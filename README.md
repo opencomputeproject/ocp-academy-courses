@@ -16,6 +16,10 @@ courses/
     figures/*.svg
     cooling_fluids_mark.svg
     thumbnail.png
+  diablo-400-disaggregated-power-for-high-density-ai-racks/
+    course.json
+    audio/moduleN/slide_*.txt
+    diablo_course_icon.svg
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
     course.json
     audio/moduleN/slide_*.txt
@@ -66,6 +70,7 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 | Folder | Course |
 |---|---|
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
+| `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
 
 ## Build a course

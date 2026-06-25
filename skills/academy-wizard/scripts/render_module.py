@@ -269,6 +269,18 @@ def _learner_aids_html(slide: dict, course: dict) -> str:
       </div>'''
 
 
+def _summary_items_html(slide: dict) -> str:
+    items = [str(item).strip() for item in slide.get("summary_items", []) if str(item).strip()]
+    if not items:
+        return ""
+    return '''
+      <ul class="summary-list animate-in">''' + "".join(
+        f'''
+        <li>{esc(item)}</li>''' for item in items
+    ) + '''
+      </ul>'''
+
+
 def render_content_bullets(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
     return f'''
@@ -604,6 +616,7 @@ def render_up_next(slide: dict, course: dict, module: dict) -> str:
       </div>
       <p class="slide-subtitle animate-in" style="margin: 0 auto 32px; text-align:center;">{esc(nt)}</p>
       <p class="animate-in" style="margin: 0 auto; max-width: 680px; font-size: 1.05rem; line-height: 1.6; padding: 18px 28px; background: var(--ocp-green-subtle); border: 1px solid rgba(141,198,63,0.35); border-radius: 8px; text-align: center;">{esc(thanks)}</p>
+      {_summary_items_html(slide)}
     </div>
   </div>
 '''
@@ -654,7 +667,8 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
       <p class="slide-subtitle animate-in" style="margin: 0 auto 18px; text-align:center;">{esc(wrap_up)}</p>
       <div class="module-complete-badge animate-in" style="margin: 0;">
         &#10003;&ensp;All Modules Complete
-      </div>{survey_html}
+      </div>
+      {_summary_items_html(slide)}{survey_html}
     </div>
   </div>
 '''
