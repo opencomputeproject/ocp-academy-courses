@@ -11,7 +11,11 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE_DIR="$ROOT_DIR/courses/$COURSE_NAME"
 BUILD_ROOT="${BUILD_ROOT:-$ROOT_DIR/build}"
 BUILD_DIR="${BUILD_DIR:-$BUILD_ROOT/$COURSE_NAME}"
-SKILL_DIR="${ACADEMY_WIZARD_SKILL_DIR:-$HOME/.codex/skills/academy-wizard}"
+DEFAULT_SKILL_DIR="$ROOT_DIR/skills/academy-wizard"
+if [[ ! -d "$DEFAULT_SKILL_DIR" && -d "$HOME/.codex/skills/academy-wizard" ]]; then
+  DEFAULT_SKILL_DIR="$HOME/.codex/skills/academy-wizard"
+fi
+SKILL_DIR="${ACADEMY_WIZARD_SKILL_DIR:-$DEFAULT_SKILL_DIR}"
 PYTHON_BIN="${PYTHON:-python3}"
 
 if [[ ! -d "$SOURCE_DIR" ]]; then

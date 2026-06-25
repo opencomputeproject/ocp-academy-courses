@@ -4,6 +4,8 @@ Open source course definitions for OCP Academy SCORM courses.
 
 This repository stores the editable course source: `course.json`, narration scripts, and lightweight course assets. It does not store generated audio, rendered HTML modules, SCORM zip files, or the original research/source materials used during course development.
 
+It also includes the `academy-wizard` Codex skill used to build the courses so contributors can reproduce the package generation flow from a clone.
+
 ## Repository layout
 
 ```text
@@ -14,6 +16,43 @@ courses/
     two_phase_dlc_mark.svg
 scripts/
   build-course.sh
+  install-academy-wizard-skill.sh
+skills/
+  academy-wizard/
+```
+
+## Install the AcademyWizard skill
+
+The bundled skill lives at:
+
+```text
+skills/academy-wizard
+```
+
+The build script uses this repo-local copy by default, so installing the skill is optional for command-line builds. Install it into Codex when you want to use it interactively to create or revise courses:
+
+```bash
+./scripts/install-academy-wizard-skill.sh
+```
+
+If you already have a local `academy-wizard` skill and want to replace it with this repo version:
+
+```bash
+./scripts/install-academy-wizard-skill.sh --force
+```
+
+The installer copies the skill to:
+
+```text
+${CODEX_HOME:-$HOME/.codex}/skills/academy-wizard
+```
+
+Restart Codex or start a new Codex session after installing so the skill list refreshes.
+
+To use the skill interactively, ask Codex for AcademyWizard work, for example:
+
+```text
+Use the academy-wizard skill to build the two-phase direct liquid cooling course from the course source in this repo.
 ```
 
 ## Build a course
@@ -33,7 +72,7 @@ export ELEVENLABS_API_KEY="<your key>"
 
 The output is written under `build/`, including the rendered course folder and LMS-ready SCORM zip.
 
-If you use a different skill location:
+The script defaults to the bundled skill under `skills/academy-wizard`. If you use a different skill location:
 
 ```bash
 ACADEMY_WIZARD_SKILL_DIR=/path/to/academy-wizard ./scripts/build-course.sh two-phase-direct-liquid-cooling-efficiencies-and-fluids
