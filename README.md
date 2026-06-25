@@ -10,6 +10,12 @@ It also includes the `academy-wizard` Codex skill used to build the courses so c
 
 ```text
 courses/
+  cooling-fluids-in-direct-liquid-cooling/
+    course.json
+    audio/moduleN/slide_*.txt
+    figures/*.svg
+    cooling_fluids_mark.svg
+    thumbnail.png
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
     course.json
     audio/moduleN/slide_*.txt
@@ -55,6 +61,13 @@ To use the skill interactively, ask Codex for AcademyWizard work, for example:
 Use the academy-wizard skill to build the two-phase direct liquid cooling course from the course source in this repo.
 ```
 
+## Available Courses
+
+| Folder | Course |
+|---|---|
+| `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
+| `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
+
 ## Build a course
 
 The build uses the local AcademyWizard Codex skill. By default the script looks for it at:
@@ -63,11 +76,11 @@ The build uses the local AcademyWizard Codex skill. By default the script looks 
 ~/.codex/skills/academy-wizard
 ```
 
-To build the two-phase DLC course:
+To build a course:
 
 ```bash
 export ELEVENLABS_API_KEY="<your key>"
-./scripts/build-course.sh two-phase-direct-liquid-cooling-efficiencies-and-fluids
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling
 ```
 
 The output is written under `build/`, including the rendered course folder and LMS-ready SCORM zip.
