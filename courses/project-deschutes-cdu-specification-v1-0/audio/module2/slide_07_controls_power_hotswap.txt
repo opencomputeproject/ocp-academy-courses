@@ -1,0 +1,17 @@
+Let's tie it all together at the controls and electrical layer.
+
+The brain of the unit is a programmable logic controller, or PLC, with a human-machine interface — an HMI — on the front. It speaks Modbus over TCP, and it supports a full dual-stack network: IPv4 and IPv6 concurrently.
+
+The IPv6 implementation includes DHCPv6, stateless address auto-configuration, and neighbor discovery — modern networking, not bolted on.
+
+The default control strategy uses two nested loops. On the secondary side, the PLC controls pump speed to maintain a fixed differential-pressure setpoint between the IT supply and return manifolds.
+
+On the primary side, the PLC modulates the Belimo control valve to maintain the three-degree approach temperature. Both loops can be reconfigured — the PLC also supports fixed-flow, fixed-supply-temperature, and fixed-return-temperature modes if your facility needs them.
+
+Multiple CDUs can be controlled as a group, with parallel hydraulic connection to a common header. That matters for scaling — you don't need a separate control architecture as your deployment grows.
+
+Electrically, the unit is fed three-phase AC at three hundred eighty to four hundred sixteen volts nominal, in either Delta four-wire or Wye five-wire distribution. Operating range is plus or minus ten percent.
+
+Total draw at full load is seventy-four kilowatts. The spec calls for at least N-plus-one input feed redundancy, with two-N redundancy preferred. Ground-fault interrupt is set at ten milliamps for personnel safety.
+
+And critically — redundant subcomponents are hot-swappable. Pumps, HMI panel, and ancillary controllers can be replaced during continuous operation, protected by finger-safe connectors, mechanical interlocks, and shortpin-equipped power connectors.

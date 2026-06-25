@@ -1,0 +1,1406 @@
+{
+  "course_slug": "project_deschutes_v1_0",
+  "course_title": "OCP Project Deschutes",
+  "course_subtitle": "Coolant Distribution Unit (CDU) Specification v1.0",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Specification v1.0 · February 2026",
+  "target_duration_minutes": 40,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "deschutes_logo.svg",
+    "academy_logo": "ocp_academy_logo.svg",
+    "badge_text": "CDU",
+    "motion_intro_logo": "ocp_academy_white.svg"
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Project Deschutes: Data Center Facilities V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-final-2025-09-05-pdf"
+    },
+    {
+      "kind": "ocp_emea_summit_recording",
+      "title": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+      "url": "https://www.youtube.com/watch?v=OKYj_J66VWM"
+    },
+    {
+      "kind": "google_cloud_blog",
+      "title": "AI infrastructure is hot. New power distribution and liquid cooling infrastructure can help",
+      "url": "https://cloud.google.com/blog/topics/systems/enabling-1-mw-it-racks-and-liquid-cooling-at-ocp-emea-summit"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_deschutes_why_now",
+      "title": "Why Deschutes, Why Now",
+      "subtitle": "Motivation, the FWS → CDU → TCS architecture, and the v1.0 headline specs.",
+      "module_badge_text": "Module 1",
+      "next_module_title": "CDU Architecture & Performance",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Introduction to Project Deschutes",
+          "subtitle": "Google's open 2 MW CDU contribution, now available to the industry",
+          "version_chip": "Specification v1.0 · February 2026",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "overview",
+          "title": "Three Modules, One Complete Picture",
+          "subtitle": "From motivation to internals to deployment — grounded in the v1.0 specification.",
+          "modules_listed": [
+            "Why Deschutes, Why Now",
+            "CDU Architecture & Performance",
+            "Deployment, Supply Chain & Call to Action"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "~40 minutes total"
+            },
+            {
+              "icon": "🎓",
+              "text": "Intermediate audience"
+            },
+            {
+              "icon": "📄",
+              "text": "Based on Spec v1.0 · Feb 2026",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf"
+            },
+            {
+              "icon": "🎥",
+              "text": "Watch the OCP Academy Liquid Cooling primer teaser",
+              "url": "https://www.youtube.com/watch?v=bIePDFht0uU"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_overview.txt",
+            "wav_file": "audio/module1/slide_02_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 3
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "ai_challenge",
+          "section_label": "Why Now",
+          "title": "The AI/ML Cooling Challenge",
+          "subtitle": "Rack densities are pushing past what air cooling can handle.",
+          "bullets": [
+            {
+              "bold_lead": "Rack power densities >100 kW",
+              "text": "now common in AI/ML clusters — well past the practical limit of air cooling."
+            },
+            {
+              "bold_lead": "Direct liquid cooling (DLC)",
+              "text": "moves heat at the chip via cold plates + a dedicated secondary loop. Lower power, smaller floor footprint."
+            },
+            {
+              "bold_lead": "The missing piece:",
+              "text": "a standardized, openly-published, high-performance CDU at multi-megawatt scale — the bridge between facility chilled water and rack cold plates."
+            },
+            {
+              "bold_lead": "Project Deschutes targets exactly that gap:",
+              "text": "2 MW thermal capacity, industry-leading hydraulic performance, open and available to every supplier."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_challenge.txt",
+            "wav_file": "audio/module1/slide_03_ai_challenge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "dlc",
+            "cdu"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "cdu_role_bridge",
+          "section_label": "Architecture",
+          "title": "Where the CDU Lives: FWS → CDU → TCS",
+          "subtitle": "The CDU is the precise control point between the building water plant and rack cold plates.",
+          "figure": {
+            "alt": "Project Deschutes bridges the Facility Water System (primary) to the Technology Cooling System (secondary) via three parallel heat exchangers and N+1 pumps, holding a 3°C approach temperature.",
+            "caption": "The CDU pulls only as much facility water as needed to hold a fixed 3°C approach temperature, while delivering 500 GPM at 80–90 psi to the IT loop.",
+            "source": "svg_inline",
+            "svg": "<svg style=\"max-width:100%;height:auto;display:block;margin:0 auto;\" viewBox=\"0 0 820 420\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Open Sans, sans-serif\">\n  <defs>\n    <marker id=\"ar-blue\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M0,0 L10,5 L0,10 z\" fill=\"#3498db\"/>\n    </marker>\n    <marker id=\"ar-red\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M0,0 L10,5 L0,10 z\" fill=\"#e74c3c\"/>\n    </marker>\n  </defs>\n\n  <!-- Facility Water System (left) -->\n  <rect x=\"20\" y=\"100\" width=\"180\" height=\"200\" rx=\"10\" fill=\"#f3f4f6\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"110\" y=\"135\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"700\" fill=\"#19194D\">Facility Water</text>\n  <text x=\"110\" y=\"153\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"700\" fill=\"#19194D\">System (FWS)</text>\n  <text x=\"110\" y=\"175\" text-anchor=\"middle\" font-size=\"11\" fill=\"#5F6062\">Primary side</text>\n  <text x=\"110\" y=\"220\" text-anchor=\"middle\" font-size=\"11\" fill=\"#5F6062\">Building chilled</text>\n  <text x=\"110\" y=\"235\" text-anchor=\"middle\" font-size=\"11\" fill=\"#5F6062\">water plant</text>\n  <text x=\"110\" y=\"270\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"600\" fill=\"#19194D\">500 GPM · 15-30 psi</text>\n\n  <!-- CDU (center) -->\n  <rect x=\"290\" y=\"60\" width=\"240\" height=\"280\" rx=\"12\" fill=\"#fff\" stroke=\"#8DC63F\" stroke-width=\"3\"/>\n  <rect x=\"290\" y=\"60\" width=\"240\" height=\"40\" rx=\"12\" fill=\"#8DC63F\"/>\n  <text x=\"410\" y=\"86\" text-anchor=\"middle\" font-size=\"15\" font-weight=\"800\" fill=\"#fff\" letter-spacing=\"1.2\">PROJECT DESCHUTES CDU</text>\n\n  <!-- 3 heat exchangers -->\n  <rect x=\"312\" y=\"125\" width=\"38\" height=\"80\" fill=\"#e3f2fd\" stroke=\"#3498db\" stroke-width=\"1.5\"/>\n  <rect x=\"358\" y=\"125\" width=\"38\" height=\"80\" fill=\"#e3f2fd\" stroke=\"#3498db\" stroke-width=\"1.5\"/>\n  <rect x=\"404\" y=\"125\" width=\"38\" height=\"80\" fill=\"#e3f2fd\" stroke=\"#3498db\" stroke-width=\"1.5\"/>\n  <text x=\"377\" y=\"220\" text-anchor=\"middle\" font-size=\"10\" fill=\"#5F6062\">3 × HX in parallel</text>\n\n  <!-- 2 pumps -->\n  <circle cx=\"475\" cy=\"155\" r=\"20\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"475\" y=\"160\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"800\" fill=\"#5F6062\">P</text>\n  <circle cx=\"475\" cy=\"205\" r=\"20\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"475\" y=\"210\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"800\" fill=\"#5F6062\">P</text>\n  <text x=\"475\" y=\"248\" text-anchor=\"middle\" font-size=\"10\" fill=\"#5F6062\">N+1 pumps</text>\n\n  <!-- Primary control valve -->\n  <polygon points=\"335,278 358,266 358,290\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"1\"/>\n  <text x=\"370\" y=\"287\" font-size=\"10\" fill=\"#5F6062\">Primary control valve</text>\n\n  <!-- Tagline -->\n  <text x=\"410\" y=\"320\" text-anchor=\"middle\" font-size=\"10\" font-weight=\"600\" fill=\"#19194D\">2 MW thermal capacity</text>\n\n  <!-- Technology Cooling System (right) -->\n  <rect x=\"620\" y=\"60\" width=\"180\" height=\"280\" rx=\"10\" fill=\"#f3f4f6\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"710\" y=\"92\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"700\" fill=\"#19194D\">Technology Cooling</text>\n  <text x=\"710\" y=\"110\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"700\" fill=\"#19194D\">System (TCS)</text>\n  <text x=\"710\" y=\"132\" text-anchor=\"middle\" font-size=\"11\" fill=\"#5F6062\">Secondary side</text>\n\n  <!-- Rack stack -->\n  <rect x=\"655\" y=\"155\" width=\"110\" height=\"140\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1\"/>\n  <line x1=\"655\" y1=\"172\" x2=\"765\" y2=\"172\" stroke=\"#5F6062\" stroke-width=\"0.5\"/>\n  <line x1=\"655\" y1=\"189\" x2=\"765\" y2=\"189\" stroke=\"#5F6062\" stroke-width=\"0.5\"/>\n  <line x1=\"655\" y1=\"206\" x2=\"765\" y2=\"206\" stroke=\"#5F6062\" stroke-width=\"0.5\"/>\n  <line x1=\"655\" y1=\"223\" x2=\"765\" y2=\"223\" stroke=\"#5F6062\" stroke-width=\"0.5\"/>\n  <line x1=\"655\" y1=\"240\" x2=\"765\" y2=\"240\" stroke=\"#5F6062\" stroke-width=\"0.5\"/>\n  <line x1=\"655\" y1=\"257\" x2=\"765\" y2=\"257\" stroke=\"#5F6062\" stroke-width=\"0.5\"/>\n  <line x1=\"655\" y1=\"274\" x2=\"765\" y2=\"274\" stroke=\"#5F6062\" stroke-width=\"0.5\"/>\n  <text x=\"710\" y=\"315\" text-anchor=\"middle\" font-size=\"11\" fill=\"#5F6062\">High-density</text>\n  <text x=\"710\" y=\"328\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"600\" fill=\"#19194D\">AI/ML cold plates</text>\n\n  <!-- Primary arrows (FWS <-> CDU) -->\n  <line x1=\"200\" y1=\"160\" x2=\"288\" y2=\"160\" stroke=\"#3498db\" stroke-width=\"6\" marker-end=\"url(#ar-blue)\"/>\n  <text x=\"244\" y=\"150\" text-anchor=\"middle\" font-size=\"10\" fill=\"#3498db\" font-weight=\"600\">Cold supply</text>\n  <line x1=\"288\" y1=\"240\" x2=\"200\" y2=\"240\" stroke=\"#e74c3c\" stroke-width=\"6\" marker-end=\"url(#ar-red)\"/>\n  <text x=\"244\" y=\"260\" text-anchor=\"middle\" font-size=\"10\" fill=\"#e74c3c\" font-weight=\"600\">Warm return</text>\n\n  <!-- Secondary arrows (CDU <-> TCS) -->\n  <line x1=\"530\" y1=\"160\" x2=\"618\" y2=\"160\" stroke=\"#3498db\" stroke-width=\"6\" marker-end=\"url(#ar-blue)\"/>\n  <text x=\"574\" y=\"150\" text-anchor=\"middle\" font-size=\"10\" fill=\"#3498db\" font-weight=\"600\">Cold TCS supply</text>\n  <line x1=\"618\" y1=\"240\" x2=\"530\" y2=\"240\" stroke=\"#e74c3c\" stroke-width=\"6\" marker-end=\"url(#ar-red)\"/>\n  <text x=\"574\" y=\"260\" text-anchor=\"middle\" font-size=\"10\" fill=\"#e74c3c\" font-weight=\"600\">Warm TCS return</text>\n\n  <!-- Approach temperature callout -->\n  <rect x=\"270\" y=\"365\" width=\"280\" height=\"42\" rx=\"6\" fill=\"#8DC63F\" fill-opacity=\"0.14\" stroke=\"#8DC63F\" stroke-width=\"1.2\"/>\n  <text x=\"410\" y=\"384\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"800\" fill=\"#6FA030\" letter-spacing=\"1\">3°C APPROACH TEMPERATURE</text>\n  <text x=\"410\" y=\"400\" text-anchor=\"middle\" font-size=\"9\" fill=\"#5F6062\">∆T = T(secondary supply, cold) − T(primary supply, cold)</text>\n\n  <!-- IT-side pressure callout -->\n  <text x=\"620\" y=\"368\" text-anchor=\"start\" font-size=\"11\" font-weight=\"700\" fill=\"#19194D\">500 GPM · 80-90 psi</text>\n  <text x=\"620\" y=\"383\" text-anchor=\"start\" font-size=\"9\" fill=\"#5F6062\">Available IT-side dP</text>\n  <text x=\"620\" y=\"398\" text-anchor=\"start\" font-size=\"9\" fill=\"#5F6062\">drives cold-plate flow</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_cdu_role_bridge.txt",
+            "wav_file": "audio/module1/slide_04_cdu_role_bridge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ],
+          "term_refs": [
+            "fws",
+            "tcs",
+            "approach_temperature",
+            "differential_pressure",
+            "heat_exchanger"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "google_experience",
+          "section_label": "Pedigree",
+          "title": "Built on 7+ Years at Hyperscale",
+          "subtitle": "First announced at the OCP EMEA Summit 2025, iterated to v1.0 through open community feedback.",
+          "bullets": [
+            {
+              "bold_lead": "Google's 5th-generation CDU.",
+              "text": "Informed by more than 7 years of liquid cooling at hyperscale."
+            },
+            {
+              "bold_lead": ">1 GW of prior-gen Deschutes deployed.",
+              "text": "Ground-truth data on what fails, how, and what to redesign."
+            },
+            {
+              "bold_lead": "First announced at OCP EMEA Summit 2025.",
+              "text": "Google released the v0.8 draft for public community feedback."
+            },
+            {
+              "bold_lead": "v1.0 = community engagement made real.",
+              "text": "Months of supplier and operator input, design-for-manufacturing refinements, and updated pump reliability data."
+            },
+            {
+              "bold_lead": "Open operational playbook.",
+              "text": "BOM, manufacturing quality, packaging, barcode labeling, validation, and FRU procedures all published."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Project Deschutes CDU overview — two views showing the unit with labeled callouts.",
+            "caption": "Figure 3.3.1 from the v1.0 spec — CDU overview with primary/secondary connections, control enclosure, pumps, and heat exchangers labeled.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_google_experience.txt",
+            "wav_file": "audio/module1/slide_05_google_experience.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "high_level_specs",
+          "section_label": "Specifications",
+          "title": "Headline Specifications (Spec Table 3.1)",
+          "columns": [
+            "Specification",
+            "Value"
+          ],
+          "rows": [
+            [
+              "IT flow",
+              "500 GPM"
+            ],
+            [
+              "Facility flow @ 0.25 GPM/kW",
+              "500 GPM"
+            ],
+            [
+              "IT dP available",
+              "80–90 psi"
+            ],
+            [
+              "Facility dP",
+              "15–30 psi"
+            ],
+            [
+              "Operating pressure",
+              "0–130 psig"
+            ],
+            [
+              "Thermal load",
+              "2,000 kW (2 MW)"
+            ],
+            [
+              "Approach temperature",
+              "3 °C"
+            ],
+            [
+              "Operating liquid temperature",
+              "18–55 °C"
+            ],
+            [
+              "CDU weight (wet / dry)",
+              "6,900 / 5,300 lb"
+            ],
+            [
+              "Power consumption",
+              "74 kW"
+            ],
+            [
+              "Pump voltage",
+              "380–416 VAC, 3-phase"
+            ],
+            [
+              "Heat exchanger",
+              "Liquid-to-liquid, dual-pass"
+            ],
+            [
+              "Coolants",
+              "DI water, PG25"
+            ],
+            [
+              "CDU dimensions (W × H × D)",
+              "65.25 × 91.44 × 42.29 in"
+            ],
+            [
+              "Redundancy",
+              "2 pumps N+1 · 3 HX in parallel · dual-feed power"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_high_level_specs.txt",
+            "wav_file": "audio/module1/slide_06_high_level_specs.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "di_water",
+            "pg25"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "key_takeaways_m1",
+          "title": "What You Learned",
+          "items": [
+            "First open CDU specification contributed to the Open Compute Project — Google's 5th-generation design.",
+            "Engineered for AI/ML: 2 MW thermal capacity at a 3 °C approach temperature, 80–90 psi available on the IT loop.",
+            "Sits as the precise control point between the Facility Water System and the Technology Cooling System.",
+            "All numbers traceable to the official v1.0 spec, dated February 26, 2026.",
+            "First announced at OCP EMEA Summit 2025, then refined through open community feedback to ship as v1.0."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_key_takeaways_m1.txt",
+            "wav_file": "audio/module1/slide_07_key_takeaways_m1.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m1",
+          "title": "Check Your Deschutes Mental Model",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check_m1.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check_m1.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m1_cooling_architecture",
+              "prompt": "What is the Deschutes CDU's role in the FWS → CDU → TCS architecture?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "It bridges facility water and the clean IT coolant loop, controlling coolant delivery while transferring heat back to the facility side.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "It replaces the building chilled-water plant entirely.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "It is only a monitoring device for rack airflow.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "It distributes rack electrical feeds in the hot aisle.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Deschutes is the controlled liquid-to-liquid bridge between the Facility Water System and Technology Cooling System.",
+              "feedback_incorrect": "Review the architecture slide. The CDU sits between FWS and TCS; it does not replace the facility plant or act as an electrical distribution device."
+            },
+            {
+              "id": "m1_headline_specs",
+              "multiple": true,
+              "prompt": "Which headline values belong to the Project Deschutes v1.0 CDU specification?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "2 MW thermal load at a 3 °C approach temperature.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "500 GPM IT flow with 80–90 psi available differential pressure.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "500 GPM facility flow at 15–30 psi at rated load.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "A closed, proprietary design available only to one supplier.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Those values summarize the thermal, IT-side hydraulic, and facility-side targets emphasized in Module 1.",
+              "feedback_incorrect": "Look back at Spec Table 3.1. Deschutes is open, and the key numbers include 2 MW, 3 °C approach, 500 GPM, and the published pressure ranges."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next_m1",
+          "next_module_number": 2,
+          "next_module_title": "CDU Architecture & Performance",
+          "thank_you_message": "Nice work — you've finished Module 1: Why Deschutes, Why Now.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_up_next_m1.txt",
+            "wav_file": "audio/module1/slide_08_up_next_m1.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "cdu_architecture_performance",
+      "title": "CDU Architecture & Performance",
+      "subtitle": "Inside the v1.0 CDU — physical envelope, fittings, pump/HX/sensor suite, controls, electrical, hot-swap.",
+      "module_badge_text": "Module 2",
+      "next_module_title": "Deployment, Supply Chain & Call to Action",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m2_title",
+          "title": "CDU Architecture & Performance",
+          "subtitle": "Opening the unit — the v1.0 internals, end to end",
+          "version_chip": "Specification v1.0 · February 2026",
+          "audio": {
+            "script_file": "audio/module2/slide_01_m2_title.txt",
+            "wav_file": "audio/module2/slide_01_m2_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "physical",
+          "section_label": "Physical Envelope",
+          "title": "Form Factor, Weight & Mechanical",
+          "bullets": [
+            {
+              "bold_lead": "Dimensions:",
+              "text": "65.25” W × 91.44” H × 42.29” D; 100” max packaged height."
+            },
+            {
+              "bold_lead": "Weight:",
+              "text": "5,300 lb dry, 6,900 lb wet — plan floor structure and seismic anchoring accordingly."
+            },
+            {
+              "bold_lead": "Frame, casters, mounting brackets.",
+              "text": "Rolled into place, anchored, plumbed."
+            },
+            {
+              "bold_lead": "Stainless-steel piping.",
+              "text": "Wetted materials limited to stainless, copper, EPDM. No nickel-plated brass on the secondary loop."
+            },
+            {
+              "bold_lead": "Shock & vibration:",
+              "text": "IEC 60068-2-27 operating (3.5 G, 11 ms half-sine); 30 G non-op; ASTM D4169 transportation."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Two CAD views of the Project Deschutes CDU showing primary and secondary side connections, control enclosure, pumps, HX, seismic interface.",
+            "caption": "Figure 3.3.1 — the Project Deschutes CDU. The unit is engineered to survive shipping, rolling, and seismic events, not just operate cleanly.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_02_physical.txt",
+            "wav_file": "audio/module2/slide_02_physical.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 17
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "mechanical_features",
+          "section_label": "Fittings & Filtration",
+          "title": "Mechanical Features: Built for Long-Term Operation",
+          "bullets": [
+            {
+              "bold_lead": "Victaulic + Tri-clamp fitting mix.",
+              "text": "Optimized to minimize integration risk, reduce pressure drop, simplify service touchpoints."
+            },
+            {
+              "bold_lead": "Layered filtration:",
+              "text": "500 µm primary strainer; 25–44 µm main secondary; 0.2 µm side-stream microfiltration at ~3 GPM."
+            },
+            {
+              "bold_lead": "Spirovent air separator",
+              "text": "purges dissolved gases continuously."
+            },
+            {
+              "bold_lead": "Flow-through expansion tank.",
+              "text": "v1.0 added front-side serviceability — direct lesson from prior generations."
+            },
+            {
+              "bold_lead": "Peroxide-cured EPDM hoses.",
+              "text": "Preferred for long-term elastomer stability."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_victaulic_triclamp.png",
+            "alt": "Annotated photos showing how Victaulic and Tri-clamp fittings are arranged around the heat exchangers and the manifold.",
+            "caption": "Figure 3.3.4 — optimized mix of Victaulic and Tri-clamp fittings minimizes integration risk and pressure drop.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_mechanical_features.txt",
+            "wav_file": "audio/module2/slide_03_mechanical_features.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 15
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            }
+          ],
+          "term_refs": [
+            "epdm"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "hydraulic_performance",
+          "section_label": "Hydraulic Performance",
+          "title": "500 GPM at 80–90 psi — With Published Curves",
+          "bullets": [
+            {
+              "bold_lead": "Secondary (IT) target:",
+              "text": "500 GPM @ 80–90 psi available dP — enough head for rack manifolds + dozens of cold plates."
+            },
+            {
+              "bold_lead": "Normal mode:",
+              "text": "two pumps in N+1 (spec p. 19 curve, PG25 fluid)."
+            },
+            {
+              "bold_lead": "Fallback mode:",
+              "text": "one pump, reduced pressure (spec p. 20) — enough time to schedule a swap rather than declare an outage."
+            },
+            {
+              "bold_lead": "Facility (primary):",
+              "text": "500 GPM @ 15–30 psi at rated load — only as much as the unit actually needs."
+            },
+            {
+              "bold_lead": "Envelope:",
+              "text": "0–130 psig operating, 130 psi pressure relief, Parker N-S-P-251 ORB6 quick-disconnect telemetry ports."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_hydraulic_n_plus_1.png",
+            "alt": "CDU secondary-side hydraulic curve, two-pump (N+1) operation, PG25 fluid.",
+            "caption": "Figure 5.1.1 — secondary-side hydraulic performance (available pressure) with 2-pump operation.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_hydraulic_performance.txt",
+            "wav_file": "audio/module2/slide_04_hydraulic_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 19
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 20
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "thermal_performance",
+          "section_label": "Thermal Performance",
+          "title": "3 °C Approach at 2 MW — Better Across Most Loads",
+          "bullets": [
+            {
+              "bold_lead": "Three dual-pass HX in parallel.",
+              "text": "Lower pressure drop, redundancy for service."
+            },
+            {
+              "bold_lead": "First-source vendor:",
+              "text": "Alfa Laval CB210-276AH (Item 30751 6274 3)."
+            },
+            {
+              "bold_lead": "Headline:",
+              "text": "3 °C approach @ 2 MW heat load, 500 GPM each side."
+            },
+            {
+              "bold_lead": "Real performance is better than headline.",
+              "text": "Table 5.3 publishes 7 operating points — e.g. 2.3 °C @ 2,150 kW / 545 GPM; 1.6 °C @ 640 kW / 162 GPM."
+            },
+            {
+              "bold_lead": "Coolant range:",
+              "text": "18–55 °C; DI water (ChemTreat, Garratt-Callahan, Veolia formulations) or PG25."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_approach_vs_flow.png",
+            "alt": "Heat exchanger thermal performance curve — approach temperature drops with flow.",
+            "caption": "Figure 5.3.2 — approach temperature vs flow at 2 MW heat load, dual-pass heat exchanger.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_thermal_performance.txt",
+            "wav_file": "audio/module2/slide_05_thermal_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 21
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 22
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "core_components_sensors",
+          "section_label": "Components & Telemetry",
+          "title": "Core Components by Part Number",
+          "bullets": [
+            {
+              "bold_lead": "Pump:",
+              "text": "Speck TOEMA065200 — 500 GPM @ 112 psi, 37 kW, seal-less. N+1 redundant."
+            },
+            {
+              "bold_lead": "VFD:",
+              "text": "ABB ACH580-31-065A-4 (NEMA Type 12) — v1.0 added serviceability accessories."
+            },
+            {
+              "bold_lead": "Primary control valve:",
+              "text": "Belimo B6500."
+            },
+            {
+              "bold_lead": "Heat exchangers:",
+              "text": "Alfa Laval CB210-276AH × 3 in parallel."
+            },
+            {
+              "bold_lead": "Telemetry:",
+              "text": "T + P on all 4 manifolds; flow ± 0.5%; per-pump RPM & power; 3-zone leak detection; coolant pH + electrical conductivity."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_secondary_loop.png",
+            "alt": "Annotated photo of the secondary (IT) side of the CDU with pumps, filters, heat exchangers, and the flow meter labeled.",
+            "caption": "Figure 3.3.2 — secondary (technical/IT) flow loop features: 4× filters, secondary flow meter, pumps, isolation valves, Victaulic fittings.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_06_core_components_sensors.txt",
+            "wav_file": "audio/module2/slide_06_core_components_sensors.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 12
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 24
+            }
+          ],
+          "term_refs": [
+            "vfd"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "controls_power_hotswap",
+          "section_label": "Controls & Power",
+          "title": "PLC with Two Control Loops + Dual-Feed Power",
+          "subtitle": "Modbus/TCP, IPv4 + IPv6 dual stack, hot-swappable redundant subcomponents.",
+          "figure": {
+            "alt": "Block diagram: PLC controls pump speed for fixed differential pressure on the IT loop, and primary-valve position for fixed approach temperature on the facility loop.",
+            "caption": "Two nested control loops run on the same PLC. Default modes shown; alternates include fixed-flow, fixed-supply-T, fixed-return-T, and fixed-speed.",
+            "source": "svg_inline",
+            "svg": "<svg style=\"max-width:100%;height:auto;display:block;margin:0 auto;\" viewBox=\"0 0 820 520\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Open Sans, sans-serif\">\n  <defs>\n    <marker id=\"ar2\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M0,0 L10,5 L0,10 z\" fill=\"#5F6062\"/>\n    </marker>\n    <marker id=\"ar2g\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\">\n      <path d=\"M0,0 L10,5 L0,10 z\" fill=\"#6FA030\"/>\n    </marker>\n  </defs>\n\n  <!-- PLC at top center -->\n  <rect x=\"330\" y=\"20\" width=\"160\" height=\"90\" rx=\"10\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"2\"/>\n  <text x=\"410\" y=\"50\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"800\" fill=\"#fff\" letter-spacing=\"1.5\">PLC + HMI</text>\n  <text x=\"410\" y=\"72\" text-anchor=\"middle\" font-size=\"10\" fill=\"#fff\">Modbus / TCP</text>\n  <text x=\"410\" y=\"88\" text-anchor=\"middle\" font-size=\"10\" fill=\"#fff\">IPv4 + IPv6 dual stack</text>\n  <text x=\"410\" y=\"102\" text-anchor=\"middle\" font-size=\"9\" fill=\"#fff\" fill-opacity=\"0.85\">DHCPv6 · SLAAC · NDP</text>\n\n  <!-- LEFT: Secondary (IT) loop -->\n  <text x=\"180\" y=\"155\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"800\" fill=\"#19194D\" letter-spacing=\"0.5\">SECONDARY LOOP (IT)</text>\n\n  <rect x=\"65\" y=\"180\" width=\"230\" height=\"55\" rx=\"6\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"180\" y=\"205\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"600\" fill=\"#19194D\">Pump (VFD-driven, N+1)</text>\n  <text x=\"180\" y=\"222\" text-anchor=\"middle\" font-size=\"10\" fill=\"#5F6062\">Speck · ABB ACH-580</text>\n\n  <rect x=\"65\" y=\"265\" width=\"230\" height=\"55\" rx=\"6\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"180\" y=\"290\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"600\" fill=\"#19194D\">Supply / return manifolds</text>\n  <text x=\"180\" y=\"307\" text-anchor=\"middle\" font-size=\"10\" fill=\"#5F6062\">dP sensor · flow meter (±0.5%)</text>\n\n  <rect x=\"65\" y=\"350\" width=\"230\" height=\"55\" rx=\"6\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"180\" y=\"380\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"600\" fill=\"#19194D\">IT cold plates</text>\n\n  <!-- Left loop flow arrows -->\n  <path d=\"M180,235 L180,265\" stroke=\"#3498db\" stroke-width=\"3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n  <path d=\"M180,320 L180,350\" stroke=\"#3498db\" stroke-width=\"3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n  <path d=\"M295,378 Q345,378 345,302 Q345,212 295,212\" stroke=\"#3498db\" stroke-width=\"3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n\n  <!-- PLC -> pump (control command) -->\n  <path d=\"M355,110 L355,140 L180,140 L180,180\" stroke=\"#8DC63F\" stroke-width=\"2.2\" stroke-dasharray=\"6,3\" fill=\"none\" marker-end=\"url(#ar2g)\"/>\n  <text x=\"266\" y=\"135\" text-anchor=\"middle\" font-size=\"9\" font-weight=\"700\" fill=\"#6FA030\">controls pump speed</text>\n\n  <!-- dP feedback -> PLC -->\n  <path d=\"M65,292 L40,292 L40,140 L330,140\" stroke=\"#5F6062\" stroke-width=\"1.5\" stroke-dasharray=\"3,3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n  <text x=\"50\" y=\"225\" text-anchor=\"start\" font-size=\"9\" fill=\"#5F6062\">dP feedback</text>\n\n  <!-- Loop 1 label -->\n  <rect x=\"65\" y=\"425\" width=\"230\" height=\"46\" rx=\"6\" fill=\"#8DC63F\" fill-opacity=\"0.14\" stroke=\"#8DC63F\" stroke-width=\"1.2\"/>\n  <text x=\"180\" y=\"445\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"800\" fill=\"#6FA030\">LOOP 1: PUMP SPEED CONTROL</text>\n  <text x=\"180\" y=\"461\" text-anchor=\"middle\" font-size=\"9\" fill=\"#5F6062\">default: fixed differential pressure</text>\n\n  <!-- RIGHT: Primary (facility) loop -->\n  <text x=\"640\" y=\"155\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"800\" fill=\"#19194D\" letter-spacing=\"0.5\">PRIMARY LOOP (FACILITY)</text>\n\n  <rect x=\"525\" y=\"180\" width=\"230\" height=\"55\" rx=\"6\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"640\" y=\"205\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"600\" fill=\"#19194D\">Primary control valve</text>\n  <text x=\"640\" y=\"222\" text-anchor=\"middle\" font-size=\"10\" fill=\"#5F6062\">Belimo B-6500 · modulating</text>\n\n  <rect x=\"525\" y=\"265\" width=\"230\" height=\"55\" rx=\"6\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"640\" y=\"290\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"600\" fill=\"#19194D\">3 × heat exchangers</text>\n  <text x=\"640\" y=\"307\" text-anchor=\"middle\" font-size=\"10\" fill=\"#5F6062\">supply &amp; return T sensors</text>\n\n  <rect x=\"525\" y=\"350\" width=\"230\" height=\"55\" rx=\"6\" fill=\"#fff\" stroke=\"#5F6062\" stroke-width=\"1.5\"/>\n  <text x=\"640\" y=\"380\" text-anchor=\"middle\" font-size=\"12\" font-weight=\"600\" fill=\"#19194D\">Facility chilled water plant</text>\n\n  <!-- Right loop flow arrows -->\n  <path d=\"M640,235 L640,265\" stroke=\"#3498db\" stroke-width=\"3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n  <path d=\"M640,320 L640,350\" stroke=\"#3498db\" stroke-width=\"3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n  <path d=\"M755,378 Q800,378 800,302 Q800,212 755,212\" stroke=\"#3498db\" stroke-width=\"3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n\n  <!-- PLC -> control valve -->\n  <path d=\"M465,110 L465,140 L640,140 L640,180\" stroke=\"#8DC63F\" stroke-width=\"2.2\" stroke-dasharray=\"6,3\" fill=\"none\" marker-end=\"url(#ar2g)\"/>\n  <text x=\"555\" y=\"135\" text-anchor=\"middle\" font-size=\"9\" font-weight=\"700\" fill=\"#6FA030\">controls valve position</text>\n\n  <!-- Approach T feedback -->\n  <path d=\"M755,292 L780,292 L780,140 L490,140\" stroke=\"#5F6062\" stroke-width=\"1.5\" stroke-dasharray=\"3,3\" fill=\"none\" marker-end=\"url(#ar2)\"/>\n  <text x=\"780\" y=\"225\" text-anchor=\"end\" font-size=\"9\" fill=\"#5F6062\">approach T feedback</text>\n\n  <!-- Loop 2 label -->\n  <rect x=\"525\" y=\"425\" width=\"230\" height=\"46\" rx=\"6\" fill=\"#8DC63F\" fill-opacity=\"0.14\" stroke=\"#8DC63F\" stroke-width=\"1.2\"/>\n  <text x=\"640\" y=\"445\" text-anchor=\"middle\" font-size=\"11\" font-weight=\"800\" fill=\"#6FA030\">LOOP 2: APPROACH TEMP CONTROL</text>\n  <text x=\"640\" y=\"461\" text-anchor=\"middle\" font-size=\"9\" fill=\"#5F6062\">default: fixed 3°C approach</text>\n\n  <!-- Bottom footer note -->\n  <text x=\"410\" y=\"500\" text-anchor=\"middle\" font-size=\"10\" fill=\"#5F6062\">Both loops run concurrently on the same PLC · alternate modes: fixed flow / fixed temperature / fixed speed</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_07_controls_power_hotswap.txt",
+            "wav_file": "audio/module2/slide_07_controls_power_hotswap.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 26
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 27
+            }
+          ],
+          "term_refs": [
+            "plc",
+            "modbus_tcp",
+            "ipv6_dual_stack"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "key_takeaways_m2",
+          "title": "What You Learned",
+          "items": [
+            "Physical: 65 × 91 × 42 in, ~6,900 lb wet. Built for shipping, rolling, anchoring.",
+            "Filtration is layered: 500 µm → 25–44 µm → 0.2 µm side-stream — designed for years of clean operation.",
+            "Hydraulic: 500 GPM @ 80–90 psi, published 2-pump and 1-pump curves.",
+            "Thermal: 3 °C approach @ 2 MW — better than spec across most of the operating envelope.",
+            "Components named: Speck pumps, ABB VFDs, Belimo valve, Alfa Laval HX.",
+            "PLC: Modbus/TCP, IPv4 + IPv6, two default loops (pump speed, primary valve), hot-swap subcomponents."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_key_takeaways_m2.txt",
+            "wav_file": "audio/module2/slide_08_key_takeaways_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m2",
+          "title": "Check Your Architecture Understanding",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check_m2.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check_m2.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m2_hydraulic_target",
+              "prompt": "Which statement best describes the published secondary-side hydraulic target?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "500 GPM on the IT side with 80–90 psi of available differential pressure.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "500 GPM on the facility side with 80–90 psi of available differential pressure.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "15–30 psi available on the IT side at rated load.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "A single fixed-flow point with no published performance curves.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. The IT or secondary side target is 500 GPM with 80–90 psi available downstream.",
+              "feedback_incorrect": "Review the hydraulic performance slide. The 80–90 psi available differential pressure is on the IT side; facility pressure is a lower range."
+            },
+            {
+              "id": "m2_controls_strategy",
+              "multiple": true,
+              "prompt": "Which controls and telemetry statements are supported by Module 2?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The PLC supports Modbus/TCP with IPv4 and IPv6 dual-stack networking.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Pump speed is controlled to maintain IT-side differential pressure.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "The primary control valve modulates to maintain approach temperature.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The secondary flow meter is designed for powered hot-swap service.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. The control model combines PLC networking, pump speed control, and primary-valve approach-temperature control.",
+              "feedback_incorrect": "Check the controls and maintenance details. The secondary flow meter requires CDU power-off service, while the PLC and control loops stay central to operation."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 18
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next_m2",
+          "next_module_number": 3,
+          "next_module_title": "Deployment, Supply Chain & Call to Action",
+          "thank_you_message": "Nice work — you've finished Module 2: CDU Architecture & Performance.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_up_next_m2.txt",
+            "wav_file": "audio/module2/slide_09_up_next_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "deployment_supply_chain_call_to_action",
+      "title": "Deployment, Supply Chain & Call to Action",
+      "subtitle": "Redmond HAC, rack power architecture, the three-tier supplier model, FRUs, and how to get involved.",
+      "module_badge_text": "Module 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m3_title",
+          "title": "Deployment, Supply Chain & Call to Action",
+          "subtitle": "From spec to data-center floor",
+          "version_chip": "Specification v1.0 · February 2026",
+          "audio": {
+            "script_file": "audio/module3/slide_01_m3_title.txt",
+            "wav_file": "audio/module3/slide_01_m3_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "redmond_hac",
+          "section_label": "Companion Spec",
+          "title": "Redmond — Hot Aisle Containment Interface",
+          "bullets": [
+            {
+              "bold_lead": "Section 18 of the same spec.",
+              "text": "Companion data-center structure to deploy the CDU into."
+            },
+            {
+              "bold_lead": "Rack envelope:",
+              "text": "28” W, up to 50” D, 80.7–90.55” H — shoulder-to-shoulder, mix-and-match depths."
+            },
+            {
+              "bold_lead": "Aisles:",
+              "text": "54” cold; 68.4” hot (with RDHx) or 102” hot (without)."
+            },
+            {
+              "bold_lead": "14′ ceiling.",
+              "text": "Fits most colo data centers worldwide — drop-in, not facility-rebuild."
+            },
+            {
+              "bold_lead": "Four critical elevations:",
+              "text": "100.5” (wall manifold), 115.5”, 127.5”, 139.5” (cable trays). Above that = fungible PCW pipe space."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_redmond_structure.png",
+            "alt": "Annotated diagram of the Redmond Hot Aisle Containment structure with X-beam supports, cable tray hangers, base plates, and busduct mounting.",
+            "caption": "Figure 18.5.1 — Redmond HAC structure. Vertical posts on 5” × 5” base plates support lateral X-beams for wall-manifold mounts; cable tray hangers attach to the verticals.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_02_redmond_hac.txt",
+            "wav_file": "audio/module3/slide_02_redmond_hac.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 54
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 56
+            }
+          ],
+          "term_refs": [
+            "hac",
+            "rdhx"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "cdu_placement",
+          "section_label": "Power + Cooling",
+          "title": "CDU + Rack Power: “4 Makes 3”",
+          "bullets": [
+            {
+              "bold_lead": "8 × 600 A bus ducts in the hot aisle",
+              "text": "(4 per side) feed power down the row."
+            },
+            {
+              "bold_lead": "“4 makes 3” redundancy.",
+              "text": "Each rack fed by 4 feeds, only 3 needed at full load — single feed loss is invisible to the rack."
+            },
+            {
+              "bold_lead": "90 kW per rack-spot",
+              "text": "supported at 1-second timescales with 3 of 4 feeds operational."
+            },
+            {
+              "bold_lead": "IEC 60309 tap boxes,",
+              "text": "5-pin, 30/32 A, 230/240 VAC Wye — global standard, EMEA / NA / Japan."
+            },
+            {
+              "bold_lead": "Facility:",
+              "text": "UPS redundancy ≥ feed redundancy; generator redundancy must support all 4 feeds."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_placement.png",
+            "alt": "Floor layout showing CDU placement relative to the Redmond structure with primary and secondary piping connections.",
+            "caption": "Figure 18.13.1 — CDU placement on the floor with primary (facility) and secondary (IT) piping connections.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdu_placement.txt",
+            "wav_file": "audio/module3/slide_03_cdu_placement.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 60
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 65
+            }
+          ],
+          "term_refs": [
+            "four_makes_three"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_table",
+          "slug": "supply_chain",
+          "section_label": "Supply Chain Model",
+          "title": "Three-Tier Supplier Model",
+          "subtitle": "Designed for 10–12 week worldwide lead times at competitive cost.",
+          "columns": [
+            "Tier",
+            "Description",
+            "Count",
+            "Lead time",
+            "Mfg sites"
+          ],
+          "rows": [
+            [
+              "AVL",
+              "Approved Vendor List — active production for Google deployments",
+              "2",
+              "4 weeks",
+              "1–3"
+            ],
+            [
+              "R-AVL",
+              "Reserved Approved — fully qualified standby, ready to activate",
+              "2",
+              "4 weeks",
+              "1–2"
+            ],
+            [
+              "RVL",
+              "Recommended Vendor List — self-qualified to spec; can sell to other CSPs and colos",
+              "6+",
+              "4 weeks",
+              "1–2"
+            ],
+            [
+              "Component AVL",
+              "Per critical component (HX, pump, VFD, PSU, piping, sensors)",
+              "2–3",
+              "8–12 weeks",
+              "1–2"
+            ],
+            [
+              "Component RVL",
+              "Per component, self-qualified",
+              "2+",
+              "8 weeks",
+              "1–2"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_supply_chain.txt",
+            "wav_file": "audio/module3/slide_04_supply_chain.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+              "page": 9
+            }
+          ],
+          "term_refs": [
+            "supplier_tiers"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "maintenance_frus",
+          "section_label": "Serviceability",
+          "title": "Maintenance & Field-Replaceable Units",
+          "bullets": [
+            {
+              "bold_lead": "Front-serviceable by design.",
+              "text": "Both filters, side-stream microfiltration, expansion tank, control panel — all front-access."
+            },
+            {
+              "bold_lead": "Pumps:",
+              "text": "Pump A front, Pump B rear (or side if blocked). Controlled break points + isolation valves + drain ports."
+            },
+            {
+              "bold_lead": "v1.0 improvements:",
+              "text": "VFD clearance accessories + front-serviceable expansion tank — direct lessons from prior generations."
+            },
+            {
+              "bold_lead": "Exception:",
+              "text": "Secondary flow meter requires CDU power-off — scheduled-event service."
+            },
+            {
+              "bold_lead": "Full barcode traceability.",
+              "text": "Section 17: Manufacturer ID, GPN, MPN, S/N, COO, date code on a PMS 803C yellow label."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_pump_a_service.png",
+            "alt": "Pump A serviced from the front of the CDU with controlled break points at the inlet and outlet.",
+            "caption": "Figure 13.2.1 — Pump A service from the front of the CDU. Both pumps have isolation valves, drain ports, and connectorized power.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_maintenance_frus.txt",
+            "wav_file": "audio/module3/slide_05_maintenance_frus.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 39
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 41
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 47
+            }
+          ],
+          "term_refs": [
+            "fru"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "get_involved",
+          "section_label": "Get Involved",
+          "title": "Resources & Next Steps",
+          "subtitle": "Four canonical links — spec, community, marketplace, and the OCP Academy primer series.",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Spec v1.0 PDF",
+              "body": "Download the official February 2026 specification — source of truth for every number in this course.",
+              "icon": "📄",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf",
+              "link_text": "opencompute.org/documents/…deschutes-v1-0-pdf"
+            },
+            {
+              "title": "CDU Subproject",
+              "body": "The OCP Coolant Distribution Unit subproject — working group, contributors, ongoing discussions.",
+              "icon": "👥",
+              "url": "https://www.opencompute.org/community/coolant-distribution-unit",
+              "link_text": "opencompute.org/community/coolant-distribution-unit"
+            },
+            {
+              "title": "OCP Marketplace",
+              "body": "Browse Deschutes-based CDUs from multiple suppliers — filtered to the CDU category.",
+              "icon": "🛍️",
+              "url": "https://www.opencompute.org/products?cloud_products%5BrefinementList%5D%5Bhardware.categories.Liquid%20Cooling%20%26%20Thermal%20Management%5D%5B0%5D=Coolant%20Distribution%20Unit%20%28CDU%29",
+              "link_text": "opencompute.org/products (CDU filter)"
+            },
+            {
+              "title": "Liquid Cooling Primer",
+              "body": "OCP Academy's four-course primer learning plan — broader liquid-cooling fundamentals.",
+              "icon": "🎓",
+              "url": "https://academy.opencompute.org/learn/learning-plans/5/liquid-cooling-technologies-overview",
+              "link_text": "academy.opencompute.org/…liquid-cooling-technologies-overview"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_get_involved.txt",
+            "wav_file": "audio/module3/slide_06_get_involved.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "key_takeaways_m3",
+          "title": "What You Learned",
+          "items": [
+            "Redmond HAC ships with the same spec — together they form a complete 2 MW liquid-cooled bay sized for global colos.",
+            "Power & cooling co-designed: 4-makes-3 redundancy, 8 × 600 A bus ducts, 90 kW per rack-spot.",
+            "Front-serviceable by design — filters, pumps, expansion tank, control panel; v1.0 added VFD + expansion-tank serviceability.",
+            "Three-tier supplier model: AVL (2) + R-AVL (2) + RVL (6+), targeting 10–12 week worldwide lead times.",
+            "The spec is open, evolving, and inviting community input — future revisions will incorporate manufacturing and validation feedback."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_key_takeaways_m3.txt",
+            "wav_file": "audio/module3/slide_07_key_takeaways_m3.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m3",
+          "title": "Check Deployment Decisions",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "audio": {
+            "script_file": "audio/module3/slide_08_knowledge_check_m3.txt",
+            "wav_file": "audio/module3/slide_08_knowledge_check_m3.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m3_redmond_role",
+              "prompt": "What does the Redmond interface contribute alongside the Deschutes CDU?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A companion hot-aisle containment and deployment structure for the liquid-cooled bay.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "A replacement for all rack-level electrical redundancy.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "A proprietary software-only control plane with no physical layout guidance.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "A rule that every deployment must rebuild the facility shell from scratch.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Redmond gives the CDU a defined, repeatable physical deployment environment.",
+              "feedback_incorrect": "Review the Redmond slide. Its role is a companion hot-aisle containment and bay interface, not a replacement for electrical design or facility planning."
+            },
+            {
+              "id": "m3_deployment_model",
+              "multiple": true,
+              "prompt": "Which statements match the deployment and operating model covered in Module 3?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The 4-makes-3 rack power model uses four feeds, with three sufficient for full load.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The supplier model includes AVL, R-AVL, and RVL tiers to broaden availability.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Filters, pumps, the expansion tank, and the control panel are designed around field serviceability.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The specification is complete, closed, and not intended for community feedback.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Module 3 ties together power redundancy, supplier tiers, serviceability, and ongoing community involvement.",
+              "feedback_incorrect": "Review the final module takeaways. Deschutes is open and evolving, with deployment, service, and supply-chain patterns designed for scale."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "OCP Project Deschutes",
+          "thank_you_message": "Thank you for completing Module 3: Deployment, Supply Chain & Call to Action.",
+          "cert_message": "You've completed every module of the OCP Academy Project Deschutes course. Your next step: open the spec, evaluate it against your own deployment, and engage with the OCP CDU working group. Open is the key to scale.",
+          "audio": {
+            "script_file": "audio/module3/slide_08_course_complete.txt",
+            "wav_file": "audio/module3/slide_08_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    }
+  ],
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "Direct liquid cooling removes heat at the chip or server level using cold plates and a dedicated coolant loop."
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "Coolant Distribution Unit: the liquid-to-liquid bridge that controls coolant flow, pressure, and heat transfer between facility water and IT equipment."
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "Facility Water System: the building-side chilled or condenser water loop feeding the CDU primary side."
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "Technology Cooling System: the clean secondary coolant loop serving rack manifolds and cold plates."
+    },
+    {
+      "id": "approach_temperature",
+      "term": "Approach temperature",
+      "tooltip": "Difference between cold TCS supply leaving the CDU and cold FWS supply entering it; Deschutes targets 3 °C."
+    },
+    {
+      "id": "differential_pressure",
+      "term": "dP",
+      "tooltip": "Differential pressure: the pressure head available to push coolant through manifolds, hoses, and cold plates."
+    },
+    {
+      "id": "heat_exchanger",
+      "term": "HX",
+      "tooltip": "Heat exchanger: transfers heat between loops without mixing the facility and IT coolant fluids."
+    },
+    {
+      "id": "di_water",
+      "term": "DI water",
+      "tooltip": "Deionized water: water treated to remove dissolved ions that can affect corrosion or conductivity."
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "Propylene glycol coolant mixture at roughly 25% glycol concentration."
+    },
+    {
+      "id": "epdm",
+      "term": "EPDM",
+      "tooltip": "Ethylene propylene diene monomer: elastomer used for coolant-compatible hoses and seals."
+    },
+    {
+      "id": "vfd",
+      "term": "VFD",
+      "tooltip": "Variable-frequency drive: controls motor speed, used here for pump speed control and efficiency."
+    },
+    {
+      "id": "plc",
+      "term": "PLC",
+      "tooltip": "Programmable logic controller: the industrial controller running CDU control loops, alarms, and interfaces."
+    },
+    {
+      "id": "modbus_tcp",
+      "term": "Modbus/TCP",
+      "tooltip": "Industrial communications protocol that carries Modbus messages over standard TCP/IP networking."
+    },
+    {
+      "id": "ipv6_dual_stack",
+      "term": "IPv6 dual stack",
+      "tooltip": "Network support for IPv4 and IPv6 at the same time."
+    },
+    {
+      "id": "hac",
+      "term": "HAC",
+      "tooltip": "Hot Aisle Containment: a structure that manages hot exhaust air around the rack row."
+    },
+    {
+      "id": "rdhx",
+      "term": "RDHx",
+      "tooltip": "Rear-door heat exchanger: a rack rear-door cooling device referenced in the Redmond aisle dimensions."
+    },
+    {
+      "id": "four_makes_three",
+      "term": "4 makes 3",
+      "tooltip": "Rack power arrangement where four feeds are present and any three can support full load."
+    },
+    {
+      "id": "supplier_tiers",
+      "term": "AVL / R-AVL / RVL",
+      "tooltip": "Supplier tiers: active approved vendors, reserved approved vendors, and recommended or self-qualified vendors."
+    },
+    {
+      "id": "fru",
+      "term": "FRU",
+      "tooltip": "Field-replaceable unit: a component designed to be swapped during field service."
+    }
+  ]
+}
