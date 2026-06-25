@@ -11,19 +11,9 @@ It also includes the `academy-wizard` Codex skill used to build the courses so c
 ```text
 courses/
   cooling-fluids-in-direct-liquid-cooling/
-    course.json
-    audio/moduleN/slide_*.txt
-    figures/*.svg
-    cooling_fluids_mark.svg
-    thumbnail.png
   diablo-400-disaggregated-power-for-high-density-ai-racks/
-    course.json
-    audio/moduleN/slide_*.txt
-    diablo_course_icon.svg
+  project-deschutes-cdu-specification-v1-0/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
-    course.json
-    audio/moduleN/slide_*.txt
-    two_phase_dlc_mark.svg
 scripts/
   build-course.sh
   install-academy-wizard-skill.sh
@@ -71,6 +61,7 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 |---|---|
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
 
 ## Build a course
