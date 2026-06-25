@@ -1,0 +1,1784 @@
+{
+  "course_slug": "cooling_fluids_in_direct_liquid_cooling",
+  "course_title": "Cooling Fluids in Direct Liquid Cooling (DLC)",
+  "course_subtitle": "Single-phase TCS fluid guidance for direct-to-chip deployments",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Guidelines for Using Water-based Heat Transfer Fluid",
+  "target_duration_minutes": 35,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "cooling_fluids_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "Fluids"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "Direct Liquid Cooling. A cooling approach where liquid removes heat close to heat-generating components such as processors or accelerators.",
+      "reference_label": "OCP Cooling Environments",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "Coolant Distribution Unit. Equipment that pumps and conditions coolant and transfers heat between the TCS and facility systems.",
+      "reference_label": "OCP Cooling Environments",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "Technology Cooling System. The closed secondary loop between the CDU and rack or server cooling hardware.",
+      "reference_label": "ASHRAE/OCP usage",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "Facility Water System. The facility-side loop outside the TCS boundary.",
+      "reference_label": "OCP Cooling Environments",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "A heat transfer fluid with 25 percent propylene glycol, commonly used in single-phase direct-to-chip cooling.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "qd",
+      "term": "QD",
+      "tooltip": "Quick Disconnect. A service connector that allows fluid connections to be made and broken in the loop.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "iat",
+      "term": "IAT",
+      "tooltip": "Inorganic Additive Technology, often using phosphate, silicate, borate, or related inorganic corrosion inhibitors."
+    },
+    {
+      "id": "oat",
+      "term": "OAT",
+      "tooltip": "Organic Acid Technology, a coolant inhibitor approach associated with longer-life corrosion protection."
+    },
+    {
+      "id": "hoat",
+      "term": "HOAT",
+      "tooltip": "Hybrid Organic Acid Technology, combining organic acids with small amounts of inorganic chemistry."
+    },
+    {
+      "id": "azole",
+      "term": "Azole",
+      "tooltip": "A corrosion inhibitor family used to protect copper and yellow metals.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tss",
+      "term": "TSS",
+      "tooltip": "Total Suspended Solids. Particles suspended in the fluid.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tds",
+      "term": "TDS",
+      "tooltip": "Total Dissolved Solids. Dissolved material in the fluid, related to conductivity.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cfu",
+      "term": "CFU/ml",
+      "tooltip": "Colony Forming Units per milliliter, used for microbial counts in the fluid.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "icp",
+      "term": "ICP",
+      "tooltip": "Inductively Coupled Plasma analysis, used to identify soluble ions and metal contamination.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "sds",
+      "term": "SDS",
+      "tooltip": "Safety Data Sheet. A supplier document with hazards, handling, storage, PPE, and disposal information.",
+      "reference_label": "OSHA SDS overview",
+      "url": "https://www.osha.gov/hazcom/safety-data-sheets"
+    },
+    {
+      "id": "coa",
+      "term": "COA",
+      "tooltip": "Certificate of Analysis. A manufacturer document showing product quality or conformance for a manufactured fluid.",
+      "reference_label": "OCP single-phase guidance draft",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "latent_heat",
+      "term": "Latent heat",
+      "tooltip": "Heat absorbed or released during a phase change, such as boiling or condensation.",
+      "reference_label": "OCP two-phase guideline",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "id": "tdp",
+      "term": "TDP",
+      "definition": "Thermal Design Power",
+      "tooltip": "Thermal Design Power. A processor or accelerator power and heat-design rating used when sizing cooling capacity; exact meaning can vary by vendor."
+    },
+    {
+      "id": "ashrae",
+      "term": "ASHRAE",
+      "definition": "American Society of Heating, Refrigerating and Air-Conditioning Engineers",
+      "tooltip": "American Society of Heating, Refrigerating and Air-Conditioning Engineers. ASHRAE publishes data-center thermal guidance and terminology used by the course.",
+      "reference_label": "ASHRAE",
+      "url": "https://www.ashrae.org/"
+    },
+    {
+      "id": "astm",
+      "term": "ASTM",
+      "definition": "ASTM International",
+      "tooltip": "ASTM International. A standards organization whose test methods are commonly referenced for materials, fluids, and corrosion testing.",
+      "reference_label": "ASTM International",
+      "url": "https://www.astm.org/"
+    },
+    {
+      "id": "qa",
+      "term": "QA",
+      "definition": "Quality Assurance",
+      "tooltip": "Quality Assurance. Testing and recordkeeping used to verify that fluid condition, supplier evidence, and operating data remain within expectations."
+    },
+    {
+      "id": "ppe",
+      "term": "PPE",
+      "definition": "Personal Protective Equipment",
+      "tooltip": "Personal Protective Equipment. Gloves, eye protection, and other controls selected from the SDS and local safety procedures.",
+      "reference_label": "OSHA PPE overview",
+      "url": "https://www.osha.gov/personal-protective-equipment"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_single_phase_fluids_matter",
+      "title": "Why Single-Phase Fluids Matter in DLC",
+      "subtitle": "Fluid boundaries, urgency, source discipline, and the two-phase contrast.",
+      "module_badge_text": "Module 1",
+      "motion_intro": {
+        "eyebrow": "Module 1",
+        "title": "Why Single-Phase Fluids Matter in DLC",
+        "subtitle": "Fluid boundaries, urgency, source discipline, and the two-phase contrast."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Cooling Fluids in Direct Liquid Cooling (DLC)",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "subtitle": "Single-phase TCS fluid selection, commissioning, monitoring, and operations.",
+          "version_chip": "Guidelines for Using Water-based Heat Transfer Fluid",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "course_overview",
+          "title": "Course Roadmap",
+          "slug": "course_roadmap",
+          "subtitle": "Four modules move from architecture and fluid families to operating discipline.",
+          "modules_listed": [
+            "Why Single-Phase Fluids Matter in DLC",
+            "Choosing and Specifying Single-Phase Fluids",
+            "Commissioning, Filling, and Protecting the Loop",
+            "Monitoring, Maintenance, and Operational Judgment"
+          ],
+          "chips": [
+            {
+              "icon": "Time",
+              "text": "30-40 min course"
+            },
+            {
+              "icon": "Level",
+              "text": "Intermediate technical audience"
+            },
+            {
+              "icon": "Scope",
+              "text": "Single-phase DLC fluids"
+            }
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_roadmap.txt",
+            "wav_file": "audio/module1/slide_02_course_roadmap.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        },
+        {
+          "type": "content_grid",
+          "title": "AI Heat Density Changes the Cooling Problem",
+          "slug": "ai_heat_density_changes_the_cooling_problem",
+          "section_label": "Why Now",
+          "subtitle": "Higher chip power and denser racks make the TCS fluid a reliability variable.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "Higher chip TDP",
+              "body": "Accelerators push heat beyond comfortable air-only limits.",
+              "icon": "1"
+            },
+            {
+              "title": "Denser racks",
+              "body": "More compute per rack increases the consequence of each loop decision.",
+              "icon": "2"
+            },
+            {
+              "title": "Residual air remains",
+              "body": "Liquid often carries most heat, but not every load in the rack.",
+              "icon": "3"
+            },
+            {
+              "title": "Uptime stakes rise",
+              "body": "Fluid problems can become compute availability problems.",
+              "icon": "4"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
+            "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tdp",
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Where the Fluid Lives",
+          "slug": "where_the_fluid_lives",
+          "section_label": "System Boundary",
+          "figure": {
+            "path": "figures/tcs_loop.svg",
+            "alt": "Technology Cooling System loop between CDU and cold plates",
+            "caption": "The course focuses on the closed TCS loop between the CDU and the IT equipment."
+          },
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "15-17"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
+            "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cdu",
+            "fws",
+            "ashrae"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Single-Phase Fluid Families in Scope",
+          "slug": "single_phase_fluid_families_in_scope",
+          "section_label": "Scope",
+          "figure": {
+            "path": "figures/fluid_families.svg",
+            "alt": "Treated water and PG25 are in scope while two-phase refrigerants are deferred",
+            "caption": "The actionable guidance in this course is for treated water and PG25 style single-phase loops."
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
+            "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "The Four Operator Questions",
+          "slug": "the_four_operator_questions",
+          "section_label": "Operator Framing",
+          "subtitle": "Fluid anxiety is practical: compatibility, leaks, monitoring, and expertise.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "Compatibility",
+              "body": "Will the fluid protect every wetted material?",
+              "icon": "1"
+            },
+            {
+              "title": "Leaks",
+              "body": "What happens when fluid appears where it should not?",
+              "icon": "2"
+            },
+            {
+              "title": "Monitoring",
+              "body": "What should be sampled, trended, and escalated?",
+              "icon": "3"
+            },
+            {
+              "title": "Expertise",
+              "body": "Who owns chemistry decisions during operation?",
+              "icon": "4"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
+            "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_two_column",
+          "title": "Two-Phase Fluids Are a Different Course",
+          "slug": "two_phase_fluids_are_a_different_course",
+          "section_label": "Contrast",
+          "subtitle": "Do not combine single-phase water/PG25 rules with two-phase refrigerant rules.",
+          "bullets": [
+            {
+              "bold_lead": "Single-phase",
+              "text": "water or PG25 carries heat mainly as sensible heat and needs chemistry maintenance."
+            },
+            {
+              "bold_lead": "Two-phase",
+              "text": "low-boiling dielectric refrigerants rely on latent heat and require pressure, vapor, and purge management."
+            },
+            {
+              "bold_lead": "Common ground",
+              "text": "compatibility discipline, SDS, COA, records, and fluid-to-system alignment."
+            }
+          ],
+          "figure": {
+            "path": "figures/single_vs_two_phase.svg",
+            "alt": "Single-phase fluids use sensible heat while two-phase refrigerants use latent heat",
+            "caption": "Two-phase fluid education can be found in the two-phase DLC course."
+          },
+          "reference_links": [
+            {
+              "label": "OCP two-phase fluid guideline",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            }
+          ],
+          "term_refs": [
+            "latent_heat",
+            "sds",
+            "coa"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "slides": "6-13"
+            },
+            {
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "timestamp": "03:12-09:15"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
+            "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Standards and Source Map",
+          "slug": "standards_and_source_map",
+          "section_label": "Source Discipline",
+          "figure": {
+            "path": "figures/standards_map.svg",
+            "alt": "Standards and source map for DLC fluid guidance",
+            "caption": "Fluid guidance is a stack of community standards, test methods, and product-specific treatment plans."
+          },
+          "reference_links": [
+            {
+              "label": "OCP Cooling Environments",
+              "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
+            "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "astm"
+          ]
+        },
+        {
+          "type": "takeaways",
+          "title": "Module 1 Summary",
+          "slug": "module_1_summary",
+          "items": [
+            "The course focuses on single-phase TCS fluids: treated water and PG25.",
+            "Two-phase refrigerants need a separate learning path because their value comes from latent heat.",
+            "Fluid guidance is a lifecycle discipline, not a one-time procurement step.",
+            "Compatibility, monitoring, and records are the recurring themes."
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module1/slide_09_module_1_summary.txt",
+            "wav_file": "audio/module1/slide_09_module_1_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module1/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Check Your Fluid Boundary",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m1q1",
+              "prompt": "Which statement best describes the fluid scope of this course?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "Airflow management inside traditional air-cooled racks.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Single-phase, water-based heat transfer fluids in direct-to-chip cold-plate loops.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "Low-boiling-point dielectric refrigerants used for two-phase cold plates.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Only facility-side water treatment for building cooling towers.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. This course focuses on single-phase water-based fluids used in the technology cooling system for direct liquid cooling.",
+              "feedback_incorrect": "The scope is the single-phase water-based fluid used in the direct-to-chip cold-plate loop, not facility water or two-phase refrigerants."
+            },
+            {
+              "id": "m1q2",
+              "prompt": "Which items belong in the operating questions for a single-phase fluid program?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "A",
+                  "text": "What fluid family and concentration are specified.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Whether low-boiling refrigerants can be run as single-phase coolants without changing flow needs.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Which chemistry limits and tests define fluid health.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "Which materials, filters, and service practices touch the fluid.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Fluid selection, chemistry control, compatibility, filtration, and service practice all belong in the program.",
+              "feedback_incorrect": "The single-phase program is built around fluid choice, chemistry limits, wetted materials, filtration, and service practices."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "Up Next - Choosing and Specifying Single-Phase Fluids",
+          "slug": "up_next_choosing_and_specifying_single_phase_flu",
+          "next_module_number": 2,
+          "next_module_title": "Choosing and Specifying Single-Phase Fluids",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
+            "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Choosing and Specifying Single-Phase Fluids"
+    },
+    {
+      "id": 2,
+      "slug": "choosing_single_phase_fluids",
+      "title": "Choosing and Specifying Single-Phase Fluids",
+      "subtitle": "Water, PG25, chemistry windows, inhibitors, and compatibility evidence.",
+      "module_badge_text": "Module 2",
+      "motion_intro": {
+        "eyebrow": "Module 2",
+        "title": "Choosing and Specifying Single-Phase Fluids",
+        "subtitle": "Water, PG25, chemistry windows, inhibitors, and compatibility evidence."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Choosing and Specifying Single-Phase Fluids",
+          "slug": "choosing_and_specifying_single_phase_fluids",
+          "subtitle": "Water, PG25, chemistry windows, inhibitors, and wetted-material compatibility.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
+            "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "Selection Decisions You Will Classify",
+          "slug": "selection_decisions_you_will_classify",
+          "subtitle": "By the end of this module, you will be able to...",
+          "objectives": [
+            "Compare treated water and PG25 using performance and maintenance tradeoffs.",
+            "Identify the fluid quality targets that protect single-phase TCS loops.",
+            "Explain why inhibitor chemistry matters for corrosion control and deposits.",
+            "Connect fluid selection to wetted materials and supplier evidence."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
+            "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Water Versus PG25 Tradeoffs",
+          "slug": "water_versus_pg25_tradeoffs",
+          "section_label": "Fluid Choice",
+          "figure": {
+            "path": "figures/water_pg25_tradeoff.svg",
+            "alt": "Treated water and PG25 tradeoffs",
+            "caption": "Water favors thermal performance. PG25 adds biostatic operating margin when concentration is maintained."
+          },
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
+            "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "Ready-to-Use Fluid Quality Targets",
+          "slug": "ready_to_use_fluid_quality_targets",
+          "section_label": "Fluid Targets",
+          "subtitle": "Selected draft values for water-based heat transfer fluids.",
+          "columns": [
+            "Parameter",
+            "Draft target",
+            "Why it matters"
+          ],
+          "rows": [
+            [
+              "TSS",
+              "<5 ppm",
+              "Particles and filter or microchannel risk"
+            ],
+            [
+              "TDS",
+              "<1000 ppm after treatment",
+              "Dissolved solids and contamination trend"
+            ],
+            [
+              "Conductivity",
+              "<2000 uS/cm at 25 deg C",
+              "Easy field signal for dissolved material"
+            ],
+            [
+              "pH",
+              "8.0 to 10.5",
+              "Corrosion and treatment chemistry window"
+            ],
+            [
+              "Total hardness",
+              "<30 ppm as CaCO3",
+              "Makeup water quality and scale risk"
+            ],
+            [
+              "Bacteria",
+              "Fill <1 CFU/ml; operation <100 CFU/ml",
+              "Biofouling control"
+            ],
+            [
+              "Azoles",
+              ">100 ppm or per Treatment Plan",
+              "Copper and yellow-metal protection"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "azole"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 1
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
+            "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Operating Temperature and Chemistry Window",
+          "slug": "operating_temperature_and_chemistry_window",
+          "section_label": "Operating Envelope",
+          "subtitle": "Temperature is part of the compatibility requirement.",
+          "bullets": [
+            {
+              "bold_lead": "Typical range",
+              "text": "TCS loops are described as below 49 deg C in the draft guidance."
+            },
+            {
+              "bold_lead": "Expected ceiling",
+              "text": "Operation is not expected to exceed 66 deg C without additional review."
+            },
+            {
+              "bold_lead": "Compatibility trigger",
+              "text": "Higher temperature requires review of wetted materials and treatment chemistry."
+            },
+            {
+              "bold_lead": "Local conditions",
+              "text": "Confirm maximum surface stagnation temperature with IT and cold plate suppliers."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "52-54"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
+            "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Corrosion Inhibitors: IAT, OAT, and HOAT",
+          "slug": "corrosion_inhibitors_iat_oat_and_hoat",
+          "section_label": "Inhibitor Chemistry",
+          "figure": {
+            "path": "figures/inhibitor_timeline.svg",
+            "alt": "Coolant inhibitor chemistry timeline from water to IAT OAT and HOAT",
+            "caption": "Inhibitor strategy affects corrosion protection, service life, and contaminant sensitivity."
+          },
+          "term_refs": [
+            "iat",
+            "oat",
+            "hoat"
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Hard Water, Scale, and Deposit Risk",
+          "slug": "hard_water_scale_and_deposit_risk",
+          "section_label": "Deposits",
+          "figure": {
+            "path": "figures/hard_water_scale.svg",
+            "alt": "Hard water ions can form scale and threaten microchannels",
+            "caption": "Calcium and magnesium are small chemistry signals with large uptime consequences."
+          },
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
+            "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Wetted Materials and Compatibility",
+          "slug": "wetted_materials_and_compatibility",
+          "section_label": "Compatibility",
+          "figure": {
+            "path": "figures/wetted_materials.svg",
+            "alt": "Wetted materials compatibility map",
+            "caption": "A material change is also a fluid-compatibility event."
+          },
+          "term_refs": [
+            "qd"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "46-51"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
+            "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Qualification and Supplier Evidence",
+          "slug": "qualification_and_supplier_evidence",
+          "section_label": "Evidence",
+          "subtitle": "The specification should be auditable after the purchase order is gone.",
+          "bullets": [
+            {
+              "bold_lead": "COA",
+              "text": "confirms manufactured product quality and conformance."
+            },
+            {
+              "bold_lead": "SDS",
+              "text": "defines handling, hazards, PPE, storage, and disposal information."
+            },
+            {
+              "bold_lead": "Treatment Plan",
+              "text": "sets local operating limits, tests, and corrective actions."
+            },
+            {
+              "bold_lead": "Compatibility confirmation",
+              "text": "ties the fluid to wetted materials and operating conditions."
+            },
+            {
+              "bold_lead": "Records",
+              "text": "preserve decisions through hardware refresh cycles."
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds",
+            "ppe"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "31-36"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
+            "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "Module 2 Summary",
+          "slug": "module_2_summary",
+          "items": [
+            "Do not choose a fluid on thermal performance alone.",
+            "Fluid targets are operating signals, not paperwork.",
+            "Inhibitor chemistry affects corrosion, deposits, and monitoring.",
+            "The wetted materials list and operating temperature define compatibility.",
+            "COA, SDS, treatment plans, and records make the decision auditable."
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module2/slide_10_module_2_summary.txt",
+            "wav_file": "audio/module2/slide_10_module_2_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module2/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Check Your Fluid Selection",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m2q1",
+              "prompt": "What is the main tradeoff when choosing PG25 instead of treated water?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "PG25 always removes more heat than water at the same flow rate.",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "PG25 eliminates the need for compatibility evidence.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "PG25 can add freeze protection and inhibitor package benefits, but it reduces heat capacity versus water.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "PG25 turns the loop into a two-phase refrigerant system.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. PG25 can be useful, but lower heat capacity and fluid-property changes must be accounted for.",
+              "feedback_incorrect": "The tradeoff is not that PG25 is automatically better. It can help with freeze and inhibitor needs, while reducing heat capacity versus water."
+            },
+            {
+              "id": "m2q2",
+              "prompt": "Which evidence belongs in a fluid qualification package?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "Only a generic fluid family name, with no concentration or material context.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Ready-to-use chemistry values such as concentration, pH, conductivity, and inhibitor limits.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "Supplier guidance for operating limits, sampling, and maintenance response.",
+                  "correct": true
+                },
+                {
+                  "id": "B",
+                  "text": "Compatibility evidence for wetted metals, polymers, elastomers, and connectors.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Qualification needs chemistry, material compatibility, and supplier operating guidance.",
+              "feedback_incorrect": "A generic fluid name is not enough. The package needs chemistry targets, exact materials, and supplier guidance."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "Up Next - Commissioning, Filling, and Protecting the Loop",
+          "slug": "up_next_commissioning_filling_and_protecting_the",
+          "next_module_number": 3,
+          "next_module_title": "Commissioning, Filling, and Protecting the Loop",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
+            "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Commissioning, Filling, and Protecting the Loop"
+    },
+    {
+      "id": 3,
+      "slug": "commissioning_filling_protecting_loop",
+      "title": "Commissioning, Filling, and Protecting the Loop",
+      "subtitle": "Serviceable design, compatible fill practices, filtration, startup records, and microbial control.",
+      "module_badge_text": "Module 3",
+      "motion_intro": {
+        "eyebrow": "Module 3",
+        "title": "Commissioning, Filling, and Protecting the Loop",
+        "subtitle": "Serviceable design, compatible fill practices, filtration, startup records, and microbial control."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Commissioning, Filling, and Protecting the Loop",
+          "slug": "commissioning_filling_and_protecting_the_loop",
+          "subtitle": "Serviceable design, leak checks, cleaning, filling, filtration, and microbial control.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
+            "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "Commissioning Practices You Will Apply",
+          "slug": "commissioning_practices_you_will_apply",
+          "subtitle": "By the end of this module, you will be able to...",
+          "objectives": [
+            "Explain design features that make fluid service possible.",
+            "Describe clean startup and fill practices for new and existing systems.",
+            "Identify filtration choices that protect cold plate microchannels.",
+            "Recognize microbial-control practices and biocide cautions."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
+            "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Mechanical Design for Serviceability",
+          "slug": "mechanical_design_for_serviceability",
+          "section_label": "Design",
+          "subtitle": "A fluid program needs physical access to sample, add, drain, and isolate.",
+          "bullets": [
+            {
+              "bold_lead": "Drain and fill access",
+              "text": "ports should support fluid replacement and controlled additions."
+            },
+            {
+              "bold_lead": "Chemical injection",
+              "text": "the loop should allow supplier-guided chemistry adjustments."
+            },
+            {
+              "bold_lead": "Complete drainage",
+              "text": "avoid deadlegs that trap contaminants or microbial populations."
+            },
+            {
+              "bold_lead": "Compatible service hardware",
+              "text": "feeders, reservoirs, bladders, and seals must follow the wetted-material list."
+            },
+            {
+              "bold_lead": "Operational continuity",
+              "text": "bleed-and-feed arrangements can support service while the loop remains online."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "60-68"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
+            "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "New-System Cleaning and Flush Sequence",
+          "slug": "new_system_cleaning_and_flush_sequence",
+          "section_label": "New Systems",
+          "figure": {
+            "path": "figures/commissioning_flow.svg",
+            "alt": "New system cleaning and filling sequence",
+            "caption": "Initial flushing protects cold plates from construction debris before final fluid fill."
+          },
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "85-98"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
+            "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "What Not to Put in the Loop",
+          "slug": "what_not_to_put_in_the_loop",
+          "section_label": "Avoidance",
+          "subtitle": "Uncontrolled cleaners and additives can turn into corrosion, residue, or deposit risk.",
+          "bullets": [
+            {
+              "bold_lead": "Avoid unsupervised cleaners",
+              "text": "detergents and chemical cleaners require supplier guidance."
+            },
+            {
+              "bold_lead": "Avoid residual silicate",
+              "text": "silicate can precipitate and deposit in microchannels."
+            },
+            {
+              "bold_lead": "Respect local discharge rules",
+              "text": "consult municipal or regulatory requirements before draining."
+            },
+            {
+              "bold_lead": "Protect the final fluid",
+              "text": "do not introduce additives outside the approved treatment plan."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "106-110"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
+            "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Startup Sampling and Baseline Records",
+          "slug": "startup_sampling_and_baseline_records",
+          "section_label": "Baseline",
+          "subtitle": "The first clean sample is the reference point for future trend interpretation.",
+          "bullets": [
+            {
+              "bold_lead": "Circulate",
+              "text": "run the loop and check for leaks during final startup."
+            },
+            {
+              "bold_lead": "Bleed air",
+              "text": "remove trapped air where needed before baseline sampling."
+            },
+            {
+              "bold_lead": "Sample each loop",
+              "text": "capture representative fluid from each TCS loop."
+            },
+            {
+              "bold_lead": "Label clearly",
+              "text": "record unit, fluid identity, date, and startup condition."
+            },
+            {
+              "bold_lead": "Keep the record",
+              "text": "retain baseline evidence for the life of the fluid."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "111-113"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
+            "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Filtration Strategy",
+          "slug": "filtration_strategy",
+          "section_label": "Particles and Biofoulants",
+          "figure": {
+            "path": "figures/filtration_strategy.svg",
+            "alt": "Inline and sidestream filtration strategy",
+            "caption": "Filters should be easier to service than cold plate microchannels."
+          },
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "61-66"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module3/slide_07_filtration_strategy.txt",
+            "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Microbial Control and Biofouling",
+          "slug": "microbial_control_and_biofouling",
+          "section_label": "Biology",
+          "subtitle": "Microbial control protects heat transfer, but biocide use must stay controlled.",
+          "bullets": [
+            {
+              "bold_lead": "Target",
+              "text": "keep operational total viable bacteria below 100 CFU/ml."
+            },
+            {
+              "bold_lead": "Action level",
+              "text": "biocide treatment is highly recommended above 1000 CFU/ml."
+            },
+            {
+              "bold_lead": "Biocide type",
+              "text": "use non-oxidizing biocide only if needed and per label."
+            },
+            {
+              "bold_lead": "Avoid halogens",
+              "text": "chlorine and similar chemistry can create corrosion risk."
+            },
+            {
+              "bold_lead": "Watch buildup",
+              "text": "frequent additions can create organic or contaminant accumulation."
+            }
+          ],
+          "term_refs": [
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "116-118"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
+            "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "Module 3 Summary",
+          "slug": "module_3_summary",
+          "items": [
+            "Design the loop so fluid service can be done cleanly and safely.",
+            "Leak-check fluids and cleaning chemicals must be compatible with the final system.",
+            "Startup sampling creates the baseline for all later monitoring.",
+            "Sidestream filtration and microbial control protect cold plate microchannels.",
+            "Project Deschutes provides a useful filter-design example."
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module3/slide_09_module_3_summary.txt",
+            "wav_file": "audio/module3/slide_09_module_3_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module3/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Check Your Commissioning Discipline",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m3q1",
+              "prompt": "Which sequence best supports a clean new-system startup?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "Mix any available coolant with site water to save commissioning time.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Fill the system first, then decide whether cleaning is needed after several months.",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "Skip sampling because the fluid was new when shipped.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Clean and flush the loop, verify cleanliness, fill with approved fluid, then establish baseline records.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Startup should protect the loop before operation and create a baseline for future trend review.",
+              "feedback_incorrect": "Commissioning should clean and flush before fill, use approved fluid, and establish baseline records before normal operation."
+            },
+            {
+              "id": "m3q2",
+              "prompt": "Which practices help protect the loop during service?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "Keep fill, flush, leak-response, and sample records.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Top off with unverified water or another fluid whenever volume is low.",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "Follow supplier guidance before adding biocide or other treatment.",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "Use compatible filters and serviceable locations for strainers or filters.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Serviceability, records, filtration, and controlled treatment protect the fluid and hardware.",
+              "feedback_incorrect": "Do not top off casually. Protect the loop with compatible filtration, records, and supplier-guided treatment decisions."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "Up Next - Monitoring and Operating for Fluid Health",
+          "slug": "up_next_monitoring_and_operating_for_fluid_healt",
+          "next_module_number": 4,
+          "next_module_title": "Monitoring, Maintenance, and Operational Judgment",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
+            "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Monitoring, Maintenance, and Operational Judgment"
+    },
+    {
+      "id": 4,
+      "slug": "monitoring_maintenance_operational_judgment",
+      "title": "Monitoring, Maintenance, and Operational Judgment",
+      "subtitle": "Routine tests, lab QA, trend interpretation, adjustments, mixing, useful life, and documentation.",
+      "module_badge_text": "Module 4",
+      "motion_intro": {
+        "eyebrow": "Module 4",
+        "title": "Monitoring, Maintenance, and Operational Judgment",
+        "subtitle": "Routine tests, lab QA, trend interpretation, adjustments, mixing, useful life, and documentation."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Monitoring and Operating for Fluid Health",
+          "slug": "monitoring_and_operating_for_fluid_health",
+          "subtitle": "Testing schedules, trend interpretation, adjustments, mixing, and documentation.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
+            "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "Operating Judgments You Will Make",
+          "slug": "operating_judgments_you_will_make",
+          "subtitle": "By the end of this module, you will be able to...",
+          "objectives": [
+            "Identify routine and laboratory fluid-health tests.",
+            "Use baseline and trend logic to interpret results.",
+            "Describe controlled adjustment and dosing practices.",
+            "Explain why mixed fluids complicate monitoring and correction.",
+            "Maintain records that support refresh cycles and troubleshooting."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
+            "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "Routine Monitoring Schedule",
+          "slug": "routine_monitoring_schedule",
+          "section_label": "Cadence",
+          "subtitle": "The monitoring plan should become more intense when a parameter drifts out of spec.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "Startup",
+              "body": "test immediately after initial fill and circulation.",
+              "icon": "1"
+            },
+            {
+              "title": "Quarterly",
+              "body": "perform routine on-site checks during normal operation.",
+              "icon": "2"
+            },
+            {
+              "title": "Weekly when out of spec",
+              "body": "increase frequency until the parameter returns to range.",
+              "icon": "3"
+            },
+            {
+              "title": "Lab QA",
+              "body": "quarterly for one year, then six-month intervals if stable.",
+              "icon": "4"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "120-125"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
+            "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "qa"
+          ]
+        },
+        {
+          "type": "content_table",
+          "title": "On-Site Test Set",
+          "slug": "on_site_test_set",
+          "section_label": "Field Checks",
+          "subtitle": "Routine tests are fast signals that guide escalation and lab follow-up.",
+          "columns": [
+            "On-site check",
+            "Signal",
+            "Typical action"
+          ],
+          "rows": [
+            [
+              "Conductivity",
+              "Dissolved material or contamination",
+              "Compare with baseline and rate of rise"
+            ],
+            [
+              "pH",
+              "Chemistry window",
+              "Confirm within treatment plan"
+            ],
+            [
+              "Hardness",
+              "Makeup water or leaching risk",
+              "Investigate source of Ca/Mg"
+            ],
+            [
+              "Total viable bacteria",
+              "Microbial activity",
+              "Retest or treat per supplier guidance"
+            ],
+            [
+              "Azoles",
+              "Copper protection",
+              "Trend depletion and action threshold"
+            ],
+            [
+              "Turbidity / appearance",
+              "Particles or clarity change",
+              "Inspect filters and sample history"
+            ],
+            [
+              "Filter loading",
+              "Particle or biofoulant burden",
+              "Replace or investigate if high"
+            ]
+          ],
+          "term_refs": [
+            "azole",
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 4
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module4/slide_04_on_site_test_set.txt",
+            "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "Laboratory QA and ICP Analysis",
+          "slug": "laboratory_qa_and_icp_analysis",
+          "section_label": "Lab View",
+          "subtitle": "Independent analysis helps distinguish fluid drift, contamination, and corrosion byproducts.",
+          "columns": [
+            "Lab check",
+            "What it helps reveal",
+            "Why it matters"
+          ],
+          "rows": [
+            [
+              "TSS and TDS",
+              "Particles and dissolved material",
+              "Tracks cleanliness and contamination"
+            ],
+            [
+              "Filtered/unfiltered metals",
+              "Copper, iron, zinc, chromium, nickel",
+              "Indicates corrosion or material release"
+            ],
+            [
+              "ICP analysis",
+              "Elemental profile",
+              "Documents water quality changes over time"
+            ],
+            [
+              "Turbidity",
+              "Fluid clarity and particles",
+              "Supports filter and deposit decisions"
+            ],
+            [
+              "Corrosion coupons if used",
+              "Supplementary corrosion evidence",
+              "May not fully represent cold plate geometry"
+            ],
+            [
+              "Written evaluation",
+              "Technical interpretation",
+              "Turns data into action guidance"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "icp"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 5
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraph": "126"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
+            "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Reading the Trend, Not Just the Number",
+          "slug": "reading_the_trend_not_just_the_number",
+          "section_label": "Trend Logic",
+          "figure": {
+            "path": "figures/monitoring_framework.svg",
+            "alt": "Fluid health monitoring framework separating system health and fluid health",
+            "caption": "Use baseline and trend direction to distinguish system health from fluid health."
+          },
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "121-128"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
+            "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Adjustments and Supplier-Guided Dosing",
+          "slug": "adjustments_and_supplier_guided_dosing",
+          "section_label": "Corrective Action",
+          "subtitle": "Controlled dosing needs known volume, supplier guidance, circulation, retest, and records.",
+          "bullets": [
+            {
+              "bold_lead": "Known volume",
+              "text": "dosing cannot be calculated safely without loop volume."
+            },
+            {
+              "bold_lead": "Supplier guidance",
+              "text": "adjust only according to treatment plan and technical support."
+            },
+            {
+              "bold_lead": "Circulate",
+              "text": "mix for 30 minutes before follow-up sampling."
+            },
+            {
+              "bold_lead": "Retest",
+              "text": "confirm the adjustment moved results into range."
+            },
+            {
+              "bold_lead": "Document",
+              "text": "record date, system, additive type, amount, and reports."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "129-134"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
+            "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Fluid Mixing and Interoperability",
+          "slug": "fluid_mixing_and_interoperability",
+          "section_label": "Interoperability",
+          "figure": {
+            "path": "figures/mixing_decision.svg",
+            "alt": "Fluid mixing decision logic",
+            "caption": "Mixing is best treated as a controlled event requiring fluid-specific evidence."
+          },
+          "term_refs": [
+            "iat",
+            "oat"
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
+            "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Documentation and Submittals",
+          "slug": "documentation_and_submittals",
+          "section_label": "Records",
+          "subtitle": "If it changes the fluid, the materials, or the interpretation of a sample, record it.",
+          "bullets": [
+            {
+              "bold_lead": "Fluid identity",
+              "text": "source, COA, SDS, and analyses for each system."
+            },
+            {
+              "bold_lead": "System volume",
+              "text": "required for calculating inhibitor or additive doses."
+            },
+            {
+              "bold_lead": "Adjustment history",
+              "text": "date, amount, additive type, and analytical reports."
+            },
+            {
+              "bold_lead": "Materials of construction",
+              "text": "metals, elastomers, plastics, filters, seals, and replacements."
+            },
+            {
+              "bold_lead": "Treatment plan",
+              "text": "operating parameters, testing schedule, and product documentation."
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds"
+          ],
+          "source_refs": [
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "143-151"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
+            "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "Module 4 Summary",
+          "slug": "module_4_summary",
+          "items": [
+            "Use routine checks and lab QA together.",
+            "Interpret trends against baseline, not isolated values alone.",
+            "Make chemistry adjustments only through controlled supplier-guided procedures.",
+            "Treat fluid mixing as an event that changes monitoring complexity.",
+            "Maintain records that future operators can trust."
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module4/slide_10_module_4_summary.txt",
+            "wav_file": "audio/module4/slide_10_module_4_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module4/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Check Your Operating Judgment",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m4q1",
+              "prompt": "What is the best way to interpret routine fluid-health results?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "React to a single number without checking method, history, or operating context.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Trend the results against baseline, limits, and recent changes before deciding on action.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Dose chemistry immediately whenever any value changes.",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "Ignore lab results when on-site test strips look acceptable.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Operating judgment comes from trend, baseline, limits, test method, and context.",
+              "feedback_incorrect": "A single value is not enough. Use trend, baseline, limits, test method, and operating context before acting."
+            },
+            {
+              "id": "m4q2",
+              "prompt": "What should happen before mixing fluids or making chemistry adjustments?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "Use lab or on-site results to verify whether the adjustment worked.",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "Confirm supplier guidance and compatibility for the exact fluids and materials involved.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Assume all inhibited water-based fluids are interchangeable.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Document the change, date, fluid batch, concentration, and reason for action.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Mixing and dosing need supplier guidance, documentation, and follow-up verification.",
+              "feedback_incorrect": "Do not assume interchangeability. Confirm compatibility, document the action, and verify the result."
+            }
+          ]
+        },
+        {
+          "type": "course_complete",
+          "title": "Cooling Fluids in Direct Liquid Cooling (DLC)",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "course_title": "Cooling Fluids in Direct Liquid Cooling (DLC)",
+          "cert_message": "You have completed the single-phase DLC fluids course. Use the OCP guidance, supplier treatment plan, and local operating records together when applying these concepts.",
+          "thank_you_message": "Thank you for completing Module 4: Monitoring, Maintenance, and Operational Judgment.",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        }
+      ]
+    }
+  ]
+}

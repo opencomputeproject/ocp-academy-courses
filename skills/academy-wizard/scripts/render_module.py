@@ -17,7 +17,9 @@ up_next, course_complete.
 
 from __future__ import annotations
 import argparse
+import hashlib
 import html
+import itertools
 import json
 import os
 import sys
@@ -460,6 +462,68 @@ def render_takeaways(slide: dict, course: dict, module: dict) -> str:
 '''
 
 
+def _stable_int(value: str) -> int:
+    return int(hashlib.sha256(value.encode("utf-8")).hexdigest(), 16)
+
+
+def _correct_slots(seed: str, n: int, k: int, multiple: bool) -> set[int]:
+    combos = list(itertools.combinations(range(n), k))
+    if multiple and 1 < k < n:
+        non_edge_blocks = [
+            c for c in combos
+            if c != tuple(range(k)) and c != tuple(range(n - k, n))
+        ]
+        if non_edge_blocks:
+            combos = non_edge_blocks
+        non_contiguous = [
+            c for c in combos
+            if not all(c[i] + 1 == c[i + 1] for i in range(len(c) - 1))
+        ]
+        if non_contiguous:
+            combos = non_contiguous
+    return set(combos[_stable_int(seed + "|correct-slots") % len(combos)])
+
+
+def _shuffled_choices(q: dict, module: dict, slide: dict, qid: str) -> list[dict]:
+    """Return a stable per-question shuffle unless explicitly disabled."""
+    choices = list(q.get("choices", []))
+    if q.get("shuffle_choices") is False or len(choices) < 2:
+        return choices
+    seed = "|".join(
+        str(part or "")
+        for part in (
+            course_key_for_shuffle(module),
+            slide.get("id"),
+            qid,
+            q.get("prompt"),
+        )
+    )
+    shuffled = [
+        choice for _, choice in sorted(
+            enumerate(choices),
+            key=lambda item: (
+                _stable_int(f"{seed}|{item[1].get('id','')}|{item[1].get('text','')}"),
+                item[0],
+            ),
+        )
+    ]
+    correct = [choice for choice in shuffled if choice.get("correct")]
+    incorrect = [choice for choice in shuffled if not choice.get("correct")]
+    if not correct or not incorrect:
+        return shuffled
+    slots = _correct_slots(seed, len(shuffled), len(correct), bool(q.get("multiple")))
+    correct_iter = iter(correct)
+    incorrect_iter = iter(incorrect)
+    return [
+        next(correct_iter) if idx in slots else next(incorrect_iter)
+        for idx in range(len(shuffled))
+    ]
+
+
+def course_key_for_shuffle(module: dict) -> str:
+    return f"module{module.get('id', '')}:{module.get('title', '')}"
+
+
 def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
     label = "Knowledge Check"
     questions_html = []
@@ -468,7 +532,7 @@ def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
         multi = bool(q.get("multiple"))
         input_type = "checkbox" if multi else "radio"
         choices_html = []
-        for choice in q.get("choices", []):
+        for choice in _shuffled_choices(q, module, slide, qid):
             cid = choice.get("id", "")
             input_id = f"{qid}_{cid}"
             choices_html.append(f'''

@@ -35,6 +35,9 @@ mkdir -p "$BUILD_DIR"
 
 "$PYTHON_BIN" "$SKILL_DIR/scripts/new_course.py" "$BUILD_DIR" "$SOURCE_DIR/course.json"
 rsync -a --include='*/' --include='*.txt' --exclude='*' "$SOURCE_DIR/audio/" "$BUILD_DIR/audio/"
+if [[ -d "$SOURCE_DIR/figures" ]]; then
+  rsync -a "$SOURCE_DIR/figures/" "$BUILD_DIR/figures/"
+fi
 
 if [[ -n "${EXISTING_AUDIO_DIR:-}" ]]; then
   rsync -a "$EXISTING_AUDIO_DIR/" "$BUILD_DIR/audio/"

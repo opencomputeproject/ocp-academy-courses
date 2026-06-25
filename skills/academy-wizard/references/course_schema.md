@@ -316,7 +316,7 @@ Optional fields:
 
 ### `knowledge_check`
 
-Place one `knowledge_check` slide before the final `up_next` or `course_complete` slide in each module unless the user opts out. The renderer supports single-answer radio questions and multiple-answer checkbox questions. The learner must submit each question once before advancing, but a correct answer is not required; retry remains available after feedback.
+Place one `knowledge_check` slide before the final `up_next` or `course_complete` slide in each module unless the user opts out. The renderer supports single-answer radio questions and multiple-answer checkbox questions. The learner must submit each question once before advancing, but a correct answer is not required; retry remains available after feedback. Choice order is deterministically shuffled by default so authored answer order does not leak into the learner view. For multi-select questions, the renderer also avoids placing every correct answer as a single obvious block at the front or back. Set `"shuffle_choices": false` on a question only when the displayed order is meaningful.
 
 ```json
 {
@@ -327,6 +327,7 @@ Place one `knowledge_check` slide before the final `up_next` or `course_complete
     {
       "id": "m2_q1",
       "prompt": "Which signal most directly indicates whether purging may be required?",
+      "shuffle_choices": true,
       "choices": [
         {"id": "a", "text": "Actual vapor pressure versus theoretical vapor pressure", "correct": true},
         {"id": "b", "text": "The rack nameplate power", "correct": false},
