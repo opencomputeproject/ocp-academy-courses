@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500">
+  <style>
+    .layer { stroke: #5F6062; stroke-width: 2; }
+    .layer-1 { fill: #ECF7DA; }
+    .layer-2 { fill: #DCEFC0; }
+    .layer-3 { fill: #C2E08C; }
+    .h-label { font: 800 22px 'Open Sans', Arial, sans-serif; fill: #19194D; }
+    .b-label { font: 600 16px 'Open Sans', Arial, sans-serif; fill: #5F6062; }
+    .arrow { stroke: #5F6062; stroke-width: 2; fill: none; }
+    .arrow-head { fill: #5F6062; }
+    .store-label { font: 700 14px 'Open Sans', Arial, sans-serif; fill: #19194D; }
+    .store-box { fill: #ffffff; stroke: #5F6062; stroke-width: 2; }
+    .green-chip { fill: #8DC63F; }
+  </style>
+  <rect width="900" height="500" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="450" y="42" text-anchor="middle" class="h-label">HPM FRU Information: Three Layers</text>
+
+  <!-- Layer 1 box -->
+  <rect x="60" y="80" width="500" height="90" rx="10" class="layer layer-1"/>
+  <text x="80" y="115" class="h-label">Layer 1 · IPMI multi-record (local)</text>
+  <text x="80" y="142" class="b-label">EEPROM at I2C bus 0 / address 0xA0 — operational in Pre-Standby</text>
+  <text x="80" y="160" class="b-label">vendor ID, component class, board identification</text>
+
+  <!-- Layer 2 box -->
+  <rect x="60" y="190" width="500" height="110" rx="10" class="layer layer-2"/>
+  <text x="80" y="225" class="h-label">Layer 2 · DMTF DSP0220 FRU (local)</text>
+  <text x="80" y="252" class="b-label">richer structured fields · optional digital cert + signature</text>
+  <text x="80" y="270" class="b-label">contains FRU Files Record → File Descriptor table</text>
+  <text x="80" y="288" class="b-label">slot 1 → local JSON · slot 2 → extended JSON</text>
+
+  <!-- Layer 3 box -->
+  <rect x="60" y="320" width="500" height="130" rx="10" class="layer layer-3"/>
+  <text x="80" y="355" class="h-label">Layer 3 · Extended JSON attributes</text>
+  <text x="80" y="382" class="b-label">large self-description (topology, bus blocks, connectors)</text>
+  <text x="80" y="402" class="b-label">Resident bit in File Descriptor → on EEPROM?</text>
+  <text x="80" y="422" class="b-label">Context bits: 11b = virtual EEPROM in FPGA</text>
+  <text x="80" y="442" class="b-label">Context bits: 10b = BIOS firmware volume</text>
+
+  <!-- Storage destinations on the right -->
+  <!-- EEPROM block -->
+  <rect x="640" y="100" width="200" height="60" rx="6" class="store-box"/>
+  <text x="740" y="138" text-anchor="middle" class="store-label">FRU EEPROM</text>
+  <text x="740" y="155" text-anchor="middle" class="b-label">I2C bus 0 / 0xA0</text>
+
+  <!-- Virtual EEPROM block -->
+  <rect x="640" y="220" width="200" height="60" rx="6" class="store-box"/>
+  <text x="740" y="253" text-anchor="middle" class="store-label">Virtual EEPROM</text>
+  <text x="740" y="271" text-anchor="middle" class="b-label">emulated by HPM FPGA</text>
+
+  <!-- BIOS FV block -->
+  <rect x="640" y="340" width="200" height="60" rx="6" class="store-box"/>
+  <text x="740" y="373" text-anchor="middle" class="store-label">BIOS Firmware Volume</text>
+  <text x="740" y="391" text-anchor="middle" class="b-label">retrieved via MMBI</text>
+
+  <!-- Arrows from Layer 1+2 to EEPROM -->
+  <path d="M 560 130 L 630 130" class="arrow" marker-end="url(#a-head)"/>
+  <path d="M 560 245 L 630 245" class="arrow" marker-end="url(#a-head)"/>
+
+  <!-- Arrows from Layer 3 down to virtual EEPROM + BIOS FV -->
+  <path d="M 560 380 Q 600 320 630 250" class="arrow" marker-end="url(#a-head)"/>
+  <path d="M 560 410 Q 600 400 630 370" class="arrow" marker-end="url(#a-head)"/>
+
+  <defs>
+    <marker id="a-head" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" class="arrow-head"/>
+    </marker>
+  </defs>
+</svg>
