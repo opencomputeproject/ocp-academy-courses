@@ -13,6 +13,7 @@ courses/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
   ocp-mhs-modular-plug-and-play-m-pnp/
+  ocp-ready-requirements-for-energy-storage-systems/
   project-deschutes-cdu-specification-v1-0/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
 scripts/
@@ -63,6 +64,7 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
+| `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
 
