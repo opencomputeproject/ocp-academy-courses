@@ -1,0 +1,1934 @@
+{
+  "course_slug": "ocp_mhs_mpnp_academy",
+  "course_title": "OCP MHS Modular Plug-and-Play (M-PNP)",
+  "course_subtitle": "A Deep-Technical Course on the M-PNP Specifications Bundle v0.5",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Specifications Bundle v0.5 · September 2025",
+  "target_duration_minutes": 36,
+  "audience_level": "deep_technical",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "mpnp_course_icon.png",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "M-PNP"
+  },
+  "sources": [
+    {
+      "kind": "ocp_specification_page",
+      "title": "OCP M-PNP FRU Discovery Boot Specification v0.5",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs",
+      "slug": "fru_disc_boot_spec"
+    },
+    {
+      "kind": "ocp_specification_page",
+      "title": "OCP HPM FPGA Specification v0.5",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs",
+      "slug": "fpga_spec"
+    },
+    {
+      "kind": "ocp_specification_page",
+      "title": "OCP M-PNP INTEROP Design Specification v0.3",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs",
+      "slug": "interop_spec"
+    },
+    {
+      "kind": "ocp_summit_recording",
+      "title": "MHS Modular Plug-and-Play (M-PNP) Workstream Update and Guidelines For Adoption",
+      "url": "https://www.youtube.com/watch?v=idSTvsWdLPo",
+      "slug": "workstream_deck"
+    },
+    {
+      "kind": "ocp_tech_talk",
+      "title": "OCP Tech Talk: M-PNP Overview and M-PNP.FRU Discovery Boot 0.5 Specification Deep Dive",
+      "url": "https://www.youtube.com/watch?v=QapIKDsCq3E",
+      "slug": "fru_disc_boot_tech_talk"
+    },
+    {
+      "kind": "ocp_tech_talk",
+      "title": "OCP Tech Talk: M-PNP Overview and M-PNP.FPGA 0.5 Specification Deep Dive",
+      "url": "https://www.youtube.com/watch?v=sWQxhUJzc3k",
+      "slug": "fpga_tech_talk"
+    },
+    {
+      "kind": "open_source_tooling",
+      "title": "OCP M-PNP FRU Tool",
+      "url": "https://github.com/opencomputeproject/OCP-SVR-MHS-M-PNP_FRUTool",
+      "slug": "fru_tool"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "introduction",
+      "title": "Introduction to MHS & the M-PNP Vision",
+      "subtitle": "The interoperability problem, the three-rung ladder, and the v0.5 specifications bundle.",
+      "module_badge_text": "Module 1",
+      "next_module_title": "FRU, Discovery & Boot Specification",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Introduction to MHS & the M-PNP Vision",
+          "subtitle": "The interoperability problem, the three-rung ladder, and the v0.5 specifications bundle.",
+          "version_chip": "Module 1 · ~8 min",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav"
+          }
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course_overview",
+          "title": "Four Modules, One Course",
+          "subtitle": "From the motivation through the technical core to the on-ramp for contributing back.",
+          "modules_listed": [
+            "Introduction to MHS & the M-PNP Vision",
+            "FRU, Discovery & Boot Specification",
+            "M-PNP HPM FPGA Specification",
+            "Interop, Conformance, Tooling & Adoption"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "~40 min total duration"
+            },
+            {
+              "icon": "🎓",
+              "text": "Deep technical audience"
+            },
+            {
+              "icon": "📄",
+              "text": "Based on M-PNP Bundle v0.5",
+              "url": "https://www.opencompute.org/wiki/Server/DC-MHS"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav"
+          },
+          "term_refs": [
+            "mpnp",
+            "fru"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "plug_and_code_today",
+          "section_label": "Today",
+          "title": "Plug-and-Code, Not Plug-and-Play",
+          "subtitle": "The hardware is interoperable. The firmware isn't.",
+          "bullets": [
+            {
+              "bold_lead": "DC-MHS already works",
+              "text": "electrically and mechanically — demonstrated at multiple OCP summits with cross-vendor SCMs and HPMs."
+            },
+            {
+              "bold_lead": "BMC firmware needs prior knowledge",
+              "text": "of the HPM, so vendors co-design or maintain a tree of per-HPM firmware images."
+            },
+            {
+              "bold_lead": "Snowflakes",
+              "text": "is the workstream's name for the result — bespoke loads that don't carry across HPM generations or vendors."
+            },
+            {
+              "bold_lead": "Cost everywhere",
+              "text": "time-to-market for new HPMs, CapEx and OpEx to integrate and validate, lost sustainability, customer friction on BYO security."
+            }
+          ],
+          "figure": {
+            "path": "figures/plug_and_code_diagram.png",
+            "alt": "DC-MHS HPM and SCM block diagram showing ROT, BMC, BIOS, LTPI, SCM CPLD components",
+            "caption": "A typical DC-MHS platform: SCM (top right) with BMC, BIOS, ROT and SCM CPLD; HPM (below) carrying the processor subsystems. Electrically interoperable, but firmware is co-designed per HPM.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 3
+            }
+          },
+          "source_refs": [
+            {
+              "source": "workstream_deck",
+              "page": 3
+            },
+            {
+              "source": "workstream_deck",
+              "page": 4
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_plug_and_code_today.txt",
+            "wav_file": "audio/module1/slide_03_plug_and_code_today.wav"
+          },
+          "term_refs": [
+            "dc_mhs",
+            "hpm",
+            "scm_dc_scm",
+            "bmc",
+            "ltpi"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "mpnp_vision",
+          "section_label": "Vision",
+          "title": "A Three-Rung Ladder to Plug-and-Play",
+          "figure": {
+            "path": "figures/mpnp_vision_ladder.png",
+            "alt": "From Plug-and-Code to Plug-and-Play three-rung diagram",
+            "caption": "Plug-and-Code (custom code per model) → Plug-and-Play Lite (some files dynamically loaded) → Plug-and-Play (runtime loading of all definition files; baseline functionality for any conforming HPM).",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 6
+            }
+          },
+          "caption": "v0.5 of the M-PNP bundle lands roughly at Plug-and-Play Lite. v1.0 targets full Plug-and-Play.",
+          "source_refs": [
+            {
+              "source": "workstream_deck",
+              "page": 6
+            },
+            {
+              "source": "interop_spec",
+              "page": 6
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_mpnp_vision.txt",
+            "wav_file": "audio/module1/slide_04_mpnp_vision.wav"
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "dc_mhs_family",
+          "section_label": "Family",
+          "title": "DC-MHS Family and M-PNP’s Place",
+          "subtitle": "M-PNP is the discovery and interoperability layer above this stack of hardware specs.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "M-FLW / M-DNO / M-SDNO",
+              "body": "HPM form-factor specs — full-width and density-optimized.",
+              "icon": "🔲"
+            },
+            {
+              "title": "M-CRPS",
+              "body": "Common Redundant Power Supply spec.",
+              "icon": "⚡"
+            },
+            {
+              "title": "M-PIC",
+              "body": "Platform Infrastructure Connectivity — power, control panel, cooling.",
+              "icon": "🔌"
+            },
+            {
+              "title": "M-XIO",
+              "body": "Extensible high-speed I/O connector & pinout.",
+              "icon": "🔗"
+            },
+            {
+              "title": "M-PESTI",
+              "body": "Peripheral Sideband Tunneling Interface — used for risers/backplanes.",
+              "icon": "📡"
+            },
+            {
+              "title": "DC-SCM 2.1 + HPM Common Circuits Type 1",
+              "body": "Secure control module and standardized HPM circuits the SCM expects.",
+              "icon": "🔐"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 15
+            },
+            {
+              "source": "workstream_deck",
+              "page": 5
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_dc_mhs_family.txt",
+            "wav_file": "audio/module1/slide_05_dc_mhs_family.wav"
+          },
+          "term_refs": [
+            "m_pesti"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "specifications_bundle",
+          "section_label": "Bundle",
+          "title": "The M-PNP Specifications Bundle v0.5",
+          "subtitle": "Three normative specs, two JSON schemas, eight worked examples.",
+          "bullets": [
+            {
+              "bold_lead": "M-PNP.INTEROP v0.3.0",
+              "text": "the glue — vision, definitions, conformance, references (15 pp)."
+            },
+            {
+              "bold_lead": "M-PNP.FRU_DISCOVERY_BOOT v0.5.0 RC2",
+              "text": "the operational core — FRU info, discovery, boot process (148 pp)."
+            },
+            {
+              "bold_lead": "M-PNP.FPGA v0.5.0 RC2",
+              "text": "the standardized FPGA architecture (227 pp)."
+            },
+            {
+              "bold_lead": "JSON schemas",
+              "text": "hardware-component v0.5.6 and fpga v0.1.3."
+            },
+            {
+              "bold_lead": "JSON mockups",
+              "text": "HPM Type 1, four risers, UBM backplane, Type 2 PDB — each as JSON + PDF rendering."
+            }
+          ],
+          "figure": {
+            "path": "figures/specs_bundle_pyramid.png",
+            "alt": "M-PNP Specifications Bundle pyramid diagram",
+            "caption": "The bundle: Interop spec, FRU/Discovery/Boot spec, HPM FPGA spec, JSON schemas, and JSON mockups.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 7
+            }
+          },
+          "source_refs": [
+            {
+              "source": "workstream_deck",
+              "page": 7
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_specifications_bundle.txt",
+            "wav_file": "audio/module1/slide_06_specifications_bundle.wav"
+          },
+          "term_refs": [
+            "fpga",
+            "ubm",
+            "pdb"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Key Takeaways",
+          "items": [
+            "M-PNP is not new hardware — it's a way of describing existing DC-MHS hardware so one BMC firmware image runs the whole ecosystem.",
+            "The unit of description is a JSON file the hardware vendor writes at design time; the BMC retrieves it at boot.",
+            "The bundle is layered: Interop sets the contract, FRU/Discovery/Boot operationalizes it, the FPGA spec gives the BMC a stable surface to talk to.",
+            "v0.5 lands at “Plug-and-Play Lite”; v1.0 (Q1 ’27) targets full Plug-and-Play."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_takeaways.txt",
+            "wav_file": "audio/module1/slide_07_takeaways.wav"
+          }
+        },
+        {
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your M-PNP Foundation",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m1_q1_mpnp_problem",
+              "prompt": "What is the central problem M-PNP is trying to remove from DC-MHS platforms?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "BMC firmware needing prior, model-specific knowledge of each HPM",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The need for mechanically standardized module form factors",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "The use of field-replaceable components in server platforms",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "The requirement to use JSON anywhere in the design process",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. M-PNP lets the BMC discover the platform from self-describing data instead of relying on a per-HPM firmware image.",
+              "feedback_incorrect": "Review the plug-and-code discussion. The pain point is BMC firmware that already has to know the HPM model before boot."
+            },
+            {
+              "id": "m1_q2_bundle_layers",
+              "multiple": true,
+              "prompt": "Which items belong to the M-PNP specifications bundle described in this module?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "M-PNP.INTEROP",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "M-PNP.FRU_DISCOVERY_BOOT",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "M-PNP.FPGA",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "JSON schemas and worked mockups",
+                  "correct": true
+                },
+                {
+                  "id": "e",
+                  "text": "A new processor socket specification",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. The bundle combines the Interop, FRU/Discovery/Boot, and FPGA specs with schemas and worked JSON examples.",
+              "feedback_incorrect": "Look back at the bundle slide. It layers three normative specs with schemas and examples; it is not a new processor socket spec."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check.wav"
+          },
+          "id": 8
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 2,
+          "next_module_title": "FRU, Discovery & Boot Specification",
+          "thank_you_message": "Nice work — you’ve finished Module 1: Introduction to MHS & the M-PNP Vision.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_up_next.txt",
+            "wav_file": "audio/module1/slide_08_up_next.wav"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "fru_discovery_boot",
+      "title": "FRU, Discovery & Boot Specification",
+      "subtitle": "How a BMC learns the platform from a cold start.",
+      "module_badge_text": "Module 2",
+      "next_module_title": "M-PNP HPM FPGA Specification",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "FRU, Discovery & Boot Specification",
+          "subtitle": "How a BMC learns the platform from a cold start.",
+          "version_chip": "Module 2 · ~12 min · Spec v0.5.0 RC2",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav"
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Learning Objectives",
+          "subtitle": "By the end of this module you will be able to…",
+          "objectives": [
+            "Explain the three pillars of the specification — FRU information, discovery, and boot — and how they fit together.",
+            "Distinguish between local attributes stored on the component and extended attributes stored elsewhere.",
+            "Trace the breadth-first discovery process through its four phases.",
+            "Walk through HPM discovery with security gates and the FPGA power states involved.",
+            "Identify the role of MMBI in the BMC-to-BIOS handoff during early boot."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav"
+          },
+          "term_refs": [
+            "hpm",
+            "scm_dc_scm",
+            "bmc",
+            "fru",
+            "mmbi",
+            "fpga"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "three_pillars",
+          "section_label": "Scope",
+          "title": "Three Pillars",
+          "subtitle": "The 148 pages rest on three load-bearing ideas.",
+          "bullets": [
+            {
+              "bold_lead": "Pillar 1 · FRU Information",
+              "text": "Every component (HPM + every peripheral) exposes a FRU information device with a known, parsable record."
+            },
+            {
+              "bold_lead": "Pillar 2 · Discovery Process",
+              "text": "The BMC walks the platform in a deterministic, breadth-first order and builds a complete topology before the BIOS runs."
+            },
+            {
+              "bold_lead": "Pillar 3 · Boot Process",
+              "text": "Boot is interleaved with discovery — attestation gates occur at specific power-state checkpoints."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 14
+            },
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 18
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_three_pillars.txt",
+            "wav_file": "audio/module2/slide_03_three_pillars.wav"
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "hpm_fru_info",
+          "section_label": "FRU Info",
+          "title": "Three Layers of HPM FRU Information",
+          "figure": {
+            "path": "figures/hpm_fru_layers.svg",
+            "alt": "Three-layer FRU information stack: IPMI multi-record, DMTF DSP0220 FRU + cert + signature, Extended JSON",
+            "caption": "Layer 1: IPMI multi-record on EEPROM at I2C bus 0 / address 0xA0. Layer 2: DMTF DSP0220 FRU + optional cert + signature. Layer 3: extended JSON (large, may live on EEPROM, virtual EEPROM in FPGA, or BIOS firmware volume)."
+          },
+          "caption": "The File Descriptor table inside the DMTF FRU points the BMC to the local + extended JSON. The Resident bit + Context field tell it where to look.",
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 32
+            },
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 33
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_hpm_fru_info.txt",
+            "wav_file": "audio/module2/slide_04_hpm_fru_info.wav"
+          },
+          "term_refs": [
+            "ipmi_fru",
+            "dmtf_fru"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "breadth_first_phases",
+          "section_label": "Discovery",
+          "title": "Breadth-First Discovery, Four Phases",
+          "figure": {
+            "path": "figures/discovery_phases.png",
+            "alt": "Breadth-first discovery diagram — SCM to HPM to risers/backplanes/PDBs to endpoint peripherals",
+            "caption": "Phase 0: SCM init. Phase 1: HPM. Phase 2: non-endpoint peripherals (risers, backplanes, PDBs, control panels). Phase 3: endpoint peripherals (NICs, drives, OCP CEM cards, M-CRPS supplies).",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 8
+            }
+          },
+          "caption": "Each ring's JSON tells the BMC how to interpret the next ring. Boot is interleaved but most of discovery completes before the BIOS gets to run.",
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 30
+            },
+            {
+              "source": "workstream_deck",
+              "page": 8
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_breadth_first_phases.txt",
+            "wav_file": "audio/module2/slide_05_breadth_first_phases.wav"
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "hpm_discovery_walkthrough",
+          "section_label": "Phase 1",
+          "title": "HPM Discovery Walkthrough",
+          "subtitle": "From pre-standby to a validated HPM description in memory.",
+          "bullets": [
+            {
+              "bold_lead": "[PreSTBY]",
+              "text": "BMC reads IPMI FRU from I2C bus 0 / 0xA0. Optionally validates digital cert + signature; optionally runs SPDM."
+            },
+            {
+              "bold_lead": "Handshake",
+              "text": "SCM asserts SCM_HPM_STBY_EN → BMC moves to Standby Hold-Off. HPM asserts HPM_SCM_STBY_RDY when aux rails regulate."
+            },
+            {
+              "bold_lead": "[STBY Hold-Off]",
+              "text": "Security gate — BMC attests the HPM FPGA while it is powered but held in reset."
+            },
+            {
+              "bold_lead": "Reset release",
+              "text": "SCM de-asserts SCM_HPM_STBY_RST_N → FPGA exits reset → Standby Run."
+            },
+            {
+              "bold_lead": "JSON retrieval",
+              "text": "BMC retrieves local + extended HPM JSON via PLDM File Transfer or the File Descriptor table in the DMTF FRU."
+            }
+          ],
+          "figure": {
+            "path": "figures/early_hpm_discovery.png",
+            "alt": "Early HPM Discovery block diagram showing BMC+SCM CPLD, JTAG/I2C/I3C, FPGA, EEPROM/FRU paths",
+            "caption": "Figure 6 from the FRU/Discovery/Boot spec. Power signals, JTAG, I2C/I3C, SCI, SPDM/MCTP paths from SCM to HPM FPGA.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "fru_disc_boot_spec",
+              "page": 31
+            }
+          },
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 31
+            },
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 32
+            },
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 33
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_hpm_discovery_walkthrough.txt",
+            "wav_file": "audio/module2/slide_06_hpm_discovery_walkthrough.wav"
+          },
+          "term_refs": [
+            "spdm",
+            "pldm",
+            "hold_off"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "peripheral_discovery",
+          "section_label": "Phase 2",
+          "title": "Six Concrete Peripheral Mockups",
+          "subtitle": "The bundle ships worked examples for the most common non-endpoint peripherals.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Riser · 1-slot x8",
+              "body": "Single PCIe CEM x8 slot riser. peripherals-fru-riser-1-x8-slot v0.3.4.",
+              "icon": "📐"
+            },
+            {
+              "title": "Riser · 1-slot x16",
+              "body": "Single PCIe CEM x16 slot riser. v0.3.1.",
+              "icon": "📐"
+            },
+            {
+              "title": "Riser · 2-slot x8",
+              "body": "Two-slot PCIe CEM x8 riser. v0.3.1.",
+              "icon": "📐"
+            },
+            {
+              "title": "Riser · 2-slot x16",
+              "body": "Two-slot PCIe CEM x16 riser. v0.3.1.",
+              "icon": "📐"
+            },
+            {
+              "title": "UBM Backplane",
+              "body": "Universal Backplane Management for NVMe drives. v0.3.5.",
+              "icon": "📦"
+            },
+            {
+              "title": "PDB · Type 2",
+              "body": "Power Distribution Board. peripherals-fru-pdb-type2 v0.1.5.",
+              "icon": "⚡"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 41
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_peripheral_discovery.txt",
+            "wav_file": "audio/module2/slide_07_peripheral_discovery.wav"
+          },
+          "term_refs": [
+            "m_pesti",
+            "ubm",
+            "pdb"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_bullets",
+          "slug": "json_bus_descriptions",
+          "section_label": "Self-Description",
+          "title": "Ten Bus Description Blocks",
+          "subtitle": "Every component publishes the same shape of JSON, bus by bus. One parser handles the whole system.",
+          "bullets": [
+            {
+              "bold_lead": "I2C / I3C",
+              "text": "Multiplexer tree, device addresses, speed mode."
+            },
+            {
+              "bold_lead": "PCIe",
+              "text": "Lane assignments and bifurcation options."
+            },
+            {
+              "bold_lead": "M-PESTI",
+              "text": "Tunneled signals per target."
+            },
+            {
+              "bold_lead": "LTPI / SGPIO",
+              "text": "Channel / bit mappings to virtual wires."
+            },
+            {
+              "bold_lead": "JTAG / SPI / UART / USB",
+              "text": "Endpoint topology and role."
+            },
+            {
+              "bold_lead": "Connectors",
+              "text": "Every physical connector and which buses pass through it."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 95
+            },
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 145
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_json_bus_descriptions.txt",
+            "wav_file": "audio/module2/slide_08_json_bus_descriptions.wav"
+          },
+          "term_refs": [
+            "ltpi",
+            "virtual_wires"
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_bullets",
+          "slug": "boot_and_mmbi",
+          "section_label": "Boot",
+          "title": "Boot Process & BMC↔BIOS via MMBI",
+          "subtitle": "Discovery dovetails into boot through the FPGA power state machine.",
+          "bullets": [
+            {
+              "bold_lead": "S0 Run-BIOS-Boot exists for a reason",
+              "text": "PCIe devices can't be attested until link training; this state lets the BMC attest over the device's OOB interface before the OS runs."
+            },
+            {
+              "bold_lead": "MMBI required",
+              "text": "BMC and BIOS must implement DMTF DSP0282 v1.0 Memory-Mapped Buffer Interface for early-boot communication."
+            },
+            {
+              "bold_lead": "Request/response",
+              "text": "MMBI carries a request-response protocol over shared memory; specific payloads are still being defined in v0.5."
+            },
+            {
+              "bold_lead": "Gated transition to S0 Run-OS",
+              "text": "Only after every runtime-attested peripheral signs off."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 145
+            },
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 146
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_boot_and_mmbi.txt",
+            "wav_file": "audio/module2/slide_09_boot_and_mmbi.wav"
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Key Takeaways",
+          "items": [
+            "FRU info lives in three layers: IPMI multi-record, DMTF FRU (signable), JSON (deep self-description).",
+            "Discovery is breadth-first across four phases (SCM → HPM → non-endpoint peripherals → endpoints).",
+            "Security gates are baked into the process — every tier is attested before it leaves Hold-Off.",
+            "The bundle ships six concrete peripheral mockups so you can read schema before writing code.",
+            "BMC ↔ BIOS early-boot communication runs on DMTF MMBI; the FPGA power state machine drives the choreography."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_takeaways.txt",
+            "wav_file": "audio/module2/slide_10_takeaways.wav"
+          }
+        },
+        {
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Discovery Model",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m2_q1_discovery_order",
+              "prompt": "Which sequence best matches the breadth-first discovery process?",
+              "shuffle_choices": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "SCM initialization → HPM → non-endpoint peripherals → endpoint peripherals",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Endpoint peripherals → non-endpoint peripherals → HPM → SCM initialization",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "BIOS boot → OS handoff → HPM JSON retrieval → SCM initialization",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Risers and backplanes first, then the HPM, then FRU storage",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Discovery moves outward from the SCM to the HPM, then to intermediate peripherals, then to endpoints.",
+              "feedback_incorrect": "Review the four-phase discovery diagram. The BMC starts with the SCM/HPM path before it walks peripherals and endpoints."
+            },
+            {
+              "id": "m2_q2_mmbi_role",
+              "prompt": "What role does MMBI play in the boot process covered here?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "It provides BMC-to-BIOS early-boot communication over a shared memory interface.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "It replaces the component FRU information device.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "It stores every peripheral JSON file inside the FPGA memory map.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "It performs PCIe link training on behalf of BIOS.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. MMBI is the required BMC-to-BIOS communication mechanism during early boot.",
+              "feedback_incorrect": "Look back at the boot slide. MMBI is a request-response communication path; it does not replace FRU data or train PCIe links."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_11_knowledge_check.wav"
+          },
+          "id": 11
+        },
+        {
+          "id": 12,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 3,
+          "next_module_title": "M-PNP HPM FPGA Specification",
+          "thank_you_message": "Nice work — you’ve finished Module 2: FRU, Discovery & Boot Specification.",
+          "audio": {
+            "script_file": "audio/module2/slide_11_up_next.txt",
+            "wav_file": "audio/module2/slide_11_up_next.wav"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "fpga_specification",
+      "title": "M-PNP HPM FPGA Specification",
+      "subtitle": "A standardized API for the HPM FPGA.",
+      "module_badge_text": "Module 3",
+      "next_module_title": "Interop, Conformance, Tooling & Adoption",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "M-PNP HPM FPGA Specification",
+          "subtitle": "A standardized API for the HPM FPGA — IP blocks, memory map, virtual wires, power states.",
+          "version_chip": "Module 3 · ~14 min · Spec v0.5.0 RC2",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav"
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Learning Objectives",
+          "subtitle": "By the end of this module you will be able to…",
+          "objectives": [
+            "Explain the FPGA standardization concept and where vendor / standardized / integrator logic each sit.",
+            "Enumerate the FPGA’s outward and inward common interfaces.",
+            "List the 13 IP blocks in the catalog and identify which 6 are required.",
+            "Describe the FPGA memory map and the three transports the BMC can use to access it.",
+            "Walk all 10 power states with their attestation hold-off gates.",
+            "Explain the virtual wires framework and the FPGA self-describing JSON."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav"
+          },
+          "term_refs": [
+            "bmc",
+            "fpga",
+            "ip_block",
+            "virtual_wires"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "standardization_concept",
+          "section_label": "Concept",
+          "title": "A Layered Architecture",
+          "figure": {
+            "path": "figures/fpga_standardization_concept.png",
+            "alt": "HPM FPGA standardized architecture diagram — vendor logic on top, MHS-standardized IP in middle, integrator logic on bottom",
+            "caption": "HPM Vendor customizations and System Integrator custom logic sit above and below a stable layer of MHS-standardized building blocks (LTPI, M-PESTI, Power Mgmt, Memory Map CSRs, Virtual Wires, BMC Interfaces).",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 9
+            }
+          },
+          "caption": "The spec dictates the API, not the implementation. No max LUT count, no required memory size — just the CSRs, the memory map, the virtual wires, and the JSON that describes all of them.",
+          "source_refs": [
+            {
+              "source": "fpga_spec",
+              "page": 23
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_standardization_concept.txt",
+            "wav_file": "audio/module3/slide_03_standardization_concept.wav"
+          },
+          "term_refs": [
+            "hpm",
+            "csr"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "common_interfaces",
+          "section_label": "Interfaces",
+          "title": "Outward and Inward",
+          "figure": {
+            "path": "figures/fpga_common_interfaces.png",
+            "alt": "FPGA common interfaces diagram showing LTPI, SGPIO, SPI, I2C/I3C and JTAG to SCM, plus M-PESTI, FlexIO, DSSI and SGPIO inside HPM",
+            "caption": "Outward (to SCM): LTPI, SGPIO, SPI, I2C/I3C, JTAG. Inward (to HPM): M-PESTI, M-XIO FlexIO, M-PIC sideband, DSSI, SGPIO to PDB.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 9
+            }
+          },
+          "caption": "Normative requirement (§8): the FPGA shall support virtual-wire access plus memory-mapped access using either SGPIO + SPI/I2C/I3C, or LTPI for both.",
+          "source_refs": [
+            {
+              "source": "fpga_spec",
+              "page": 27
+            },
+            {
+              "source": "fpga_spec",
+              "page": 28
+            },
+            {
+              "source": "fpga_spec",
+              "page": 29
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_common_interfaces.txt",
+            "wav_file": "audio/module3/slide_04_common_interfaces.wav"
+          },
+          "term_refs": [
+            "scm_dc_scm",
+            "m_pesti",
+            "ltpi",
+            "pdb"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_table",
+          "slug": "ip_blocks_catalog",
+          "section_label": "Catalog",
+          "title": "13 IP Blocks — 6 Required, 7 Optional",
+          "subtitle": "From Power Sequencing to General GPIOs.",
+          "columns": [
+            "IP Block",
+            "Req?",
+            "Purpose"
+          ],
+          "rows": [
+            [
+              "Power Sequencing & Management",
+              "Y",
+              "Unified HPM power states + transition-request CSRs"
+            ],
+            [
+              "System / Device Reset Control",
+              "Y",
+              "Virtual reset for MXIO, OCP slots, on-board devices"
+            ],
+            [
+              "Virtual Wires Framework",
+              "Y",
+              "Maps FPGA internal signals to SGPIO/LTPI transport"
+            ],
+            [
+              "LTPI or SGPIO",
+              "Y",
+              "At least one BMC-facing transport"
+            ],
+            [
+              "M-PESTI",
+              "Y",
+              "CSR mapping for peripheral identification (DSTAT min.)"
+            ],
+            [
+              "FlexIO MXIO + M-PIC PICPWR sideband",
+              "Y",
+              "Configurable IO pins on M-XIO + M-PIC sideband"
+            ],
+            [
+              "SPI Interface",
+              "N",
+              "Random-access memory map"
+            ],
+            [
+              "Generic Mux Control",
+              "N",
+              "I2C/I3C/system bus muxes"
+            ],
+            [
+              "LED Control",
+              "N",
+              "System LEDs and 7-seg displays"
+            ],
+            [
+              "Cooling Subsystem Control",
+              "N",
+              "Fans, pumps, thermal hardware"
+            ],
+            [
+              "System Telemetry",
+              "N",
+              "Telemetry data via memory-mapped CSRs"
+            ],
+            [
+              "I2C / I3C",
+              "N",
+              "FPGA's own bus participation"
+            ],
+            [
+              "General Use GPIOs",
+              "N",
+              "Package pins as GPIOs"
+            ]
+          ],
+          "source_refs": [
+            {
+              "source": "fpga_spec",
+              "page": 30
+            },
+            {
+              "source": "fpga_spec",
+              "page": 31
+            },
+            {
+              "source": "fpga_spec",
+              "page": 32
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_ip_blocks_catalog.txt",
+            "wav_file": "audio/module3/slide_05_ip_blocks_catalog.wav"
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "memory_map_architecture",
+          "section_label": "Memory Map",
+          "title": "Directory + Required + Optional + OEM",
+          "subtitle": "The BMC reads the directory first to learn where everything else lives.",
+          "bullets": [
+            {
+              "bold_lead": "Required Memory Map Directory",
+              "text": "Header listing every section and its offset."
+            },
+            {
+              "bold_lead": "Required Section(s)",
+              "text": "Standardized IP blocks the spec mandates."
+            },
+            {
+              "bold_lead": "Optional But Defined Section(s)",
+              "text": "Defined by the spec but not required."
+            },
+            {
+              "bold_lead": "OEM Section(s)",
+              "text": "Vendor / integrator-specific content."
+            },
+            {
+              "bold_lead": "Three access transports",
+              "text": "SPI (random access), LTPI Data Channel (multiplexed), I2C/I3C mailbox (slower, always-present in standby)."
+            }
+          ],
+          "figure": {
+            "path": "figures/fpga_memory_map.png",
+            "alt": "FPGA Memory Map Architecture diagram — interface CSRs, directory, required sections, optional sections, OEM sections",
+            "caption": "Interface CSRs sit at the top, followed by the Required Directory, then required/optional/OEM sections. The same content is reachable from any of the three transports.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "fpga_spec",
+              "page": 33
+            }
+          },
+          "source_refs": [
+            {
+              "source": "fpga_spec",
+              "page": 33
+            },
+            {
+              "source": "fpga_spec",
+              "page": 40
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_memory_map_architecture.txt",
+            "wav_file": "audio/module3/slide_06_memory_map_architecture.wav"
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "power_states_machine",
+          "section_label": "Power States",
+          "title": "10 States, 4 Hold-Offs, 3 Attestation Gates",
+          "figure": {
+            "path": "figures/fpga_power_state_diagram.png",
+            "alt": "FPGA Power State Transition Diagram — G3 through S0 Run-OS with hold-off variants",
+            "caption": "Figure 15 of the FPGA spec. G3 → Pre-STBY → STBY (Hold-Off) → STBY (Run) → S5 (Hold-Off) → S5 (Run) → S0 (SoC Ramp) → S0 (Hold-Off) → S0 (Run-BIOS-Boot) → S0 (Run-OS). The four Hold-Off states are where the BMC attests each tier of devices before releasing them.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "fpga_spec",
+              "page": 64
+            }
+          },
+          "caption": "Three attestation gates fire in Standby Hold-Off (FPGA), S5 Hold-Off (FRU storage devices), and S0 Hold-Off / Run-BIOS-Boot (SoCs and PCIe devices). Security policy is up to the integrator; the state machine just makes the gates possible.",
+          "source_refs": [
+            {
+              "source": "fpga_spec",
+              "page": 62
+            },
+            {
+              "source": "fpga_spec",
+              "page": 63
+            },
+            {
+              "source": "fpga_spec",
+              "page": 64
+            },
+            {
+              "source": "fpga_spec",
+              "page": 65
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_power_states_machine.txt",
+            "wav_file": "audio/module3/slide_07_power_states_machine.wav"
+          },
+          "term_refs": [
+            "fru",
+            "hold_off"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_bullets",
+          "slug": "virtual_wires",
+          "section_label": "Virtual Wires",
+          "title": "Logical Signals on a Physical Transport",
+          "subtitle": "Thousands of internal FPGA signals reach the BMC without a pin-per-signal connector.",
+          "bullets": [
+            {
+              "bold_lead": "Logical signal list",
+              "text": "Spec defines required + optional virtual wires (PWRGD, reset requests, interrupts, status bits, GPIOs)."
+            },
+            {
+              "bold_lead": "Transport mapping",
+              "text": "Each virtual wire maps to a bit position in an SGPIO frame or an LTPI virtual wire channel."
+            },
+            {
+              "bold_lead": "JSON description",
+              "text": "Vendor publishes the mapping in fpga JSON; BMC reads it at discovery time."
+            },
+            {
+              "bold_lead": "Extensibility",
+              "text": "Vendors add additional virtual wires for their own signals; BMC ingests via the same JSON."
+            },
+            {
+              "bold_lead": "GPIO framework included",
+              "text": "Same plumbing also handles FPGA package-pin GPIO mapping."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fpga_spec",
+              "page": 50
+            },
+            {
+              "source": "fpga_spec",
+              "page": 51
+            },
+            {
+              "source": "fpga_spec",
+              "page": 57
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_virtual_wires.txt",
+            "wav_file": "audio/module3/slide_08_virtual_wires.wav"
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_bullets",
+          "slug": "fpga_self_describing_json",
+          "section_label": "Self-Description",
+          "title": "fpga Schema v0.1.3 — What the BMC Reads",
+          "subtitle": "An FPGA build emits a JSON file that describes itself exactly.",
+          "bullets": [
+            {
+              "bold_lead": "General information",
+              "text": "Vendor, version, build identifier."
+            },
+            {
+              "bold_lead": "IP blocks",
+              "text": "Required ones from the catalog + any vendor-defined blocks."
+            },
+            {
+              "bold_lead": "CSRs",
+              "text": "Register name, offset, access type, bit fields, reset values."
+            },
+            {
+              "bold_lead": "Memory map sections",
+              "text": "Section names and address ranges."
+            },
+            {
+              "bold_lead": "Virtual wire mappings",
+              "text": "Every logical signal ↔ transport-bit pairing."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fpga_spec",
+              "page": 40
+            },
+            {
+              "source": "fpga_spec",
+              "page": 41
+            },
+            {
+              "source": "fpga_spec",
+              "page": 42
+            },
+            {
+              "source": "fpga_spec",
+              "page": 43
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_fpga_self_describing_json.txt",
+            "wav_file": "audio/module3/slide_09_fpga_self_describing_json.wav"
+          },
+          "term_refs": [
+            "dmtf_fru"
+          ]
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Key Takeaways",
+          "items": [
+            "The standardization concept layers vendor logic, MHS-standardized IP, and integrator logic so each can change without breaking the others.",
+            "The FPGA shall support virtual wires + memory-mapped access — via SGPIO + SPI/I2C/I3C or LTPI for both.",
+            "13 IP blocks; 6 required. Vendor-defined blocks must also publish a self-describing JSON.",
+            "Memory map: directory + required + optional + OEM. Accessible via SPI, LTPI Data Channel, or I2C/I3C mailbox.",
+            "10 power states with 4 hold-off variants — the BMC attests each tier before releasing reset.",
+            "FPGA self-describing JSON tells the BMC exactly what's in this build, so one BMC firmware image can run any conforming HPM."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_takeaways.txt",
+            "wav_file": "audio/module3/slide_10_takeaways.wav"
+          }
+        },
+        {
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your FPGA API Model",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m3_q1_fpga_spec_scope",
+              "prompt": "What does the M-PNP HPM FPGA specification standardize?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The API surface: CSRs, memory map, virtual wires, IP block descriptions, and JSON self-description",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "A maximum LUT count and one required FPGA vendor implementation",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "Only the physical package pinout of the FPGA device",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Only the BMC firmware update sequence",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. The spec standardizes the interface the BMC can rely on, not the vendor implementation details.",
+              "feedback_incorrect": "Review the layered architecture slide. The spec defines the stable API surface, not a required LUT count or single implementation."
+            },
+            {
+              "id": "m3_q2_holdoff_gates",
+              "multiple": true,
+              "prompt": "Which concepts are tied to the FPGA power-state and attestation model?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Hold-Off states where hardware is powered but reset is held",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The BMC attesting each tier before releasing it",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "A transition to S0 Run-OS only after required runtime attestation completes",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Skipping discovery once main power is available",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Hold-Off states create the checkpoints the BMC uses before releasing hardware into the next stage.",
+              "feedback_incorrect": "Review the power-state diagram. The point is controlled release after attestation, not skipping discovery."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_11_knowledge_check.wav"
+          },
+          "id": 11
+        },
+        {
+          "id": 12,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 4,
+          "next_module_title": "Interop, Conformance, Tooling & Adoption",
+          "thank_you_message": "Nice work — you’ve finished Module 3: M-PNP HPM FPGA Specification.",
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next.txt",
+            "wav_file": "audio/module3/slide_11_up_next.wav"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "interop_tooling_adoption",
+      "title": "Interop, Conformance, Tooling & Adoption",
+      "subtitle": "The Interop spec, the schemas, the tools, the roadmap, and how to contribute.",
+      "module_badge_text": "Module 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Interop, Conformance, Tooling & Adoption",
+          "subtitle": "Bring it home: the Interop spec, the JSON ecosystem, the tools, and the roadmap.",
+          "version_chip": "Module 4 · ~8 min",
+          "audio": {
+            "script_file": "audio/module4/slide_01_title.txt",
+            "wav_file": "audio/module4/slide_01_title.wav"
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Learning Objectives",
+          "subtitle": "By the end of this module you will be able to…",
+          "objectives": [
+            "Describe what the Interop spec adds beyond the FRU and FPGA specs.",
+            "Identify the JSON schemas and mockup examples in the v0.5 bundle.",
+            "Use the open-source tools (frupack.py shipped, fpga2json.py coming Q2 ’26).",
+            "Locate the workstream in the v0.5 → v1.0 timeline.",
+            "Know exactly how to contribute back."
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_objectives.txt",
+            "wav_file": "audio/module4/slide_02_objectives.wav"
+          },
+          "term_refs": [
+            "fru",
+            "fpga"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "interop_specification",
+          "section_label": "Interop",
+          "title": "The Interoperability Specification (v0.3.0)",
+          "subtitle": "Fifteen pages of contract. Intentionally short.",
+          "bullets": [
+            {
+              "bold_lead": "Vision + definition",
+              "text": "What interoperability means — mechanically, electrically, logically."
+            },
+            {
+              "bold_lead": "Three levels",
+              "text": "Plug-and-Code → Plug-and-Play Lite → Baseline Plug-and-Play."
+            },
+            {
+              "bold_lead": "Cross-spec requirements",
+              "text": "Common requirements that span the bundle."
+            },
+            {
+              "bold_lead": "Conformance criteria",
+              "text": "What a supplier must meet for OCP recognition."
+            },
+            {
+              "bold_lead": "References",
+              "text": "FRU/Discovery/Boot, FPGA, DC-SCM 2.1, HPM Common Circuits, OCP NIC, DMTF (FRU/PLDM/MCTP/MMBI), PCIe, SPDM."
+            }
+          ],
+          "figure": {
+            "path": "figures/interop_spec_map.png",
+            "alt": "Interop spec content map — scope, vision, requirements, conformance, references",
+            "caption": "The Interop spec is the table of contents for everything else. Read it first.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 10
+            }
+          },
+          "source_refs": [
+            {
+              "source": "interop_spec",
+              "page": 6
+            },
+            {
+              "source": "interop_spec",
+              "page": 8
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_03_interop_specification.txt",
+            "wav_file": "audio/module4/slide_03_interop_specification.wav"
+          },
+          "term_refs": [
+            "scm_dc_scm",
+            "dmtf_fru",
+            "pldm",
+            "mmbi",
+            "spdm"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_grid",
+          "slug": "schemas_and_mockups",
+          "section_label": "Schemas",
+          "title": "Two Schemas, Eight Worked Examples",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "hardware-component v0.5.6",
+              "body": "Schema for HPMs and peripherals.",
+              "icon": "📄"
+            },
+            {
+              "title": "fpga v0.1.3",
+              "body": "Schema for FPGAs and other PLDs.",
+              "icon": "📄"
+            },
+            {
+              "title": "HPM Type 1 v0.6.8",
+              "body": "Complete worked example with 181 FPGA signals.",
+              "icon": "🔲"
+            },
+            {
+              "title": "FPGA mockup v0.1.13",
+              "body": "Paired with the HPM example.",
+              "icon": "🔳"
+            },
+            {
+              "title": "Riser · 1×x8",
+              "body": "Single-slot PCIe CEM x8.",
+              "icon": "📐"
+            },
+            {
+              "title": "Riser · 1×x16 / 2×x8 / 2×x16",
+              "body": "Three more riser variants.",
+              "icon": "📐"
+            },
+            {
+              "title": "UBM Backplane v0.3.5",
+              "body": "NVMe drive backplane.",
+              "icon": "📦"
+            },
+            {
+              "title": "PDB Type 2 v0.1.5",
+              "body": "Power Distribution Board.",
+              "icon": "⚡"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "fru_disc_boot_spec",
+              "page": 19
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_04_schemas_and_mockups.txt",
+            "wav_file": "audio/module4/slide_04_schemas_and_mockups.wav"
+          },
+          "term_refs": [
+            "hpm",
+            "ubm",
+            "pdb"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "tools_frupack_fpga2json",
+          "section_label": "Tooling",
+          "title": "frupack.py Today, fpga2json.py Next",
+          "subtitle": "Open-source tools for generating the artefacts the BMC reads.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "frupack.py — shipped",
+              "body": "FRU Packaging Tool, contributed by HPE. Takes a JSON description and packages it into binary FRU bytes with multi-record framing, offsets, and CRCs.",
+              "icon": "📦",
+              "url": "https://github.com/opencomputeproject/OCP-SVR-MHS-M-PNP_FRUTool",
+              "link_text": "github.com/opencomputeproject/OCP-SVR-MHS-M-PNP_FRUTool"
+            },
+            {
+              "title": "fpga2json.py — Q2 ’26",
+              "body": "FPGA-to-JSON generator. Reads an FPGA build and produces the self-describing JSON the BMC ingests. HPE-contributed, targeted second quarter of 2026.",
+              "icon": "⏳"
+            },
+            {
+              "title": "Still needed",
+              "body": "JSON-from-schematic generators, JSON validators, BMC-side ingestion libraries. Live demos at OCP Innovation Stations at recent summits.",
+              "icon": "🛠"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "workstream_deck",
+              "page": 12
+            },
+            {
+              "source": "workstream_deck",
+              "page": 14
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_tools_frupack_fpga2json.txt",
+            "wav_file": "audio/module4/slide_05_tools_frupack_fpga2json.wav"
+          },
+          "term_refs": [
+            "bmc"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "roadmap",
+          "section_label": "Roadmap",
+          "title": "v0.5 → v0.7 → v0.9 → v1.0",
+          "figure": {
+            "path": "figures/mpnp_roadmap.png",
+            "alt": "M-PNP Workstream Progress and Schedule timeline showing v0.5 to v1.0 milestones",
+            "caption": "v0.5 (Sept '25) shipped. v0.7 (Aug '26): FRU/Disc/Boot complete, FPGA IP defs complete, peripheral PLD reqs defined. v0.9 (~Oct '26 Global Summit): Interop spec complete. v1.0 (Q1 '27): finalize all specs and collaterals.",
+            "source": "reuse",
+            "extract_from": {
+              "source_slug": "workstream_deck",
+              "page": 12
+            }
+          },
+          "caption": "Every version increment is gated on community feedback and prototype validation. Engage during v0.7 / v0.9 to influence v1.0.",
+          "source_refs": [
+            {
+              "source": "workstream_deck",
+              "page": 12
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_06_roadmap.txt",
+            "wav_file": "audio/module4/slide_06_roadmap.wav"
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_bullets",
+          "slug": "challenges_and_call_to_action",
+          "section_label": "Adoption",
+          "title": "Open Challenges & How to Help",
+          "subtitle": "What the workstream is wrestling with, and where new contributors land first.",
+          "bullets": [
+            {
+              "bold_lead": "Platform/chassis JSON",
+              "text": "LED policy, thermal envelopes — not on the HPM, not on the BMC. Where do they live?"
+            },
+            {
+              "bold_lead": "PCIe add-in cards",
+              "text": "OCP NIC + PCIe CEM cover a lot; the workstream is finding gaps to fill (often in those specs, not M-PNP)."
+            },
+            {
+              "bold_lead": "Full prototype platform",
+              "text": "Need FPGA + BMC + BIOS prototypes to validate the specs end-to-end."
+            },
+            {
+              "bold_lead": "Get involved",
+              "text": "DC-MHS wiki, public mailing list ocp-mhs-public@OCP-All.groups.io, Tech Talks, Innovation Station demos."
+            },
+            {
+              "bold_lead": "Build something",
+              "text": "Use frupack.py to package a JSON for hardware you care about — then bring questions."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "workstream_deck",
+              "page": 13
+            },
+            {
+              "source": "workstream_deck",
+              "page": 14
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_challenges_and_call_to_action.txt",
+            "wav_file": "audio/module4/slide_07_challenges_and_call_to_action.wav"
+          },
+          "term_refs": [
+            "mpnp",
+            "dc_mhs"
+          ]
+        },
+        {
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Adoption Path",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m4_q1_interop_role",
+              "prompt": "What does the Interoperability specification add beyond the FRU and FPGA specifications?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The cross-spec contract: vision, definitions, common requirements, conformance criteria, and references",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "A replacement for all endpoint standards such as OCP NIC and PCIe CEM",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "A mandatory production BMC codebase",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "A new chassis-only JSON schema that is already complete in v0.5",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. The Interop spec is the short cross-spec contract that ties the bundle together.",
+              "feedback_incorrect": "Review the Interop slide. It does not replace endpoint standards or ship a mandatory BMC codebase."
+            },
+            {
+              "id": "m4_q2_tools",
+              "prompt": "Which tooling statement matches this module?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "frupack.py packages JSON descriptions into binary FRU bytes; fpga2json.py is planned next.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "fpga2json.py is the only shipped tool in the bundle today.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "frupack.py replaces the need for schema validation or worked examples.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "The tooling is unrelated to the data the BMC reads.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. frupack.py is the current packaging tool, while fpga2json.py is the planned generator for FPGA self-description.",
+              "feedback_incorrect": "Review the tooling slide. frupack.py exists today; fpga2json.py is the planned next step."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_08_knowledge_check.wav"
+          },
+          "id": 8
+        },
+        {
+          "id": 9,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "OCP MHS Modular Plug-and-Play (M-PNP)",
+          "thank_you_message": "Thank you for completing Module 4: Interop, Conformance, Tooling & Adoption.",
+          "cert_message": "You've completed every module of the OCP M-PNP Academy course. Visit opencompute.org/wiki/Server/DC-MHS to plug into the workstream.",
+          "audio": {
+            "script_file": "audio/module4/slide_08_course_complete.txt",
+            "wav_file": "audio/module4/slide_08_course_complete.wav"
+          },
+          "survey": {
+            "body": "Got a couple minutes to help us improve? Help us shape improvements and our future courses by sharing your feedback with our development team. We periodically select submitters at random for great giveaways!",
+            "button_text": "Share Feedback",
+            "url": "https://forms.gle/wamJN5n8X4mCyV7C9"
+          }
+        }
+      ]
+    }
+  ],
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "term_glossary": [
+    {
+      "id": "mpnp",
+      "term": "M-PNP",
+      "tooltip": "Modular Plug-and-Play; the MHS layer that lets BMC firmware discover and operate conforming hardware from self-describing data.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "dc_mhs",
+      "term": "DC-MHS",
+      "tooltip": "Data Center Modular Hardware System; OCP's modular server hardware family that M-PNP builds on.",
+      "reference_label": "OCP Modular Hardware System",
+      "url": "https://www.opencompute.org/wiki/Server/MHS"
+    },
+    {
+      "id": "hpm",
+      "term": "HPM",
+      "tooltip": "Host Processor Module; the compute module containing the processor complex and platform logic.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "scm_dc_scm",
+      "term": "SCM / DC-SCM",
+      "tooltip": "Secure Control Module; the management and control module that carries the BMC, root of trust, firmware storage, and platform control functions.",
+      "reference_label": "OCP DC-SCM specs and designs",
+      "url": "https://www.opencompute.org/w/index.php?title=Server%2FMHS%2FDC-SCM-Specs-and-Designs"
+    },
+    {
+      "id": "bmc",
+      "term": "BMC",
+      "tooltip": "Baseboard Management Controller; the management processor that discovers hardware, reads FRU data, and coordinates platform boot.",
+      "reference_label": "OCP DC-SCM specs and designs",
+      "url": "https://www.opencompute.org/w/index.php?title=Server%2FMHS%2FDC-SCM-Specs-and-Designs"
+    },
+    {
+      "id": "fru",
+      "term": "FRU",
+      "tooltip": "Field Replaceable Unit; a replaceable component that exposes identity and descriptive information to platform management firmware.",
+      "reference_label": "DMTF FRU specifications",
+      "url": "https://www.dmtf.org/content/dmtf-releases-two-specifications-field-replaceable-unit-fru"
+    },
+    {
+      "id": "ipmi_fru",
+      "term": "IPMI FRU",
+      "tooltip": "Legacy FRU information format used for basic component identification and inventory records.",
+      "reference_label": "IPMI FRU Information Storage Definition",
+      "url": "https://www.intel.co.id/content/dam/www/public/us/en/documents/specification-updates/ipmi-platform-mgt-fru-info-storage-def-v1-0-rev-1-3-spec-update.pdf"
+    },
+    {
+      "id": "dmtf_fru",
+      "term": "DMTF FRU / DSP0220",
+      "tooltip": "DMTF FRU data format used for richer FRU descriptions, including structures M-PNP can use for signed metadata and file descriptors.",
+      "reference_label": "DMTF DSP0220 published versions",
+      "url": "https://www.dmtf.org/dsp/DSP0220"
+    },
+    {
+      "id": "spdm",
+      "term": "SPDM",
+      "tooltip": "Security Protocol and Data Model; a DMTF protocol used for device authentication, measurement, and attestation flows.",
+      "reference_label": "DMTF SPDM standards",
+      "url": "https://www.dmtf.org/standards/SPDM"
+    },
+    {
+      "id": "pldm",
+      "term": "PLDM",
+      "tooltip": "Platform Level Data Model; a DMTF management protocol family used here as one access path for file transfer and platform data exchange.",
+      "reference_label": "DMTF PMCI standards",
+      "url": "https://www.dmtf.org/standards/pmci"
+    },
+    {
+      "id": "m_pesti",
+      "term": "M-PESTI",
+      "tooltip": "Modular Peripheral Sideband Tunneling Interface; the sideband tunneling path used for peripheral discovery and control in DC-MHS systems.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "ltpi",
+      "term": "LTPI",
+      "tooltip": "LVDS Tunneling Protocol and Interface; a DC-SCM sideband transport for carrying low-pin-count management signals.",
+      "reference_label": "OCP DC-SCM specs and designs",
+      "url": "https://www.opencompute.org/w/index.php?title=Server%2FMHS%2FDC-SCM-Specs-and-Designs"
+    },
+    {
+      "id": "mmbi",
+      "term": "MMBI",
+      "tooltip": "Memory-Mapped Buffer Interface; DMTF DSP0282 interface for BMC-to-BIOS communication during early boot.",
+      "reference_label": "DMTF DSP0282 published versions",
+      "url": "https://www.dmtf.org/dsp/DSP0282"
+    },
+    {
+      "id": "fpga",
+      "term": "FPGA",
+      "tooltip": "Field-Programmable Gate Array; the programmable logic device that exposes M-PNP's standardized HPM control surface.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "csr",
+      "term": "CSR",
+      "tooltip": "Control/status register; a memory-mapped register the BMC reads or writes to inspect state or request actions.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "ip_block",
+      "term": "IP block",
+      "tooltip": "A reusable FPGA function block with defined behavior, registers, and self-description.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "virtual_wires",
+      "term": "Virtual wires",
+      "tooltip": "Logical sideband signals carried over transports like SGPIO or LTPI instead of dedicated physical pins.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "hold_off",
+      "term": "Hold-Off state",
+      "tooltip": "A powered-but-held-in-reset state that gives the BMC a checkpoint for attestation before releasing the next tier of hardware.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    },
+    {
+      "id": "ubm",
+      "term": "UBM",
+      "tooltip": "Universal Backplane Management; a backplane management framework used with NVMe and other storage backplane designs.",
+      "reference_label": "SNIA SFF-TA-1005 UBM",
+      "url": "https://members.snia.org/document/dl/27167"
+    },
+    {
+      "id": "pdb",
+      "term": "PDB",
+      "tooltip": "Power Distribution Board; a board that distributes platform power and can publish FRU and JSON data.",
+      "reference_label": "OCP DC-MHS specs and designs",
+      "url": "https://www.opencompute.org/wiki/Server/MHS/DC-MHS-Specs-and-Designs"
+    }
+  ]
+}
