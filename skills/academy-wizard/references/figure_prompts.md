@@ -60,10 +60,14 @@ When the course.json says `figure: { type: "svg_inline", template: "box_flow", d
 Run this checklist before rendering a module final:
 
 - Give each colored arrow family its own `<marker>` with the same fill or stroke color as the line. A green line uses a green marker; an orange warning line uses an orange marker; a blue line uses a blue marker.
+- For curved or diagonal arrows, the line must flow into the center of the arrowhead's flat back side. Do not let the path terminate at the point of the arrowhead; that makes the line look attached to the wrong end unless the arrow is perfectly straight and aligned.
+- Prefer explicit arrowhead polygons for curved or diagonal arrows: end the `<path>` at the flat-back center point, then draw a same-color triangle whose flat side is centered on that endpoint and whose point extends forward. If using an SVG `<marker>`, set `refX`/`refY` to the flat-back center or shorten the path so the visible line meets the back of the head, not the tip.
+- Stop the arrowhead point exactly at the target object's boundary line. The point may touch the stroke of a box, card, callout, connector, or diagram object, but it must not extend into that shape.
 - Prefer modest arrowheads. If a marker looks like a detached triangle, reduce `markerWidth`, `markerHeight`, or switch to `markerUnits="userSpaceOnUse"` with an open arrow path.
 - Make labels avoid paths. A label describing the entire top loop belongs above the line, centered to the overall figure; side callout labels should sit outside the diagram and align with their subtext.
 - Align grouped objects as groups, not one element at a time. Repeated bars, wicks, bubbles, cards, or nodes should visually center within their parent shape.
 - Use wrapped `<tspan>` lines or wider shapes when text risks escaping boxes, pills, or badges.
+- Run `scripts/check_svg_arrows.py course.json --fail-on-flags` before rendering modules that reference custom SVGs.
 - Render and inspect at desktop and mobile widths when a diagram has many labels. SVG source that looks reasonable in code can still overlap after font rendering.
 
 ## Caption rules
