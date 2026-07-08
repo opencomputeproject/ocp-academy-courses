@@ -89,10 +89,13 @@ For inline SVG figures, make labels fit inside their shapes. Center text in boxe
 Before delivery, visually check every diagram:
 - Arrowheads are visible, proportional, and attached to real lines.
 - Arrowhead color matches the line color. Do not reuse a blue/default marker on green, orange, warning, or other colored paths.
-- Lines connect cleanly without awkward right-angle kinks at the arrowhead.
+- Curved or diagonal arrow lines flow into the center of the flat back side of the arrowhead. If the visible line connects to the point of the arrowhead, redraw it; explicit arrowhead polygons are preferred for these arrows.
+- Arrowhead points stop on the target object's boundary line. Do not let the point extend into the box, card, callout, connector, or object it is pointing to.
+- Lines connect cleanly without awkward kinks at the arrowhead, and the final path tangent is aligned with the arrowhead centerline.
 - Labels do not overlap lines, arrowheads, bubbles, or bounding boxes.
 - Repeated objects are centered as a group.
 - Long labels are centered to the diagram when they describe the whole figure, or wrapped/placed outside the flow when they describe a side callout.
+- Run `scripts/check_svg_arrows.py course.json --fail-on-flags` as part of SVG QA for new or revised diagrams.
 
 ## Anti-patterns
 
