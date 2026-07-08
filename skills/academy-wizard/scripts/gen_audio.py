@@ -5,6 +5,7 @@ gen_audio.py — turn approved narration .txt files into .wav files.
 Usage:
     python gen_audio.py <course.json> [--module N] [--engine elevenlabs|openai|say]
                        [--voice <voice_id>] [--force]
+                       [--allow-local-fallback-for-partial]
 
 Defaults: walk every module and every slide; pick the engine automatically based
 on environment variables (ELEVENLABS_API_KEY, then OPENAI_API_KEY, otherwise
@@ -12,6 +13,9 @@ fall back to macOS `say`). Skip slides whose .wav already exists unless --force.
 
 The narration script for each slide must already exist at the path declared in
 course.json's `audio.script_file`. The output WAV is written to `audio.wav_file`.
+Knowledge-check slides are always narrated; the script fails if a
+`knowledge_check` slide lacks audio metadata or its script/WAV cannot be
+generated.
 
 Output format target: 22050 Hz, 16-bit PCM, mono. Most LMSes are happiest with
 this. Cloud engines that return mp3 are converted with ffmpeg if available;
@@ -25,6 +29,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -47,7 +52,15 @@ def synth_say(text: str, out_wav: Path) -> None:
     if not need("say"):
         raise RuntimeError("`say` not found; on macOS this should be at /usr/bin/say.")
     aiff = out_wav.with_suffix(".aiff")
-    subprocess.run(["say", "-v", "Samantha", "-o", str(aiff), "--data-format=LEI16@22050", text], check=True)
+    text_file = None
+    try:
+        with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".txt", delete=False) as tmp:
+            tmp.write(text)
+            text_file = Path(tmp.name)
+        subprocess.run(["say", "-v", "Samantha", "-f", str(text_file), "-o", str(aiff)], check=True)
+    finally:
+        if text_file:
+            text_file.unlink(missing_ok=True)
     # Rename .aiff to .wav — the header is different, but many players are lenient.
     # If ffmpeg is available, convert properly.
     if need("ffmpeg"):
@@ -126,6 +139,18 @@ def synth_openai(text: str, out_wav: Path, voice_id: str | None) -> None:
 SYNTHS = {"say": synth_say, "elevenlabs": synth_elevenlabs, "openai": synth_openai}
 
 
+def slide_ref(mod: dict, slide: dict) -> str:
+    return f"M{mod.get('id')}S{slide.get('id')} ({slide.get('type')}, {slide.get('slug', 'no-slug')})"
+
+
+def iter_module_slides(course: dict, module_filter: int | None):
+    for mod in course.get("modules", []):
+        if module_filter and mod.get("id") != module_filter:
+            continue
+        for slide in mod.get("slides", []):
+            yield mod, slide
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("course_json", type=Path)
@@ -133,6 +158,14 @@ def main():
     p.add_argument("--engine", choices=list(SYNTHS.keys()))
     p.add_argument("--voice", help="engine-specific voice id")
     p.add_argument("--force", action="store_true", help="re-synth even if .wav exists")
+    p.add_argument(
+        "--allow-local-fallback-for-partial",
+        action="store_true",
+        help=(
+            "allow macOS say to fill missing knowledge-check audio even when other "
+            "WAVs already exist; use only after the user approves the voice mismatch"
+        ),
+    )
     args = p.parse_args()
 
     course = json.loads(args.course_json.read_text())
@@ -141,58 +174,98 @@ def main():
     print(f"engine: {engine}")
     synth = SYNTHS[engine]
 
+    jobs = []
+    errors: list[str] = []
+    existing_wavs = 0
+    needs_synth_knowledge_check = False
+    for mod, slide in iter_module_slides(course, args.module):
+        audio = slide.get("audio") or {}
+        script_rel = audio.get("script_file")
+        wav_rel = audio.get("wav_file")
+        is_knowledge_check = slide.get("type") == "knowledge_check"
+        if is_knowledge_check and (not script_rel or not wav_rel):
+            errors.append(f"{slide_ref(mod, slide)} missing audio.script_file/audio.wav_file")
+            continue
+        if not script_rel or not wav_rel:
+            continue
+        script_path = out_dir / script_rel
+        wav_path = out_dir / wav_rel
+        if wav_path.exists():
+            existing_wavs += 1
+        elif is_knowledge_check:
+            needs_synth_knowledge_check = True
+        if args.force and is_knowledge_check:
+            needs_synth_knowledge_check = True
+        jobs.append((mod, slide, script_path, wav_path))
+
+    if (
+        engine == "say"
+        and existing_wavs
+        and needs_synth_knowledge_check
+        and not args.allow_local_fallback_for_partial
+        and not args.force
+    ):
+        errors.append(
+            "refusing to synthesize a missing knowledge-check narration with macOS "
+            "`say` while other narration WAVs already exist; provide the same cloud "
+            "TTS credentials/voice used for the course, or get explicit user approval "
+            "and rerun with --allow-local-fallback-for-partial"
+        )
+
+    if errors:
+        print("\nAudio generation blocked:", file=sys.stderr)
+        for err in errors:
+            print(f"  - {err}", file=sys.stderr)
+        sys.exit(1)
+
     n_done = 0
     n_skip = 0
-    for mod in course["modules"]:
-        if args.module and mod["id"] != args.module:
+    for mod, slide, script_path, wav_path in jobs:
+        if not script_path.exists():
+            errors.append(f"{slide_ref(mod, slide)} missing script: {script_path}")
             continue
-        for slide in mod["slides"]:
-            audio = slide.get("audio") or {}
-            script_rel = audio.get("script_file")
-            wav_rel = audio.get("wav_file")
-            if not script_rel or not wav_rel:
-                continue
-            script_path = out_dir / script_rel
-            wav_path = out_dir / wav_rel
-            if not script_path.exists():
-                print(f"  MISS script: {script_path}")
-                continue
-            if wav_path.exists() and not args.force:
-                n_skip += 1
-                continue
-            text = script_path.read_text().strip()
-            # Strip pronunciation hint comments (lines starting with "#")
-            text = "\n".join(line for line in text.splitlines() if not line.startswith("#")).strip()
-            if not text:
-                print(f"  EMPTY: {script_path}")
-                continue
-            wav_path.parent.mkdir(parents=True, exist_ok=True)
-            try:
-                if engine in ("elevenlabs", "openai"):
-                    synth(text, wav_path, args.voice)
-                else:
-                    synth(text, wav_path)
-                n_done += 1
-                print(f"  OK {wav_path.relative_to(out_dir)}")
-            except Exception as e:
-                msg = str(e)
-                print(f"  FAIL {wav_path.relative_to(out_dir)}: {msg}", file=sys.stderr)
-                # The Codex sandbox can block api.elevenlabs.io and OpenAI's TTS
-                # endpoint at the egress proxy. Help the user route around it.
-                if "403" in msg and ("Tunnel" in msg or "proxy" in msg.lower() or "allowlist" in msg.lower()):
-                    print(
-                        "\n  NOTE: It looks like this sandbox can't reach the TTS endpoint.\n"
-                        "  Run this command on your Mac/Linux host instead:\n"
-                        f"      cd {out_dir}\n"
-                        "      export ELEVENLABS_API_KEY=<your key>\n"
-                        f"      python3 {Path(__file__).resolve()} {args.course_json.name}"
-                        + (f" --module {args.module}" if args.module else "")
-                        + "\n",
-                        file=sys.stderr,
-                    )
-                    sys.exit(2)
+        if wav_path.exists() and not args.force:
+            n_skip += 1
+            continue
+        text = script_path.read_text().strip()
+        # Strip pronunciation hint comments (lines starting with "#")
+        text = "\n".join(line for line in text.splitlines() if not line.startswith("#")).strip()
+        if not text:
+            errors.append(f"{slide_ref(mod, slide)} empty script: {script_path}")
+            continue
+        wav_path.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            if engine in ("elevenlabs", "openai"):
+                synth(text, wav_path, args.voice)
+            else:
+                synth(text, wav_path)
+            n_done += 1
+            print(f"  OK {wav_path.relative_to(out_dir)}")
+        except Exception as e:
+            msg = str(e)
+            errors.append(f"{slide_ref(mod, slide)} failed {wav_path.relative_to(out_dir)}: {msg}")
+            print(f"  FAIL {wav_path.relative_to(out_dir)}: {msg}", file=sys.stderr)
+            # The Codex sandbox can block api.elevenlabs.io and OpenAI's TTS
+            # endpoint at the egress proxy. Help the user route around it.
+            if "403" in msg and ("Tunnel" in msg or "proxy" in msg.lower() or "allowlist" in msg.lower()):
+                print(
+                    "\n  NOTE: It looks like this sandbox can't reach the TTS endpoint.\n"
+                    "  Run this command on your Mac/Linux host instead:\n"
+                    f"      cd {out_dir}\n"
+                    "      export ELEVENLABS_API_KEY=<your key>\n"
+                    f"      python3 {Path(__file__).resolve()} {args.course_json.name}"
+                    + (f" --module {args.module}" if args.module else "")
+                    + "\n",
+                    file=sys.stderr,
+                )
+                sys.exit(2)
 
     print(f"\nsynthesized: {n_done}; skipped (already present): {n_skip}")
+    if errors:
+        print("\nAudio generation failed:", file=sys.stderr)
+        for err in errors:
+            print(f"  - {err}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

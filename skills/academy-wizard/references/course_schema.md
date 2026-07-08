@@ -133,6 +133,8 @@ Every slide has:
 
 Plus type-specific fields. See `slide_design_patterns.md` for what each type needs.
 
+`knowledge_check` slides are always narrated. They must include the same `audio.script_file` and `audio.wav_file` fields as content slides, and the corresponding script/WAV must be generated before rendering a module. `course_complete` may remain silent unless the approved design says otherwise.
+
 Optional learner-aid fields accepted on slides:
 
 ```json
@@ -316,13 +318,20 @@ Optional fields:
 
 ### `knowledge_check`
 
-Place one `knowledge_check` slide before the final `up_next` or `course_complete` slide in each module unless the user opts out. The renderer supports single-answer radio questions and multiple-answer checkbox questions. The learner must submit each question once before advancing, but a correct answer is not required; retry remains available after feedback. Choice order is deterministically shuffled by default so authored answer order does not leak into the learner view. For multi-select questions, the renderer also avoids placing every correct answer as a single obvious block at the front or back. Set `"shuffle_choices": false` on a question only when the displayed order is meaningful.
+Place one `knowledge_check` slide before the final `up_next` or `course_complete` slide in each module unless the user opts out. Treat it as a narrated interaction slide, not a silent quiz: add a concise orientation script and the matching `audio` block. The renderer supports single-answer radio questions and multiple-answer checkbox questions. The learner must submit each question once before advancing, but a correct answer is not required; retry remains available after feedback. Choice order is deterministically shuffled by default so authored answer order does not leak into the learner view. For multi-select questions, the renderer also avoids placing every correct answer as a single obvious block at the front or back. Set `"shuffle_choices": false` on a question only when the displayed order is meaningful.
+
+For single-answer radio questions, put `feedback_incorrect` on each incorrect choice when possible. The rendered feedback should explain why that selected answer is wrong compared with the correct concept. Keep the question-level `feedback_incorrect` as a fallback for older renderers or unspecified choices. For multi-select questions, use the question-level `feedback_incorrect`; do not try to author separate feedback for every possible wrong combination.
 
 ```json
 {
   "type": "knowledge_check",
   "title": "Check Your Loop Mental Model",
   "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+  "audio": {
+    "script_file": "audio/module2/slide_09_knowledge_check.txt",
+    "wav_file": "audio/module2/slide_09_knowledge_check.wav",
+    "approved": true
+  },
   "questions": [
     {
       "id": "m2_q1",
@@ -330,8 +339,18 @@ Place one `knowledge_check` slide before the final `up_next` or `course_complete
       "shuffle_choices": true,
       "choices": [
         {"id": "a", "text": "Actual vapor pressure versus theoretical vapor pressure", "correct": true},
-        {"id": "b", "text": "The rack nameplate power", "correct": false},
-        {"id": "c", "text": "The outside-air temperature alone", "correct": false}
+        {
+          "id": "b",
+          "text": "The rack nameplate power",
+          "correct": false,
+          "feedback_incorrect": "Rack power may shape cooling demand, but it does not reveal whether vapor pressure is drifting from the expected value."
+        },
+        {
+          "id": "c",
+          "text": "The outside-air temperature alone",
+          "correct": false,
+          "feedback_incorrect": "Outside-air temperature is too indirect. The monitoring signal is the actual vapor pressure compared with the theoretical value."
+        }
       ],
       "feedback_correct": "Correct. Pressure behavior can indicate non-condensables or another anomaly.",
       "feedback_incorrect": "Review the monitoring threshold. The key comparison is actual vapor pressure against the theoretical value for the boiling temperature."
