@@ -43,6 +43,12 @@ Open with the *why* of this slide in one sentence — what gap in understanding 
 
 Recap the module in plain language. The bullets on screen are the headline; the narration is the elaboration. Don't just read the bullets — that's redundant and boring.
 
+### Knowledge-check slide (~70–110 words, ~30–45s)
+
+Orient the learner to the mental model being checked and tell them how the interaction behaves. Do not read every question or answer choice. Mention that an attempt is required to continue, correctness is not required, and retry feedback is available.
+
+> Before you finish, take a moment to check the mental model. The first question asks you to connect the key packet-format change to the protocol's design goal. The second asks which implementation behaviors belong on the switch side. Submit each question once to continue. Correct answers are not required, and you can retry after feedback. Use that feedback to connect your answer back to the concepts you just reviewed.
+
 ### Up Next slide (~60–80 words, ~30s)
 
 This is the moment to acknowledge the learner finished a module and to set up the next one. Don't rush past it. Two beats: thanks for finishing this module, then a teaser for what's next.
