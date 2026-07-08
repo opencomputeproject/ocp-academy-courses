@@ -4,6 +4,8 @@ Open source course definitions for OCP Academy SCORM courses.
 
 This repository stores the editable course source: `course.json`, narration scripts, and lightweight course assets. It does not store generated audio, rendered HTML modules, SCORM zip files, or the original research/source materials used during course development.
 
+The courses in this repository are generally hosted on [OCP Academy](https://academy.opencompute.org/learn), primarily in its catalog of [Data Center Technology courses](https://academy.opencompute.org/learn/public/catalog/view/3).
+
 It also includes the `academy-wizard` Codex skill used to build the courses so contributors can reproduce the package generation flow from a clone.
 
 ## Repository layout
@@ -12,6 +14,7 @@ It also includes the `academy-wizard` Codex skill used to build the courses so c
 courses/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  ocp-esun-ethernet-for-scale-up-networks/
   ocp-mhs-modular-plug-and-play-m-pnp/
   ocp-ready-requirements-for-energy-storage-systems/
   project-deschutes-cdu-specification-v1-0/
@@ -63,6 +66,7 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 |---|---|
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |

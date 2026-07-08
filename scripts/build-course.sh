@@ -58,7 +58,7 @@ if [[ "${SKIP_AUDIO:-0}" == "1" && -z "${EXISTING_AUDIO_DIR:-}" ]]; then
   exit 0
 fi
 
-"$PYTHON_BIN" "$SKILL_DIR/scripts/audio_tail_report.py" "$BUILD_DIR/course.json"
+"$PYTHON_BIN" "$SKILL_DIR/scripts/audio_tail_report.py" "$BUILD_DIR/course.json" --fail-on-flags
 "$PYTHON_BIN" "$SKILL_DIR/scripts/validate_package.py" "$BUILD_DIR"
 "$PYTHON_BIN" "$SKILL_DIR/scripts/zip_for_lms.py" "$BUILD_DIR"
 

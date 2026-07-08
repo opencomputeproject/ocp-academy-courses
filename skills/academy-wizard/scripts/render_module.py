@@ -547,9 +547,10 @@ def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
         for choice in _shuffled_choices(q, module, slide, qid):
             cid = choice.get("id", "")
             input_id = f"{qid}_{cid}"
+            choice_feedback = choice.get("feedback_incorrect") or choice.get("feedback") or ""
             choices_html.append(f'''
             <label class="quiz-choice" for="{esc(input_id)}">
-              <input id="{esc(input_id)}" type="{input_type}" name="{esc(qid)}" value="{esc(cid)}" data-correct="{'true' if choice.get('correct') else 'false'}">
+              <input id="{esc(input_id)}" type="{input_type}" name="{esc(qid)}" value="{esc(cid)}" data-correct="{'true' if choice.get('correct') else 'false'}" data-feedback="{esc(choice_feedback)}">
               <span>{esc(choice.get("text"))}</span>
             </label>''')
         questions_html.append(f'''
@@ -690,9 +691,30 @@ RENDERERS = {
 }
 
 
+def validate_knowledge_check_audio(module: dict) -> None:
+    missing = []
+    for slide in module.get("slides", []):
+        if slide.get("type") != "knowledge_check":
+            continue
+        audio = slide.get("audio") or {}
+        if not audio.get("script_file") or not audio.get("wav_file"):
+            missing.append(
+                f"M{module.get('id')}S{slide.get('id')} "
+                f"({slide.get('slug', 'knowledge_check')})"
+            )
+    if missing:
+        joined = "\n  - ".join(missing)
+        raise ValueError(
+            "Knowledge-check slides must include narration metadata before rendering.\n"
+            "Add audio.script_file and audio.wav_file, generate the matching WAV, "
+            f"then render again:\n  - {joined}"
+        )
+
+
 def render_module(course: dict, module_index: int) -> str:
     """Return full HTML string for moduleN.html."""
     module = course["modules"][module_index]
+    validate_knowledge_check_audio(module)
     module_num = module["id"]
     slides_html = []
     audio_map_entries = []
@@ -1013,8 +1035,12 @@ def render_module(course: dict, module_index: int) -> str:
     SCORM.setSuspendData(JSON.stringify(obj));
   }}
 
+  function selectedInputs(card) {{
+    return Array.from(card.querySelectorAll('input:checked'));
+  }}
+
   function selectedChoiceIds(card) {{
-    return Array.from(card.querySelectorAll('input:checked')).map(input => input.value).sort();
+    return selectedInputs(card).map(input => input.value).sort();
   }}
 
   function correctChoiceIds(card) {{
@@ -1025,6 +1051,12 @@ def render_module(course: dict, module_index: int) -> str:
     if (a.length !== b.length) return false;
     for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
     return true;
+  }}
+
+  function selectedChoiceFeedback(card) {{
+    if (card.dataset.multiple === 'true') return '';
+    const input = selectedInputs(card)[0];
+    return input && input.dataset.feedback ? input.dataset.feedback : '';
   }}
 
   function saveQuizState(questionId, selected, isCorrect) {{
@@ -1060,7 +1092,9 @@ def render_module(course: dict, module_index: int) -> str:
     if (!box) return;
     box.classList.remove('correct', 'incorrect');
     box.classList.add(isCorrect ? 'correct' : 'incorrect');
-    box.textContent = isCorrect ? card.dataset.correctFeedback : card.dataset.incorrectFeedback;
+    box.textContent = isCorrect
+      ? card.dataset.correctFeedback
+      : (selectedChoiceFeedback(card) || card.dataset.incorrectFeedback);
   }}
 
   function restoreQuizState() {{
