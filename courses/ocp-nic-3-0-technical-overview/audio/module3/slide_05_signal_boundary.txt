@@ -1,0 +1,7 @@
+# pronunciation: PRSNTB -> presence B; PRSNTA -> presence A; PERST -> P E reset; REFCLK -> ref clock; BIF -> B I F; AUX_PWR_EN -> aux power enable; MAIN_PWR_EN -> main power enable; NIC_PWR_GOOD -> Nick power good; SMBus -> S M Bus; MCTP -> M C T P; NC-SI -> N C S I; RBT -> R B T; FRU EEPROM -> Fru E E Prom
+
+This is the integration checklist slide. The baseboard supplies the rails, drives ref clock and P E reset, drives the BIF pins with aux power enable, and controls aux and main power enable. It also reads presence B encoding and reads the Fru E E Prom while the card is in ID Mode.
+
+The card has its own responsibilities. It straps presence B to presence A according to the encoding rules, exposes Fru E E Prom records, latches BIF values under the specified power conditions, and asserts Nick power good when the relevant rails are within tolerance.
+
+The shared sideband path depends on what the card and platform implement. S M Bus, M C T P, N C S I over R B T, R B T isolate, USB, and Wake are not just labels in a pin table. They are boundaries between platform design, card capability, and management policy.
