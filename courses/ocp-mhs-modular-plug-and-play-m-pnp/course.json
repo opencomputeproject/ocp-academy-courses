@@ -352,17 +352,20 @@
                 {
                   "id": "b",
                   "text": "The need for mechanically standardized module form factors",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "Mechanical standardization is part of the DC-MHS context, but M-PNP focuses on letting the BMC discover the HPM without model-specific firmware."
                 },
                 {
                   "id": "c",
                   "text": "The use of field-replaceable components in server platforms",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "Field-replaceable components remain important. The issue M-PNP addresses is how the BMC identifies and manages them without hard-coded platform knowledge."
                 },
                 {
                   "id": "d",
                   "text": "The requirement to use JSON anywhere in the design process",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "JSON is one representation used for self-description, not the central problem. The pain point is model-specific BMC assumptions before boot."
                 }
               ],
               "feedback_correct": "Correct. M-PNP lets the BMC discover the platform from self-describing data instead of relying on a per-HPM firmware image.",
@@ -815,17 +818,20 @@
                 {
                   "id": "b",
                   "text": "Endpoint peripherals → non-endpoint peripherals → HPM → SCM initialization",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "That order starts too far out. The breadth-first process begins with SCM initialization and the HPM before it walks peripherals and endpoints."
                 },
                 {
                   "id": "c",
                   "text": "BIOS boot → OS handoff → HPM JSON retrieval → SCM initialization",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "BIOS and OS handoff come later. The BMC first discovers the SCM/HPM path so it has platform context before boot proceeds."
                 },
                 {
                   "id": "d",
                   "text": "Risers and backplanes first, then the HPM, then FRU storage",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "Risers and backplanes are discovered after the HPM path is established, not before the base SCM-to-HPM discovery."
                 }
               ],
               "feedback_correct": "Correct. Discovery moves outward from the SCM to the HPM, then to intermediate peripherals, then to endpoints.",
@@ -843,17 +849,20 @@
                 {
                   "id": "b",
                   "text": "It replaces the component FRU information device.",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "MMBI does not replace FRU information. It carries request-response communication between the BMC and BIOS during early boot."
                 },
                 {
                   "id": "c",
                   "text": "It stores every peripheral JSON file inside the FPGA memory map.",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "JSON self-description and FPGA memory maps are separate topics. MMBI is the early-boot communication path between the BMC and BIOS."
                 },
                 {
                   "id": "d",
                   "text": "It performs PCIe link training on behalf of BIOS.",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "PCIe link training stays with platform firmware and hardware flows. MMBI is a shared-memory communication mechanism, not a link-training engine."
                 }
               ],
               "feedback_correct": "Correct. MMBI is the required BMC-to-BIOS communication mechanism during early boot.",
@@ -1334,17 +1343,20 @@
                 {
                   "id": "b",
                   "text": "A maximum LUT count and one required FPGA vendor implementation",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "The specification avoids mandating one FPGA vendor implementation or LUT count. It standardizes the interface the BMC can depend on."
                 },
                 {
                   "id": "c",
                   "text": "Only the physical package pinout of the FPGA device",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "A package pinout is too narrow. The spec covers the BMC-facing API surface, including CSRs, memory map, virtual wires, IP blocks, and JSON self-description."
                 },
                 {
                   "id": "d",
                   "text": "Only the BMC firmware update sequence",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "The scope is not just firmware update flow. The spec defines a stable API surface that lets the BMC interact with the HPM FPGA."
                 }
               ],
               "feedback_correct": "Correct. The spec standardizes the interface the BMC can rely on, not the vendor implementation details.",
@@ -1706,17 +1718,20 @@
                 {
                   "id": "b",
                   "text": "A replacement for all endpoint standards such as OCP NIC and PCIe CEM",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "The Interop spec does not replace endpoint standards. It defines the cross-spec contract that lets the M-PNP bundle align with those standards."
                 },
                 {
                   "id": "c",
                   "text": "A mandatory production BMC codebase",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "Interop does not ship or require a production BMC implementation. It defines common requirements, definitions, conformance criteria, and references."
                 },
                 {
                   "id": "d",
                   "text": "A new chassis-only JSON schema that is already complete in v0.5",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "The Interop spec is not a chassis-only schema. It frames the shared contract across M-PNP vision, definitions, requirements, conformance, and references."
                 }
               ],
               "feedback_correct": "Correct. The Interop spec is the short cross-spec contract that ties the bundle together.",
@@ -1734,17 +1749,20 @@
                 {
                   "id": "b",
                   "text": "fpga2json.py is the only shipped tool in the bundle today.",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "fpga2json.py is planned next, not the only shipped tool. The module identifies frupack.py as the current packaging tool."
                 },
                 {
                   "id": "c",
                   "text": "frupack.py replaces the need for schema validation or worked examples.",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "frupack.py packages descriptions into FRU bytes, but schemas and worked examples still guide valid self-description data."
                 },
                 {
                   "id": "d",
                   "text": "The tooling is unrelated to the data the BMC reads.",
-                  "correct": false
+                  "correct": false,
+                  "feedback_incorrect": "The tooling exists to create and package the self-describing data that the BMC ultimately reads."
                 }
               ],
               "feedback_correct": "Correct. frupack.py is the current packaging tool, while fpga2json.py is the planned generator for FPGA self-description.",
