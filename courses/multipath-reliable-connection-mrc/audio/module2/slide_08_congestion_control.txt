@@ -1,0 +1,13 @@
+# slide 2.8 — content_two_column "Congestion Control: NSCC + Trimming + ECN"
+# target: ~100s · ~240 words
+# pronunciation: NSCC -> "N S C C"; ECN -> "E C N"; UEC -> "U E C"; UltraEthernet -> "Ultra Ethernet"; MRC -> "M R C"; PFC -> "P F C"; DSCP -> "D S C P"; NACK -> "knack"; NACKs -> "knacks"; EV -> "E V"
+
+Congestion control in M R C composes three mechanisms. None of them are P F C.
+
+The first is the sender-side algorithm, N S C C, the sender-based congestion control specified by the Ultra Ethernet Consortium in U E C transport spec one point oh one. M R C doesn't redefine N S C C. It adopts it. N S C C maintains a per-connection congestion window and reacts to two signals.
+
+That brings us to the second mechanism — packet trimming. When a switch's queue would have dropped a packet on a congested egress, it instead strips the payload, keeps the headers, marks the packet with a D S C P trimmed code point, and forwards just the header on a high-priority class. The receiver gets a few bytes of news instead of nothing. It immediately sends a knack with the trimmed code, and the sender retransmits that one packet — fast, surgical, no timeout.
+
+Trimming gives M R C the ability to distinguish two very different kinds of loss. Trimmed loss is congestion. Non-trimmed loss is something else — usually a failed path.
+
+The third signal is E C N. M R C uses E C N markings the standard way for sender throttle, but it also turns the per-packet mark into a per-path signal. When the receiver echoes an E C N mark back in a sack, the sender takes that as evidence that the specific entropy value used for that packet is hot, and rotates it out of the active set for at least one round-trip.
