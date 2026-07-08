@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 660" role="img" aria-labelledby="title desc">
+  <title id="title">Baseboard and Card Signal Ownership</title>
+  <desc id="desc">Spec-grounded technical diagram for the OCP NIC 3.0 Academy course.</desc>
+  <defs>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8.5" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8dc63f"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8.5" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#343895"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="8.5" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .bg { fill:#f7f9fb; }
+      .panel { fill:#fff; stroke:#dbe4ee; stroke-width:1.4; }
+      .title { font:800 30px Arial, Helvetica, sans-serif; fill:#232a35; letter-spacing:0; }
+      .label { font:700 17px Arial, Helvetica, sans-serif; fill:#232a35; letter-spacing:0; }
+      .small { font:400 14px Arial, Helvetica, sans-serif; fill:#5f6b78; letter-spacing:0; }
+      .tiny { font:700 12px Arial, Helvetica, sans-serif; fill:#64748b; letter-spacing:0; }
+      .green { fill:#8dc63f; }
+      .blue { fill:#343895; }
+      .gray { fill:#64748b; }
+      .line-green { stroke:#8dc63f; stroke-width:4; fill:none; marker-end:url(#arrow-green); }
+      .line-blue { stroke:#343895; stroke-width:4; fill:none; marker-end:url(#arrow-blue); }
+      .line-gray { stroke:#64748b; stroke-width:3; fill:none; marker-end:url(#arrow-gray); }
+      .flow-green { stroke:#8dc63f; stroke-width:4; fill:none; stroke-linecap:round; }
+      .flow-blue { stroke:#343895; stroke-width:4; fill:none; stroke-linecap:round; }
+      .flow-gray { stroke:#64748b; stroke-width:3; fill:none; stroke-linecap:round; }
+      .arrowhead-green { fill:#8dc63f; }
+      .arrowhead-blue { fill:#343895; }
+      .arrowhead-gray { fill:#64748b; }
+      .dash { stroke-dasharray:8 8; }
+    </style>
+  </defs>
+  <rect class="bg" width="1100" height="660" rx="24"/>
+  <rect class="panel" x="28" y="28" width="1044" height="604" rx="18"/>
+  <rect x="28" y="28" width="1044" height="8" fill="#8dc63f" rx="4"/>
+  <text class="title" x="58" y="82">Baseboard and Card Signal Ownership</text>
+
+          <g transform="translate(68 140)">
+            <rect x="0" y="0" width="328" height="360" rx="20" fill="#eef3ff" stroke="#343895" stroke-width="2"/>
+            <text class="label" x="164" y="42" text-anchor="middle">Baseboard / platform</text>
+            <text class="small" x="36" y="92">supplies +3.3V_EDGE and +12V_EDGE</text>
+            <text class="small" x="36" y="128">drives REFCLK and PERST#</text>
+            <text class="small" x="36" y="164">drives BIF[5:0]# with AUX_PWR_EN</text>
+            <text class="small" x="36" y="200">reads PRSNTB encoding</text>
+            <text class="small" x="36" y="236">reads FRU EEPROM in ID mode</text>
+            <text class="small" x="36" y="272">implements hot-swap controller behavior</text>
+          </g>
+          <g transform="translate(704 140)">
+            <rect x="0" y="0" width="328" height="360" rx="20" fill="#eef7e7" stroke="#8dc63f" stroke-width="2"/>
+            <text class="label" x="164" y="42" text-anchor="middle">OCP NIC card</text>
+            <text class="small" x="36" y="92">straps PRSNTB to PRSNTA</text>
+            <text class="small" x="36" y="128">latches BIF after AUX power conditions</text>
+            <text class="small" x="36" y="164">asserts NIC_PWR_GOOD when rails are valid</text>
+            <text class="small" x="36" y="200">exposes FRU EEPROM records</text>
+            <text class="small" x="36" y="236">supports WAKE# where implemented</text>
+            <text class="small" x="36" y="272">provides NC-SI over RBT sideband path</text>
+          </g>
+          <g transform="translate(424 162)">
+            <rect x="0" y="0" width="252" height="316" rx="18" fill="#fff" stroke="#dbe4ee" stroke-width="2"/>
+            <text class="label" x="126" y="38" text-anchor="middle">4C+ slot boundary</text>
+            <text class="small" x="126" y="82" text-anchor="middle">PCIe lanes</text>
+            <text class="small" x="126" y="118" text-anchor="middle">REFCLK / PERST#</text>
+            <text class="small" x="126" y="154" text-anchor="middle">PRSNTB / BIF</text>
+            <text class="small" x="126" y="190" text-anchor="middle">SMBus / MCTP</text>
+            <text class="small" x="126" y="226" text-anchor="middle">NC-SI over RBT</text>
+            <text class="small" x="126" y="262" text-anchor="middle">WAKE# / power controls</text>
+          </g>
+          <path class="flow-blue" d="M396 246 L400 246"/>
+          <polygon class="arrowhead-blue" points="400,234 424,246 400,258"/>
+          <path class="flow-green" d="M704 286 L700 286"/>
+          <polygon class="arrowhead-green" points="700,274 676,286 700,298"/>
+          <path class="flow-gray dash" d="M396 352 L400 352"/>
+          <polygon class="arrowhead-gray" points="400,342 424,352 400,362"/>
+          <path class="flow-gray dash" d="M704 352 L700 352"/>
+          <polygon class="arrowhead-gray" points="700,342 676,352 700,362"/>
+          <text class="tiny" x="550" y="530" text-anchor="middle">Signal names identify electrical ownership. Implementation responsibility still lives on the correct side of the slot.</text>
+
+</svg>
