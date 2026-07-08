@@ -69,7 +69,7 @@ Do not skim. The course's credibility depends on this analysis.
 
 Compute the rough shape of the course using the duration math in `references/duration_math.md`. As a rule of thumb: **~2 minutes of seat time per slide**, **~8–10 slides per module**, **modules of ~15–20 minutes each**.
 
-Draft a proposed outline as a Markdown document and put it in the user's chosen output folder as `_outline.md` (the leading underscore marks it as a working file you'll delete at the end). The outline lists every module and, beneath each, every lesson slide with a one-line description. Unless the user opts out, include a narrated `knowledge_check` slide immediately before each module's final `up_next` or `course_complete` slide. Knowledge checks should allow retry feedback and require an attempt before advancing, but should not require a correct answer to continue. For single-answer radio questions, write an answer-specific `feedback_incorrect` on each incorrect choice that explains why that selected answer is wrong relative to the correct concept. For multi-select questions, use a concise question-level `feedback_incorrect` that points the learner back to the right mental model without trying to enumerate every wrong combination.
+Draft a proposed outline as a Markdown document and put it in the user's chosen output folder as `_outline.md` (the leading underscore marks it as a working file you'll delete at the end). The outline lists every module and, beneath each, every lesson slide with a one-line description. Unless the user opts out, include a narrated `knowledge_check` slide immediately before each module's final `up_next` or `course_complete` slide. Every knowledge check must contain exactly two questions: first a single-answer radio question that checks the core concept, then a multi-select checkbox question that asks learners to apply or classify that concept. Knowledge checks should allow retry feedback and require an attempt on both questions before advancing, but should not require correct answers to continue. For the single-answer question, write an answer-specific `feedback_incorrect` on each incorrect choice that explains why that selected answer is wrong relative to the correct concept. For the multi-select question, use a concise question-level `feedback_incorrect` that points the learner back to the right mental model without trying to enumerate every wrong combination.
 
 Present the outline to the user and ask: "Does this structure work? Suggest changes, add/remove modules, reorder lessons, etc." Iterate until they say "approved." **Do not move to Phase 4 without approval.**
 
@@ -93,7 +93,7 @@ Voice rules — read `references/script_writing.md` for full guidance, but in sh
 
 For cloud TTS, write pronunciation-aware scripts before generating audio. Spell out dense acronyms, standards, version numbers, and years in the script where needed, and avoid long slash-heavy strings. After generation, check suspect clips for late-volume fade, end buzz, post-speech noise bursts, and abrupt cuts; if the tail fades, shorten dense paragraphs and regenerate that slide only. If the issue is only after speech has ended, trim the post-speech artifact and preserve the spoken ending.
 
-Every `knowledge_check` slide must have its own concise narration script and a matching `audio` block in `course.json`; do not leave knowledge-check audio null. The script should orient the learner to the interaction and mental model, not read every answer choice. Use the same naming pattern as other slides, for example `audio/module1/slide_11_knowledge_check.txt` and `.wav`.
+Every `knowledge_check` slide must have its own concise narration script and a matching `audio` block in `course.json`; do not leave knowledge-check audio null. The script should orient the learner to the two-question interaction and mental model, not read every answer choice. Use the same naming pattern as other slides, for example `audio/module1/slide_11_knowledge_check.txt` and `.wav`.
 
 Save all scripts, then present them to the user in module-sized batches. Ask the user to edit any script directly in the file, or to tell you what to change. Iterate per module. **Lock each module's scripts with explicit user approval** before generating audio for it.
 
@@ -118,7 +118,7 @@ The single source of truth for the course is a JSON file at the working area roo
 Before rendering, verify the course has:
 
 - `brand.course_logo` pointing to a real SVG/PNG in the package root.
-- Every `knowledge_check` slide has `audio.script_file`, `audio.wav_file`, an existing script, and a generated WAV from the same TTS provider, voice, and pacing as the surrounding narrated slides.
+- Every `knowledge_check` slide has exactly two questions: question 1 is single-answer radio, question 2 is multi-select checkbox, both have feedback, and the slide has `audio.script_file`, `audio.wav_file`, an existing script, and a generated WAV from the same TTS provider, voice, and pacing as the surrounding narrated slides.
 - Useful `reference_links`, `resource_callout`, and `term_refs` entries where learner aids are needed.
 - Source/resource links on the slide where a learner first needs them, not only on a later wrap-up slide.
 

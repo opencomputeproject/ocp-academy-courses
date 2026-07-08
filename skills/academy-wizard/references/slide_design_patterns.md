@@ -56,12 +56,13 @@ Slide built around a single large figure with a one-paragraph caption underneath
 - The renderer label is already `Key Takeaways`; use a distinct title such as `Module 2 Summary`, not `Key Takeaways`.
 
 ### `knowledge_check`
-Multiple-choice knowledge check shown immediately before the final module slide. Use one or two questions that can be answered from the slide text, narration, figures, or tooltips in the same module. Questions may have a single correct answer or multiple correct answers.
+Multiple-choice knowledge check shown immediately before the final module slide. Use exactly two questions that can be answered from the slide text, narration, figures, or tooltips in the same module: first a single-answer radio question, then a multi-select checkbox question.
 - Fields: `title`, `subtitle`, `questions[]`.
+- Question 1: omit `multiple` or set it to `false`; use one correct choice and answer-specific `feedback_incorrect` on each incorrect choice.
+- Question 2: set `multiple: true`; use two or more correct choices when the content supports it, and keep incorrect feedback at the question level because there are too many possible wrong answer combinations.
 - Each question: `id`, `prompt`, optional `multiple: true`, `choices[]`, `feedback_correct`, `feedback_incorrect`.
-- Each choice: `id`, `text`, `correct: true|false`; for single-answer radio questions, each incorrect choice should also include `feedback_incorrect` explaining why that selected answer is wrong.
-- The renderer requires one submit attempt before advancing, shows feedback, allows retry, and lets the learner continue even when the answer is incorrect.
-- For multi-select questions, keep incorrect feedback at the question level because there are too many possible wrong answer combinations.
+- Each choice: `id`, `text`, `correct: true|false`.
+- The renderer requires one submit attempt on both questions before advancing, shows feedback, allows retry, and lets the learner continue even when answers are incorrect.
 
 ### `up_next`
 End-of-module slide. The last slide of every module *except* the final one. It shows a "Module N Complete" badge, introduces the next module by number/title, places a pulsing round double-arrow link beside the visible "Module N" heading, then thanks the learner for finishing the module by name. Don't leave it as a bare next-module teaser — the example reference course made that slide feel blank, and learners deserve acknowledgement.
