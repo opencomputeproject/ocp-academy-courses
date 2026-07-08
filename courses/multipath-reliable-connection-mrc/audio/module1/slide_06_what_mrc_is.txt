@@ -1,0 +1,15 @@
+# slide 1.6 — content_bullets "What MRC Is"
+# target: ~95s · ~235 words
+# pronunciation: MRC -> "M R C"; RDMA -> "R D M A"; RoCE -> "rocky"; RC -> "R C"; IBTA -> "I B T A"; SACK -> "sack"; NACK -> "knack"; ECN -> "E C N"; QP -> "Q P"
+
+Here's the one-line definition straight from the specification. M R C is an extension to the InfiniBand R C transport. It supports multipath load balancing, out-of-order packet placement, an independent reliability layer, and fast failure bypass — over standard, best-effort Ethernet. No special fabric. No P F C required. No proprietary switch silicon.
+
+A few things to anchor in your head before we go deeper.
+
+It is still R D M A over Converged Ethernet. The framing is Rocky. The verbs A P I is the I B T A verbs A P I you already know. M R C is a new queue pair type and a new opcode space — sitting alongside R C, not replacing it. Today's NICs that support M R C also still speak R C.
+
+It supports R D M A Write and Write-with-Immediate only. No Read. No Send. No Atomics. That's intentional — it covers the operations that collective communication libraries actually use for AI training.
+
+Every data packet is self-describing. The remote virtual address and remote key travel in every packet, so the receiver can place each packet directly into G P U memory the moment it arrives — even if its neighbours haven't shown up yet.
+
+And every connection sprays its packets across many paths simultaneously, treating each path independently for load balance, congestion response, and failure detection. We'll unpack each of those mechanics in module two.

@@ -1,0 +1,17 @@
+# slide 3.7 — content_bullets "Trade-offs and Limitations"
+# target: ~90s · ~215 words
+# pronunciation: MRC -> "M R C"; RC -> "R C"; WriteIMM -> "write-immediate"; QP -> "Q P"; RNR-NAK -> "R N R knack"; PFC -> "P F C"; RDMA -> "R D M A"
+
+Before you commit M R C to a fabric, know the trade-offs.
+
+One. The operation set is narrow. R D M A Write and Write-with-Immediate only. No Read, no Send, no Atomics. If your stack relies on R D M A Read for one-sided memory pulls or on Atomics for synchronization primitives, you'll need to keep an R C queue pair around for those operations.
+
+Two. Write-with-Immediate is resource-bounded. The number of in-flight write-with-immediate operations is capped by responder-side tracking memory. The application has to enforce that bound — M R C does not advertise message-level flow-control credits.
+
+Three. R N R knack semantics are gone. If a Write-with-Immediate arrives and the responder has no completion descriptor, the queue pair transitions to error. Software must manage receive-queue posting carefully.
+
+Four. P F C is disabled. M R C runs on best-effort lossy Ethernet. That's a feature for AI workloads but a change of operating posture for fabrics that were tuned around lossless behavior.
+
+Five. Multipath spraying optimises for tail latency on large messages. Tiny latency-sensitive messages may not see a benefit, and may pay a small cost from out-of-order arrival.
+
+None of these are fatal. They're the design choices that make M R C work — and you should weigh them against the failure-tolerance gains we covered.

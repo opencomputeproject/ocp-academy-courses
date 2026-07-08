@@ -1,0 +1,11 @@
+# slide 2.3 — content_diagram "The MRC Stack"
+# target: ~90s · ~220 words
+# pronunciation: MRC -> "M R C"; RC -> "R C"; RoCE -> "rocky"; RDMA -> "R D M A"; RoCEv2 -> "rocky v two"; IBTA -> "I B T A"; RETH -> "R E T H"; QP -> "Q P"; UDP -> "U D P"
+
+Start with where M R C lives. The framing is still rocky v two — the I B T A's R D M A over Converged Ethernet, running on top of standard U D P over I P v six over Ethernet. The verbs A P I you already know is unchanged. From an application's point of view, an M R C connection looks like a new queue-pair type sitting alongside reliable connection. Today's M R C-capable Nicks still speak R C natively.
+
+M R C extends the R C transport with three things. First, a multipath-spraying data plane — a single connection can use hundreds of paths at once. Second, an independent reliability layer of sacks and knacks, separate from the transport-level ACK. Third, fast failure detection and bypass.
+
+It also subtracts. M R C supports R D M A Write and Write-with-Immediate only. No Read, no Send, no Atomics. That sounds restrictive, but it covers every operation collective-comm libraries actually use for AI training.
+
+The big innovation is per-packet self-description. Every Write packet carries the R E T H header — the remote virtual address, the remote key, and the total D M A length. The receiver places each packet directly into G P U memory the moment it arrives, no matter the order. That's what makes spraying safe.

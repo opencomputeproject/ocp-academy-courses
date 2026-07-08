@@ -1,0 +1,1379 @@
+{
+  "course_slug": "ocp_mrc_academy",
+  "course_title": "OCP Academy - MRC Technical Overview",
+  "course_subtitle": "Multipath Reliable Connection — a new open RDMA transport for AI training fabrics",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Specification v1.0 · March 2026",
+  "target_duration_minutes": 30,
+  "audience_level": "technical",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "mrc_course_logo.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "MRC"
+  },
+  "sources": [
+    {
+      "kind": "ocp_specification_pdf",
+      "title": "OCP Multipath Reliable Connection (MRC) Specification Revision 1.0",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "kind": "paper",
+      "title": "Resilient AI Supercomputer Networking using MRC and SRv6",
+      "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf"
+    },
+    {
+      "kind": "blog_post",
+      "title": "Supercomputer networking to accelerate large scale AI training",
+      "url": "https://openai.com/index/mrc-supercomputer-networking/"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_mrc",
+      "title": "Why MRC",
+      "subtitle": "The AI back-end networking problem, what RoCE/RC can't do, what MRC is, and who built it.",
+      "module_badge_text": "Module 1",
+      "next_module_title": "Inside MRC",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Multipath Reliable Connection (MRC)",
+          "subtitle": "A new open RDMA transport for AI training fabrics",
+          "version_chip": "Specification v1.0 · March 2026",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "overview",
+          "title": "Three Modules, One Complete Picture",
+          "subtitle": "A 30-minute course for data-center network engineers, grounded in the MRC 1.0 specification and the joint contributor paper.",
+          "modules_listed": [
+            "Why MRC",
+            "Inside MRC",
+            "Deploying MRC"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "~30-minute total seat time"
+            },
+            {
+              "icon": "🎓",
+              "text": "Data-center network engineers"
+            },
+            {
+              "icon": "📄",
+              "text": "Based on OCP MRC 1.0 (March 2026)",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "tail_latency",
+          "section_label": "The Workload",
+          "title": "AI Training Has a Tail-Latency Problem",
+          "subtitle": "Synchronous pretraining moves at the speed of its slowest transfer.",
+          "bullets": [
+            {
+              "bold_lead": "Synchronous step.",
+              "text": "Tens of thousands of GPUs cooperate in lockstep, interleaved with collective communication every step."
+            },
+            {
+              "bold_lead": "Tail latency dominates.",
+              "text": "Quoted from the OpenAI paper: \"Tail latency dominates the performance of synchronous pretraining jobs when running at very large scales.\""
+            },
+            {
+              "bold_lead": "System noise grows with scale.",
+              "text": "HPC has long called this \"network noise\" — outliers from congestion or failures hold the whole cluster idle."
+            },
+            {
+              "bold_lead": "Two root drivers.",
+              "text": "Congestion (flow collisions, deterministic incast) and failures (link flaps, transceiver glitches, switch reboots)."
+            },
+            {
+              "bold_lead": "The constraint.",
+              "text": "Mean throughput is a comfort. Crushing the tail is the constraint MRC is designed against."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_tail_latency.txt",
+            "wav_file": "audio/module1/slide_03_tail_latency.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tail_latency",
+            "incast"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "three_jobs",
+          "section_label": "What the Fabric Must Do",
+          "title": "Three Things the Network Must Do",
+          "bullets": [
+            {
+              "bold_lead": "Load-balance.",
+              "text": "Every flow finds a path that isn't already at line rate. Default ECMP fails when a small number of huge flows share a fabric."
+            },
+            {
+              "bold_lead": "Absorb incast.",
+              "text": "Synchronous collectives create deterministic many-to-one traffic. Drain it without dropping packets or pushing pressure into unrelated flows."
+            },
+            {
+              "bold_lead": "Ride out failures.",
+              "text": "Optics flap, transceivers glitch, switches reboot. With millions of links in a training fabric, something is always failing somewhere."
+            }
+          ],
+          "figure": {
+            "path": "figures/three_jobs.svg",
+            "alt": "Three jobs of an AI back-end network: load balance, absorb incast, ride out failures",
+            "caption": "All three constraints must hold simultaneously, in hardware, at sustained line rate.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='15' width='400' height='95' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><circle cx='50' cy='62' r='22' fill='#8DC63F'/><text x='50' y='71' text-anchor='middle' font-size='22' font-weight='700' fill='#ffffff'>⚖</text><text x='90' y='52' font-size='17' font-weight='700' fill='#5F6062'>Load‑balance</text><text x='90' y='75' font-size='12.5' fill='#5F6062'>Spread flows across many paths</text><text x='90' y='93' font-size='12.5' fill='#5F6062'>so no link becomes a bottleneck.</text><rect x='10' y='130' width='400' height='95' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><circle cx='50' cy='177' r='22' fill='#8DC63F'/><text x='50' y='186' text-anchor='middle' font-size='22' font-weight='700' fill='#ffffff'>⇉</text><text x='90' y='167' font-size='17' font-weight='700' fill='#5F6062'>Absorb in‑cast</text><text x='90' y='190' font-size='12.5' fill='#5F6062'>Drain many‑to‑one bursts without</text><text x='90' y='208' font-size='12.5' fill='#5F6062'>pushing pressure backward.</text><rect x='10' y='245' width='400' height='95' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><circle cx='50' cy='292' r='22' fill='#8DC63F'/><text x='50' y='301' text-anchor='middle' font-size='22' font-weight='700' fill='#ffffff'>↺</text><text x='90' y='282' font-size='17' font-weight='700' fill='#5F6062'>Ride out failures</text><text x='90' y='305' font-size='12.5' fill='#5F6062'>Detect and bypass broken paths</text><text x='90' y='323' font-size='12.5' fill='#5F6062'>without crashing the training job.</text></g></svg>"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_three_things.txt",
+            "wav_file": "audio/module1/slide_04_three_things.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "ecmp"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "roce_limits",
+          "section_label": "Why a New Transport",
+          "title": "RoCE/RC Wasn't Built For This",
+          "bullets": [
+            {
+              "bold_lead": "Single-path.",
+              "text": "One connection's five-tuple hashes onto one path. Parallel links can sit idle while one is saturated."
+            },
+            {
+              "bold_lead": "In-order assumption.",
+              "text": "RC's reliability layer treats out-of-order arrivals as a fault — the opposite of what multipath spraying produces."
+            },
+            {
+              "bold_lead": "Relies on PFC.",
+              "text": "Priority Flow Control creates head-of-line blocking; one congested queue ripples backward through the fabric."
+            },
+            {
+              "bold_lead": "Blunt failure semantics.",
+              "text": "A path loss can take out the whole QP. At 100,000 GPUs, that's a job-killer."
+            }
+          ],
+          "figure": {
+            "path": "figures/roce_singlepath_congestion.svg",
+            "alt": "With single-path flows like in classic RoCE, individual links frequently become congested.",
+            "caption": "Single-path RoCE: many flows collapse onto the same hashed link. Diagram: OpenAI.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_roce_limits.txt",
+            "wav_file": "audio/module1/slide_05_roce_limits.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "roce",
+            "rc",
+            "pfc",
+            "qp"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "what_mrc_is",
+          "section_label": "Definition",
+          "title": "What MRC Is",
+          "subtitle": "An extension to the RC transport — published as an open OCP specification.",
+          "bullets": [
+            {
+              "bold_lead": "An extension to the RC transport.",
+              "text": "Still RDMA over Converged Ethernet (RoCE) framing; sits alongside RC, not replacing it."
+            },
+            {
+              "bold_lead": "Multipath by design.",
+              "text": "Sprays the packets of a single connection across many paths in parallel, treating each path independently."
+            },
+            {
+              "bold_lead": "Write and WriteIMM only.",
+              "text": "No Read, no Send, no Atomics. Scoped to the operations collective-comm libraries actually use."
+            },
+            {
+              "bold_lead": "Self-describing packets.",
+              "text": "Every packet carries the remote virtual address and R_Key, so the receiver places it in GPU memory the moment it arrives."
+            },
+            {
+              "bold_lead": "Runs over best-effort Ethernet.",
+              "text": "No proprietary fabric. No PFC required. No special switch silicon."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_what_mrc_is.txt",
+            "wav_file": "audio/module1/slide_06_what_mrc_is.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "mrc",
+            "writeimm",
+            "r_key"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "who_built",
+          "section_label": "Contributors & Resources",
+          "title": "Who Built MRC and Where to Find It",
+          "subtitle": "A two-year joint contribution from six companies, now an open OCP specification.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "Six contributing companies",
+              "body": "AMD, Broadcom, Intel, Microsoft, Nvidia, and OpenAI co-authored MRC 1.0 over roughly two years.",
+              "icon": "🤝"
+            },
+            {
+              "title": "Open OCP specification",
+              "body": "76 pages, RFC 2119 normative language, Open Web Foundation Final Specification Agreement.",
+              "icon": "📄",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+              "link_text": "opencompute.org/documents/ocp-mrc-1-0-pdf"
+            },
+            {
+              "title": "MRC API on GitHub",
+              "body": "Reference API and supporting code for the specification — hosted by the Open Compute Project on GitHub.",
+              "icon": "💻",
+              "url": "https://github.com/opencomputeproject/OCP-Multipath-Reliable-Connection",
+              "link_text": "github.com/opencomputeproject/OCP-Multipath-Reliable-Connection"
+            },
+            {
+              "title": "Already in production",
+              "body": "Deployed across OpenAI's largest Nvidia GB200 supercomputers, OCI Stargate (Abilene), and Microsoft Fairwater.",
+              "icon": "🏭"
+            },
+            {
+              "title": "Hardware ecosystem",
+              "body": "Nvidia ConnectX-8 / Spectrum-X, AMD Pollara, Broadcom Thor Ultra / Tomahawk 5; switch software from Arista, SONiC.",
+              "icon": "🔌"
+            },
+            {
+              "title": "OpenAI overview blog",
+              "body": "A designer-friendly summary of the MRC design, with diagrams and animations.",
+              "icon": "🔗",
+              "url": "https://openai.com/index/mrc-supercomputer-networking/",
+              "link_text": "openai.com/index/mrc-supercomputer-networking"
+            },
+            {
+              "title": "Companion paper",
+              "body": "\"Resilient AI Supercomputer Networking using MRC and SRv6\" — production measurements at 50K–75K GPU scale.",
+              "icon": "📊",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf",
+              "link_text": "cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_who_built.txt",
+            "wav_file": "audio/module1/slide_07_who_built.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Module 1 Key Takeaways",
+          "items": [
+            "Synchronous AI training is dominated by tail latency — the slowest transfer in every step holds the cluster idle.",
+            "The back-end network has three jobs at scale: load-balance, absorb incast, and ride out failures.",
+            "RoCE/RC was not designed for any of that. It's single-path, in-order, PFC-dependent, and brittle to path loss.",
+            "MRC is an extension to the RC transport that adds multipath spraying, out-of-order direct placement, and fast failure bypass over standard best-effort Ethernet.",
+            "It's a joint contribution from AMD, Broadcom, Intel, Microsoft, Nvidia, and OpenAI, now an open OCP specification at v1.0 (March 2026)."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_takeaways.txt",
+            "wav_file": "audio/module1/slide_08_takeaways.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your MRC Framing",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "audio": {
+            "script_file": "audio/module1/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "Why does MRC matter for large synchronous AI training jobs?",
+              "shuffle_choices": true,
+              "choices": [
+                {
+                  "id": "tail",
+                  "text": "It reduces tail-latency risk by spraying traffic across paths and riding through congestion or failures.",
+                  "correct": true
+                },
+                {
+                  "id": "fabric",
+                  "text": "It replaces Ethernet with a proprietary training fabric.",
+                  "correct": false,
+                  "feedback_incorrect": "MRC is designed for standard best-effort Ethernet, not a proprietary replacement fabric."
+                },
+                {
+                  "id": "cpu",
+                  "text": "It mainly improves CPU management traffic outside the training fabric.",
+                  "correct": false,
+                  "feedback_incorrect": "The course frames MRC around GPU-scale back-end training traffic and collective communication, not CPU management traffic."
+                },
+                {
+                  "id": "mean",
+                  "text": "It focuses only on mean throughput, even if outliers remain.",
+                  "correct": false,
+                  "feedback_incorrect": "Mean throughput is not enough at this scale. MRC is designed against tail latency from congestion and failures."
+                }
+              ],
+              "feedback_correct": "Correct. MRC is about keeping huge synchronized jobs moving when paths congest or fail.",
+              "feedback_incorrect": "Review the Module 1 framing: the pain point is tail latency in synchronous training, and MRC addresses it over standard Ethernet."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "Which statements describe MRC at the high level introduced in Module 1?",
+              "choices": [
+                {
+                  "id": "rc_extension",
+                  "text": "It extends the RC transport while using RoCE framing.",
+                  "correct": true
+                },
+                {
+                  "id": "single_connection",
+                  "text": "It can spray packets from a single connection across many paths.",
+                  "correct": true
+                },
+                {
+                  "id": "best_effort",
+                  "text": "It runs over best-effort Ethernet without requiring PFC.",
+                  "correct": true
+                },
+                {
+                  "id": "all_ops",
+                  "text": "It adds Read, Send, and Atomic operations to the MRC QP.",
+                  "correct": false
+                },
+                {
+                  "id": "special_switches",
+                  "text": "It requires special switch silicon before packets can be forwarded.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. MRC preserves familiar RoCE/RC context while adding multipath behavior for the operations collective libraries need.",
+              "feedback_incorrect": "Keep the Module 1 definition in mind: MRC is an RC transport extension for Write and WriteIMM over best-effort Ethernet, with packet spraying across paths."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 2,
+          "next_module_title": "Inside MRC — How the Protocol Works",
+          "thank_you_message": "Nice work — you've finished Module 1: Why MRC. You now have the framing for everything that follows: why MRC exists, where RoCE/RC fell short at AI scale, what MRC is at a glance, and who built it. The protocol mechanics are next — stick with us.",
+          "audio": {
+            "script_file": "audio/module1/slide_10_up_next.txt",
+            "wav_file": "audio/module1/slide_10_up_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "inside_mrc",
+      "title": "Inside MRC",
+      "subtitle": "Multipath spraying, SRv6 source routing, the reliability layer, congestion control, and fast failure bypass.",
+      "module_badge_text": "Module 2",
+      "next_module_title": "Deploying MRC",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Inside MRC",
+          "subtitle": "Stack, spraying, reliability, congestion control, failure bypass.",
+          "version_chip": "Module 2",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Learning Objectives",
+          "subtitle": "By the end of this module, you'll be able to…",
+          "objectives": [
+            "Sketch where MRC sits in the stack and what it adds to (and subtracts from) RC.",
+            "Explain how a single QP sprays packets across many paths using entropy values, and the three supported routing modes.",
+            "Describe out-of-order direct placement and the independent SACK/NACK reliability layer.",
+            "Describe MRC's congestion-control mechanics and how it bypasses a failed path in tens of microseconds."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "mrc_stack",
+          "section_label": "Architecture",
+          "title": "The MRC Stack",
+          "subtitle": "RoCEv2 framing, RC transport, with three additions and three subtractions.",
+          "bullets": [
+            {
+              "bold_lead": "Framing unchanged.",
+              "text": "Standard RoCEv2 over UDP / IPv6 / Ethernet. Verbs API is the IBTA verbs API."
+            },
+            {
+              "bold_lead": "Adds.",
+              "text": "Multipath spraying, independent SACK/NACK reliability layer, fast failure bypass."
+            },
+            {
+              "bold_lead": "Subtracts.",
+              "text": "Write and WriteIMM only — no Read, no Send, no Atomics."
+            },
+            {
+              "bold_lead": "Self-describing packets.",
+              "text": "Every Write packet carries RETH (virtual address, R_Key, DMA length) so the receiver places each one directly into memory."
+            },
+            {
+              "bold_lead": "Coexists with RC.",
+              "text": "MRC is a new QP type alongside RC, not a replacement. MRC-capable NICs still speak RC."
+            }
+          ],
+          "figure": {
+            "path": "figures/mrc_stack.svg",
+            "alt": "MRC stack: NCCL / verbs API on top, MRC + RC parallel transports, RoCEv2 framing, UDP/IPv6/Ethernet base.",
+            "caption": "MRC sits as a new QP type alongside RC, sharing the RoCEv2 framing and the verbs API.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 380' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif' text-anchor='middle'><rect x='10' y='10' width='440' height='52' rx='8' fill='#8DC63F' opacity='0.15' stroke='#8DC63F'/><text x='230' y='34' font-size='13' font-weight='700' fill='#5F6062'>Application / NCCL · libibverbs API</text><text x='230' y='52' font-size='11' fill='#5F6062'>Unchanged verbs surface — post Write &amp; WriteIMM</text><rect x='10' y='75' width='215' height='80' rx='8' fill='#8DC63F' opacity='0.22' stroke='#6FA030' stroke-width='2'/><text x='117' y='98' font-size='13' font-weight='700' fill='#5F6062'>MRC QP</text><text x='117' y='118' font-size='10.5' fill='#5F6062'>Multipath spraying · SACK/NACK</text><text x='117' y='133' font-size='10.5' fill='#5F6062'>EV-based path mgmt · fast bypass</text><text x='117' y='148' font-size='10' fill='#6FA030' font-weight='600'>Write · WriteIMM only</text><rect x='235' y='75' width='215' height='80' rx='8' fill='#5F6062' opacity='0.10' stroke='#5F6062'/><text x='342' y='98' font-size='13' font-weight='700' fill='#5F6062'>RC QP (still supported)</text><text x='342' y='118' font-size='10.5' fill='#5F6062'>Single-path · in-order</text><text x='342' y='133' font-size='10.5' fill='#5F6062'>Local ACK timeout · PFC</text><text x='342' y='148' font-size='10' fill='#5F6062' font-weight='600'>Write · Read · Send · Atomic</text><rect x='10' y='170' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='194' font-size='12' font-weight='600' fill='#5F6062'>RoCEv2 framing · BTH · iCRC (IBTA)</text><rect x='10' y='220' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='244' font-size='12' fill='#5F6062'>UDP destination port 4971</text><rect x='10' y='270' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='294' font-size='12' fill='#5F6062'>IPv6 (flow label · SRv6 / uSID)</text><rect x='10' y='320' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='344' font-size='12' fill='#5F6062'>Best-effort Ethernet · no PFC required</text></g></svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_mrc_stack.txt",
+            "wav_file": "audio/module2/slide_03_mrc_stack.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "mrc",
+            "roce",
+            "rc",
+            "qp",
+            "writeimm",
+            "reth",
+            "r_key"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "multipath_spraying",
+          "section_label": "Data Plane",
+          "title": "Multipath Spraying with Entropy Values",
+          "bullets": [
+            {
+              "bold_lead": "32-bit Entropy Value (EV).",
+              "text": "Striped across the UDP source port and IPv6 flow label — switches see different EVs as different five-tuples and hash to different paths."
+            },
+            {
+              "bold_lead": "128–256 EVs per QP at startup.",
+              "text": "A single connection lights up dozens to hundreds of links simultaneously, balanced across planes."
+            },
+            {
+              "bold_lead": "Three routing modes.",
+              "text": "UDP source port (pure ECMP), Structured EV (deterministic spine selection), and SRv6 (sender-encoded paths)."
+            },
+            {
+              "bold_lead": "ECN as a per-path signal.",
+              "text": "An ECN-marked packet causes its EV to be temporarily \"skipped\" — load-balancing in addition to throttling."
+            }
+          ],
+          "figure": {
+            "path": "figures/mrc_packet_spraying.svg",
+            "alt": "MRC spreads packets across many paths at once, reducing congestion that can slow synchronous AI training.",
+            "caption": "MRC sprays the packets of a single connection across many paths in parallel. Diagram: OpenAI.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_multipath_spraying.txt",
+            "wav_file": "audio/module2/slide_04_multipath_spraying.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "ev",
+            "ecmp"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "srv6_usid",
+          "section_label": "Source Routing",
+          "title": "SRv6 with uSIDs",
+          "bullets": [
+            {
+              "bold_lead": "Static, per-switch identifiers.",
+              "text": "Every switch has a 16-bit uSID. The packet's IPv6 destination is a 32-bit locator + a stack of uSIDs — one per hop."
+            },
+            {
+              "bold_lead": "Forwarding is a shift + lookup.",
+              "text": "A switch matches its locator+uSID against the first 48 bits, shifts the uSID stack 16 bits left, and does a normal static FIB lookup."
+            },
+            {
+              "bold_lead": "No dynamic routing.",
+              "text": "Tables never change. No BGP convergence. The sender encodes the path; switches blindly forward."
+            },
+            {
+              "bold_lead": "Line-rate in commodity silicon.",
+              "text": "Implemented at line rate on Nvidia Spectrum-4/5 and Broadcom Tomahawk-5 — running Cumulus, SONiC, and Arista EOS."
+            }
+          ],
+          "figure": {
+            "path": "figures/srv6_source_routing.svg",
+            "alt": "SRv6 allows the sender to encode the full path each packet should take to the network.",
+            "caption": "SRv6 with uN uSIDs: the sender writes the path into every packet. Diagram: OpenAI.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_srv6_usid.txt",
+            "wav_file": "audio/module2/slide_05_srv6_usid.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "srv6",
+            "usid"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "ooo_receive",
+          "section_label": "Receiver",
+          "title": "Out-of-Order Receive & Direct Placement",
+          "subtitle": "Three pieces of state define the responder's tracking window.",
+          "columns": [
+            "State field",
+            "Meaning",
+            "Default"
+          ],
+          "rows": [
+            [
+              "cack_psn",
+              "Cumulative ACK PSN — the left edge of the window. Every PSN up to and including this one has been received.",
+              "rq_psn − 1 at start"
+            ],
+            [
+              "max_rcv_psn",
+              "Highest non-trimmed PSN seen so far.",
+              "rq_psn − 1 at start"
+            ],
+            [
+              "max_psn_range (mpr)",
+              "Size of the tracking bitmap. Packets with PSN in [cack_psn, cack_psn + mpr) are valid in any order; packets outside are silently dropped.",
+              "128 packets"
+            ],
+            [
+              "RETH (in every Write packet)",
+              "Virtual address, R_Key, and total DMA length. Enables direct placement of each packet without a reorder buffer.",
+              "—"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_ooo_receive.txt",
+            "wav_file": "audio/module2/slide_06_ooo_receive.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "psn"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "sack_nack",
+          "section_label": "Reliability Layer",
+          "title": "Independent SACK and NACK",
+          "bullets": [
+            {
+              "bold_lead": "Separate from transport ACK.",
+              "text": "SACK = SETH header + CC_STATE. NACK = NETH header. Both run in parallel with the standard RoCE ACK."
+            },
+            {
+              "bold_lead": "SACK carries delivery + congestion state.",
+              "text": "cack_psn, the PSN that triggered, a 64-bit bitmap of nearby PSNs received, ECN echo, RTT timestamp."
+            },
+            {
+              "bold_lead": "SACK triggers.",
+              "text": "Byte counter past threshold (default 1 KB), ECN-marked packet, retransmit arrival, ACK-Request flag, or reliability probe."
+            },
+            {
+              "bold_lead": "NACK codes.",
+              "text": "TRIMMED, TRIMMED_LASTHOP (optional); NO_BITMAP, NO_PKT_BUFFER, NO_RESOURCE, PSN_OOR_WINDOW, UNEXP_EVENT (mandatory)."
+            }
+          ],
+          "figure": {
+            "path": "figures/sack_nack.svg",
+            "alt": "SACK and NACK control flow alongside RDMA transport ACKs",
+            "caption": "The SACK/NACK layer is logically independent of the transport ACK.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='10' width='205' height='340' rx='10' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='112' y='34' text-anchor='middle' font-size='14' font-weight='700' fill='#5F6062'>SACK · SETH + CC_STATE</text><text x='25' y='60' font-size='11' fill='#5F6062'>Carries</text><text x='25' y='80' font-size='11.5' font-weight='600' fill='#6FA030'>cack_psn</text><text x='25' y='98' font-size='10.5' fill='#5F6062'>cumulative ACK position</text><text x='25' y='122' font-size='11.5' font-weight='600' fill='#6FA030'>ack_psn_offset</text><text x='25' y='140' font-size='10.5' fill='#5F6062'>PSN that triggered the SACK</text><text x='25' y='164' font-size='11.5' font-weight='600' fill='#6FA030'>64-bit bitmap</text><text x='25' y='182' font-size='10.5' fill='#5F6062'>nearby PSNs received</text><text x='25' y='206' font-size='11.5' font-weight='600' fill='#6FA030'>ECN echo</text><text x='25' y='224' font-size='10.5' fill='#5F6062'>per-path congestion signal</text><text x='25' y='248' font-size='11.5' font-weight='600' fill='#6FA030'>tx_timestamp</text><text x='25' y='266' font-size='10.5' fill='#5F6062'>round-trip time</text><text x='25' y='298' font-size='11' fill='#5F6062'>Triggered on:</text><text x='25' y='316' font-size='10.5' fill='#5F6062'>byte threshold · ECN ·</text><text x='25' y='332' font-size='10.5' fill='#5F6062'>retransmit · AR flag · probe</text><rect x='245' y='10' width='205' height='340' rx='10' fill='#5F6062' opacity='0.10' stroke='#5F6062' stroke-width='2'/><text x='347' y='34' text-anchor='middle' font-size='14' font-weight='700' fill='#5F6062'>NACK · NETH</text><text x='260' y='60' font-size='11' fill='#5F6062'>Codes (mandatory):</text><text x='260' y='80' font-size='11' font-weight='600' fill='#5F6062'>NO_BITMAP</text><text x='260' y='100' font-size='11' font-weight='600' fill='#5F6062'>NO_PKT_BUFFER</text><text x='260' y='120' font-size='11' font-weight='600' fill='#5F6062'>NO_RESOURCE</text><text x='260' y='140' font-size='11' font-weight='600' fill='#5F6062'>PSN_OOR_WINDOW</text><text x='260' y='160' font-size='11' font-weight='600' fill='#5F6062'>UNEXP_EVENT</text><text x='260' y='190' font-size='11' fill='#5F6062'>Codes (optional):</text><text x='260' y='210' font-size='11' font-weight='600' fill='#5F6062'>TRIMMED</text><text x='260' y='230' font-size='11' font-weight='600' fill='#5F6062'>TRIMMED_LASTHOP</text><text x='260' y='262' font-size='11' fill='#5F6062'>Drives:</text><text x='260' y='280' font-size='10.5' fill='#5F6062'>retry logic · CC response ·</text><text x='260' y='296' font-size='10.5' fill='#5F6062'>QP error transitions</text></g></svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_07_sack_nack.txt",
+            "wav_file": "audio/module2/slide_07_sack_nack.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "sack",
+            "nack"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "congestion_control",
+          "section_label": "Congestion Control",
+          "title": "NSCC + Packet Trimming + ECN",
+          "bullets": [
+            {
+              "bold_lead": "NSCC — sender-side algorithm.",
+              "text": "MRC adopts the UltraEthernet Consortium's NSCC sender-based congestion control (UEC transport spec 1.01). MRC consumes it; it does not redefine it."
+            },
+            {
+              "bold_lead": "Packet trimming.",
+              "text": "A congestion-doomed packet has its payload stripped; the header is priority-forwarded with DSCP_TRIMMED. Receiver responds with a TRIMMED NACK → fast surgical retransmit."
+            },
+            {
+              "bold_lead": "Distinguishes loss types.",
+              "text": "Trimmed loss = congestion. Non-trimmed loss = path failure. Two different responses."
+            },
+            {
+              "bold_lead": "ECN as a per-EV signal.",
+              "text": "ECN echo in a SACK tells the sender that one EV's path is hot — that EV rotates out for at least one RTT."
+            }
+          ],
+          "figure": {
+            "path": "figures/congestion_signals.svg",
+            "alt": "Congestion control signals in MRC: NSCC, trimming, ECN",
+            "caption": "Three composable signals — none of them PFC.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='15' width='400' height='100' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='42' font-size='15' font-weight='700' fill='#6FA030'>1. NSCC</text><text x='30' y='62' font-size='12' fill='#5F6062'>Sender-based congestion window —</text><text x='30' y='80' font-size='12' fill='#5F6062'>from UltraEthernet Consortium</text><text x='30' y='98' font-size='12' fill='#5F6062'>(UEC transport spec 1.01).</text><rect x='10' y='130' width='400' height='100' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='157' font-size='15' font-weight='700' fill='#6FA030'>2. Packet Trimming</text><text x='30' y='177' font-size='12' fill='#5F6062'>Switch strips payload, forwards header</text><text x='30' y='195' font-size='12' fill='#5F6062'>at high priority → receiver NACKs →</text><text x='30' y='213' font-size='12' fill='#5F6062'>surgical retransmit. No timeout.</text><rect x='10' y='245' width='400' height='100' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='272' font-size='15' font-weight='700' fill='#6FA030'>3. ECN as per-EV signal</text><text x='30' y='292' font-size='12' fill='#5F6062'>SACK echoes ECN → sender rotates</text><text x='30' y='310' font-size='12' fill='#5F6062'>the affected EV out for ≥ 1 RTT.</text><text x='30' y='328' font-size='12' font-weight='600' fill='#5F6062'>Load-balance, not just throttle.</text></g></svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_08_congestion_control.txt",
+            "wav_file": "audio/module2/slide_08_congestion_control.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "nscc",
+            "packet_trimming"
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "failure_bypass",
+          "section_label": "Failure Bypass",
+          "title": "Path Failure Bypass in Tens of Microseconds",
+          "bullets": [
+            {
+              "bold_lead": "Non-trimmed loss = path failure.",
+              "text": "MRC assumes the path itself has died and marks that EV \"ALWAYS_SKIP\" — immediately."
+            },
+            {
+              "bold_lead": "Per-EV granularity.",
+              "text": "Other EVs on the same connection keep flowing. The QP doesn't error out. The job keeps moving."
+            },
+            {
+              "bold_lead": "Background probes.",
+              "text": "MRC quietly retests the parked EV. If probes succeed, the EV returns to the active set. If not, it stays parked."
+            }
+          ],
+          "figure": {
+            "path": "figures/training_run_t1_failure.svg",
+            "alt": "Real data captured during a training run showing MRC reacting to the complete loss of a T1 switch.",
+            "caption": "Production data — MRC reacting to the complete loss of a T1 switch. Diagram: OpenAI.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_09_failure_bypass.txt",
+            "wav_file": "audio/module2/slide_09_failure_bypass.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Module 2 Key Takeaways",
+          "items": [
+            "MRC is a thin extension to the RC transport — same RoCEv2 framing, similar to verbs. Only Write and WriteIMM. Every packet is self-describing.",
+            "A single QP sprays packets across 128–256 entropy values, using ECMP, Structured EV, or SRv6 source routing.",
+            "Reliability is an independent SACK/NACK layer, logically separate from the transport ACK.",
+            "Congestion control is NSCC (from UltraEthernet) + packet trimming + ECN treated as a per-EV signal — no PFC required.",
+            "Path failures are bypassed in tens of microseconds at per-EV granularity, so the connection survives and the job keeps moving."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_takeaways.txt",
+            "wav_file": "audio/module2/slide_10_takeaways.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Protocol Model",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "audio": {
+            "script_file": "audio/module2/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "In MRC, what is the role of an Entropy Value, or EV?",
+              "shuffle_choices": true,
+              "choices": [
+                {
+                  "id": "path_selector",
+                  "text": "It is varied per packet so the sender can spread traffic across many network paths.",
+                  "correct": true
+                },
+                {
+                  "id": "memory_key",
+                  "text": "It authorizes remote memory access for an RDMA Write.",
+                  "correct": false,
+                  "feedback_incorrect": "Remote memory authorization is the R_Key. EVs are about path selection and spraying."
+                },
+                {
+                  "id": "receiver_window",
+                  "text": "It is the responder bitmap size that bounds out-of-order placement.",
+                  "correct": false,
+                  "feedback_incorrect": "The responder tracking window is max_psn_range. EVs select paths through the fabric."
+                },
+                {
+                  "id": "completion_queue",
+                  "text": "It is the completion queue entry returned by libibverbs.",
+                  "correct": false,
+                  "feedback_incorrect": "The verbs completion flow is separate. EVs are packet-level entropy/path-selection values."
+                }
+              ],
+              "feedback_correct": "Correct. EVs are the packet-level path-selection mechanism that makes spraying work.",
+              "feedback_incorrect": "Review the spraying slide: EVs are path selectors, not memory keys, completion objects, or bitmap sizes."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "Which mechanisms help MRC distinguish congestion, reliability gaps, and path failures?",
+              "choices": [
+                {
+                  "id": "sack",
+                  "text": "SACKs carry delivery bitmap and congestion state back to the sender.",
+                  "correct": true
+                },
+                {
+                  "id": "nack",
+                  "text": "NACKs identify packets or conditions that need retransmission or special handling.",
+                  "correct": true
+                },
+                {
+                  "id": "trimming",
+                  "text": "Packet trimming signals congestion differently from non-trimmed loss.",
+                  "correct": true
+                },
+                {
+                  "id": "skip_ev",
+                  "text": "A failed path can cause the affected EV to be skipped while other EVs keep flowing.",
+                  "correct": true
+                },
+                {
+                  "id": "pfc",
+                  "text": "PFC pause frames are the main MRC signal for distinguishing loss types.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. MRC combines explicit reliability feedback, congestion signals, and per-EV path state.",
+              "feedback_incorrect": "Look back to Module 2: SACK/NACK feedback, trimming, ECN, and per-EV state are central. PFC is not the loss-classification mechanism."
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 3,
+          "next_module_title": "Deploying MRC — Topologies, Performance, Operations",
+          "thank_you_message": "Nice work — you've finished Module 2: Inside MRC. You now have a working mental model of the protocol's mechanics: the stack, spraying, source routing, reliability, congestion control, and failure bypass. Module 3 puts all of it into a real fabric.",
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next.txt",
+            "wav_file": "audio/module2/slide_12_up_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "deploying_mrc",
+      "title": "Deploying MRC",
+      "subtitle": "Multi-plane topologies, production performance, the two APIs, and trade-offs to know.",
+      "module_badge_text": "Module 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Deploying MRC",
+          "subtitle": "Topologies, production performance, APIs, and trade-offs.",
+          "version_chip": "Module 3",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Learning Objectives",
+          "subtitle": "By the end of this module, you'll be able to…",
+          "objectives": [
+            "Describe the 2-tier multi-plane topology MRC enables and why it's cheaper, lower-power, and more resilient.",
+            "Cite the production-scale evidence — transceiver flaps, T1 reboots, and how training jobs behaved.",
+            "Name the headline performance numbers: point-to-point bandwidth, NCCL at scale, MRC vs RoCE under loss and incast.",
+            "Identify the application and controller APIs, plus the main trade-offs and limitations of MRC."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "multiplane",
+          "section_label": "Topology",
+          "title": "Two-Tier Multi-Plane Topologies",
+          "bullets": [
+            {
+              "bold_lead": "51.2 Tb/s switch silicon.",
+              "text": "Either 64 ports at 800 Gb/s — or 512 ports at 100 Gb/s if you break each port into eight links."
+            },
+            {
+              "bold_lead": "Two tiers, 131,072 GPUs.",
+              "text": "Multi-plane 8 × 100 Gb/s breakout reaches ~131K GPUs in two tiers. A conventional 800 Gb/s design needs three or four."
+            },
+            {
+              "bold_lead": "Lose less when things fail.",
+              "text": "A T0–T1 link loss costs 0.4% of a node's capacity in a 100 Gb plane — vs 3% in an 800 Gb plane."
+            },
+            {
+              "bold_lead": "NIC link tolerance.",
+              "text": "Losing one NIC-side optic costs 1/8 of that node's bandwidth, instead of taking the connection down entirely."
+            },
+            {
+              "bold_lead": "In production today.",
+              "text": "OCI Stargate (Abilene), Microsoft Fairwater, and OpenAI's Nvidia GB200 supercomputers run this topology."
+            }
+          ],
+          "figure": {
+            "path": "figures/multi_plane_topology.svg",
+            "alt": "MRC's support for multi-plane networks means we can connect over a hundred thousand GPUs with only two tiers of switches.",
+            "caption": "2-tier multi-plane topology: 8 × 100 Gb/s planes connect ~131K GPUs. Diagram: OpenAI.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_03_multiplane.txt",
+            "wav_file": "audio/module3/slide_03_multiplane.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_grid",
+          "slug": "production_evidence",
+          "section_label": "Production Evidence",
+          "title": "What MRC Looks Like at 50–75K GPU Scale",
+          "subtitle": "Direct quotes and measurements from the OpenAI/Microsoft/AMD/Broadcom/Nvidia companion paper.",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "75K-GPU pretraining startup",
+              "body": "Fewer than 5 packets per QP lost in the first minute — a loss rate of roughly 1 packet in 25 million. Spraying absorbs it with no operator action.",
+              "icon": "🚀"
+            },
+            {
+              "title": "50K-GPU transceiver flap",
+              "body": "A T0 optical transceiver flapped its 4 links rapidly. Throughput dipped ~25% for one minute, then snapped back to full speed. No QP failed.",
+              "icon": "⚡"
+            },
+            {
+              "title": "Four T1 switch reboots",
+              "body": "During training of a recent ChatGPT/Codex frontier model. With MRC, operators didn't even coordinate with the training teams. Jobs kept running.",
+              "icon": "🔁"
+            },
+            {
+              "title": "Operational quote",
+              "body": "\"Link failures and flapping links between T0 and T1 switches can largely be ignored.\" — Resilient AI Supercomputer Networking using MRC and SRv6.",
+              "icon": "💬"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_production_evidence.txt",
+            "wav_file": "audio/module3/slide_04_production_evidence.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "qp"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "performance",
+          "section_label": "Measured Performance",
+          "title": "MRC vs RoCE — The Numbers",
+          "subtitle": "All figures from production benchmarks on GB200 / ConnectX-8 / Spectrum-X clusters.",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "96% of theoretical peak BW",
+              "body": "Cross-rack 32 KB transfer at ~770 Gb/s on an 800 Gb/s ConnectX-8 NIC. Round-trip latency: 5.09 µs local, 6.54 µs cross-T1.",
+              "icon": "📈"
+            },
+            {
+              "title": "NCCL: 92 GB/s at 42K GPUs",
+              "body": "Per-GPU NCCL sendrecv throughput holds at 92 gigabytes/second across 42,000 peers.",
+              "icon": "🌐"
+            },
+            {
+              "title": "1 MRC QP beats 16 RoCE QPs",
+              "body": "A single MRC QP spraying 256 paths outperforms 16 RoCE QPs on a 64-way ring all-reduce. Permutation flow throughput: 390 Gb/s on every flow.",
+              "icon": "🥇"
+            },
+            {
+              "title": "Survives 1% loss",
+              "body": "At 1% packet loss, RoCE throughput collapses. MRC sustains ~⅓ of intended throughput — because failure bypass kicks in.",
+              "icon": "🛡"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_performance.txt",
+            "wav_file": "audio/module3/slide_05_performance.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "mrc",
+            "roce",
+            "nccl"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "two_apis",
+          "section_label": "APIs",
+          "title": "Two APIs You'll Touch",
+          "bullets": [
+            {
+              "bold_lead": "Application API.",
+              "text": "Mirrors libibverbs — same flow, new QP transport type, new opcode space. ibv_modify_qp transitions, post Write/WriteIMM, poll completions."
+            },
+            {
+              "bold_lead": "Controller API.",
+              "text": "Operator-side surface (spec §10.2). Per-QP multipath policy: EV count, plane coverage, bypass aggressiveness, probe cadence."
+            },
+            {
+              "bold_lead": "Path-reachability queries.",
+              "text": "Controller can query the fabric and trigger EV probes on demand — useful for fleet observability and tooling."
+            },
+            {
+              "bold_lead": "Path-template distribution.",
+              "text": "In SRv6 deployments, the controller distributes the templates each NIC uses to construct destination addresses."
+            }
+          ],
+          "figure": {
+            "path": "figures/two_apis.svg",
+            "alt": "Two APIs: application (libibverbs-mirror) and controller (multipath policy and path management)",
+            "caption": "Application code uses the verbs API. Operator tooling uses the controller API.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='15' width='400' height='155' rx='12' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='42' font-size='14' font-weight='700' fill='#6FA030'>Application API</text><text x='30' y='60' font-size='11.5' fill='#5F6062'>Mirrors libibverbs.</text><text x='30' y='82' font-size='11.5' fill='#5F6062'>• Allocate MRC QP type</text><text x='30' y='102' font-size='11.5' fill='#5F6062'>• ibv_modify_qp transitions</text><text x='30' y='122' font-size='11.5' fill='#5F6062'>• Post Write / WriteIMM</text><text x='30' y='142' font-size='11.5' fill='#5F6062'>• Poll completions</text><text x='30' y='162' font-size='10.5' fill='#6FA030' font-weight='600'>Audience: app and library developers</text><rect x='10' y='185' width='400' height='160' rx='12' fill='#5F6062' opacity='0.10' stroke='#5F6062' stroke-width='2'/><text x='30' y='212' font-size='14' font-weight='700' fill='#5F6062'>Controller API · spec §10.2</text><text x='30' y='232' font-size='11.5' fill='#5F6062'>• Per-QP multipath policy</text><text x='30' y='252' font-size='11.5' fill='#5F6062'>• EV count &amp; plane allocation</text><text x='30' y='272' font-size='11.5' fill='#5F6062'>• Failure-bypass aggressiveness</text><text x='30' y='292' font-size='11.5' fill='#5F6062'>• EV probe scheduling</text><text x='30' y='312' font-size='11.5' fill='#5F6062'>• SRv6 path-template distribution</text><text x='30' y='335' font-size='10.5' fill='#5F6062' font-weight='600'>Audience: fleet operators &amp; tooling</text></g></svg>"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_06_two_apis.txt",
+            "wav_file": "audio/module3/slide_06_two_apis.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "ev",
+            "writeimm",
+            "srv6"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_bullets",
+          "slug": "tradeoffs",
+          "section_label": "Trade-offs",
+          "title": "Limitations to Know Before You Commit",
+          "subtitle": "MRC's design choices — useful to weigh against the resilience gains.",
+          "bullets": [
+            {
+              "bold_lead": "Write & WriteIMM only.",
+              "text": "No Read, no Send, no Atomics. Keep an RC QP around if your stack uses one-sided reads or atomic primitives."
+            },
+            {
+              "bold_lead": "WriteIMM is resource-bounded.",
+              "text": "Software must enforce the in-flight WriteIMM cap — MRC does not advertise message-level flow-control credits."
+            },
+            {
+              "bold_lead": "No RNR-NAK semantics.",
+              "text": "If WriteIMM arrives and there's no receive descriptor, the QP transitions to error. Manage receive-queue posting carefully."
+            },
+            {
+              "bold_lead": "PFC disabled.",
+              "text": "MRC runs on best-effort lossy Ethernet. A change of operating posture for fabrics tuned around lossless behavior."
+            },
+            {
+              "bold_lead": "Optimized for bulk, not tiny messages.",
+              "text": "Spraying chases tail latency on large transfers. Small latency-sensitive messages may pay a small out-of-order cost."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_tradeoffs.txt",
+            "wav_file": "audio/module3/slide_07_tradeoffs.wav",
+            "approved": false
+          },
+          "term_refs": [
+            "rc",
+            "rnr_nak",
+            "pfc"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Course Key Takeaways",
+          "items": [
+            "MRC is an open OCP specification (v1.0, March 2026) — a joint contribution from AMD, Broadcom, Intel, Microsoft, Nvidia, and OpenAI.",
+            "It exists because synchronous AI training is dominated by tail latency, and standard RC over RoCE wasn't built for it.",
+            "Mechanics: multipath spraying with entropy values, SRv6 source routing, independent SACK/NACK, NSCC + trimming + ECN, fast failure bypass.",
+            "Topology: 2-tier multi-plane fabric connecting >100K GPUs with fewer optics and less power than 3-tier designs.",
+            "Production: deployed in OCI Stargate (Abilene), Microsoft Fairwater, and OpenAI's GB200 supercomputers training frontier models today.",
+            "Trade-offs: Write/WriteIMM only, no PFC, no RNR-NAK — design choices that buy the resilience."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_takeaways.txt",
+            "wav_file": "audio/module3/slide_08_takeaways.wav",
+            "approved": false
+          }
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Deployment View",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "What deployment advantage does the two-tier multi-plane topology emphasize?",
+              "shuffle_choices": true,
+              "choices": [
+                {
+                  "id": "smaller_failure_domain",
+                  "text": "It reaches very large scale while making a single link or optic failure cost a smaller fraction of capacity.",
+                  "correct": true
+                },
+                {
+                  "id": "no_failures",
+                  "text": "It eliminates link, optic, and switch failures from the fabric.",
+                  "correct": false,
+                  "feedback_incorrect": "The production evidence assumes failures still happen. The benefit is graceful impact and recovery, not elimination of failures."
+                },
+                {
+                  "id": "more_tiers",
+                  "text": "It requires adding more Clos tiers before reaching large GPU counts.",
+                  "correct": false,
+                  "feedback_incorrect": "The course highlights two-tier reach at very large scale, not a need for extra tiers."
+                },
+                {
+                  "id": "single_path",
+                  "text": "It works by forcing each connection onto one stable path.",
+                  "correct": false,
+                  "feedback_incorrect": "MRC depends on multipath spraying. The topology and transport work together to spread traffic."
+                }
+              ],
+              "feedback_correct": "Correct. The topology pairs scale with smaller per-failure impact, which is exactly what MRC exploits.",
+              "feedback_incorrect": "Review the topology slide: the point is large two-tier scale plus smaller capacity loss when individual links fail."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "Which deployment trade-offs or operating responsibilities should teams plan for?",
+              "choices": [
+                {
+                  "id": "write_only",
+                  "text": "MRC supports Write and WriteIMM, not Read, Send, or Atomic operations.",
+                  "correct": true
+                },
+                {
+                  "id": "writeimm_resources",
+                  "text": "Software must respect the responder-side WriteIMM resource bound.",
+                  "correct": true
+                },
+                {
+                  "id": "controller",
+                  "text": "The controller configures EV profiles, policies, probes, and path reachability information.",
+                  "correct": true
+                },
+                {
+                  "id": "pfc_required",
+                  "text": "The fabric must keep PFC enabled for MRC reliability to work.",
+                  "correct": false
+                },
+                {
+                  "id": "all_verbs",
+                  "text": "Applications can assume every existing RC verb is available on the MRC QP.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. MRC brings resilience, but it also narrows operations and adds controller responsibilities.",
+              "feedback_incorrect": "Use the trade-off slide as the guide: plan around Write/WriteIMM scope, resource management, controller policy, and best-effort Ethernet."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "OCP Academy - MRC Technical Overview",
+          "thank_you_message": "Thank you for completing Module 3: Deploying MRC. You now have the framing, the protocol mechanics, and the deployment context to evaluate MRC on your own fabric.",
+          "cert_message": "Two documents will repay deeper reading: the OCP MRC 1.0 specification and the companion paper \"Resilient AI Supercomputer Networking using MRC and SRv6.\" Both are linked from Module 1, slide 7. Until next time.",
+          "survey": {
+            "url": "https://docs.google.com/forms/d/e/1FAIpQLSf-IDIuFSXbRk-nks90x7J_4-iiZ6vEvmmNQoVps3ySP6UFmg/viewform?usp=header",
+            "body": "Got a couple minutes to help us improve? Help us shape improvements and our future courses by sharing your feedback with our development team. We periodically select submitters at random for great giveaways!",
+            "button_text": "Share Feedback"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_10_course_complete.txt",
+            "wav_file": "audio/module3/slide_10_course_complete.wav",
+            "approved": true
+          }
+        }
+      ]
+    }
+  ],
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "term_glossary": [
+    {
+      "id": "tail_latency",
+      "term": "Tail latency",
+      "tooltip": "Delay from the slowest transfers in a synchronized job; at large scale, those outliers can idle the whole training step.",
+      "reference_label": "OpenAI MRC companion paper",
+      "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf"
+    },
+    {
+      "id": "incast",
+      "term": "Incast",
+      "tooltip": "Many senders targeting one receiver or link at once, creating short, deterministic congestion bursts.",
+      "reference_label": "MRC overview context",
+      "url": "https://openai.com/index/mrc-supercomputer-networking/"
+    },
+    {
+      "id": "ecmp",
+      "term": "ECMP",
+      "tooltip": "Equal-Cost Multi-Path routing; switches hash flows across equivalent paths, usually by packet header fields.",
+      "reference_label": "MRC specification routing model",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "roce",
+      "term": "RoCE",
+      "tooltip": "RDMA over Converged Ethernet; RDMA semantics carried over Ethernet/IP networks.",
+      "reference_label": "MRC specification transport context",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "rc",
+      "term": "RC",
+      "tooltip": "Reliable Connection, the classic ordered and reliable RDMA transport that MRC extends.",
+      "reference_label": "MRC specification transport extensions",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "pfc",
+      "term": "PFC",
+      "tooltip": "Priority Flow Control; pauses traffic for a priority class instead of dropping frames, but can spread head-of-line blocking.",
+      "reference_label": "MRC design motivation",
+      "url": "https://openai.com/index/mrc-supercomputer-networking/"
+    },
+    {
+      "id": "qp",
+      "term": "QP",
+      "tooltip": "Queue Pair; the RDMA connection object holding send/receive queues and transport state.",
+      "reference_label": "MRC specification QP properties",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "mrc",
+      "term": "MRC",
+      "tooltip": "Multipath Reliable Connection, an OCP transport extension that sprays one reliable connection across many paths.",
+      "reference_label": "OCP MRC 1.0 specification",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "writeimm",
+      "term": "WriteIMM",
+      "tooltip": "RDMA Write with Immediate; writes data and delivers an immediate value that can trigger responder completion.",
+      "reference_label": "MRC specification supported operations",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "r_key",
+      "term": "R_Key",
+      "tooltip": "Remote key authorizing access to a registered remote memory region.",
+      "reference_label": "MRC specification RETH fields",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "ev",
+      "term": "Entropy Value (EV)",
+      "tooltip": "Per-packet path selector used by MRC to spread packets across many network paths.",
+      "reference_label": "MRC specification entropy generation",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "srv6",
+      "term": "SRv6",
+      "tooltip": "Segment Routing over IPv6; the sender encodes path information into the packet.",
+      "reference_label": "RFC 8986",
+      "url": "https://www.rfc-editor.org/rfc/rfc8986"
+    },
+    {
+      "id": "usid",
+      "term": "uSID",
+      "tooltip": "SRv6 micro-segment identifier; compact per-hop routing value used in an SRv6 path stack.",
+      "reference_label": "MRC specification SRv6 model",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "psn",
+      "term": "PSN",
+      "tooltip": "Packet Sequence Number; the RoCE sequence number MRC uses to track out-of-order delivery.",
+      "reference_label": "MRC specification reliable delivery",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "sack",
+      "term": "SACK",
+      "tooltip": "Selective acknowledgment; tells the sender which nearby packets arrived and carries congestion state.",
+      "reference_label": "MRC specification reliability SACKs",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "nack",
+      "term": "NACK",
+      "tooltip": "Negative acknowledgment; tells the sender a packet needs retransmission or hit a reliability error.",
+      "reference_label": "MRC specification reliability NACKs",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "reth",
+      "term": "RETH",
+      "tooltip": "RDMA Extended Transport Header; in MRC, every Write packet carries placement information.",
+      "reference_label": "MRC specification RETH changes",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "nscc",
+      "term": "NSCC",
+      "tooltip": "Network Signal Congestion Control, the UEC sender-side congestion-control algorithm MRC adopts.",
+      "reference_label": "Ultra Ethernet Consortium",
+      "url": "https://ultraethernet.org/"
+    },
+    {
+      "id": "packet_trimming",
+      "term": "Packet trimming",
+      "tooltip": "Congested switches strip payload, forward headers, and let the receiver trigger a fast retransmit.",
+      "reference_label": "MRC specification trimmed packet processing",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    },
+    {
+      "id": "nccl",
+      "term": "NCCL",
+      "tooltip": "NVIDIA Collective Communications Library, commonly used for GPU collective communication.",
+      "reference_label": "NVIDIA NCCL",
+      "url": "https://developer.nvidia.com/nccl"
+    },
+    {
+      "id": "rnr_nak",
+      "term": "RNR-NAK",
+      "tooltip": "Receiver Not Ready negative acknowledgment; supported by RC semantics but not by MRC.",
+      "reference_label": "MRC specification WriteIMM resource management",
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+# slide 2.4 — content_two_column "Multipath Spraying with Entropy Values"
+# target: ~95s · ~230 words
+# pronunciation: MRC -> "M R C"; QP -> "Q P"; ECMP -> "E C M P"; UDP -> "U D P"; IPv6 -> "I P v six"; SRv6 -> "S R V six"; ECN -> "E C N"; EV -> "E V"
+
+Now the spraying mechanism itself. Every packet a queue pair sends carries a thirty-two-bit entropy value — an E V — striped across the U D P source port and the I P v six flow label. Switches downstream see two flows with different E Vs as two different five-tuples and hash them onto different paths. So a single connection lights up dozens or hundreds of links in parallel.
+
+At queue-pair startup, the sender pre-computes a set of E Vs — typically a hundred and twenty-eight to two hundred and fifty-six values — and rotates through them. On a multi-plane fabric, the set is balanced so every plane gets equal traffic.
+
+The specification defines three routing modes. The simplest is U D P source port — pure E C M P. Switches hash the five-tuple and the standard fabric does the rest.
+
+The second is structured entropy — a deterministic encoding inside the I P v six flow label and U D P source port that pins a path to a specific spine.
+
+The third is S R V six. Each packet's destination address explicitly names every switch in its path. We'll unpack S R V six on the next slide.
+
+One more piece. When a packet gets E C N-marked, the receiver echoes it. The sender treats the E V on that path as congested and rotates it out of the active set. So E C N becomes a per-path load-balancing signal, not just a per-flow throttle.
