@@ -1,0 +1,15 @@
+# slide 1.5 — content_two_column "RoCE/RC Wasn't Built For This"
+# target: ~100s · ~245 words
+# pronunciation: RoCE -> "rocky"; RC -> "R C"; QP -> "Q P"; PFC -> "P F C"; ECMP -> "E C M P"; HPC -> "H P C"; RDMA -> "R D M A"; NIC -> "Nick"; NICs -> "Nicks"
+
+R D M A over Converged Ethernet — Rocky — has been the workhorse for hardware-accelerated GPU-to-GPU memory transfers for years. Its reliable connection mode, R C, is what most existing AI fabrics run today. R C is a great protocol for the workloads it was designed for. AI training isn't one of them.
+
+Four limitations matter here. First, R C is single-path. The five-tuple of one connection hashes to one path through every E C M P decision in the fabric. A few large flows can hammer one link while parallel links sit idle.
+
+Second, R C's reliability layer is designed for an ordered, in-sequence delivery model. The moment packets arrive out of order — which is exactly what you want if you're spraying across many paths — R C treats it as a fault.
+
+Third, R C clusters typically rely on P F C — priority flow control — to make the fabric look lossless. P F C creates head-of-line blocking. One stuck queue at one switch can ripple congestion backward through the tree and starve unrelated flows.
+
+Fourth, R C's failure semantics are blunt. A path loss takes out the whole queue pair. The job sees a hard error rather than a brief slowdown. At a hundred thousand G P Yous, you cannot afford that.
+
+These aren't bugs in R C. They're the consequences of a design optimized for a different era. AI training needs a transport that's multi-path, loss-tolerant, P F C-free, and surgical about failures. That's M R C.

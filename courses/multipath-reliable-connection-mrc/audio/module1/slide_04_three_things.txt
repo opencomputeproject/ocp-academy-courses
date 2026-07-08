@@ -1,0 +1,13 @@
+# slide 1.4 — content_two_column "Three Things the Network Must Do"
+# target: ~95s · ~230 words
+# pronunciation: NIC -> "Nick"; NICs -> "Nicks"
+
+So what does the back-end network actually have to do to keep synchronous training moving. The joint paper distills it to three jobs.
+
+First, load-balance. Every flow has to find a path that isn't already carrying another flow at line rate. Hashing a single flow onto a single path — which is the default behavior of E C M P — works fine for general-purpose traffic but breaks down when a small number of huge flows have to share a fabric.
+
+Second, absorb in-cast. Synchronous collectives create deterministic many-to-one patterns: every G P U in a tensor-parallel group sends to one receiver in the same moment. The network has to drain that in-cast without dropping packets and without backing pressure up the tree into unrelated flows.
+
+Third, ride out failures. Optics flap. Transceivers glitch. Switches reboot or freeze. With millions of links across a training fabric, something is always going wrong somewhere. The training job must not even notice — or at worst, briefly slow down and recover by itself.
+
+These three jobs sound modest in isolation. They're hard because they have to hold at the same time, in hardware, on every connection, under sustained line-rate load. Any transport you put into a back-end AI fabric is judged on how well it does all three. Modules two and three trace exactly how M R C earns each one.

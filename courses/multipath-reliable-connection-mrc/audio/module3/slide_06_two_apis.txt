@@ -1,0 +1,11 @@
+# slide 3.6 — content_two_column "Two APIs You'll Touch"
+# target: ~95s · ~225 words
+# pronunciation: MRC -> "M R C"; APIs -> "A P Is"; API -> "A P I"; QP -> "Q P"; QPs -> "Q Ps"; ibv_modify_qp -> "I B V modify Q P"; EV -> "E V"; SRv6 -> "S R V six"
+
+If you're integrating or operating M R C, two A P Is matter.
+
+The first is the application A P I — the side that talks to user-space libraries like N C C L. It mirrors the standard lib-i-b-verbs surface. You allocate queue pairs, you transition them through state with I B V modify Q P, you post Write and Write-with-Immediate work requests, and you poll for completions. M R C adds a new queue-pair transport type and a new opcode space, but the verbs flow is unchanged. If your stack speaks rocky today, the integration cost for M R C is small.
+
+The second is the controller A P I — defined in section ten point two of the specification. This is the operator-side surface. A network controller talks to Nicks to set per-queue-pair multipath policy: how many entropy values to allocate, which planes they cover, how aggressive the failure-bypass should be, when to send probes. The controller can also query path reachability across the fabric and trigger E V probes on demand. In production deployments running S R V six source routing, the controller is also responsible for distributing the path templates each Nick uses to construct destination addresses.
+
+You won't normally need to touch either A P I as an applications developer. The reason to know they exist is for fleet operations, observability, and tooling.

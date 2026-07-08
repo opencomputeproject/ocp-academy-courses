@@ -1,0 +1,13 @@
+# slide 1.3 — content_bullets "AI Training Has a Tail-Latency Problem"
+# target: ~100s · ~245 words
+# pronunciation: GPUs -> "G P Yous" (singular GPU -> "G P U"); RDMA -> "R D M A"; PFC -> "P F C"; HPC -> "H P C"
+
+Start with the workload. A modern frontier model is trained synchronously. Tens of thousands of G P Yous step forward together, every step interspersed with a burst of communication — data parallelism, tensor parallelism, pipeline parallelism, expert parallelism. The whole cluster moves at the speed of its slowest transfer.
+
+That's why the OpenAI team writes — quote — "tail latency dominates the performance of synchronous pre-training jobs when running at very large scales." It's a one-line summary of the entire problem.
+
+At small scale you almost never see the tail. At a hundred thousand G P Yous, every step is a draw from a distribution with a very long right tail, and one slow transfer holds the whole cluster idle. The H P C community has a name for this — they call it system noise, or network noise — and it gets worse as you scale.
+
+Two things drive that noise. The first is congestion: two flows happen to hash onto the same link, or many senders happen to target the same receiver at the same time. The second is failure: a link flaps, a transceiver glitches, a switch needs to be rebooted. At meaningful scale, a few of these are happening at any given minute.
+
+The job of the network is not to deliver the best mean throughput. It's to crush the tail. Mean performance is a comfort. Tail performance is the constraint. M R C is designed against that constraint.
