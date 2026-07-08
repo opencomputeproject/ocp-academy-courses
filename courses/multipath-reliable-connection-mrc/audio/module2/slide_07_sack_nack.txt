@@ -1,0 +1,11 @@
+# slide 2.7 — content_two_column "Reliability: Independent SACK and NACK"
+# target: ~95s · ~225 words
+# pronunciation: MRC -> "M R C"; SACK -> "sack"; SACKs -> "sacks"; NACK -> "knack"; NACKs -> "knacks"; RC -> "R C"; PSN -> "P S N"; ACK -> "ack"; ECN -> "E C N"
+
+Reliability in M R C is deliberately separate from the transport-level ack. There are two new control messages — the sack and the knack — and they carry different information.
+
+A sack tells the requestor what the responder has actually received. It carries the cumulative ack P S N, the P S N of the packet that triggered the sack, a sixty-four-bit bitmap of which packets near that P S N have arrived, and the responder's current congestion state — including whether the triggering packet was E C N marked. The responder generates a sack on a few clear triggers: when its byte counter passes a threshold, when a retransmitted packet arrives, when an E C N-marked packet arrives, or when it sees the ack-request flag.
+
+A knack tells the requestor that a packet was actively rejected — and why. The specification defines six mandatory knack codes. PSN out of range. No bitmap resource. No packet buffer. No general resource. Unexpected event. And two optional codes for trimmed packets — we'll meet those on the next slide.
+
+Sacks drive fast loss detection and retransmission. Knacks drive retry logic, congestion response, and queue-pair error transitions. Together they replace R C's blunt local-ack timeout with a precise, low-latency reliability story that spans many parallel paths.

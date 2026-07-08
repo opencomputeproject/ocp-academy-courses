@@ -1,0 +1,13 @@
+# slide 2.9 — content_two_column "Fast Failure Bypass"
+# target: ~95s · ~230 words
+# pronunciation: MRC -> "M R C"; EV -> "E V"; EVs -> "E Vs"; SACK -> "sack"; QP -> "Q P"; SRv6 -> "S R V six"; NACK -> "knack"; PSN -> "P S N"
+
+This is the pay-off for everything we've covered. When a packet is lost and not trimmed, M R C assumes the path itself has failed. It marks that entropy value as "always skip" and stops sending on it — immediately.
+
+That decision happens at the granularity of a single E V. Other E Vs on the same connection keep flowing. The connection itself does not error out, the queue pair stays alive, the job keeps moving. The Open A I paper measures the total end-to-end bypass time — from a packet getting lost to the sender having fully migrated traffic off the affected paths — at tens of microseconds.
+
+While the bad path is parked, M R C sends quiet probe packets to re-test it. If the probes start succeeding again, the E V comes back into the active set. If they don't, it stays parked until the operator fixes the underlying problem.
+
+For larger failures — a whole port going down — M R C uses port status updates carried inside sacks. A node tells its peers which of its local ports are unreachable, and the peers stop sending to those ports. End-to-end re-stabilisation after a port goes down typically takes a few seconds — but the training job never sees a hard error, only a brief loss of capacity.
+
+The result, in production, is that link flaps and switch reboots are no longer urgent operational events.

@@ -1,0 +1,13 @@
+# slide 2.5 — content_diagram "SRv6 with uN uSIDs"
+# target: ~95s · ~225 words
+# pronunciation: SRv6 -> "S R V six"; uSID -> "micro S I D"; uSIDs -> "micro S I Ds"; IPv6 -> "I P v six"; FIB -> "F I B"; MRC -> "M R C"
+
+S R V six is the heaviest of the three routing modes, and the one that powers Open A I's production clusters. Here's how it works.
+
+Every switch in the fabric is assigned a sixteen-bit micro S I D — a short identifier the switch recognises as itself. The destination address in each packet starts with a thirty-two-bit locator prefix, followed by a sequence of those sixteen-bit micro S I Ds — one per switch the packet should traverse.
+
+When a packet hits a switch, that switch checks its own locator and micro S I D against the first forty-eight bits of the destination address. If they match, the switch left-shifts the micro S I D stack inside the address by sixteen bits — exposing the next switch's micro S I D — and forwards the packet using a normal static F I B lookup.
+
+The forwarding tables never change. No dynamic routing. No B G P. No convergence delays. The sender encodes the full path into every packet, and the switches blindly do what they're told.
+
+Open A I, Nvidia, Microsoft, and Arista have implemented this S R V six forwarding at line rate on production switch silicon — Nvidia Spectrum-Four and Spectrum-Five, and Broadcom Tomahawk-Five — running Cumulus, sonic, and Arista E O S. M R C plus S R V six is what makes static source routing across a hundred thousand G P Yous practical.

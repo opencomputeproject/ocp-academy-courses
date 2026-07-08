@@ -1,0 +1,11 @@
+# slide 2.6 — content_table "Out-of-Order Receive & Direct Placement"
+# target: ~90s · ~210 words
+# pronunciation: MRC -> "M R C"; PSN -> "P S N"; RETH -> "R E T H"; QP -> "Q P"; RDMA -> "R D M A"; DMA -> "D M A"
+
+If you spray across many paths, packets arrive out of order. R C treats that as a fault. M R C treats it as the normal case.
+
+Every M R C responder maintains a tracking bitmap keyed on packet sequence number — P S N. Three fields define the window. The cumulative ACK P S N, called cack underscore p s n, marks the left edge — every P S N up to and including this one has been received. The max receive P S N marks the right edge — the highest P S N seen so far, ignoring trimmed packets. The max P S N range — m p r — is the size of the window the bitmap can track. By default that's one hundred and twenty-eight packets.
+
+Any packet whose P S N falls inside the window from cack underscore p s n to cack underscore p s n plus m p r is valid, no matter the arrival order. Packets outside the window are silently dropped.
+
+The direct-placement guarantee follows from the per-packet R E T H. Every Write packet carries its own virtual address, its own remote key, and the total D M A length of the message. The Nick looks at one packet, checks bounds, and writes the payload straight to memory. No reorder buffer. No reassembly queue. No latency hit.

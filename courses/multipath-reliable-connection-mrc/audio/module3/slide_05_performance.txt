@@ -1,0 +1,13 @@
+# slide 3.5 — content_grid "Measured Performance"
+# target: ~100s · ~240 words
+# pronunciation: MRC -> "M R C"; RoCE -> "rocky"; QP -> "Q P"; QPs -> "Q Ps"; NCCL -> "N C C L"; GPUs -> "G P Yous"; Gb/s -> "gigabits per second"; T1 -> "T one"
+
+Four performance results worth knowing.
+
+First, point-to-point bandwidth. On Cluster B — Nvidia G B two-hundred with ConnectX-Eight at four times two-hundred gig — local round-trip latency at two bytes is five point oh nine microseconds. Cross-rack at two bytes is six point five four microseconds. At thirty-two-kilobyte transfers, both achieve around seven hundred and seventy gigabits per second — ninety-six percent of the theoretical peak.
+
+Second, N C C L at scale. N C C L send-receive over M R C achieves up to ninety-two gigabytes per second per G P U at a scale of forty-two thousand G P Yous. That's the per-G P U throughput holding up across forty-two thousand peers.
+
+Third, the comparison against rocky. One M R C queue pair, spraying across two hundred and fifty-six paths, outperforms sixteen rocky queue pairs on a sixty-four-way ring all-reduce. The same paper's permutation micro-benchmark shows it more starkly. Single-queue-pair rocky gives some flows full line rate and others a half or a third. A single M R C queue pair, on the same fabric, delivers three hundred and ninety gigabits per second to every flow.
+
+Fourth, behavior under loss. At one percent packet loss — the kind of background loss a real fabric sees from transient impairments — rocky throughput collapses to nearly zero. M R C still delivers about a third of intended throughput at the same loss rate. The reason is the failure-bypass mechanics from module two — they make M R C robust to exactly the kind of loss that destroys rocky.

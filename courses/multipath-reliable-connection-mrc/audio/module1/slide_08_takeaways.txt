@@ -1,0 +1,11 @@
+# slide 1.8 — takeaways
+# target: ~60s · ~150 words
+# pronunciation: MRC -> "M R C"; RC -> "R C"; RDMA -> "R D M A"; OCP -> "O C P"
+
+To recap module one. AI training is dominated by tail latency, not mean throughput — the slowest transfer in every step holds the whole cluster idle. The back-end network has three jobs at scale: load-balance flows, absorb in-cast cleanly, and ride out failures without crashing the job.
+
+The R D M A transports we've been using — R C over Rocky — were not designed for any of that. They are single-path, reliant on P F C, and intolerant of out-of-order delivery.
+
+M R C is the open answer. It's an extension to the R C transport, defined as a seventy-six-page O C P specification, contributed jointly by AMD, Broadcom, Intel, Microsoft, Nvidia, and Open A I, and already running in production AI clusters today.
+
+That's the setup. In module two we'll go inside the protocol itself.
