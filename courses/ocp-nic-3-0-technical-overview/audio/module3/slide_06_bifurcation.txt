@@ -1,0 +1,7 @@
+# pronunciation: PCIe -> P C I E; SFF -> S F F; DSFF -> D S F F; PRSNTB -> presence B; BIF -> B I F; FRU EEPROM -> Fru E E Prom; AUX_PWR_EN -> aux power enable; NIC_PWR_GOOD -> Nick power good
+
+P C I E bifurcation is how the host divides available lanes into one or more links. For S F F cards, the combination of presence B encoding and BIF two through zero gives a deterministic lane-width model for the supported baseboard and card combination.
+
+D S F F adds more flexibility and more discovery. The baseboard reads the D S F F presence encoding, then reads Fru E E Prom OEM records D zero, D one, and D two in ID Mode to learn the supported P C I E link subdivision modes. BIF five through zero then communicates the selected mode across the Primary and Secondary connector behavior.
+
+Timing matters. The baseboard drives the required BIF state with the rising edge of aux power enable, and the card latches the value once aux power enable and Nick power good are asserted.
