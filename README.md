@@ -14,6 +14,7 @@ It also includes the `academy-wizard` Codex skill used to build the courses so c
 courses/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  integrating-quantum-processing-units-into-data-center-infrastructure/
   multipath-reliable-connection-mrc/
   ocp-esun-ethernet-for-scale-up-networks/
   ocp-mhs-modular-plug-and-play-m-pnp/
@@ -67,6 +68,7 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 |---|---|
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `integrating-quantum-processing-units-into-data-center-infrastructure` | Integrating Quantum Processing Units into Data Center Infrastructure |
 | `multipath-reliable-connection-mrc` | OCP Academy - MRC Technical Overview |
 | `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
