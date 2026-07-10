@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+C D B gives the host and module a command-reply pattern. The spec describes a typical sequence in four steps.
+
+First, the host prepares the command message by filling the required header fields and payload. Second, it triggers the command by writing the message to the appropriate location. Third, it polls the C D B status registers to monitor progress. Fourth, when the command is complete, it retrieves the reply header and payload.
+
+That pattern is the backbone for this module. Whether the host is retrieving telemetry, asking for event-log records, or using a larger payload area, the operating discipline is the same: write the request, trigger it, check status, then read the response.
+The four steps also make troubleshooting easier when software misbehaves. You can ask whether the command was formed correctly, whether it was triggered, whether status was read, and whether the reply matched completion.

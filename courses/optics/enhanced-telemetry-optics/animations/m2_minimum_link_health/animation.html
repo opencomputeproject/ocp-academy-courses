@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minimum Category Link Health</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 1280px;
+      height: 720px;
+      margin: 0;
+      overflow: hidden;
+      background: #f7f9fc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    svg { display: block; width: 1280px; height: 720px; }
+    text { letter-spacing: 0; }
+    .title { font-size: 34px; font-weight: 800; fill: #343895; }
+    .subtitle { font-size: 20px; font-weight: 700; fill: #5f6062; }
+    .card-title { font-size: 19px; font-weight: 800; fill: #343895; }
+    .card-note { font-size: 14px; font-weight: 700; fill: #5f6062; }
+    .score { font-size: 39px; font-weight: 800; fill: #1f2937; }
+    .big-title { font-size: 25px; font-weight: 800; fill: #343895; }
+    .big-score { font-size: 76px; font-weight: 800; fill: #1f2937; }
+    .operator { font-size: 48px; font-weight: 900; fill: #343895; }
+    .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
+  </style>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-label="Silent animation showing a link health score following the weakest category rather than the average.">
+  <defs>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
+    </filter>
+    <filter id="glow-amber" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#d88911" flood-opacity="0.7"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="#f7f9fc"/>
+  <rect x="34" y="28" width="1212" height="664" rx="24" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"/>
+  <text x="640" y="82" text-anchor="middle" class="title">Link Health Follows the Weakest Category</text>
+  <text x="640" y="114" text-anchor="middle" class="subtitle">A summary score should preserve the action signal.</text>
+
+  <g id="cards" transform="translate(66 166)">
+    <g id="cat-0" transform="translate(0 0)">
+      <rect id="cat-bg-0" width="204" height="160" rx="17" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
+      <text x="20" y="34" class="card-title">Optical</text>
+      <text id="cat-score-0" x="20" y="86" class="score">94</text>
+      <rect x="20" y="104" width="164" height="16" rx="8" fill="#dce2ea"/>
+      <rect id="cat-bar-0" x="20" y="104" width="154" height="16" rx="8" fill="#8dc63f"/>
+      <text id="cat-note-0" x="20" y="142" class="card-note">SNR, BER, power</text>
+    </g>
+    <g id="cat-1" transform="translate(236 0)">
+      <rect id="cat-bg-1" width="204" height="160" rx="17" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
+      <text x="20" y="34" class="card-title">Electrical</text>
+      <text id="cat-score-1" x="20" y="86" class="score">92</text>
+      <rect x="20" y="104" width="164" height="16" rx="8" fill="#dce2ea"/>
+      <rect id="cat-bar-1" x="20" y="104" width="151" height="16" rx="8" fill="#8dc63f"/>
+      <text id="cat-note-1" x="20" y="142" class="card-note">host/module margin</text>
+    </g>
+    <g id="cat-2" transform="translate(472 0)">
+      <rect id="cat-bg-2" width="204" height="160" rx="17" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
+      <text x="20" y="34" class="card-title">Errors</text>
+      <text id="cat-score-2" x="20" y="86" class="score">91</text>
+      <rect x="20" y="104" width="164" height="16" rx="8" fill="#dce2ea"/>
+      <rect id="cat-bar-2" x="20" y="104" width="149" height="16" rx="8" fill="#8dc63f"/>
+      <text id="cat-note-2" x="20" y="142" class="card-note">FEC and counters</text>
+    </g>
+    <g id="cat-3" transform="translate(708 0)">
+      <rect id="cat-bg-3" width="204" height="160" rx="17" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
+      <text x="20" y="34" class="card-title">Thermal</text>
+      <text id="cat-score-3" x="20" y="86" class="score">89</text>
+      <rect x="20" y="104" width="164" height="16" rx="8" fill="#dce2ea"/>
+      <rect id="cat-bar-3" x="20" y="104" width="146" height="16" rx="8" fill="#8dc63f"/>
+      <text id="cat-note-3" x="20" y="142" class="card-note">temperature limits</text>
+    </g>
+    <g id="cat-4" transform="translate(944 0)">
+      <rect id="cat-bg-4" width="204" height="160" rx="17" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
+      <text x="20" y="34" class="card-title">Remote</text>
+      <text id="cat-score-4" x="20" y="86" class="score">93</text>
+      <rect x="20" y="104" width="164" height="16" rx="8" fill="#dce2ea"/>
+      <rect id="cat-bar-4" x="20" y="104" width="153" height="16" rx="8" fill="#8dc63f"/>
+      <text id="cat-note-4" x="20" y="142" class="card-note">partner evidence</text>
+    </g>
+  </g>
+
+  <g id="average-panel" transform="translate(214 432)">
+    <rect width="350" height="154" rx="22" fill="#eef0fb" stroke="#343895" stroke-width="3" filter="url(#shadow)"/>
+    <text x="175" y="40" text-anchor="middle" class="big-title">Simple average</text>
+    <text id="avg-score" x="175" y="116" text-anchor="middle" class="big-score">92</text>
+    <text x="175" y="140" text-anchor="middle" class="card-note">can still look acceptable</text>
+  </g>
+
+  <text x="640" y="522" text-anchor="middle" class="operator">vs.</text>
+
+  <g id="min-panel" transform="translate(716 432)">
+    <rect id="min-panel-bg" width="350" height="154" rx="22" fill="#f4faef" stroke="#8dc63f" stroke-width="3" filter="url(#shadow)"/>
+    <text x="175" y="40" text-anchor="middle" class="big-title">Reported link health</text>
+    <text id="min-score" x="175" y="116" text-anchor="middle" class="big-score">89</text>
+    <text id="min-note" x="175" y="140" text-anchor="middle" class="card-note">minimum category score</text>
+  </g>
+
+  <g>
+    <rect x="180" y="626" width="920" height="52" rx="26" fill="#f8fafc" stroke="#d6dce7" stroke-width="2"/>
+    <text id="status" x="640" y="660" text-anchor="middle" class="status">Begin with healthy categories, then watch one field drift.</text>
+  </g>
+</svg>
+
+<script>
+  const duration = 16;
+  const base = [94, 92, 91, 89, 93];
+  const labels = ['Optical', 'Electrical', 'Errors', 'Thermal', 'Remote'];
+
+  function clamp(v, min = 0, max = 1) { return Math.min(max, Math.max(min, v)); }
+  function smooth(v) { const x = clamp(v); return x * x * (3 - 2 * x); }
+  function mix(a, b, p) { return a + (b - a) * p; }
+  function windowValue(v, start, end, feather = 0.12) {
+    return clamp(Math.min(smooth((v - start) / feather), 1 - smooth((v - (end - feather)) / feather)));
+  }
+  function scoreColor(score) {
+    if (score < 55) return '#d88911';
+    if (score < 75) return '#e7a936';
+    return '#8dc63f';
+  }
+  function panelFill(score) {
+    if (score < 55) return '#fff7e8';
+    if (score < 75) return '#fffbe9';
+    return '#f4faef';
+  }
+
+  function setCategory(index, score, pulse) {
+    const color = scoreColor(score);
+    const bg = document.getElementById(`cat-bg-${index}`);
+    const bar = document.getElementById(`cat-bar-${index}`);
+    document.getElementById(`cat-score-${index}`).textContent = String(Math.round(score));
+    bar.setAttribute('width', String(164 * clamp(score / 100)));
+    bar.setAttribute('fill', color);
+    bg.setAttribute('fill', panelFill(score));
+    bg.setAttribute('stroke', color);
+    bg.setAttribute('stroke-width', String(3 + pulse * 3));
+    bg.style.filter = pulse > 0.1 ? 'url(#glow-amber)' : '';
+    document.getElementById(`cat-note-${index}`).textContent = index === 0 && score < 60 ? 'weakest category' : [
+      'SNR, BER, power',
+      'host/module margin',
+      'FEC and counters',
+      'temperature limits',
+      'partner evidence',
+    ][index];
+  }
+
+  window.renderAt = function renderAt(rawTime) {
+    const t = ((rawTime % duration) + duration) % duration;
+    const drift = smooth((t - 3.1) / 3.2) * (1 - smooth((t - 14.0) / 1.8));
+    const weakPulse = windowValue(t, 5.5, 12.6, 0.9) * (0.68 + 0.32 * Math.sin(t * Math.PI * 3) ** 2);
+    const values = base.slice();
+    values[0] = mix(94, 42, drift);
+    const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
+    const min = Math.min(...values);
+    const minIndex = values.indexOf(min);
+
+    values.forEach((value, index) => setCategory(index, value, index === minIndex && drift > 0.15 ? weakPulse : 0));
+    document.getElementById('avg-score').textContent = String(Math.round(avg));
+    document.getElementById('min-score').textContent = String(Math.round(min));
+
+    const minPanel = document.getElementById('min-panel-bg');
+    const minColor = scoreColor(min);
+    minPanel.setAttribute('fill', panelFill(min));
+    minPanel.setAttribute('stroke', minColor);
+    minPanel.setAttribute('stroke-width', String(3 + weakPulse * 3));
+    minPanel.style.filter = weakPulse > 0.2 ? 'url(#glow-amber)' : 'url(#shadow)';
+    document.getElementById('min-note').textContent = drift > 0.2 ? `minimum: ${labels[minIndex]}` : 'minimum category score';
+    let status = 'Begin with healthy categories, then watch one field drift.';
+    if (t >= 3.2 && t < 6.1) status = 'One category can degrade while the others remain healthy.';
+    else if (t >= 6.1 && t < 9.2) status = 'A simple average still looks less urgent than the weak field.';
+    else if (t >= 9.2 && t < 12.8) status = 'The reported health score follows the minimum category.';
+    else if (t >= 12.8) status = 'Compression is useful only when it preserves the action signal.';
+    document.getElementById('status').textContent = status;
+  };
+
+  window.renderAt(0);
+</script>
+</body>
+</html>

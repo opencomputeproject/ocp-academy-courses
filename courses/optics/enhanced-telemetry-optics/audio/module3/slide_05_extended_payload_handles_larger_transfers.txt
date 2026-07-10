@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Not every reply fits comfortably in the local payload area. The spec describes extended payload pages, A0h through AFh, for larger transfers. It notes capacity up to 2048 bytes.
+
+The operational idea is simple. The command workflow does not change, but the data area grows. Software still prepares a command, triggers it, polls status, and retrieves the reply. The difference is that part of the reply may live in extended payload pages rather than only in the local payload.
+
+Length and check fields matter because the host has to know how much data belongs to the reply and whether it has been retrieved correctly. Larger transfers make discipline more important, not less.
+Extended payload is especially relevant for richer replies and logs. As telemetry gets more useful, replies may need more room. The workflow should scale without turning every larger response into a special case.

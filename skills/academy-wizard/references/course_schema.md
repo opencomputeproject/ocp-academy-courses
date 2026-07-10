@@ -11,6 +11,7 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
   "spec_version_chip": "Specification v1.6.0 · March 2025",
+  "index_footer_line": "Optional exact footer line for the course home page.",
   "target_duration_minutes": 35,
   "audience_level": "intermediate",
   "brand": {

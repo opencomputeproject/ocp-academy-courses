@@ -122,8 +122,9 @@ def render_course_overview(slide: dict, course: dict, module: dict) -> str:
     for chip in slide.get("chips", []):
         # Optional url makes a chip clickable.
         url = chip.get("url")
+        icon = str(chip.get("icon", "")).strip()
         inner = f'''
-          <div class="meta-chip-icon">{esc(chip.get("icon",""))}</div>
+          {f'<div class="meta-chip-icon">{esc(icon)}</div>' if icon else ""}
           <span>{esc(chip.get("text",""))}</span>'''
         if url:
             chips_html += f'''
