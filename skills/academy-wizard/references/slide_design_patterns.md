@@ -40,7 +40,10 @@ Bullets on the left, figure on the right (or vice versa). Use for "concept + dia
 
 ### `content_grid`
 Card grid (2x2 or 2x3) for comparing options or showing parallel concepts. Use for form factors, modes, variants.
-- Fields: `section_label`, `title`, `subtitle`, `cards[]` (each card has `title`, `body`, optional `icon`).
+- Fields: `section_label`, `title`, `subtitle`, `cards[]` (each card has `title`, `body`, optional `icon`, optional `tone`).
+- Use `cards[].tone` only when the slide is intentionally contrasting different ideas, sides, states, risks, priorities, or categories. Examples: old vs new, operator vs vendor, benefit vs tradeoff, current state vs target state, risk vs mitigation. For ordinary grids where cards are a collection of related concepts, leave tone unset so the cards stay visually unified.
+- Supported tones and aliases: `blue`/`baseline`/`traditional`, `green`/`accent`/`positive`/`ai`, `slate`/`neutral`/`context`, `amber`/`warning`/`tradeoff`, and `red`/`risk`/`constraint`.
+- The renderer supplies separate light- and dark-mode palettes for these tones. Keep slide content semantic by setting only `cards[].tone`; do not add inline colors to individual cards.
 
 ### `content_table`
 A real HTML table for specs, pinouts, dimensions, values. Use sparingly — tables are dense.
@@ -49,6 +52,11 @@ A real HTML table for specs, pinouts, dimensions, values. Use sparingly — tabl
 ### `content_diagram`
 Slide built around a single large figure with a one-paragraph caption underneath. Use when the figure carries the entire message (e.g., airflow diagrams).
 - Fields: `section_label`, `title`, `figure`, `caption`.
+
+### `full_slide_image`
+Narrated source image with no added visible words. Use sparingly when the source visual itself needs the full canvas and narration supplies the teaching context.
+- Fields: `figure` with `path` and `alt`, plus normal `audio`.
+- Do not add `section_label`, `title`, `caption`, `reference_links`, or visible learner-aid blocks to this slide type unless the user explicitly asks; the point is image-only presentation.
 
 ### `takeaways`
 4-6 check-iconed summary bullets. Put it immediately before the knowledge check when a module includes one.
@@ -83,6 +91,18 @@ Figures should live in `figures/` and be referenced by relative path:
 figure: { path: "figures/airflow_diagram.png", alt: "...", caption: "..." }
 ```
 Captions render below the figure in muted text. Alt text is required for accessibility. Figures render inside clickable zoom panels by default; do not add separate "click to zoom" instructional text on the slide.
+
+Video and short animation assets may also live in `figures/` and use the same `figure` field:
+```
+figure: {
+  path: "figures/expanded_beam_dust_compare.mp4",
+  media_type: "video",
+  poster: "figures/expanded_beam_dust_compare_frame.png",
+  alt: "...",
+  caption: "..."
+}
+```
+Video figures render with Play/Pause and Zoom buttons that appear on mouse hover or keyboard focus. Keep video clips short, silent or muted by default, and support the teaching point without requiring extra instructions on the slide.
 
 For inline SVG figures, make labels fit inside their shapes. Center text in boxes when the layout is symmetrical, wrap long labels with `<tspan>` lines, or widen the box or pill. Do not leave text spilling outside the drawn shape.
 

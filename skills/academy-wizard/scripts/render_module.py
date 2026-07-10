@@ -35,6 +35,7 @@ from motion_intro import (
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 TEMPLATE_DIR = SKILL_DIR / "templates"
+VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov", ".m4v"}
 
 
 def esc(s: str | None) -> str:
@@ -283,8 +284,9 @@ def _summary_items_html(slide: dict) -> str:
 
 def render_content_bullets(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
+    slide_class = "slide slide--mobile-scroll" if slide.get("mobile_scroll") else "slide"
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="{slide_class}" data-slide="{slide["id"]}">
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -298,24 +300,55 @@ def render_content_bullets(slide: dict, course: dict, module: dict) -> str:
 
 
 def _figure_html(fig: dict | None) -> str:
-    """Wrap any figure (file-img or inline SVG) in a white panel so dark
-    lines and text in the source diagram stay legible in dark mode. The
-    caption sits below the panel so it still picks up theme-aware text
-    colors."""
+    """Wrap image, inline-SVG, or video media in a white panel so dark lines
+    and text stay legible in dark mode. Video figures get hover controls for
+    play/pause and zoom; image figures keep the click-to-enlarge behavior."""
     if not fig:
         return ""
     path = fig.get("path", "")
     alt = fig.get("alt", "")
     caption = fig.get("caption", "")
+    media_type = (fig.get("media_type") or fig.get("type") or "").lower()
+    if not media_type and Path(path).suffix.lower() in VIDEO_EXTENSIONS:
+        media_type = "video"
     # Prefer inline SVG markup when explicitly provided (svg_inline + svg key);
     # otherwise reference the file at `path` via <img>. Browsers render .svg
     # files via <img> cleanly, so figures with source: "svg_inline" + a .svg
     # file path also work.
     inline_svg = fig.get("svg") if fig.get("source") == "svg_inline" else None
-    if inline_svg:
+    if media_type == "video":
+        poster = fig.get("poster", "")
+        preload = fig.get("preload", "metadata")
+        attr_bits = [
+            f'class="figure-video"',
+            f'src="{esc(path)}"',
+            f'aria-label="{esc(alt)}"',
+            f'preload="{esc(preload)}"',
+            "playsinline",
+            "muted" if fig.get("muted", True) else "",
+            "loop" if fig.get("loop", True) else "",
+            "autoplay" if fig.get("autoplay", True) else "",
+            f'poster="{esc(poster)}"' if poster else "",
+        ]
+        attrs = " ".join(bit for bit in attr_bits if bit)
+        body = f'''
+          <video {attrs}></video>
+          <div class="figure-video-controls" aria-label="Video controls">
+            <button type="button" class="figure-video-control" data-video-toggle aria-label="Pause video" title="Pause video">
+              <span class="video-icon video-icon-pause" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="figure-video-control" data-video-zoom aria-label="Zoom video" title="Zoom video">
+              <span aria-hidden="true">&#8981;</span>
+            </button>
+          </div>'''
+    elif inline_svg:
         body = inline_svg
     else:
         body = f'<img src="{esc(path)}" alt="{esc(alt)}" style="max-width:100%;height:auto;display:block;margin:0 auto;cursor:zoom-in;">'
+    panel_class = "figure-panel figure-panel--video" if media_type == "video" else "figure-panel"
+    video_attr = ' data-video-figure="true"' if media_type == "video" else ""
+    role = "group" if media_type == "video" else "button"
+    aria_label = "Video figure" if media_type == "video" else "Zoom figure"
     panel_style = (
         "background:#ffffff;"
         "border-radius:12px;"
@@ -327,25 +360,54 @@ def _figure_html(fig: dict | None) -> str:
     )
     return f'''
       <div class="figure-wrap animate-in" style="margin-top:8px;">
-        <div class="figure-panel" data-zoomable-figure="true" tabindex="0" role="button" aria-label="Zoom figure: {esc(alt)}" style="{panel_style}">
+        <div class="{panel_class}" data-zoomable-figure="true"{video_attr} tabindex="0" role="{role}" aria-label="{aria_label}: {esc(alt)}" style="{panel_style}">
           {body}
         </div>
         {f'<p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;line-height:1.45;">{esc(caption)}</p>' if caption else ""}
       </div>'''
 
 
+def _compact_table_html(table: dict | None) -> str:
+    if not table:
+        return ""
+    columns = table.get("columns", [])
+    rows = table.get("rows", [])
+    if not columns or not rows:
+        return ""
+    header = "".join(f'<th scope="col">{esc(column)}</th>' for column in columns)
+    body = "".join(
+        "<tr>" + "".join(f"<td>{esc(value)}</td>" for value in row) + "</tr>"
+        for row in rows
+    )
+    title = table.get("title")
+    return f'''
+          <div class="compact-data-table animate-in">
+            {f'<h3>{esc(title)}</h3>' if title else ""}
+            <div class="compact-data-table__scroll">
+              <table>
+                <thead><tr>{header}</tr></thead>
+                <tbody>{body}</tbody>
+              </table>
+            </div>
+          </div>'''
+
+
 def render_content_two_column(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
+    compact_table = slide.get("compact_table")
+    slide_class = "slide slide--mobile-scroll" if compact_table or slide.get("mobile_scroll") else "slide"
+    column_class = "two-column two-column--with-table" if compact_table else "two-column"
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="{slide_class}" data-slide="{slide["id"]}">
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
       {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
-      <div class="two-column">
+      <div class="{column_class}">
         <div>
           <ul class="bullet-list animate-in">{_bullets_html(slide.get("bullets", []))}
           </ul>
+          {_compact_table_html(compact_table)}
         </div>
         <div>{_figure_html(slide.get("figure"))}
         </div>
@@ -360,6 +422,9 @@ def render_content_grid(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
     cards = []
     for c in slide.get("cards", []):
+        tone = str(c.get("tone", "")).strip().lower()
+        tone = "".join(ch for ch in tone if ch.isalnum() or ch in ("-", "_"))
+        card_class = "tenet-card animate-in" + (f" tenet-card--{tone}" if tone else "")
         # Optional url + link_text make a card clickable, with a visible
         # URL line under the body.
         url = c.get("url")
@@ -384,11 +449,11 @@ def render_content_grid(slide: dict, course: dict, module: dict) -> str:
           {link_html}'''
         if url:
             cards.append(f'''
-        <a class="tenet-card animate-in" href="{esc(url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">{inner}
+        <a class="{card_class}" href="{esc(url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">{inner}
         </a>''')
         else:
             cards.append(f'''
-        <div class="tenet-card animate-in">{inner}
+        <div class="{card_class}">{inner}
         </div>''')
     # Allow a slide to pin its column count explicitly (e.g., 6 cards as 3x2
     # instead of the default 5+1).
@@ -448,6 +513,19 @@ def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
       {_figure_html(slide.get("figure"))}
       {f'<p class="slide-subtitle animate-in" style="margin-top:16px;">{esc(slide.get("caption"))}</p>' if slide.get("caption") else ""}
       {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def render_full_slide_image(slide: dict, course: dict, module: dict) -> str:
+    fig = slide.get("figure") or {}
+    path = fig.get("path", "")
+    alt = fig.get("alt", "")
+    return f'''
+  <div class="slide slide-full-image" data-slide="{slide["id"]}">
+    <div class="full-slide-figure animate-in" data-zoomable-figure="true" tabindex="0" role="button" aria-label="Zoom figure: {esc(alt)}">
+      <img src="{esc(path)}" alt="{esc(alt)}">
     </div>
   </div>
 '''
@@ -684,6 +762,7 @@ RENDERERS = {
     "content_grid": render_content_grid,
     "content_table": render_content_table,
     "content_diagram": render_content_diagram,
+    "full_slide_image": render_full_slide_image,
     "takeaways": render_takeaways,
     "knowledge_check": render_knowledge_check,
     "up_next": render_up_next,
@@ -1180,6 +1259,16 @@ def render_module(course: dict, module_index: int) -> str:
 <!-- Click-to-enlarge lightbox for figures -->
 <script>
 (function() {{
+  function syncVideoToggle(panel) {{
+    if (!panel) return;
+    var video = panel.querySelector('video.figure-video');
+    var button = panel.querySelector('[data-video-toggle]');
+    if (!video || !button) return;
+    var paused = video.paused;
+    button.innerHTML = paused ? '<span class="video-icon video-icon-play" aria-hidden="true"></span>' : '<span class="video-icon video-icon-pause" aria-hidden="true"></span>';
+    button.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
+    button.setAttribute('title', paused ? 'Play video' : 'Pause video');
+  }}
   function openLightbox(panel) {{
     var overlay = document.createElement('div');
     overlay.className = 'lightbox-overlay';
@@ -1191,10 +1280,24 @@ def render_module(course: dict, module_index: int) -> str:
     overlay.appendChild(frame);
     var hint = document.createElement('div');
     hint.className = 'lightbox-hint';
-    hint.textContent = 'Click anywhere or press Esc to close';
+    hint.textContent = 'Click outside or press Esc to close';
     overlay.appendChild(hint);
-    overlay.addEventListener('click', closeLightbox);
+    overlay.addEventListener('click', function(e) {{
+      if (!e.target.closest('.lightbox-figure')) closeLightbox();
+    }});
     document.body.appendChild(overlay);
+    var sourceVideo = panel.querySelector('video.figure-video');
+    var lightboxPanel = frame.querySelector('.figure-panel');
+    var lightboxVideo = frame.querySelector('video.figure-video');
+    if (sourceVideo && lightboxVideo) {{
+      lightboxVideo.currentTime = sourceVideo.currentTime || 0;
+      if (sourceVideo.paused) {{
+        lightboxVideo.pause();
+      }} else {{
+        lightboxVideo.play().catch(function() {{}});
+      }}
+      syncVideoToggle(lightboxPanel);
+    }}
     document.addEventListener('keydown', escClose);
   }}
   function closeLightbox() {{
@@ -1208,6 +1311,32 @@ def render_module(course: dict, module_index: int) -> str:
     return target.closest('.figure-panel[data-zoomable-figure="true"]');
   }}
   document.addEventListener('click', function(e) {{
+    var toggle = e.target.closest && e.target.closest('[data-video-toggle]');
+    if (toggle) {{
+      e.preventDefault();
+      e.stopPropagation();
+      var togglePanel = figurePanelFromEventTarget(toggle);
+      var video = togglePanel && togglePanel.querySelector('video.figure-video');
+      if (video) {{
+        if (video.paused) {{
+          video.play().catch(function() {{}});
+        }} else {{
+          video.pause();
+        }}
+        syncVideoToggle(togglePanel);
+      }}
+      return;
+    }}
+    var zoomButton = e.target.closest && e.target.closest('[data-video-zoom]');
+    if (zoomButton) {{
+      e.preventDefault();
+      e.stopPropagation();
+      if (zoomButton.closest('.lightbox-overlay')) return;
+      var zoomPanel = figurePanelFromEventTarget(zoomButton);
+      if (zoomPanel) openLightbox(zoomPanel);
+      return;
+    }}
+    if (e.target.closest && e.target.closest('.lightbox-overlay')) return;
     var panel = figurePanelFromEventTarget(e.target);
     if (panel) {{
       e.stopPropagation();
@@ -1216,12 +1345,25 @@ def render_module(course: dict, module_index: int) -> str:
   }});
   document.addEventListener('keydown', function(e) {{
     if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest && e.target.closest('.figure-video-control')) return;
+    if (e.target.closest && e.target.closest('.lightbox-overlay')) return;
     var panel = figurePanelFromEventTarget(e.target);
     if (panel) {{
       e.preventDefault();
       openLightbox(panel);
     }}
   }});
+  document.addEventListener('play', function(e) {{
+    if (e.target && e.target.matches && e.target.matches('video.figure-video')) {{
+      syncVideoToggle(figurePanelFromEventTarget(e.target));
+    }}
+  }}, true);
+  document.addEventListener('pause', function(e) {{
+    if (e.target && e.target.matches && e.target.matches('video.figure-video')) {{
+      syncVideoToggle(figurePanelFromEventTarget(e.target));
+    }}
+  }}, true);
+  document.querySelectorAll('.figure-panel[data-video-figure="true"]').forEach(syncVideoToggle);
 }})();
 </script>
 </body>
