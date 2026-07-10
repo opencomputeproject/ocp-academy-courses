@@ -118,7 +118,7 @@ Every slide has:
 ```json
 {
   "id": 1,
-  "type": "title|course_overview|objectives|content_bullets|content_two_column|content_grid|content_table|content_diagram|takeaways|knowledge_check|up_next|course_complete",
+  "type": "title|course_overview|objectives|content_bullets|content_two_column|content_grid|content_table|content_diagram|full_slide_image|takeaways|knowledge_check|up_next|course_complete",
   "slug": "title",
   "audio": {
     "script_file": "audio/module1/slide_01_title.txt",
@@ -234,12 +234,17 @@ Useful for adding a brief preview video alongside the module roadmap. Falls back
   "section_label": "Definition",
   "title": "What is OCP NIC 3.0?",
   "subtitle": "Optional one-line intro.",
+  "mobile_scroll": true,
   "bullets": [
     {"bold_lead": "Open, standardized", "text": "NIC specification purpose-built for hyperscale data centers."},
     {"bold_lead": "Hot-swappable", "text": "field-replaceable unit (FRU) enabling a multi-vendor ecosystem."}
   ]
 }
 ```
+
+Set `mobile_scroll` only when a content-heavy slide cannot fit above the fixed
+controls on a narrow viewport. It keeps desktop layout unchanged and top-aligns
+the slide below the module badge with vertical scrolling on mobile.
 
 ### `content_two_column`
 
@@ -249,9 +254,19 @@ Useful for adding a brief preview video alongside the module roadmap. Falls back
   "section_label": "Airflow",
   "title": "Cold and Hot Aisle Cooling",
   "bullets": [ /* same shape as content_bullets */ ],
+  "compact_table": {
+    "title": "Optional compact comparison",
+    "columns": ["Material", "Index", "Speed"],
+    "rows": [["Air", "1.00", "3.0 x 10^8 m/s"]]
+  },
   "figure": { "path": "figures/cold_aisle_airflow.png", "alt": "Cold aisle airflow", "caption": "Cool air enters the front…" }
 }
 ```
+
+`compact_table` is optional. Use it below the bullet list when a short source table
+fills otherwise unused space in the text column and directly supports the figure.
+Keep it to a few columns and rows; the renderer makes these slides vertically
+scrollable on small screens so the table and figure remain accessible.
 
 ### `content_grid`
 
@@ -264,6 +279,8 @@ Useful for adding a brief preview video alongside the module roadmap. Falls back
   "cards": [
     {"title": "SFF",  "body": "16 PCIe lanes, 80W envelope, 76mm.",  "icon": "🔲"},
     {"title": "TSFF", "body": "16 PCIe lanes, 80W envelope, tall.",  "icon": "🔲"},
+    {"title": "Baseline", "body": "Current operating model.", "tone": "blue"},
+    {"title": "Constraint", "body": "Design limit or risk to manage.", "tone": "amber"},
     {"title": "OCP MRC 1.0", "body": "Open RDMA transport spec.", "icon": "📄",
      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
      "link_text": "opencompute.org/documents/ocp-mrc-1-0-pdf"}
@@ -274,6 +291,7 @@ Useful for adding a brief preview video alongside the module roadmap. Falls back
 Optional fields:
 
 - `grid_cols` — pin the column count explicitly. Without it the renderer auto-picks `min(5, card_count)`, which puts a 6-card grid into 5+1. Common values: 3 (for 6-card grids), 2, or 4.
+- `cards[].tone` — optional visual tone for a card. Use it when cards intentionally contrast distinct ideas, sides, states, risks, priorities, or categories. Leave it out for a normal collection of related concepts. Supported tones and aliases: `blue`/`baseline`/`traditional`, `green`/`accent`/`positive`/`ai`, `slate`/`neutral`/`context`, `amber`/`warning`/`tradeoff`, and `red`/`risk`/`constraint`. Tones are theme-aware in the renderer; do not hard-code tone colors in slide content.
 - `cards[].url` — makes a card a clickable `<a>` opening in a new tab.
 - `cards[].link_text` — when set together with `url`, renders a short visible URL line in OCP-green underneath the card body. If only `url` is set, the URL itself is shown.
 
@@ -300,6 +318,25 @@ Optional fields:
   "section_label": "Mechanical",
   "title": "DSFF Card Assembly",
   "figure": { "path": "figures/dsff_exploded.png", "alt": "DSFF exploded view", "caption": "..." }
+}
+```
+
+### `full_slide_image`
+
+Use this for a narrated source image that should occupy the slide without an added title, caption, section label, or learner-facing text.
+
+```json
+{
+  "type": "full_slide_image",
+  "slug": "source_image_context",
+  "figure": {
+    "path": "figures/source_slide_09.png",
+    "alt": "Source slide image showing fiber-count growth across front-end and back-end network generations."
+  },
+  "audio": {
+    "script_file": "audio/module1/slide_06_source_image_context.txt",
+    "wav_file": "audio/module1/slide_06_source_image_context.wav"
+  }
 }
 ```
 
@@ -417,4 +454,24 @@ Optionally add a `survey` object to attach a feedback CTA card below the "All Mo
 }
 ```
 
-`extract_figures.py` reads `extract_from`. The image-gen step reads `generate_prompt`. The renderer just embeds `path`, `alt`, `caption` into the HTML.
+For local video or animation clips, use the same `figure` field and set the media path to an
+MP4, WebM, MOV, or M4V file:
+
+```json
+{
+  "path": "figures/expanded_beam_dust_compare.mp4",
+  "media_type": "video",
+  "poster": "figures/expanded_beam_dust_compare_frame.png",
+  "alt": "Silent animation comparing dust impact on physical-contact and expanded-beam connectors.",
+  "caption": "Expanded beam spreads the optical spot so the same contaminant blocks less of the path.",
+  "source": "custom",
+  "autoplay": true,
+  "loop": true,
+  "muted": true
+}
+```
+
+`extract_figures.py` reads `extract_from`. The image-gen step reads `generate_prompt`.
+The renderer embeds image figures as zoomable images and embeds video figures with hover/focus
+Play/Pause and Zoom controls. `render_index.py` lists both the video and `poster` in the SCORM
+manifest.

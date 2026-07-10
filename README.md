@@ -2,7 +2,7 @@
 
 Open source course definitions for OCP Academy SCORM courses.
 
-This repository stores the editable course source: `course.json`, narration scripts, and lightweight course assets. It does not store generated audio, rendered HTML modules, SCORM zip files, or the original research/source materials used during course development.
+This repository stores the editable course source: `course.json`, narration scripts, course-owned figures, thumbnails, and short teaching animations. It does not store generated audio, rendered HTML modules, SCORM zip files, or the original research/source materials used during course development.
 
 The courses in this repository are generally hosted on [OCP Academy](https://academy.opencompute.org/learn), primarily in its catalog of [Data Center Technology courses](https://academy.opencompute.org/learn/public/catalog/view/3).
 
@@ -20,6 +20,8 @@ courses/
   ocp-mhs-modular-plug-and-play-m-pnp/
   ocp-nic-3-0-technical-overview/
   ocp-ready-requirements-for-energy-storage-systems/
+  optics/
+    introduction-to-emerging-optical-technologies/
   project-deschutes-cdu-specification-v1-0/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
 scripts/
@@ -75,6 +77,7 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
 | `ocp-nic-3-0-technical-overview` | OCP NIC 3.0 Technical Overview |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
+| `optics/introduction-to-emerging-optical-technologies` | Introduction to Emerging Optical Technologies |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
 
@@ -112,7 +115,7 @@ EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh two-phase-direct-liq
 Use pull requests for course improvements.
 
 - Edit slide text, quiz content, figures, and structure in `course.json`.
-- Edit narration in `courses/<course>/audio/moduleN/slide_*.txt`.
+- Edit narration in `courses/<course-path>/audio/moduleN/slide_*.txt`.
 - Do not commit generated `.wav`, `module*.html`, `index.html`, `imsmanifest.xml`, or `.zip` files.
 - Run the build script before opening a PR when possible.
 

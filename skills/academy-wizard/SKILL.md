@@ -77,6 +77,8 @@ See `references/slide_design_patterns.md` for the conventional slide types each 
 
 Every slide that uses a small `section_label` must have a distinct visible `title`. Do not set both to the same phrase. For example, keep the label `Learning Objectives` but use a descriptive title such as `Deployment Choices You Will Classify`; keep the label `Key Takeaways` but use a module-specific summary title.
 
+For `content_grid` slides, use card tones only when the slide is intentionally contrasting distinct ideas, sides, states, risks, priorities, or categories. Leave tones unset for ordinary collections of related concepts so the grid reads as one family.
+
 ### Phase 4 — Narration scripts (GATE 2)
 
 For each slide in the approved outline, draft a narration script as a plain text file at:
