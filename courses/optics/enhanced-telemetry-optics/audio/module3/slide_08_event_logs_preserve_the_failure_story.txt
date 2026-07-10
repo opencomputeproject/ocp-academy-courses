@@ -1,0 +1,9 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Current telemetry tells you what the link looks like now. Event logs help explain how it got there.
+
+The spec describes event logging in non-volatile memory. It also describes 32-byte event log entries with a unique sequence value, timestamp fields, event identifier, and detail fields. The smallest sequence value indicates the oldest record, and the sequence can wrap.
+
+This structure matters when a module is moved, reset, or inspected after the fact. If the log preserves order, time, event type, and relevant details, the operator can reconstruct the failure story instead of relying on the first alarm that happened to reach a dashboard.
+
+The course takeaway is simple: event history turns transient symptoms into evidence.
+Event records are also useful during vendor and operator conversations. Instead of debating when a problem might have happened, teams can compare ordered records, timestamps, and details against host logs and maintenance windows.

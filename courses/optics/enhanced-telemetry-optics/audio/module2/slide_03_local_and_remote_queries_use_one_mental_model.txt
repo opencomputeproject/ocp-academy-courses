@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+The host software should not need a different mental model for every side of a link. It talks to the local transceiver over I squared C. From there, the command can ask for local data, or it can ask the local module to retrieve data from a remote link partner over the in-band interface.
+
+This is especially important in breakout cases. The local module may have more than one remote partner, so the request must preserve enough endpoint context to return the right data.
+
+For the operator, the benefit is consistency. The host remains the control point. The local compliant module becomes the bridge to remote visibility. That is the operating model behind many of the metrics we review next.
+This model also protects tooling from becoming fragmented. If local and remote queries share a workflow, host software can expose a consistent operator experience even when the data source is on the far side of the link.

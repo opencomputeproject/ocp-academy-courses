@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Status checking is what keeps a command-reply workflow honest. A module may be busy. A command may complete successfully. A command may fail. Host software has to know which state it is seeing before it treats a reply as valid.
+
+That is why the spec includes C D B command status registers and completion indicators. The point is not only to make the command complete. The point is to make host behavior repeatable.
+
+A reliable operator tool should not guess that telemetry is ready. It should trigger the command, poll for completion, handle failure clearly, and then retrieve the reply. That software discipline is what lets low-level module behavior become trustworthy operational evidence.
+Good status behavior also improves automation. A script can safely retry, back off, report a command failure, or stop before presenting stale data. That is the difference between a helpful tool and a risky shortcut.
