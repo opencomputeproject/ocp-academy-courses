@@ -197,10 +197,11 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             mod_intro = mod.get("motion_intro", {})
             if isinstance(mod_intro, dict):
                 add_file(files, mod_intro.get("logo"))
-        # Figures referenced by this module's slides — but only those that
+        # Figures/media referenced by this module's slides — but only those that
         # actually live on disk. Inline SVGs (source == "svg_inline") carry
         # a `path` for figure-plan bookkeeping but never exist as standalone
-        # files, so registering them would break the manifest.
+        # files, so registering them would break the manifest. Video figures
+        # may also declare a poster frame; include both runtime files.
         for slide in mod.get("slides", []):
             fig = slide.get("figure")
             if not fig or not fig.get("path"):
@@ -211,6 +212,9 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             p = fig["path"]
             if p not in files:
                 files.append(p)
+            poster = fig.get("poster")
+            if poster and poster not in files:
+                files.append(poster)
         # Audio files declared in course.json (canonical) — derive even if
         # .wav doesn't exist yet, so the manifest stays correct across renders.
         for slide in mod.get("slides", []):
