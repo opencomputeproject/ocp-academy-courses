@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Event logs need enough detail to be useful, but they also need control. A noisy link can cross a threshold repeatedly. Without hysteresis, the log can fill with duplicate entries that obscure the actual sequence of events.
+
+The spec includes threshold-driven events such as link-up, link-down, loss of signal, loss of link, M P I threshold, S N R threshold, pre-feck B E R threshold, feck histogram threshold, uncorrectable feck, module temperature, and received power. It also lists host API support for reading and writing event hysteresis, with a default value of 10 seconds in the spec.
+
+For final release, that value should be checked against the published specification. The concept is stable: tune event behavior so logs preserve signal rather than noise.
+Hysteresis is not about hiding failures. It is about preserving a readable failure story. A log that records the same oscillation too many times can make root cause harder, not easier.

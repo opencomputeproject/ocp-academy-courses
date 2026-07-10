@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+The host boundary is explicit in the spec. All compliant transceiver communication with the local host is performed over I squared C. Commands issued to the local module may request telemetry from the local transceiver or from one of the remote link partners.
+
+When remote data is requested, the local transceiver is responsible for retrieving that data and presenting it to the local host. The local host does not directly communicate with the remote partner modules.
+
+That detail affects architecture, debugging, and security review. Host software can remain consistent. The module handles the in-band remote retrieval. Operators get far-end visibility without inventing a separate management path for every remote optical endpoint.
+This boundary also simplifies access control discussions. The host can authorize and log its local interaction, while the compliant module handles remote retrieval through the link. That is cleaner than many ad hoc remote debug paths.

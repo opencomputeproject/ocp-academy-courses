@@ -21,6 +21,7 @@ courses/
   ocp-nic-3-0-technical-overview/
   ocp-ready-requirements-for-energy-storage-systems/
   optics/
+    enhanced-telemetry-optics/
     introduction-to-emerging-optical-technologies/
   project-deschutes-cdu-specification-v1-0/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
@@ -77,6 +78,7 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
 | `ocp-nic-3-0-technical-overview` | OCP NIC 3.0 Technical Overview |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
+| `optics/enhanced-telemetry-optics` | Enhanced Telemetry Optics |
 | `optics/introduction-to-emerging-optical-technologies` | Introduction to Emerging Optical Technologies |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |

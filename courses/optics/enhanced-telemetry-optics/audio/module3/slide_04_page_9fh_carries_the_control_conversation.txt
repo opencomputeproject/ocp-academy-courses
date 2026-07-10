@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Page 9Fh is where the control conversation lives. The spec points to the C M I S C D B messaging page and identifies command header fields, reply header fields, and the local payload area.
+
+For course purposes, we do not need to teach every byte. The durable concept is separation of roles. The host writes the command. The module reports status and returns the reply. The payload area carries the data that belongs to that request.
+
+This matters because many operator tools ultimately depend on the same lower-level discipline. If software skips status checking or reads the reply too early, it risks turning a structured command model into unreliable debug output.
+This is a good place to separate implementation detail from learning detail. Engineers implementing the interface need the byte maps. Learners operating the system need to know what the byte maps are organizing.

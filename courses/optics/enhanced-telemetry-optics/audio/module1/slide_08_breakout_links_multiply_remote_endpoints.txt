@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Breakout makes the visibility problem more interesting. A single switch-side module may connect to multiple remote endpoints. If those remote partners behave differently, the operator needs telemetry that can identify which remote side is healthy and which one is degrading.
+
+The spec calls this out directly. A transceiver may be connected to more than one link partner in a breakout use case, so local software has to preserve endpoint identity. One summary value for the whole front-panel port may hide the actual failing path.
+
+That is why remote identification, per-segment monitoring, and host-side harvesting belong in the same story. The interface is not just collecting data. It is preserving enough context for the operator to map data back to the right physical and logical endpoint.
+Breakout is where vague language breaks down. Saying the port is unhealthy may not identify the affected partner. The useful question is which remote endpoint, which lane group, and which side of the electrical or optical boundary changed.

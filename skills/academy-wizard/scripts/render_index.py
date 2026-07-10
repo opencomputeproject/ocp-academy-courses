@@ -52,6 +52,9 @@ def render_index_html(course: dict) -> str:
     # store the phrase in mixed case.
     tagline = course.get("tagline") or "Community-driven Hyperscale Innovation for All"
     version_chip = course.get("spec_version_chip", "")
+    footer_line = course.get("index_footer_line") or (
+        course_title + (f" · {version_chip}" if version_chip else "")
+    )
     brand = course.get("brand", {})
     academy_logo = brand.get("academy_logo", "")
     course_logo = brand.get("course_logo", "")
@@ -110,7 +113,7 @@ def render_index_html(course: dict) -> str:
 </div>
 
 <div class="footer">
-  {esc(course_title)}{f' &middot; {esc(version_chip)}' if version_chip else ""}
+  {esc(footer_line)}
   {f'<br><span class="version">{esc(tagline)}</span>' if tagline else ""}
 </div>
 </div>

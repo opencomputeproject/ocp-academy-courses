@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Hitless update is not a single command. It is a lifecycle with checkpoints. The spec includes block download behavior, command status, completion, and activation steps. Those details matter in implementation, but the operating pattern is the part to remember.
+
+A safe update starts with capability and image information. It moves through start, transfer, completion, run, and commit behavior. At each phase, software needs status feedback, error handling, and a clear understanding of which image is active now and which image becomes active after future resets.
+
+Remote update adds one more layer: the local module is helping manage the far endpoint. That makes command discipline and status reporting even more important.
+The phrase hitless should be treated as an operating requirement, not a casual promise. It depends on implementation quality, status feedback, error handling, and the deployment policy that decides when an update is allowed.
