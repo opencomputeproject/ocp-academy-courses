@@ -4,6 +4,10 @@ Single-phase TCS fluid guidance for direct-to-chip deployments.
 
 This course source is intended for PR-friendly editing. Change slides, quiz content, glossary links, and figure SVGs in `course.json`. Change narration in `audio/moduleN/slide_*.txt`. Generated audio and SCORM runtime files are not checked in.
 
+## Media
+
+Course-owned SVG, PNG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the Module 3 commissioning animation are stored in `animations/m3_commissioning_sequence/`.
+
 ## Modules
 
 | Module | Title | Summary |
