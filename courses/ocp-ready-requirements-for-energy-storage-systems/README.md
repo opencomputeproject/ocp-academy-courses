@@ -13,6 +13,17 @@ This course source is intended for PR-friendly editing. Change slides, quiz cont
 | 3 | Safety Hazards, Mitigation, And Operations | Electrical, thermal, gas, explosion, chemical, detection, ventilation, suppression, and response considerations. |
 | 4 | Codes, Standards, And OCP Ready™ Application | How to navigate local codes, international standards, insurer guidance, and OCP Ready™ ESS parameters. |
 
+## Media
+
+Course-owned figures and the silent deployment-workflow animation are stored in `figures/`. The editable Python source for that animation is stored in `animations/`.
+
+To regenerate the animation and its poster:
+
+```bash
+python -m pip install Pillow numpy imageio-ffmpeg
+python courses/ocp-ready-requirements-for-energy-storage-systems/animations/build_requirement_to_evidence_workflow.py
+```
+
 ## Build
 
 From the repository root:

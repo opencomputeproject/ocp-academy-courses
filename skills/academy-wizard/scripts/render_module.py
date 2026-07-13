@@ -38,6 +38,13 @@ TEMPLATE_DIR = SKILL_DIR / "templates"
 VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov", ".m4v"}
 
 
+def _is_video_figure(fig: dict | None) -> bool:
+    if not fig:
+        return False
+    media_type = (fig.get("media_type") or fig.get("type") or "").lower()
+    return media_type == "video" or Path(fig.get("path", "")).suffix.lower() in VIDEO_EXTENSIONS
+
+
 def esc(s: str | None) -> str:
     """HTML-escape a value, treating None as ''."""
     if s is None:
@@ -309,9 +316,7 @@ def _figure_html(fig: dict | None) -> str:
     path = fig.get("path", "")
     alt = fig.get("alt", "")
     caption = fig.get("caption", "")
-    media_type = (fig.get("media_type") or fig.get("type") or "").lower()
-    if not media_type and Path(path).suffix.lower() in VIDEO_EXTENSIONS:
-        media_type = "video"
+    media_type = "video" if _is_video_figure(fig) else (fig.get("media_type") or fig.get("type") or "").lower()
     # Prefer inline SVG markup when explicitly provided (svg_inline + svg key);
     # otherwise reference the file at `path` via <img>. Browsers render .svg
     # files via <img> cleanly, so figures with source: "svg_inline" + a .svg
@@ -398,8 +403,9 @@ def render_content_two_column(slide: dict, course: dict, module: dict) -> str:
     compact_table = slide.get("compact_table")
     slide_class = "slide slide--mobile-scroll" if compact_table or slide.get("mobile_scroll") else "slide"
     column_class = "two-column two-column--with-table" if compact_table else "two-column"
+    video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
     return f'''
-  <div class="{slide_class}" data-slide="{slide["id"]}">
+  <div class="{slide_class}" data-slide="{slide["id"]}"{video_attr}>
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -506,8 +512,9 @@ def render_content_table(slide: dict, course: dict, module: dict) -> str:
 
 def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
+    video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="slide" data-slide="{slide["id"]}"{video_attr}>
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
