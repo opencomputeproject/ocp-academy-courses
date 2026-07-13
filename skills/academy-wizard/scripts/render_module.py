@@ -1278,6 +1278,11 @@ def render_module(course: dict, module_index: int) -> str:
     var frame = document.createElement('div');
     frame.className = 'lightbox-figure';
     frame.innerHTML = panel.innerHTML;
+    if (panel.hasAttribute('data-video-figure')) {{
+      frame.classList.add('figure-panel', 'figure-panel--video');
+      frame.setAttribute('data-zoomable-figure', 'true');
+      frame.setAttribute('data-video-figure', 'true');
+    }}
     overlay.appendChild(frame);
     var hint = document.createElement('div');
     hint.className = 'lightbox-hint';
@@ -1288,7 +1293,7 @@ def render_module(course: dict, module_index: int) -> str:
     }});
     document.body.appendChild(overlay);
     var sourceVideo = panel.querySelector('video.figure-video');
-    var lightboxPanel = frame.querySelector('.figure-panel');
+    var lightboxPanel = frame;
     var lightboxVideo = frame.querySelector('video.figure-video');
     if (sourceVideo && lightboxVideo) {{
       lightboxVideo.currentTime = sourceVideo.currentTime || 0;

@@ -17,6 +17,12 @@ This folder contains the editable course source for the SCORM package. It includ
 
 Each module includes a knowledge check before its final transition or completion slide.
 
+Module 3 includes a short, silent animation of the mandatory OCP NIC 3.0 power-state sequence. Its editable source is under `animations/`, and the SCORM-ready MP4 is under `figures/`. On macOS, regenerate it from the repository root with:
+
+```bash
+swift courses/ocp-nic-3-0-technical-overview/animations/render_power_state_video.swift
+```
+
 ## Build
 
 From the repository root:
