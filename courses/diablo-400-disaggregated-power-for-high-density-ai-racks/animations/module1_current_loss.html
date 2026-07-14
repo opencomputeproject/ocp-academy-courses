@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Current, copper, and I2R loss animation</title>
+<style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eef1f3}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="scene" width="1280" height="720" aria-label="Animated comparison of current and conductor burden at lower and higher distribution voltage"></canvas>
+<script src="academy_video_common.js"></script>
+<script>
+(function () {
+  'use strict';
+  var V = window.AcademyVideo;
+  var ctx = V.ctx;
+  var C = V.C;
+
+  function gauge(x, y, label, amount, color, active) {
+    V.text(label, x, y - 30, 18, 700, C.text, 'center');
+    V.roundedRect(x - 42, y, 84, 190, 14, '#f4f5f6', C.border, 2);
+    var h = 158 * amount;
+    V.roundedRect(x - 28, y + 174 - h, 56, h, 10, color);
+    V.text(Math.round(amount * 100) + '%', x, y + 96, 22, 700, amount > 0.48 ? '#ffffff' : C.text, 'center');
+    if (active) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 4;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.roundRect(x - 46, y - 4, 92, 198, 16);
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  function heatWave(x, y, radius, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = C.amber;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, Math.PI * 1.15, Math.PI * 1.85);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function renderFrame(t) {
+    var low = V.progress(t, 300, 1700);
+    var high = V.progress(t, 2200, 4100);
+    var result = V.progress(t, 4550, 6100);
+    var reset = 1 - V.progress(t, 7550, 8200);
+    low *= reset;
+    high *= reset;
+    result *= reset;
+
+    V.header('MODULE 1 / POWER PHYSICS', 'Same power target, very different current burden');
+    V.panel(38, 124, 574, 474, 'LOWER DISTRIBUTION VOLTAGE');
+    V.panel(668, 124, 574, 474, 'HIGHER DISTRIBUTION VOLTAGE', 'green');
+
+    V.roundedRect(190, 175, 270, 44, 22, C.bluePale, '#d7d8f1', 2);
+    V.text('FIXED POWER TARGET', 325, 197, 16, 700, C.blue, 'center');
+    V.roundedRect(820, 175, 270, 44, 22, C.bluePale, '#d7d8f1', 2);
+    V.text('SAME POWER TARGET', 955, 197, 16, 700, C.blue, 'center');
+
+    gauge(162, 270, 'VOLTAGE', 0.38 * low, C.blue, false);
+    gauge(310, 270, 'CURRENT', 0.90 * low, C.amber, low > 0.85);
+    gauge(792, 270, 'VOLTAGE', 0.90 * high, C.blue, high > 0.85);
+    gauge(940, 270, 'CURRENT', 0.32 * high, C.greenDark, false);
+
+    V.line(410, 432, 562, 432, C.dim, 28, low);
+    V.line(1040, 432, 1192, 432, C.greenDark, 12, high);
+    for (var i = 0; i < 4; i += 1) {
+      if (low > 0.8) V.movingDot(416, 432, 552, 432, t, i * 260, 1050, C.amber, 6);
+    }
+    if (high > 0.8) V.movingDot(1048, 432, 1184, 432, t, 2500, 1750, C.green, 6);
+
+    var heat = low * (0.45 + (0.35 * V.pulse(t, 600)));
+    heatWave(484, 432, 38, heat);
+    heatWave(484, 432, 55, heat * 0.7);
+    V.text('HEAVIER COPPER / MORE HEAT', 326, 545, 17, 700, C.amber, 'center');
+    V.text('PRACTICAL CABLING / ROUTING', 956, 545, 17, 700, C.greenDark, 'center');
+
+    V.panel(180, 620, 920, 70, '', result > 0.25 ? 'blue' : null);
+    ctx.save();
+    ctx.globalAlpha = 0.35 + (0.65 * result);
+    V.text('VOLTAGE UP', 300, 655, 18, 700, C.blue, 'center');
+    V.arrow(390, 655, 500, 655, C.greenDark, 5, result);
+    V.text('CURRENT DOWN', 630, 655, 18, 700, C.text, 'center');
+    V.arrow(760, 655, 870, 655, C.greenDark, 5, result);
+    V.text('LOWER I2R LOSS', 980, 655, 18, 700, C.greenDark, 'center');
+    ctx.restore();
+  }
+
+  V.install(renderFrame, 8200, 6900);
+}());
+</script>
+</body>
+</html>

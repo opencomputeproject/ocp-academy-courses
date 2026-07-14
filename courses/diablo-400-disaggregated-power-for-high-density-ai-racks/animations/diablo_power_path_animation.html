@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diablo 400 power-path animation</title>
+<style>
+  html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: #eef1f3;
+  }
+  canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+  }
+</style>
+</head>
+<body>
+<canvas id="scene" width="1280" height="720" aria-label="Animated Diablo 400 ride-through and DC output model"></canvas>
+<script>
+(function () {
+  'use strict';
+
+  var canvas = document.getElementById('scene');
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width;
+  var H = canvas.height;
+  var previewFrame = null;
+  var COLORS = {
+    bg: '#eef1f3',
+    panel: '#ffffff',
+    text: '#3d3d3f',
+    muted: '#6f7378',
+    border: '#d6dadd',
+    green: '#8DC63F',
+    greenDark: '#6FA030',
+    greenPale: '#f2f8ea',
+    blue: '#343895',
+    bluePale: '#eff0fb',
+    amber: '#e6a23c',
+    amberPale: '#fff7e7',
+    dim: '#aeb4b8'
+  };
+
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+
+  function progress(t, start, end) {
+    var x = clamp((t - start) / (end - start), 0, 1);
+    return x * x * (3 - (2 * x));
+  }
+
+  function pulse(t, period) {
+    return 0.5 + (0.5 * Math.sin((t / period) * Math.PI * 2));
+  }
+
+  function roundedRect(x, y, w, h, radius, fill, stroke, lineWidth) {
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, radius);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    if (stroke) {
+      ctx.lineWidth = lineWidth || 1;
+      ctx.strokeStyle = stroke;
+      ctx.stroke();
+    }
+  }
+
+  function text(value, x, y, size, weight, color, align) {
+    ctx.font = (weight || 400) + ' ' + size + 'px Arial, sans-serif';
+    ctx.fillStyle = color || COLORS.text;
+    ctx.textAlign = align || 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(value, x, y);
+  }
+
+  function line(x1, y1, x2, y2, color, width, amount) {
+    var p = amount === undefined ? 1 : clamp(amount, 0, 1);
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 + ((x2 - x1) * p), y1 + ((y2 - y1) * p));
+    ctx.lineWidth = width;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = color;
+    ctx.stroke();
+  }
+
+  function arrow(x1, y1, x2, y2, color, width, amount) {
+    var p = amount === undefined ? 1 : clamp(amount, 0, 1);
+    var ex = x1 + ((x2 - x1) * p);
+    var ey = y1 + ((y2 - y1) * p);
+    if (p > 0.96) {
+      var angle = Math.atan2(y2 - y1, x2 - x1);
+      var len = 15;
+      var backOffset = len * Math.cos(Math.PI / 6);
+      var bx = ex - (backOffset * Math.cos(angle));
+      var by = ey - (backOffset * Math.sin(angle));
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(bx, by);
+      ctx.lineWidth = width;
+      ctx.lineCap = 'butt';
+      ctx.strokeStyle = color;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(ex, ey);
+      ctx.lineTo(ex - (len * Math.cos(angle - Math.PI / 6)), ey - (len * Math.sin(angle - Math.PI / 6)));
+      ctx.lineTo(ex - (len * Math.cos(angle + Math.PI / 6)), ey - (len * Math.sin(angle + Math.PI / 6)));
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+    } else {
+      line(x1, y1, x2, y2, color, width, p);
+    }
+  }
+
+  function node(x, y, label, detail, active, tone) {
+    var color = tone || COLORS.green;
+    var glow = active ? (10 + (8 * pulse(active * 1000, 800))) : 0;
+    ctx.save();
+    if (glow) {
+      ctx.shadowColor = color;
+      ctx.shadowBlur = glow;
+    }
+    ctx.beginPath();
+    ctx.arc(x, y, 24, 0, Math.PI * 2);
+    ctx.fillStyle = active ? color : '#ffffff';
+    ctx.fill();
+    ctx.lineWidth = active ? 4 : 3;
+    ctx.strokeStyle = active ? color : COLORS.border;
+    ctx.stroke();
+    ctx.restore();
+    text(label, x, y - 52, 22, 700, active ? COLORS.text : COLORS.muted, 'center');
+    text(detail, x, y + 54, 17, 400, COLORS.muted, 'center');
+  }
+
+  function movingDot(x1, x2, y, t, start, end, color) {
+    var p = progress(t, start, end);
+    if (p <= 0 || p >= 1) return;
+    var x = x1 + ((x2 - x1) * p);
+    ctx.save();
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 14;
+    ctx.beginPath();
+    ctx.arc(x, y, 8, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function rail(y, label, color, amount, t, offset) {
+    text(label, 845, y, 20, 700, COLORS.text, 'left');
+    line(966, y, 1172, y, COLORS.border, 8, 1);
+    line(966, y, 1172, y, color, 8, amount);
+    if (amount > 0.9) {
+      var dotX = 982 + (((t + offset) % 1100) / 1100) * 172;
+      ctx.save();
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(dotX, y, 7, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = color;
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  function renderFrame(milliseconds) {
+    var t = ((milliseconds % 8000) + 8000) % 8000;
+    var resetFade = 1 - progress(t, 7350, 7980);
+    var acActive = clamp((1 - progress(t, 2050, 2420)) * resetFade, 0, 1);
+    var lossActive = progress(t, 1850, 2300) * resetFade;
+    var holdupActive = progress(t, 2150, 2800) * (1 - progress(t, 4300, 4850)) * resetFade;
+    var storageActive = progress(t, 3600, 4550) * resetFade;
+    var outputActive = progress(t, 4700, 6200) * resetFade;
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = COLORS.bg;
+    ctx.fillRect(0, 0, W, H);
+
+    roundedRect(38, 28, 16, 62, 8, COLORS.green);
+    text('DIABLO 400 POWER PATH', 76, 47, 18, 700, COLORS.greenDark);
+    text('Support through AC loss and the plus-minus 400 V DC output model', 76, 79, 34, 700, COLORS.text);
+
+    roundedRect(38, 124, 712, 548, 18, COLORS.panel, COLORS.border, 2);
+    roundedRect(774, 124, 468, 548, 18, COLORS.panel, COLORS.border, 2);
+    text('SUPPORT SEQUENCE', 74, 165, 18, 700, COLORS.greenDark);
+    text('DC OUTPUT MODEL', 810, 165, 18, 700, COLORS.greenDark);
+
+    text('A controlled handoff keeps the DC output available.', 74, 205, 24, 700, COLORS.text);
+    line(130, 316, 640, 316, COLORS.border, 8, 1);
+    line(130, 316, 330, 316, COLORS.green, 8, acActive);
+    line(330, 316, 522, 316, COLORS.green, 8, holdupActive);
+    arrow(522, 316, 774, 316, COLORS.greenDark, 8, storageActive);
+
+    node(130, 316, 'Facility AC', 'normal operation', acActive, COLORS.green);
+    node(330, 316, 'Holdup', 'up to 20 ms', holdupActive, COLORS.green);
+    node(522, 316, 'BBU / CBU', 'optional storage', storageActive, COLORS.blue);
+
+    if (lossActive > 0.05) {
+      ctx.save();
+      ctx.globalAlpha = lossActive;
+      roundedRect(238, 388, 174, 34, 17, COLORS.amberPale, COLORS.amber, 2);
+      text('AC LOSS DETECTED', 325, 405, 15, 700, COLORS.text, 'center');
+      ctx.restore();
+    }
+
+    movingDot(142, 312, 316, t, 500, 2050, COLORS.green);
+    movingDot(348, 504, 316, t, 2450, 3950, COLORS.green);
+    movingDot(540, 748, 316, t, 4300, 5500, COLORS.blue);
+
+    roundedRect(74, 430, 630, 176, 14, COLORS.greenPale, '#dbe9cb', 2);
+    text('Built-in holdup', 104, 468, 21, 700, COLORS.text);
+    text('Bridges the first moment after AC loss.', 104, 501, 18, 400, COLORS.muted);
+    text('Optional energy storage', 104, 548, 21, 700, COLORS.text);
+    text('BBU support: 45 to 90 seconds at 100% load.', 104, 581, 18, 400, COLORS.muted);
+
+    text('Nominal plus-minus 400 volts DC', 810, 205, 24, 700, COLORS.text);
+    roundedRect(810, 238, 396, 320, 14, COLORS.bluePale, '#d7d8f1', 2);
+    rail(312, '+400 V DC', COLORS.blue, outputActive, t, 0);
+    rail(398, 'COMMON', COLORS.greenDark, outputActive, t, 360);
+    rail(484, '-400 V DC', COLORS.blue, outputActive, t, 720);
+
+    var midpointAlpha = progress(t, 5900, 6550) * resetFade;
+    ctx.save();
+    ctx.globalAlpha = 0.35 + (0.65 * midpointAlpha);
+    roundedRect(818, 578, 380, 54, 12, COLORS.greenPale, '#dbe9cb', 2);
+    text('Common is the midpoint between + and - poles', 1008, 605, 15, 700, COLORS.text, 'center');
+    ctx.restore();
+
+  }
+
+  function startPreview() {
+    var start = performance.now();
+    function draw(now) {
+      renderFrame(now - start);
+      previewFrame = requestAnimationFrame(draw);
+      window.__previewFrame = previewFrame;
+    }
+    previewFrame = requestAnimationFrame(draw);
+    window.__previewFrame = previewFrame;
+  }
+
+  window.renderFrame = renderFrame;
+  window.captureAnimation = function () {
+    return new Promise(function (resolve, reject) {
+      if (!window.MediaRecorder || !canvas.captureStream) {
+        reject(new Error('Canvas recording is not supported in this browser.'));
+        return;
+      }
+      if (previewFrame) cancelAnimationFrame(previewFrame);
+      renderFrame(0);
+      var stream = canvas.captureStream(30);
+      var recorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm;codecs=vp8',
+        videoBitsPerSecond: 3200000
+      });
+      var chunks = [];
+      recorder.ondataavailable = function (event) {
+        if (event.data && event.data.size) chunks.push(event.data);
+      };
+      recorder.onerror = function (event) {
+        reject(event.error || new Error('MediaRecorder failed.'));
+      };
+      recorder.onstop = async function () {
+        try {
+          var blob = new Blob(chunks, { type: 'video/webm' });
+          var bytes = new Uint8Array(await blob.arrayBuffer());
+          renderFrame(6800);
+          resolve(Array.from(bytes));
+        } catch (error) {
+          reject(error);
+        }
+      };
+      recorder.start(250);
+      var started = performance.now();
+      function drawRecorded(now) {
+        var elapsed = now - started;
+        renderFrame(Math.min(elapsed, 7999));
+        if (elapsed < 8000) {
+          requestAnimationFrame(drawRecorded);
+        } else {
+          recorder.stop();
+        }
+      }
+      requestAnimationFrame(drawRecorded);
+    });
+  };
+
+  startPreview();
+}());
+</script>
+</body>
+</html>

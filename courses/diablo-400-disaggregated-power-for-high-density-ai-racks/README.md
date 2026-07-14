@@ -4,6 +4,8 @@ Disaggregated plus-minus 400 volt rack power, sidecar architecture, safety inter
 
 This course source is intended for PR-friendly editing. Change slides, quiz content, glossary links, and inline SVG figures in `course.json`. Change narration in `audio/moduleN/slide_*.txt`. Generated audio and SCORM runtime files are not checked in.
 
+The course includes one silent animated teaching figure per module. The encoded WebM files and poster images live in `figures/`; their editable HTML canvas sources and Playwright recording scripts live in `animations/`.
+
 ## Modules
 
 | Module | Title | Summary |
@@ -23,6 +25,13 @@ export ELEVENLABS_API_KEY="<your key>"
 ```
 
 The finished SCORM folder and LMS zip are created under `build/`.
+
+To regenerate the teaching animations before building the course, run the recording scripts from the course's `animations/` directory. They require Node.js and Playwright:
+
+```bash
+node record_module_videos.js
+node record_diablo_power_path.js
+```
 
 For local QA with previously generated audio, set `EXISTING_AUDIO_DIR` to a folder shaped like `audio/`:
 
