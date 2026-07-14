@@ -38,6 +38,13 @@ TEMPLATE_DIR = SKILL_DIR / "templates"
 VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov", ".m4v"}
 
 
+def _is_video_figure(fig: dict | None) -> bool:
+    if not fig:
+        return False
+    media_type = (fig.get("media_type") or fig.get("type") or "").lower()
+    return media_type == "video" or Path(fig.get("path", "")).suffix.lower() in VIDEO_EXTENSIONS
+
+
 def esc(s: str | None) -> str:
     """HTML-escape a value, treating None as ''."""
     if s is None:
@@ -309,9 +316,7 @@ def _figure_html(fig: dict | None) -> str:
     path = fig.get("path", "")
     alt = fig.get("alt", "")
     caption = fig.get("caption", "")
-    media_type = (fig.get("media_type") or fig.get("type") or "").lower()
-    if not media_type and Path(path).suffix.lower() in VIDEO_EXTENSIONS:
-        media_type = "video"
+    media_type = "video" if _is_video_figure(fig) else (fig.get("media_type") or fig.get("type") or "").lower()
     # Prefer inline SVG markup when explicitly provided (svg_inline + svg key);
     # otherwise reference the file at `path` via <img>. Browsers render .svg
     # files via <img> cleanly, so figures with source: "svg_inline" + a .svg
@@ -398,8 +403,9 @@ def render_content_two_column(slide: dict, course: dict, module: dict) -> str:
     compact_table = slide.get("compact_table")
     slide_class = "slide slide--mobile-scroll" if compact_table or slide.get("mobile_scroll") else "slide"
     column_class = "two-column two-column--with-table" if compact_table else "two-column"
+    video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
     return f'''
-  <div class="{slide_class}" data-slide="{slide["id"]}">
+  <div class="{slide_class}" data-slide="{slide["id"]}"{video_attr}>
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -463,8 +469,9 @@ def render_content_grid(slide: dict, course: dict, module: dict) -> str:
         grid_cols = explicit
     else:
         grid_cols = max(2, min(5, len(slide.get("cards", [])) or 3))
+    slide_class = "slide slide--mobile-scroll" if slide.get("mobile_scroll") else "slide"
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="{slide_class}" data-slide="{slide["id"]}">
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -506,8 +513,9 @@ def render_content_table(slide: dict, course: dict, module: dict) -> str:
 
 def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
+    video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="slide" data-slide="{slide["id"]}"{video_attr}>
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -895,6 +903,21 @@ def render_module(course: dict, module_index: int) -> str:
   const themeToggle = document.getElementById('themeToggle');
   const fullscreenBtn = document.getElementById('fullscreenBtn');
 
+  function syncSlideVideos(activeSlideNumber, restartActive) {{
+    slides.forEach(function(slide) {{
+      const video = slide.querySelector('video.figure-video');
+      if (!video) return;
+      const isActive = slide.dataset.slide === String(activeSlideNumber);
+      if (!isActive) {{
+        video.pause();
+        video.currentTime = 0;
+        return;
+      }}
+      if (restartActive) video.currentTime = 0;
+      if (video.hasAttribute('autoplay')) video.play().catch(function() {{}});
+    }});
+  }}
+
   function goToSlide(n, direction) {{
     if (n < 1 || n > totalSlides || n === currentSlide) return;
     const oldSlide = document.querySelector('.slide.active');
@@ -906,6 +929,7 @@ def render_module(course: dict, module_index: int) -> str:
     }}
     requestAnimationFrame(() => newSlide.classList.add('active'));
     currentSlide = n;
+    syncSlideVideos(currentSlide, true);
     updateControls();
     if (typeof loadSlideAudio === 'function') loadSlideAudio(n);
     if (typeof checkCompletion === 'function') checkCompletion();
@@ -1250,6 +1274,7 @@ def render_module(course: dict, module_index: int) -> str:
 
   window.addEventListener('beforeunload', function() {{ SCORM.finish(); }});
 
+  syncSlideVideos(currentSlide, true);
   updateControls();
   document.addEventListener('click', function initAudio() {{
     loadSlideAudio(currentSlide);
@@ -1278,6 +1303,11 @@ def render_module(course: dict, module_index: int) -> str:
     var frame = document.createElement('div');
     frame.className = 'lightbox-figure';
     frame.innerHTML = panel.innerHTML;
+    if (panel.hasAttribute('data-video-figure')) {{
+      frame.classList.add('figure-panel', 'figure-panel--video');
+      frame.setAttribute('data-zoomable-figure', 'true');
+      frame.setAttribute('data-video-figure', 'true');
+    }}
     overlay.appendChild(frame);
     var hint = document.createElement('div');
     hint.className = 'lightbox-hint';
@@ -1288,7 +1318,7 @@ def render_module(course: dict, module_index: int) -> str:
     }});
     document.body.appendChild(overlay);
     var sourceVideo = panel.querySelector('video.figure-video');
-    var lightboxPanel = frame.querySelector('.figure-panel');
+    var lightboxPanel = frame;
     var lightboxVideo = frame.querySelector('video.figure-video');
     if (sourceVideo && lightboxVideo) {{
       lightboxVideo.currentTime = sourceVideo.currentTime || 0;

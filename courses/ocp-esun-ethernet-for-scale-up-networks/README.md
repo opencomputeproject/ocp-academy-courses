@@ -27,6 +27,19 @@ For local QA with previously generated audio, set `EXISTING_AUDIO_DIR` to a fold
 EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks
 ```
 
+## Animated Figure
+
+Slide 6 uses a silent, looping animation to show the standard 20-40 byte IP
+header contracting into the 4-byte ESUN Header. The checked-in MP4 and poster
+can be regenerated with Pillow and ffmpeg:
+
+```bash
+cd courses/ocp-esun-ethernet-for-scale-up-networks
+python3 animations/header_efficiency/build_header_efficiency_video.py \
+  --output figures/header_efficiency_animation.mp4 \
+  --poster figures/header_efficiency_animation_poster.png
+```
+
 ## Public References
 
 The original research files are not included in this repository. Public learner/source references used by the course include:
