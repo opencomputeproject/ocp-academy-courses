@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>From Firmware Branches to Runtime Definitions</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 1280px;
+      height: 720px;
+      margin: 0;
+      overflow: hidden;
+      background: #f5f7fb;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    svg { display: block; width: 1280px; height: 720px; }
+    text { letter-spacing: 0; }
+    .eyebrow { font-size: 16px; font-weight: 800; fill: #343895; }
+    .heading { font-size: 27px; font-weight: 800; fill: #171d48; }
+    .panel-title { font-size: 22px; font-weight: 800; fill: #171d48; }
+    .card-title { font-size: 20px; font-weight: 800; fill: #171d48; }
+    .card-body { font-size: 15px; font-weight: 700; fill: #5f6062; }
+    .status { font-size: 21px; font-weight: 800; fill: #1f2937; }
+  </style>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-label="Silent animation contrasting model-specific BMC firmware branches with one BMC image that loads hardware definitions at runtime.">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#27304a" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="#f5f7fb"/>
+  <rect x="28" y="24" width="1224" height="672" rx="22" fill="#ffffff" stroke="#d9dee8" stroke-width="2"/>
+  <text x="70" y="68" class="eyebrow">M-PNP OPERATING MODEL</text>
+  <text x="70" y="103" class="heading">Move platform knowledge from firmware branches into runtime data</text>
+
+  <g id="legacy-panel" transform="translate(70 137)">
+    <rect id="legacy-bg" width="535" height="422" rx="18" fill="#fff8f6" stroke="#ef6a5b" stroke-width="4"/>
+    <rect x="24" y="22" width="154" height="34" rx="8" fill="#ffe4df"/>
+    <text x="101" y="45" text-anchor="middle" font-size="15" font-weight="800" fill="#b53a30">PLUG-AND-CODE</text>
+    <text x="24" y="91" class="panel-title">Each HPM creates a firmware branch</text>
+
+    <g transform="translate(28 120)" filter="url(#shadow)">
+      <rect width="196" height="98" rx="14" fill="#ffffff" stroke="#343895" stroke-width="4"/>
+      <rect x="18" y="18" width="48" height="48" rx="10" fill="#eef0fb"/>
+      <path d="M31 31 H53 V53 H31 Z M36 36 H48 V48 H36 Z" fill="#343895"/>
+      <text x="82" y="45" class="card-title">BMC</text>
+      <text x="82" y="69" class="card-body">firmware tree</text>
+    </g>
+
+    <path id="branch-a" d="M224 169 C260 169 266 150 291 150" fill="none" stroke="#ef6a5b" stroke-width="5"/>
+    <polygon id="branch-head-a" class="arrowhead" points="291,134 326,150 291,166" fill="#ef6a5b"/>
+    <path id="branch-b" d="M224 169 C260 169 270 248 291 248" fill="none" stroke="#ef6a5b" stroke-width="5"/>
+    <polygon id="branch-head-b" class="arrowhead" points="291,232 326,248 291,264" fill="#ef6a5b"/>
+    <path id="branch-c" d="M224 169 C260 169 270 346 291 346" fill="none" stroke="#ef6a5b" stroke-width="5"/>
+    <polygon id="branch-head-c" class="arrowhead" points="291,330 326,346 291,362" fill="#ef6a5b"/>
+
+    <g id="image-a" transform="translate(326 112)" filter="url(#shadow)">
+      <rect width="180" height="76" rx="12" fill="#ffffff" stroke="#ef6a5b" stroke-width="3"/>
+      <text x="18" y="31" class="card-title">Image A</text>
+      <text x="18" y="55" class="card-body">HPM model A</text>
+    </g>
+    <g id="image-b" transform="translate(326 210)" filter="url(#shadow)">
+      <rect width="180" height="76" rx="12" fill="#ffffff" stroke="#ef6a5b" stroke-width="3"/>
+      <text x="18" y="31" class="card-title">Image B</text>
+      <text x="18" y="55" class="card-body">HPM model B</text>
+    </g>
+    <g id="image-c" transform="translate(326 308)" filter="url(#shadow)">
+      <rect width="180" height="76" rx="12" fill="#ffffff" stroke="#ef6a5b" stroke-width="3"/>
+      <text x="18" y="31" class="card-title">Image C</text>
+      <text x="18" y="55" class="card-body">new board branch</text>
+    </g>
+
+    <g transform="translate(28 264)">
+      <circle cx="13" cy="13" r="13" fill="#ef6a5b"/>
+      <path d="M8 8 L18 18 M18 8 L8 18" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+      <text x="38" y="14" font-size="16" font-weight="800" fill="#8d332b">
+        <tspan x="38" dy="0">Integrate, validate, and</tspan>
+        <tspan x="38" dy="20">maintain every branch</tspan>
+      </text>
+    </g>
+  </g>
+
+  <g id="runtime-panel" transform="translate(675 137)">
+    <rect id="runtime-bg" width="535" height="422" rx="18" fill="#f3fbfc" stroke="#b9dfe6" stroke-width="4"/>
+    <rect x="24" y="22" width="132" height="34" rx="8" fill="#d9f3f6"/>
+    <text x="90" y="45" text-anchor="middle" font-size="15" font-weight="800" fill="#007f96">M-PNP</text>
+    <text x="24" y="91" class="panel-title">One parser loads definitions at runtime</text>
+
+    <g id="one-image" transform="translate(28 124)" filter="url(#shadow)">
+      <rect width="240" height="132" rx="14" fill="#ffffff" stroke="#343895" stroke-width="4"/>
+      <rect x="18" y="18" width="48" height="48" rx="10" fill="#eef0fb"/>
+      <path d="M31 31 H53 V53 H31 Z M36 36 H48 V48 H36 Z" fill="#343895"/>
+      <text x="82" y="44" font-size="19" font-weight="800" fill="#171d48">One BMC image</text>
+      <rect x="18" y="82" width="204" height="34" rx="8" fill="#eef0fb"/>
+      <text x="120" y="105" text-anchor="middle" font-size="15" font-weight="800" fill="#343895">stable parser</text>
+    </g>
+
+    <path id="runtime-arrow" d="M324 190 H292" fill="none" stroke="#00a7c4" stroke-width="6"/>
+    <polygon id="runtime-arrow-head" class="arrowhead" points="292,174 268,190 292,206" fill="#00a7c4"/>
+
+    <g id="definition-stack" transform="translate(324 112)">
+      <g id="def-a" transform="translate(0 0)" filter="url(#shadow)">
+        <rect width="182" height="70" rx="11" fill="#ffffff" stroke="#8dc63f" stroke-width="3"/>
+        <path d="M18 14 H55 L69 28 V56 H18 Z" fill="#f4faef" stroke="#8dc63f" stroke-width="2"/>
+        <path d="M55 14 V28 H69" fill="none" stroke="#8dc63f" stroke-width="2"/>
+        <text x="43" y="45" text-anchor="middle" font-size="13" font-weight="800" fill="#5f8f22">JSON</text>
+        <text x="86" y="33" class="card-title">HPM A</text>
+        <text x="86" y="54" class="card-body">definitions</text>
+      </g>
+      <g id="def-b" transform="translate(0 88)" filter="url(#shadow)">
+        <rect width="182" height="70" rx="11" fill="#ffffff" stroke="#8dc63f" stroke-width="3"/>
+        <path d="M18 14 H55 L69 28 V56 H18 Z" fill="#f4faef" stroke="#8dc63f" stroke-width="2"/>
+        <path d="M55 14 V28 H69" fill="none" stroke="#8dc63f" stroke-width="2"/>
+        <text x="43" y="45" text-anchor="middle" font-size="13" font-weight="800" fill="#5f8f22">JSON</text>
+        <text x="86" y="33" class="card-title">HPM B</text>
+        <text x="86" y="54" class="card-body">definitions</text>
+      </g>
+      <g id="def-c" transform="translate(0 176)" filter="url(#shadow)">
+        <rect width="182" height="70" rx="11" fill="#ffffff" stroke="#8dc63f" stroke-width="3"/>
+        <path d="M18 14 H55 L69 28 V56 H18 Z" fill="#f4faef" stroke="#8dc63f" stroke-width="2"/>
+        <path d="M55 14 V28 H69" fill="none" stroke="#8dc63f" stroke-width="2"/>
+        <text x="43" y="45" text-anchor="middle" font-size="13" font-weight="800" fill="#5f8f22">JSON</text>
+        <text x="86" y="33" class="card-title">HPM C</text>
+        <text x="86" y="54" class="card-body">new data</text>
+      </g>
+    </g>
+
+    <g id="runtime-check" transform="translate(28 382)">
+      <circle cx="13" cy="13" r="13" fill="#8dc63f"/>
+      <path d="M7 13 L11 17 L20 8" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="38" y="19" font-size="16" font-weight="800" fill="#47711b">Platform knowledge travels with the hardware</text>
+    </g>
+  </g>
+
+  <g>
+    <rect id="status-bg" x="70" y="588" width="1140" height="76" rx="16" fill="#fff2ef" stroke="#ef6a5b" stroke-width="3"/>
+    <circle id="status-dot" cx="111" cy="626" r="11" fill="#ef6a5b"/>
+    <text id="status" x="141" y="634" class="status">Platform assumptions are compiled into a growing family of firmware images.</text>
+  </g>
+</svg>
+
+<script>
+  const duration = 16;
+
+  function clamp(value, min = 0, max = 1) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function smooth(value) {
+    const x = clamp(value);
+    return x * x * (3 - 2 * x);
+  }
+
+  function setOpacity(id, value) {
+    document.getElementById(id).setAttribute('opacity', String(value));
+  }
+
+  window.renderAt = function renderAt(rawTime) {
+    const t = ((rawTime % duration) + duration) % duration;
+    const transition = smooth((t - 5.8) / 3.2);
+    const settled = smooth((t - 9.3) / 1.4);
+    const legacyPulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 1.4);
+    const runtimePulse = 0.5 + 0.5 * Math.sin((t - 8.5) * Math.PI * 1.2);
+
+    document.getElementById('legacy-panel').setAttribute('opacity', String(1 - transition * 0.58));
+    document.getElementById('legacy-bg').setAttribute('stroke-width', String(4 + (1 - transition) * legacyPulse * 2));
+    ['branch-a', 'branch-b', 'branch-c'].forEach((id, index) => {
+      const reveal = smooth((t - index * 0.65) / 0.9);
+      document.getElementById(id).setAttribute('stroke-dasharray', '260');
+      document.getElementById(id).setAttribute('stroke-dashoffset', String(260 * (1 - reveal)));
+      setOpacity(`branch-head-${['a', 'b', 'c'][index]}`, smooth((reveal - 0.68) / 0.32));
+    });
+    ['image-a', 'image-b', 'image-c'].forEach((id, index) => {
+      const reveal = smooth((t - 0.5 - index * 0.75) / 0.8);
+      setOpacity(id, reveal * (1 - transition * 0.4));
+    });
+
+    const runtimeOpacity = 0.34 + transition * 0.66;
+    document.getElementById('runtime-panel').setAttribute('opacity', String(runtimeOpacity));
+    document.getElementById('runtime-bg').setAttribute('stroke', transition > 0.55 ? '#00a7c4' : '#b9dfe6');
+    document.getElementById('runtime-bg').setAttribute('stroke-width', String(4 + settled * runtimePulse * 2));
+    setOpacity('one-image', 0.45 + transition * 0.55);
+    setOpacity('definition-stack', 0.25 + transition * 0.75);
+    setOpacity('runtime-check', settled);
+
+    const arrow = document.getElementById('runtime-arrow');
+    arrow.setAttribute('stroke-dasharray', '90');
+    arrow.setAttribute('stroke-dashoffset', String(90 * (1 - transition)));
+    arrow.setAttribute('opacity', String(transition));
+    setOpacity('runtime-arrow-head', smooth((transition - 0.68) / 0.32));
+
+    const status = document.getElementById('status');
+    const statusBg = document.getElementById('status-bg');
+    const statusDot = document.getElementById('status-dot');
+    if (t < 5.8) {
+      status.textContent = 'Platform assumptions are compiled into a growing family of firmware images.';
+      statusBg.setAttribute('fill', '#fff2ef');
+      statusBg.setAttribute('stroke', '#ef6a5b');
+      statusDot.setAttribute('fill', '#ef6a5b');
+    } else if (t < 9.6) {
+      status.textContent = 'M-PNP separates stable firmware logic from model-specific platform data.';
+      statusBg.setAttribute('fill', '#eef0fb');
+      statusBg.setAttribute('stroke', '#343895');
+      statusDot.setAttribute('fill', '#343895');
+    } else {
+      status.textContent = 'One BMC image discovers the hardware and loads its definitions at runtime.';
+      statusBg.setAttribute('fill', '#f4faef');
+      statusBg.setAttribute('stroke', '#8dc63f');
+      statusDot.setAttribute('fill', '#8dc63f');
+    }
+  };
+
+  window.renderAt(0);
+</script>
+</body>
+</html>

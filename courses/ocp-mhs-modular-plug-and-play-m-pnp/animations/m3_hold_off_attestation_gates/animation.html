@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hold-Off and Attestation Gates</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 1280px;
+      height: 720px;
+      margin: 0;
+      overflow: hidden;
+      background: #f5f7fb;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    svg { display: block; width: 1280px; height: 720px; }
+    text { letter-spacing: 0; }
+    .eyebrow { font-size: 16px; font-weight: 800; fill: #343895; }
+    .heading { font-size: 27px; font-weight: 800; fill: #171d48; }
+    .state { font-size: 15px; font-weight: 800; fill: #171d48; }
+    .device { font-size: 19px; font-weight: 800; fill: #171d48; }
+    .small { font-size: 14px; font-weight: 700; fill: #5f6062; }
+    .status { font-size: 20px; font-weight: 800; fill: #1f2937; }
+  </style>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-label="Silent animation showing hardware entering hold-off states, being attested by the BMC, and then being released toward S0 Run OS.">
+  <defs>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#27304a" flood-opacity="0.13"/>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="#f5f7fb"/>
+  <rect x="28" y="24" width="1224" height="672" rx="22" fill="#ffffff" stroke="#d9dee8" stroke-width="2"/>
+  <text x="70" y="68" class="eyebrow">CONTROLLED SECURITY RELEASE</text>
+  <text x="70" y="103" class="heading">Power can be present while reset holds the next boot stage</text>
+
+  <g transform="translate(476 124)" filter="url(#shadow)">
+    <rect width="328" height="92" rx="16" fill="#eef0fb" stroke="#343895" stroke-width="4"/>
+    <circle cx="48" cy="46" r="25" fill="#343895"/>
+    <path d="M36 34 H60 V58 H36 Z M42 40 H54 V52 H42 Z" fill="#ffffff"/>
+    <text x="88" y="40" font-size="22" font-weight="800" fill="#171d48">BMC trust controller</text>
+    <text id="bmc-action" x="88" y="66" font-size="16" font-weight="700" fill="#5f6062">Inspect evidence before release</text>
+  </g>
+
+  <path d="M130 328 H1150" fill="none" stroke="#d8dee8" stroke-width="14" stroke-linecap="round"/>
+  <path id="progress" d="M130 328 H130" fill="none" stroke="#8dc63f" stroke-width="8" stroke-linecap="round"/>
+
+  <g id="scan-beam" opacity="0">
+    <path id="scan-line" d="M640 216 L130 286" fill="none" stroke="#00a7c4" stroke-width="4" stroke-dasharray="8 8"/>
+    <circle id="scan-dot" cx="130" cy="286" r="10" fill="#00a7c4"/>
+  </g>
+
+  <g id="stage-0" transform="translate(48 270)">
+    <circle id="stage-circle-0" cx="82" cy="58" r="38" fill="#f8fafc" stroke="#cbd2dc" stroke-width="5"/>
+    <g id="stage-lock-0" transform="translate(58 34)">
+      <rect x="4" y="19" width="40" height="31" rx="6" fill="#a6b0bf"/>
+      <path d="M12 20 V13 A12 12 0 0 1 36 13 V20" fill="none" stroke="#a6b0bf" stroke-width="6"/>
+      <circle cx="24" cy="34" r="4" fill="#ffffff"/>
+    </g>
+    <g id="stage-check-0" transform="translate(58 34)" opacity="0">
+      <circle cx="24" cy="24" r="24" fill="#8dc63f"/>
+      <path d="M13 24 L21 32 L37 15" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <rect id="stage-card-0" x="0" y="113" width="164" height="148" rx="14" fill="#f8fafc" stroke="#cbd2dc" stroke-width="3"/>
+    <text x="82" y="142" text-anchor="middle" class="state">STANDBY HOLD-OFF</text>
+    <text x="82" y="183" text-anchor="middle" class="device">HPM FPGA</text>
+    <text x="82" y="209" text-anchor="middle" class="small">Power available</text>
+    <text x="82" y="231" text-anchor="middle" class="small">Reset asserted</text>
+  </g>
+
+  <g id="stage-1" transform="translate(278 270)">
+    <circle id="stage-circle-1" cx="82" cy="58" r="38" fill="#f8fafc" stroke="#cbd2dc" stroke-width="5"/>
+    <g id="stage-lock-1" transform="translate(58 34)">
+      <rect x="4" y="19" width="40" height="31" rx="6" fill="#a6b0bf"/>
+      <path d="M12 20 V13 A12 12 0 0 1 36 13 V20" fill="none" stroke="#a6b0bf" stroke-width="6"/>
+      <circle cx="24" cy="34" r="4" fill="#ffffff"/>
+    </g>
+    <g id="stage-check-1" transform="translate(58 34)" opacity="0">
+      <circle cx="24" cy="24" r="24" fill="#8dc63f"/>
+      <path d="M13 24 L21 32 L37 15" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <rect id="stage-card-1" x="0" y="113" width="164" height="148" rx="14" fill="#f8fafc" stroke="#cbd2dc" stroke-width="3"/>
+    <text x="82" y="142" text-anchor="middle" class="state">S5 HOLD-OFF</text>
+    <text x="82" y="183" text-anchor="middle" class="device">FRU storage</text>
+    <text x="82" y="209" text-anchor="middle" class="small">Read identity</text>
+    <text x="82" y="231" text-anchor="middle" class="small">Check integrity</text>
+  </g>
+
+  <g id="stage-2" transform="translate(508 270)">
+    <circle id="stage-circle-2" cx="82" cy="58" r="38" fill="#f8fafc" stroke="#cbd2dc" stroke-width="5"/>
+    <g id="stage-lock-2" transform="translate(58 34)">
+      <rect x="4" y="19" width="40" height="31" rx="6" fill="#a6b0bf"/>
+      <path d="M12 20 V13 A12 12 0 0 1 36 13 V20" fill="none" stroke="#a6b0bf" stroke-width="6"/>
+      <circle cx="24" cy="34" r="4" fill="#ffffff"/>
+    </g>
+    <g id="stage-check-2" transform="translate(58 34)" opacity="0">
+      <circle cx="24" cy="24" r="24" fill="#8dc63f"/>
+      <path d="M13 24 L21 32 L37 15" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <rect id="stage-card-2" x="0" y="113" width="164" height="148" rx="14" fill="#f8fafc" stroke="#cbd2dc" stroke-width="3"/>
+    <text x="82" y="142" text-anchor="middle" class="state">S0 HOLD-OFF</text>
+    <text x="82" y="183" text-anchor="middle" class="device">SoC + devices</text>
+    <text x="82" y="209" text-anchor="middle" class="small">Main power on</text>
+    <text x="82" y="231" text-anchor="middle" class="small">Boot still gated</text>
+  </g>
+
+  <g id="stage-3" transform="translate(738 270)">
+    <circle id="stage-circle-3" cx="82" cy="58" r="38" fill="#f8fafc" stroke="#cbd2dc" stroke-width="5"/>
+    <g id="stage-lock-3" transform="translate(58 34)">
+      <rect x="4" y="19" width="40" height="31" rx="6" fill="#a6b0bf"/>
+      <path d="M12 20 V13 A12 12 0 0 1 36 13 V20" fill="none" stroke="#a6b0bf" stroke-width="6"/>
+      <circle cx="24" cy="34" r="4" fill="#ffffff"/>
+    </g>
+    <g id="stage-check-3" transform="translate(58 34)" opacity="0">
+      <circle cx="24" cy="24" r="24" fill="#8dc63f"/>
+      <path d="M13 24 L21 32 L37 15" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <rect id="stage-card-3" x="0" y="113" width="164" height="148" rx="14" fill="#f8fafc" stroke="#cbd2dc" stroke-width="3"/>
+    <text x="82" y="142" text-anchor="middle" class="state">RUN BIOS BOOT</text>
+    <text x="82" y="183" text-anchor="middle" class="device">PCIe devices</text>
+    <text x="82" y="209" text-anchor="middle" class="small">Train links</text>
+    <text x="82" y="231" text-anchor="middle" class="small">Finish checks</text>
+  </g>
+
+  <g id="stage-4" transform="translate(968 270)">
+    <circle id="stage-circle-4" cx="82" cy="58" r="38" fill="#f8fafc" stroke="#cbd2dc" stroke-width="5"/>
+    <g id="stage-lock-4" transform="translate(58 34)">
+      <rect x="4" y="19" width="40" height="31" rx="6" fill="#a6b0bf"/>
+      <path d="M12 20 V13 A12 12 0 0 1 36 13 V20" fill="none" stroke="#a6b0bf" stroke-width="6"/>
+      <circle cx="24" cy="34" r="4" fill="#ffffff"/>
+    </g>
+    <g id="stage-check-4" transform="translate(58 34)" opacity="0">
+      <circle cx="24" cy="24" r="24" fill="#8dc63f"/>
+      <path d="M13 24 L21 32 L37 15" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+    <rect id="stage-card-4" x="0" y="113" width="164" height="148" rx="14" fill="#f8fafc" stroke="#cbd2dc" stroke-width="3"/>
+    <text x="82" y="142" text-anchor="middle" class="state">S0 RUN OS</text>
+    <text x="82" y="183" text-anchor="middle" class="device">OS release</text>
+    <text x="82" y="209" text-anchor="middle" class="small">Required checks</text>
+    <text x="82" y="231" text-anchor="middle" class="small">complete</text>
+  </g>
+
+  <g>
+    <rect id="status-bg" x="70" y="574" width="1140" height="84" rx="17" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
+    <circle id="status-dot" cx="112" cy="616" r="11" fill="#343895"/>
+    <text id="status" x="142" y="624" class="status">Standby Hold-Off: attest the HPM FPGA while reset remains asserted.</text>
+  </g>
+</svg>
+
+<script>
+  const duration = 16;
+  const centers = [130, 360, 590, 820, 1050];
+  const starts = [0, 3, 6, 9, 12];
+  const statuses = [
+    'Standby Hold-Off: attest the HPM FPGA while reset remains asserted.',
+    'S5 Hold-Off: verify field-replaceable storage before advancing.',
+    'S0 Hold-Off: main power exposes the SoC and additional devices for inspection.',
+    'Run BIOS Boot: link training makes remaining PCIe evidence available.',
+    'S0 Run OS: release the platform after the required runtime checks complete.'
+  ];
+  const actions = [
+    'Attest HPM FPGA',
+    'Verify FRU storage',
+    'Evaluate SoC and devices',
+    'Complete PCIe checks',
+    'Release to the operating system'
+  ];
+
+  function clamp(value, min = 0, max = 1) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function smooth(value) {
+    const x = clamp(value);
+    return x * x * (3 - 2 * x);
+  }
+
+  function activeStage(t) {
+    if (t < 3) return 0;
+    if (t < 6) return 1;
+    if (t < 9) return 2;
+    if (t < 12) return 3;
+    return 4;
+  }
+
+  window.renderAt = function renderAt(rawTime) {
+    const t = ((rawTime % duration) + duration) % duration;
+    const active = activeStage(t);
+    const local = t - starts[active];
+    const scan = smooth(local / 1.15);
+    const approved = smooth((local - 1.25) / 0.75);
+    const pulse = 0.5 + 0.5 * Math.sin(local * Math.PI * 1.6);
+
+    for (let index = 0; index < 5; index += 1) {
+      const complete = index < active || (index === active && approved > 0.85);
+      const current = index === active && !complete;
+      const circle = document.getElementById(`stage-circle-${index}`);
+      const card = document.getElementById(`stage-card-${index}`);
+      circle.setAttribute('fill', complete ? '#f4faef' : current ? '#e9f8fb' : '#f8fafc');
+      circle.setAttribute('stroke', complete ? '#8dc63f' : current ? '#00a7c4' : '#cbd2dc');
+      circle.setAttribute('stroke-width', current ? String(5 + pulse * 2) : '5');
+      card.setAttribute('fill', complete ? '#f4faef' : current ? '#f3fbfc' : '#f8fafc');
+      card.setAttribute('stroke', complete ? '#8dc63f' : current ? '#00a7c4' : '#cbd2dc');
+      card.setAttribute('stroke-width', current ? '4' : '3');
+      document.getElementById(`stage-lock-${index}`).setAttribute('opacity', complete ? '0' : '1');
+      document.getElementById(`stage-check-${index}`).setAttribute('opacity', complete ? '1' : '0');
+    }
+
+    const previousCenter = active === 0 ? centers[0] : centers[active - 1];
+    const targetCenter = centers[active];
+    const progressEnd = active === 0 ? centers[0] : previousCenter + (targetCenter - previousCenter) * approved;
+    document.getElementById('progress').setAttribute('d', `M${centers[0]} 328 H${progressEnd}`);
+
+    const scanBeam = document.getElementById('scan-beam');
+    scanBeam.setAttribute('opacity', String(clamp(local / 0.25) * clamp((1.5 - local) / 0.3)));
+    const scanX = 640 + (targetCenter - 640) * scan;
+    const scanY = 216 + (286 - 216) * scan;
+    document.getElementById('scan-line').setAttribute('d', `M640 216 L${scanX} ${scanY}`);
+    document.getElementById('scan-dot').setAttribute('cx', String(scanX));
+    document.getElementById('scan-dot').setAttribute('cy', String(scanY));
+
+    document.getElementById('bmc-action').textContent = actions[active];
+    document.getElementById('status').textContent = statuses[active];
+    const final = active === 4 && approved > 0.8;
+    document.getElementById('status-bg').setAttribute('fill', final ? '#f4faef' : '#eef0fb');
+    document.getElementById('status-bg').setAttribute('stroke', final ? '#8dc63f' : '#343895');
+    document.getElementById('status-dot').setAttribute('fill', final ? '#8dc63f' : '#343895');
+  };
+
+  window.renderAt(0);
+</script>
+</body>
+</html>

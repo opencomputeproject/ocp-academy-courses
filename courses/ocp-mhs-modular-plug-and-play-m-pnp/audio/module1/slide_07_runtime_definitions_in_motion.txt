@@ -1,0 +1,5 @@
+Hardware compatibility doesn't automatically create firmware portability. In a plug-and-code model, each H P M model adds another branch to the B M C firmware tree. That branch carries assumptions about registers, buses, devices, and platform behavior. A new vendor or board generation means another integration cycle, another image to validate, and another long-lived maintenance path.
+
+M-PNP changes where that platform knowledge lives. The hardware supplier publishes self-describing definition files with the component. At boot, one B M C image discovers the HPM, retrieves its definitions, and learns the interfaces it should use. The firmware keeps a stable parser and operating model while the data describes what changed.
+
+That separation is the bridge from Plug-and-Play Lite toward full plug-and-play. The goal isn't to remove platform-specific information. It's to make that information portable, inspectable, and available at runtime instead of hard-coding it into a growing family of firmware branches.

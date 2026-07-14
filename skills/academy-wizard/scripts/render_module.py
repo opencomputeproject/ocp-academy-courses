@@ -520,7 +520,7 @@ def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
       {_figure_html(slide.get("figure"))}
-      {f'<p class="slide-subtitle animate-in" style="margin-top:16px;">{esc(slide.get("caption"))}</p>' if slide.get("caption") else ""}
+      {f'<p class="slide-main-text animate-in">{esc(slide.get("caption"))}</p>' if slide.get("caption") else ""}
       {_learner_aids_html(slide, course)}
     </div>
   </div>
