@@ -4,15 +4,16 @@ check_svg_arrows.py - flag SVG arrow geometry mistakes.
 
 Usage:
     python check_svg_arrows.py course.json --fail-on-flags
-    python check_svg_arrows.py figures/
+    python check_svg_arrows.py figures/ animations/
     python check_svg_arrows.py figures/example.svg --fail-on-flags
 
 The check focuses on the common problematic pattern in Academy diagrams:
-curved or diagonal paths using a triangular marker whose refX is near the
-point of the arrowhead. For those arrows, the line should end at the center of
-the flat back side of the arrowhead, with the arrowhead extending forward from
-that endpoint. It also catches explicit arrowhead polygons whose point intrudes
-into a target rectangle instead of stopping on the target boundary.
+paths using a triangular marker whose reference point is not at the center of
+the arrowhead's flat back side. Every arrow shaft must end at that flat-back
+center, with the arrowhead extending forward from the endpoint. The checker
+also scans inline SVG in animation HTML, verifies explicit polygons marked with
+class="arrowhead" connect at their flat-back center, and catches arrowhead tips
+that intrude into target rectangles.
 """
 
 from __future__ import annotations
@@ -36,15 +37,20 @@ TRANSLATE_RE = re.compile(
     r"translate\(\s*([-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?)"
     r"(?:[\s,]+([-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?))?\s*\)"
 )
+INLINE_SVG_RE = re.compile(r"<svg\b[\s\S]*?</svg>", re.I)
+PATH_TOKEN_RE = re.compile(
+    r"[A-Za-z]|[-+]?(?:\d*\.\d+|\d+)(?:[eE][-+]?\d+)?"
+)
 
 
 @dataclass(frozen=True)
 class MarkerShape:
     marker_id: str
     ref_x: float
-    min_x: float
-    max_x: float
-    is_tip_attached: bool
+    ref_y: float
+    tip: tuple[float, float]
+    back_center: tuple[float, float]
+    is_back_attached: bool
 
 
 @dataclass(frozen=True)
@@ -75,6 +81,14 @@ class RectShape:
 @dataclass(frozen=True)
 class PolygonShape:
     points: list[tuple[float, float]]
+    element: ET.Element
+
+
+@dataclass(frozen=True)
+class ConnectorShape:
+    start: tuple[float, float]
+    previous: tuple[float, float]
+    end: tuple[float, float]
     element: ET.Element
 
 
@@ -164,20 +178,32 @@ def marker_shapes(root: ET.Element) -> dict[str, MarkerShape]:
         if not marker_id:
             continue
         points = marker_points(marker)
-        if len(points) < 3:
+        tip = arrowhead_tip(points)
+        if tip is None:
             continue
-
-        xs = [point[0] for point in points]
-        min_x = min(xs)
-        max_x = max(xs)
-        width = max_x - min_x
-        if width <= 0:
+        back_points = list(points)
+        back_points.remove(tip)
+        if len(back_points) != 2:
             continue
 
         ref_x = first_number(marker.get("refX"), default=0.0)
-        tip_tolerance = max(0.75, width * 0.2)
-        is_tip_attached = abs(ref_x - max_x) <= tip_tolerance
-        shapes[marker_id] = MarkerShape(marker_id, ref_x, min_x, max_x, is_tip_attached)
+        ref_y = first_number(marker.get("refY"), default=0.0)
+        back_center = (
+            (back_points[0][0] + back_points[1][0]) / 2,
+            (back_points[0][1] + back_points[1][1]) / 2,
+        )
+        xs = [point[0] for point in points]
+        ys = [point[1] for point in points]
+        tolerance = max(0.75, max(max(xs) - min(xs), max(ys) - min(ys)) * 0.08)
+        distance = ((ref_x - back_center[0]) ** 2 + (ref_y - back_center[1]) ** 2) ** 0.5
+        shapes[marker_id] = MarkerShape(
+            marker_id=marker_id,
+            ref_x=ref_x,
+            ref_y=ref_y,
+            tip=tip,
+            back_center=back_center,
+            is_back_attached=distance <= tolerance,
+        )
     return shapes
 
 
@@ -208,6 +234,117 @@ def element_points(element: ET.Element) -> list[tuple[float, float]]:
     if name in {"polyline", "polygon"}:
         return points_attr_pairs(element.get("points"))
     return []
+
+
+PATH_PARAM_COUNTS = {
+    "M": 2,
+    "L": 2,
+    "H": 1,
+    "V": 1,
+    "C": 6,
+    "S": 4,
+    "Q": 4,
+    "T": 2,
+    "A": 7,
+}
+
+
+def path_terminal_segment(
+    value: str | None,
+) -> tuple[tuple[float, float], tuple[float, float], tuple[float, float]] | None:
+    """Return path start, last tangent/control point, and final endpoint."""
+    if not value:
+        return None
+    tokens = PATH_TOKEN_RE.findall(value)
+    index = 0
+    command: str | None = None
+    current = (0.0, 0.0)
+    subpath_start = current
+    start: tuple[float, float] | None = None
+    previous = current
+    end = current
+
+    def point(x: float, y: float, relative: bool, origin: tuple[float, float]) -> tuple[float, float]:
+        return (x + origin[0], y + origin[1]) if relative else (x, y)
+
+    while index < len(tokens):
+        token = tokens[index]
+        if token.isalpha():
+            command = token
+            index += 1
+            if command.upper() == "Z":
+                previous = current
+                current = subpath_start
+                end = current
+            continue
+        if command is None:
+            break
+
+        upper = command.upper()
+        count = PATH_PARAM_COUNTS.get(upper)
+        if count is None or index + count > len(tokens):
+            break
+        raw = tokens[index : index + count]
+        if any(item.isalpha() for item in raw):
+            break
+        values = [float(item) for item in raw]
+        index += count
+        relative = command.islower()
+        origin = current
+
+        if upper == "M":
+            current = point(values[0], values[1], relative, origin)
+            subpath_start = current
+            if start is None:
+                start = current
+            previous = origin
+            end = current
+            command = "l" if relative else "L"
+        elif upper in {"L", "T"}:
+            previous = origin
+            current = point(values[-2], values[-1], relative, origin)
+            end = current
+        elif upper == "H":
+            previous = origin
+            current = (values[0] + origin[0], origin[1]) if relative else (values[0], origin[1])
+            end = current
+        elif upper == "V":
+            previous = origin
+            current = (origin[0], values[0] + origin[1]) if relative else (origin[0], values[0])
+            end = current
+        elif upper == "C":
+            previous = point(values[2], values[3], relative, origin)
+            current = point(values[4], values[5], relative, origin)
+            end = current
+        elif upper in {"S", "Q"}:
+            previous = point(values[0], values[1], relative, origin)
+            current = point(values[2], values[3], relative, origin)
+            end = current
+        elif upper == "A":
+            previous = origin
+            current = point(values[5], values[6], relative, origin)
+            end = current
+
+    if start is None:
+        return None
+    return start, previous, end
+
+
+def element_terminal_segment(
+    element: ET.Element,
+) -> tuple[tuple[float, float], tuple[float, float], tuple[float, float]] | None:
+    name = local_name(element.tag)
+    if name == "path":
+        return path_terminal_segment(element.get("d"))
+    if name == "line":
+        start = (first_number(element.get("x1")), first_number(element.get("y1")))
+        end = (first_number(element.get("x2")), first_number(element.get("y2")))
+        return start, start, end
+    if name == "polyline":
+        points = points_attr_pairs(element.get("points"))
+        if len(points) >= 2:
+            return points[0], points[-2], points[-1]
+    return None
 
 
 def element_is_curved_or_diagonal(element: ET.Element) -> bool:
@@ -297,32 +434,88 @@ def collect_geometry(
     return rects, polygons
 
 
+def collect_connectors(
+    element: ET.Element,
+    dx: float = 0.0,
+    dy: float = 0.0,
+    in_marker: bool = False,
+) -> list[ConnectorShape]:
+    local_dx, local_dy = parse_translate(element.get("transform"))
+    dx += local_dx
+    dy += local_dy
+    in_marker = in_marker or local_name(element.tag) == "marker"
+    connectors: list[ConnectorShape] = []
+
+    if not in_marker:
+        segment = element_terminal_segment(element)
+        if segment is not None:
+            start, previous, end = segment
+            connectors.append(
+                ConnectorShape(
+                    start=(start[0] + dx, start[1] + dy),
+                    previous=(previous[0] + dx, previous[1] + dy),
+                    end=(end[0] + dx, end[1] + dy),
+                    element=element,
+                )
+            )
+
+    for child in list(element):
+        connectors.extend(collect_connectors(child, dx=dx, dy=dy, in_marker=in_marker))
+    return connectors
+
+
 def arrowhead_tip(points: list[tuple[float, float]], tolerance: float = 0.5) -> tuple[float, float] | None:
     if len(points) != 3:
         return None
 
-    xs = [point[0] for point in points]
-    ys = [point[1] for point in points]
+    edges = [
+        (point_distance(points[0], points[1]), points[2]),
+        (point_distance(points[1], points[2]), points[0]),
+        (point_distance(points[2], points[0]), points[1]),
+    ]
+    edges.sort(key=lambda item: item[0])
+    if edges[0][0] <= tolerance or edges[0][0] > edges[1][0] * 0.97:
+        return None
+    return edges[0][1]
 
-    max_x = max(xs)
-    min_x = min(xs)
-    max_y = max(ys)
-    min_y = min(ys)
 
-    right_tip = [point for point in points if abs(point[0] - max_x) <= tolerance]
-    left_tip = [point for point in points if abs(point[0] - min_x) <= tolerance]
-    down_tip = [point for point in points if abs(point[1] - max_y) <= tolerance]
-    up_tip = [point for point in points if abs(point[1] - min_y) <= tolerance]
+def arrowhead_back_center(
+    points: list[tuple[float, float]],
+) -> tuple[tuple[float, float], tuple[float, float]] | None:
+    tip = arrowhead_tip(points)
+    if tip is None:
+        return None
+    back_points = list(points)
+    back_points.remove(tip)
+    if len(back_points) != 2:
+        return None
+    center = (
+        (back_points[0][0] + back_points[1][0]) / 2,
+        (back_points[0][1] + back_points[1][1]) / 2,
+    )
+    return tip, center
 
-    if len(right_tip) == 1 and len(left_tip) == 2:
-        return right_tip[0]
-    if len(left_tip) == 1 and len(right_tip) == 2:
-        return left_tip[0]
-    if len(down_tip) == 1 and len(up_tip) == 2:
-        return down_tip[0]
-    if len(up_tip) == 1 and len(down_tip) == 2:
-        return up_tip[0]
-    return None
+
+def point_distance(a: tuple[float, float], b: tuple[float, float]) -> float:
+    return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+
+
+def connector_aligns_with_arrowhead(
+    connector: ConnectorShape,
+    back_center: tuple[float, float],
+    tip: tuple[float, float],
+) -> bool:
+    shaft = (
+        connector.end[0] - connector.previous[0],
+        connector.end[1] - connector.previous[1],
+    )
+    head = (tip[0] - back_center[0], tip[1] - back_center[1])
+    shaft_length = (shaft[0] ** 2 + shaft[1] ** 2) ** 0.5
+    head_length = (head[0] ** 2 + head[1] ** 2) ** 0.5
+    if shaft_length == 0 or head_length == 0:
+        return False
+    cosine = (shaft[0] * head[0] + shaft[1] * head[1]) / (shaft_length * head_length)
+    return cosine >= 0.9
 
 
 def polygon_is_arrowhead(polygon: PolygonShape) -> bool:
@@ -348,73 +541,133 @@ def line_number_for_element(source: str, element: ET.Element) -> int | None:
     return None
 
 
-def check_svg(svg: Path) -> tuple[list[Issue], list[str]]:
+def parse_svg_roots(artwork: Path, source: str) -> tuple[list[ET.Element], list[str]]:
+    warnings: list[str] = []
+    if artwork.suffix.lower() == ".svg":
+        try:
+            return [ET.fromstring(source)], warnings
+        except ET.ParseError as exc:
+            return [], [f"{artwork}: SVG XML parse failed: {exc}"]
+
+    roots: list[ET.Element] = []
+    matches = list(INLINE_SVG_RE.finditer(source))
+    if not matches:
+        return [], [f"{artwork}: no inline SVG found"]
+    for index, match in enumerate(matches, start=1):
+        try:
+            roots.append(ET.fromstring(match.group(0)))
+        except ET.ParseError as exc:
+            warnings.append(f"{artwork}: inline SVG {index} XML parse failed: {exc}")
+    return roots, warnings
+
+
+def check_artwork(artwork: Path) -> tuple[list[Issue], list[str]]:
     warnings: list[str] = []
     issues: list[Issue] = []
     try:
-        source = svg.read_text(encoding="utf-8")
-        root = ET.fromstring(source)
+        source = artwork.read_text(encoding="utf-8")
     except UnicodeDecodeError as exc:
-        return [], [f"{svg}: could not read as UTF-8 SVG: {exc}"]
-    except ET.ParseError as exc:
-        return [], [f"{svg}: SVG XML parse failed: {exc}"]
+        return [], [f"{artwork}: could not read as UTF-8 artwork: {exc}"]
 
-    class_markers = stylesheet_marker_map(root)
-    shapes = marker_shapes(root)
-    checked_tags = {"path", "line", "polyline"}
+    roots, parse_warnings = parse_svg_roots(artwork, source)
+    warnings.extend(parse_warnings)
+    for root in roots:
+        class_markers = stylesheet_marker_map(root)
+        shapes = marker_shapes(root)
+        checked_tags = {"path", "line", "polyline"}
 
-    for element in root.iter():
-        if local_name(element.tag) not in checked_tags:
-            continue
-        marker_id = element_marker_id(element, class_markers)
-        if not marker_id:
-            continue
-        shape = shapes.get(marker_id)
-        if not shape or not shape.is_tip_attached:
-            continue
-        if not element_is_curved_or_diagonal(element):
-            continue
-
-        issues.append(
-            Issue(
-                svg=svg,
-                line=line_number_for_element(source, element),
-                marker_id=marker_id,
-                element=element_label(element),
-                detail=(
-                    "curved or diagonal arrow uses a triangular marker whose refX is near "
-                    "the arrow point; end the line at the flat-back center or use an "
-                    "explicit same-color arrowhead polygon"
-                ),
-            )
-        )
-
-    root_area = viewbox_area(root)
-    max_rect_area = root_area * 0.35 if root_area else None
-    rects, polygons = collect_geometry(root, max_rect_area=max_rect_area)
-    for polygon in polygons:
-        if not polygon_is_arrowhead(polygon):
-            continue
-        tip = arrowhead_tip(polygon.points)
-        if tip is None:
-            continue
-        for rect in rects:
-            if not rect.contains_strict(tip):
+        for element in root.iter():
+            if local_name(element.tag) not in checked_tags:
+                continue
+            marker_id = element_marker_id(element, class_markers)
+            if not marker_id:
+                continue
+            shape = shapes.get(marker_id)
+            if not shape or shape.is_back_attached:
                 continue
             issues.append(
                 Issue(
-                    svg=svg,
-                    line=line_number_for_element(source, polygon.element),
-                    marker_id="explicit-arrowhead",
-                    element=element_label(polygon.element),
+                    svg=artwork,
+                    line=line_number_for_element(source, element),
+                    marker_id=marker_id,
+                    element=element_label(element),
                     detail=(
-                        "arrowhead tip is inside a rectangle; stop the point on the "
-                        "target object's boundary line and keep the arrowhead outside "
-                        "the target shape"
+                        "arrow shaft attaches to a triangular marker away from the center "
+                        "of its flat back side; set the marker reference to the flat-back "
+                        "center or use an explicit class=\"arrowhead\" polygon"
                     ),
                 )
             )
-            break
+
+        root_area = viewbox_area(root)
+        max_rect_area = root_area * 0.15 if root_area else None
+        rects, polygons = collect_geometry(root, max_rect_area=max_rect_area)
+        connectors = collect_connectors(root)
+        for polygon in polygons:
+            if not polygon_is_arrowhead(polygon):
+                continue
+            geometry = arrowhead_back_center(polygon.points)
+            if geometry is None:
+                continue
+            tip, back_center = geometry
+            for rect in rects:
+                if not rect.contains_strict(tip):
+                    continue
+                issues.append(
+                    Issue(
+                        svg=artwork,
+                        line=line_number_for_element(source, polygon.element),
+                        marker_id="explicit-arrowhead",
+                        element=element_label(polygon.element),
+                        detail=(
+                            "arrowhead tip is inside a rectangle; stop the point on the "
+                            "target object's boundary line and keep the arrowhead outside "
+                            "the target shape"
+                        ),
+                    )
+                )
+                break
+
+            class_names = polygon.element.get("class", "").split()
+            if not any("arrowhead" in class_name for class_name in class_names):
+                continue
+            xs = [point[0] for point in polygon.points]
+            ys = [point[1] for point in polygon.points]
+            tolerance = max(1.5, max(max(xs) - min(xs), max(ys) - min(ys)) * 0.08)
+            connected = [
+                connector
+                for connector in connectors
+                if point_distance(connector.end, back_center) <= tolerance
+            ]
+            if not connected:
+                issues.append(
+                    Issue(
+                        svg=artwork,
+                        line=line_number_for_element(source, polygon.element),
+                        marker_id="explicit-arrowhead",
+                        element=element_label(polygon.element),
+                        detail=(
+                            "no arrow shaft ends at the midpoint of this arrowhead's flat "
+                            "back side"
+                        ),
+                    )
+                )
+            elif not any(
+                connector_aligns_with_arrowhead(connector, back_center, tip)
+                for connector in connected
+            ):
+                issues.append(
+                    Issue(
+                        svg=artwork,
+                        line=line_number_for_element(source, polygon.element),
+                        marker_id="explicit-arrowhead",
+                        element=element_label(polygon.element),
+                        detail=(
+                            "arrow shaft reaches the flat-back midpoint but its final "
+                            "tangent does not align with the arrowhead direction"
+                        ),
+                    )
+                )
     return issues, warnings
 
 
@@ -440,10 +693,16 @@ def collect_from_json(course_json: Path) -> list[Path]:
     figures_dir = root / "figures"
     if figures_dir.is_dir():
         found.extend(figures_dir.glob("*.svg"))
+    for animations_dir in (root / "animations", root.parent / "animations"):
+        if not animations_dir.is_dir():
+            continue
+        found.extend(animations_dir.rglob("*.svg"))
+        found.extend(animations_dir.rglob("*.html"))
+        found.extend(animations_dir.rglob("*.htm"))
     return found
 
 
-def collect_svg_files(inputs: list[Path]) -> tuple[list[Path], list[str]]:
+def collect_artwork_files(inputs: list[Path]) -> tuple[list[Path], list[str]]:
     if not inputs:
         if Path("course.json").exists():
             inputs = [Path("course.json")]
@@ -458,14 +717,16 @@ def collect_svg_files(inputs: list[Path]) -> tuple[list[Path], list[str]]:
             figures_dir = path / "figures"
             search_root = figures_dir if figures_dir.is_dir() else path
             collected.extend(search_root.rglob("*.svg"))
+            collected.extend(search_root.rglob("*.html"))
+            collected.extend(search_root.rglob("*.htm"))
         elif path.is_file() and path.suffix.lower() == ".json":
             collected.extend(collect_from_json(path))
-        elif path.is_file() and path.suffix.lower() == ".svg":
+        elif path.is_file() and path.suffix.lower() in {".svg", ".html", ".htm"}:
             collected.append(path)
         elif not path.exists():
             warnings.append(f"{path}: path does not exist")
         else:
-            warnings.append(f"{path}: not an SVG, JSON course file, or directory")
+            warnings.append(f"{path}: not SVG/HTML artwork, a JSON course file, or a directory")
 
     unique: list[Path] = []
     seen: set[Path] = set()
@@ -479,9 +740,14 @@ def collect_svg_files(inputs: list[Path]) -> tuple[list[Path], list[str]]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Flag SVG arrow geometry where lines connect to arrowhead tips or arrowheads intrude into target shapes."
+        description="Flag SVG and inline-animation arrow geometry where shafts miss flat-back centers or arrowheads intrude into targets."
     )
-    parser.add_argument("paths", nargs="*", type=Path, help="course.json, SVG files, or folders to scan")
+    parser.add_argument(
+        "paths",
+        nargs="*",
+        type=Path,
+        help="course.json, SVG/HTML artwork files, or folders to scan",
+    )
     parser.add_argument(
         "--fail-on-flags",
         action="store_true",
@@ -489,13 +755,13 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    svg_files, warnings = collect_svg_files(args.paths)
-    if not svg_files and not warnings:
-        warnings.append("No SVG files found to check")
+    artwork_files, warnings = collect_artwork_files(args.paths)
+    if not artwork_files and not warnings:
+        warnings.append("No SVG or inline-SVG animation files found to check")
 
     issues: list[Issue] = []
-    for svg in svg_files:
-        file_issues, file_warnings = check_svg(svg)
+    for artwork in artwork_files:
+        file_issues, file_warnings = check_artwork(artwork)
         issues.extend(file_issues)
         warnings.extend(file_warnings)
 
@@ -505,7 +771,7 @@ def main() -> int:
             print(f"  - {warning}")
 
     if issues:
-        print(f"\n{len(issues)} SVG arrow issue(s):")
+        print(f"\n{len(issues)} arrow geometry issue(s):")
         for issue in issues:
             location = f"{issue.svg}"
             if issue.line:
@@ -519,7 +785,7 @@ def main() -> int:
         )
         return 1 if args.fail_on_flags else 0
 
-    print(f"\nOK - SVG arrow geometry check passed for {len(svg_files)} file(s).")
+    print(f"\nOK - arrow geometry check passed for {len(artwork_files)} file(s).")
     return 0
 
 

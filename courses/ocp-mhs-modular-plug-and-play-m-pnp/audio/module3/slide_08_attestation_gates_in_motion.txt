@@ -1,0 +1,5 @@
+Hold-Off is a controlled security checkpoint, not a failed power transition. Hardware can have the power it needs for inspection while reset remains asserted. That gives the B M C time to establish trust before the component can affect the next stage of boot.
+
+The first major gate occurs in Standby Hold-Off, where the BMC can attest the H P M FPGA before releasing it into Standby Run. Later, S five Hold-Off creates a checkpoint for field-replaceable storage devices. As the platform approaches S zero, the BMC can evaluate the system-on-chip and other devices that become reachable with main power.
+
+Some P C I E devices can't be fully checked until link training, so S zero Run Bios Boot provides a controlled window before the operating system takes over. Only after the required runtime attestations complete does the platform advance to S zero Run O S. The state machine defines the checkpoints. The integrator's security policy decides what evidence is required at each one.

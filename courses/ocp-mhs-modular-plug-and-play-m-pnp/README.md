@@ -2,6 +2,8 @@
 
 Deep-technical course on the M-PNP specifications bundle, covering the MHS interoperability problem, FRU discovery and boot, the HPM FPGA API, conformance, tooling, and adoption.
 
+Each module includes a short animated teaching figure. The editable HTML animation sources and rendering helpers live in `animations/`; the exported silent videos and poster frames live in `figures/`.
+
 This course source is intended for PR-friendly editing. Change slides, quiz content, glossary links, and figures in `course.json`. Change narration in `audio/moduleN/slide_*.txt`. Generated audio and SCORM runtime files are not checked in.
 
 ## Modules
