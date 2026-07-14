@@ -469,8 +469,9 @@ def render_content_grid(slide: dict, course: dict, module: dict) -> str:
         grid_cols = explicit
     else:
         grid_cols = max(2, min(5, len(slide.get("cards", [])) or 3))
+    slide_class = "slide slide--mobile-scroll" if slide.get("mobile_scroll") else "slide"
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="{slide_class}" data-slide="{slide["id"]}">
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -902,6 +903,21 @@ def render_module(course: dict, module_index: int) -> str:
   const themeToggle = document.getElementById('themeToggle');
   const fullscreenBtn = document.getElementById('fullscreenBtn');
 
+  function syncSlideVideos(activeSlideNumber, restartActive) {{
+    slides.forEach(function(slide) {{
+      const video = slide.querySelector('video.figure-video');
+      if (!video) return;
+      const isActive = slide.dataset.slide === String(activeSlideNumber);
+      if (!isActive) {{
+        video.pause();
+        video.currentTime = 0;
+        return;
+      }}
+      if (restartActive) video.currentTime = 0;
+      if (video.hasAttribute('autoplay')) video.play().catch(function() {{}});
+    }});
+  }}
+
   function goToSlide(n, direction) {{
     if (n < 1 || n > totalSlides || n === currentSlide) return;
     const oldSlide = document.querySelector('.slide.active');
@@ -913,6 +929,7 @@ def render_module(course: dict, module_index: int) -> str:
     }}
     requestAnimationFrame(() => newSlide.classList.add('active'));
     currentSlide = n;
+    syncSlideVideos(currentSlide, true);
     updateControls();
     if (typeof loadSlideAudio === 'function') loadSlideAudio(n);
     if (typeof checkCompletion === 'function') checkCompletion();
@@ -1257,6 +1274,7 @@ def render_module(course: dict, module_index: int) -> str:
 
   window.addEventListener('beforeunload', function() {{ SCORM.finish(); }});
 
+  syncSlideVideos(currentSlide, true);
   updateControls();
   document.addEventListener('click', function initAudio() {{
     loadSlideAudio(currentSlide);
