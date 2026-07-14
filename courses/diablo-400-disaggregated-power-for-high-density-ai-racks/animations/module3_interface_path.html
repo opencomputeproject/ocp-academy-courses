@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diablo 400 serviceable interface path animation</title>
+<style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eef1f3}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="scene" width="1280" height="720" aria-label="Animated serviceable interface path from facility AC to the IT rack"></canvas>
+<script src="academy_video_common.js"></script>
+<script>
+(function () {
+  'use strict';
+  var V = window.AcademyVideo;
+  var ctx = V.ctx;
+  var C = V.C;
+  var blocks = [
+    { x: 36, w: 136, lines: ['OVERHEAD', 'AC BUSWAY'] },
+    { x: 208, w: 136, lines: ['AC PDU', 'INPUT PROTECTION'] },
+    { x: 380, w: 136, lines: ['PSU SHELVES', 'HOT-SWAP'] },
+    { x: 552, w: 136, lines: ['VERTICAL', 'BUSBAR'] },
+    { x: 724, w: 136, lines: ['DC PDU', 'PROTECT / CONTROL'] },
+    { x: 896, w: 136, lines: ['OUTPUT', 'CABLE'] },
+    { x: 1068, w: 176, lines: ['IT RACK', 'COMPUTE LOAD'] }
+  ];
+  var notes = [
+    'Facility AC enters from the overhead busway.',
+    'The AC PDU accepts input and protects the power shelves.',
+    'Front-accessible PSU shelves convert power and share current.',
+    'The vertical busbar distributes plus, minus, and common.',
+    'The DC PDU protects, switches, controls, and reports telemetry.',
+    'Output voltage disconnects before a cable is serviced.',
+    'Together, the interfaces form a deliberate service path.'
+  ];
+
+  function block(item, active, index) {
+    var tone = active ? C.greenPale : '#ffffff';
+    var stroke = active ? C.green : C.border;
+    ctx.save();
+    if (active) {
+      ctx.shadowColor = C.green;
+      ctx.shadowBlur = 10;
+    }
+    V.roundedRect(item.x, 260, item.w, 150, 14, tone, stroke, active ? 4 : 2);
+    ctx.restore();
+    V.roundedRect(item.x + 18, 282, 40, 40, 10, active ? C.green : C.bluePale);
+    V.text(String(index + 1), item.x + 38, 302, 19, 700, active ? '#ffffff' : C.blue, 'center');
+    V.text(item.lines[0], item.x + (item.w / 2), 350, 17, 700, C.text, 'center', item.w - 18);
+    V.text(item.lines[1], item.x + (item.w / 2), 379, 13, 700, C.muted, 'center', item.w - 18);
+  }
+
+  function renderFrame(elapsed) {
+    var t = elapsed * 0.5;
+    var reset = 1 - V.progress(t, 8250, 8850);
+    var stage = Math.min(6, Math.floor(Math.max(0, t - 300) / 1050));
+    var complete = V.progress(t, 6900, 7900) * reset;
+
+    V.header('MODULE 3 / SERVICEABLE INTERFACES', 'Follow the power path from facility AC to the IT rack');
+    V.panel(28, 124, 1224, 400, 'SERVICEABLE INTERFACE PATH');
+
+    for (var i = 0; i < blocks.length; i += 1) {
+      var local = V.progress(t, 300 + (i * 900), 850 + (i * 900)) * reset;
+      block(blocks[i], local > 0.55, i);
+      if (i < blocks.length - 1) {
+        var x1 = blocks[i].x + blocks[i].w;
+        var x2 = blocks[i + 1].x - 8;
+        V.arrow(x1 + 4, 335, x2, 335, C.greenDark, 5, V.progress(t, 720 + (i * 900), 1210 + (i * 900)) * reset);
+        if (t > 1200 + (i * 900)) V.movingDot(x1 + 8, 335, x2 - 8, 335, t, 1200 + (i * 900), 900, C.green, 5);
+      }
+    }
+
+    V.panel(86, 555, 1108, 110, '', complete > 0.2 ? 'green' : 'blue');
+    V.text('CURRENT TEACHING BEAT', 120, 585, 14, 700, complete > 0.2 ? C.greenDark : C.blue);
+    V.text(complete > 0.55 ? notes[6] : notes[stage], 640, 624, 24, 700, C.text, 'center', 1020);
+  }
+
+  V.install(renderFrame, 17700, 15400);
+}());
+</script>
+</body>
+</html>

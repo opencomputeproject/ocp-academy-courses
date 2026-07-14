@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coordinated LVDC response animation</title>
+<style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eef1f3}canvas{display:block;width:100vw;height:100vh}</style>
+</head>
+<body>
+<canvas id="scene" width="1280" height="720" aria-label="Animated coordinated LVDC system response with conversion, storage, protection, and healthy loads"></canvas>
+<script src="academy_video_common.js"></script>
+<script>
+(function () {
+  'use strict';
+  var V = window.AcademyVideo;
+  var ctx = V.ctx;
+  var C = V.C;
+
+  function block(x, y, w, h, title, detail, state) {
+    var fill = '#ffffff';
+    var stroke = C.border;
+    if (state === 'active') { fill = C.greenPale; stroke = C.green; }
+    if (state === 'support') { fill = C.bluePale; stroke = C.blue; }
+    if (state === 'warning') { fill = C.amberPale; stroke = C.amber; }
+    if (state === 'fault') { fill = C.redPale; stroke = C.red; }
+    ctx.save();
+    if (state && state !== 'idle') {
+      ctx.shadowColor = stroke;
+      ctx.shadowBlur = 10;
+    }
+    V.roundedRect(x, y, w, h, 14, fill, stroke, state && state !== 'idle' ? 4 : 2);
+    ctx.restore();
+    V.text(title, x + (w / 2), y + 39, 19, 700, C.text, 'center', w - 20);
+    V.text(detail, x + (w / 2), y + 70, 14, 700, C.muted, 'center', w - 20);
+  }
+
+  function renderFrame(t) {
+    var normal = V.progress(t, 250, 1600);
+    var loadStep = V.progress(t, 2300, 3000) * (1 - V.progress(t, 4100, 4500));
+    var fault = V.progress(t, 4450, 5000) * (1 - V.progress(t, 6050, 6500));
+    var cleared = V.progress(t, 5750, 6500);
+    var recovery = V.progress(t, 6500, 7550);
+    var reset = 1 - V.progress(t, 8350, 8950);
+
+    V.header('MODULE 4 / COORDINATED LVDC', 'Conversion, storage, and protection act as one system');
+    V.panel(28, 124, 1224, 466, 'CONCEPTUAL COORDINATED RESPONSE');
+
+    block(62, 260, 150, 112, 'MV / AC', 'SOURCE', normal > 0.5 ? 'active' : 'idle');
+    block(262, 240, 166, 152, 'CONVERSION', 'RECTIFIER / SST', normal > 0.5 ? 'active' : 'idle');
+    block(478, 260, 146, 112, 'DC BUS', 'LVDC', loadStep > 0.25 ? 'support' : (normal > 0.5 ? 'active' : 'idle'));
+    block(674, 240, 170, 152, 'PROTECTION', 'SELECTIVE CLEARING', fault > 0.2 ? 'warning' : (cleared > 0.5 ? 'active' : 'idle'));
+    block(934, 190, 220, 112, 'IT LOADS', 'AI COMPUTE', fault > 0.2 ? 'fault' : (loadStep > 0.2 ? 'warning' : (normal > 0.5 ? 'active' : 'idle')));
+    block(934, 350, 220, 112, 'COOLING', 'HEALTHY BRANCH', recovery > 0.2 ? 'active' : (normal > 0.5 ? 'active' : 'idle'));
+    block(478, 458, 146, 94, 'ESS', 'STORAGE', loadStep > 0.2 ? 'support' : 'idle');
+
+    V.arrow(212, 316, 254, 316, C.greenDark, 6, normal * reset);
+    V.arrow(428, 316, 470, 316, C.greenDark, 6, normal * reset);
+    V.arrow(624, 316, 666, 316, C.greenDark, 6, normal * reset);
+    V.arrow(844, 286, 926, 246, fault > 0.2 ? C.red : C.greenDark, 6, (cleared > 0.35 ? 0.25 : normal) * reset);
+    V.arrow(844, 346, 926, 406, C.greenDark, 6, normal * reset);
+    V.line(551, 458, 551, 380, C.border, 4, 1);
+    if (loadStep > 0.01) V.arrow(551, 458, 551, 380, C.blue, 6, loadStep * reset);
+
+    if (normal > 0.75) {
+      V.movingDot(218, 316, 248, 316, t, 600, 700, C.green, 5);
+      V.movingDot(434, 316, 464, 316, t, 900, 700, C.green, 5);
+      V.movingDot(630, 316, 660, 316, t, 1200, 700, C.green, 5);
+      V.movingDot(850, 343, 918, 400, t, 1450, 950, C.green, 5);
+    }
+    if (loadStep > 0.2) V.movingDot(551, 450, 551, 388, t, 2400, 700, C.blue, 6);
+
+    if (fault > 0.2) {
+      ctx.save();
+      ctx.globalAlpha = fault;
+      V.roundedRect(1062, 309, 68, 36, 18, C.redPale, C.red, 2);
+      V.text('FAULT', 1096, 327, 14, 700, C.red, 'center');
+      ctx.restore();
+    }
+    if (cleared > 0.45) {
+      ctx.save();
+      ctx.globalAlpha = cleared * reset;
+      ctx.strokeStyle = C.red;
+      ctx.lineWidth = 7;
+      ctx.beginPath();
+      ctx.moveTo(875, 263);
+      ctx.lineTo(903, 291);
+      ctx.moveTo(903, 263);
+      ctx.lineTo(875, 291);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    var label = 'NORMAL FLOW / CONVERSION FEEDS THE DC BUS';
+    var tone = 'green';
+    if (loadStep > 0.2) { label = 'AI LOAD STEP / ESS SUPPORTS THE DC BUS'; tone = 'blue'; }
+    if (fault > 0.2) { label = 'DC FAULT / PROTECTION ACTS QUICKLY'; tone = 'amber'; }
+    if (cleared > 0.45) { label = 'SELECTIVE CLEARING / HEALTHY COOLING STAYS ONLINE'; tone = 'green'; }
+    V.panel(118, 620, 1044, 70, '', tone);
+    V.text(label, 640, 655, 21, 700, C.text, 'center', 980);
+  }
+
+  V.install(renderFrame, 8950, 7600);
+}());
+</script>
+</body>
+</html>
