@@ -10,7 +10,19 @@ This course source is intended for PR-friendly editing. Change slides, quiz cont
 |---|---|---|
 | 1 | Why Deschutes, Why Now | Motivation, the FWS -> CDU -> TCS architecture, and the v1.0 headline specs. |
 | 2 | CDU Architecture & Performance | Inside the v1.0 CDU: physical envelope, fittings, pump/HX/sensor suite, controls, electrical, hot-swap. |
-| 3 | Deployment, Supply Chain & Call to Action | Redmond HAC, rack power architecture, the three-tier supplier model, FRUs, and how to get involved. |
+| 3 | Deployment, Supply Chain & Call to Action | Redmond HAC, rack power architecture, the three-tier supplier model, FRUs, contained pump service, and how to get involved. |
+
+## Teaching animations
+
+Each module includes one short, silent teaching animation that plays alongside the narrated lesson:
+
+| Module | Concept |
+|---|---|
+| 1 | The CDU as the thermal bridge between facility water and the technology cooling system |
+| 2 | Concurrent PLC control loops for pump speed, valve position, and redundant power |
+| 3 | Contained pump service while the redundant pump maintains coolant flow |
+
+The rendered WebM files and poster images are in `figures/`. Their editable HTML animation sources are in `animations/`.
 
 ## Build
 

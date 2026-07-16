@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Deschutes Pump Service Sequence</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 1280px;
+      height: 720px;
+      margin: 0;
+      overflow: hidden;
+      background: #f7f8fa;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    svg { display: block; width: 1280px; height: 720px; }
+    text { letter-spacing: 0; }
+    .flow { stroke-dasharray: 17 15; animation: flow 1.05s linear infinite; }
+    .pump-b-rotor { transform-box: fill-box; transform-origin: center; animation: spin 1.8s linear infinite; }
+    .pump-a-rotor { transform-box: fill-box; transform-origin: center; animation: pumpAspin 12s linear infinite; }
+    .valve-a { transform-box: fill-box; transform-origin: center; animation: closeValve 12s ease-in-out infinite; }
+    .branch-fluid { animation: drainFluid 12s ease-in-out infinite; }
+    .drain-hose { animation: showDrain 12s ease-in-out infinite; }
+    .power-plug { animation: unplug 12s ease-in-out infinite; }
+    .break-point { animation: breakPoint 12s ease-in-out infinite; }
+    .pump-a-assembly { animation: removePump 12s ease-in-out infinite; }
+    .step-1 { animation: step1 12s ease-in-out infinite; }
+    .step-2 { animation: step2 12s ease-in-out infinite; }
+    .step-3 { animation: step3 12s ease-in-out infinite; }
+    .step-4 { animation: step4 12s ease-in-out infinite; }
+    .step-5 { animation: step5 12s ease-in-out infinite; }
+    .continuous { animation: continuous 2s ease-in-out infinite; }
+    @keyframes flow { to { stroke-dashoffset: -32; } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pumpAspin {
+      0%, 15% { transform: rotate(0deg); }
+      22%, 80% { transform: rotate(40deg); }
+      90%, 100% { transform: rotate(360deg); }
+    }
+    @keyframes closeValve {
+      0%, 14%, 90%, 100% { transform: rotate(0deg); }
+      22%, 82% { transform: rotate(90deg); }
+    }
+    @keyframes drainFluid {
+      0%, 25% { opacity: 1; }
+      35%, 82% { opacity: .08; }
+      92%, 100% { opacity: 1; }
+    }
+    @keyframes showDrain {
+      0%, 25%, 48%, 100% { opacity: 0; }
+      30%, 43% { opacity: 1; }
+    }
+    @keyframes unplug {
+      0%, 43%, 82%, 100% { transform: translateX(0); }
+      52%, 76% { transform: translateX(34px); }
+    }
+    @keyframes breakPoint {
+      0%, 43%, 65%, 100% { opacity: .25; }
+      50%, 60% { opacity: 1; }
+    }
+    @keyframes removePump {
+      0%, 60%, 86%, 100% { transform: translateY(0); }
+      70%, 80% { transform: translateY(122px); }
+    }
+    @keyframes step1 { 0%, 16%, 100% { opacity: 1; } 22%, 95% { opacity: .35; } }
+    @keyframes step2 { 0%, 16%, 34%, 100% { opacity: .35; } 20%, 30% { opacity: 1; } }
+    @keyframes step3 { 0%, 30%, 54%, 100% { opacity: .35; } 36%, 50% { opacity: 1; } }
+    @keyframes step4 { 0%, 48%, 70%, 100% { opacity: .35; } 55%, 66% { opacity: 1; } }
+    @keyframes step5 { 0%, 64%, 93%, 100% { opacity: .35; } 72%, 88% { opacity: 1; } }
+    @keyframes continuous { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 1280 720" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="title">Contained pump service sequence</title>
+    <desc id="desc">A silent animation shows a redundant pump maintaining coolant flow while the service branch is isolated, drained, de-energized, disconnected, and removed through the front service envelope.</desc>
+    <defs>
+      <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1b2340" flood-opacity="0.12"/>
+      </filter>
+    </defs>
+
+    <rect width="1280" height="720" fill="#f7f8fa"/>
+    <rect width="1280" height="86" fill="#ffffff"/>
+    <rect y="84" width="1280" height="2" fill="#8dc63f"/>
+    <text x="52" y="37" font-size="15" font-weight="700" fill="#6fa030">PROJECT DESCHUTES SERVICEABILITY</text>
+    <text x="52" y="68" font-size="25" font-weight="700" fill="#19194d">Contained service preserves flow while a pump is removed</text>
+    <g transform="translate(956 23)">
+      <rect id="redundant-flow-box" width="270" height="42" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
+      <circle class="continuous" cx="22" cy="21" r="6" fill="#6fa030"/>
+      <text id="redundant-flow-text" x="40" y="26" font-size="14" font-weight="700" fill="#315018">Redundant flow remains active</text>
+    </g>
+
+    <g transform="translate(52 112)">
+      <g class="step-1">
+        <rect width="212" height="52" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
+        <circle cx="25" cy="26" r="16" fill="#8dc63f"/>
+        <text x="25" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">1</text>
+        <text x="50" y="31" font-size="15" font-weight="700" fill="#315018">Isolate branch</text>
+      </g>
+      <g class="step-2" transform="translate(228)">
+        <rect width="212" height="52" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
+        <circle cx="25" cy="26" r="16" fill="#8dc63f"/>
+        <text x="25" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">2</text>
+        <text x="50" y="31" font-size="15" font-weight="700" fill="#315018">Drain pump leg</text>
+      </g>
+      <g class="step-3" transform="translate(456)">
+        <rect width="212" height="52" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
+        <circle cx="25" cy="26" r="16" fill="#8dc63f"/>
+        <text x="25" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">3</text>
+        <text x="50" y="31" font-size="15" font-weight="700" fill="#315018">De-energize</text>
+      </g>
+      <g class="step-4" transform="translate(684)">
+        <rect width="212" height="52" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
+        <circle cx="25" cy="26" r="16" fill="#8dc63f"/>
+        <text x="25" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">4</text>
+        <text x="50" y="31" font-size="15" font-weight="700" fill="#315018">Disconnect</text>
+      </g>
+      <g class="step-5" transform="translate(912)">
+        <rect width="212" height="52" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
+        <circle cx="25" cy="26" r="16" fill="#8dc63f"/>
+        <text x="25" y="31" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">5</text>
+        <text x="50" y="31" font-size="15" font-weight="700" fill="#315018">Remove safely</text>
+      </g>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="74" y="196" width="814" height="438" rx="10" fill="#ffffff" stroke="#c9ced7" stroke-width="2"/>
+      <rect x="74" y="196" width="814" height="58" rx="8" fill="#f2f4f7"/>
+      <text x="100" y="231" font-size="18" font-weight="700" fill="#19194d">SIMPLIFIED CDU PUMP BAY</text>
+
+      <path id="supply-arrow-shaft" d="M122 314 H795" stroke="#2f8fd5" stroke-width="14" stroke-linecap="butt"/>
+      <polygon id="supply-arrowhead" class="arrowhead" points="795,302 820,314 795,326" fill="#2f8fd5"/>
+      <path class="flow" d="M128 314 H786" stroke="#c2e7ff" stroke-width="5" stroke-linecap="round"/>
+      <text x="124" y="289" font-size="13" font-weight="700" fill="#2479b8">SECONDARY SUPPLY HEADER</text>
+      <path d="M122 552 H820" stroke="#d94a45" stroke-width="14" stroke-linecap="round"/>
+      <text x="124" y="583" font-size="13" font-weight="700" fill="#b3322f">SECONDARY RETURN HEADER</text>
+
+      <g id="pump-a-section" transform="translate(202 330)">
+        <path class="branch-fluid" d="M110 -16 V36 M110 158 V222" stroke="#2f8fd5" stroke-width="12" stroke-linecap="round"/>
+        <g transform="translate(110 20)">
+          <g class="valve-a">
+            <circle r="23" fill="#ffffff" stroke="#5f6062" stroke-width="2"/>
+            <path d="M-16 0 H16" stroke="#d9822b" stroke-width="7" stroke-linecap="round"/>
+          </g>
+        </g>
+        <g class="pump-a-assembly">
+          <circle cx="110" cy="96" r="57" fill="#ffffff" stroke="#5f6062" stroke-width="3"/>
+          <g transform="translate(110 96)">
+            <g class="pump-a-rotor" fill="#8dc63f">
+              <path d="M0 -38 C28 -30 31 -13 8 -3 Z"/>
+              <path d="M38 0 C30 28 13 31 3 8 Z"/>
+              <path d="M0 38 C-28 30 -31 13 -8 3 Z"/>
+              <path d="M-38 0 C-30 -28 -13 -31 -3 -8 Z"/>
+              <circle r="8" fill="#5f6062"/>
+            </g>
+          </g>
+          <rect x="43" y="73" width="22" height="46" rx="3" fill="#ffffff" stroke="#5f6062"/>
+          <g transform="translate(18 82)">
+            <g class="power-plug">
+              <rect width="30" height="28" rx="4" fill="#5f6062"/>
+              <path d="M30 8 H43 M30 20 H43" stroke="#5f6062" stroke-width="4"/>
+            </g>
+          </g>
+        </g>
+        <g transform="translate(110 190)">
+          <g class="valve-a">
+            <circle r="23" fill="#ffffff" stroke="#5f6062" stroke-width="2"/>
+            <path d="M-16 0 H16" stroke="#d9822b" stroke-width="7" stroke-linecap="round"/>
+          </g>
+        </g>
+        <circle class="break-point" cx="110" cy="43" r="31" fill="none" stroke="#d9822b" stroke-width="5" stroke-dasharray="7 5"/>
+        <circle class="break-point" cx="110" cy="150" r="31" fill="none" stroke="#d9822b" stroke-width="5" stroke-dasharray="7 5"/>
+        <path class="drain-hose" d="M144 148 C205 175 205 205 232 221 V229" fill="none" stroke="#2f8fd5" stroke-width="6" stroke-dasharray="10 8" stroke-linecap="butt"/>
+        <polygon class="drain-hose arrowhead" points="224,229 240,229 232,245" fill="#2f8fd5"/>
+        <rect class="drain-hose" x="205" y="245" width="62" height="24" rx="4" fill="#d9edf9" stroke="#2f8fd5"/>
+        <text class="drain-hose" x="236" y="262" text-anchor="middle" font-size="11" font-weight="700" fill="#2479b8">DRAIN</text>
+        <path d="M110 278 V334" stroke="#d9822b" stroke-width="5" stroke-linecap="butt"/>
+        <polygon class="arrowhead" points="102,334 118,334 110,350" fill="#d9822b"/>
+        <text x="110" y="374" text-anchor="middle" font-size="12" font-weight="700" fill="#a8611c">FRONT SERVICE ENVELOPE</text>
+      </g>
+
+      <g id="pump-b-section" transform="translate(536 330)">
+        <path d="M110 -16 V36 M110 158 V222" stroke="#2f8fd5" stroke-width="12" stroke-linecap="round"/>
+        <circle cx="110" cy="96" r="57" fill="#ffffff" stroke="#6fa030" stroke-width="4"/>
+        <g transform="translate(110 96)">
+          <g class="pump-b-rotor" fill="#8dc63f">
+            <path d="M0 -38 C28 -30 31 -13 8 -3 Z"/>
+            <path d="M38 0 C30 28 13 31 3 8 Z"/>
+            <path d="M0 38 C-28 30 -31 13 -8 3 Z"/>
+            <path d="M-38 0 C-30 -28 -13 -31 -3 -8 Z"/>
+            <circle r="8" fill="#5f6062"/>
+          </g>
+        </g>
+        <rect x="26" y="190" width="168" height="44" rx="5" fill="#eef6e4" stroke="#8dc63f"/>
+        <circle class="continuous" cx="48" cy="212" r="6" fill="#6fa030"/>
+        <text x="64" y="217" font-size="13" font-weight="700" fill="#315018">FLOW CONTINUES</text>
+      </g>
+      <g>
+        <rect x="220" y="332" width="184" height="30" rx="4" fill="#ffffff" stroke="#dce0e6"/>
+        <text x="312" y="352" text-anchor="middle" font-size="13" font-weight="700" fill="#19194d">PUMP A · SERVICE BRANCH</text>
+        <rect id="pump-b-label-box" x="554" y="332" width="184" height="30" rx="4" fill="#ffffff" stroke="#dce0e6"/>
+        <text x="646" y="352" text-anchor="middle" font-size="13" font-weight="700" fill="#19194d">PUMP B · REDUNDANT DUTY</text>
+      </g>
+    </g>
+
+    <g filter="url(#shadow)">
+      <rect x="918" y="196" width="308" height="438" rx="10" fill="#ffffff" stroke="#c9ced7" stroke-width="2"/>
+      <rect x="918" y="196" width="308" height="58" rx="8" fill="#eef6e4"/>
+      <text x="944" y="231" font-size="18" font-weight="700" fill="#315018">SERVICE SAFEGUARDS</text>
+
+      <g transform="translate(950 286)">
+        <circle cx="18" cy="18" r="18" fill="#8dc63f"/>
+        <path d="M10 18 L16 24 L27 11" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="50" y="15" font-size="14" font-weight="700" fill="#19194d">Isolation valves</text>
+        <text x="50" y="35" font-size="12" fill="#5f6062">contain branch pressure</text>
+      </g>
+      <g transform="translate(950 358)">
+        <circle cx="18" cy="18" r="18" fill="#8dc63f"/>
+        <path d="M10 18 L16 24 L27 11" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="50" y="15" font-size="14" font-weight="700" fill="#19194d">Drain port</text>
+        <text x="50" y="35" font-size="12" fill="#5f6062">clears trapped coolant</text>
+      </g>
+      <g transform="translate(950 430)">
+        <circle cx="18" cy="18" r="18" fill="#8dc63f"/>
+        <path d="M10 18 L16 24 L27 11" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="50" y="15" font-size="14" font-weight="700" fill="#19194d">Finger-safe power</text>
+        <text x="50" y="35" font-size="12" fill="#5f6062">de-energizes before release</text>
+      </g>
+      <g transform="translate(950 502)">
+        <circle cx="18" cy="18" r="18" fill="#8dc63f"/>
+        <path d="M10 18 L16 24 L27 11" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="50" y="15" font-size="14" font-weight="700" fill="#19194d">Controlled break points</text>
+        <text x="50" y="35" font-size="12" fill="#5f6062">define safe separation</text>
+      </g>
+      <rect x="950" y="574" width="244" height="38" rx="5" fill="#f2f4f7"/>
+      <text x="1072" y="598" text-anchor="middle" font-size="12" font-weight="700" fill="#5f6062">Vendor procedure required for review</text>
+    </g>
+  </svg>
+</body>
+</html>
