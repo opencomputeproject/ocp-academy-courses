@@ -25,6 +25,7 @@ import sys
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+from render_index import scorm_metadata_title
 from render_scrolling import parse_webvtt
 
 
@@ -128,6 +129,17 @@ def main():
             tree = ET.parse(manifest)
             ns = {"ims": "http://www.imsproject.org/xsd/imscp_rootv1p1p2",
                   "adl": "http://www.adlnet.org/xsd/adlcp_rootv1p2"}
+            if course:
+                manifest_title = tree.findtext(
+                    ".//ims:organizations/ims:organization/ims:title",
+                    namespaces=ns,
+                )
+                expected_title = scorm_metadata_title(course)
+                if manifest_title != expected_title:
+                    err(
+                        "manifest organization title does not match course language metadata "
+                        f"— expected {expected_title!r}, got {manifest_title!r}"
+                    )
             for res in tree.getroot().iter("{http://www.imsproject.org/xsd/imscp_rootv1p1p2}resource"):
                 for f in res.findall("{http://www.imsproject.org/xsd/imscp_rootv1p1p2}file"):
                     href = f.get("href")

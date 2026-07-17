@@ -797,7 +797,7 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
       </div>'''
     # Same centering treatment as render_up_next.
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="slide slide--mobile-scroll" data-slide="{slide["id"]}">
     <div class="slide-content" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
       <div class="module-complete-badge animate-in" style="margin: 0 0 18px 0;">
         &#10003;&ensp;{esc(module_complete)}

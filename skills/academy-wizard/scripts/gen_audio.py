@@ -7,9 +7,11 @@ Usage:
                        [--voice <voice_id>] [--force]
                        [--allow-local-fallback-for-partial]
 
-Defaults: walk every module and every slide; pick the engine automatically based
-on environment variables (ELEVENLABS_API_KEY, then OPENAI_API_KEY, otherwise
-fall back to macOS `say`). Skip slides whose .wav already exists unless --force.
+Defaults: walk every module and every slide; use top-level `narration` engine and
+voice metadata when present, otherwise pick the engine from environment variables
+(ELEVENLABS_API_KEY, then OPENAI_API_KEY, otherwise macOS `say`). Command-line
+engine/voice options are explicit overrides. Skip existing .wav files unless
+--force.
 
 The narration script for each slide must already exist at the path declared in
 course.json's `audio.script_file`. The output WAV is written to `audio.wav_file`.
@@ -33,14 +35,39 @@ import tempfile
 from pathlib import Path
 
 
-def pick_engine(requested: str | None) -> str:
+def narration_config(course: dict) -> dict:
+    value = course.get("narration") or {}
+    return value if isinstance(value, dict) else {}
+
+
+def pick_engine(requested: str | None, course: dict | None = None) -> str:
     if requested:
         return requested
+    configured = str(narration_config(course or {}).get("engine") or "").strip().lower()
+    if configured:
+        if configured not in ("elevenlabs", "openai", "say"):
+            raise ValueError(f"Unsupported course narration engine: {configured}")
+        return configured
     if os.getenv("ELEVENLABS_API_KEY"):
         return "elevenlabs"
     if os.getenv("OPENAI_API_KEY"):
         return "openai"
     return "say"
+
+
+def pick_voice_id(requested: str | None, course: dict, engine: str) -> str | None:
+    if requested:
+        return requested
+    configured = narration_config(course)
+    configured_engine = str(configured.get("engine") or "").strip().lower()
+    configured_voice = str(configured.get("voice_id") or "").strip()
+    if configured_voice and configured_engine in ("", engine):
+        return configured_voice
+    if engine == "elevenlabs":
+        return os.getenv("ELEVENLABS_VOICE_ID") or "bbGtsRRKUfYO634UxSjz"
+    if engine == "openai":
+        return os.getenv("OPENAI_TTS_VOICE", "alloy")
+    return None
 
 
 def need(cmd: str) -> str | None:
@@ -173,8 +200,14 @@ def main():
         print("Scrolling style has no narration by default; no audio generated.")
         return
     out_dir = args.course_json.resolve().parent
-    engine = pick_engine(args.engine)
+    try:
+        engine = pick_engine(args.engine, course)
+    except ValueError as error:
+        sys.exit(str(error))
+    voice_id = pick_voice_id(args.voice, course, engine)
     print(f"engine: {engine}")
+    if voice_id:
+        print(f"voice: {voice_id}")
     synth = SYNTHS[engine]
 
     jobs = []
@@ -239,7 +272,7 @@ def main():
         wav_path.parent.mkdir(parents=True, exist_ok=True)
         try:
             if engine in ("elevenlabs", "openai"):
-                synth(text, wav_path, args.voice)
+                synth(text, wav_path, voice_id)
             else:
                 synth(text, wav_path)
             n_done += 1

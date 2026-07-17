@@ -1,6 +1,6 @@
 ---
 name: academy-wizard
-description: AcademyWizard — build a brand-new OCP Academy SCORM e-learning package in either narrated Slides style or lesson-based Scrolling style from OCP source materials (whitepapers, specs, Summit recordings, slide decks, course.json, or any combination). Acts as a guided wizard that interviews the user about course style, duration, and audience; analyzes sources; proposes an outline for approval; develops scripts and figures when the chosen style needs them; then generates readable HTML, course.json, resources, imsmanifest.xml, and LMS-ready SCORM. Use whenever the user wants to create, author, build, or scaffold an OCP Academy course, e-learning module, SCORM package, training, or online course from OCP whitepapers, specs, Summit talks, presentation decks, or existing course source.
+description: AcademyWizard — build or translate OCP Academy SCORM e-learning packages in narrated Slides or lesson-based Scrolling style. Use for new Academy courses, SCORM modules, training built from OCP whitepapers/specs/Summit material, and additional-language editions of an existing Slides course. Guides source analysis, outline and script approval, figures, narration, readable course.json/HTML, localized metadata and media, validation, and LMS-ready packaging.
 ---
 
 # AcademyWizard — author OCP Academy SCORM courses
@@ -19,6 +19,15 @@ Store the selection in top-level `course.json` as `"style": "Slides"` or `"style
 
 - Use **Slides** for narrated, slide-by-slide technical teaching with prev/next controls.
 - Use **Scrolling** for reading-led lesson content, rich inline interactions, a persistent lesson table of contents, and progressive Continue gates. Each Scrolling course is one standalone SCORM SCO and one `.zip`; do not convert its lessons into Slides modules.
+
+## Translate an existing Slides course
+
+When the request is a translation or additional-language edition of a Slides
+course, read `references/slides_translation.md` completely before changing the
+course. Keep the canonical course immutable, scaffold a self-contained locale
+under `locales/<BCP-47 tag>/`, and render, narrate, validate, and package that
+locale independently. Use `scripts/scaffold_slides_translation.py` to create the
+locale branch; do not begin from generated HTML or a copied SCORM ZIP.
 
 ## What "done" looks like
 
@@ -152,7 +161,7 @@ Slides generation sequence:
 2. `scripts/extract_figures.py course.json` — pulls reused figures out of source PDFs/PPTX into `figures/`.
 3. *(AI-generated figures)* — for each `figure.generate_prompt` in `course.json`, generate an image and save it under `figures/<slug>.png`. Use the image generation tool available in this environment. (Outside this skill, this is the imagegen step.)
 4. `scripts/check_svg_arrows.py course.json --fail-on-flags` — scans SVG figures and sibling SVG/HTML animation sources. It flags every triangular marker not referenced at its flat-back center, explicit `arrowhead` polygons whose shaft misses or approaches the back edge at the wrong angle, and arrowhead tips that intrude into target rectangles. Run it before rendering animation frames or encoding video, and fix every issue before generating audio or rendering modules.
-5. `scripts/gen_audio.py course.json` — walks every `slide_*.txt` script, generates the matching `.wav` using cloud TTS if `ELEVENLABS_API_KEY` or `OPENAI_API_KEY` is set, otherwise macOS `say`. Default voice is Leo v2 (`bbGtsRRKUfYO634UxSjz`) — measured and authoritative for technical narration; override with `--voice <id>` or `ELEVENLABS_VOICE_ID`. Default pacing is `ELEVENLABS_SPEED=1.18` (1.0 reads too slowly for dense material). Knowledge-check narration is mandatory: if this script exits non-zero because a knowledge-check script/WAV is missing, because cloud TTS failed, or because it refused a likely voice mismatch, stop and gate the user before rendering. Use `--allow-local-fallback-for-partial` only after the user explicitly approves a local fallback for a partially narrated course. **If the call fails with a `403 Tunnel`/`blocked-by-allowlist` proxy error**, the Codex sandbox can't reach `api.elevenlabs.io`. The script detects this and prints a copy-paste command for the user to run on their Mac/Linux host instead — do not retry from the sandbox; relay the message and wait for the user to come back.
+5. `scripts/gen_audio.py course.json` — walks every `slide_*.txt` script and generates the matching `.wav`. Voice precedence is explicit `--engine`/`--voice`, then top-level `course.json` `narration`, then environment defaults. Korean locale scaffolds use ElevenLabs Chris - Warm and clear (`PDoCXqBQFGsvfO0hNkEs`). Courses without voice metadata default to Leo v2 (`bbGtsRRKUfYO634UxSjz`) for ElevenLabs; `ELEVENLABS_VOICE_ID` supplies the fallback voice before that built-in default. Default pacing is `ELEVENLABS_SPEED=1.18`. Knowledge-check narration is mandatory: if this script exits non-zero because a knowledge-check script/WAV is missing, because cloud TTS failed, or because it refused a likely voice mismatch, stop and gate the user before rendering. Use `--allow-local-fallback-for-partial` only after the user explicitly approves a local fallback for a partially narrated course. **If the call fails with a `403 Tunnel`/`blocked-by-allowlist` proxy error**, the Codex sandbox can't reach `api.elevenlabs.io`. The script detects this and prints a copy-paste command for the user to run on their Mac/Linux host instead — do not retry from the sandbox; relay the message and wait for the user to come back.
 6. `scripts/audio_tail_report.py course.json --fail-on-flags` — flags generated clips whose ending is much quieter than the body or has a non-silent burst after a quiet gap. Listen to flagged clips, then shorten/regenerate or trim only post-speech artifacts. If the flagged clip is a new or updated knowledge-check narration, stop and gate the user before rendering.
 7. `scripts/render_module.py course.json --module <N>` — renders `moduleN.html` for each module from the slide spec.
 8. `scripts/render_index.py course.json` — renders `index.html` and writes `imsmanifest.xml`.
@@ -193,6 +202,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | Image-gen prompts and OCP visual style | `references/figure_prompts.md` |
 | SCORM 1.2 packaging requirements | `references/scorm_packaging.md` |
 | Why the existing brand colors and CSS variables | `references/brand_style.md` |
+| Slides translation workflow and folder convention | `references/slides_translation.md` |
 
 ## Key scripts
 
@@ -209,6 +219,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | `scripts/validate_package.py` | Check the finished folder is LMS-ready |
 | `scripts/zip_for_lms.py` | Build a strict upload zip from `imsmanifest.xml` runtime files only |
 | `scripts/course_delivery_summary.py` | Generate delivery metadata and module duration summaries from `course.json` and final audio |
+| `scripts/scaffold_slides_translation.py` | Create a self-contained locale source branch without modifying the canonical course |
 
 Each script has its own `--help`. Read its source if you need to understand what it accepts.
 
@@ -237,6 +248,13 @@ For Scrolling knowledge checks, keep question typography uniform across question
 **Keep designated control art exact.** Render the course's canonical SVG paths and glyph outlines verbatim. Do not redraw search, navigation, process, flashcard, quiz, feedback, retry, or completion icons with Unicode characters, CSS borders, or merely similar artwork. Keep only the required glyph outlines as readable inline SVG so the package remains self-contained.
 
 **Protect LMS syllabus completion.** In multi-SCO packages, never gate a module's `cmi.core.lesson_status=completed` on all modules being complete. Course Home completes on launch. Each module preserves a prior `completed` or `passed` status on revisit, sets `incomplete` only when needed, and sets `completed` as soon as its own final slide is reached. The `up_next` slide may link to the next module for learner convenience, but SCORM 1.2 tracking belongs to the SCO the LMS launched.
+
+**Keep translations source-derived and LMS-identifiable.** The canonical course
+remains the structural and technical source of truth. Use BCP 47 locale folders,
+preserve IDs/facts/URLs, and never reuse canonical-language narration. Keep
+`course_title` learner-facing. English manifests use it unchanged; non-English
+manifests append the English language name in parentheses. Use `scorm_title`
+only for an exact manifest-only override.
 
 **Never ship silent knowledge checks.** A `knowledge_check` slide is a narrated slide. If its script or WAV is missing, or if only a mismatched voice/fallback can be generated, stop and ask the user to resolve the audio gate before rebuilding the SCORM.
 
