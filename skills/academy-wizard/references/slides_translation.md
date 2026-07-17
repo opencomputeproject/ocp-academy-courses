@@ -88,9 +88,10 @@ Keep structure and identity stable: module IDs, slide IDs/types, question IDs,
 choice IDs/correctness, glossary IDs, source references, URLs, numeric values,
 standards, versions, and technical requirements must match the canonical course.
 
-Do not translate technology acronyms word-for-word. Keep standard Latin-letter
-forms such as `OCP`, `ESUN`, `CPU`, `GPU`, `PFC`, and `ECN` in visible text and
-TTS scripts unless an approved glossary explicitly requires another convention.
+Do not translate technology acronyms word-for-word. Keep `OCP` and other
+standard Latin-letter forms such as `ESUN`, `CPU`, `AI`, `GPU`, `PFC`, and `ECN`
+in visible text and TTS scripts unless an approved glossary explicitly requires
+another convention.
 Let the selected native-language voice pronounce those letters with its natural
 accent. Translate the explanation around the acronym.
 
