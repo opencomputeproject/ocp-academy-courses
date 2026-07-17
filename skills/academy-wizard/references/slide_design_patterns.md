@@ -77,8 +77,8 @@ End-of-module slide. The last slide of every module *except* the final one. It s
 - Fields: `next_module_number`, `next_module_title`, optional `thank_you_message` (overrides the auto-generated "Thank you for completing Module N: <title>.").
 
 ### `course_complete`
-Replaces `up_next` on the final module's final slide. Thanks the learner for finishing the final module AND wraps the whole course — these are two distinct beats, not one. The renderer shows the per-module completion badge, the per-module thank-you, then a "Course Complete" headline with the course title and a closing message, then an "All Modules Complete" badge.
-- Fields: `course_title` (defaults to the course-level title), `cert_message` (the closing line; defaults to a sensible wrap-up), optional `thank_you_message` (per-module thanks override).
+Replaces `up_next` on the final module's final slide. Thanks the learner for finishing the final module AND wraps the whole course — these are two distinct beats, not one. The renderer shows the per-module completion badge, the per-module thank-you, then a "Course Complete" headline with the course title and a closing message. Do not repeat that status with an "All Modules Complete" badge. Add useful continuing resources with `reference_links`; the renderer centers those pills with the rest of the final-slide content.
+- Fields: `course_title` (defaults to the course-level title), `cert_message` (the closing line; defaults to a sensible wrap-up), optional `thank_you_message` (per-module thanks override), and recommended `reference_links`.
 
 ## Animation
 
@@ -120,7 +120,7 @@ Before delivery, visually check every diagram:
 ## Anti-patterns
 
 - **Don't put narration text on the slide.** The narration plays automatically — duplicating it on screen makes the listener choose which to read. Use the slide for keywords, not paragraphs.
-- **Don't invite learners to skip slide 1 narration.** Title-slide hint text should direct learners to press play first, then advance with arrow or Space.
+- **Start slide 1 narration automatically.** Title-slide hint text should say narration starts automatically, then identify arrow or Space as the advance controls. Playback begins during page initialization and does not wait for the motion intro.
 - **Don't exceed 6 bullets per slide.** If you have more, split.
 - **Don't mix figure + grid + table on one slide.** Pick one heavy element.
 - **Don't write headers on every slide that just say "More info" or "Continued."** Each title should be specific.

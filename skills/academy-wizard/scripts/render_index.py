@@ -31,6 +31,7 @@ from motion_intro import (
     motion_intro_script,
     render_motion_intro,
 )
+from render_scrolling import is_scrolling, render_scrolling_course, runtime_files
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -43,10 +44,17 @@ def esc(s):
     return html.escape(str(s), quote=True)
 
 
-def render_index_html(course: dict) -> str:
+def ui(course: dict, key: str, default: str) -> str:
+    """Return an optional course-localized interface label."""
+    return str((course.get("ui_labels") or {}).get(key, default))
+
+
+def render_index_html(course: dict, resource_root: Path | None = None) -> str:
+    if is_scrolling(course):
+        return render_scrolling_course(course, resource_root)
     css = (TEMPLATE_DIR / "index_styles.css").read_text()
     css += "\n\n" + load_motion_intro_css(TEMPLATE_DIR)
-    course_title = course.get("course_title", "Academy Course")
+    course_title = course.get("course_title", "OCP Academy Course")
     course_subtitle = course.get("course_subtitle", "")
     # Brand tenet: the index tagline is fixed. CSS renders all caps;
     # store the phrase in mixed case.
@@ -58,6 +66,9 @@ def render_index_html(course: dict) -> str:
     brand = course.get("brand", {})
     academy_logo = brand.get("academy_logo", "")
     course_logo = brand.get("course_logo", "")
+    language = course.get("language") or "en"
+    not_started = ui(course, "not_started", "Not Started")
+    completed = ui(course, "completed", "Completed")
 
     cards = []
     for i, mod in enumerate(course["modules"], start=1):
@@ -67,7 +78,7 @@ def render_index_html(course: dict) -> str:
     <div class="module-info">
       <h3>{esc(mod.get("title",""))}</h3>
       <p>{esc(mod.get("subtitle",""))}</p>
-      <div class="status status-incomplete" id="status-{mod["id"]}">Not Started</div>
+      <div class="status status-incomplete" id="status-{mod["id"]}">{esc(not_started)}</div>
     </div>
   </a>''')
 
@@ -79,7 +90,7 @@ def render_index_html(course: dict) -> str:
         title_html = esc(course_title)
 
     return f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="{esc(language)}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -134,7 +145,7 @@ def render_index_html(course: dict) -> str:
           var status = document.getElementById('status-' + m);
           if (card) card.classList.add('completed');
           if (status) {{
-            status.textContent = 'Completed';
+            status.textContent = {json.dumps(completed, ensure_ascii=False)};
             status.className = 'status status-completed';
           }}
         }});
@@ -163,11 +174,45 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     truthful even if rendered before audio has been generated. Figures come
     from slides[*].figure.path. The manifest must list every file referenced
     by HTML pages — strict LMSes reject zips with unlisted files."""
+    if is_scrolling(course):
+        course_slug = course.get("course_slug", "ocp_academy_scrolling_course")
+        course_title = course.get("course_title", "OCP Academy Course")
+        files_xml = "\n      ".join(
+            f'<file href="{xml_escape(path)}"/>' for path in runtime_files(course)
+        )
+        return f'''<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="{xml_escape(course_slug.upper())}_MANIFEST" version="1.0"
+  xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+  xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                       http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd
+                       http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+  </metadata>
+  <organizations default="COURSE_ORG">
+    <organization identifier="COURSE_ORG">
+      <title>{xml_escape(course_title)}</title>
+      <item identifier="ITEM_COURSE" identifierref="RES_COURSE">
+        <title>{xml_escape(course_title)}</title>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="RES_COURSE" type="webcontent" adlcp:scormtype="sco" href="index.html">
+      {files_xml}
+    </resource>
+  </resources>
+</manifest>
+'''
+
     brand = course.get("brand", {})
     course_logo = brand.get("course_logo", "")
     academy_logo = brand.get("academy_logo", "")
-    course_slug = course.get("course_slug", "academy_course")
-    course_title = course.get("course_title", "Academy Course")
+    course_slug = course.get("course_slug", "ocp_academy_course")
+    course_title = course.get("course_title", "OCP Academy Course")
 
     org_items = []
     resources = []
@@ -269,7 +314,7 @@ def main():
     course = json.loads(args.course_json.read_text())
     out_dir = args.course_json.resolve().parent
 
-    (out_dir / "index.html").write_text(render_index_html(course))
+    (out_dir / "index.html").write_text(render_index_html(course, out_dir))
     print(f"wrote {out_dir / 'index.html'}")
     (out_dir / "imsmanifest.xml").write_text(render_manifest(course, out_dir))
     print(f"wrote {out_dir / 'imsmanifest.xml'}")

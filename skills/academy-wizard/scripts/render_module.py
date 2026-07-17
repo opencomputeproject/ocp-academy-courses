@@ -31,6 +31,7 @@ from motion_intro import (
     motion_intro_script,
     render_motion_intro,
 )
+from render_scrolling import is_scrolling, render_scrolling_course
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -50,6 +51,11 @@ def esc(s: str | None) -> str:
     if s is None:
         return ""
     return html.escape(str(s), quote=True)
+
+
+def ui(course: dict, key: str, default: str) -> str:
+    """Return an optional course-localized interface label."""
+    return str((course.get("ui_labels") or {}).get(key, default))
 
 
 def _norm_text(value: str | None) -> str:
@@ -99,6 +105,11 @@ def render_title(slide: dict, course: dict, module: dict) -> str:
     version_chip = slide.get("version_chip") or course.get("spec_version_chip", "")
     tagline = slide.get("tagline") or course.get("tagline", "")
     course_logo = course.get("brand", {}).get("course_logo", "")
+    narration_hint = ui(
+        course,
+        "narration_hint",
+        "Narration starts automatically. Advance with → or Space",
+    )
     return f'''
   <div class="slide slide-hero active" data-slide="{slide["id"]}">
     <div class="hero-content">
@@ -107,7 +118,7 @@ def render_title(slide: dict, course: dict, module: dict) -> str:
       <p class="hero-subtitle animate-in">{esc(subtitle)}</p>
       {f'<span class="hero-version animate-in">{esc(version_chip)}</span>' if version_chip else ""}
       <div class="hero-start-hint animate-in">
-        Press <span class="inline-play-icon" aria-hidden="true">&#9654;</span><span>then advance with</span> <strong style="margin: 0 4px;">&#8594;</strong> or <strong style="margin: 0 4px;">Space</strong>
+        <span>{esc(narration_hint)}</span>
       </div>
       {f'<p class="hero-tagline animate-in">{esc(tagline)}</p>' if tagline else ""}
     </div>
@@ -116,7 +127,7 @@ def render_title(slide: dict, course: dict, module: dict) -> str:
 
 
 def render_course_overview(slide: dict, course: dict, module: dict) -> str:
-    label = "Course Overview"
+    label = ui(course, "course_overview", "Course Overview")
     items = []
     for i, mt in enumerate(slide.get("modules_listed", []), start=1):
         current = ' current' if i == module["id"] else ""
@@ -174,7 +185,7 @@ def render_course_overview(slide: dict, course: dict, module: dict) -> str:
 
 
 def render_objectives(slide: dict, course: dict, module: dict) -> str:
-    label = "Learning Objectives"
+    label = ui(course, "learning_objectives", "Learning Objectives")
     items = "".join(
         f'''
         <li class="takeaway-item animate-in">
@@ -213,7 +224,22 @@ def _bullets_html(bullets: list[dict]) -> str:
     return "".join(parts)
 
 
-def _learner_aids_html(slide: dict, course: dict) -> str:
+def _external_page_icon_html() -> str:
+    return '''<svg class="pill-icon pill-icon--external" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M15 3h6v6"></path><path d="M10 14 21 3"></path>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+    </svg>'''
+
+
+def _terminology_icon_html() -> str:
+    return '''<svg class="pill-icon pill-icon--terminology" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 7v14"></path><path d="M16 12h2"></path><path d="M16 8h2"></path>
+      <path d="M3 18a1 1 0 0 1-1-1V5a2 2 0 0 1 2-2h5a3 3 0 0 1 3 3v15a3 3 0 0 0-3-3Z"></path>
+      <path d="M21 18a1 1 0 0 0 1-1V5a2 2 0 0 0-2-2h-5a3 3 0 0 0-3 3v15a3 3 0 0 1 3-3Z"></path>
+    </svg>'''
+
+
+def _learner_aids_html(slide: dict, course: dict, centered: bool = False) -> str:
     # Render optional learner aids in the slide content flow. The returned
     # block is appended inside `.slide-content`, after the slide's primary
     # text/table/image content. It is never fixed or floating.
@@ -230,25 +256,23 @@ def _learner_aids_html(slide: dict, course: dict) -> str:
         term = esc(item.get("term"))
         tip = esc(item.get("tooltip"))
         label = item.get("reference_label")
-        tooltip = tip + (f" Reference: {esc(label)}." if label else "")
-        url = item.get("url")
-        if url:
-            glossary_chips.append(
-                f'<a class="glossary-chip" href="{esc(url)}" target="_blank" rel="noopener" '
-                f'data-tooltip="{tooltip}" title="{tip}">{term}</a>'
-            )
-        else:
-            glossary_chips.append(
-                f'<span class="glossary-chip" data-tooltip="{tooltip}" title="{tip}">{term}</span>'
-            )
+        reference_word = esc(ui(course, "reference", "Reference"))
+        tooltip = tip + (f" {reference_word}: {esc(label)}." if label else "")
+        glossary_chips.append(
+            f'<span class="glossary-chip" tabindex="0" data-tooltip="{tooltip}" '
+            f'title="{tip}" aria-label="{term}: {tooltip}">{term}{_terminology_icon_html()}</span>'
+        )
 
     ref_links = []
     for link in slide.get("reference_links", []):
         url = link.get("url")
         if not url:
             continue
+        link_label = esc(link.get("label") or ui(course, "learn_more", "Learn more"))
+        opens_new_tab = esc(ui(course, "opens_new_tab", "opens in a new tab"))
         ref_links.append(
-            f'<a class="reference-pill" href="{esc(url)}" target="_blank" rel="noopener">{esc(link.get("label") or "Learn more")}</a>'
+            f'<a class="reference-pill" href="{esc(url)}" target="_blank" rel="noopener" '
+            f'aria-label="{link_label} ({opens_new_tab})">{link_label}{_external_page_icon_html()}</a>'
         )
 
     callout_html = ""
@@ -257,11 +281,11 @@ def _learner_aids_html(slide: dict, course: dict) -> str:
         callout_html = f'''
         <div class="resource-callout animate-in">
           <div>
-            <span class="resource-label">Learner Resource</span>
+            <span class="resource-label">{esc(ui(course, "learner_resource", "Learner Resource"))}</span>
             <strong>{esc(callout.get("title"))}</strong>
             <p>{esc(callout.get("text"))}</p>
           </div>
-          <a class="resource-button" href="{esc(callout.get("url"))}" target="_blank" rel="noopener">{esc(callout.get("button_text") or "Open")}</a>
+          <a class="resource-button" href="{esc(callout.get("url"))}" target="_blank" rel="noopener">{esc(callout.get("button_text") or ui(course, "open", "Open"))}</a>
         </div>'''
 
     if not glossary_chips and not ref_links and not callout_html:
@@ -273,8 +297,9 @@ def _learner_aids_html(slide: dict, course: dict) -> str:
     refs_html = ""
     if ref_links:
         refs_html = '<div class="reference-strip animate-in">' + "".join(ref_links) + '</div>'
+    aids_class = "learner-aids learner-aids--centered" if centered else "learner-aids"
     return f'''
-      <div class="learner-aids">{glossary_html}{refs_html}{callout_html}
+      <div class="{aids_class}">{glossary_html}{refs_html}{callout_html}
       </div>'''
 
 
@@ -307,12 +332,13 @@ def render_content_bullets(slide: dict, course: dict, module: dict) -> str:
 '''
 
 
-def _figure_html(fig: dict | None) -> str:
+def _figure_html(fig: dict | None, course: dict | None = None) -> str:
     """Wrap image, inline-SVG, or video media in a white panel so dark lines
     and text stay legible in dark mode. Video figures get hover controls for
     play/pause and zoom; image figures keep the click-to-enlarge behavior."""
     if not fig:
         return ""
+    course = course or {}
     path = fig.get("path", "")
     alt = fig.get("alt", "")
     caption = fig.get("caption", "")
@@ -339,11 +365,11 @@ def _figure_html(fig: dict | None) -> str:
         attrs = " ".join(bit for bit in attr_bits if bit)
         body = f'''
           <video {attrs}></video>
-          <div class="figure-video-controls" aria-label="Video controls">
-            <button type="button" class="figure-video-control" data-video-toggle aria-label="Pause video" title="Pause video">
+          <div class="figure-video-controls" aria-label="{esc(ui(course, 'video_controls', 'Video controls'))}">
+            <button type="button" class="figure-video-control" data-video-toggle aria-label="{esc(ui(course, 'pause_video', 'Pause video'))}" title="{esc(ui(course, 'pause_video', 'Pause video'))}">
               <span class="video-icon video-icon-pause" aria-hidden="true"></span>
             </button>
-            <button type="button" class="figure-video-control" data-video-zoom aria-label="Zoom video" title="Zoom video">
+            <button type="button" class="figure-video-control" data-video-zoom aria-label="{esc(ui(course, 'zoom_video', 'Zoom video'))}" title="{esc(ui(course, 'zoom_video', 'Zoom video'))}">
               <span aria-hidden="true">&#8981;</span>
             </button>
           </div>'''
@@ -354,7 +380,11 @@ def _figure_html(fig: dict | None) -> str:
     panel_class = "figure-panel figure-panel--video" if media_type == "video" else "figure-panel"
     video_attr = ' data-video-figure="true"' if media_type == "video" else ""
     role = "group" if media_type == "video" else "button"
-    aria_label = "Video figure" if media_type == "video" else "Zoom figure"
+    aria_label = (
+        ui(course, "video_figure", "Video figure")
+        if media_type == "video"
+        else ui(course, "zoom_figure", "Zoom figure")
+    )
     panel_style = (
         "background:#ffffff;"
         "border-radius:12px;"
@@ -416,7 +446,7 @@ def render_content_two_column(slide: dict, course: dict, module: dict) -> str:
           </ul>
           {_compact_table_html(compact_table)}
         </div>
-        <div>{_figure_html(slide.get("figure"))}
+        <div>{_figure_html(slide.get("figure"), course)}
         </div>
       </div>
       {_learner_aids_html(slide, course)}
@@ -486,6 +516,7 @@ def render_content_grid(slide: dict, course: dict, module: dict) -> str:
 
 def render_content_table(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
+    slide_class = "slide slide--mobile-scroll" if slide.get("mobile_scroll") else "slide"
     cols = slide.get("columns", [])
     rows = slide.get("rows", [])
     header = "".join(f'<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--ocp-green);font-size:0.85rem;color:var(--text-primary);">{esc(c)}</th>' for c in cols)
@@ -494,7 +525,7 @@ def render_content_table(slide: dict, course: dict, module: dict) -> str:
         cells = "".join(f'<td style="padding:10px 14px;border-bottom:1px solid var(--border-color);font-size:0.85rem;color:var(--text-secondary);">{esc(v)}</td>' for v in row)
         body += f"<tr>{cells}</tr>"
     return f'''
-  <div class="slide" data-slide="{slide["id"]}">
+  <div class="{slide_class}" data-slide="{slide["id"]}">
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -519,7 +550,7 @@ def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
-      {_figure_html(slide.get("figure"))}
+      {_figure_html(slide.get("figure"), course)}
       {f'<p class="slide-main-text animate-in">{esc(slide.get("caption"))}</p>' if slide.get("caption") else ""}
       {_learner_aids_html(slide, course)}
     </div>
@@ -533,7 +564,7 @@ def render_full_slide_image(slide: dict, course: dict, module: dict) -> str:
     alt = fig.get("alt", "")
     return f'''
   <div class="slide slide-full-image" data-slide="{slide["id"]}">
-    <div class="full-slide-figure animate-in" data-zoomable-figure="true" tabindex="0" role="button" aria-label="Zoom figure: {esc(alt)}">
+    <div class="full-slide-figure animate-in" data-zoomable-figure="true" tabindex="0" role="button" aria-label="{esc(ui(course, 'zoom_figure', 'Zoom figure'))}: {esc(alt)}">
       <img src="{esc(path)}" alt="{esc(alt)}">
     </div>
   </div>
@@ -541,7 +572,7 @@ def render_full_slide_image(slide: dict, course: dict, module: dict) -> str:
 
 
 def render_takeaways(slide: dict, course: dict, module: dict) -> str:
-    label = "Key Takeaways"
+    label = ui(course, "key_takeaways", "Key Takeaways")
     items = "".join(
         f'''
         <li class="takeaway-item animate-in">
@@ -624,7 +655,19 @@ def course_key_for_shuffle(module: dict) -> str:
 
 
 def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
-    label = "Knowledge Check"
+    label = ui(course, "knowledge_check", "Knowledge Check")
+    submit_label = ui(course, "submit", "Submit")
+    retry_label = ui(course, "retry", "Retry")
+    gate_note = ui(
+        course,
+        "quiz_gate_note",
+        "Submit each question once to continue. Correct answers are not required, and retries are available.",
+    )
+    gate_warning = ui(
+        course,
+        "quiz_gate_warning",
+        "Submit each question once before advancing.",
+    )
     questions_html = []
     for qi, q in enumerate(slide.get("questions", []), start=1):
         qid = q.get("id") or f"m{module.get('id')}_s{slide.get('id')}_q{qi}"
@@ -642,14 +685,14 @@ def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
             </label>''')
         questions_html.append(f'''
         <div class="quiz-card animate-in" data-question-id="{esc(qid)}" data-multiple="{'true' if multi else 'false'}"
-             data-correct-feedback="{esc(q.get("feedback_correct") or q.get("feedback") or "Correct.")}"
-             data-incorrect-feedback="{esc(q.get("feedback_incorrect") or q.get("feedback") or "Review the feedback and try again.")}">
+             data-correct-feedback="{esc(q.get("feedback_correct") or q.get("feedback") or ui(course, 'correct', 'Correct.'))}"
+             data-incorrect-feedback="{esc(q.get("feedback_incorrect") or q.get("feedback") or ui(course, 'review_feedback', 'Review the feedback and try again.'))}">
           <p class="quiz-question">{esc(q.get("prompt"))}</p>
           <div class="quiz-choices">{"".join(choices_html)}
           </div>
           <div class="quiz-actions">
-            <button class="quiz-submit" type="button">Submit</button>
-            <button class="quiz-retry" type="button">Retry</button>
+            <button class="quiz-submit" type="button">{esc(submit_label)}</button>
+            <button class="quiz-retry" type="button">{esc(retry_label)}</button>
           </div>
           <div class="quiz-feedback" aria-live="polite"></div>
         </div>''')
@@ -661,8 +704,8 @@ def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
       {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
       <div class="knowledge-check-wrap">{"".join(questions_html)}
       </div>
-      <p class="quiz-gate-note animate-in">Submit each question once to continue. Correct answers are not required, and retries are available.</p>
-      <div class="quiz-gate-warning" role="status">Submit each question once before advancing.</div>
+      <p class="quiz-gate-note animate-in">{esc(gate_note)}</p>
+      <div class="quiz-gate-warning" role="status">{esc(gate_warning)}</div>
       {_learner_aids_html(slide, course)}
     </div>
   </div>
@@ -677,10 +720,15 @@ def render_up_next(slide: dict, course: dict, module: dict) -> str:
     nt = slide.get("next_module_title", "")
     this_title = module.get("title", "")
     # The thank-you line is customizable; provide a sensible default that names this module.
-    thanks = slide.get("thank_you_message") or (
-        f"Thank you for completing Module {module['id']}"
-        + (f": {this_title}." if this_title else ".")
-    )
+    thanks = slide.get("thank_you_message") or ui(
+        course,
+        "default_module_thanks",
+        "Thank you for completing Module {module}: {title}.",
+    ).format(module=module["id"], title=this_title)
+    module_label = ui(course, "module", "Module")
+    module_complete = ui(course, "module_complete", "Module {module} Complete").format(module=module["id"])
+    up_next = ui(course, "up_next", "Up Next")
+    go_to_module = ui(course, "go_to_module", "Go to Module {module}").format(module=nm)
     # Use the standard .slide/.slide-content shell so colors follow the
     # theme (black on light, white on dark). The .slide-next class was
     # found to render blank in some browsers; avoid it. Use a vertical
@@ -690,12 +738,12 @@ def render_up_next(slide: dict, course: dict, module: dict) -> str:
   <div class="slide" data-slide="{slide["id"]}">
     <div class="slide-content" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
       <div class="module-complete-badge animate-in" style="margin: 0 0 28px 0;">
-        &#10003;&ensp;Module {module["id"]} Complete
+        &#10003;&ensp;{esc(module_complete)}
       </div>
-      <span class="section-label animate-in">Up Next</span>
+      <span class="section-label animate-in">{esc(up_next)}</span>
       <div class="next-module-heading animate-in">
-        <h2 class="slide-title">Module {nm}</h2>
-        <a class="next-module-link" href="module{nm}.html" aria-label="Go to Module {nm}" title="Go to Module {nm}">
+        <h2 class="slide-title">{esc(module_label)} {nm}</h2>
+        <a class="next-module-link" href="module{nm}.html" aria-label="{esc(go_to_module)}" title="{esc(go_to_module)}">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 5l7 7-7 7"></path>
             <path d="M12 5l7 7-7 7"></path>
@@ -715,31 +763,36 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
     this_title = module.get("title", "")
     course_title = slide.get("course_title", course.get("course_title", ""))
     # Two messages: a per-module thanks and a course-level wrap-up.
-    module_thanks = slide.get("thank_you_message") or (
-        f"Thank you for completing Module {module['id']}"
-        + (f": {this_title}." if this_title else ".")
-    )
-    wrap_up = slide.get("cert_message") or (
-        f"You've completed every module of {course_title}. "
-        "We hope this course leaves you ready to put what you've learned into practice."
-    )
+    module_thanks = slide.get("thank_you_message") or ui(
+        course,
+        "default_module_thanks",
+        "Thank you for completing Module {module}: {title}.",
+    ).format(module=module["id"], title=this_title)
+    wrap_up = slide.get("cert_message") or ui(
+        course,
+        "default_course_wrap",
+        "You've completed every module of {course}. We hope this course leaves you ready to put what you've learned into practice.",
+    ).format(course=course_title)
     # Survey CTA — invariant URL and body baked into the skill so every
     # OCP Academy course gets the same feedback ask. These constants must
     # not be changed by per-course course.json overrides. button_text
     # alone remains customizable via slide.survey.button_text (defaults
     # to "Share Feedback").
     SURVEY_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf-IDIuFSXbRk-nks90x7J_4-iiZ6vEvmmNQoVps3ySP6UFmg/viewform?usp=header"
-    SURVEY_BODY = (
+    default_survey_body = (
         "Got a couple minutes to help us improve? Help us shape "
         "improvements and our future courses by sharing your feedback "
         "with our development team. We periodically select submitters "
         "at random for great giveaways!"
     )
+    survey_body = ui(course, "survey_body", default_survey_body)
     survey = slide.get("survey") or {}
-    survey_button = survey.get("button_text", "Share Feedback")
+    survey_button = survey.get("button_text") or ui(course, "share_feedback", "Share Feedback")
+    module_complete = ui(course, "module_complete", "Module {module} Complete").format(module=module["id"])
+    course_complete = ui(course, "course_complete", "Course Complete")
     survey_html = f'''
       <div class="survey-cta animate-in" style="max-width: 680px; margin: 18px auto 0; padding: 18px 24px; background: var(--bg-card); border: 1px solid var(--ocp-green); border-radius: 12px; box-shadow: var(--card-shadow); text-align: center;">
-        <p style="font-size: 1.0rem; line-height: 1.45; margin: 0 0 12px 0; color: var(--text-primary);">{esc(SURVEY_BODY)}</p>
+        <p style="font-size: 1.0rem; line-height: 1.45; margin: 0 0 12px 0; color: var(--text-primary);">{esc(survey_body)}</p>
         <a class="survey-btn" href="{esc(SURVEY_URL)}" target="_blank" rel="noopener" style="display: inline-block; padding: 10px 24px; background: var(--ocp-green); color: #ffffff; text-decoration: none; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em; border-radius: 8px; transition: background 0.15s ease;">{esc(survey_button)} &#8594;</a>
       </div>'''
     # Same centering treatment as render_up_next.
@@ -747,15 +800,13 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
   <div class="slide" data-slide="{slide["id"]}">
     <div class="slide-content" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
       <div class="module-complete-badge animate-in" style="margin: 0 0 18px 0;">
-        &#10003;&ensp;Module {module["id"]} Complete
+        &#10003;&ensp;{esc(module_complete)}
       </div>
       <p class="animate-in" style="margin: 0 auto 20px; max-width: 680px; font-size: 1.05rem; line-height: 1.5; padding: 14px 24px; background: var(--ocp-green-subtle); border: 1px solid rgba(141,198,63,0.35); border-radius: 8px; text-align: center;">{esc(module_thanks)}</p>
-      <span class="section-label animate-in">Course Complete</span>
+      <span class="section-label animate-in">{esc(course_complete)}</span>
       <h2 class="slide-title animate-in" style="margin: 0 0 6px 0; text-align:center;">{esc(course_title)}</h2>
       <p class="slide-subtitle animate-in" style="margin: 0 auto 18px; text-align:center;">{esc(wrap_up)}</p>
-      <div class="module-complete-badge animate-in" style="margin: 0;">
-        &#10003;&ensp;All Modules Complete
-      </div>
+      {_learner_aids_html(slide, course, centered=True)}
       {_summary_items_html(slide)}{survey_html}
     </div>
   </div>
@@ -821,14 +872,31 @@ def render_module(course: dict, module_index: int) -> str:
     course_title = course.get("course_title", "Course")
     module_title = module.get("title", "")
     badge_logo = course.get("brand", {}).get("course_logo", "")
+    language = course.get("language") or "en"
+    module_label = ui(course, "module", "Module")
+    theme_label = ui(course, "theme", "Theme")
+    toggle_dark_mode = ui(course, "toggle_dark_mode", "Toggle dark mode")
+    previous_slide = ui(course, "previous_slide", "Previous slide")
+    next_slide = ui(course, "next_slide", "Next slide")
+    play_pause_narration = ui(course, "play_pause_narration", "Play/Pause narration")
+    playback_speed = ui(course, "playback_speed", "Playback speed")
+    playback_speed_slider = ui(course, "playback_speed_slider", "Playback speed slider")
+    speed_label = ui(course, "speed", "Speed")
+    toggle_fullscreen = ui(course, "toggle_fullscreen", "Toggle fullscreen")
+    fullscreen_label = ui(course, "fullscreen", "Fullscreen")
+    select_answer = ui(course, "select_answer", "Select at least one answer, then submit.")
+    play_video = ui(course, "play_video", "Play video")
+    pause_video = ui(course, "pause_video", "Pause video")
+    enlarged_figure = ui(course, "enlarged_figure", "Enlarged figure")
+    lightbox_close_hint = ui(course, "lightbox_close_hint", "Click outside or press Esc to close")
 
     return f'''<!DOCTYPE html>
-<html lang="en">
+<html lang="{esc(language)}">
 <head>
 <meta charset="UTF-8">
 <script src="scorm_api.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{esc(course_title)} - Module {module_num}</title>
+<title>{esc(course_title)} - {esc(module_label)} {module_num}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -841,10 +909,10 @@ def render_module(course: dict, module_index: int) -> str:
 {motion_intro_noscript_style()}
 <div class="module-badge">
   <div class="module-badge-logo">
-    {f'<img src="{esc(badge_logo)}" alt="course logo">' if badge_logo else ""}
+    {f'<img src="{esc(badge_logo)}" alt="{esc(course_title)}">' if badge_logo else ""}
     {_badge_text_html(course)}
   </div>
-  <div class="module-badge-text">Module {module_num}</div>
+  <div class="module-badge-text">{esc(module_label)} {module_num}</div>
 </div>
 
 <div class="deck" id="deck">
@@ -855,34 +923,34 @@ def render_module(course: dict, module_index: int) -> str:
 <div class="progress-bar" id="progressBar"></div>
 <div class="controls">
   <div class="controls-left">
-    <span class="theme-label">Theme</span>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+    <span class="theme-label">{esc(theme_label)}</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="{esc(toggle_dark_mode)}"></button>
     <span class="key-hint">D</span>
   </div>
   <div class="controls-center">
-    <button class="btn btn-nav" id="prevBtn" aria-label="Previous slide" disabled>&#8592;</button>
+    <button class="btn btn-nav" id="prevBtn" aria-label="{esc(previous_slide)}" disabled>&#8592;</button>
     <span class="slide-counter" id="slideCounter">1 / {len(module["slides"])}</span>
-    <button class="btn btn-nav" id="nextBtn" aria-label="Next slide">&#8594;</button>
+    <button class="btn btn-nav" id="nextBtn" aria-label="{esc(next_slide)}">&#8594;</button>
   </div>
   <div class="controls-right">
     <div class="audio-controls">
-      <button class="btn-audio" id="audioPlayBtn" aria-label="Play/Pause narration" title="Play/Pause (P)">&#9654;</button>
+      <button class="btn-audio" id="audioPlayBtn" aria-label="{esc(play_pause_narration)}" title="{esc(play_pause_narration)} (P)">&#9654;</button>
       <div class="audio-progress-wrap" id="audioProgressWrap">
         <div class="audio-progress-fill" id="audioProgressFill"></div>
       </div>
       <span class="audio-time" id="audioTime">0:00</span>
       <div class="audio-speed-wrap" id="audioSpeedWrap">
-        <button class="btn-audio-speed" id="audioSpeedBtn" aria-label="Playback speed" title="Playback speed" aria-haspopup="true" aria-expanded="false">
+        <button class="btn-audio-speed" id="audioSpeedBtn" aria-label="{esc(playback_speed)}" title="{esc(playback_speed)}" aria-haspopup="true" aria-expanded="false">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16a8 8 0 1 1 16 0"/><line x1="12" y1="16" x2="16" y2="11"/><circle cx="12" cy="16" r="1.2" fill="currentColor"/></svg>
         </button>
-        <div class="audio-speed-popup" id="audioSpeedPopup" role="dialog" aria-label="Playback speed">
-          <div class="audio-speed-popup-label">Speed <span class="audio-speed-popup-value" id="audioSpeedValue">1.0&times;</span></div>
-          <input type="range" id="audioSpeedSlider" min="0.8" max="1.6" step="0.1" value="1.0" aria-label="Playback speed slider">
+        <div class="audio-speed-popup" id="audioSpeedPopup" role="dialog" aria-label="{esc(playback_speed)}">
+          <div class="audio-speed-popup-label">{esc(speed_label)} <span class="audio-speed-popup-value" id="audioSpeedValue">1.0&times;</span></div>
+          <input type="range" id="audioSpeedSlider" min="0.8" max="1.6" step="0.1" value="1.0" aria-label="{esc(playback_speed_slider)}">
           <div class="audio-speed-popup-scale"><span>0.8&times;</span><span>1.2&times;</span><span>1.6&times;</span></div>
         </div>
       </div>
     </div>
-    <button class="btn" id="fullscreenBtn" aria-label="Toggle fullscreen" title="Fullscreen (F)">
+    <button class="btn" id="fullscreenBtn" aria-label="{esc(toggle_fullscreen)}" title="{esc(fullscreen_label)} (F)">
       <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
     </button>
     <span class="key-hint">F</span>
@@ -936,7 +1004,7 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   function updateFirstSlideAudioCue() {{
-    document.body.classList.toggle('first-slide-audio-cue', currentSlide === 1);
+    document.body.classList.toggle('first-slide-audio-cue', currentSlide === 1 && autoplayFallbackArmed);
   }}
 
   function updateControls() {{
@@ -1014,6 +1082,8 @@ def render_module(course: dict, module_index: int) -> str:
   let audioPlayer = new Audio();
   let audioPlaying = false;
   let autoPlayAudio = true;
+  let autoplayFallbackArmed = false;
+  const autoplayRetryEvents = ['pointerdown', 'keydown', 'touchstart'];
   const audioPlayBtn = document.getElementById('audioPlayBtn');
   const audioProgressFill = document.getElementById('audioProgressFill');
   const audioProgressWrap = document.getElementById('audioProgressWrap');
@@ -1026,10 +1096,64 @@ def render_module(course: dict, module_index: int) -> str:
     return m + ':' + (s < 10 ? '0' : '') + s;
   }}
 
+  function setAudioPlaying(isPlaying) {{
+    audioPlaying = isPlaying;
+    audioPlayBtn.innerHTML = isPlaying ? '&#9646;&#9646;' : '&#9654;';
+  }}
+
+  function retryBlockedAutoplay(event) {{
+    if (!autoplayFallbackArmed) return;
+    if (event && audioPlayBtn.contains(event.target)) return;
+    disarmAutoplayFallback();
+    attemptAudioPlayback();
+  }}
+
+  function disarmAutoplayFallback() {{
+    if (!autoplayFallbackArmed) return;
+    autoplayFallbackArmed = false;
+    autoplayRetryEvents.forEach((eventName) => {{
+      document.removeEventListener(eventName, retryBlockedAutoplay, true);
+    }});
+    updateFirstSlideAudioCue();
+  }}
+
+  function armAutoplayFallback() {{
+    if (autoplayFallbackArmed) return;
+    autoplayFallbackArmed = true;
+    autoplayRetryEvents.forEach((eventName) => {{
+      document.addEventListener(eventName, retryBlockedAutoplay, {{ capture: true }});
+    }});
+    updateFirstSlideAudioCue();
+  }}
+
+  function attemptAudioPlayback() {{
+    if (!audioPlayer.src) return;
+    let playRequest;
+    try {{
+      playRequest = audioPlayer.play();
+    }} catch (_) {{
+      setAudioPlaying(false);
+      armAutoplayFallback();
+      return;
+    }}
+    if (playRequest && typeof playRequest.then === 'function') {{
+      playRequest.then(() => {{
+        setAudioPlaying(true);
+        disarmAutoplayFallback();
+      }}).catch(() => {{
+        setAudioPlaying(false);
+        armAutoplayFallback();
+      }});
+    }} else {{
+      setAudioPlaying(true);
+      disarmAutoplayFallback();
+    }}
+  }}
+
   function loadSlideAudio(slideNum) {{
+    disarmAutoplayFallback();
     audioPlayer.pause();
-    audioPlaying = false;
-    audioPlayBtn.innerHTML = '&#9654;';
+    setAudioPlaying(false);
     audioProgressFill.style.width = '0%';
     audioTime.textContent = '0:00';
     const src = audioMap[slideNum];
@@ -1041,10 +1165,7 @@ def render_module(course: dict, module_index: int) -> str:
       // is a belt-and-braces guarantee that the user's slider value sticks.
       audioPlayer.playbackRate = getSavedSpeed();
       if (autoPlayAudio) {{
-        audioPlayer.play().then(() => {{
-          audioPlaying = true;
-          audioPlayBtn.innerHTML = '&#9646;&#9646;';
-        }}).catch(() => {{}});
+        attemptAudioPlayback();
       }}
     }}
   }}
@@ -1053,13 +1174,10 @@ def render_module(course: dict, module_index: int) -> str:
     if (!audioPlayer.src) return;
     if (audioPlaying) {{
       audioPlayer.pause();
-      audioPlaying = false;
-      audioPlayBtn.innerHTML = '&#9654;';
+      setAudioPlaying(false);
+      disarmAutoplayFallback();
     }} else {{
-      audioPlayer.play().then(() => {{
-        audioPlaying = true;
-        audioPlayBtn.innerHTML = '&#9646;&#9646;';
-      }}).catch(() => {{}});
+      attemptAudioPlayback();
     }}
   }}
 
@@ -1227,7 +1345,7 @@ def render_module(course: dict, module_index: int) -> str:
         if (selected.length === 0) {{
           applyQuizFeedback(card, false);
           const box = card.querySelector('.quiz-feedback');
-          if (box) box.textContent = 'Select at least one answer, then submit.';
+          if (box) box.textContent = {json.dumps(select_answer, ensure_ascii=False)};
           return;
         }}
         const isCorrect = sameArray(selected, correct);
@@ -1276,10 +1394,7 @@ def render_module(course: dict, module_index: int) -> str:
 
   syncSlideVideos(currentSlide, true);
   updateControls();
-  document.addEventListener('click', function initAudio() {{
-    loadSlideAudio(currentSlide);
-    document.removeEventListener('click', initAudio);
-  }}, {{ once: true }});
+  loadSlideAudio(currentSlide);
 }})();
 </script>
 <!-- Click-to-enlarge lightbox for figures -->
@@ -1292,14 +1407,14 @@ def render_module(course: dict, module_index: int) -> str:
     if (!video || !button) return;
     var paused = video.paused;
     button.innerHTML = paused ? '<span class="video-icon video-icon-play" aria-hidden="true"></span>' : '<span class="video-icon video-icon-pause" aria-hidden="true"></span>';
-    button.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
-    button.setAttribute('title', paused ? 'Play video' : 'Pause video');
+    button.setAttribute('aria-label', paused ? {json.dumps(play_video, ensure_ascii=False)} : {json.dumps(pause_video, ensure_ascii=False)});
+    button.setAttribute('title', paused ? {json.dumps(play_video, ensure_ascii=False)} : {json.dumps(pause_video, ensure_ascii=False)});
   }}
   function openLightbox(panel) {{
     var overlay = document.createElement('div');
     overlay.className = 'lightbox-overlay';
     overlay.setAttribute('role', 'dialog');
-    overlay.setAttribute('aria-label', 'Enlarged figure');
+    overlay.setAttribute('aria-label', {json.dumps(enlarged_figure, ensure_ascii=False)});
     var frame = document.createElement('div');
     frame.className = 'lightbox-figure';
     frame.innerHTML = panel.innerHTML;
@@ -1311,7 +1426,7 @@ def render_module(course: dict, module_index: int) -> str:
     overlay.appendChild(frame);
     var hint = document.createElement('div');
     hint.className = 'lightbox-hint';
-    hint.textContent = 'Click outside or press Esc to close';
+    hint.textContent = {json.dumps(lightbox_close_hint, ensure_ascii=False)};
     overlay.appendChild(hint);
     overlay.addEventListener('click', function(e) {{
       if (!e.target.closest('.lightbox-figure')) closeLightbox();
@@ -1412,6 +1527,12 @@ def main():
 
     course = json.loads(args.course_json.read_text())
     out_dir = args.course_json.resolve().parent
+
+    if is_scrolling(course):
+        out_path = args.out or (out_dir / "index.html")
+        out_path.write_text(render_scrolling_course(course), encoding="utf-8")
+        print(f"wrote {out_path} (Scrolling single-SCO course)")
+        return
 
     if args.all:
         for i, mod in enumerate(course["modules"]):

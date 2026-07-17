@@ -6,8 +6,9 @@ The wizard maintains a single `course.json` in the working area. It's the source
 
 ```json
 {
-  "course_slug": "ocp_nic_3_0_academy",
-  "course_title": "OCP NIC 3.0 Academy",
+  "style": "Slides",
+  "course_slug": "ocp_academy_nic_3_0",
+  "course_title": "OCP Academy: NIC 3.0",
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
   "spec_version_chip": "Specification v1.6.0 · March 2025",
@@ -43,11 +44,115 @@ The wizard maintains a single `course.json` in the working area. It's the source
 }
 ```
 
+## Presentation style
+
+`style` accepts exactly `"Slides"` or `"Scrolling"`. If omitted, renderers assume Slides so existing courses remain compatible.
+
+- Slides uses `modules[].slides[]`, narration, and multiple SCO pages.
+- Scrolling uses top-level `lessons[].blocks[]`, a persistent left table of contents, progressive Continue gates, and one `index.html` SCO. Narration is false by default.
+
+### Scrolling top-level shape
+
+```json
+{
+  "schema_version": "2.0",
+  "style": "Scrolling",
+  "course_slug": "module-1-the-ocp-origins",
+  "course_title": "Module 1: The OCP Origins",
+  "course_subtitle": "A concise plain-text description.",
+  "course_description_html": "<p>The full learner-facing description.</p>",
+  "target_duration_minutes": null,
+  "audience_level": "introductory",
+  "brand": {
+    "primary_color": "#8cc53f",
+    "primary_color_dark": "#6fa030",
+    "course_logo": "resources/images/module-banner.png"
+  },
+  "theme": {
+    "source_theme": "classic",
+    "accent_color": "#8cc53f",
+    "sidebar_style": "Light",
+    "corner_style": "Rounded",
+    "cover_image": "resources/images/cover.jpg",
+    "cover_width": 1680,
+    "cover_height": 737,
+    "cover_overlay": 0,
+    "cover_page_type": "full",
+    "navigation_type": "sidebar",
+    "lesson_header_style": "accent",
+    "lesson_header_size": "medium",
+    "lesson_header_color": "#8cc53f",
+    "lesson_header_hidden": false,
+    "button_scheme": "accent",
+    "block_padding": 30,
+    "animate_block_entrance": true,
+    "font_families": {
+      "heading": "Be Vietnam",
+      "body": "Be Vietnam",
+      "ui": "Lato"
+    },
+    "font_faces": [
+      {
+        "family": "Be Vietnam",
+        "weight": 400,
+        "style": "normal",
+        "path": "resources/fonts/be-vietnam-regular.woff2"
+      }
+    ]
+  },
+  "scrolling": {
+    "toc_position": "left",
+    "toc_initially_open": true,
+    "show_search": true,
+    "show_lesson_count": true,
+    "show_cover_lesson_list": true,
+    "lesson_transition": "directional_vertical",
+    "continue_gates": true,
+    "narration": false
+  },
+  "lessons": []
+}
+```
+
+Each lesson has sequential `id`, stable `slug`, learner-facing `title`, optional `description_html`, and ordered `blocks`. Supported block types are `text`, `list`, `image`, `video`, `attachment`, `divider`, `continue`, `quote`, `buttons`, `accordion`, `tabs`, `process`, `labeled_graphic`, `flashcards`, and `knowledge_check`. A Scrolling `process` block is rendered as a numbered, one-step-at-a-time carousel; each item may include a title, `description_html`, and media. Store course-owned binary media under `resources/images`, `resources/videos`, `resources/captions`, or `resources/documents` and reference those paths from block `media` objects. Blocks may set `style.entrance_animation`; false keeps that block static even when `theme.animate_block_entrance` is enabled.
+
+Quote blocks may include structured `avatar` media. Classic quote variant `d` renders that image as an 80px circle beside transparent quote content on the block's own background; retain its responsive width and authored typography instead of substituting a generic callout card. Scrolling videos use the maintained custom player: transparent letterboxing, a centered 98px play circle, no browser-native controls before activation, and the configured control order after activation—play/pause, seek/loaded progress, remaining time, seven-choice speed menu, caption-language menu, picture-in-picture, fullscreen, and expandable volume. Use the canonical Video.js-compatible glyph outlines rather than substitute art. Scrolling accordions use right-aligned plus/minus controls rather than native disclosure triangles; light block surfaces render adjoining bordered white cards with a 4px accent rule on expanded content, while dark surfaces retain the configured borderless treatment.
+
+A captioned video declares editable VTT resources in `media.captions[]`:
+
+```json
+{
+  "type": "video",
+  "media": {
+    "path": "resources/videos/origin-story.mp4",
+    "poster": "resources/images/origin-story.jpg",
+    "captions": [
+      {"path": "resources/captions/origin-story.en-US.vtt", "language": "en-US", "label": "English (US)"},
+      {"path": "resources/captions/origin-story.fr.vtt", "language": "fr", "label": "Français"}
+    ]
+  }
+}
+```
+
+The renderer parses those files into generated cue fallback data so CC works from `file://` as well as an LMS, but `course.json` retains only the VTT paths and language metadata. Add translated subtitle tracks as additional VTT entries; never duplicate or hard-code cues in course authoring data.
+
+Every `continue` block has a `label` and optional `complete_hint`. It reveals following blocks until the next Continue gate. A nearby `knowledge_check` does not disable Continue; progression may happen before or after answering it. The final gate completes that lesson and immediately opens the next lesson. Revisiting a completed lesson hides its Continue controls and shows a full-pane 61px gray bar linking to the next lesson; do not add a separate generic Next Lesson button. A final `buttons` item with `type: "exit-course"` completes its zero-gate lesson only when the learner clicks Exit; entering that lesson must not mark it complete or expose a completion message. Completing every lesson completes the single SCO.
+
+`show_cover_lesson_list` defaults to true and renders the ordered lesson overview below the cover's lesson count. The classic centered cover title uses responsive sizes: 32px/38px by default, 45px/52px from 480px, 60px/70px from 992px, and 80px/90px from 1440px. `lesson_transition` accepts `"directional_vertical"` (default) or `"none"`; the default brings later lessons in from below and earlier lessons in from above while respecting reduced-motion preferences. The desktop lesson pane is a viewport-height scrolling region. Each lesson includes a 61px gray previous-navigation strip above its hero (`Home` for lesson 1), and lesson entry starts at a 62px pane offset so scrolling upward reveals that strip. Preserve the configured lesson-header grid, including its 160px by 5px post-title rule, two-pixel white separation before the first body block, and wide-screen 950px-grid cap; at a 1440px viewport its inner header is 761.667px rather than a percentage that keeps growing. The desktop TOC is 280px wide; lesson rows use bold 13px/16px text, 18px 41px 18px 43px padding, 52px height for one-line titles, natural 68px height for two-line titles, and a `#f3f3f3` active fill. A completed row uses the canonical 30px status wrapper with an inset 20px, 16-unit progress-circle SVG and check path. Scrolling block backgrounds span the lesson pane, but their inner content widths are type-specific: do not apply one global side margin to text, lists, media, interactions, and Continue controls. Full-width cropped images have a 200px minimum height and retain enough intrinsic height to avoid clipping an image taller than that threshold. Text-aside blocks use the maintained content width, medium videos cap at 1100px on wide screens, and dividers retain the 920px content-box cap, responsive padding, and negative 8.333% line margins on wide panes.
+
+When `theme.animate_block_entrance` is true, observe eligible blocks as they enter the viewport. Text-aside media fades and moves 50px from its outside edge over 1 second after a 0.12-second delay. List items use the same horizontal entrance staggered by 0.25 seconds. Full media, videos, and Continue controls fade without translation. Honor reduced motion. `show_search` provides submit-on-Enter full-course content search with lesson-grouped occurrence counts, not live title filtering.
+
+The `theme` object is authoritative learner-facing source. Preserve the configured cover (including dimensions and overlay), typography through local `font_faces`, navigation and lesson-header treatment, button scheme, block padding, and animation preference. The renderer must reproduce that presentation using readable AcademyWizard HTML/CSS rather than replacing the authored design with generic defaults. Omitted values use the maintained Scrolling defaults.
+
+Render classic Scrolling heading and heading-paragraph blocks with a bold 32px/40px heading line box and 8px vertical padding. If `heading_html` contains an author-sized `font-size: 2rem` span, retain bold inheritance but give that span a 20px/25px line box; do not style it as regular body text.
+
+Classic Scrolling interactions retain their authored geometry. Numbered lists use 40px accent-green number circles and a 100px gap to the text column; at a 1440px viewport the item and text widths are 760px and 660px. Description-style flashcards omit placeholder media, render as 252px white cards, use the canonical 36px top-right control and SVG icon, and flip to a `#fafafa` text back. A three-card group stays in one row with 28px gaps on wide screens. Accordion headers use the maintained 715.828px medium width and expand to the 761.667px wide-grid cap, with 30px padding, 18px/25.2px bold type, and 87px header height. Process interactions use an 830px card at 1440px, horizontal 0.5-second directional transitions, and 56px circular chevrons. Description button blocks use a centered 620px row with a 450px description column (80px right padding) and a 170px by 40px pill button; do not stack the text and button on desktop. Knowledge checks use a 760px white card with 64px/56px padding, 646px answer rows, a 20px radio ring with centered 6px selected dot, and configured submitted feedback. Submission disables the choices and hides Submit; correct/incorrect answer glyphs replace the selected dot, feedback fades from scale 1.1 after the configured delay, incorrect feedback offers Take Again, and correct feedback does not.
+
 For OCP branded text, render `OCP Ready` with a superscript `TM` in learner-facing HTML. Use the `™` glyph in metadata, manifest titles, image alt text, and other plain-text fields where HTML tags are not valid. Do not change source filenames or local source paths to add trademarks.
 
 The optional `brand.badge_text` sets the small label shown under the course logo in each module's top-left badge. Set it to the course's short slug — "NIC", "CDU", "RDMA", etc. — when that's a useful abbreviation. If it is omitted or blank, the renderer leaves the small label out; it does not invent one from the course title.
 
-`brand.course_logo` is required for a polished Academy course. It appears to the right of the OCP Academy logo on `index.html`, above `badge_text` in each module's top-left badge, and as the floating/glowing hero icon on every module title slide. If the user does not provide an asset, generate a simple course-specific SVG mark and place it at the package root. Keep the SVG mark graphical; do not embed acronym text in the logo itself.
+`brand.course_logo` is required for a polished OCP Academy course. It appears to the right of the OCP Academy logo on `index.html`, above `badge_text` in each module's top-left badge, and as the floating/glowing hero icon on every module title slide. If the user does not provide an asset, generate a simple course-specific SVG mark and place it at the package root. Keep the SVG mark graphical; do not embed acronym text in the logo itself.
 
 ## Motion intro shape
 
@@ -77,7 +182,7 @@ Override only when needed:
     "duration_ms": 8000,
     "logo": "ocp_academy_white.svg",
     "index": {
-      "title": "OCP NIC 3.0 Academy",
+      "title": "OCP Academy: NIC 3.0",
       "subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification"
     },
     "modules": {
@@ -90,6 +195,8 @@ Override only when needed:
 Disable globally with `"motion_intro": {"enabled": false}`. Disable only the course-home intro
 with `"motion_intro": {"index": {"enabled": false}}`. Disable module intros with
 `"motion_intro": {"modules": {"enabled": false}}`.
+
+For narrated Slides modules, slide 1 audio starts during module-page initialization and runs independently of this overlay. Do not delay narration until the motion intro ends. When browser autoplay policy blocks audible playback, retain the loaded clip and retry on the learner's first pointer, touch, or keyboard interaction while pulsing the play control as the fallback cue.
 
 ## Module shape
 
@@ -153,7 +260,7 @@ Optional learner-aid fields accepted on slides:
 }
 ```
 
-Use `reference_links` for small bottom-of-slide link pills. Use `resource_callout` for a larger learner resource box when the resource deserves more context. These learner aids render inside `.slide-content`, left-aligned, below the slide's last text/table/image element. Do not place them in a separate floating "Terms" region, fixed footer, or control-adjacent panel. Use `term_refs` with a top-level `term_glossary`:
+Use `reference_links` for small bottom-of-slide link pills. Every resource pill opens in a new tab and includes the inline external-page icon on its right edge. Use `resource_callout` for a larger learner resource box when the resource deserves more context. Use `term_refs` for tooltip-only glossary pills; they include the inline terminology/book icon on the right and never become links, even when the glossary metadata retains a source URL for authoring or audit purposes. These learner aids render inside `.slide-content`, left-aligned, below the slide's last text/table/image element. The one alignment exception is the final module's final `course_complete` slide, where its resource strip is centered. Do not place learner aids in a separate floating "Terms" region, fixed footer, or control-adjacent panel. Use `term_refs` with a top-level `term_glossary`:
 
 ```json
 {
@@ -424,16 +531,16 @@ The end-of-module slide on every module *except* the final one. Carries the "Mod
 
 ### `course_complete`
 
-The end-of-final-module slide. Two beats: thanks the learner for finishing the final module AND wraps up the whole course. Both messages have sensible auto-defaults if omitted.
+The end-of-final-module slide. Two beats: thanks the learner for finishing the final module AND wraps up the whole course. Both messages have sensible auto-defaults if omitted. Add useful `reference_links` as the learner's continuing resources; the renderer centers that resource strip with the rest of the completion content. Do not add a redundant "All Modules Complete" badge below the course-complete message.
 
-Optionally add a `survey` object to attach a feedback CTA card below the "All Modules Complete" badge. The card has a body paragraph and a button that opens the survey URL in a new tab. Omit `survey` entirely to render the slide without any CTA. `button_text` defaults to "Share Feedback".
+Optionally add a `survey` object to attach a feedback CTA card below the centered resources. The card has a body paragraph and a button that opens the survey URL in a new tab. Omit `survey` entirely to render the slide without any CTA. `button_text` defaults to "Share Feedback".
 
 ```json
 {
   "type": "course_complete",
-  "course_title": "OCP NIC 3.0 Academy",
+  "course_title": "OCP Academy: NIC 3.0",
   "thank_you_message": "Thank you for completing Module 6: Compliance, Ecosystem & Future.",
-  "cert_message": "You've completed every module of the OCP NIC 3.0 Academy. We hope this course leaves you ready to put what you've learned into practice.",
+  "cert_message": "You've completed every module of the OCP Academy NIC 3.0 course. We hope this course leaves you ready to put what you've learned into practice.",
   "survey": {
     "body": "Got a couple minutes to help us improve? Help us shape improvements and our future courses by sharing your feedback with the course development team. We periodically select submitters at random for great giveaways!",
     "button_text": "Share Feedback",

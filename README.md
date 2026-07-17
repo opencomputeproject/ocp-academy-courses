@@ -2,11 +2,24 @@
 
 Open source course definitions for OCP Academy SCORM courses.
 
-This repository stores the editable course source: `course.json`, narration scripts, course-owned figures, thumbnails, and short teaching animations. It does not store generated audio, rendered HTML modules, SCORM zip files, or the original research/source materials used during course development.
+This repository stores editable course source: `course.json`, narration scripts when applicable, and course-owned media. It does not store generated audio, rendered HTML, SCORM zip files, or the original research materials used during course development.
 
 The courses in this repository are generally hosted on [OCP Academy](https://academy.opencompute.org/learn), primarily in its catalog of [Data Center Technology courses](https://academy.opencompute.org/learn/public/catalog/view/3).
 
-It also includes the `academy-wizard` Codex skill used to build the courses so contributors can reproduce the package generation flow from a clone.
+It also includes the `academy-wizard` Codex skill used to author and rebuild courses so contributors can reproduce the package generation flow from a clone.
+
+## Course styles
+
+AcademyWizard supports two explicit values for the top-level `style` property in `course.json`:
+
+| Style | Learner experience | Source shape | Typical media |
+|---|---|---|---|
+| `Slides` | Narrated, previous/next slide navigation | `modules[].slides[]` | Narration scripts, generated audio, figures, and teaching animations |
+| `Scrolling` | Lesson table of contents, vertical content, Continue gates, and in-page interactions | `lessons[].blocks[]` | Images, videos, captions, documents, and course-specific interaction settings |
+
+`Slides` remains the default when `style` is omitted. `Scrolling` courses are emitted as one standalone SCORM course per `course.json`; a multi-course learning sequence is assembled in the LMS rather than combined into one package.
+
+See [Course styles](docs/course-styles.md) for the authoring and fidelity contract.
 
 ## Repository layout
 
@@ -15,6 +28,11 @@ courses/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
   integrating-quantum-processing-units-into-data-center-infrastructure/
+  intro-to-ocp/
+    module-1-the-ocp-origins/
+    module-2-the-ocp-ecosystem-governance/
+    module-3-ocp-technologies-open-rack-cooling/
+    module-4-today-and-tomorrow-the-journey/
   multipath-reliable-connection-mrc/
   ocp-esun-ethernet-for-scale-up-networks/
   ocp-mhs-modular-plug-and-play-m-pnp/
@@ -40,13 +58,13 @@ The bundled skill lives at:
 skills/academy-wizard
 ```
 
-The build script uses this repo-local copy by default, so installing the skill is optional for command-line builds. Install it into Codex when you want to use it interactively to create or revise courses:
+The build script uses the repo-local AcademyWizard copy by default, so installing the skill is optional for command-line builds. Install it into Codex when you want to interactively create or revise courses:
 
 ```bash
 ./scripts/install-academy-wizard-skill.sh
 ```
 
-If you already have a local `academy-wizard` skill and want to replace it with this repo version:
+Add `--force` to replace an existing local copy:
 
 ```bash
 ./scripts/install-academy-wizard-skill.sh --force
@@ -63,7 +81,7 @@ Restart Codex or start a new Codex session after installing so the skill list re
 To use the skill interactively, ask Codex for AcademyWizard work, for example:
 
 ```text
-Use the academy-wizard skill to build the two-phase direct liquid cooling course from the course source in this repo.
+Use AcademyWizard to build a Scrolling course from the course source in this repository.
 ```
 
 ## Available Courses
@@ -73,6 +91,10 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
 | `integrating-quantum-processing-units-into-data-center-infrastructure` | Integrating Quantum Processing Units into Data Center Infrastructure |
+| `intro-to-ocp/module-1-the-ocp-origins` | Module 1: The OCP Origins |
+| `intro-to-ocp/module-2-the-ocp-ecosystem-governance` | Module 2: The OCP Ecosystem & Governance |
+| `intro-to-ocp/module-3-ocp-technologies-open-rack-cooling` | Module 3: OCP Technologies (Open Rack & Cooling) |
+| `intro-to-ocp/module-4-today-and-tomorrow-the-journey` | Module 4: Today and Tomorrow (The Journey) |
 | `multipath-reliable-connection-mrc` | OCP Academy - MRC Technical Overview |
 | `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
@@ -85,13 +107,9 @@ Use the academy-wizard skill to build the two-phase direct liquid cooling course
 
 ## Build a course
 
-The build uses the local AcademyWizard Codex skill. By default the script looks for it at:
+The build uses the bundled AcademyWizard skill by default and selects the Slides or Scrolling pipeline from `course.json`.
 
-```text
-~/.codex/skills/academy-wizard
-```
-
-To build a course:
+To build a narrated Slides course:
 
 ```bash
 export ELEVENLABS_API_KEY="<your key>"
@@ -99,6 +117,14 @@ export ELEVENLABS_API_KEY="<your key>"
 ```
 
 The output is written under `build/`, including the rendered course folder and LMS-ready SCORM zip.
+
+To build one standalone course in the Intro to OCP Scrolling series, no narration API key is required:
+
+```bash
+./scripts/build-course.sh intro-to-ocp/module-1-the-ocp-origins
+```
+
+This writes the package folder and zip beneath `build/intro-to-ocp/`. Run the same command with each sibling folder to produce the four independent LMS packages.
 
 The script defaults to the bundled skill under `skills/academy-wizard`. If you use a different skill location:
 
@@ -117,8 +143,9 @@ EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh two-phase-direct-liq
 Use pull requests for course improvements.
 
 - Edit slide text, quiz content, figures, and structure in `course.json`.
-- Edit narration in `courses/<course-path>/audio/moduleN/slide_*.txt`.
+- For Slides courses, edit narration in `courses/<course-path>/audio/moduleN/slide_*.txt`.
+- For Scrolling courses, retain learner media under `resources/` and preserve source-specific interaction, typography, spacing, motion, control-art, and caption metadata in `course.json`.
 - Do not commit generated `.wav`, `module*.html`, `index.html`, `imsmanifest.xml`, or `.zip` files.
 - Run the build script before opening a PR when possible.
 
-The build regenerates audio from the checked-in narration scripts, renders the SCORM HTML, validates the package, and creates a strict LMS zip.
+The build renders the selected style, validates the package, and creates a strict LMS zip. Slides builds also regenerate audio from checked-in narration scripts unless existing audio or `SKIP_AUDIO=1` is supplied.
