@@ -49,6 +49,55 @@ def ui(course: dict, key: str, default: str) -> str:
     return str((course.get("ui_labels") or {}).get(key, default))
 
 
+LANGUAGE_NAMES = {
+    "ar": "Arabic",
+    "de": "German",
+    "es": "Spanish",
+    "fr": "French",
+    "hi": "Hindi",
+    "it": "Italian",
+    "ja": "Japanese",
+    "ko": "Korean",
+    "nl": "Dutch",
+    "pl": "Polish",
+    "pt": "Portuguese",
+    "ru": "Russian",
+    "sv": "Swedish",
+    "tr": "Turkish",
+    "uk": "Ukrainian",
+    "vi": "Vietnamese",
+    "zh": "Chinese",
+    "zh-hans": "Chinese (Simplified)",
+    "zh-hant": "Chinese (Traditional)",
+}
+
+
+def scorm_metadata_title(course: dict) -> str:
+    """Return the LMS-facing title without changing learner-facing HTML."""
+    course_title = str(course.get("course_title") or "OCP Academy Course")
+    explicit = str(course.get("scorm_title") or "").strip()
+    if explicit:
+        return explicit
+
+    language = str(course.get("language") or "en").strip().lower().replace("_", "-")
+    parts = language.split("-")
+    primary = parts[0]
+    script_tag = "-".join(parts[:2]) if len(parts) > 1 and len(parts[1]) == 4 else ""
+    if primary in ("", "en"):
+        return course_title
+
+    language_name = str(course.get("metadata_language_name") or "").strip()
+    if not language_name:
+        language_name = (
+            LANGUAGE_NAMES.get(language)
+            or (LANGUAGE_NAMES.get(script_tag) if script_tag else None)
+            or LANGUAGE_NAMES.get(primary)
+            or language
+        )
+    suffix = f"({language_name})"
+    return course_title if course_title.endswith(suffix) else f"{course_title} {suffix}"
+
+
 def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     if is_scrolling(course):
         return render_scrolling_course(course, resource_root)
@@ -176,7 +225,7 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     by HTML pages — strict LMSes reject zips with unlisted files."""
     if is_scrolling(course):
         course_slug = course.get("course_slug", "ocp_academy_scrolling_course")
-        course_title = course.get("course_title", "OCP Academy Course")
+        course_title = scorm_metadata_title(course)
         files_xml = "\n      ".join(
             f'<file href="{xml_escape(path)}"/>' for path in runtime_files(course)
         )
@@ -212,7 +261,7 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     course_logo = brand.get("course_logo", "")
     academy_logo = brand.get("academy_logo", "")
     course_slug = course.get("course_slug", "ocp_academy_course")
-    course_title = course.get("course_title", "OCP Academy Course")
+    course_title = scorm_metadata_title(course)
 
     org_items = []
     resources = []

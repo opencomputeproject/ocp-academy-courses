@@ -9,6 +9,9 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "style": "Slides",
   "course_slug": "ocp_academy_nic_3_0",
   "course_title": "OCP Academy: NIC 3.0",
+  "language": "en-US",
+  "scorm_title": "Optional exact manifest-only title override",
+  "metadata_language_name": "Optional language label for the manifest suffix",
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
   "spec_version_chip": "Specification v1.6.0 · March 2025",
@@ -43,6 +46,13 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "modules": [ /* see below */ ]
 }
 ```
+
+`course_title` is learner-facing and appears inside the rendered course.
+`language` is a BCP 47 tag. English packages use `course_title` unchanged in
+`imsmanifest.xml`; non-English packages append the English language name in
+parentheses, such as `OCP ESUN (Korean)`. Use `scorm_title` only for an exact
+manifest-only override. Use `metadata_language_name` to override the automatic
+language label without changing course content.
 
 ## Presentation style
 

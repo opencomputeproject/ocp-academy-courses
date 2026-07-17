@@ -25,6 +25,13 @@ See [Course styles](docs/course-styles.md) for the authoring and fidelity contra
 
 ```text
 courses/
+  <slides-course>/
+    course.json                 # canonical English source
+    audio/
+    figures/
+    locales/
+      ko-KR/                    # self-contained translated source
+      fr-FR/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
   integrating-quantum-processing-units-into-data-center-infrastructure/
@@ -118,6 +125,33 @@ export ELEVENLABS_API_KEY="<your key>"
 
 The output is written under `build/`, including the rendered course folder and LMS-ready SCORM zip.
 
+### Translate a Slides course
+
+Keep the existing course root as the canonical English source. Scaffold each
+additional language beneath a BCP 47 locale folder:
+
+```bash
+python skills/academy-wizard/scripts/scaffold_slides_translation.py \
+  courses/ocp-esun-ethernet-for-scale-up-networks/course.json ko-KR \
+  --language-name Korean
+```
+
+This creates a self-contained editable source under
+`courses/ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR/`. Translate its
+`course.json`, narration scripts, and text-bearing media, then build it as an
+independent package:
+
+```bash
+export ELEVENLABS_API_KEY="<your key>"
+./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR
+```
+
+The visible course title remains unchanged. The SCORM manifest title adds the
+English language name, such as `OCP ESUN (Korean)`, so LMS asset lists can
+distinguish editions. See
+`skills/academy-wizard/references/slides_translation.md` for the complete
+translation and QA workflow.
+
 To build one standalone course in the Intro to OCP Scrolling series, no narration API key is required:
 
 ```bash
@@ -144,6 +178,7 @@ Use pull requests for course improvements.
 
 - Edit slide text, quiz content, figures, and structure in `course.json`.
 - For Slides courses, edit narration in `courses/<course-path>/audio/moduleN/slide_*.txt`.
+- Store translated Slides sources in `courses/<course-path>/locales/<BCP-47 tag>/`.
 - For Scrolling courses, retain learner media under `resources/` and preserve source-specific interaction, typography, spacing, motion, control-art, and caption metadata in `course.json`.
 - Do not commit generated `.wav`, `module*.html`, `index.html`, `imsmanifest.xml`, or `.zip` files.
 - Run the build script before opening a PR when possible.
