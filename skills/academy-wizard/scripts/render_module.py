@@ -753,9 +753,7 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
       <span class="section-label animate-in">Course Complete</span>
       <h2 class="slide-title animate-in" style="margin: 0 0 6px 0; text-align:center;">{esc(course_title)}</h2>
       <p class="slide-subtitle animate-in" style="margin: 0 auto 18px; text-align:center;">{esc(wrap_up)}</p>
-      <div class="module-complete-badge animate-in" style="margin: 0;">
-        &#10003;&ensp;All Modules Complete
-      </div>
+      {_learner_aids_html(slide, course)}
       {_summary_items_html(slide)}{survey_html}
     </div>
   </div>
