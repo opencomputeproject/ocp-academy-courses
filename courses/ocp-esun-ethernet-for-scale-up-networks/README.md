@@ -17,9 +17,11 @@ The module includes a knowledge check before the final course-completion slide.
 - English is the canonical source in this folder.
 - Korean is a self-contained authoring source under `locales/ko-KR/`, including
   translated `course.json`, narration scripts, and localized figures.
+- Japanese is a self-contained authoring source under `locales/ja-JP/`, including
+  translated `course.json`, narration scripts, and localized figures.
 
-The Korean edition preserves the English structure and technical facts while
-using its own LMS metadata and ElevenLabs narration voice.
+Each translated edition preserves the English structure and technical facts while
+using locale-specific LMS metadata and its approved ElevenLabs narration voice.
 
 ## Build
 
@@ -41,6 +43,13 @@ Build the Korean edition independently:
 ```bash
 export ELEVENLABS_API_KEY="<your key>"
 ./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR
+```
+
+Build the Japanese edition independently:
+
+```bash
+export ELEVENLABS_API_KEY="<your key>"
+./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP
 ```
 
 ## Animated Figure

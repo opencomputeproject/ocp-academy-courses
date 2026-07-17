@@ -28,6 +28,10 @@ from pathlib import Path
 LANGUAGE_TAG_RE = re.compile(r"^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
 
 LOCALE_NARRATION_DEFAULTS = {
+    "ja": {
+        "engine": "elevenlabs",
+        "voice_id": "b34JylakFZPlGS0BnwyY",
+    },
     "ko": {
         "engine": "elevenlabs",
         "voice_id": "PDoCXqBQFGsvfO0hNkEs",
@@ -201,9 +205,10 @@ def main() -> None:
     print(f"wrote {target_json}")
     print(f"reset {audio_count} narration approval(s)")
     if narration_default:
+        voice_label = narration_default.get("voice_name") or f"{language} ElevenLabs voice"
         print(
             "set narration default: "
-            f"{narration_default['voice_name']} ({narration_default['voice_id']})"
+            f"{voice_label} ({narration_default['voice_id']})"
         )
     print("\nNext steps:")
     print("  1. Translate learner-facing course.json fields and ui_labels.")

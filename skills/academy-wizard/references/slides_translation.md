@@ -114,6 +114,10 @@ course-specific engine and voice automatically. Do not substitute another voice
 unless the user explicitly selects one; use `--voice` for an intentional
 one-time override.
 
+For every Japanese locale (`ja` and its regional variants), use the approved
+ElevenLabs voice ID `b34JylakFZPlGS0BnwyY`. The scaffold records the ID under
+top-level `narration` and the same override rule applies.
+
 After editorial approval, synthesize the locale audio and run
 `audio_tail_report.py --fail-on-flags`. Regenerate only flagged clips. Do not
 render or package after a required knowledge-check audio failure.
