@@ -12,6 +12,11 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "language": "en-US",
   "scorm_title": "Optional exact manifest-only title override",
   "metadata_language_name": "Optional language label for the manifest suffix",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "Course-specific ElevenLabs voice ID",
+    "voice_name": "Human-readable voice name"
+  },
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
   "spec_version_chip": "Specification v1.6.0 · March 2025",
@@ -53,6 +58,12 @@ The wizard maintains a single `course.json` in the working area. It's the source
 parentheses, such as `OCP ESUN (Korean)`. Use `scorm_title` only for an exact
 manifest-only override. Use `metadata_language_name` to override the automatic
 language label without changing course content.
+
+For narrated Slides courses, optional top-level `narration` makes the TTS engine
+and voice reproducible. `gen_audio.py` uses this course-specific configuration
+before environment defaults; `--engine` and `--voice` remain explicit command
+overrides. Korean locale scaffolds set ElevenLabs `Chris - Warm and clear`
+(`PDoCXqBQFGsvfO0hNkEs`).
 
 ## Presentation style
 

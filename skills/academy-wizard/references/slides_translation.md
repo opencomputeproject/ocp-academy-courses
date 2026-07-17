@@ -66,6 +66,7 @@ The scaffold:
 - copies figures, animations, and referenced brand assets;
 - preserves module, slide, quiz, glossary, source-reference, and URL structure;
 - sets `language` and a locale-specific `course_slug`;
+- applies any maintained locale narration default to top-level `narration`;
 - records the source path and SHA-256 under `localization`;
 - creates empty locale narration folders; and
 - resets every narration approval to `false`.
@@ -105,6 +106,13 @@ Write new scripts for every narrated slide. Never reuse English WAVs. Use one
 approved voice, model, and speed consistently across the locale. Keep a narrated
 knowledge check narrated, and preserve final-slide narration when the approved
 course design includes it.
+
+For every Korean locale (`ko` and its regional variants), use ElevenLabs
+`Chris - Warm and clear`, voice ID `PDoCXqBQFGsvfO0hNkEs`. The translation
+scaffold records this under top-level `narration`, and `gen_audio.py` honors that
+course-specific engine and voice automatically. Do not substitute another voice
+unless the user explicitly selects one; use `--voice` for an intentional
+one-time override.
 
 After editorial approval, synthesize the locale audio and run
 `audio_tail_report.py --fail-on-flags`. Regenerate only flagged clips. Do not

@@ -9,7 +9,8 @@ Usage:
 The source course is never modified. The new locale starts with the same slide
 structure and copied visual assets, but narration folders are empty and every
 audio block is reset to approved=false so translated scripts must be reviewed
-and synthesized deliberately.
+and synthesized deliberately. Maintained locale narration defaults are written
+to top-level course metadata.
 """
 
 from __future__ import annotations
@@ -25,6 +26,14 @@ from pathlib import Path
 
 
 LANGUAGE_TAG_RE = re.compile(r"^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
+
+LOCALE_NARRATION_DEFAULTS = {
+    "ko": {
+        "engine": "elevenlabs",
+        "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+        "voice_name": "Chris - Warm and clear",
+    },
+}
 
 
 def canonical_language_tag(value: str) -> str:
@@ -45,6 +54,12 @@ def canonical_language_tag(value: str) -> str:
 
 def is_slides(course: dict) -> bool:
     return str(course.get("style") or "Slides").strip().casefold() == "slides"
+
+
+def locale_narration_default(language: str) -> dict | None:
+    primary_language = language.split("-", 1)[0].lower()
+    default = LOCALE_NARRATION_DEFAULTS.get(primary_language)
+    return dict(default) if default else None
 
 
 def copy_tree_if_present(source_root: Path, target_root: Path, name: str) -> None:
@@ -149,6 +164,10 @@ def main() -> None:
     source_language = canonical_language_tag(str(course.get("language") or "en-US"))
     course["style"] = "Slides"
     course["language"] = language
+    course.pop("narration", None)
+    narration_default = locale_narration_default(language)
+    if narration_default:
+        course["narration"] = narration_default
     course.pop("scorm_title", None)
     if args.scorm_title:
         course["scorm_title"] = args.scorm_title
@@ -181,6 +200,11 @@ def main() -> None:
     )
     print(f"wrote {target_json}")
     print(f"reset {audio_count} narration approval(s)")
+    if narration_default:
+        print(
+            "set narration default: "
+            f"{narration_default['voice_name']} ({narration_default['voice_id']})"
+        )
     print("\nNext steps:")
     print("  1. Translate learner-facing course.json fields and ui_labels.")
     print("  2. Write locale narration scripts under audio/moduleN/.")
