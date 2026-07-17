@@ -76,11 +76,11 @@ else
   if [[ -n "${EXISTING_AUDIO_DIR:-}" ]]; then
     rsync -a "$EXISTING_AUDIO_DIR/" "$BUILD_DIR/audio/"
   elif [[ "${SKIP_AUDIO:-0}" != "1" ]]; then
-    AUDIO_ARGS=()
     if [[ "${FORCE_AUDIO:-0}" == "1" ]]; then
-      AUDIO_ARGS+=(--force)
+      "$PYTHON_BIN" "$SKILL_DIR/scripts/gen_audio.py" "$BUILD_DIR/course.json" --force
+    else
+      "$PYTHON_BIN" "$SKILL_DIR/scripts/gen_audio.py" "$BUILD_DIR/course.json"
     fi
-    "$PYTHON_BIN" "$SKILL_DIR/scripts/gen_audio.py" "$BUILD_DIR/course.json" "${AUDIO_ARGS[@]}"
   fi
 
   "$PYTHON_BIN" "$SKILL_DIR/scripts/render_module.py" "$BUILD_DIR/course.json" --all
