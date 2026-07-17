@@ -12,6 +12,15 @@ This course source is intended for PR-friendly editing. Change slides, quiz cont
 
 The module includes a knowledge check before the final course-completion slide.
 
+## Language editions
+
+- English is the canonical source in this folder.
+- Korean is a self-contained authoring source under `locales/ko-KR/`, including
+  translated `course.json`, narration scripts, and localized figures.
+
+The Korean edition preserves the English structure and technical facts while
+using its own LMS metadata and ElevenLabs narration voice.
+
 ## Build
 
 From the repository root:
@@ -25,6 +34,13 @@ For local QA with previously generated audio, set `EXISTING_AUDIO_DIR` to a fold
 
 ```bash
 EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks
+```
+
+Build the Korean edition independently:
+
+```bash
+export ELEVENLABS_API_KEY="<your key>"
+./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR
 ```
 
 ## Animated Figure
