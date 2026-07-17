@@ -169,6 +169,9 @@ def main():
     args = p.parse_args()
 
     course = json.loads(args.course_json.read_text())
+    if str(course.get("style") or "Slides").strip().casefold() == "scrolling":
+        print("Scrolling style has no narration by default; no audio generated.")
+        return
     out_dir = args.course_json.resolve().parent
     engine = pick_engine(args.engine)
     print(f"engine: {engine}")

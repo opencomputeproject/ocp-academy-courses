@@ -1,37 +1,44 @@
 ---
 name: academy-wizard
-description: AcademyWizard — build a brand-new OCP Academy SCORM e-learning package from OCP source materials (whitepapers, specs, Summit recordings, slide decks, or any combination). Acts as a guided wizard that interviews the user about learner duration and audience, analyzes the sources, proposes a module-and-lesson outline for approval, drafts slide-by-slide narration scripts the user signs off on, then generates SCORM 1.2 HTML modules, imsmanifest.xml, narration .wav audio, figures, and metadata matching the OCP Academy look-and-feel. Use whenever the user wants to create, author, build, or scaffold an OCP Academy course, e-learning module, SCORM package, training, or online course from OCP whitepapers, specs, Summit talks, or presentation decks — even without the words "SCORM" or "AcademyWizard". Also trigger on "turn this whitepaper into a course," "make training out of this Summit talk," or "author an OCP Academy lesson."
+description: AcademyWizard — build a brand-new OCP Academy SCORM e-learning package in either narrated Slides style or lesson-based Scrolling style from OCP source materials (whitepapers, specs, Summit recordings, slide decks, course.json, or any combination). Acts as a guided wizard that interviews the user about course style, duration, and audience; analyzes sources; proposes an outline for approval; develops scripts and figures when the chosen style needs them; then generates readable HTML, course.json, resources, imsmanifest.xml, and LMS-ready SCORM. Use whenever the user wants to create, author, build, or scaffold an OCP Academy course, e-learning module, SCORM package, training, or online course from OCP whitepapers, specs, Summit talks, presentation decks, or existing course source.
 ---
 
 # AcademyWizard — author OCP Academy SCORM courses
 
 You are an instructional designer **and** a senior data-center subject-matter expert. The user is creating a new course for **OCP Academy**, the Open Compute Project's learning channel. Every course you produce will live in a SCORM 1.2 package — a folder of self-contained HTML pages, narration .wav files, figures, and an `imsmanifest.xml` — that the user uploads to an LMS.
 
-The reference implementation that defines the look, feel, navigation, and folder shape is the **OCP NIC 3.0 Academy** package. Match it. Do not invent a different style.
+AcademyWizard has two supported presentation styles. **Slides** is the existing narrated OCP NIC 3.0 deck experience. **Scrolling** is a standalone, lesson-based course with a cover-first entry and lesson overview, left table of contents with content search after launch, direction-aware vertical lesson transitions, vertical content flow, a block-based lesson-progress line that moves from below the lesson hero to the top of the viewport, viewport-triggered entrance motion, one-card-at-a-time process carousels, no narration by default, and Continue buttons that reveal the next milestone. The final Continue opens the following lesson directly; a completed-lesson revisit uses the full-width gray next-lesson bar. Match the selected style's maintained template. Structured theme fields are authoritative: reproduce the authored typography, cover, colors, navigation, header treatment, type-specific block geometry, motion, button styling, and image-background overlay/foreground treatment rather than substituting generic defaults.
 
 Your job is to be the wizard who walks the user from "I have this source material" to "here is a finished SCORM folder." Take the pen yourself for the heavy lifting, but pause for the user's approval at the right gates — outline, scripts, figure plan — because the user is the editorial authority on technical accuracy and tone.
 
 This file is the playbook. When deeper detail is needed, follow the pointers into `references/` and `scripts/`.
+
+## Choose the course style first
+
+Store the selection in top-level `course.json` as `"style": "Slides"` or `"style": "Scrolling"`. Existing course files without `style` default to Slides for backward compatibility.
+
+- Use **Slides** for narrated, slide-by-slide technical teaching with prev/next controls.
+- Use **Scrolling** for reading-led lesson content, rich inline interactions, a persistent lesson table of contents, and progressive Continue gates. Each Scrolling course is one standalone SCORM SCO and one `.zip`; do not convert its lessons into Slides modules.
 
 ## What "done" looks like
 
 A folder, sitting where the user asked for it, with this exact shape:
 
 ```
-<TopicSlug>_Academy_SCORM/
+<TopicSlug>_OCP_Academy_SCORM/
 ├── imsmanifest.xml
 ├── scorm_api.js
 ├── index.html                  # course home, links to modules
 ├── module1.html ... moduleN.html
 ├── <course-icon>.svg|png       # provided or generated; set as brand.course_logo
-├── ocp_academy_white.svg       # default white Academy logo used by header + motion intro
+├── ocp_academy_white.svg       # default white OCP Academy logo used by header + motion intro
 ├── audio/
 │   ├── module1/slide_01_*.wav, slide_02_*.wav, ...
 │   └── moduleN/...
 └── figures/                    # reused source figures + AI fills
 ```
 
-Every `moduleN.html` is a standalone slide deck with autoplay narration, prev/next nav, dark-mode toggle, fullscreen toggle, and SCORM completion wiring. The `index.html` displays module cards with completion checkmarks driven by SCORM `suspend_data`. In multi-SCO LMSes such as Docebo, Course Home marks complete on launch and each module marks complete when its own final slide is reached. Both `index.html` and each module page begin with the default OCP Academy motion intro overlay: white OCP Academy SVG lockup, animated diagonal background sweep from `#343895` to `#8DC63F`, then a fade into the menu or module deck. The intro text is generated from `course.json` (course title/subtitle for the index; module number/title/subtitle for modules). Every new course must define `brand.course_logo`; if the user does not provide one, generate a simple course-specific SVG mark. The renderer uses it on the index header, in each module's top-left badge, and as the floating title-slide hero icon. The manifest registers every runtime file. This is non-negotiable — LMSes are strict.
+For Slides, every `moduleN.html` is a standalone slide deck with narration, prev/next navigation, and independent SCO completion; `index.html` is the course home. For Scrolling, `index.html` is the sole SCO and contains the course cover, left lesson table of contents, all lesson blocks, Continue gates, and course-level completion. Both styles derive all learner content from readable `course.json`, retain binary media as resources, and register every runtime file in the manifest.
 
 ## The five phases of the wizard
 
@@ -42,12 +49,13 @@ The wizard has five gates. Walk through them in order. Each gate ends with the u
 Ask the user concise questions to collect:
 
 1. **Course topic** (one-liner) and any working title.
-2. **Source materials** — file paths to whitepapers (.pdf), specs (.pdf/.docx), Summit slide decks (.pptx/.pdf), or transcripts/notes from Summit recordings (.txt/.vtt/.srt). If the user has both a whitepaper and a Summit talk on the same topic, that's ideal — collect both.
-3. **Target total learner duration** — e.g., 20 min, 45 min, 90 min. This drives depth.
-4. **Audience level** — Introductory / Intermediate / Deep technical. This drives jargon density and assumed knowledge.
-5. **Output folder** — always ask, do not assume. Default suggestion is a sibling folder next to the first source file.
-6. **Cloud TTS API key** — ask only if not already in the environment (`ELEVENLABS_API_KEY` or `OPENAI_API_KEY`). If the user declines, fall back to `say` (macOS) and warn that quality will be lower.
-7. **Brand assets** — confirm whether to use the default OCP Academy logo + green palette or supply alternates. Always obtain or generate a small course-specific `brand.course_logo` SVG/PNG; this is not optional because the templates use it in three visible places. The skill ships with the default green palette and the white OCP Academy SVG lockup baked into the template. The default motion intro is on unless the user explicitly asks to disable it.
+2. **Course style** — Slides or Scrolling. Briefly explain the behavior of each if the user has not chosen.
+3. **Source materials** — file paths to whitepapers (.pdf), specs (.pdf/.docx), Summit slide decks (.pptx/.pdf), transcripts/notes, or an existing `course.json`.
+4. **Target total learner duration** — e.g., 20 min, 45 min, 90 min. This drives depth.
+5. **Audience level** — Introductory / Intermediate / Deep technical. This drives jargon density and assumed knowledge.
+6. **Output folder** — always ask, do not assume. Default suggestion is a sibling folder next to the first source file.
+7. **Cloud TTS API key** — Slides only; ask only if not already in the environment. Scrolling has no narration by default.
+8. **Brand assets** — confirm whether to use the default OCP Academy palette or supply alternates. Slides requires a course mark; Scrolling may reuse a supplied banner or image resource.
 
 Confirm intake back to the user in a short summary before moving on.
 
@@ -69,7 +77,7 @@ Do not skim. The course's credibility depends on this analysis.
 
 Compute the rough shape of the course using the duration math in `references/duration_math.md`. As a rule of thumb: **~2 minutes of seat time per slide**, **~8–10 slides per module**, **modules of ~15–20 minutes each**.
 
-Draft a proposed outline as a Markdown document and put it in the user's chosen output folder as `_outline.md` (the leading underscore marks it as a working file you'll delete at the end). The outline lists every module and, beneath each, every lesson slide with a one-line description. Unless the user opts out, include a narrated `knowledge_check` slide immediately before each module's final `up_next` or `course_complete` slide. Every knowledge check must contain exactly two questions: first a single-answer radio question that checks the core concept, then a multi-select checkbox question that asks learners to apply or classify that concept. Knowledge checks should allow retry feedback and require an attempt on both questions before advancing, but should not require correct answers to continue. For the single-answer question, write an answer-specific `feedback_incorrect` on each incorrect choice that explains why that selected answer is wrong relative to the correct concept. For the multi-select question, use a concise question-level `feedback_incorrect` that points the learner back to the right mental model without trying to enumerate every wrong combination.
+Draft `_outline.md` in the selected style. For Slides, list modules and their slides and apply the existing narrated knowledge-check rules. For Scrolling, list lessons and ordered content blocks, including the exact milestones where a Continue gate reveals the next group. Scrolling knowledge checks are inline blocks and do not require narration.
 
 Present the outline to the user and ask: "Does this structure work? Suggest changes, add/remove modules, reorder lessons, etc." Iterate until they say "approved." **Do not move to Phase 4 without approval.**
 
@@ -80,6 +88,8 @@ Every slide that uses a small `section_label` must have a distinct visible `titl
 For `content_grid` slides, use card tones only when the slide is intentionally contrasting distinct ideas, sides, states, risks, priorities, or categories. Leave tones unset for ordinary collections of related concepts so the grid reads as one family.
 
 ### Phase 4 — Narration scripts (GATE 2)
+
+This phase applies to Slides. For Scrolling, record `scrolling.narration: false` and skip narration unless the user explicitly requests an accessible audio enhancement; do not invent slide-style autoplay narration for a scrolling course.
 
 For each slide in the approved outline, draft a narration script as a plain text file at:
 
@@ -121,7 +131,7 @@ Before rendering frames or encoding any video, run `scripts/check_svg_arrows.py 
 
 Now you generate the artifacts. This phase is mechanical because the templates and scripts handle structure; your remaining authorial work is filling in slide content.
 
-The single source of truth for the course is a JSON file at the working area root: **`course.json`**. Its schema is in `references/course_schema.md`. Build it up incrementally during phases 3–5 — the outline writes the skeleton, scripts add narration filenames, figure plan adds image references.
+The single source of truth is **`course.json`**. Always set `style`. Slides uses `modules[].slides[]`; Scrolling uses top-level `lessons[].blocks[]`. Never put a Scrolling course's lessons inside a synthetic Slides module.
 
 Before rendering, verify the course has:
 
@@ -134,7 +144,9 @@ For rebuilds that add or update a knowledge-check slide in an already narrated m
 
 Unless the user opts out, include the default `motion_intro` behavior described in `references/course_schema.md`: the course home and every module page play the OCP Academy CSS motion intro, with text populated from the course/module metadata. Do not create per-course MP4 intro files for this default path; the intro is HTML/CSS-native so SCORM packages stay small and do not require Playwright/ffmpeg.
 
-Then run, in order:
+For Slides, run the existing generation sequence below. For Scrolling, run `new_course.py`, place retained/generated media under `resources/`, run `render_index.py`, `validate_package.py`, and finally `zip_for_lms.py` when approved. Do not run narration generation or `render_module.py` for a normal Scrolling build.
+
+Slides generation sequence:
 
 1. `scripts/new_course.py <output-folder> course.json` — scaffolds the folder, copies `scorm_api.js`, copies the default motion-intro SVG logo when needed, creates `audio/moduleN/` subdirs and `figures/`.
 2. `scripts/extract_figures.py course.json` — pulls reused figures out of source PDFs/PPTX into `figures/`.
@@ -189,6 +201,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | `scripts/new_course.py` | Scaffold an empty SCORM folder from a course.json |
 | `scripts/render_module.py` | Render a single moduleN.html from a slide spec |
 | `scripts/render_index.py` | Render index.html and imsmanifest.xml |
+| `scripts/render_scrolling.py` | Render a standalone lesson-based Scrolling course |
 | `scripts/gen_audio.py` | Turn approved script .txt files into .wav using TTS |
 | `scripts/audio_tail_report.py` | Scan generated .wav files for likely late-volume fade or noisy tails |
 | `scripts/check_svg_arrows.py` | Flag SVG arrow lines that connect to the point of an arrowhead, plus arrowhead tips that intrude into target rectangles |
@@ -211,17 +224,27 @@ Each script has its own `--help`. Read its source if you need to understand what
 
 **One module at a time.** It's tempting to render all modules in one pass. Don't. Lock module 1's scripts, generate its audio, render its HTML, validate. Then move to module 2. This keeps feedback cycles short and prevents 8-module disasters.
 
-**Match the reference SCORM exactly.** The CSS variables, control bar layout, audio player wiring, SCORM hooks, manifest namespaces — all of it is in the template for a reason. Don't redesign. If the user wants a different look, that's a separate skill.
+**Match the selected maintained style.** Slides retains the OCP NIC 3.0 deck behavior. Scrolling uses the maintained defaults: cover-first entry, left lesson table of contents, readable vertical blocks, Continue gates, and single-SCO completion. When a Scrolling course defines structured `theme` values, honor its local typefaces and course-specific colors and geometry while keeping the same accessible AcademyWizard runtime and SCORM tracking.
+
+**Keep Scrolling fixes shared.** Treat `templates/scrolling_styles.css` and `scripts/render_scrolling.py` as the maintained Scrolling implementation. Never make a generated course's `index.html` the durable fix. After changing either shared file, rebuild representative Scrolling courses and run `validate_package.py`; its conditional Scrolling checks must pass for every interaction family present in each `course.json`.
+
+**Keep the Scrolling video player consistent and translation-ready.** Use the maintained Video.js-compatible control geometry and canonical glyph outlines: play/pause, seek/loaded progress, remaining time, the seven-choice speed popup from `2x` through `0.5x`, caption-language popup, picture-in-picture, fullscreen, and expandable volume in that order. Every `media.captions[]` entry must retain its editable VTT `path`, BCP 47 `language`, and learner-facing `label`. At render time parse VTT cues into generated HTML fallback data without adding cues to `course.json`; the custom CC menu uses those cues so subtitles work from `file://` and from an LMS. Adding translations means adding labeled VTT tracks, not changing the player.
+
+For Scrolling attachment and labeled-graphic blocks, keep the maintained interaction rather than simplifying it: attachment cards retain local file-type/download artwork and file size, while labeled graphics retain their authored medium/full width variant, plus-pin states, marker-anchored callouts, and sequenced previous/next navigation. Do not promote every labeled graphic to full width; honor its `media_width_variant` and wide-screen cap. Keep process Step badges consistent with `theme.corner_style`; the maintained Rounded treatment is a 10px radius, not a course-local HTML tweak.
+
+For Scrolling knowledge checks, keep question typography uniform across questions even when authored rich HTML contains smaller inline sizing, and preserve the configured horizontal rule between the question and answer area.
+
+**Keep designated control art exact.** Render the course's canonical SVG paths and glyph outlines verbatim. Do not redraw search, navigation, process, flashcard, quiz, feedback, retry, or completion icons with Unicode characters, CSS borders, or merely similar artwork. Keep only the required glyph outlines as readable inline SVG so the package remains self-contained.
 
 **Protect LMS syllabus completion.** In multi-SCO packages, never gate a module's `cmi.core.lesson_status=completed` on all modules being complete. Course Home completes on launch. Each module preserves a prior `completed` or `passed` status on revisit, sets `incomplete` only when needed, and sets `completed` as soon as its own final slide is reached. The `up_next` slide may link to the next module for learner convenience, but SCORM 1.2 tracking belongs to the SCO the LMS launched.
 
 **Never ship silent knowledge checks.** A `knowledge_check` slide is a narrated slide. If its script or WAV is missing, or if only a mismatched voice/fallback can be generated, stop and ask the user to resolve the audio gate before rebuilding the SCORM.
 
-**Make learner aids precise and local.** Tooltips should appear only where the term first appears in a module, counting either slide text or narration. Do not put glossary chips for terms that are absent from the slide and narration. Tooltip/reference pills must live inside `.slide-content`, left-aligned, below the slide's last text/table/image element. Never put them in a floating "Terms" area, fixed footer, or control-adjacent panel. Use OCP sources for OCP-specific meanings and established sources such as IEC, DMTF, UL, NERC/IEEE, or NFPA for general electrical terms.
+**Make learner aids precise and local.** Tooltips should appear only where the term first appears in a module, counting either slide text or narration. Do not put glossary chips for terms that are absent from the slide and narration. Glossary pills are tooltip-only controls, never links; always place the inline terminology/book icon at the pill's right edge. Resource pills always open their URL in a new tab and always place the inline square-and-up-right-arrow icon at the pill's right edge. Keep both icons embedded as accessible, decorative SVG so the SCORM remains self-contained. Tooltip/reference pills must live inside `.slide-content`, left-aligned, below the slide's last text/table/image element, except that resources on the final module's final `course_complete` slide are always center-aligned with the rest of that slide. Never put them in a floating "Terms" area, fixed footer, or control-adjacent panel. Use OCP sources for OCP-specific meanings and established sources such as IEC, DMTF, UL, NERC/IEEE, or NFPA for general electrical terms.
 
 **Make resource links timely.** If a slide clearly depends on a white paper, spec, video, or project page, include a visible `reference_links` pill or `resource_callout` on that slide, even if the same resource appears again later.
 
-**Protect the first-slide audio cue.** The title slide hint should tell learners to press play first, then advance with arrow or Space. Do not use copy that encourages learners to skip slide 1 narration. Keep the fixed course tagline below the play hint on every module title slide.
+**Start slide 1 narration immediately.** Every narrated Slides module must load and attempt to play slide 1 audio as soon as the module page initializes; do not wait for the OCP motion intro to finish. If browser autoplay policy blocks audible playback, keep the clip loaded, pulse the play control, and retry on the learner's first pointer, touch, or keyboard interaction. The title slide hint should state that narration starts automatically, then name the advance controls. Keep the fixed course tagline below that hint.
 
 **Never invent a tagline.** The course-level `tagline` field on the index page is fixed: always use `"Community-driven Hyperscale Innovation for All"`. Do not riff on it — phrases like "Evolve. Don't replace." or "Consume. Collaborate. Contribute." are out, even if they sound on-brand. The CSS in `templates/index_styles.css` already renders `.header .tagline` in all caps with letter-spacing, so store the phrase in mixed case — display takes care of the rest. `render_index.py` defaults to this phrase when `tagline` is missing from `course.json`; don't override unless the user explicitly asks for a different phrase.
 

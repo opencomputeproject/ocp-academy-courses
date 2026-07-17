@@ -78,10 +78,13 @@ def render_motion_intro(course: dict, scope: str, module: dict | None = None) ->
     scoped = _scope_cfg(course, scope)
     logo = motion_intro_logo(course, scope)
     duration = motion_intro_duration(course, scope)
+    ui_labels = course.get("ui_labels") or {}
+    intro_label = ui_labels.get("course_intro", "OCP Academy course intro")
+    skip_intro = ui_labels.get("skip_intro", "Skip intro")
 
     if scope == "index":
         eyebrow = scoped.get("eyebrow") or "OCP Academy"
-        title = scoped.get("title") or course.get("course_title") or "Academy Course"
+        title = scoped.get("title") or course.get("course_title") or "OCP Academy Course"
         subtitle = scoped.get("subtitle") or course.get("course_subtitle") or course.get("tagline") or "Community-driven Hyperscale Innovation for All"
     else:
         if module is None:
@@ -94,7 +97,7 @@ def render_motion_intro(course: dict, scope: str, module: dict | None = None) ->
         logo = module_intro.get("logo") or logo
 
     return f'''
-<div class="ocp-motion-intro" id="ocpMotionIntro" data-duration-ms="{duration}" role="presentation" aria-label="OCP Academy course intro">
+<div class="ocp-motion-intro" id="ocpMotionIntro" data-duration-ms="{duration}" role="presentation" aria-label="{esc(intro_label)}">
   <div class="ocp-motion-intro__bg"></div>
   <div class="ocp-motion-intro__grid"></div>
   <div class="ocp-motion-intro__vignette"></div>
@@ -108,7 +111,7 @@ def render_motion_intro(course: dict, scope: str, module: dict | None = None) ->
     {f'<div class="ocp-motion-intro__subtitle">{esc(subtitle)}</div>' if subtitle else ''}
   </div>
   <div class="ocp-motion-intro__outro"></div>
-  <button class="ocp-motion-intro__skip" type="button" id="ocpMotionIntroSkip" aria-label="Skip intro animation">Skip intro</button>
+  <button class="ocp-motion-intro__skip" type="button" id="ocpMotionIntroSkip" aria-label="{esc(skip_intro)}">{esc(skip_intro)}</button>
 </div>'''
 
 

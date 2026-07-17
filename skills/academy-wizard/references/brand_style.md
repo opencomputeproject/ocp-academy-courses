@@ -53,7 +53,7 @@ Toggled via `[data-theme="dark"]` on `<html>`. Persisted in `localStorage` (key 
 - Color contrast in dark mode is acceptable but borderline for `--dark-muted` against `--dark-card`. Avoid putting critical info in muted text in dark mode.
 - All buttons have `aria-label`.
 - Keyboard navigation is wired (arrows, space, Home, End, F, D, P).
-- Auto-playing audio respects browser autoplay policies (first slide audio loads after first user interaction).
+- Slide 1 narration is loaded and started during module initialization, independently of the motion-intro animation. If browser autoplay policy blocks audible playback, the loaded clip retries on the first pointer, touch, or keyboard interaction and the play control provides the fallback cue.
 
 ## OCP green: two hexes
 

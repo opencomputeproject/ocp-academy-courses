@@ -16,7 +16,8 @@ import json
 import shutil
 import sys
 from pathlib import Path
-from motion_intro import motion_intro_logo
+from motion_intro import motion_intro_enabled, motion_intro_logo
+from render_scrolling import is_scrolling
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -86,15 +87,20 @@ def main():
     # Motion intro logo: the skill ships a default white OCP Academy SVG so
     # every generated package can play the intro without requiring the user
     # to provide a logo file alongside course.json.
-    copy_logo_candidate(motion_intro_logo(course), "motion_intro.logo")
+    if not is_scrolling(course) and motion_intro_enabled(course, "index"):
+        copy_logo_candidate(motion_intro_logo(course), "motion_intro.logo")
 
-    # audio + figures dirs
-    figures = out / "figures"
-    figures.mkdir(exist_ok=True)
-    for mod in course["modules"]:
-        d = out / "audio" / f"module{mod['id']}"
-        d.mkdir(parents=True, exist_ok=True)
-    print("created audio/moduleN/ subdirs and figures/")
+    if is_scrolling(course):
+        for name in ("images", "videos", "captions", "documents"):
+            (out / "resources" / name).mkdir(parents=True, exist_ok=True)
+        print("created resources/ subdirectories for Scrolling course media")
+    else:
+        figures = out / "figures"
+        figures.mkdir(exist_ok=True)
+        for mod in course["modules"]:
+            d = out / "audio" / f"module{mod['id']}"
+            d.mkdir(parents=True, exist_ok=True)
+        print("created audio/moduleN/ subdirs and figures/")
 
     # If course.json itself is not yet in out_dir, copy it so renderers can find it.
     target_json = out / args.course_json.name
@@ -103,9 +109,13 @@ def main():
         print(f"copied {args.course_json.name} -> {target_json}")
 
     print("\nScaffold complete. Next steps:")
-    print(f"  1. Write narration scripts under {out}/audio/moduleN/slide_*.txt")
-    print(f"  2. Drop or generate figures under {out}/figures/")
-    print(f"  3. Run gen_audio.py, then render_module.py --all, then render_index.py")
+    if is_scrolling(course):
+        print(f"  1. Place binary learner media under {out}/resources/")
+        print(f"  2. Run render_index.py, then validate_package.py")
+    else:
+        print(f"  1. Write narration scripts under {out}/audio/moduleN/slide_*.txt")
+        print(f"  2. Drop or generate figures under {out}/figures/")
+        print(f"  3. Run gen_audio.py, then render_module.py --all, then render_index.py")
 
 
 if __name__ == "__main__":

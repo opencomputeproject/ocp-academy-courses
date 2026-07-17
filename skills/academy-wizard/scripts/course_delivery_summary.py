@@ -74,6 +74,20 @@ def main() -> int:
 
     module_rows = []
     total_seconds = 0.0
+    if str(course.get("style") or "Slides").strip().casefold() == "scrolling":
+        print("TITLE")
+        print(title)
+        print()
+        print(f"SHORT DESCRIPTION ({len(short)} chars)")
+        print(short)
+        print()
+        print("LONG DESCRIPTION")
+        print((subtitle or f"This OCP Academy course introduces {title}.").rstrip(".") + ".")
+        print()
+        print(f"Scrolling course: {len(course.get('lessons', []))} lessons; no narration by default.")
+        for lesson in course.get("lessons", []):
+            print(f"Lesson {lesson.get('id')}: {lesson.get('title')}")
+        return 0
     for module in course.get("modules", []):
         seconds = module_audio_seconds(root, module)
         total_seconds += seconds

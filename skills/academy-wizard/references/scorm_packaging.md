@@ -1,12 +1,18 @@
 # SCORM 1.2 packaging
 
+AcademyWizard supports two package organizations:
+
+- **Slides:** multi-SCO package with Course Home plus one SCO per narrated module.
+- **Scrolling:** single-SCO package where `index.html` contains the course cover and every lesson. Lesson progress and Continue-gate state live in `cmi.suspend_data`; the SCO completes after all lessons complete.
+
 The reference OCP NIC 3.0 package is SCORM 1.2. Stick with 1.2 unless the user specifically requests 2004 — most LMSes accept both, and 1.2 has fewer foot-guns.
 
 ## Required files at the package root
 
 - `imsmanifest.xml` — the package descriptor.
 - `index.html` — the launcher (the SCO that runs first).
-- One or more `moduleN.html` — additional SCOs.
+- Slides only: one or more `moduleN.html` additional SCOs.
+- Scrolling only: learner media under `resources/`; no `moduleN.html` files.
 - `scorm_api.js` — wrapper that finds the LMS API and shims it. Copied verbatim from `assets/scorm_api.js`.
 - All audio under `audio/moduleN/`.
 - All figures under `figures/`.
@@ -60,7 +66,7 @@ If you must zip manually for some reason, the equivalent shell command is:
 
 ```
 cd <output-folder>/..
-zip -r <TopicSlug>_Academy_SCORM.zip <TopicSlug>_Academy_SCORM \
+zip -r <TopicSlug>_OCP_Academy_SCORM.zip <TopicSlug>_OCP_Academy_SCORM \
     -x '*/.DS_Store' '*/course.json' '*/_*.md' '*/_*.py' \
        '*/audio/*/slide_*.txt' '*/gen_audio_standalone.py'
 ```
