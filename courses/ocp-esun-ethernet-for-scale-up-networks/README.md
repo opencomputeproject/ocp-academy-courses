@@ -19,6 +19,14 @@ The module includes a knowledge check before the final course-completion slide.
   translated `course.json`, narration scripts, and localized figures.
 - Japanese is a self-contained authoring source under `locales/ja-JP/`, including
   translated `course.json`, narration scripts, and localized figures.
+- Simplified Chinese is a self-contained authoring source under `locales/zh-CN/`,
+  including translated `course.json`, narration scripts, and localized figures.
+- Portuguese for Latin America is a self-contained authoring source under
+  `locales/pt-BR/`, including translated `course.json`, narration scripts, and
+  localized figures.
+- Spanish for Latin America is a self-contained authoring source under
+  `locales/es-419/`, including translated `course.json`, narration scripts, and
+  localized figures.
 
 Each translated edition preserves the English structure and technical facts while
 using locale-specific LMS metadata and its approved ElevenLabs narration voice.
@@ -50,6 +58,15 @@ Build the Japanese edition independently:
 ```bash
 export ELEVENLABS_API_KEY="<your key>"
 ./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP
+```
+
+Build the Chinese and Latin American editions independently:
+
+```bash
+export ELEVENLABS_API_KEY="<your key>"
+./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/zh-CN
+./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/pt-BR
+./scripts/build-course.sh ocp-esun-ethernet-for-scale-up-networks/locales/es-419
 ```
 
 ## Animated Figure
