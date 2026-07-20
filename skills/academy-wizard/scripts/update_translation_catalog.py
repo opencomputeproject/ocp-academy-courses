@@ -19,7 +19,7 @@ TRANSLATED_LEARNING_URL = (
 
 LOCALE_LABEL_OVERRIDES = {
     "es-419": "Spanish (LATAM)",
-    "pt-BR": "Portuguese (LATAM)",
+    "pt-BR": "Portuguese (Brazil)",
     "zh-CN": "Chinese (Simplified)",
     "zh-HK": "Chinese (Traditional, Hong Kong)",
     "zh-SG": "Chinese (Simplified)",
