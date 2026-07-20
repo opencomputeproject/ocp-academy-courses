@@ -107,16 +107,20 @@ approved voice, model, and speed consistently across the locale. Keep a narrated
 knowledge check narrated, and preserve final-slide narration when the approved
 course design includes it.
 
-For every Korean locale (`ko` and its regional variants), use ElevenLabs
-`Chris - Warm and clear`, voice ID `PDoCXqBQFGsvfO0hNkEs`. The translation
-scaffold records this under top-level `narration`, and `gen_audio.py` honors that
-course-specific engine and voice automatically. Do not substitute another voice
-unless the user explicitly selects one; use `--voice` for an intentional
-one-time override.
+Use these maintained ElevenLabs locale defaults:
 
-For every Japanese locale (`ja` and its regional variants), use the approved
-ElevenLabs voice ID `b34JylakFZPlGS0BnwyY`. The scaffold records the ID under
-top-level `narration` and the same override rule applies.
+| Locale | Voice | Voice ID |
+|---|---|---|
+| `ko` and regional variants | Chris - Warm and clear | `PDoCXqBQFGsvfO0hNkEs` |
+| `ja` and regional variants | Approved Japanese voice | `b34JylakFZPlGS0BnwyY` |
+| `zh-CN` | Lan Chen | `bZtjnyJAFD0Cp3lfNG5g` |
+| `pt-BR` | Carla, Latin American accent | `m151rjrbWXbBqyq56tly` |
+| `es-419` | Ninoska, Latin American accent | `zl1Ut8dvwcVSuQSB9XkG` |
+
+The translation scaffold records the matching default under top-level
+`narration`, and `gen_audio.py` honors that course-specific engine and voice
+automatically. Do not substitute another voice unless the user explicitly
+selects one; use `--voice` for an intentional one-time override.
 
 After editorial approval, synthesize the locale audio and run
 `audio_tail_report.py --fail-on-flags`. Regenerate only flagged clips. Do not
@@ -134,7 +138,8 @@ Run the SVG arrow check before encoding localized animation video.
 
 ## Metadata and final resources
 
-Set a valid BCP 47 `language` such as `ko-KR`, `fr-FR`, or `ja-JP`. Use
+Set a valid BCP 47 `language` such as `ko-KR`, `ja-JP`, `zh-CN`, `pt-BR`, or
+`es-419`. Use
 `metadata_language_name` only to override the automatic English language label.
 Use `scorm_title` only for an exact manifest-only title override.
 

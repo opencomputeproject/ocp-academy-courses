@@ -28,6 +28,11 @@ from pathlib import Path
 LANGUAGE_TAG_RE = re.compile(r"^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
 
 LOCALE_NARRATION_DEFAULTS = {
+    "es-419": {
+        "engine": "elevenlabs",
+        "voice_id": "zl1Ut8dvwcVSuQSB9XkG",
+        "voice_name": "Ninoska",
+    },
     "ja": {
         "engine": "elevenlabs",
         "voice_id": "b34JylakFZPlGS0BnwyY",
@@ -36,6 +41,16 @@ LOCALE_NARRATION_DEFAULTS = {
         "engine": "elevenlabs",
         "voice_id": "PDoCXqBQFGsvfO0hNkEs",
         "voice_name": "Chris - Warm and clear",
+    },
+    "pt-BR": {
+        "engine": "elevenlabs",
+        "voice_id": "m151rjrbWXbBqyq56tly",
+        "voice_name": "Carla",
+    },
+    "zh-CN": {
+        "engine": "elevenlabs",
+        "voice_id": "bZtjnyJAFD0Cp3lfNG5g",
+        "voice_name": "Lan Chen",
     },
 }
 
@@ -61,8 +76,11 @@ def is_slides(course: dict) -> bool:
 
 
 def locale_narration_default(language: str) -> dict | None:
-    primary_language = language.split("-", 1)[0].lower()
-    default = LOCALE_NARRATION_DEFAULTS.get(primary_language)
+    normalized_language = canonical_language_tag(language)
+    primary_language = normalized_language.split("-", 1)[0]
+    default = LOCALE_NARRATION_DEFAULTS.get(normalized_language)
+    if default is None:
+        default = LOCALE_NARRATION_DEFAULTS.get(primary_language)
     return dict(default) if default else None
 
 

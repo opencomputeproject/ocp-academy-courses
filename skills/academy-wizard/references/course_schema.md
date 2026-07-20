@@ -62,9 +62,11 @@ language label without changing course content.
 For narrated Slides courses, optional top-level `narration` makes the TTS engine
 and voice reproducible. `gen_audio.py` uses this course-specific configuration
 before environment defaults; `--engine` and `--voice` remain explicit command
-overrides. Korean locale scaffolds set ElevenLabs `Chris - Warm and clear`
-(`PDoCXqBQFGsvfO0hNkEs`); Japanese locale scaffolds set the approved ElevenLabs
-voice ID `b34JylakFZPlGS0BnwyY`.
+overrides. Maintained locale scaffolds set Korean `Chris - Warm and clear`
+(`PDoCXqBQFGsvfO0hNkEs`), Japanese `b34JylakFZPlGS0BnwyY`, Chinese `Lan Chen`
+(`bZtjnyJAFD0Cp3lfNG5g`), Brazilian Portuguese `Carla`
+(`m151rjrbWXbBqyq56tly`), and Latin American Spanish `Ninoska`
+(`zl1Ut8dvwcVSuQSB9XkG`).
 
 ## Presentation style
 
