@@ -246,11 +246,13 @@ def main():
                     err(f"index.html: {block_type} rendering is missing {marker}")
         caption_tracks = _scrolling_caption_tracks(course)
         if caption_tracks:
+            ui_labels = course.get("ui_labels") if isinstance(course.get("ui_labels"), dict) else {}
+            captions_off_label = str(ui_labels.get("captions_off") or "Captions off")
             for marker in (
                 "academy-video__caption-display",
                 "academy-video__caption-data",
                 'data-video-menu="captions"',
-                "Captions off",
+                captions_off_label,
                 "M1419 1493H373",
             ):
                 if marker not in index_html:

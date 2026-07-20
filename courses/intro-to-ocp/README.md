@@ -33,3 +33,45 @@ From the repository root:
 ```
 
 Each command creates a separate package folder and zip under `build/intro-to-ocp/`.
+
+## Korean editions
+
+The Korean Scrolling sources live under `locales/ko-KR/` within each course.
+They retain translated `course.json` content and only the media files that
+differ from the canonical English course. Build each Korean course separately:
+
+```bash
+./scripts/build-course.sh intro-to-ocp/module-1-the-ocp-origins/locales/ko-KR
+./scripts/build-course.sh intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/ko-KR
+./scripts/build-course.sh intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ko-KR
+./scripts/build-course.sh intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ko-KR
+```
+
+## Japanese editions
+
+The Japanese Scrolling sources live under `locales/ja-JP/` within each course.
+As with Korean, the locale stores translated `course.json` content plus only
+the Japanese media overrides. Build each Japanese course separately:
+
+```bash
+./scripts/build-course.sh intro-to-ocp/module-1-the-ocp-origins/locales/ja-JP
+./scripts/build-course.sh intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/ja-JP
+./scripts/build-course.sh intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ja-JP
+./scripts/build-course.sh intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ja-JP
+```
+
+## Simplified Chinese editions
+
+The Simplified Chinese Scrolling sources live under `locales/zh-CN/` within
+each course. Each locale stores translated `course.json` content and only its
+localized media overrides, including Chinese captions, dubbed videos with
+AcademyWizard background music, diagrams with baked-in Chinese text, and the
+translated membership PDF.
+Build each Simplified Chinese course separately:
+
+```bash
+./scripts/build-course.sh intro-to-ocp/module-1-the-ocp-origins/locales/zh-CN
+./scripts/build-course.sh intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/zh-CN
+./scripts/build-course.sh intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-CN
+./scripts/build-course.sh intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-CN
+```

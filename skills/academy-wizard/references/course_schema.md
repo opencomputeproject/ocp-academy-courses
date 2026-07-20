@@ -63,7 +63,8 @@ For narrated Slides courses, optional top-level `narration` makes the TTS engine
 and voice reproducible. `gen_audio.py` uses this course-specific configuration
 before environment defaults; `--engine` and `--voice` remain explicit command
 overrides. Maintained locale scaffolds set Korean `Chris - Warm and clear`
-(`PDoCXqBQFGsvfO0hNkEs`), Japanese `b34JylakFZPlGS0BnwyY`, Chinese `Lan Chen`
+(`PDoCXqBQFGsvfO0hNkEs`), the approved Japanese voice
+(`b34JylakFZPlGS0BnwyY`), Simplified Chinese `Lan Chen`
 (`bZtjnyJAFD0Cp3lfNG5g`), Brazilian Portuguese `Carla`
 (`m151rjrbWXbBqyq56tly`), and Latin American Spanish `Ninoska`
 (`zl1Ut8dvwcVSuQSB9XkG`).

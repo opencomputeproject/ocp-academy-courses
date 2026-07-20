@@ -32,6 +32,15 @@ Before committing translated sources, run
 `scripts/update_translation_catalog.py` from the repository root so the root
 README lists every translated course and non-English language edition.
 
+## Translate an existing Scrolling course
+
+Read `references/scrolling_translation.md` completely before changing the
+course. Keep the canonical course immutable and scaffold a lightweight locale
+under `locales/<BCP-47 tag>/` with
+`scripts/scaffold_scrolling_translation.py`. The locale keeps translated
+`course.json` plus language-specific resource overrides; the build overlays
+those resources onto the canonical media tree to create a self-contained SCO.
+
 ## What "done" looks like
 
 A folder, sitting where the user asked for it, with this exact shape:
@@ -164,7 +173,7 @@ Slides generation sequence:
 2. `scripts/extract_figures.py course.json` — pulls reused figures out of source PDFs/PPTX into `figures/`.
 3. *(AI-generated figures)* — for each `figure.generate_prompt` in `course.json`, generate an image and save it under `figures/<slug>.png`. Use the image generation tool available in this environment. (Outside this skill, this is the imagegen step.)
 4. `scripts/check_svg_arrows.py course.json --fail-on-flags` — scans SVG figures and sibling SVG/HTML animation sources. It flags every triangular marker not referenced at its flat-back center, explicit `arrowhead` polygons whose shaft misses or approaches the back edge at the wrong angle, and arrowhead tips that intrude into target rectangles. Run it before rendering animation frames or encoding video, and fix every issue before generating audio or rendering modules.
-5. `scripts/gen_audio.py course.json` — walks every `slide_*.txt` script and generates the matching `.wav`. Voice precedence is explicit `--engine`/`--voice`, then top-level `course.json` `narration`, then environment defaults. Maintained locale defaults include Korean Chris - Warm and clear (`PDoCXqBQFGsvfO0hNkEs`), Japanese (`b34JylakFZPlGS0BnwyY`), Chinese Lan Chen (`bZtjnyJAFD0Cp3lfNG5g`), Brazilian Portuguese Carla (`m151rjrbWXbBqyq56tly`), and Latin American Spanish Ninoska (`zl1Ut8dvwcVSuQSB9XkG`). Courses without voice metadata default to Leo v2 (`bbGtsRRKUfYO634UxSjz`) for ElevenLabs; `ELEVENLABS_VOICE_ID` supplies the fallback voice before that built-in default. Default pacing is `ELEVENLABS_SPEED=1.18`. Knowledge-check narration is mandatory: if this script exits non-zero because a knowledge-check script/WAV is missing, because cloud TTS failed, or because it refused a likely voice mismatch, stop and gate the user before rendering. Use `--allow-local-fallback-for-partial` only after the user explicitly approves a local fallback for a partially narrated course. **If the call fails with a `403 Tunnel`/`blocked-by-allowlist` proxy error**, the Codex sandbox can't reach `api.elevenlabs.io`. The script detects this and prints a copy-paste command for the user to run on their Mac/Linux host instead — do not retry from the sandbox; relay the message and wait for the user to come back.
+5. `scripts/gen_audio.py course.json` — walks every `slide_*.txt` script and generates the matching `.wav`. Voice precedence is explicit `--engine`/`--voice`, then top-level `course.json` `narration`, then environment defaults. Maintained locale defaults include Korean Chris - Warm and clear (`PDoCXqBQFGsvfO0hNkEs`), the approved Japanese voice (`b34JylakFZPlGS0BnwyY`), Simplified Chinese Lan Chen (`bZtjnyJAFD0Cp3lfNG5g`), Brazilian Portuguese Carla (`m151rjrbWXbBqyq56tly`), and Latin American Spanish Ninoska (`zl1Ut8dvwcVSuQSB9XkG`). Courses without voice metadata default to Leo v2 (`bbGtsRRKUfYO634UxSjz`) for ElevenLabs; `ELEVENLABS_VOICE_ID` supplies the fallback voice before that built-in default. Default pacing is `ELEVENLABS_SPEED=1.18`. Knowledge-check narration is mandatory: if this script exits non-zero because a knowledge-check script/WAV is missing, because cloud TTS failed, or because it refused a likely voice mismatch, stop and gate the user before rendering. Use `--allow-local-fallback-for-partial` only after the user explicitly approves a local fallback for a partially narrated course. **If the call fails with a `403 Tunnel`/`blocked-by-allowlist` proxy error**, the Codex sandbox can't reach `api.elevenlabs.io`. The script detects this and prints a copy-paste command for the user to run on their Mac/Linux host instead — do not retry from the sandbox; relay the message and wait for the user to come back.
 6. `scripts/audio_tail_report.py course.json --fail-on-flags` — flags generated clips whose ending is much quieter than the body or has a non-silent burst after a quiet gap. Listen to flagged clips, then shorten/regenerate or trim only post-speech artifacts. If the flagged clip is a new or updated knowledge-check narration, stop and gate the user before rendering.
 7. `scripts/render_module.py course.json --module <N>` — renders `moduleN.html` for each module from the slide spec.
 8. `scripts/render_index.py course.json` — renders `index.html` and writes `imsmanifest.xml`.
@@ -224,6 +233,8 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | `scripts/course_delivery_summary.py` | Generate delivery metadata and module duration summaries from `course.json` and final audio |
 | `scripts/scaffold_slides_translation.py` | Create a self-contained locale source branch without modifying the canonical course |
 | `scripts/update_translation_catalog.py` | Refresh or check the root README Translations table from committed locale sources |
+| `scripts/scaffold_scrolling_translation.py` | Create a lightweight Scrolling locale that overlays language-specific resources on canonical media |
+| `scripts/mix_localized_video.py` | Replace source audio with a voice-only master over normalized, ducked AcademyWizard background music |
 
 Each script has its own `--help`. Read its source if you need to understand what it accepts.
 
@@ -244,6 +255,8 @@ Each script has its own `--help`. Read its source if you need to understand what
 **Keep Scrolling fixes shared.** Treat `templates/scrolling_styles.css` and `scripts/render_scrolling.py` as the maintained Scrolling implementation. Never make a generated course's `index.html` the durable fix. After changing either shared file, rebuild representative Scrolling courses and run `validate_package.py`; its conditional Scrolling checks must pass for every interaction family present in each `course.json`.
 
 **Keep the Scrolling video player consistent and translation-ready.** Use the maintained Video.js-compatible control geometry and canonical glyph outlines: play/pause, seek/loaded progress, remaining time, the seven-choice speed popup from `2x` through `0.5x`, caption-language popup, picture-in-picture, fullscreen, and expandable volume in that order. Every `media.captions[]` entry must retain its editable VTT `path`, BCP 47 `language`, and learner-facing `label`. At render time parse VTT cues into generated HTML fallback data without adding cues to `course.json`; the custom CC menu uses those cues so subtitles work from `file://` and from an LMS. Adding translations means adding labeled VTT tracks, not changing the player.
+
+**Use the maintained localized-video music library.** For dubbed embedded videos without a verified music/effects stem, follow `references/scrolling_translation.md`: rotate the three tracks in `assets/background-music/` evenly, favor longer tracks for longer videos, retain a voice-only master, and render with `scripts/mix_localized_video.py`. Keep music assets and their attribution out of generated courses and SCORM packages.
 
 For Scrolling attachment and labeled-graphic blocks, keep the maintained interaction rather than simplifying it: attachment cards retain local file-type/download artwork and file size, while labeled graphics retain their authored medium/full width variant, plus-pin states, marker-anchored callouts, and sequenced previous/next navigation. Do not promote every labeled graphic to full width; honor its `media_width_variant` and wide-screen cap. Keep process Step badges consistent with `theme.corner_style`; the maintained Rounded treatment is a 10px radius, not a course-local HTML tweak.
 

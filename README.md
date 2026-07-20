@@ -161,6 +161,10 @@ page.
 <!-- translations-table:start -->
 | Course | Chinese (Simplified) | Japanese | Korean | Portuguese (LATAM) | Spanish (LATAM) |
 |---|---|---|---|---|---|
+| [Module 1: The OCP Origins](courses/intro-to-ocp/module-1-the-ocp-origins/) | [`zh-CN`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/zh-CN/) | [`ja-JP`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/ko-KR/) | — | — |
+| [Module 2: The OCP Ecosystem & Governance](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/) | [`zh-CN`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/zh-CN/) | [`ja-JP`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/ko-KR/) | — | — |
+| [Module 3: OCP Technologies (Open Rack & Cooling)](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/) | [`zh-CN`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-CN/) | [`ja-JP`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ko-KR/) | — | — |
+| [Module 4: Today and Tomorrow (The Journey)](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/) | [`zh-CN`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-CN/) | [`ja-JP`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ko-KR/) | — | — |
 | [OCP ESUN: Ethernet for Scale-Up Networks](courses/ocp-esun-ethernet-for-scale-up-networks/) | [`zh-CN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-CN/) | [`ja-JP`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP/) | [`ko-KR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR/) | [`pt-BR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/pt-BR/) | [`es-419`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/es-419/) |
 <!-- translations-table:end -->
 
@@ -190,8 +194,8 @@ Use pull requests for course improvements.
 
 - Edit slide text, quiz content, figures, and structure in `course.json`.
 - For Slides courses, edit narration in `courses/<course-path>/audio/moduleN/slide_*.txt`.
-- Store translated Slides sources in `courses/<course-path>/locales/<BCP-47 tag>/`.
-- When committing a translated Slides source, run
+- Store translated course sources in `courses/<course-path>/locales/<BCP-47 tag>/`; Slides locales are self-contained, while Scrolling locales overlay language-specific resources on the canonical course.
+- When committing a translated course source, run
   `python skills/academy-wizard/scripts/update_translation_catalog.py` to refresh
   the root README translation table.
 - For Scrolling courses, retain learner media under `resources/` and preserve source-specific interaction, typography, spacing, motion, control-art, and caption metadata in `course.json`.

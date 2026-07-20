@@ -60,6 +60,16 @@ mkdir -p "$BUILD_DIR"
 
 "$PYTHON_BIN" "$SKILL_DIR/scripts/new_course.py" "$BUILD_DIR" "$SOURCE_DIR/course.json"
 if [[ "$COURSE_STYLE" == "scrolling" ]]; then
+  # A Scrolling locale is a lightweight overlay: retain canonical binary
+  # resources, then replace only localized assets such as translated videos,
+  # captions, or images. This avoids checking the same large media into Git
+  # once per language while still producing a self-contained SCORM package.
+  if [[ "$SOURCE_DIR" == */locales/* ]]; then
+    CANONICAL_SOURCE_DIR="${SOURCE_DIR%%/locales/*}"
+    if [[ -d "$CANONICAL_SOURCE_DIR/resources" ]]; then
+      rsync -a "$CANONICAL_SOURCE_DIR/resources/" "$BUILD_DIR/resources/"
+    fi
+  fi
   if [[ -d "$SOURCE_DIR/resources" ]]; then
     rsync -a "$SOURCE_DIR/resources/" "$BUILD_DIR/resources/"
   fi

@@ -67,7 +67,11 @@ LANGUAGE_NAMES = {
     "uk": "Ukrainian",
     "vi": "Vietnamese",
     "zh": "Chinese",
+    "zh-cn": "Chinese (Simplified)",
+    "zh-sg": "Chinese (Simplified)",
     "zh-hans": "Chinese (Simplified)",
+    "zh-hk": "Chinese (Traditional)",
+    "zh-tw": "Chinese (Traditional)",
     "zh-hant": "Chinese (Traditional)",
 }
 
