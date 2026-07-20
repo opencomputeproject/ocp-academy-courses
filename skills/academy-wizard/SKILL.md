@@ -28,6 +28,9 @@ course. Keep the canonical course immutable, scaffold a self-contained locale
 under `locales/<BCP-47 tag>/`, and render, narrate, validate, and package that
 locale independently. Use `scripts/scaffold_slides_translation.py` to create the
 locale branch; do not begin from generated HTML or a copied SCORM ZIP.
+Before committing translated sources, run
+`scripts/update_translation_catalog.py` from the repository root so the root
+README lists every translated course and non-English language edition.
 
 ## What "done" looks like
 
@@ -220,6 +223,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | `scripts/zip_for_lms.py` | Build a strict upload zip from `imsmanifest.xml` runtime files only |
 | `scripts/course_delivery_summary.py` | Generate delivery metadata and module duration summaries from `course.json` and final audio |
 | `scripts/scaffold_slides_translation.py` | Create a self-contained locale source branch without modifying the canonical course |
+| `scripts/update_translation_catalog.py` | Refresh or check the root README Translations table from committed locale sources |
 
 Each script has its own `--help`. Read its source if you need to understand what it accepts.
 

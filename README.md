@@ -152,6 +152,18 @@ distinguish editions. See
 `skills/academy-wizard/references/slides_translation.md` for the complete
 translation and QA workflow.
 
+#### Translations
+
+Published editions are available on the
+[OCP Academy Translated Learning](https://academy.opencompute.org/pages/25/ocp-academy-translated-learning)
+page.
+
+<!-- translations-table:start -->
+| Course | Chinese (Simplified) | Japanese | Korean | Portuguese (LATAM) | Spanish (LATAM) |
+|---|---|---|---|---|---|
+| [OCP ESUN: Ethernet for Scale-Up Networks](courses/ocp-esun-ethernet-for-scale-up-networks/) | [`zh-CN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-CN/) | [`ja-JP`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP/) | [`ko-KR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR/) | [`pt-BR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/pt-BR/) | [`es-419`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/es-419/) |
+<!-- translations-table:end -->
+
 To build one standalone course in the Intro to OCP Scrolling series, no narration API key is required:
 
 ```bash
@@ -179,6 +191,9 @@ Use pull requests for course improvements.
 - Edit slide text, quiz content, figures, and structure in `course.json`.
 - For Slides courses, edit narration in `courses/<course-path>/audio/moduleN/slide_*.txt`.
 - Store translated Slides sources in `courses/<course-path>/locales/<BCP-47 tag>/`.
+- When committing a translated Slides source, run
+  `python skills/academy-wizard/scripts/update_translation_catalog.py` to refresh
+  the root README translation table.
 - For Scrolling courses, retain learner media under `resources/` and preserve source-specific interaction, typography, spacing, motion, control-art, and caption metadata in `course.json`.
 - Do not commit generated `.wav`, `module*.html`, `index.html`, `imsmanifest.xml`, or `.zip` files.
 - Run the build script before opening a PR when possible.
