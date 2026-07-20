@@ -191,6 +191,15 @@ def esc(value: object) -> str:
     return html.escape("" if value is None else str(value), quote=True)
 
 
+def ui(labels: dict | None, key: str, default: str, **values: object) -> str:
+    """Return a localized interface label while preserving English defaults."""
+    template = str((labels or {}).get(key) or default)
+    try:
+        return template.format(**values)
+    except (KeyError, ValueError):
+        return default.format(**values)
+
+
 def css_string(value: object) -> str:
     text = str(value or "Arial").replace("\\", "\\\\").replace('"', '\\"')
     return f'"{text}"'
@@ -284,28 +293,37 @@ def media_figure(
     extra_class: str = "",
     zoomable: bool = False,
     cropped: bool = False,
+    ui_labels: dict | None = None,
 ) -> str:
     if not media or not media.get("path"):
         return ""
     path = esc(media["path"])
-    alt = esc(media.get("alt") or "Course media")
+    alt = esc(media.get("alt") or ui(ui_labels, "course_media", "Course media"))
     caption = f"<figcaption>{caption_html}</figcaption>" if caption_html else ""
     image = f'<img src="{path}" alt="{alt}" loading="lazy">'
     if zoomable:
-        image = f'<button class="media-zoom" type="button" data-zoom-src="{path}" data-zoom-alt="{alt}" aria-label="Zoom image">{image}</button>'
+        image = (
+            f'<button class="media-zoom" type="button" data-zoom-src="{path}" data-zoom-alt="{alt}" '
+            f'aria-label="{esc(ui(ui_labels, "zoom_image", "Zoom image"))}">{image}</button>'
+        )
     crop_class = " media-card--crop" if cropped else ""
     crop_style = f' style="background-image:url(\'{path}\')"' if cropped else ""
     return f'<figure class="media-card {esc(extra_class)}{crop_class}"{crop_style}>{image}{caption}</figure>'
 
 
-def video_figure(media: dict | None, caption_html: str = "", animate: bool = True) -> str:
+def video_figure(
+    media: dict | None,
+    caption_html: str = "",
+    animate: bool = True,
+    ui_labels: dict | None = None,
+) -> str:
     if not media or not media.get("path"):
         return ""
     poster = f' poster="{esc(media.get("poster"))}"' if media.get("poster") else ""
     caption_tracks = [track for track in media.get("captions", []) if isinstance(track, dict) and track.get("path")]
     tracks = "".join(
         f'<track kind="captions" src="{esc(track["path"])}" srclang="{esc(track.get("language") or "en")}" '
-        f'label="{esc(track.get("label") or track.get("language") or "Captions")}">'
+        f'label="{esc(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions"))}">'
         for track in caption_tracks
     )
     caption_payload = {
@@ -313,7 +331,7 @@ def video_figure(media: dict | None, caption_html: str = "", animate: bool = Tru
             {
                 "path": str(track["path"]),
                 "language": str(track.get("language") or "en"),
-                "label": str(track.get("label") or track.get("language") or "Captions"),
+                "label": str(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions")),
                 "cues": track.get("_cues") or [],
             }
             for track in caption_tracks
@@ -337,17 +355,19 @@ def video_figure(media: dict | None, caption_html: str = "", animate: bool = Tru
     if caption_tracks:
         caption_items = (
             '<button class="academy-video__menu-item is-selected" type="button" role="menuitemradio" '
-            'data-video-caption-index="-1" aria-checked="true">Captions off</button>'
+            f'data-video-caption-index="-1" aria-checked="true">{esc(ui(ui_labels, "captions_off", "Captions off"))}</button>'
             + "".join(
                 f'<button class="academy-video__menu-item" type="button" role="menuitemradio" '
-                f'data-video-caption-index="{index}" aria-checked="false">{esc(track.get("label") or track.get("language") or "Captions")}</button>'
+                f'data-video-caption-index="{index}" aria-checked="false">'
+                f'{esc(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions"))}</button>'
                 for index, track in enumerate(caption_tracks)
             )
         )
+        captions_label = esc(ui(ui_labels, "captions", "Captions"))
         captions_control = (
             '<div class="academy-video__menu-control academy-video__captions-control">'
             '<button class="academy-video__button academy-video__captions" type="button" data-video-menu-button="captions" '
-            'title="Captions" aria-label="Captions" aria-haspopup="true" aria-expanded="false">'
+            f'title="{captions_label}" aria-label="{captions_label}" aria-haspopup="true" aria-expanded="false">'
             f'{scrolling_video_icon("captions")}</button>'
             '<div class="academy-video__menu" data-video-menu="captions" hidden>'
             f'<div class="academy-video__menu-content" role="menu">{caption_items}</div></div></div>'
@@ -362,55 +382,55 @@ def video_figure(media: dict | None, caption_html: str = "", animate: bool = Tru
         '<div class="academy-video" data-video-player>'
         f'<video preload="auto" playsinline src="{esc(media["path"])}"{poster}><source src="{esc(media["path"])}">{tracks}</video>'
         f'{caption_data}'
-        '<button class="academy-video__big-play" type="button" data-video-action="toggle" aria-label="Play video">'
+        f'<button class="academy-video__big-play" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play_video", "Play video"))}">'
         f'{scrolling_video_icon("play")}'
         '</button>'
         '<div class="academy-video__controls">'
-        '<button class="academy-video__button academy-video__toggle" type="button" data-video-action="toggle" aria-label="Play">'
+        f'<button class="academy-video__button academy-video__toggle" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play", "Play"))}">'
         f'{scrolling_video_icon("play", "academy-video__play-icon")}{scrolling_video_icon("pause", "academy-video__pause-icon")}'
         '</button>'
         '<div class="academy-video__progress-control">'
         '<div class="academy-video__progress-track"><span class="academy-video__progress-loaded" data-video-loaded></span>'
         '<span class="academy-video__progress-played" data-video-played><i aria-hidden="true"></i></span></div>'
-        '<input class="academy-video__progress" type="range" min="0" max="100" step="0.1" value="0" data-video-progress aria-label="Seek">'
+        f'<input class="academy-video__progress" type="range" min="0" max="100" step="0.1" value="0" data-video-progress aria-label="{esc(ui(ui_labels, "seek", "Seek"))}">'
         '</div>'
         f'<span class="academy-video__remaining" data-video-remaining>{initial_remaining}</span>'
         '<div class="academy-video__menu-control academy-video__rate-control">'
         '<span class="academy-video__rate-value" data-video-rate-value aria-hidden="true">1x</span>'
-        '<button class="academy-video__button academy-video__rate" type="button" data-video-menu-button="rate" '
-        'title="Playback Rate" aria-label="Playback Rate" aria-haspopup="true" aria-expanded="false"></button>'
+        f'<button class="academy-video__button academy-video__rate" type="button" data-video-menu-button="rate" '
+        f'title="{esc(ui(ui_labels, "playback_rate", "Playback Rate"))}" aria-label="{esc(ui(ui_labels, "playback_rate", "Playback Rate"))}" aria-haspopup="true" aria-expanded="false"></button>'
         f'<div class="academy-video__menu" data-video-menu="rate" hidden><div class="academy-video__menu-content" role="menu">{speed_items}</div></div></div>'
         f'{captions_control}'
-        '<button class="academy-video__button academy-video__picture-in-picture" type="button" data-video-action="picture-in-picture" title="Picture-in-picture" aria-label="Picture-in-picture">'
+        f'<button class="academy-video__button academy-video__picture-in-picture" type="button" data-video-action="picture-in-picture" title="{esc(ui(ui_labels, "picture_in_picture", "Picture-in-picture"))}" aria-label="{esc(ui(ui_labels, "picture_in_picture", "Picture-in-picture"))}">'
         f'{scrolling_video_icon("picture_in_picture_enter", "academy-video__pip-enter")}{scrolling_video_icon("picture_in_picture_exit", "academy-video__pip-exit")}</button>'
-        '<button class="academy-video__button academy-video__fullscreen" type="button" data-video-action="fullscreen" aria-label="Fullscreen">'
+        f'<button class="academy-video__button academy-video__fullscreen" type="button" data-video-action="fullscreen" aria-label="{esc(ui(ui_labels, "fullscreen", "Fullscreen"))}">'
         f'{scrolling_video_icon("fullscreen_enter", "academy-video__fullscreen-enter")}{scrolling_video_icon("fullscreen_exit", "academy-video__fullscreen-exit")}'
         '</button>'
         '<div class="academy-video__volume-panel">'
-        '<button class="academy-video__button academy-video__mute" type="button" data-video-action="mute" aria-label="Mute">'
+        f'<button class="academy-video__button academy-video__mute" type="button" data-video-action="mute" aria-label="{esc(ui(ui_labels, "mute", "Mute"))}">'
         f'{scrolling_video_icon("volume_high", "academy-video__volume-high")}{scrolling_video_icon("volume_muted", "academy-video__volume-muted")}</button>'
-        '<div class="academy-video__volume-control"><input class="academy-video__volume" type="range" min="0" max="1" step="0.05" value="1" data-video-volume aria-label="Volume"></div>'
+        f'<div class="academy-video__volume-control"><input class="academy-video__volume" type="range" min="0" max="1" step="0.05" value="1" data-video-volume aria-label="{esc(ui(ui_labels, "volume", "Volume"))}"></div>'
         '</div>'
         '</div></div>'
         f'{caption}</figure>'
     )
 
 
-def interactive_content(item: dict) -> str:
+def interactive_content(item: dict, ui_labels: dict | None = None) -> str:
     description = item.get("description_html") or item.get("body_html") or ""
-    media = media_figure(item.get("media"), item.get("caption_html") or "")
+    media = media_figure(item.get("media"), item.get("caption_html") or "", ui_labels=ui_labels)
     return f'{description}{media}'
 
 
-def flashcard_content(item: dict) -> str:
+def flashcard_content(item: dict, ui_labels: dict | None = None) -> str:
     """Description cards may carry a placeholder image that is not displayed."""
     description = item.get("description_html") or item.get("body_html") or ""
     if str(item.get("type") or "").casefold() == "description":
         return description
-    return interactive_content(item)
+    return interactive_content(item, ui_labels)
 
 
-def render_interactive(block: dict, lesson_id: int) -> str:
+def render_interactive(block: dict, lesson_id: int, ui_labels: dict | None = None) -> str:
     block_type = block.get("type") or "interactive"
     visible_items = [item for item in block.get("items", []) if not item.get("hidden")]
     if block_type == "tabs":
@@ -426,7 +446,7 @@ def render_interactive(block: dict, lesson_id: int) -> str:
                 f'data-tab-panel="{panel_id}">{esc(item.get("title") or item.get("label") or f"Tab {index}")}</button>'
             )
             panels.append(
-                f'<section class="tab-panel{active}" id="{panel_id}" role="tabpanel">{interactive_content(item)}</section>'
+                f'<section class="tab-panel{active}" id="{panel_id}" role="tabpanel">{interactive_content(item, ui_labels)}</section>'
             )
         return f'<div class="tab-set"><div class="tab-list" role="tablist">{"".join(buttons)}</div>{"".join(panels)}</div>'
     if block_type == "process":
@@ -453,40 +473,42 @@ def render_interactive(block: dict, lesson_id: int) -> str:
                 step_number += 1
             selected = "true" if index == 1 else "false"
             hidden = "" if index == 1 else " hidden"
-            media = media_figure(item.get("media"), item.get("caption_html") or "", zoomable=zoomable)
+            media = media_figure(
+                item.get("media"), item.get("caption_html") or "", zoomable=zoomable, ui_labels=ui_labels
+            )
             number = (
-                f'<span class="process-step__number">Step {step_number}</span>'
+                f'<span class="process-step__number">{esc(ui(ui_labels, "step", "Step {number}", number=step_number))}</span>'
                 if item_type == "step" else ""
             )
             action = ""
             if item_type == "intro":
                 action = (
                     '<button class="process-step__start" type="button" data-process-action="next">'
-                    '<span>START</span><svg aria-hidden="true" viewBox="0 0 320 512" focusable="false">'
+                    f'<span>{esc(ui(ui_labels, "start", "START"))}</span><svg aria-hidden="true" viewBox="0 0 320 512" focusable="false">'
                     f'<path fill="currentColor" d="{SCROLLING_PROCESS_FORWARD_PATH}"/></svg></button>'
                 )
                 control_content = (
                     '<svg aria-hidden="true" viewBox="0 0 320 512" focusable="false">'
                     f'<path fill="currentColor" d="{SCROLLING_PROCESS_FORWARD_PATH}"/></svg>'
                 )
-                control_label = item.get("title") or "Introduction"
+                control_label = item.get("title") or ui(ui_labels, "introduction", "Introduction")
             elif item_type == "summary":
                 action = (
                     '<button class="process-step__restart" type="button" data-process-target="0">'
-                    '<span>START AGAIN</span><svg aria-hidden="true" viewBox="0 0 512 512" focusable="false">'
+                    f'<span>{esc(ui(ui_labels, "start_again", "START AGAIN"))}</span><svg aria-hidden="true" viewBox="0 0 512 512" focusable="false">'
                     f'<path fill="currentColor" d="{SCROLLING_RETAKE_PATH}"/></svg></button>'
                 )
                 control_content = (
                     '<svg aria-hidden="true" viewBox="0 0 512 512" focusable="false">'
                     f'<path fill="currentColor" d="{SCROLLING_RETAKE_PATH}"/></svg>'
                 )
-                control_label = item.get("title") or "Conclusion"
+                control_label = item.get("title") or ui(ui_labels, "conclusion", "Conclusion")
             else:
                 control_content = str(step_number)
-                control_label = f"Step {step_number}"
+                control_label = ui(ui_labels, "step", "Step {number}", number=step_number)
             steps.append(
                 f'<article class="process-slide process-slide--{esc(item_type)}" data-process-slide="{index - 1}"{hidden} role="group" '
-                f'aria-label="{index} of {len(visible_items)}">'
+                f'aria-label="{esc(ui(ui_labels, "slide_position", "{current} of {total}", current=index, total=len(visible_items)))}">'
                 f'<div class="process-step process-step--{esc(item_type)}">'
                 f'{number}'
                 f'<div class="process-step__title"><h2>{esc(item.get("title") or item.get("label") or "")}</h2></div>'
@@ -495,18 +517,19 @@ def render_interactive(block: dict, lesson_id: int) -> str:
                 f'{action}</div></article>'
             )
             controls.append(
-                f'<li><button type="button" data-process-target="{index - 1}" aria-label="Go to slide {esc(control_label)}" '
+                f'<li><button type="button" data-process-target="{index - 1}" '
+                f'aria-label="{esc(ui(ui_labels, "go_to_slide", "Go to slide {title}", title=control_label))}" '
                 f'aria-current="{selected}">{control_content}</button></li>'
             )
         return (
             f'<div class="process-shell"><div class="process-carousel process-carousel--controls-{control_tone}" '
-            f'id="{esc(process_id)}" data-process-index="0" role="region" aria-label="Carousel">'
+            f'id="{esc(process_id)}" data-process-index="0" role="region" aria-label="{esc(ui(ui_labels, "carousel", "Carousel"))}">'
             '<div class="process-controls">'
-            '<button class="process-controls__previous" type="button" data-process-action="previous" aria-label="Go to previous slide">'
+            f'<button class="process-controls__previous" type="button" data-process-action="previous" aria-label="{esc(ui(ui_labels, "previous_slide", "Go to previous slide"))}">'
             '<span aria-hidden="true"><svg viewBox="0 0 320 512" focusable="false"><path fill="currentColor" d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg></span></button>'
             f'<ol class="process-controls__items">{"".join(controls)}</ol>'
-            f'<span class="visually-hidden" data-process-count>1 of {len(visible_items)}</span>'
-            '<button class="process-controls__next" type="button" data-process-action="next" aria-label="Go to next slide">'
+            f'<span class="visually-hidden" data-process-count>{esc(ui(ui_labels, "slide_position", "{current} of {total}", current=1, total=len(visible_items)))}</span>'
+            f'<button class="process-controls__next" type="button" data-process-action="next" aria-label="{esc(ui(ui_labels, "next_slide", "Go to next slide"))}">'
             '<span aria-hidden="true"><svg viewBox="0 0 320 512" focusable="false"><path fill="currentColor" d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg></span></button>'
             f'</div><div class="process-slides" aria-live="polite">{"".join(steps)}</div>'
             '</div></div>'
@@ -516,17 +539,17 @@ def render_interactive(block: dict, lesson_id: int) -> str:
         items.append(
             '<details class="interactive-card">'
             '<summary><span class="interactive-card__title">'
-            f'{esc(item.get("title") or item.get("label") or "Explore")}'
+            f'{esc(item.get("title") or item.get("label") or ui(ui_labels, "explore", "Explore"))}'
             '</span><span class="interactive-card__toggler" aria-hidden="true">'
             '<svg class="interactive-card__plus" viewBox="0 0 512 512" focusable="false"><path fill="currentColor" d="M488 232c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v208c0 13.3-10.7 24-24 24s-24-10.7-24-24V280H24c-13.3 0-24-10.7-24-24s10.7-24 24-24h208V24c0-13.3 10.7-24 24-24s24 10.7 24 24v208h208z"/></svg>'
             '<svg class="interactive-card__minus" viewBox="0 0 448 512" focusable="false"><path fill="currentColor" d="M432 232c13.3 0 24 10.7 24 24s-10.7 24-24 24H40c-13.3 0-24-10.7-24-24s10.7-24 24-24h392z"/></svg>'
             '</span></summary>'
-            f'<div class="interactive-card__content">{interactive_content(item)}</div></details>'
+            f'<div class="interactive-card__content">{interactive_content(item, ui_labels)}</div></details>'
         )
     return "".join(items)
 
 
-def render_block(block: dict, lesson_id: int) -> str:
+def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> str:
     block_type = block.get("type") or "unknown"
     variant = block.get("variant") or ""
     style = block.get("style") if isinstance(block.get("style"), dict) else {}
@@ -565,6 +588,7 @@ def render_block(block: dict, lesson_id: int) -> str:
             extra_class=f"scroll-animate {motion}" if animate else "",
             zoomable=bool(style.get("zoom_on_click", False)),
             cropped=cropped,
+            ui_labels=ui_labels,
         )
         body = block.get("body_html") or ""
         if variant == "text_aside" and body:
@@ -575,16 +599,17 @@ def render_block(block: dict, lesson_id: int) -> str:
             block.get("media"),
             block.get("caption_html") or "",
             animate=style.get("entrance_animation") is True,
+            ui_labels=ui_labels,
         )
     if block_type == "attachment":
         media = block.get("media") or {}
         if not media.get("path"):
             return ""
-        label = str(block.get("label") or media.get("alt") or "Open attachment")
+        label = str(block.get("label") or media.get("alt") or ui(ui_labels, "open_attachment", "Open attachment"))
         size = format_file_size(media.get("bytes"))
         size_markup = f'<span class="attachment-card__size">{esc(size)}</span>' if size else ""
         pdf_icon = (
-            '<svg class="attachment-card__file-icon" aria-label="PDF file" fill="none" focusable="false" '
+            f'<svg class="attachment-card__file-icon" aria-label="{esc(ui(ui_labels, "pdf_file", "PDF file"))}" fill="none" focusable="false" '
             'height="50" role="img" viewBox="0 0 40 50" width="40" xmlns="http://www.w3.org/2000/svg">'
             '<path clip-rule="evenodd" d="M2 0C.895 0 0 .895 0 2v46c0 1.105.895 2 2 2h36c1.105 0 2-.895 2-2V14L26 0H2Z" fill="#F5D0CE" fill-rule="evenodd"/>'
             '<path clip-rule="evenodd" d="M26 0v14h14" fill="#EDADA9" fill-rule="evenodd"/>'
@@ -595,14 +620,14 @@ def render_block(block: dict, lesson_id: int) -> str:
         )
         download_icon = (
             '<svg class="attachment-card__download-icon" focusable="false" height="19" viewBox="0 0 16 19" width="16">'
-            '<title>Download</title><desc>Arrow down with horizontal line beneath it</desc>'
+            f'<title>{esc(ui(ui_labels, "download", "Download"))}</title><desc>{esc(ui(ui_labels, "download", "Download"))}</desc>'
             '<rect height="2" rx="1" width="16" y="17"/>'
             '<path d="M4.464 8.293A1 1 0 1 0 3.05 9.707l4.24 4.24c.4.4 1.028.392 1.42 0l4.24-4.24a1 1 0 1 0-1.414-1.414L8 4.757 4.464 8.293zm0 0L8 4.757l3.536 3.536L8 11.828 4.464 8.293z"/>'
             '<path d="M7 0h2v12H7z"/></svg>'
         )
         return (
             f'<a class="attachment-card" href="{esc(media["path"])}" download="{esc(label)}" '
-            f'target="_blank" rel="noopener noreferrer nofollow" aria-label="Download {esc(label)}">'
+            f'target="_blank" rel="noopener noreferrer nofollow" aria-label="{esc(ui(ui_labels, "download", "Download"))} {esc(label)}">'
             f'<span class="attachment-card__main"><span class="attachment-card__icon">{pdf_icon}</span>'
             f'<span class="attachment-card__info"><span class="attachment-card__title">{esc(label)}</span>{size_markup}</span></span>'
             f'<span class="attachment-card__rest">{download_icon}</span></a>'
@@ -610,12 +635,12 @@ def render_block(block: dict, lesson_id: int) -> str:
     if block_type == "divider":
         return "<hr>"
     if block_type == "continue":
-        label = esc(block.get("label") or "CONTINUE")
+        label = esc(block.get("label") or ui(ui_labels, "continue", "CONTINUE"))
         motion = " scroll-animate scroll-animate--fade" if style.get("entrance_animation", True) else ""
         return (
             f'<div class="continue-band{motion}">'
             f'<button class="continue-button" type="button" data-label="{label}">{label}</button>'
-            f'<p class="continue-hint">{esc(block.get("complete_hint") or "Complete the content above before moving on.")}</p>'
+            f'<p class="continue-hint">{esc(block.get("complete_hint") or ui(ui_labels, "complete_hint", "Complete the content above before moving on."))}</p>'
             '</div>'
         )
     if block_type == "quote":
@@ -636,7 +661,7 @@ def render_block(block: dict, lesson_id: int) -> str:
         rows = []
         action_left = str(style.get("button_alignment") or "right").casefold() == "left"
         for item in block.get("buttons", []):
-            label = esc(item.get("label") or "Open resource")
+            label = esc(item.get("label") or ui(ui_labels, "open_resource", "Open resource"))
             is_exit = str(item.get("type") or "").casefold() == "exit-course"
             if is_exit:
                 control = f'<button class="course-button" type="button" data-exit-course>{label}</button>'
@@ -664,10 +689,11 @@ def render_block(block: dict, lesson_id: int) -> str:
             '</svg></span>'
         )
         for index, card in enumerate(block.get("cards", []), start=1):
-            front = flashcard_content(card.get("front") or {})
-            back = flashcard_content(card.get("back") or {})
+            front = flashcard_content(card.get("front") or {}, ui_labels)
+            back = flashcard_content(card.get("back") or {}, ui_labels)
             cards.append(
-                f'<div class="flashcard" role="button" tabindex="0" aria-pressed="false" aria-label="Flip card {index}">'
+                f'<div class="flashcard" role="button" tabindex="0" aria-pressed="false" '
+                f'aria-label="{esc(ui(ui_labels, "flip_card", "Flip card {number}", number=index))}">'
                 f'<div class="flashcard__front"><div class="flashcard__description"><div class="flashcard__description-inner">'
                 f'{front}</div></div>{flip_icon}</div>'
                 f'<div class="flashcard__back"><div class="flashcard__description"><div class="flashcard__description-inner">'
@@ -676,7 +702,7 @@ def render_block(block: dict, lesson_id: int) -> str:
         count_class = f' flashcard-grid--{len(cards)}' if cards else ""
         return f'<div class="flashcard-grid{count_class}">{"".join(cards)}</div>'
     if block_type in {"accordion", "tabs", "process", "interactive"}:
-        return render_interactive(block, lesson_id)
+        return render_interactive(block, lesson_id, ui_labels)
     if block_type == "labeled_graphic":
         media = block.get("media") or {}
         if not media.get("path"):
@@ -696,7 +722,7 @@ def render_block(block: dict, lesson_id: int) -> str:
         for index, item in enumerate(visible_items, start=1):
             marker_id = f'{graphic_id}-marker-{index}'
             callout_id = f'{graphic_id}-callout-{index}'
-            title = str(item.get("title") or f"Marker {index}")
+            title = str(item.get("title") or ui(ui_labels, "marker", "Marker {number}", number=index))
             try:
                 x = max(0.0, min(100.0, float(item.get("x") or 50)))
             except (TypeError, ValueError):
@@ -729,25 +755,26 @@ def render_block(block: dict, lesson_id: int) -> str:
                 '<li class="labeled-graphic__item">'
                 f'<button class="labeled-graphic__marker" id="{marker_id}" type="button" style="{marker_style}" '
                 f'data-labeled-marker="{index - 1}" data-marker-index="{index - 1}" data-marker-title="{esc(title)}" '
-                f'aria-controls="{callout_id}" aria-expanded="false" aria-label="Marker, {esc(title)}, Plus, Not viewed">'
+                f'aria-controls="{callout_id}" aria-expanded="false" '
+                f'aria-label="{esc(ui(ui_labels, "marker_status", "Marker, {title}, Plus, Not viewed", title=title))}">'
                 f'<span class="labeled-graphic__pin">{plus_icon}</span></button>'
                 f'<div class="labeled-graphic__bubble labeled-graphic__bubble--{horizontal} labeled-graphic__bubble--{vertical}" '
                 f'id="{callout_id}" data-labeled-callout="{index - 1}" data-marker-index="{index - 1}" style="{marker_style}" hidden>'
                 '<div class="labeled-graphic__callout" role="dialog" aria-modal="false" '
                 f'aria-labelledby="{callout_id}-title">'
                 f'<h2 class="labeled-graphic__title" id="{callout_id}-title" tabindex="-1">{esc(title)}</h2>'
-                f'<button class="labeled-graphic__close" type="button" data-labeled-action="close" aria-label="Close modal">{close_icon}</button>'
+                f'<button class="labeled-graphic__close" type="button" data-labeled-action="close" aria-label="{esc(ui(ui_labels, "close_modal", "Close modal"))}">{close_icon}</button>'
                 f'<div class="labeled-graphic__content"><div class="labeled-graphic__description">{item.get("description_html") or ""}</div></div>'
                 '<div class="labeled-graphic__controls">'
-                f'<button class="labeled-graphic__previous" type="button" data-labeled-action="previous" aria-label="Previous">{previous_icon}</button>'
-                f'<button class="labeled-graphic__next" type="button" data-labeled-action="next" aria-label="Next">{next_icon}</button>'
+                f'<button class="labeled-graphic__previous" type="button" data-labeled-action="previous" aria-label="{esc(ui(ui_labels, "previous", "Previous"))}">{previous_icon}</button>'
+                f'<button class="labeled-graphic__next" type="button" data-labeled-action="next" aria-label="{esc(ui(ui_labels, "next", "Next"))}">{next_icon}</button>'
                 '</div></div></div></li>'
             )
         return (
             f'<div class="labeled-graphic labeled-graphic--{width_variant}" id="{graphic_id}" '
             f'data-labeled-graphic data-media-width="{esc(media_width)}" data-marker-index="-1">'
             '<figure class="labeled-graphic__figure">'
-            f'<img class="labeled-graphic__image" src="{esc(media["path"])}" alt="{esc(media.get("alt") or "Labeled graphic")}"{size_attrs} loading="lazy">'
+            f'<img class="labeled-graphic__image" src="{esc(media["path"])}" alt="{esc(media.get("alt") or ui(ui_labels, "labeled_graphic", "Labeled graphic"))}"{size_attrs} loading="lazy">'
             f'<ol class="labeled-graphic__items">{"".join(items)}</ol></figure></div>'
         )
     if block_type == "knowledge_check":
@@ -765,16 +792,16 @@ def render_block(block: dict, lesson_id: int) -> str:
         return (
             f'<div class="quiz-card" data-question-id="{qid}"><div class="quiz-question">{block.get("question_html") or ""}</div>'
             f'<div class="quiz-choices">{choices}</div><div class="quiz-actions">'
-            '<button class="quiz-submit" type="button">SUBMIT</button></div>'
+            f'<button class="quiz-submit" type="button">{esc(ui(ui_labels, "submit", "SUBMIT"))}</button></div>'
             '<div class="quiz-feedback quiz-feedback--correct"><span class="quiz-feedback__icon" aria-hidden="true">'
             f'<svg class="quiz-feedback__glyph" viewBox="0 0 1024 1024" focusable="false"><g transform="translate(0 1024) scale(1 -1)"><path fill="currentColor" d="{SCROLLING_FEEDBACK_CORRECT_PATH}"/></g></svg></span>'
-            f'<strong class="quiz-feedback__label">Correct</strong><div class="quiz-feedback__text">{block.get("feedback_correct_html") or "Correct."}</div></div>'
+            f'<strong class="quiz-feedback__label">{esc(ui(ui_labels, "correct", "Correct"))}</strong><div class="quiz-feedback__text">{block.get("feedback_correct_html") or ui(ui_labels, "correct", "Correct") + "."}</div></div>'
             '<div class="quiz-feedback quiz-feedback--incorrect"><span class="quiz-feedback__icon" aria-hidden="true">'
             f'<svg class="quiz-feedback__glyph" viewBox="0 0 1024 1024" focusable="false"><g transform="translate(0 1024) scale(1 -1)"><path fill="currentColor" d="{SCROLLING_FEEDBACK_INCORRECT_PATH}"/></g></svg></span>'
-            f'<strong class="quiz-feedback__label">Incorrect</strong><div class="quiz-feedback__text">{block.get("feedback_incorrect_html") or "Review the lesson and try again."}</div></div>'
+            f'<strong class="quiz-feedback__label">{esc(ui(ui_labels, "incorrect", "Incorrect"))}</strong><div class="quiz-feedback__text">{block.get("feedback_incorrect_html") or "Review the lesson and try again."}</div></div>'
             '<div class="quiz-retake-wrap" hidden><button class="quiz-retake" type="button"><span class="quiz-retake__content">'
             f'<span class="quiz-retake__icon" aria-hidden="true"><svg viewBox="0 0 512 512" focusable="false"><path fill="currentColor" d="{SCROLLING_RETAKE_PATH}"/></svg></span>'
-            'TAKE AGAIN</span></button></div></div>'
+            f'{esc(ui(ui_labels, "take_again", "TAKE AGAIN"))}</span></button></div></div>'
         )
     content = block.get("content")
     return f'<pre>{esc(json.dumps(content, indent=2, ensure_ascii=False))}</pre>' if content else ""
@@ -868,6 +895,7 @@ def render_lesson(
     total: int,
     next_title: str = "",
     previous_title: str = "",
+    ui_labels: dict | None = None,
 ) -> str:
     gate_count = sum(1 for block in lesson.get("blocks", []) if (block.get("type") or "unknown") == "continue")
     has_exit = any(
@@ -884,7 +912,7 @@ def render_lesson(
         gate_index = f' data-gate-index="{gate_level}"' if block_type == "continue" else ""
         final_gate = ' data-final-gate="true"' if block_type == "continue" and gate_level == gate_count - 1 else ""
         progress_attr = f' data-progress-index="{block_index}" data-progress-mode="{"action" if block_type == "continue" else "view"}"'
-        content = render_block(block, lesson.get("id") or index)
+        content = render_block(block, lesson.get("id") or index, ui_labels)
         blocks.append(
             f'<section class="{esc(block_classes(block))}"{gate_attr}{gate_index}{final_gate}{progress_attr}{block_style_attr(block)}>'
             f'<div class="block__container"><div class="block__content">{content}</div></div></section>'
@@ -895,13 +923,23 @@ def render_lesson(
         completed_navigation = (
             '<div class="completed-lesson-nav" hidden>'
             f'<button class="completed-lesson-nav__link" type="button" data-next-lesson="{index + 1}">'
-            f'<span>Lesson {index + 1} - {esc(next_title or f"Lesson {index + 1}")}</span>'
+            f'<span>{esc(ui(ui_labels, "lesson_next", "Lesson {number} - {title}", number=index + 1, title=next_title or ui(ui_labels, "lesson", "Lesson {number}", number=index + 1)))}</span>'
             '<svg aria-hidden="true" viewBox="0 0 15 16" focusable="false"><path d="M2 8L7.65685 13.6569L13.3137 8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>'
             '</button></div>'
         )
     else:
         completed_navigation = ''
-    previous_label = "Home" if index == 1 else f'Lesson {index - 1} - {previous_title or f"Lesson {index - 1}"}'
+    previous_label = (
+        ui(ui_labels, "home", "Home")
+        if index == 1
+        else ui(
+            ui_labels,
+            "lesson_previous",
+            "Lesson {number} - {title}",
+            number=index - 1,
+            title=previous_title or ui(ui_labels, "lesson", "Lesson {number}", number=index - 1),
+        )
+    )
     previous_navigation = (
         '<div class="previous-lesson-nav">'
         f'<button class="previous-lesson-nav__link" type="button" data-lesson-target="{index - 1}">'
@@ -913,8 +951,8 @@ def render_lesson(
 <article class="lesson" id="lesson-{index}" data-lesson-id="{index}" data-lesson-slug="{esc(lesson.get("slug") or f"lesson-{index}")}" data-gate-count="{gate_level}" data-progress-total="{len(lesson_blocks)}" data-has-exit="{str(has_exit).lower()}">
   {previous_navigation}
   <header class="lesson__hero"><div class="lesson__hero-inner">
-    <p class="lesson__number">Lesson {index} of {total}</p>
-    <h2>{esc(lesson.get("title") or f"Lesson {index}")}</h2>
+    <p class="lesson__number">{esc(ui(ui_labels, "lesson_of", "Lesson {current} of {total}", current=index, total=total))}</p>
+    <h2>{esc(lesson.get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index))}</h2>
     <span class="lesson__rule" aria-hidden="true"></span>
     <div class="lesson__description">{lesson.get("description_html") or ""}</div>
   </div></header>
@@ -955,6 +993,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     brand = course.get("brand") or {}
     theme = course.get("theme") or {}
     scrolling = course.get("scrolling") or {}
+    ui_labels = course.get("ui_labels") if isinstance(course.get("ui_labels"), dict) else {}
     accent = safe_color(brand.get("primary_color") or theme.get("accent_color"), "#8cc53f")
     accent_dark = safe_color(brand.get("primary_color_dark"), "#6fa030")
     header_style = str(theme.get("lesson_header_style") or "ACCENT").upper()
@@ -1024,21 +1063,21 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     nav = "".join(
         f'<button class="lesson-nav__item" type="button" data-lesson-target="{index}" data-search-text="{esc(searchable_lesson_text(lesson))}">'
         f'{lesson_icon}'
-        f'<span class="lesson-nav__title">{esc(lesson.get("title") or f"Lesson {index}")}</span>'
-        f'<span class="lesson-nav__status" aria-label="Unstarted">{lesson_status_icon}</span></button>'
+        f'<span class="lesson-nav__title">{esc(lesson.get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index))}</span>'
+        f'<span class="lesson-nav__status" aria-label="{esc(ui(ui_labels, "unstarted", "Unstarted"))}">{lesson_status_icon}</span></button>'
         for index, lesson in enumerate(lessons, start=1)
     )
     search_results = "".join(
         f'<button class="sidebar-search-result" type="button" data-lesson-target="{index}" data-search-text="{esc(searchable_lesson_text(lesson))}" hidden>'
-        f'{lesson_icon}<span class="sidebar-search-result__title">{esc(lesson.get("title") or f"Lesson {index}")}</span>'
+        f'{lesson_icon}<span class="sidebar-search-result__title">{esc(lesson.get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index))}</span>'
         '<span class="sidebar-search-result__count"></span></button>'
         for index, lesson in enumerate(lessons, start=1)
     )
     cover_nav = "".join(
         f'<button class="course-cover__lesson-item" type="button" data-lesson-target="{index}">'
         '<span class="course-cover__lesson-handle" aria-hidden="true"><i></i><i></i><i></i></span>'
-        f'<span class="course-cover__lesson-title">{esc(lesson.get("title") or f"Lesson {index}")}</span>'
-        '<span class="course-cover__lesson-status" aria-label="Unstarted"></span></button>'
+        f'<span class="course-cover__lesson-title">{esc(lesson.get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index))}</span>'
+        f'<span class="course-cover__lesson-status" aria-label="{esc(ui(ui_labels, "unstarted", "Unstarted"))}"></span></button>'
         for index, lesson in enumerate(lessons, start=1)
     )
     lesson_html = "".join(
@@ -1046,12 +1085,14 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
             lesson,
             index,
             len(lessons),
-            (lessons[index].get("title") or f"Lesson {index + 1}") if index < len(lessons) else "",
-            (lessons[index - 2].get("title") or f"Lesson {index - 1}") if index > 1 else "",
+            (lessons[index].get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index + 1)) if index < len(lessons) else "",
+            (lessons[index - 2].get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index - 1)) if index > 1 else "",
+            ui_labels,
         )
         for index, lesson in enumerate(lessons, start=1)
     )
     course_title_json = json.dumps(course.get("course_title") or "OCP Academy Course")
+    ui_labels_json = json.dumps(ui_labels, ensure_ascii=False).replace("</", "<\\/")
     initial_nav_class = "" if bool(scrolling.get("toc_initially_open", True)) else " nav-closed"
     theme_classes = ["is-cover"]
     if theme.get("hide_lesson_headers"):
@@ -1065,7 +1106,15 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   'use strict';
   var lessonCount = __LESSON_COUNT__;
   var directionalTransitions = __DIRECTIONAL_TRANSITIONS__;
+  var uiLabels = __UI_LABELS__;
   var activeLesson = 0;
+  function uiText(key, fallback, values) {
+    var text = String(uiLabels[key] || fallback);
+    Object.keys(values || {}).forEach(function(name) {
+      text = text.split('{' + name + '}').join(String(values[name]));
+    });
+    return text;
+  }
   var state = {
     currentLesson: 0,
     gates: {},
@@ -1160,18 +1209,18 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       var isComplete = completed(id);
       item.classList.toggle('is-complete', isComplete);
       var status = item.querySelector('.lesson-nav__status');
-      if (status) status.setAttribute('aria-label', isComplete ? 'Completed' : 'Unstarted');
+      if (status) status.setAttribute('aria-label', isComplete ? uiText('completed', 'Completed') : uiText('unstarted', 'Unstarted'));
     });
     document.querySelectorAll('.course-cover__lesson-item').forEach(function(item) {
       var id = Number(item.dataset.lessonTarget);
       var isComplete = completed(id);
       item.classList.toggle('is-complete', isComplete);
       var status = item.querySelector('.course-cover__lesson-status');
-      if (status) status.setAttribute('aria-label', isComplete ? 'Completed' : 'Unstarted');
+      if (status) status.setAttribute('aria-label', isComplete ? uiText('completed', 'Completed') : uiText('unstarted', 'Unstarted'));
     });
     var percent = lessonCount ? Math.round(state.completedLessons.length / lessonCount * 100) : 0;
     document.getElementById('progress-fill').style.width = percent + '%';
-    document.getElementById('progress-value').textContent = percent + '% COMPLETE';
+    document.getElementById('progress-value').textContent = uiText('complete_progress', '{percent}% COMPLETE', { percent: percent });
   }
   function lessonReadPercent(lesson) {
     if (!lesson) return 0;
@@ -1362,7 +1411,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       button.tabIndex = current ? 0 : -1;
     });
     var count = carousel.querySelector('[data-process-count]');
-    if (count) count.textContent = (index + 1) + ' of ' + slides.length;
+    if (count) count.textContent = uiText('slide_position', '{current} of {total}', { current: index + 1, total: slides.length });
     var previous = carousel.querySelector('[data-process-action="previous"]');
     var next = carousel.querySelector('[data-process-action="next"]');
     if (previous) {
@@ -1384,7 +1433,9 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       if (current) marker.classList.add('is-viewed');
       marker.setAttribute('aria-expanded', current ? 'true' : 'false');
       var title = marker.dataset.markerTitle || 'Marker';
-      marker.setAttribute('aria-label', title + (marker.classList.contains('is-viewed') ? ', viewed' : ', not viewed'));
+      marker.setAttribute('aria-label', title + (marker.classList.contains('is-viewed')
+        ? ', ' + uiText('viewed', 'viewed')
+        : ', ' + uiText('not_viewed', 'not viewed')));
     });
     graphic.querySelectorAll('[data-labeled-callout]').forEach(function(callout) {
       callout.hidden = Number(callout.dataset.labeledCallout) !== index;
@@ -1561,7 +1612,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       player.classList.toggle('is-playing', !video.paused);
       if (current > 0) player.classList.add('is-started');
       player.querySelectorAll('[data-video-action="toggle"]').forEach(function(button) {
-        button.setAttribute('aria-label', video.paused ? 'Play video' : 'Pause video');
+        button.setAttribute('aria-label', video.paused ? uiText('play_video', 'Play video') : uiText('pause_video', 'Pause video'));
       });
       if (progress) progress.value = duration ? String(current / duration * 100) : '0';
       if (progressPlayed) progressPlayed.style.width = (duration ? current / duration * 100 : 0) + '%';
@@ -1625,7 +1676,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     });
     if (mute) mute.addEventListener('click', function() {
       video.muted = !video.muted;
-      mute.setAttribute('aria-label', video.muted ? 'Unmute' : 'Mute');
+      mute.setAttribute('aria-label', video.muted ? uiText('unmute', 'Unmute') : uiText('mute', 'Mute'));
       syncState();
       showControls();
     });
@@ -1642,7 +1693,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     document.addEventListener('fullscreenchange', function() {
       var active = document.fullscreenElement === player;
       player.classList.toggle('is-fullscreen', active);
-      if (fullscreen) fullscreen.setAttribute('aria-label', active ? 'Exit fullscreen' : 'Fullscreen');
+      if (fullscreen) fullscreen.setAttribute('aria-label', active ? uiText('exit_fullscreen', 'Exit fullscreen') : uiText('fullscreen', 'Fullscreen'));
     });
     if (pictureInPicture) pictureInPicture.addEventListener('click', function() {
       if (document.pictureInPictureElement && document.exitPictureInPicture) {
@@ -1866,10 +1917,12 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       if (count) {
         visible += 1;
         var label = item.querySelector('.sidebar-search-result__count');
-        if (label) label.textContent = count + (count === 1 ? ' result' : ' results');
+        if (label) label.textContent = uiText('result', count === 1 ? '{count} result' : '{count} results', { count: count });
       }
     });
-    if (searchMessage) searchMessage.textContent = query && !visible ? 'No results for “' + search.value.trim() + '”' : '';
+    if (searchMessage) searchMessage.textContent = query && !visible
+      ? uiText('no_results', 'No results for “{query}”', { query: search.value.trim() })
+      : '';
   }
   if (searchToggle) searchToggle.addEventListener('click', openSearch);
   if (searchClose) searchClose.addEventListener('click', function(event) { event.preventDefault(); closeSearch(); });
@@ -1894,7 +1947,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
 })();
 '''.replace("__LESSON_COUNT__", str(len(lessons))).replace(
         "__DIRECTIONAL_TRANSITIONS__", "true" if directional_transitions else "false"
-    ).replace("__COURSE_TITLE__", course_title_json)
+    ).replace("__COURSE_TITLE__", course_title_json).replace("__UI_LABELS__", ui_labels_json)
     root_css = (
         f':root{{--accent:{accent};--accent-dark:{accent_dark};--accent-text:{contrasting_text(accent)};'
         f'--lesson-header-bg:{header_background};--lesson-header-text:{header_text};'
@@ -1904,7 +1957,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
         f'--ui:{css_string(ui_family)},"Noto Sans Myanmar",sans-serif;}}'
     )
     return f'''<!doctype html>
-<html lang="en">
+<html lang="{esc(course.get("language") or "en")}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1913,19 +1966,19 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   <style>{font_face_css(theme)}\n{css}\n{root_css}</style>
 </head>
 <body class="{esc(' '.join(theme_classes))}">
-  <button class="toc-toggle" id="toc-toggle" type="button" aria-label="Toggle lesson table of contents"><span></span><span></span><span></span></button>
+  <button class="toc-toggle" id="toc-toggle" type="button" aria-label="{esc(ui(ui_labels, "toggle_toc", "Toggle lesson table of contents"))}"><span></span><span></span><span></span></button>
   <aside class="sidebar" id="sidebar">
     <header class="sidebar__header">
       <div class="sidebar__header-content">
-        {f'<button class="sidebar__search-toggle" id="search-toggle" type="button" aria-label="Open search menu">{search_icon}</button>' if search_enabled else ''}
+        {f'<button class="sidebar__search-toggle" id="search-toggle" type="button" aria-label="{esc(ui(ui_labels, "open_search", "Open search menu"))}">{search_icon}</button>' if search_enabled else ''}
         <h1><button class="sidebar__course-title" type="button" data-lesson-target="0">{esc(course.get("course_title") or "OCP Academy Course")}</button></h1>
         <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
-        <p class="progress-value" id="progress-value">0% COMPLETE</p>
+        <p class="progress-value" id="progress-value">{esc(ui(ui_labels, "complete_progress", "{percent}% COMPLETE", percent=0))}</p>
       </div>
-      {f'<div class="sidebar__search-area" id="sidebar-search-area" hidden><form class="sidebar__search" id="sidebar-search-form" autocomplete="off">{search_icon}<input id="lesson-search" name="search" type="search" placeholder="search" aria-label="Search"><button id="search-close" type="reset" aria-label="Close search menu">{close_icon}</button></form></div>' if search_enabled else ''}
+      {f'<div class="sidebar__search-area" id="sidebar-search-area" hidden><form class="sidebar__search" id="sidebar-search-form" autocomplete="off">{search_icon}<input id="lesson-search" name="search" type="search" placeholder="{esc(ui(ui_labels, "search", "search"))}" aria-label="{esc(ui(ui_labels, "search", "Search"))}"><button id="search-close" type="reset" aria-label="{esc(ui(ui_labels, "close_search", "Close search menu"))}">{close_icon}</button></form></div>' if search_enabled else ''}
     </header>
     <div class="sidebar__body">
-      <nav class="lesson-nav" id="lesson-nav" aria-label="Lessons">{nav}</nav>
+      <nav class="lesson-nav" id="lesson-nav" aria-label="{esc(ui(ui_labels, "lessons", "Lessons"))}">{nav}</nav>
       {f'<div class="sidebar-search-results" id="sidebar-search-results" hidden><p class="sidebar-search-results__message" id="sidebar-search-message"></p>{search_results}</div>' if search_enabled else ''}
     </div>
   </aside>
@@ -1933,16 +1986,16 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     <section class="course-cover" id="course-cover">
       <header class="course-cover__hero"{cover_style}><div class="course-cover__hero-content">
         <div class="course-cover__title-frame"><h2>{esc(course.get("course_title") or "OCP Academy Course")}</h2></div>
-        <button class="start-button" type="button" data-start-course>START COURSE</button>
+        <button class="start-button" type="button" data-start-course>{esc(ui(ui_labels, "start_course", "START COURSE"))}</button>
       </div></header>
       <div class="course-cover__details"><div class="course-cover__description">{course.get("course_description_html") or esc(course.get("course_subtitle") or "")}</div>
-      {f'<p class="course-cover__lesson-count">{len(lessons)} lessons</p>' if show_lesson_count else ''}
-      {f'<nav class="course-cover__lesson-list" aria-label="Course lessons">{cover_nav}</nav>' if show_cover_lesson_list else ''}</div>
+      {f'<p class="course-cover__lesson-count">{esc(ui(ui_labels, "lessons_count", "{count} lessons", count=len(lessons)))}</p>' if show_lesson_count else ''}
+      {f'<nav class="course-cover__lesson-list" aria-label="{esc(ui(ui_labels, "course_lessons", "Course lessons"))}">{cover_nav}</nav>' if show_cover_lesson_list else ''}</div>
     </section>
     {lesson_html}
   </main>
   <div class="lesson-read-progress-sticky" id="lesson-read-progress-sticky" aria-hidden="true"><div class="lesson-read-progress"><div class="lesson-read-progress__progress"><div class="lesson-read-progress__track"><div class="lesson-read-progress__indicator"></div></div></div></div></div>
-  <dialog class="image-zoom-dialog" id="image-zoom-dialog"><button type="button" data-close-zoom aria-label="Close image">×</button><img alt=""></dialog>
+  <dialog class="image-zoom-dialog" id="image-zoom-dialog"><button type="button" data-close-zoom aria-label="{esc(ui(ui_labels, "close_image", "Close image"))}">×</button><img alt=""></dialog>
   <script>{script}</script>
 </body>
 </html>'''

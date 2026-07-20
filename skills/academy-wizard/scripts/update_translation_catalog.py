@@ -103,8 +103,6 @@ def collect_translations(repo_root: Path) -> list[Translation]:
         if not canonical_json.is_file():
             raise SystemExit(f"Missing canonical course.json for {locale_json}")
         canonical = load_json(canonical_json)
-        if canonical.get("style", "Slides") != "Slides":
-            continue
 
         translations.append(
             Translation(
