@@ -115,7 +115,7 @@ Use these maintained ElevenLabs locale defaults:
 | `ko` and regional variants | Chris - Warm and clear | `PDoCXqBQFGsvfO0hNkEs` |
 | `ja` and regional variants | Approved Japanese voice | `b34JylakFZPlGS0BnwyY` |
 | `zh-CN` | Lan Chen | `bZtjnyJAFD0Cp3lfNG5g` |
-| `pt-BR` | Carla, Latin American accent | `m151rjrbWXbBqyq56tly` |
+| `pt-BR` | Carla, Brazilian Portuguese | `m151rjrbWXbBqyq56tly` |
 | `es-419` | Ninoska, Latin American accent | `zl1Ut8dvwcVSuQSB9XkG` |
 
 The translation scaffold records the matching default under top-level
