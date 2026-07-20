@@ -11,7 +11,8 @@ an independent SCORM package.
 3. Translation rules
 4. Narration and media
 5. Metadata and final resources
-6. Review, validation, and delivery
+6. Repository translation catalog
+7. Review, validation, and delivery
 
 ## Source and folder convention
 
@@ -147,6 +148,23 @@ The final slide of the final module must repeat the course's key continuing
 resources as centered `reference_links` pills above the Share Feedback block.
 Localize only the pill labels. Keep the authoritative URLs, external-link icons,
 new-tab behavior, and resource order consistent across languages.
+
+## Repository translation catalog
+
+Before committing translated source in an Academy course repository, refresh
+the root README's `Translations` table:
+
+```bash
+python skills/academy-wizard/scripts/update_translation_catalog.py
+python skills/academy-wizard/scripts/update_translation_catalog.py --check
+```
+
+The updater derives non-English language columns and translated-course rows
+from `courses/**/locales/*/course.json`. It preserves the link above the table
+to the OCP Academy Translated Learning page and uses `—` when a course does not
+have an edition in a listed language. Commit the README change with the locale
+source. Do not commit a new or removed translation while `--check` reports that
+the table is stale.
 
 ## Review, validation, and delivery
 
