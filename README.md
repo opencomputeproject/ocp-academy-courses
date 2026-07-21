@@ -45,6 +45,14 @@ courses/
   ocp-mhs-modular-plug-and-play-m-pnp/
   ocp-nic-3-0-technical-overview/
   ocp-ready-requirements-for-energy-storage-systems/
+  open-rack-v3/
+    module-1-ocp-orv3-history-and-impact/
+    module-2-orv3-core-specifications/
+    module-3-orv3-real-world-implementations/
+    module-4-orv3-high-power-racks/
+    module-5-orv3-future-trends/
+    module-6-the-open-rack-wide-orw-expansion/
+    module-7-advanced-orw-liquid-cooling-practice/
   optics/
     enhanced-telemetry-optics/
     introduction-to-emerging-optical-technologies/
@@ -107,6 +115,13 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
 | `ocp-nic-3-0-technical-overview` | OCP NIC 3.0 Technical Overview |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
+| `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
+| `open-rack-v3/module-2-orv3-core-specifications` | Module 2: ORv3 Core Specifications |
+| `open-rack-v3/module-3-orv3-real-world-implementations` | Module 3: ORv3 Real World Implementations |
+| `open-rack-v3/module-4-orv3-high-power-racks` | Module 4: ORv3 High Power Racks |
+| `open-rack-v3/module-5-orv3-future-trends` | Module 5: ORv3 Future Trends |
+| `open-rack-v3/module-6-the-open-rack-wide-orw-expansion` | Module 6 - The Open Rack Wide (ORW) Expansion |
+| `open-rack-v3/module-7-advanced-orw-liquid-cooling-practice` | Module 7 - Advanced ORW Liquid Cooling & Practice |
 | `optics/enhanced-telemetry-optics` | Enhanced Telemetry Optics |
 | `optics/introduction-to-emerging-optical-technologies` | Introduction to Emerging Optical Technologies |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
