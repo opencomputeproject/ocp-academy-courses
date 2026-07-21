@@ -55,6 +55,24 @@ def _scrolling_block_types(course: dict) -> set[str]:
     }
 
 
+def _scrolling_question_types(course: dict) -> set[str]:
+    return {
+        str(block.get("question_type") or "multiple_choice").strip().casefold()
+        for lesson in course.get("lessons", [])
+        for block in lesson.get("blocks", [])
+        if isinstance(block, dict) and block.get("type") == "knowledge_check"
+    }
+
+
+def _scrolling_block_variants(course: dict) -> set[str]:
+    return {
+        str(block.get("variant") or "").strip().casefold()
+        for lesson in course.get("lessons", [])
+        for block in lesson.get("blocks", [])
+        if isinstance(block, dict)
+    }
+
+
 def _scrolling_has_quote_avatar(course: dict) -> bool:
     return any(
         block.get("type") == "quote" and bool(block.get("avatar"))
@@ -219,10 +237,17 @@ def main():
             "flashcards": ("flashcard__description-inner", "transform: scale(.9) translateZ(0);", "flashcard.is-flipped"),
             "knowledge_check": (
                 "quiz-choice__indicator",
+                "data-quiz-choice-result",
                 "quiz-feedback__glyph",
                 "quiz-retake__icon",
                 '.quiz-question [style*="font-size"]',
                 "border-top: 1px solid #8f8f8f;",
+                ".quiz-choice.is-correct .quiz-choice__check",
+                ".quiz-choice.is-incorrect .quiz-choice__x",
+                ".quiz-choice.is-selected::after",
+                "inset: 5px 0;",
+                ".quiz-choice.is-selected.is-correct::after",
+                ".quiz-choice.is-selected.is-incorrect::after",
             ),
             "labeled_graphic": (
                 "data-labeled-graphic",
@@ -244,6 +269,57 @@ def main():
             for marker in markers:
                 if marker not in index_html:
                     err(f"index.html: {block_type} rendering is missing {marker}")
+        if "matching" in _scrolling_question_types(course):
+            for marker in (
+                "quiz-match-piece--source",
+                "data-match-drag-source",
+                "data-match-drop-zone",
+                "data-match-order=",
+                "quiz-match-piece__decoration--grip",
+                "background: color-mix(in srgb, var(--accent) 50%, #fff);",
+                ".quiz-match-piece--source::before",
+                "mask-image: radial-gradient(40px 40px at 100% 50%, transparent 19px, #000 19px);",
+                "quiz-match-piece--target",
+                "quiz-match-piece__jigsaw",
+                "quiz-matching-results",
+                "quiz-matching-result__correction",
+                "pairMatchingPieces",
+                "matchingPointerDrag",
+                "matchingDropOverlap = .015",
+                "matchingPointerMoveTolerance = 8",
+                "matchingOverlapRatio",
+                "document.addEventListener('pointerdown'",
+                "document.addEventListener('pointermove'",
+                "document.addEventListener('pointerup'",
+                "document.addEventListener('pointercancel'",
+                "matchChoice.click();",
+                "syncMatchingSourceRows",
+                "restoreMatchingSourceRows",
+                "syncMatchingPieceHeights",
+                "--match-column-gap: 40px;",
+                "--match-snap-offset: 32px;",
+                ".quiz-matching__item--source:has(.quiz-match-piece.is-paired)",
+                ".quiz-matching__item--target:has(.quiz-match-piece.is-paired)",
+            ):
+                if marker not in index_html:
+                    err(f"index.html: matching rendering is missing {marker}")
+        if "numbered_divider" in _scrolling_block_variants(course):
+            for marker in (
+                "numbered-divider__number",
+                ".numbered-divider::before",
+                "margin-inline: -8.3333333%;",
+                "border-top: 1px solid var(--accent);",
+            ):
+                if marker not in index_html:
+                    err(f"index.html: numbered-divider rendering is missing {marker}")
+        if "fill_in_the_blank" in _scrolling_question_types(course):
+            for marker in ("data-quiz-accepted", ".quiz-fillin__accepted"):
+                if marker not in index_html:
+                    err(f"index.html: fill-in rendering is missing {marker}")
+        if "buttons" in block_types:
+            for marker in ("--resource-button-width", "white-space: nowrap;"):
+                if marker not in index_html:
+                    err(f"index.html: resource-button rendering is missing {marker}")
         caption_tracks = _scrolling_caption_tracks(course)
         if caption_tracks:
             ui_labels = course.get("ui_labels") if isinstance(course.get("ui_labels"), dict) else {}
@@ -320,6 +396,13 @@ def main():
                     if width_variant in {"medium", "full"} and f"labeled-graphic--{width_variant}" not in index_html:
                         err(f"index.html: labeled graphic is missing its {width_variant} width variant")
                 style = block.get("style") if isinstance(block.get("style"), dict) else {}
+                variant = str(block.get("variant") or "").strip().casefold().replace("_", " ")
+                if block.get("type") == "image" and variant == "text aside":
+                    position = str(style.get("image_position") or "left").strip().casefold()
+                    if position not in {"left", "right"}:
+                        err("course.json: text-aside style.image_position must be left or right")
+                    elif f"block--image-{position}" not in index_html:
+                        err(f"index.html: text-aside image is missing its {position}-side layout class")
                 background_media = style.get("background_media") if isinstance(style.get("background_media"), dict) else {}
                 if background_media.get("path") and style.get("background_overlay_opacity") is not None:
                     required = {
@@ -334,6 +417,14 @@ def main():
                         err("index.html: left-aligned button block is missing its alignment class")
                     if 'resource-button-row--action-left"><div class="resource-button-action"' not in index_html:
                         err("index.html: left-aligned button action does not precede its description")
+                if block.get("type") == "buttons" and style.get("button_width_px") is not None:
+                    try:
+                        width = max(170, min(600, int(round(float(style["button_width_px"])))))
+                    except (TypeError, ValueError):
+                        err("course.json: style.button_width_px must be numeric")
+                    else:
+                        if f"--resource-button-width:{width}px" not in index_html:
+                            err(f"index.html: resource button is missing configured width {width}px")
         if _scrolling_has_quote_avatar(course) and "quote-card__avatar" not in index_html:
             err("index.html: quote avatar is missing from the rendered quote")
 

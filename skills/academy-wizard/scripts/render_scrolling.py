@@ -293,15 +293,17 @@ def media_figure(
     extra_class: str = "",
     zoomable: bool = False,
     cropped: bool = False,
+    decorative: bool = False,
     ui_labels: dict | None = None,
 ) -> str:
     if not media or not media.get("path"):
         return ""
     path = esc(media["path"])
-    alt = esc(media.get("alt") or ui(ui_labels, "course_media", "Course media"))
+    alt = "" if decorative else esc(media.get("alt") or ui(ui_labels, "course_media", "Course media"))
+    accessibility = ' aria-hidden="true"' if decorative else ""
     caption = f"<figcaption>{caption_html}</figcaption>" if caption_html else ""
-    image = f'<img src="{path}" alt="{alt}" loading="lazy">'
-    if zoomable:
+    image = f'<img src="{path}" alt="{alt}" loading="lazy"{accessibility}>'
+    if zoomable and not decorative:
         image = (
             f'<button class="media-zoom" type="button" data-zoom-src="{path}" data-zoom-alt="{alt}" '
             f'aria-label="{esc(ui(ui_labels, "zoom_image", "Zoom image"))}">{image}</button>'
@@ -554,7 +556,17 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
     variant = block.get("variant") or ""
     style = block.get("style") if isinstance(block.get("style"), dict) else {}
     if block_type == "text":
-        return f'<div class="block-content">{block.get("heading_html", "")}{block.get("body_html", "")}</div>'
+        heading_html = str(block.get("heading_html") or "")
+        if heading_html:
+            heading_tag = "h3" if "subheading" in str(variant).casefold() else "h2"
+            if not re.search(r"<h[1-6](?:\s|>)", heading_html, flags=re.I):
+                heading_html = re.sub(
+                    r"<p(?:\s[^>]*)?>(.*?)</p>",
+                    rf"<{heading_tag}>\1</{heading_tag}>",
+                    heading_html,
+                    flags=re.I | re.S,
+                )
+        return f'<div class="block-content">{heading_html}{block.get("body_html", "")}</div>'
     if block_type == "list":
         tag = "ol" if block.get("list_style") == "numbered" else "ul"
         numbered = tag == "ol"
@@ -577,7 +589,11 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
         media = block.get("media") if isinstance(block.get("media"), dict) else {}
         dimensions = media.get("dimensions") if isinstance(media.get("dimensions"), dict) else {}
         cropped = variant == "full"
-        position = str(style.get("image_position") or "right").casefold()
+        image_role = str(block.get("image_role") or "content").strip().casefold()
+        decorative = image_role in {"decorative", "design"}
+        position = str(style.get("image_position") or "left").strip().casefold()
+        if position not in {"left", "right"}:
+            position = "left"
         motion = "scroll-animate--slide-left" if position == "left" else "scroll-animate--slide-right"
         if variant != "text_aside":
             motion = "scroll-animate--fade"
@@ -586,8 +602,9 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
             media,
             block.get("caption_html") or "",
             extra_class=f"scroll-animate {motion}" if animate else "",
-            zoomable=bool(style.get("zoom_on_click", False)),
+            zoomable=not decorative and bool(style.get("zoom_on_click", False)),
             cropped=cropped,
+            decorative=decorative,
             ui_labels=ui_labels,
         )
         body = block.get("body_html") or ""
@@ -632,7 +649,16 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
             f'<span class="attachment-card__info"><span class="attachment-card__title">{esc(label)}</span>{size_markup}</span></span>'
             f'<span class="attachment-card__rest">{download_icon}</span></a>'
         )
+    if block_type == "impact":
+        return f'<div class="impact-statement">{block.get("body_html") or ""}</div>'
     if block_type == "divider":
+        if variant == "numbered_divider":
+            number = esc(block.get("number") or block.get("id") or "")
+            return (
+                '<div class="numbered-divider">'
+                f'<span class="numbered-divider__number"><span class="visually-hidden">Numbered divider</span>{number}</span>'
+                '</div>'
+            )
         return "<hr>"
     if block_type == "continue":
         label = esc(block.get("label") or ui(ui_labels, "continue", "CONTINUE"))
@@ -660,6 +686,12 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
     if block_type == "buttons":
         rows = []
         action_left = str(style.get("button_alignment") or "right").casefold() == "left"
+        configured_button_width = style.get("button_width_px")
+        if isinstance(configured_button_width, (int, float)):
+            button_width = max(170, min(int(configured_button_width), 600))
+        else:
+            longest_label = max((len(str(item.get("label") or "")) for item in block.get("buttons", [])), default=0)
+            button_width = max(170, min(360, 80 + longest_label * 7))
         for item in block.get("buttons", []):
             label = esc(item.get("label") or ui(ui_labels, "open_resource", "Open resource"))
             is_exit = str(item.get("type") or "").casefold() == "exit-course"
@@ -679,9 +711,12 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
                 row_classes.append("resource-button-row--exit")
             row_content = action + description if action_left else description + action
             rows.append(f'<div class="{" ".join(row_classes)}">{row_content}</div>')
-        return f'<div class="resource-button-list">{"".join(rows)}</div>'
+        return f'<div class="resource-button-list" style="--resource-button-width:{button_width}px">{"".join(rows)}</div>'
     if block_type == "flashcards":
         cards = []
+        flashcard_size = str(style.get("flashcard_size") or "small").strip().casefold()
+        large_cards = flashcard_size == "large"
+        card_class = "flashcard flashcard--large" if large_cards else "flashcard"
         flip_icon = (
             '<span class="flashcard__flip" aria-hidden="true">'
             '<svg viewBox="0 0 23 17" focusable="false"><path fill="currentColor" fill-rule="nonzero" '
@@ -692,7 +727,7 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
             front = flashcard_content(card.get("front") or {}, ui_labels)
             back = flashcard_content(card.get("back") or {}, ui_labels)
             cards.append(
-                f'<div class="flashcard" role="button" tabindex="0" aria-pressed="false" '
+                f'<div class="{card_class}" role="button" tabindex="0" aria-pressed="false" '
                 f'aria-label="{esc(ui(ui_labels, "flip_card", "Flip card {number}", number=index))}">'
                 f'<div class="flashcard__front"><div class="flashcard__description"><div class="flashcard__description-inner">'
                 f'{front}</div></div>{flip_icon}</div>'
@@ -700,7 +735,8 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
                 f'{back}</div></div>{flip_icon}</div></div>'
             )
         count_class = f' flashcard-grid--{len(cards)}' if cards else ""
-        return f'<div class="flashcard-grid{count_class}">{"".join(cards)}</div>'
+        size_class = " flashcard-grid--large" if large_cards else ""
+        return f'<div class="flashcard-grid{count_class}{size_class}">{"".join(cards)}</div>'
     if block_type in {"accordion", "tabs", "process", "interactive"}:
         return render_interactive(block, lesson_id, ui_labels)
     if block_type == "labeled_graphic":
@@ -779,19 +815,115 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
         )
     if block_type == "knowledge_check":
         qid = f'q-{lesson_id}-{block.get("id")}'
-        choices = "".join(
-            f'<label class="quiz-choice"><input type="radio" name="{qid}" value="{index}" data-correct="{str(bool(choice.get("correct"))).lower()}">'
-            '<span class="quiz-choice__indicator" aria-hidden="true">'
-            '<svg class="quiz-choice__dot" viewBox="0 0 10 10" focusable="false"><circle cx="5" cy="5" r="5"/></svg>'
-            '<svg class="quiz-choice__check" viewBox="0 0 11 8" focusable="false"><path d="M9.6 0 11 1.3 3.9 8 0 4.3 1.4 3l2.6 2.4L9.6 0Z"/></svg>'
-            '<svg class="quiz-choice__x" viewBox="0 0 10 10" focusable="false"><path d="M5 4.17 9.17 0 10 .83 5.83 5 10 9.17 9.17 10 5 5.83.83 10 0 9.17 4.17 5 0 .83.83 0Z"/></svg>'
-            '</span>'
-            f'<span class="quiz-choice__text">{choice.get("text_html") or ""}</span></label>'
-            for index, choice in enumerate(block.get("choices", []), start=1)
-        )
+        question_type = re.sub(
+            r"[^a-z0-9]+", "_", str(block.get("question_type") or "multiple_choice").casefold()
+        ).strip("_")
+        question_id = f'{qid}-question'
+        if question_type in {"multiple_choice", "multiple_response"}:
+            input_type = "checkbox" if question_type == "multiple_response" else "radio"
+            role = "group" if input_type == "checkbox" else "radiogroup"
+            choices = "".join(
+                f'<label class="quiz-choice"><input type="{input_type}" name="{qid}" value="{index}" data-correct="{str(bool(choice.get("correct"))).lower()}">'
+                '<span class="quiz-choice__indicator" aria-hidden="true">'
+                '<svg class="quiz-choice__dot" viewBox="0 0 10 10" focusable="false"><circle cx="5" cy="5" r="5"/></svg>'
+                '<svg class="quiz-choice__check" viewBox="0 0 11 8" focusable="false"><path d="M9.6 0 11 1.3 3.9 8 0 4.3 1.4 3l2.6 2.4L9.6 0Z"/></svg>'
+                '<svg class="quiz-choice__x" viewBox="0 0 10 10" focusable="false"><path d="M5 4.17 9.17 0 10 .83 5.83 5 10 9.17 9.17 10 5 5.83.83 10 0 9.17 4.17 5 0 .83.83 0Z"/></svg>'
+                '</span>'
+                f'<span class="quiz-choice__text">{choice.get("text_html") or ""}</span>'
+                '<span class="visually-hidden" data-quiz-choice-result></span></label>'
+                for index, choice in enumerate(block.get("choices", []), start=1)
+            )
+            answer_controls = (
+                f'<div class="quiz-choices" role="{role}" aria-labelledby="{question_id}">{choices}</div>'
+            )
+        elif question_type == "fill_in_the_blank":
+            accepted_answers = [str(value) for value in block.get("accepted_answers", [])]
+            accepted = esc(json.dumps(accepted_answers, ensure_ascii=False))
+            accepted_id = f'{qid}-accepted'
+            accepted_label = esc(ui(ui_labels, "acceptable_responses", "Acceptable responses"))
+            accepted_text = ", ".join(esc(value) for value in accepted_answers)
+            answer_controls = (
+                '<div class="quiz-fillin">'
+                f'<input type="text" data-quiz-fillin data-accepted-answers="{accepted}" '
+                f'aria-labelledby="{question_id}" aria-describedby="{accepted_id}" '
+                f'placeholder="{esc(ui(ui_labels, "type_answer", "Type your answer here"))}">'
+                f'<div class="quiz-fillin__accepted" id="{accepted_id}" data-quiz-accepted hidden>'
+                f'{accepted_label}: {accepted_text}</div>'
+                '</div>'
+            )
+        elif question_type == "matching":
+            pairs = list(block.get("pairs", []))
+            left_items = []
+            right_items = []
+            result_items = []
+            indexed_pairs = list(enumerate(pairs, start=1))
+            # Rise deliberately shuffles the draggable source pieces while keeping
+            # the target column in authored order. A deterministic rotation keeps
+            # the interaction reproducible without presenting an already-solved row.
+            shuffled_pairs = indexed_pairs[-1:] + indexed_pairs[:-1]
+            grip_path = (
+                "M64 128a32 32 0 1 0 0-64 32 32 0 1 0 0 64zm0 160a32 32 0 1 0 0-64 "
+                "32 32 0 1 0 0 64zM96 416a32 32 0 1 0-64 0 32 32 0 1 0 64 0zm96-288a32 "
+                "32 0 1 0 0-64 32 32 0 1 0 0 64zm32 128a32 32 0 1 0-64 0 32 32 0 1 0 64 "
+                "0zM192 448a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"
+            )
+            for display_order, (index, pair) in enumerate(shuffled_pairs, start=1):
+                left_items.append(
+                    '<li class="quiz-matching__item quiz-matching__item--source" role="listitem" data-match-drag-source>'
+                    f'<button class="quiz-match-piece quiz-match-piece--source" type="button" '
+                    f'data-match-side="left" data-match-key="{index}" data-match-order="{display_order}" aria-pressed="false">'
+                    '<span class="quiz-match-piece__decoration quiz-match-piece__decoration--grip" aria-hidden="true">'
+                    f'<svg viewBox="0 0 256 512" focusable="false"><path fill="currentColor" d="{grip_path}"/></svg></span>'
+                    f'<span class="quiz-match-piece__content">{pair.get("prompt_html") or ""}</span>'
+                    '<span class="visually-hidden" data-match-announcement></span>'
+                    '<span class="visually-hidden"> Selectable item</span></button></li>'
+                )
+            for index, pair in indexed_pairs:
+                right_items.append(
+                    '<li class="quiz-matching__item quiz-matching__item--target" role="listitem" data-match-drop-zone>'
+                    f'<button class="quiz-match-piece quiz-match-piece--target" type="button" '
+                    f'data-match-side="right" data-match-key="{index}" aria-pressed="false">'
+                    '<span class="quiz-match-piece__jigsaw" aria-hidden="true"></span>'
+                    f'<span class="quiz-match-piece__content">{pair.get("match_html") or ""}</span>'
+                    '<span class="quiz-match-piece__decoration quiz-match-piece__decoration--target" aria-hidden="true"></span>'
+                    '<span class="visually-hidden" data-match-announcement></span>'
+                    '<span class="visually-hidden"> Selectable item</span></button></li>'
+                )
+                result_items.append(
+                    f'<li class="quiz-matching-result" data-match-result-key="{index}">'
+                    '<div class="quiz-matching-result__pieces">'
+                    '<div class="quiz-matching-result__piece quiz-matching-result__piece--source">'
+                    '<span class="quiz-matching-result__content" data-match-result-left></span>'
+                    '<span class="quiz-matching-result__socket" aria-hidden="true"></span></div>'
+                    '<div class="quiz-matching-result__piece quiz-matching-result__piece--target">'
+                    '<span class="quiz-matching-result__tab" aria-hidden="true"></span>'
+                    f'<span class="quiz-matching-result__content">{pair.get("match_html") or ""}</span></div></div>'
+                    '<div class="quiz-matching-result__feedback quiz-matching-result__feedback--correct">'
+                    '<span class="quiz-matching-result__icon" aria-hidden="true">'
+                    '<svg viewBox="0 0 11 8" focusable="false"><path fill="currentColor" d="M9.6 0 11 1.3 3.9 8 0 4.3 1.4 3l2.6 2.4L9.6 0Z"/></svg></span>'
+                    f'<span>{esc(ui(ui_labels, "correct", "Correct"))}.</span></div>'
+                    '<div class="quiz-matching-result__feedback quiz-matching-result__feedback--incorrect">'
+                    '<span class="quiz-matching-result__icon" aria-hidden="true">'
+                    '<svg viewBox="0 0 10 10" focusable="false"><path fill="currentColor" d="M5 4.17 9.17 0 10 .83 5.83 5 10 9.17 9.17 10 5 5.83.83 10 0 9.17 4.17 5 0 .83.83 0Z"/></svg></span>'
+                    f'<span><span>{esc(ui(ui_labels, "incorrect", "Incorrect"))}.</span> '
+                    f'<span class="quiz-matching-result__correction">Correct: <span>{pair.get("prompt_html") or ""}</span></span></span>'
+                    '</div></li>'
+                )
+            answer_controls = (
+                '<div class="quiz-matching" aria-labelledby="' + question_id + '">'
+                '<ul class="quiz-matching__column quiz-matching__column--source" role="list" aria-label="Matching column 1">'
+                + "".join(left_items) + '</ul>'
+                '<ul class="quiz-matching__column quiz-matching__column--target" role="list" aria-label="Matching column 2">'
+                + "".join(right_items) + '</ul></div>'
+                '<ul class="quiz-matching-results" aria-label="Matching results" hidden>'
+                + "".join(result_items) + '</ul>'
+            )
+        else:
+            answer_controls = ""
         return (
-            f'<div class="quiz-card" data-question-id="{qid}"><div class="quiz-question">{block.get("question_html") or ""}</div>'
-            f'<div class="quiz-choices">{choices}</div><div class="quiz-actions">'
+            f'<div class="quiz-card" data-question-id="{qid}" data-question-type="{question_type}">'
+            f'<div class="quiz-question" id="{question_id}">{block.get("question_html") or ""}</div>'
+            f'{answer_controls}<div class="quiz-actions">'
             f'<button class="quiz-submit" type="button">{esc(ui(ui_labels, "submit", "SUBMIT"))}</button></div>'
             '<div class="quiz-feedback quiz-feedback--correct"><span class="quiz-feedback__icon" aria-hidden="true">'
             f'<svg class="quiz-feedback__glyph" viewBox="0 0 1024 1024" focusable="false"><g transform="translate(0 1024) scale(1 -1)"><path fill="currentColor" d="{SCROLLING_FEEDBACK_CORRECT_PATH}"/></g></svg></span>'
@@ -864,6 +996,8 @@ def block_classes(block: dict) -> str:
     if variant:
         classes.append(f"block--variant-{variant}")
     position = re.sub(r"[^a-z]+", "", str(style.get("image_position") or "").casefold())
+    if block_type == "image" and variant == "text-aside" and position not in {"left", "right"}:
+        position = "left"
     size = re.sub(r"[^a-z]+", "", str(style.get("image_size") or "").casefold())
     if position:
         classes.append(f"block--image-{position}")
@@ -1038,6 +1172,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     show_lesson_count = bool(scrolling.get("show_lesson_count", True))
     show_cover_lesson_list = bool(scrolling.get("show_cover_lesson_list", True))
     directional_transitions = str(scrolling.get("lesson_transition") or "directional_vertical").casefold() != "none"
+    navigation_restricted = bool(theme.get("navigation_restricted", False))
     lesson_icon = (
         '<svg class="lesson-nav__handle" aria-hidden="true" viewBox="0 0 18 12" focusable="false">'
         '<path d="M.667 1A.833.833 0 0 1 1.5.167H14a.833.833 0 1 1 0 1.666H1.5A.833.833 0 0 1 .667 1Zm0 5A.833.833 0 0 1 1.5 5.167h15a.833.833 0 1 1 0 1.666h-15A.833.833 0 0 1 .667 6Zm0 5a.833.833 0 0 1 .833-.833h9.167a.833.833 0 1 1 0 1.666H1.5A.833.833 0 0 1 .667 11Z" fill="currentColor"/>'
@@ -1060,21 +1195,27 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
         '<path fill="currentColor" d="M9.786 9.786a.707.707 0 0 1-1 0L5 6 1.214 9.786a.707.707 0 0 1-1-1L4 5 .214 1.214a.707.707 0 0 1 1-1L5 4 8.786.214a.707.707 0 0 1 1 1L6 5l3.786 3.786a.707.707 0 0 1 0 1Z"/>'
         '</svg>'
     )
+    def initial_lock_attributes(index: int) -> str:
+        return ' disabled aria-disabled="true"' if navigation_restricted and index > 1 else ""
+
     nav = "".join(
-        f'<button class="lesson-nav__item" type="button" data-lesson-target="{index}" data-search-text="{esc(searchable_lesson_text(lesson))}">'
+        f'<button class="lesson-nav__item" type="button" data-lesson-target="{index}" data-search-text="{esc(searchable_lesson_text(lesson))}"'
+        f'{initial_lock_attributes(index)}>'
         f'{lesson_icon}'
         f'<span class="lesson-nav__title">{esc(lesson.get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index))}</span>'
         f'<span class="lesson-nav__status" aria-label="{esc(ui(ui_labels, "unstarted", "Unstarted"))}">{lesson_status_icon}</span></button>'
         for index, lesson in enumerate(lessons, start=1)
     )
     search_results = "".join(
-        f'<button class="sidebar-search-result" type="button" data-lesson-target="{index}" data-search-text="{esc(searchable_lesson_text(lesson))}" hidden>'
+        f'<button class="sidebar-search-result" type="button" data-lesson-target="{index}" data-search-text="{esc(searchable_lesson_text(lesson))}" hidden'
+        f'{initial_lock_attributes(index)}>'
         f'{lesson_icon}<span class="sidebar-search-result__title">{esc(lesson.get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index))}</span>'
         '<span class="sidebar-search-result__count"></span></button>'
         for index, lesson in enumerate(lessons, start=1)
     )
     cover_nav = "".join(
-        f'<button class="course-cover__lesson-item" type="button" data-lesson-target="{index}">'
+        f'<button class="course-cover__lesson-item" type="button" data-lesson-target="{index}"'
+        f'{initial_lock_attributes(index)}>'
         '<span class="course-cover__lesson-handle" aria-hidden="true"><i></i><i></i><i></i></span>'
         f'<span class="course-cover__lesson-title">{esc(lesson.get("title") or ui(ui_labels, "lesson", "Lesson {number}", number=index))}</span>'
         f'<span class="course-cover__lesson-status" aria-label="{esc(ui(ui_labels, "unstarted", "Unstarted"))}"></span></button>'
@@ -1106,6 +1247,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   'use strict';
   var lessonCount = __LESSON_COUNT__;
   var directionalTransitions = __DIRECTIONAL_TRANSITIONS__;
+  var navigationRestricted = __NAVIGATION_RESTRICTED__;
   var uiLabels = __UI_LABELS__;
   var activeLesson = 0;
   function uiText(key, fallback, values) {
@@ -1141,6 +1283,10 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     SCORM.setLocation(activeLesson ? 'lesson-' + activeLesson : 'cover');
   }
   function completed(id) { return state.completedLessons.indexOf(id) !== -1; }
+  function lessonUnlocked(id) {
+    id = Number(id || 0);
+    return !navigationRestricted || id <= 1 || completed(id - 1);
+  }
   function markComplete(id) {
     if (!completed(id)) state.completedLessons.push(id);
     var lesson = document.getElementById('lesson-' + id);
@@ -1148,20 +1294,161 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     if (id === activeLesson) syncLessonReadProgress();
     if (state.completedLessons.length >= lessonCount) SCORM.setCompleted();
   }
+  function clearMatchingPiece(piece) {
+    if (!piece) return;
+    piece.classList.remove('is-pending', 'is-paired', 'is-drop-target');
+    piece.setAttribute('aria-pressed', 'false');
+    var item = piece.closest('.quiz-matching__item');
+    if (item) {
+      item.classList.remove('is-dragging', 'is-drop-target');
+      item.style.removeProperty('transform');
+    }
+    var announcement = piece.querySelector('[data-match-announcement]');
+    if (announcement) announcement.textContent = '';
+    delete piece.dataset.pairedWith;
+  }
+  function syncMatchingSourceRows(quiz) {
+    if (!quiz) return;
+    var sourceColumn = quiz.querySelector('.quiz-matching__column--source');
+    if (!sourceColumn) return;
+    var sourceItems = Array.from(sourceColumn.querySelectorAll('.quiz-matching__item--source'));
+    var targets = Array.from(quiz.querySelectorAll('[data-match-side="right"]'));
+    var placed = new Set();
+    var rows = targets.map(function(target) {
+      if (!target.dataset.pairedWith) return null;
+      var source = quiz.querySelector('[data-match-side="left"][data-match-key="' + target.dataset.pairedWith + '"]');
+      var sourceItem = source ? source.closest('.quiz-matching__item--source') : null;
+      if (sourceItem) placed.add(sourceItem);
+      return sourceItem;
+    });
+    var remaining = sourceItems.filter(function(sourceItem) { return !placed.has(sourceItem); });
+    var remainingIndex = 0;
+    rows.forEach(function(source, index) {
+      if (!source) rows[index] = remaining[remainingIndex++];
+    });
+    rows.forEach(function(source) { if (source) sourceColumn.appendChild(source); });
+  }
+  function restoreMatchingSourceRows(quiz) {
+    if (!quiz) return;
+    var sourceColumn = quiz.querySelector('.quiz-matching__column--source');
+    if (!sourceColumn) return;
+    Array.from(sourceColumn.querySelectorAll('.quiz-matching__item--source'))
+      .sort(function(a, b) {
+        var aPiece = a.querySelector('[data-match-side="left"]');
+        var bPiece = b.querySelector('[data-match-side="left"]');
+        return Number((aPiece && aPiece.dataset.matchOrder) || 0) - Number((bPiece && bPiece.dataset.matchOrder) || 0);
+      })
+      .forEach(function(sourceItem) { sourceColumn.appendChild(sourceItem); });
+  }
+  function syncMatchingPieceHeights(quiz) {
+    if (!quiz) return;
+    var matching = quiz.querySelector('.quiz-matching');
+    if (!matching || matching.hidden || !matching.getClientRects().length) return;
+    var pieces = Array.from(matching.querySelectorAll('.quiz-match-piece'));
+    if (!pieces.length) return;
+    pieces.forEach(function(piece) { piece.style.removeProperty('height'); });
+    var resolvedHeight = 0;
+    pieces.forEach(function(piece) {
+      var content = piece.querySelector('.quiz-match-piece__content');
+      var style = window.getComputedStyle(piece);
+      var verticalChrome = parseFloat(style.paddingTop || 0) + parseFloat(style.paddingBottom || 0)
+        + parseFloat(style.borderTopWidth || 0) + parseFloat(style.borderBottomWidth || 0);
+      var contentHeight = content ? content.scrollHeight : piece.scrollHeight - verticalChrome;
+      resolvedHeight = Math.max(resolvedHeight, parseFloat(style.minHeight || 0), contentHeight + verticalChrome);
+    });
+    var height = Math.ceil(resolvedHeight) + 'px';
+    pieces.forEach(function(piece) { piece.style.height = height; });
+  }
+  function pairMatchingPieces(quiz, leftKey, rightKey) {
+    if (!quiz || quiz.classList.contains('is-submitted')) return;
+    leftKey = String(leftKey || '');
+    rightKey = String(rightKey || '');
+    var left = quiz.querySelector('[data-match-side="left"][data-match-key="' + leftKey + '"]');
+    var right = quiz.querySelector('[data-match-side="right"][data-match-key="' + rightKey + '"]');
+    if (!left || !right) return;
+    var oldRight = left.dataset.pairedWith
+      ? quiz.querySelector('[data-match-side="right"][data-match-key="' + left.dataset.pairedWith + '"]')
+      : null;
+    var oldLeft = right.dataset.pairedWith
+      ? quiz.querySelector('[data-match-side="left"][data-match-key="' + right.dataset.pairedWith + '"]')
+      : null;
+    [left, right, oldLeft, oldRight].forEach(clearMatchingPiece);
+    left.dataset.pairedWith = rightKey;
+    right.dataset.pairedWith = leftKey;
+    left.classList.add('is-paired');
+    right.classList.add('is-paired');
+    left.setAttribute('aria-pressed', 'true');
+    right.setAttribute('aria-pressed', 'true');
+    var leftText = (left.querySelector('.quiz-match-piece__content') || left).textContent.trim();
+    var rightText = (right.querySelector('.quiz-match-piece__content') || right).textContent.trim();
+    var leftAnnouncement = left.querySelector('[data-match-announcement]');
+    var rightAnnouncement = right.querySelector('[data-match-announcement]');
+    if (leftAnnouncement) leftAnnouncement.textContent = ' Matched with ' + rightText + '.';
+    if (rightAnnouncement) rightAnnouncement.textContent = ' Matched with ' + leftText + '.';
+    syncMatchingSourceRows(quiz);
+    delete quiz.dataset.matchPendingLeft;
+    delete quiz.dataset.matchPendingRight;
+  }
   function showQuizResult(quiz, result) {
     if (!quiz || !result) return;
-    var selected = String(result.selected || '');
+    var questionType = String(quiz.dataset.questionType || 'multiple_choice');
     quiz.classList.add('is-submitted');
-    quiz.querySelectorAll('input[type="radio"]').forEach(function(input) {
-      input.checked = input.value === selected;
-      input.disabled = true;
-      var choice = input.closest('.quiz-choice');
-      if (choice) {
-        choice.classList.toggle('is-selected', input.checked);
-        choice.classList.toggle('is-correct', input.dataset.correct === 'true');
-        choice.classList.toggle('is-incorrect', input.dataset.correct !== 'true');
+    if (questionType === 'multiple_choice' || questionType === 'multiple_response') {
+      var selectedValues = Array.isArray(result.selected)
+        ? result.selected.map(String)
+        : [String(result.selected || '')];
+      quiz.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function(input) {
+        input.checked = selectedValues.indexOf(input.value) !== -1;
+        input.disabled = true;
+        var choice = input.closest('.quiz-choice');
+        if (choice) {
+          choice.classList.toggle('is-selected', input.checked);
+          choice.classList.toggle('is-correct', input.dataset.correct === 'true');
+          choice.classList.toggle('is-incorrect', input.dataset.correct !== 'true');
+          var choiceResult = choice.querySelector('[data-quiz-choice-result]');
+          if (choiceResult) {
+            choiceResult.textContent = input.dataset.correct === 'true'
+              ? (input.checked ? ' Correctly selected.' : ' Correctly unselected.')
+              : (input.checked ? ' Incorrectly selected.' : ' Incorrectly unselected.');
+          }
+        }
+      });
+    } else if (questionType === 'fill_in_the_blank') {
+      var fillin = quiz.querySelector('[data-quiz-fillin]');
+      if (fillin) {
+        fillin.value = String(result.answer || '');
+        fillin.disabled = true;
+        fillin.classList.toggle('is-correct', !!result.correct);
+        fillin.classList.toggle('is-incorrect', !result.correct);
       }
-    });
+      var acceptedAnswers = quiz.querySelector('[data-quiz-accepted]');
+      if (acceptedAnswers) acceptedAnswers.hidden = false;
+    } else if (questionType === 'matching') {
+      var pairs = result.pairs && typeof result.pairs === 'object' ? result.pairs : {};
+      quiz.querySelectorAll('.quiz-match-piece').forEach(function(choice) {
+        choice.disabled = true;
+        choice.classList.remove('is-pending', 'is-dragging', 'is-drop-target');
+      });
+      quiz.querySelectorAll('.quiz-matching__item').forEach(function(item) {
+        item.classList.remove('is-dragging', 'is-drop-target');
+        item.style.removeProperty('transform');
+      });
+      var matching = quiz.querySelector('.quiz-matching');
+      var results = quiz.querySelector('.quiz-matching-results');
+      if (matching) matching.hidden = true;
+      if (results) results.hidden = false;
+      quiz.querySelectorAll('.quiz-matching-result').forEach(function(row) {
+        var rightKey = String(row.dataset.matchResultKey || '');
+        var leftKey = Object.keys(pairs).find(function(key) { return String(pairs[key]) === rightKey; }) || '';
+        var source = quiz.querySelector('[data-match-side="left"][data-match-key="' + leftKey + '"]');
+        var sourceContent = source ? source.querySelector('.quiz-match-piece__content') : null;
+        var resultContent = row.querySelector('[data-match-result-left]');
+        if (resultContent) resultContent.innerHTML = sourceContent ? sourceContent.innerHTML : '';
+        var pairCorrect = leftKey === rightKey;
+        row.classList.toggle('is-correct', pairCorrect);
+        row.classList.toggle('is-incorrect', !pairCorrect);
+      });
+    }
     var actions = quiz.querySelector('.quiz-actions');
     if (actions) {
       actions.classList.add('is-proceed');
@@ -1183,12 +1470,48 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   function resetQuiz(quiz) {
     if (!quiz) return;
     quiz.classList.remove('is-submitted');
-    quiz.querySelectorAll('input[type="radio"]').forEach(function(input) {
+    quiz.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function(input) {
       input.checked = false;
       input.disabled = false;
       var choice = input.closest('.quiz-choice');
-      if (choice) choice.classList.remove('is-selected', 'is-correct', 'is-incorrect');
+      if (choice) {
+        choice.classList.remove('is-selected', 'is-correct', 'is-incorrect');
+        var choiceResult = choice.querySelector('[data-quiz-choice-result]');
+        if (choiceResult) choiceResult.textContent = '';
+      }
     });
+    var fillin = quiz.querySelector('[data-quiz-fillin]');
+    if (fillin) {
+      fillin.value = '';
+      fillin.disabled = false;
+      fillin.classList.remove('is-correct', 'is-incorrect');
+    }
+    var acceptedAnswers = quiz.querySelector('[data-quiz-accepted]');
+    if (acceptedAnswers) acceptedAnswers.hidden = true;
+    quiz.querySelectorAll('.quiz-match-piece').forEach(function(choice) {
+      choice.disabled = false;
+      choice.classList.remove('is-pending', 'is-paired', 'is-dragging', 'is-drop-target');
+      choice.setAttribute('aria-pressed', 'false');
+      var announcement = choice.querySelector('[data-match-announcement]');
+      if (announcement) announcement.textContent = '';
+      delete choice.dataset.pairedWith;
+    });
+    quiz.querySelectorAll('.quiz-matching__item').forEach(function(item) {
+      item.classList.remove('is-dragging', 'is-drop-target');
+      item.style.removeProperty('transform');
+    });
+    restoreMatchingSourceRows(quiz);
+    var matching = quiz.querySelector('.quiz-matching');
+    var results = quiz.querySelector('.quiz-matching-results');
+    if (matching) matching.hidden = false;
+    if (results) results.hidden = true;
+    quiz.querySelectorAll('.quiz-matching-result').forEach(function(row) {
+      row.classList.remove('is-correct', 'is-incorrect');
+      var content = row.querySelector('[data-match-result-left]');
+      if (content) content.innerHTML = '';
+    });
+    delete quiz.dataset.matchPendingLeft;
+    delete quiz.dataset.matchPendingRight;
     var actions = quiz.querySelector('.quiz-actions');
     if (actions) {
       actions.hidden = false;
@@ -1205,6 +1528,9 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   function updateProgress() {
     document.querySelectorAll('.lesson-nav__item').forEach(function(item) {
       var id = Number(item.dataset.lessonTarget);
+      var isLocked = !lessonUnlocked(id);
+      item.disabled = isLocked;
+      item.setAttribute('aria-disabled', isLocked ? 'true' : 'false');
       item.classList.toggle('is-active', id === activeLesson);
       var isComplete = completed(id);
       item.classList.toggle('is-complete', isComplete);
@@ -1213,10 +1539,18 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     });
     document.querySelectorAll('.course-cover__lesson-item').forEach(function(item) {
       var id = Number(item.dataset.lessonTarget);
+      var isLocked = !lessonUnlocked(id);
+      item.disabled = isLocked;
+      item.setAttribute('aria-disabled', isLocked ? 'true' : 'false');
       var isComplete = completed(id);
       item.classList.toggle('is-complete', isComplete);
       var status = item.querySelector('.course-cover__lesson-status');
       if (status) status.setAttribute('aria-label', isComplete ? uiText('completed', 'Completed') : uiText('unstarted', 'Unstarted'));
+    });
+    document.querySelectorAll('.sidebar-search-result').forEach(function(item) {
+      var isLocked = !lessonUnlocked(Number(item.dataset.lessonTarget));
+      item.disabled = isLocked;
+      item.setAttribute('aria-disabled', isLocked ? 'true' : 'false');
     });
     var percent = lessonCount ? Math.round(state.completedLessons.length / lessonCount * 100) : 0;
     document.getElementById('progress-fill').style.width = percent + '%';
@@ -1311,6 +1645,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       var result = state.quizzes[quiz.dataset.questionId];
       if (result) showQuizResult(quiz, result);
     });
+    lesson.querySelectorAll('.quiz-card[data-question-type="matching"]').forEach(syncMatchingPieceHeights);
     if (gateCount > 0 && unlocked >= gateCount) markComplete(id);
     isComplete = completed(id);
     if (isComplete) lesson.querySelectorAll('[data-gate-index]').forEach(function(block) { block.hidden = true; });
@@ -1320,6 +1655,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   function openLesson(id, focus) {
     var previousLesson = activeLesson;
     var targetLesson = Number(id || 0);
+    if (targetLesson > 0 && !lessonUnlocked(targetLesson)) return;
     var direction = directionalTransitions && previousLesson > 0 && targetLesson > 0 && targetLesson !== previousLesson
       ? (targetLesson > previousLesson ? 'next' : 'previous')
       : '';
@@ -1728,6 +2064,102 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     card.setAttribute('aria-pressed', flipped ? 'true' : 'false');
   }
 
+  var matchingPointerDrag = null;
+  var matchingClickSuppressUntil = 0;
+  var matchingDropOverlap = .015;
+  var matchingPointerMoveTolerance = 8;
+  function matchingOverlapRatio(sourceRect, targetRect) {
+    var overlapWidth = Math.max(0, Math.min(sourceRect.right, targetRect.right) - Math.max(sourceRect.left, targetRect.left));
+    var overlapHeight = Math.max(0, Math.min(sourceRect.bottom, targetRect.bottom) - Math.max(sourceRect.top, targetRect.top));
+    var sourceArea = Math.max(1, sourceRect.width * sourceRect.height);
+    return (overlapWidth * overlapHeight) / sourceArea;
+  }
+  function matchingDropTargetFor(drag) {
+    if (!drag || !drag.item || !drag.quiz) return null;
+    var sourceRect = drag.item.getBoundingClientRect();
+    var bestTarget = null;
+    var bestOverlap = matchingDropOverlap;
+    drag.quiz.querySelectorAll('.quiz-match-piece--target').forEach(function(target) {
+      if (target.disabled) return;
+      var targetItem = target.closest('.quiz-matching__item--target');
+      if (!targetItem) return;
+      var overlap = matchingOverlapRatio(sourceRect, targetItem.getBoundingClientRect());
+      if (overlap >= bestOverlap) {
+        bestOverlap = overlap;
+        bestTarget = target;
+      }
+    });
+    return bestTarget;
+  }
+  function setMatchingDropTarget(drag, target) {
+    if (!drag || drag.target === target) return;
+    if (drag.target) {
+      var oldItem = drag.target.closest('.quiz-matching__item--target');
+      if (oldItem) oldItem.classList.remove('is-drop-target');
+    }
+    drag.target = target;
+    if (target) {
+      var targetItem = target.closest('.quiz-matching__item--target');
+      if (targetItem) targetItem.classList.add('is-drop-target');
+    }
+  }
+  function beginMatchingPointerDrag(source, event) {
+    if (!source || source.disabled || source.closest('.quiz-card').classList.contains('is-submitted')) return;
+    var item = source.closest('.quiz-matching__item--source');
+    if (!item) return;
+    matchingPointerDrag = {
+      source: source,
+      item: item,
+      quiz: source.closest('.quiz-card'),
+      pointerId: event.pointerId,
+      startX: Number(event.clientX || 0),
+      startY: Number(event.clientY || 0),
+      active: false,
+      target: null
+    };
+    try { source.setPointerCapture(event.pointerId); } catch (e) {}
+  }
+  function updateMatchingPointerDrag(event) {
+    if (!matchingPointerDrag || event.pointerId !== matchingPointerDrag.pointerId) return;
+    var deltaX = Number(event.clientX || 0) - matchingPointerDrag.startX;
+    var deltaY = Number(event.clientY || 0) - matchingPointerDrag.startY;
+    if (!matchingPointerDrag.active && Math.hypot(deltaX, deltaY) < matchingPointerMoveTolerance) return;
+    matchingPointerDrag.active = true;
+    if (event.cancelable) event.preventDefault();
+    matchingPointerDrag.item.classList.add('is-dragging');
+    matchingPointerDrag.item.style.transform = 'translate3d(' + deltaX + 'px, ' + deltaY + 'px, 0)';
+    setMatchingDropTarget(matchingPointerDrag, matchingDropTargetFor(matchingPointerDrag));
+  }
+  function finishMatchingPointerDrag(event) {
+    if (!matchingPointerDrag || event.pointerId !== matchingPointerDrag.pointerId) return;
+    var drag = matchingPointerDrag;
+    if (drag.active && event.type !== 'pointercancel') updateMatchingPointerDrag(event);
+    matchingPointerDrag = null;
+    try { drag.source.releasePointerCapture(drag.pointerId); } catch (e) {}
+    drag.item.classList.remove('is-dragging');
+    drag.item.style.removeProperty('transform');
+    if (drag.target) {
+      var targetItem = drag.target.closest('.quiz-matching__item--target');
+      if (targetItem) targetItem.classList.remove('is-drop-target');
+    }
+    if (!drag.active) return;
+    if (event && event.cancelable) event.preventDefault();
+    matchingClickSuppressUntil = Date.now() + 350;
+    if (drag.target && event.type !== 'pointercancel') {
+      pairMatchingPieces(drag.quiz, drag.source.dataset.matchKey, drag.target.dataset.matchKey);
+    }
+  }
+
+  document.addEventListener('pointerdown', function(event) {
+    var source = event.target.closest('.quiz-match-piece--source');
+    if (!source || source.disabled || event.button !== 0 || event.isPrimary === false) return;
+    try { source.focus({ preventScroll: true }); } catch (e) { source.focus(); }
+    beginMatchingPointerDrag(source, event);
+  });
+  document.addEventListener('pointermove', updateMatchingPointerDrag, { passive: false });
+  document.addEventListener('pointerup', finishMatchingPointerDrag, { passive: false });
+  document.addEventListener('pointercancel', finishMatchingPointerDrag, { passive: false });
+
   document.addEventListener('click', function(event) {
     var nav = event.target.closest('[data-lesson-target]');
     if (nav) { openLesson(nav.dataset.lessonTarget, true); return; }
@@ -1828,13 +2260,62 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       if (openDialog.close) openDialog.close(); else openDialog.removeAttribute('open');
       return;
     }
+    var matchChoice = event.target.closest('.quiz-match-piece');
+    if (matchChoice && !matchChoice.disabled) {
+      if (Date.now() < matchingClickSuppressUntil) return;
+      var matchQuiz = matchChoice.closest('.quiz-card');
+      var matchSide = matchChoice.dataset.matchSide;
+      var pendingName = matchSide === 'left' ? 'matchPendingLeft' : 'matchPendingRight';
+      matchQuiz.querySelectorAll('[data-match-side="' + matchSide + '"]').forEach(function(choice) {
+        choice.classList.remove('is-pending');
+      });
+      matchChoice.classList.add('is-pending');
+      matchQuiz.dataset[pendingName] = matchChoice.dataset.matchKey;
+      var leftKey = matchQuiz.dataset.matchPendingLeft;
+      var rightKey = matchQuiz.dataset.matchPendingRight;
+      if (leftKey && rightKey) {
+        pairMatchingPieces(matchQuiz, leftKey, rightKey);
+      }
+      return;
+    }
     var submit = event.target.closest('.quiz-submit');
     if (submit) {
       var quiz = submit.closest('.quiz-card');
-      var selected = quiz.querySelector('input:checked');
-      if (!selected) return;
-      var correct = selected.dataset.correct === 'true';
-      var result = { selected: selected.value, correct: correct };
+      var questionType = String(quiz.dataset.questionType || 'multiple_choice');
+      var result;
+      if (questionType === 'multiple_response') {
+        var selectedInputs = Array.from(quiz.querySelectorAll('input[type="checkbox"]:checked'));
+        if (!selectedInputs.length) return;
+        var allInputs = Array.from(quiz.querySelectorAll('input[type="checkbox"]'));
+        var correct = allInputs.every(function(input) {
+          return input.checked === (input.dataset.correct === 'true');
+        });
+        result = { selected: selectedInputs.map(function(input) { return input.value; }), correct: correct };
+      } else if (questionType === 'fill_in_the_blank') {
+        var fillin = quiz.querySelector('[data-quiz-fillin]');
+        var answer = String(fillin ? fillin.value : '').trim();
+        if (!answer) return;
+        var accepted = [];
+        try { accepted = JSON.parse(fillin.dataset.acceptedAnswers || '[]'); } catch (e) {}
+        var normalized = answer.toLocaleLowerCase().replace(/\s+/g, ' ').trim();
+        var fillCorrect = accepted.some(function(value) {
+          return String(value).toLocaleLowerCase().replace(/\s+/g, ' ').trim() === normalized;
+        });
+        result = { answer: answer, correct: fillCorrect };
+      } else if (questionType === 'matching') {
+        var leftChoices = Array.from(quiz.querySelectorAll('[data-match-side="left"]'));
+        if (!leftChoices.length || leftChoices.some(function(choice) { return !choice.dataset.pairedWith; })) return;
+        var pairs = {};
+        leftChoices.forEach(function(choice) { pairs[choice.dataset.matchKey] = choice.dataset.pairedWith; });
+        var matchCorrect = leftChoices.every(function(choice) {
+          return choice.dataset.matchKey === choice.dataset.pairedWith;
+        });
+        result = { pairs: pairs, correct: matchCorrect };
+      } else {
+        var selected = quiz.querySelector('input[type="radio"]:checked');
+        if (!selected) return;
+        result = { selected: selected.value, correct: selected.dataset.correct === 'true' };
+      }
       state.quizzes[quiz.dataset.questionId] = result;
       showQuizResult(quiz, result);
       applyGates(quiz.closest('.lesson'));
@@ -1852,6 +2333,12 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   });
 
   document.addEventListener('keydown', function(event) {
+    var matchChoice = event.target.closest('.quiz-match-piece');
+    if (matchChoice && !matchChoice.disabled && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      matchChoice.click();
+      return;
+    }
     var card = event.target.closest('.flashcard');
     if (!card || event.target.closest('a') || (event.key !== 'Enter' && event.key !== ' ')) return;
     event.preventDefault();
@@ -1870,6 +2357,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   }, { passive: true });
   window.addEventListener('resize', function() {
     var lesson = document.querySelector('.lesson.is-active');
+    if (lesson) lesson.querySelectorAll('.quiz-card[data-question-type="matching"]').forEach(syncMatchingPieceHeights);
     recordVisibleLessonBlocks(lesson);
     syncLessonReadProgress();
   });
@@ -1947,6 +2435,8 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
 })();
 '''.replace("__LESSON_COUNT__", str(len(lessons))).replace(
         "__DIRECTIONAL_TRANSITIONS__", "true" if directional_transitions else "false"
+    ).replace(
+        "__NAVIGATION_RESTRICTED__", "true" if navigation_restricted else "false"
     ).replace("__COURSE_TITLE__", course_title_json).replace("__UI_LABELS__", ui_labels_json)
     root_css = (
         f':root{{--accent:{accent};--accent-dark:{accent_dark};--accent-text:{contrasting_text(accent)};'
