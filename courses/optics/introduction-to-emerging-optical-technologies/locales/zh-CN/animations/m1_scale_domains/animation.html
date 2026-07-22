@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scale-up、Scale-out 与 Scale-across</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 1280px;
+      height: 720px;
+      margin: 0;
+      overflow: hidden;
+      background: #f7f9fc;
+      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+    }
+    svg { display: block; width: 1280px; height: 720px; }
+    text { letter-spacing: 0; }
+    .facility-label { font-size: 28px; font-weight: 800; fill: #343895; }
+    .rack-label { font-size: 18px; font-weight: 800; fill: #343895; }
+    .device-label { font-size: 14px; font-weight: 800; fill: #ffffff; }
+    .switch-label { font-size: 17px; font-weight: 800; fill: #ffffff; }
+    .stage-name { font-size: 34px; font-weight: 800; fill: #ffffff; }
+    .constraint-text { font-size: 27px; font-weight: 800; fill: #1f2937; }
+    .domain-label {
+      font-size: 25px;
+      font-weight: 800;
+      paint-order: stroke fill;
+      stroke: #ffffff;
+      stroke-width: 7px;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-label="动画展示机架内的 Scale-up 链路、跨机架的 Scale-out 链路，以及数据中心建筑之间的 Scale-across 链路。">
+  <defs>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1f2937" flood-opacity="0.16"/>
+    </filter>
+    <filter id="glow-green" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#8dc63f" flood-opacity="0.85"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-blue" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#343895" flood-opacity="0.75"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-cyan" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feFlood flood-color="#00a7c4" flood-opacity="0.82"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="#f7f9fc"/>
+  <rect x="24" y="18" width="1232" height="684" rx="24" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"/>
+
+  <g id="world">
+    <rect x="72" y="90" width="1136" height="516" rx="28" fill="#f8fafc" stroke="#00a7c4" stroke-width="4" stroke-dasharray="12 10"/>
+    <text id="campus-label" x="640" y="140" text-anchor="middle" class="domain-label" fill="#007f96">园区 / 邻近设施</text>
+
+    <g id="hall-a">
+      <rect x="116" y="150" width="500" height="404" rx="22" fill="#ffffff" stroke="#a6b0bf" stroke-width="4" filter="url(#shadow)"/>
+      <text x="366" y="190" text-anchor="middle" class="facility-label">数据机房 A</text>
+
+      <g id="rack-a1">
+        <rect x="172" y="224" width="112" height="224" rx="12" fill="#f4faef" stroke="#8dc63f" stroke-width="5"/>
+        <text x="228" y="250" text-anchor="middle" class="rack-label">机架 1</text>
+        <rect x="188" y="272" width="34" height="46" rx="6" fill="#343895"/>
+        <rect x="234" y="272" width="34" height="46" rx="6" fill="#343895"/>
+        <rect x="188" y="330" width="34" height="46" rx="6" fill="#343895"/>
+        <rect x="234" y="330" width="34" height="46" rx="6" fill="#343895"/>
+        <text x="205" y="300" text-anchor="middle" class="device-label">A</text>
+        <text x="251" y="300" text-anchor="middle" class="device-label">B</text>
+        <text x="205" y="358" text-anchor="middle" class="device-label">C</text>
+        <text x="251" y="358" text-anchor="middle" class="device-label">D</text>
+        <rect x="190" y="396" width="76" height="30" rx="6" fill="#5f6062"/>
+        <text x="228" y="417" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">机架网络</text>
+      </g>
+
+      <g id="rack-a2">
+        <rect x="304" y="224" width="82" height="224" rx="10" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
+        <text x="345" y="252" text-anchor="middle" class="rack-label">机架 2</text>
+        <rect x="320" y="280" width="50" height="34" rx="6" fill="#dce2ea"/>
+        <rect x="320" y="326" width="50" height="34" rx="6" fill="#dce2ea"/>
+        <rect x="320" y="372" width="50" height="34" rx="6" fill="#dce2ea"/>
+      </g>
+      <g id="rack-a3">
+        <rect x="406" y="224" width="82" height="224" rx="10" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
+        <text x="447" y="252" text-anchor="middle" class="rack-label">机架 3</text>
+        <rect x="422" y="280" width="50" height="34" rx="6" fill="#dce2ea"/>
+        <rect x="422" y="326" width="50" height="34" rx="6" fill="#dce2ea"/>
+        <rect x="422" y="372" width="50" height="34" rx="6" fill="#dce2ea"/>
+      </g>
+      <g id="rack-a4">
+        <rect x="508" y="224" width="64" height="224" rx="10" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
+        <text x="540" y="252" text-anchor="middle" class="rack-label">机架 4</text>
+        <rect x="520" y="280" width="40" height="34" rx="6" fill="#dce2ea"/>
+        <rect x="520" y="326" width="40" height="34" rx="6" fill="#dce2ea"/>
+        <rect x="520" y="372" width="40" height="34" rx="6" fill="#dce2ea"/>
+      </g>
+
+      <rect x="280" y="478" width="172" height="46" rx="10" fill="#343895"/>
+      <text x="366" y="508" text-anchor="middle" class="switch-label">网络交换机</text>
+    </g>
+
+    <g id="hall-b">
+      <rect x="674" y="150" width="490" height="404" rx="22" fill="#ffffff" stroke="#a6b0bf" stroke-width="4" filter="url(#shadow)"/>
+      <text x="919" y="190" text-anchor="middle" class="facility-label">数据机房 B</text>
+      <g fill="#f8fafc" stroke="#a6b0bf" stroke-width="3">
+        <rect x="738" y="224" width="92" height="224" rx="10"/>
+        <rect x="854" y="224" width="92" height="224" rx="10"/>
+        <rect x="970" y="224" width="92" height="224" rx="10"/>
+      </g>
+      <g fill="#dce2ea">
+        <rect x="755" y="280" width="58" height="34" rx="6"/><rect x="755" y="326" width="58" height="34" rx="6"/><rect x="755" y="372" width="58" height="34" rx="6"/>
+        <rect x="871" y="280" width="58" height="34" rx="6"/><rect x="871" y="326" width="58" height="34" rx="6"/><rect x="871" y="372" width="58" height="34" rx="6"/>
+        <rect x="987" y="280" width="58" height="34" rx="6"/><rect x="987" y="326" width="58" height="34" rx="6"/><rect x="987" y="372" width="58" height="34" rx="6"/>
+      </g>
+      <text x="784" y="252" text-anchor="middle" class="rack-label">机架 5</text>
+      <text x="900" y="252" text-anchor="middle" class="rack-label">机架 6</text>
+      <text x="1016" y="252" text-anchor="middle" class="rack-label">机架 7</text>
+      <rect x="833" y="478" width="172" height="46" rx="10" fill="#343895"/>
+      <text x="919" y="508" text-anchor="middle" class="switch-label">网络交换机</text>
+    </g>
+
+    <g id="base-links" fill="none" stroke-linecap="round">
+      <path id="up-path-1" d="M205 318 V390 Q205 404 220 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
+      <path id="up-path-2" d="M251 318 V390 Q251 404 238 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
+      <path id="up-path-3" d="M205 376 V390 Q205 404 220 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
+      <path id="up-path-4" d="M251 376 V390 Q251 404 238 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
+
+      <path id="out-path-1" d="M228 448 V462 Q228 492 280 501" stroke="#343895" stroke-width="8" opacity="0.24"/>
+      <path id="out-path-2" d="M345 448 V478" stroke="#343895" stroke-width="8" opacity="0.24"/>
+      <path id="out-path-3" d="M447 448 V462 Q447 492 452 501" stroke="#343895" stroke-width="8" opacity="0.24"/>
+      <path id="out-path-4" d="M540 448 V458 Q540 500 452 501" stroke="#343895" stroke-width="8" opacity="0.24"/>
+      <path d="M784 448 V464 Q784 493 833 501" stroke="#343895" stroke-width="8" opacity="0.18"/>
+      <path d="M900 448 V478" stroke="#343895" stroke-width="8" opacity="0.18"/>
+      <path d="M1016 448 V464 Q1016 493 1005 501" stroke="#343895" stroke-width="8" opacity="0.18"/>
+
+      <path id="across-path" d="M452 501 C566 501 590 570 690 570 S790 501 833 501" stroke="#00a7c4" stroke-width="11" opacity="0.28"/>
+    </g>
+
+    <g id="highlights" fill="none">
+      <rect id="up-highlight" x="158" y="210" width="140" height="252" rx="18" stroke="#8dc63f" stroke-width="8"/>
+      <rect id="out-highlight" x="102" y="136" width="528" height="432" rx="28" stroke="#343895" stroke-width="8"/>
+      <rect id="across-highlight" x="58" y="76" width="1164" height="544" rx="34" stroke="#00a7c4" stroke-width="8"/>
+    </g>
+
+    <g id="domain-labels">
+      <text id="up-label" x="228" y="202" text-anchor="middle" class="domain-label" fill="#5f8f20">Scale-up</text>
+      <text id="out-label" x="366" y="592" text-anchor="middle" class="domain-label" fill="#343895">Scale-out</text>
+      <text id="across-label" x="920" y="592" text-anchor="middle" class="domain-label" fill="#007f96">Scale-across</text>
+    </g>
+
+    <g id="up-pulses"></g>
+    <g id="out-pulses"></g>
+    <g id="across-pulses"></g>
+  </g>
+
+  <g id="stage-band">
+    <rect id="stage-band-bg" x="386" y="20" width="508" height="68" rx="34" fill="#8dc63f" filter="url(#shadow)"/>
+    <text id="stage-name" x="640" y="65" text-anchor="middle" class="stage-name">SCALE-UP（纵向扩展）</text>
+  </g>
+
+  <g id="constraint-band">
+    <rect id="constraint-band-bg" x="116" y="626" width="1048" height="62" rx="18" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
+    <text id="constraint-text" x="640" y="666" text-anchor="middle" class="constraint-text">封装  •  散热设计  •  维护空间</text>
+  </g>
+</svg>
+
+<script>
+  const duration = 18;
+  const world = document.getElementById('world');
+  const stageName = document.getElementById('stage-name');
+  const stageBandBg = document.getElementById('stage-band-bg');
+  const constraintText = document.getElementById('constraint-text');
+  const constraintBandBg = document.getElementById('constraint-band-bg');
+  const highlights = {
+    up: document.getElementById('up-highlight'),
+    out: document.getElementById('out-highlight'),
+    across: document.getElementById('across-highlight'),
+  };
+  const labels = {
+    up: document.getElementById('up-label'),
+    out: document.getElementById('out-label'),
+    across: document.getElementById('across-label'),
+  };
+  const campusLabel = document.getElementById('campus-label');
+
+  const cameras = {
+    up: { scale: 2.25, cx: 228, cy: 340 },
+    out: { scale: 1.28, cx: 366, cy: 360 },
+    across: { scale: 1, cx: 640, cy: 350 },
+  };
+
+  function clamp(value, min = 0, max = 1) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function smoothstep(value) {
+    const x = clamp(value);
+    return x * x * (3 - 2 * x);
+  }
+
+  function mix(a, b, amount) {
+    return a + (b - a) * amount;
+  }
+
+  function mixCamera(a, b, amount) {
+    const eased = smoothstep(amount);
+    return {
+      scale: mix(a.scale, b.scale, eased),
+      cx: mix(a.cx, b.cx, eased),
+      cy: mix(a.cy, b.cy, eased),
+    };
+  }
+
+  function cameraAt(t) {
+    if (t < 3.6) return cameras.up;
+    if (t < 4.9) return mixCamera(cameras.up, cameras.out, (t - 3.6) / 1.3);
+    if (t < 8.2) return cameras.out;
+    if (t < 9.5) return mixCamera(cameras.out, cameras.across, (t - 8.2) / 1.3);
+    if (t < 16.2) return cameras.across;
+    return mixCamera(cameras.across, cameras.up, (t - 16.2) / 1.8);
+  }
+
+  function setCamera(camera) {
+    world.setAttribute(
+      'transform',
+      `translate(640 360) scale(${camera.scale}) translate(${-camera.cx} ${-camera.cy})`
+    );
+  }
+
+  function setOpacity(node, value) {
+    node.setAttribute('opacity', String(clamp(value)));
+  }
+
+  function stageAt(t) {
+    if (t < 4.25 || t >= 17.1) return 'up';
+    if (t < 8.85) return 'out';
+    if (t < 13.1) return 'across';
+    return 'all';
+  }
+
+  function setStage(stage, t) {
+    const pulse = 0.72 + 0.28 * Math.sin(t * Math.PI * 2) ** 2;
+    let opacity = { up: 0.16, out: 0.10, across: 0.08 };
+    let labelOpacity = { up: 0, out: 0, across: 0 };
+    let name = 'SCALE-UP（纵向扩展）';
+    let message = '封装  •  散热设计  •  维护空间';
+    let color = '#8dc63f';
+    let pale = '#f4faef';
+
+    if (stage === 'up') {
+      opacity = { up: pulse, out: 0.08, across: 0.04 };
+    } else if (stage === 'out') {
+      opacity = { up: 0.34, out: pulse, across: 0.08 };
+      labelOpacity = { up: 0.48, out: 0, across: 0 };
+      name = 'SCALE-OUT（横向扩展）';
+      message = '交换机端口规模  •  光纤芯数  •  链路可靠性';
+      color = '#343895';
+      pale = '#eef0fb';
+    } else if (stage === 'across') {
+      opacity = { up: 0.18, out: 0.42, across: pulse };
+      labelOpacity = { up: 0.32, out: 0.50, across: 0 };
+      name = 'SCALE-ACROSS（跨域）';
+      message = '传输距离  •  传播时延';
+      color = '#00a7c4';
+      pale = '#eef9fb';
+    } else {
+      opacity = { up: pulse, out: pulse, across: pulse };
+      labelOpacity = { up: 1, out: 1, across: 1 };
+      name = '三个扩展域';
+      message = '先明确约束，再选择技术';
+      color = '#343895';
+      pale = '#f2f4f8';
+    }
+
+    stageName.textContent = name;
+    stageBandBg.setAttribute('fill', color);
+    constraintText.textContent = message;
+    constraintBandBg.setAttribute('fill', pale);
+    constraintBandBg.setAttribute('stroke', color);
+    Object.keys(opacity).forEach((key) => {
+      setOpacity(highlights[key], opacity[key]);
+      setOpacity(labels[key], labelOpacity[key]);
+    });
+    setOpacity(campusLabel, stage === 'across' || stage === 'all' ? 1 : 0);
+  }
+
+  function makePulses(pathIds, groupId, color, filterId, particlesPerPath) {
+    const group = document.getElementById(groupId);
+    return pathIds.map((pathId) => {
+      const path = document.getElementById(pathId);
+      const particles = [];
+      for (let i = 0; i < particlesPerPath; i += 1) {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('r', i === 0 ? '8' : '5');
+        circle.setAttribute('fill', color);
+        circle.setAttribute('stroke', '#ffffff');
+        circle.setAttribute('stroke-width', '1.5');
+        circle.setAttribute('opacity', '0');
+        group.appendChild(circle);
+        particles.push(circle);
+      }
+      return { path, particles };
+    });
+  }
+
+  const pulseGroups = {
+    up: makePulses(['up-path-1', 'up-path-2', 'up-path-3', 'up-path-4'], 'up-pulses', '#8dc63f', 'glow-green', 3),
+    out: makePulses(['out-path-1', 'out-path-2', 'out-path-3', 'out-path-4'], 'out-pulses', '#343895', 'glow-blue', 3),
+    across: makePulses(['across-path'], 'across-pulses', '#00a7c4', 'glow-cyan', 7),
+  };
+
+  function animatePulses(items, progress, visible, spacing) {
+    items.forEach((item, pathIndex) => {
+      const length = item.path.getTotalLength();
+      item.particles.forEach((particle, particleIndex) => {
+        const position = (progress + pathIndex * 0.11 - particleIndex * spacing + 1) % 1;
+        const point = item.path.getPointAtLength(position * length);
+        particle.setAttribute('cx', String(point.x));
+        particle.setAttribute('cy', String(point.y));
+        particle.setAttribute('opacity', String(visible * (particleIndex === 0 ? 1 : 0.62)));
+      });
+    });
+  }
+
+  window.renderAt = function renderAt(rawTime) {
+    const t = ((rawTime % duration) + duration) % duration;
+    const stage = stageAt(t);
+    setCamera(cameraAt(t));
+    setStage(stage, t);
+
+    const upVisible = stage === 'up' || stage === 'all' ? 1 : stage === 'out' ? 0.42 : 0.18;
+    const outVisible = stage === 'out' || stage === 'all' ? 1 : stage === 'across' ? 0.46 : 0.10;
+    const acrossVisible = stage === 'across' || stage === 'all' ? 1 : 0.08;
+    animatePulses(pulseGroups.up, (t * 0.34) % 1, upVisible, 0.12);
+    animatePulses(pulseGroups.out, (t * 0.22) % 1, outVisible, 0.16);
+    animatePulses(pulseGroups.across, (t * 0.14) % 1, acrossVisible, 0.12);
+  };
+
+  window.renderAt(0);
+</script>
+</body>
+</html>

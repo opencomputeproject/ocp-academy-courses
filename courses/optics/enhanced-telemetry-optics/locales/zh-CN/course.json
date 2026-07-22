@@ -1,0 +1,2125 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_networking_project_optics_reliability_zh_cn",
+  "course_title": "增强遥测光学",
+  "language": "zh-CN",
+  "course_subtitle": "通过增强遥测定位 AI 光网络中发生了什么故障、故障位置及其原因。",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "增强遥测规范 - 2026",
+  "index_footer_line": "OCP 网络项目光学可靠性工作组：增强遥测规范 - 2026",
+  "target_duration_minutes": 50,
+  "audience_level": "中级技术人员",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "ocp_optics_reliability_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "OPTICS"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP学院"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+      "kind": "specification source"
+    },
+    {
+      "path": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf",
+      "kind": "public specification reference"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "pmd",
+      "term": "PMD",
+      "tooltip": "物理介质相关层：光模块传输路径的具体物理实现。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "cmis",
+      "term": "CMIS",
+      "tooltip": "通用管理接口规范：用于管理可插拔收发器的标准接口。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "i2c",
+      "term": "I2C",
+      "tooltip": "一种双线本地管理接口，主机通过它与本地收发器通信。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "vdm",
+      "term": "VDM",
+      "tooltip": "可变诊断监控：CMIS 中用于承载多项模块遥测值的页面。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "snr",
+      "term": "SNR",
+      "tooltip": "信噪比：用于主机侧与线路侧通道的信号质量指标。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "fec",
+      "term": "FEC",
+      "tooltip": "前向纠错：用于理解链路压力和不可纠正故障的纠错机制。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "ber",
+      "term": "BER",
+      "tooltip": "误码率：错误比特数与传输总比特数之比，用于量化链路质量。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "ddmi",
+      "term": "DDMI",
+      "tooltip": "数字诊断监控接口：模块报告的诊断值以及警告或告警标志位。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "cdb",
+      "term": "CDB",
+      "tooltip": "命令数据块：CMIS 中用于遥测收集与传输的命令-响应机制。",
+      "reference_label": "OCP 光学遥测规范",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "the_ai_fabric_visibility_problem",
+      "title": "AI 网络的可见性难题",
+      "subtitle": "将增强遥测用作本地和远端光学端点的运维模型。",
+      "module_badge_text": "模块 1",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "the_ai_fabric_visibility_problem",
+          "title": "AI 网络的可见性难题",
+          "subtitle": "将增强遥测用作本地和远端光学端点的运维模型。",
+          "version_chip": "增强遥测规范 - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "范围 and Overview"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.txt",
+            "wav_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "the_reliability_questions_this_course_answers",
+          "title": "本课程回答的可靠性问题",
+          "subtitle": "四个模块从运维问题出发，逐步建立可部署的主机工作流。",
+          "modules_listed": [
+            "AI 网络的可见性难题",
+            "指标、标志位与链路健康状况",
+            "CDB 工作流、事件日志与远程访问",
+            "固件、主机软件与部署就绪"
+          ],
+          "chips": [
+            {
+              "text": "总计约 50 分钟"
+            },
+            {
+              "text": "中级技术受众"
+            },
+            {
+              "text": "公开 OCP 规范"
+            },
+            {
+              "text": "来自 Credo 和 Oracle 的 OCP 社区志愿者"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "公共OCP 光学遥测规范",
+              "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "范围 and Overview"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.txt",
+            "wav_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "link_flaps_become_fabric_scale_events",
+          "section_label": "运维驱动因素",
+          "title": "链路抖动演变为网络级事件",
+          "subtitle": "大规模 AI 网络使光学盲点变得昂贵，因为一个局部症状可能有远程原因。",
+          "bullets": [
+            {
+              "bold_lead": "更多端点",
+              "text": "网络连接许多加速器、交换机、光学器件和服务器端点，因此一个物理症状可能跨越多个所有权边界。"
+            },
+            {
+              "bold_lead": "更少直接接触",
+              "text": "裸机服务器或其他远端端点中的光模块，可能无法从交换机告警中直接看见。"
+            },
+            {
+              "bold_lead": "更高的停机成本",
+              "text": "链路抖动可能会中断依赖可预测网络健康的训练、资格验证或维护工作流。"
+            },
+            {
+              "bold_lead": "需要共同证据",
+              "text": "运维人员需要跨厂商和形态规格的一致遥测数据，才能大规模比较症状。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Impact and 范围"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "9-10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.txt",
+            "wav_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "the_three_part_software_stack",
+          "section_label": "软件栈",
+          "title": "三层软件栈",
+          "subtitle": "规范将系统分为收发器实现、主机软件和遥测服务器集成。",
+          "bullets": [
+            {
+              "bold_lead": "收发器固件与指标",
+              "text": "该模块收集本地和远程遥测数据，维护事件历史，并提供通用的命令行为。"
+            },
+            {
+              "bold_lead": "交换机上的主机软件",
+              "text": "主机轮询模块，请求本地或远端数据，并通过SDK或命令行工具生成运维输出。"
+            },
+            {
+              "bold_lead": "遥测服务器集成",
+              "text": "服务器可以聚合并汇总全网健康状况，但其实现仍依赖用户且超出规范范围。"
+            }
+          ],
+          "figure": {
+            "path": "figures/software_stack.svg",
+            "alt": "从收发器固件到主机软件再到遥测服务器的三部分遥测软件栈。",
+            "caption": "规范侧重收发器行为及其与主机软件的通用接口；遥测服务器的设计则有意留给运维方决定。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "范围"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_the_three_part_software_stack.txt",
+            "wav_file": "audio/module1/slide_04_the_three_part_software_stack.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_bullets",
+          "slug": "what_the_specification_includes_and_excludes",
+          "section_label": "范围",
+          "title": "规范包含与不包含的内容",
+          "subtitle": "该贡献规范通用遥测行为，而不试图规定上层的每一种监控系统。",
+          "bullets": [
+            {
+              "bold_lead": "适用速率",
+              "text": "该规范适用于符合规范的 400G、800G 和 1.6T 收发器。"
+            },
+            {
+              "bold_lead": "独立于 PMD",
+              "text": "遥测模型旨在独立于模块的物理介质依赖实现。"
+            },
+            {
+              "bold_lead": "建立在CMIS之上",
+              "text": "规范采用OIF CMIS 5.x 功能，并增加了定义和修改以增强遥测。"
+            },
+            {
+              "bold_lead": "服务器保持开放",
+              "text": "遥测服务器的实现依赖用户，不在文档范围内。"
+            }
+          ],
+          "term_refs": [
+            "pmd",
+            "cmis"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "范围"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.txt",
+            "wav_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "six_functions_of_a_compliant_transceiver",
+          "section_label": "核心功能",
+          "title": "合规收发器的六项功能",
+          "subtitle": "该规范将模块原始数据转化为面向运维的通用可见性模型。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "正常工作模式监控",
+              "body": "在链路服务期间收集面向主机和面向线路的接收器统计数据。"
+            },
+            {
+              "title": "链路健康报告",
+              "body": "通过统一的健康指标追踪和记录遥测数据，而不是孤立的计数器。"
+            },
+            {
+              "title": "远程识别",
+              "body": "利用带内通信在链路两端的收发器之间交换数据。"
+            },
+            {
+              "title": "事件日志记录",
+              "body": "通知、时间戳并保存重要事件于非易失性模块内存中。"
+            },
+            {
+              "title": "无中断固件更新",
+              "body": "支持本地和远程固件更新，但不以服务中断为运营目标。"
+            },
+            {
+              "title": "主机采集",
+              "body": "启用交换软件收集遥测数据并准备将其流式传输到遥测服务器。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Overview"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "11"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.txt",
+            "wav_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "a_link_is_more_than_one_fiber_path",
+          "section_label": "链路模型",
+          "title": "一条链路不只包含一段光纤",
+          "figure": {
+            "path": "figures/link_segments_telemetry.mp4",
+            "media_type": "video",
+            "alt": "无声动画显示交换机电气、光学和主机电气连接段，并带有遥测定位。",
+            "caption": "分段级遥测将交换机-模块电气链路、光路和主机-模块电气链路分离为独立监控的证据。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "High Level Requirements: point-to-point links"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.txt",
+            "wav_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "breakout_links_multiply_remote_endpoints",
+          "section_label": "分支链路",
+          "title": "分支链路使远端端点成倍增加",
+          "figure": {
+            "path": "figures/source_docx_breakout_segments.png",
+            "alt": "分支光链路示例，一个交换机侧模块连接到多个主机模块。",
+            "caption": "在分支或光纤重排场景中，一个交换机端口可能需要来自多个远端链路对端的独立遥测数据。",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "High Level Requirements: breakout links"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.txt",
+            "wav_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "visibility_starts_with_a_shared_model",
+          "title": "可见性始于统一模型",
+          "items": [
+            "运维难题是找到故障段，而不仅仅是注意到链路状态的变化。",
+            "标准化的边界是收发器行为和与主机软件的统一接口。",
+            "符合标准的光学系统预计将支持本地和远程遥测采集。",
+            "分支链路使端点身份和独立远程监控成为必不可少。",
+            "遥测服务器的设计仍依赖运维人员，但模块到主机的模式可以保持通用。"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "范围 and Overview"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.txt",
+            "wav_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "check_your_model_visibility_and_scope",
+          "title": "检验你的理解：可见性与范围",
+          "subtitle": "回答一次即可继续。不要求正确，反馈后你可以重试。",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "增强光学遥测的主要目的是什么？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "本地链路告警可能无法揭示导致问题的本地电气段、光学段或远端电气段。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "遥测服务器需要必须为所有运维方采用同一种实现。",
+                  "correct": false,
+                  "feedback_incorrect": "该规范使得遥测服务器的实现依赖用户。主要工作集中在收发器和主机接口。"
+                },
+                {
+                  "id": "c",
+                  "text": "每个光学模块都需要相同的物理介质相关设计。",
+                  "correct": false,
+                  "feedback_incorrect": "该范围旨在独立于 PMD，因此通用遥测模型可以适用于不同实现。"
+                }
+              ],
+              "feedback_correct": "没错。价值在于结合本地和远端证据，将症状对应到正在失效的链路段。",
+              "feedback_incorrect": "回顾可见性模型：目标是将局部症状与本地电气、光学和远端端点证据联系起来。"
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "哪些功能属于合规收发器和主机遥测模型？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "正常工作模式链路监控和统计数据收集。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "链路对端之间的带内远程识别和数据交换。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "可编程事件通知和非易失性事件日志。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "必须采用遥测遥测遥测遥测遥测遥测遥测服务器产品架构。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "没错。共享模型包含模块和主机功能，而服务器实现则保持开放。",
+              "feedback_incorrect": "保持界限明确：规范涵盖模块行为和主机数据采集，但不规定遥测服务器的实现方式。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "范围 and Overview"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.txt",
+            "wav_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next_metrics_and_link_health",
+          "title": "下一步：指标与链路健康状况",
+          "next_module_number": 2,
+          "next_module_title": "指标、标志位与链路健康状况",
+          "thank_you_message": "干得好——你完成了OCP 光学可靠性的可见性模型。",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Telemetry Data"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_metrics_and_link_health.txt",
+            "wav_file": "audio/module1/slide_11_up_next_metrics_and_link_health.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "指标、标志位与链路健康状况"
+    },
+    {
+      "id": 2,
+      "slug": "metrics_flags_and_link_health",
+      "title": "指标、标志位与链路健康状况",
+      "subtitle": "遥测类别、汇总标志位、掩码以及取最差类别的链路健康评分。",
+      "module_badge_text": "模块 2",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "metrics_flags_and_link_health",
+          "title": "指标、标志位与链路健康状况",
+          "subtitle": "遥测类别、汇总标志位、掩码以及取最差类别的链路健康评分。",
+          "version_chip": "增强遥测规范 - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Status and Telemetry Metrics"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_01_metrics_flags_and_link_health.txt",
+            "wav_file": "audio/module2/slide_01_metrics_flags_and_link_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "signals_you_will_interpret",
+          "title": "你将解读的信号",
+          "subtitle": "本模块结束时，你将能够对遥测数据进行分类，并解释链路健康状况的总结方式。",
+          "objectives": [
+            "在概念层面区分本地遥测查询和远程遥测查询。",
+            "将常见指标分类为质量、错误、恢复、环境和上下文类别。",
+            "请解释为什么链路健康评分是由最弱类别而非平均值驱动的。",
+            "描述标志位和掩码如何帮助运维人员聚焦监控行为。"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Telemetry Data"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_signals_you_will_interpret.txt",
+            "wav_file": "audio/module2/slide_02_signals_you_will_interpret.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "local_and_remote_queries_use_one_mental_model",
+          "section_label": "查询模型",
+          "title": "本地与远程查询采用同一心智模型",
+          "subtitle": "主机查询本地模块；本地模块可以返回自身数据，也可以在带内检索远端数据。",
+          "bullets": [
+            {
+              "bold_lead": "本地查询",
+              "text": "主机通过I2C请求其能直接访问的模块提供遥测数据。"
+            },
+            {
+              "bold_lead": "远程查询",
+              "text": "本地模块从远端链路对端获取遥测数据，并返回给同一主机。"
+            },
+            {
+              "bold_lead": "分支连接感知",
+              "text": "远程请求可能需要识别被查询的链路对端或端口。"
+            }
+          ],
+          "figure": {
+            "path": "figures/local_remote_query_model.svg",
+            "alt": "主机通过I2C查询本地模块，本地模块通过带内通信访问远端链路对端。",
+            "caption": "一个一致的主机工作流程仍然可以区分本地数据、远端数据和分支链路对端身份。",
+            "source": "svg_inline"
+          },
+          "term_refs": [
+            "i2c"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Status and Telemetry Metrics"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.txt",
+            "wav_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_bullets",
+          "slug": "status_pages_establish_the_baseline",
+          "section_label": "基线页面",
+          "title": "状态页面建立基线",
+          "subtitle": "该模块高层次展示了标准 CMIS 状态、配置、VDM、CDB、有效载荷和厂商专属页面。",
+          "bullets": [
+            {
+              "bold_lead": "CMIS Bank 0",
+              "text": "通用模块页面提供基线身份、状态和控制信息。"
+            },
+            {
+              "bold_lead": "配置与状态页面",
+              "text": "标准页面在解读增强遥测数据之前确定运行状态。"
+            },
+            {
+              "bold_lead": "VDM 与遥测页面",
+              "text": "许多测量值与 CMIS VDM 概念一致，并被存储以便主机访问。"
+            },
+            {
+              "bold_lead": "CDB和有效载荷页面",
+              "text": "命令和有效载荷区域支持遥测检索、事件日志及更大响应。"
+            },
+            {
+              "bold_lead": "厂商页面",
+              "text": "厂商专属字段可能仍然存在，但课程侧重于通用的运维接口。"
+            }
+          ],
+          "term_refs": [
+            "vdm"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Status and Telemetry Metrics"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_status_pages_establish_the_baseline.txt",
+            "wav_file": "audio/module2/slide_04_status_pages_establish_the_baseline.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "optical_and_electrical_quality_metrics",
+          "section_label": "质量指标",
+          "title": "光学与电气质量指标",
+          "subtitle": "高质量测量有助于区分线路侧光学问题和主机端电气问题。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "SNR",
+              "body": "光线路通道和电气主机通道的信噪比。"
+            },
+            {
+              "title": "眼高",
+              "body": "主机侧和线路侧眼高测量显示信号裕量。"
+            },
+            {
+              "title": "PAM4 LTP",
+              "body": "电平转换参数有助于表征主机和线路的PAM4信号行为。"
+            },
+            {
+              "title": "MPI估计",
+              "body": "多径干涉估计有助于识别光学反射或路径效应。"
+            },
+            {
+              "title": "主机与线路",
+              "body": "区分主机端和线路端数值有助于定位较弱的链路段。"
+            },
+            {
+              "title": "逐通道视图",
+              "body": "通道级值防止一条降级通道在端口级摘要中消失。"
+            }
+          ],
+          "term_refs": [
+            "snr"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Telemetry Data"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-14"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.txt",
+            "wav_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "error_and_recovery_metrics",
+          "section_label": "错误与恢复",
+          "title": "错误与恢复指标",
+          "subtitle": "错误计数器和恢复行为显示链路是单纯噪声还是实际失去服务。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "pre-FEC BER",
+              "body": "纠错前的误码行为反映原始链路压力。"
+            },
+            {
+              "title": "FEC 直方图",
+              "body": "每帧累积的错误有助于表征 FEC 纠错负载。"
+            },
+            {
+              "title": "不可纠正码字",
+              "body": "无法修复的故障会导致更严重的链路衰减。"
+            },
+            {
+              "title": "重连",
+              "body": "链路断开与重新建立的计数器反映随时间出现的不稳定性。"
+            },
+            {
+              "title": "LOS 与 LOL",
+              "body": "信号丢失和链路丢失事件用于识别需要历史的状态转换。"
+            },
+            {
+              "title": "正常运行时间",
+              "body": "自上次建链以来的运行时间为恢复和稳定性提供了背景。"
+            }
+          ],
+          "term_refs": [
+            "ber",
+            "fec"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Telemetry Data"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "14"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_error_and_recovery_metrics.txt",
+            "wav_file": "audio/module2/slide_06_error_and_recovery_metrics.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "environment_and_module_context",
+          "section_label": "上下文指标",
+          "title": "环境与模块上下文",
+          "subtitle": "温度、功率、序列识别和警告将测量数据转化为可追踪的证据。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "模块温度",
+              "body": "模块温度表明热条件是否会影响链路质量。"
+            },
+            {
+              "title": "激光温度",
+              "body": "激光温度为漂移和告警行为提供了光学器件的背景信息。"
+            },
+            {
+              "title": "电压",
+              "body": "供电环境有助于将链路问题与当地电气状况联系起来。"
+            },
+            {
+              "title": "接收光功率",
+              "body": "接收到的光功率有助于区分光路损失与其他症状。"
+            },
+            {
+              "title": "DDMI警告",
+              "body": "告警和警告标志位会暴露模块报告的阈值越界情况。"
+            },
+            {
+              "title": "序列号",
+              "body": "身份场将遥测和事件历史与物理模块绑定。"
+            }
+          ],
+          "term_refs": [
+            "ddmi"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Telemetry Data and Telemetry Info"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "14-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_environment_and_module_context.txt",
+            "wav_file": "audio/module2/slide_07_environment_and_module_context.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "link_health_score_uses_the_worst_category",
+          "section_label": "评分模型",
+          "title": "链路健康评分取最差类别",
+          "figure": {
+            "path": "figures/link_health_minimum_score.mp4",
+            "media_type": "video",
+            "alt": "无声动画显示多个链路健康类别评分，报告的健康状况紧随最弱类别。",
+            "caption": "最小类别规则防止一个不佳的字段被其他更健康的测量掩盖。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Rating Score Formula"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "49-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.txt",
+            "wav_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "flags_and_masks_keep_monitoring_actionable",
+          "section_label": "标志位与掩码",
+          "title": "标志位和掩码让监控保持可操作",
+          "subtitle": "摘要标志位使状态可见；掩码允许部署控制哪些计数器会影响评分。",
+          "bullets": [
+            {
+              "bold_lead": "摘要标志位",
+              "text": "标志可以显示指标组是否跨越阈值或是否需要运维人员关注。"
+            },
+            {
+              "bold_lead": "自定义掩码",
+              "text": "掩码可以包含或排除部分计数器，用于链路健康评分计算。"
+            },
+            {
+              "bold_lead": "运维调节",
+              "text": "部署可以在不丢失共享指标模型的情况下减少噪声。"
+            }
+          ],
+          "figure": {
+            "path": "figures/flags_and_masks.svg",
+            "alt": "示意图，展示了链路健康汇总标志位与掩码控制。",
+            "caption": "标志位和掩码有助于监控保持保持通用、可比较，并具备足够的运维灵活性。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Telemetry Flag Summary Reporting and Custom Mask"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "45-48"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.txt",
+            "wav_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "metrics_should_point_to_action",
+          "title": "指标应当指向行动",
+          "items": [
+            "本地和远程遥测使用相同的以主机为中心的运维模型。",
+            "质量指标区分主机端电气行为与线路端光学行为。",
+            "错误、恢复和正常运行时间的数值显示链路是否存在噪声、不稳定或故障。",
+            "环境与身份字段使测量可追溯到真实硬件。",
+            "链路健康评分使用最弱类别以避免隐藏异常字段。"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Telemetry Data and Rating Score Formula"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_metrics_should_point_to_action.txt",
+            "wav_file": "audio/module2/slide_10_metrics_should_point_to_action.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_metrics_and_scores",
+          "title": "检验你的理解：指标与评分",
+          "subtitle": "回答一次即可继续。不要求正确，反馈后你可以重试。",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "为什么链路健康评分使用最弱类别而非平均值？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "某一类别表现不佳即使其他类别健康，也可能使链路变得不可靠。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "从遥测字段中无法计算平均值。",
+                  "correct": false,
+                  "feedback_incorrect": "平均值可以被计算出来，但它们可能隐藏了应当驱动行动的异常类别。"
+                },
+                {
+                  "id": "c",
+                  "text": "对链路健康状况来说，只有光功率重要。",
+                  "correct": false,
+                  "feedback_incorrect": "光功率很有用，但模型还考虑电气质量、错误、恢复行为和上下文。"
+                }
+              ],
+              "feedback_correct": "没错。评分旨在保留最弱类别所代表的行动信号。",
+              "feedback_incorrect": "回顾评分模型：汇总不应掩盖失败类别。"
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "哪些项目属于诊断链路健康状况有用的遥测证据？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "SNR、眼高、PAM4 LTP和MPI估计。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "pre-FEC BER、FEC 直方图、重连、LOS 和 LOL。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "模块温度、激光温度、接收光功率和序列身份。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "只有外部仪表盘的最终通过/失败结果。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "没错。有用的诊断结合了质量、错误、恢复、环境和身份背景。",
+              "feedback_incorrect": "使用类别模型：链路健康状况需要质量、错误、恢复、环境和身份信息，而不仅仅是最终仪表盘结果。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Module Telemetry Data and Rating Score Formula"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.txt",
+            "wav_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "up_next",
+          "slug": "up_next_cdb_and_event_workflows",
+          "title": "下一步：CDB 与事件工作流",
+          "next_module_number": 3,
+          "next_module_title": "CDB 工作流、事件日志与远程访问",
+          "thank_you_message": "干得好——你已经完成了遥测和链路健康模块。",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver CDB Implementation"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.txt",
+            "wav_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "CDB 工作流、事件日志与远程访问"
+    },
+    {
+      "id": 3,
+      "slug": "cdb_workflows_event_logs_and_remote_access",
+      "title": "CDB 工作流、事件日志与远程访问",
+      "subtitle": "用于传输遥测数据、事件历史和远端信息的命令-响应模式。",
+      "module_badge_text": "模块 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "cdb_workflows_event_logs_and_remote_access",
+          "title": "CDB 工作流、事件日志与远程访问",
+          "subtitle": "用于传输遥测数据、事件历史和远端信息的命令-响应模式。",
+          "version_chip": "增强遥测规范 - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver CDB Implementation"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-18"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.txt",
+            "wav_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "workflows_you_will_trace",
+          "title": "你将跟踪的工作流",
+          "subtitle": "本模块结束时，你将能够跟踪命令、日志和远程访问行为。",
+          "objectives": [
+            "追踪四步 CDB 命令-响应工作流程。",
+            "描述为什么9Fh 页和扩展有效载荷区域重要，无需记忆字节映射。",
+            "请解释非易失性事件日志如何保留故障经过。",
+            "在概念上区分远程字节访问与远程页面访问。"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver CDB Implementation and Event Log Management"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_workflows_you_will_trace.txt",
+            "wav_file": "audio/module3/slide_02_workflows_you_will_trace.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "cdb_is_a_command_reply_workflow",
+          "section_label": "CDB 模式",
+          "title": "CDB 是命令-响应工作流",
+          "figure": {
+            "path": "figures/cdb_command_reply.mp4",
+            "media_type": "video",
+            "alt": "无声动画展示了从命令准备到回复检索的四步 CDB流程。",
+            "caption": "典型的 CDB 命令序列包括准备消息、触发执行、轮询状态，并在完成后检索回复。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "cdb"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver CDB Implementation"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.txt",
+            "wav_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "page_9fh_carries_the_control_conversation",
+          "section_label": "控制页面",
+          "title": "9Fh 页承载控制交互",
+          "subtitle": "控制页包含命令与回复结构；课程强调工作模式，而不是每个字节字段。",
+          "bullets": [
+            {
+              "bold_lead": "命令头",
+              "text": "主机负责写入命令标识及相关的请求信息。"
+            },
+            {
+              "bold_lead": "回复头",
+              "text": "该模块执行后返回完成状态和响应元数据。"
+            },
+            {
+              "bold_lead": "本地有效载荷",
+              "text": "较小的消息可以在需要扩展页之前使用本地有效载荷区域。"
+            }
+          ],
+          "figure": {
+            "path": "figures/page_9f_structure.svg",
+            "alt": "9Fh 页简化结构，包含命令头、回复头和本地有效载荷。",
+            "caption": "9Fh 页是规范中主机和模块之间的CDB消息页面。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Control Page Structure"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-17"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.txt",
+            "wav_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "extended_payload_handles_larger_transfers",
+          "section_label": "有效载荷规模",
+          "title": "扩展有效载荷支持更大规模传输",
+          "subtitle": "当本地有效载荷不足时，分页式扩展有效载荷区域会携带更大的回复。",
+          "bullets": [
+            {
+              "bold_lead": "首先是本地有效载荷",
+              "text": "小命令和回复可以使用本地有效载荷空间。"
+            },
+            {
+              "bold_lead": "扩展有效载荷页面",
+              "text": "A0h 至 AFh 页面在规范中提供了更大的载荷容量。"
+            },
+            {
+              "bold_lead": "长度与完整性字段",
+              "text": "有效载荷长度和校验字段帮助软件了解应检索和验证的内容。"
+            }
+          ],
+          "figure": {
+            "path": "figures/extended_payload.svg",
+            "alt": "简化扩展有效载荷图，显示本地有效载荷及A0h到AFh页面。",
+            "caption": "规范描述了扩展有效载荷页，用于更大的命令数据，最高可达2048字节。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Extended Payload"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "17"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.txt",
+            "wav_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "status_registers_tell_the_host_when_to_read",
+          "section_label": "命令状态",
+          "title": "状态寄存器告诉主机何时读取",
+          "subtitle": "完成和失败状态是工作流程的一部分，而非可选的清理。",
+          "bullets": [
+            {
+              "bold_lead": "忙碌状态",
+              "text": "主机应预期命令执行需要时间并查询进度。"
+            },
+            {
+              "bold_lead": "完成标志",
+              "text": "完成状态告诉软件何时可以读取回复。"
+            },
+            {
+              "bold_lead": "失败处理",
+              "text": "失败的命令必须显式处理，而非解释为有效的遥测数据。"
+            },
+            {
+              "bold_lead": "可重复的软件行为",
+              "text": "一致的状态行为使SDK和命令行工具成为可靠的运维工作流。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Command Status Registers"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "18"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.txt",
+            "wav_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_retrieval_follows_the_same_pattern",
+          "section_label": "遥测命令",
+          "title": "遥测检索遵循同一模式",
+          "figure": {
+            "path": "figures/telemetry_retrieval_flow.svg",
+            "alt": "主机请求遥测数据，本地模块收集本地或远端数据，回复返回健康字段。",
+            "caption": "遥测检索无论数据是本地还是远程，都使用相同的命令、状态和回复模式。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Telemetry"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "28-45"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.txt",
+            "wav_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "event_logs_preserve_the_failure_story",
+          "section_label": "事件历史",
+          "title": "事件日志保留故障过程",
+          "subtitle": "非易失性事件日志让运维人员能够检查发生了什么，而不仅仅是链路现在的样子。",
+          "bullets": [
+            {
+              "bold_lead": "非易失性环形缓冲器",
+              "text": "该模块记录在内存中存活的关键事件，这些事件能在经历正常断电或维护流程后仍可保留。"
+            },
+            {
+              "bold_lead": "唯一序列号",
+              "text": "唯一的序列值有助于重建事件顺序，包括序列号回绕后的顺序。"
+            },
+            {
+              "bold_lead": "时间戳和事件ID",
+              "text": "每个条目都包含时间和事件类型，因此症状可以与主机和网络数据进行关联。"
+            },
+            {
+              "bold_lead": "可读输出",
+              "text": "主机 API 应当使近期事件可读，而不是在事件发生时强制进行位字段解析。"
+            }
+          ],
+          "figure": {
+            "path": "figures/source_docx_event_log_example.png",
+            "alt": "规范文档中的事件日志解析示例截图。",
+            "caption": "规范包含事件日志解析示例；面向学习者的工作流应保留事件顺序、时间和含义。",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Event Log Management"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "53-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.txt",
+            "wav_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_grid",
+          "slug": "hysteresis_prevents_noise_from_burying_signal",
+          "section_label": "事件控制",
+          "title": "滞回机制避免噪声淹没信号",
+          "subtitle": "需要控制反复的阈值穿越，以确保日志在不稳定时期仍有用。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "阈值事件",
+              "body": "可以记录链路上线、链路下线、LOS、LOL、温度、Rx 功率、pre-FEC BER、FEC bin等多个事件。"
+            },
+            {
+              "title": "滞后窗口",
+              "body": "规范中列出了API控制的默认10秒事件滞后值。"
+            },
+            {
+              "title": "减少重复噪音",
+              "body": "窗口有助于防止重复的链路反复抖动使日志过载。"
+            },
+            {
+              "title": "可编程行为",
+              "body": "主机命令可以读取或写入本地和远端端点的事件滞后值。"
+            },
+            {
+              "title": "更清晰的时间线",
+              "body": "运维人员可以专注于独立事件，而非数十个重复的阈值条目。"
+            },
+            {
+              "title": "版本检查",
+              "body": "用于生产的具体数值应以已发布的规范修订版为准。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Event Log IDs, Types, Thresholds, and Host Software APIs"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "53-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.txt",
+            "wav_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "content_two_column",
+          "slug": "remote_cmis_access_reaches_the_far_endpoint",
+          "section_label": "远程访问",
+          "title": "远程 CMIS 访问触达远端",
+          "subtitle": "远程访问允许主机软件通过本地兼容模块从对端模块获取信息。",
+          "bullets": [
+            {
+              "bold_lead": "字节访问",
+              "text": "当软件需要较小的字段或远端端点的有限范围时，使用有针对性的请求。"
+            },
+            {
+              "bold_lead": "页面访问",
+              "text": "当软件需要更大的CMIS页快照时，使用面向页面的请求。"
+            },
+            {
+              "bold_lead": "一致的信任边界",
+              "text": "主机仍与本地模块通信；本地模块通过带内通信获取远端数据。"
+            }
+          ],
+          "figure": {
+            "path": "figures/remote_cmis_access.svg",
+            "alt": "远程 CMIS 字节访问和页面访问比较。",
+            "caption": "远程字节访问和页面访问在大小和使用场景上有所不同，但都保留了本地主机到本地模块的控制模型。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Remote CMIS Register Access"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "65-73"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.txt",
+            "wav_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "cdb_turns_telemetry_into_an_operational_workflow",
+          "title": "CDB 将遥测转化为运维工作流",
+          "items": [
+            "CDB使用可重复的准备、触发、轮询和检索序列。",
+            "9Fh 页和有效载荷区域支持命令和响应交换；具体字节映射仍留在规范中。",
+            "状态检查保护运维人员不将未完成或失败的命令视为有效数据。",
+            "事件日志在瞬态故障后保留有序、时间戳的证据。",
+            "远程CMIS访问允许主机通过本地合规模块检查远端端点。"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver CDB Implementation through Remote CMIS Access"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-73"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.txt",
+            "wav_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "check_your_model_cdb_and_events",
+          "title": "检验你的理解：CDB 与事件",
+          "subtitle": "回答一次即可继续。不要求正确，反馈后你可以重试。",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "哪种序列最能描述典型的 CDB 交互？",
+              "shuffle_choices": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "准备命令，触发它，轮询状态，获取回复。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "获取回复，触发命令，准备命令头，忽略状态。",
+                  "correct": false,
+                  "feedback_incorrect": "命令完成后读取回复，状态轮询是工作流程的一部分。"
+                },
+                {
+                  "id": "c",
+                  "text": "启动时轮询一次状态，然后不带命令读取所有遥测数据。",
+                  "correct": false,
+                  "feedback_incorrect": "每个命令工作流程都会检查状态。遥测检索仍然使用命令和回复行为。"
+                }
+              ],
+              "feedback_correct": "没错。这四步流程是CDB的核心工作流程。",
+              "feedback_incorrect": "复习命令模式：准备、触发、轮询、检索。"
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "哪些功能在症状消失后帮助诊断链路抖动？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "带有序列和时间戳的非易失性事件日志。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "远程CMIS访问以检查远端端点。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "通过状态检查遥测数据检索，而不是读取陈旧的回复。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "移除事件滞后，确保每个重复的阈值穿越都会被记录。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "没错。耐用的日志、远程可见性和严格的命令状态检查都有助于保存证据。",
+              "feedback_incorrect": "考虑证据路径：保留事件历史，访问远端端点，并在信任回复前验证命令完成。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver CDB Implementation and CDB Event Log Management"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_12_check_your_model_cdb_and_events.txt",
+            "wav_file": "audio/module3/slide_12_check_your_model_cdb_and_events.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 13,
+          "type": "up_next",
+          "slug": "up_next_firmware_and_host_readiness",
+          "title": "下一步：固件与主机就绪",
+          "next_module_number": 4,
+          "next_module_title": "固件、主机软件与部署就绪",
+          "thank_you_message": "干得不错——你已经完成了命令和事件工作流程模块。",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Firmware Management Features and Host Software"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.txt",
+            "wav_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "固件、主机软件与部署就绪"
+    },
+    {
+      "id": 4,
+      "slug": "firmware_host_software_and_deployment_readiness",
+      "title": "固件、主机软件与部署就绪",
+      "subtitle": "生命周期管理和主机工具如何将遥测转化为大规模可靠性能力。",
+      "module_badge_text": "模块 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "firmware_host_software_and_deployment_readiness",
+          "title": "固件、主机软件与部署就绪",
+          "subtitle": "生命周期管理和主机工具如何将遥测转化为大规模可靠性能力。",
+          "version_chip": "增强遥测规范 - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Firmware Management Features and Host Software"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.txt",
+            "wav_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "operations_you_will_connect",
+          "title": "你将串联的运维环节",
+          "subtitle": "在本模块结束时，你将能够解释生命周期和主机工具如何支持可靠性。",
+          "objectives": [
+            "描述本地和远程固件管理能力。",
+            "解释为什么主机软件即使请求远端数据，仍与本地模块通信。",
+            "确定支持运维人员工作流程的命令行API 类别。",
+            "将遥测采集、事件历史和服务器聚合能力纳入部署就绪模型中。"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Firmware Management Features and Host Software"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_operations_you_will_connect.txt",
+            "wav_file": "audio/module4/slide_02_operations_you_will_connect.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "firmware_management_supports_local_and_remote_optics",
+          "section_label": "固件能力",
+          "title": "固件管理支持本地与远程光模块",
+          "subtitle": "规范包括 CMIS 定义的固件流程和厂商定义的远程升级能力。",
+          "mobile_scroll": true,
+          "bullets": [
+            {
+              "bold_lead": "标准本地流程",
+              "text": "CMIS定义的固件管理涵盖由主机控制的固件映像下载、激活和状态监控。"
+            },
+            {
+              "bold_lead": "远程升级路径",
+              "text": "规范中厂商定义的命令通过带内通信实现远程固件升级。"
+            },
+            {
+              "bold_lead": "能力发现",
+              "text": "软件应在开始更新前确定哪些固件管理功能可用。"
+            }
+          ],
+          "figure": {
+            "path": "figures/source_docx_firmware_upgrade_flow.png",
+            "alt": "规范文档中的固件升级流程图。",
+            "caption": "原图展示 CMIS 固件升级流程；课程将其作为生命周期模式理解，而不是记忆对象。",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Firmware Management Features"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.txt",
+            "wav_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "hitless_update_is_a_lifecycle_pattern",
+          "section_label": "更新生命周期",
+          "title": "无中断更新是一种生命周期模式",
+          "figure": {
+            "path": "figures/source_docx_block_download_flow.png",
+            "alt": "固件块下载流程图，来自规范文档。",
+            "caption": "块下载流程强化了固件更新是一个有状态的生命周期，包含检查、重试、完成和提交等行为。",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Firmware Management Features"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-93"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.txt",
+            "wav_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "host_software_owns_the_local_conversation",
+          "section_label": "主机边界",
+          "title": "主机软件负责本地交互",
+          "subtitle": "主机通过 I2C 与本地合规模块通信；本地模块检索远端数据。",
+          "bullets": [
+            {
+              "bold_lead": "本地控制点",
+              "text": "规范中，所有合规收发器与本地主机之间的通信均通过I2C进行。"
+            },
+            {
+              "bold_lead": "远程取回",
+              "text": "当请求远端数据时，本地收发器会获取数据并将其返回主机。"
+            },
+            {
+              "bold_lead": "没有直接的远程路径",
+              "text": "本地主机不直接与远端链路对端模块通信。"
+            }
+          ],
+          "figure": {
+            "path": "figures/host_local_conversation.svg",
+            "alt": "主机通过I2C与本地模块通信，而本地模块则通过带内通信获取远端对端的数据。",
+            "caption": "主机仍位于本地；合规模块连接到远端端点。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver Communications"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.txt",
+            "wav_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "command_line_apis_become_operator_tools",
+          "section_label": "运维 API",
+          "title": "命令行 API 成为运维工具",
+          "subtitle": "主机 SDK 和命令行 API 将通用模块功能暴露为可重复的工作流程。",
+          "columns": [
+            "API 类别",
+            "运维用途"
+          ],
+          "rows": [
+            [
+              "标准 CMIS 访问",
+              "读取本地寄存器和标准模块状态。"
+            ],
+            [
+              "远程 CMIS 访问",
+              "从远程链路合作伙伴提取标准CMIS数据。"
+            ],
+            [
+              "遥测下载",
+              "提供本地或远端模块的遥测参数。"
+            ],
+            [
+              "事件日志",
+              "读取、下载、清除并调整本地或远程事件历史。"
+            ],
+            [
+              "固件更新",
+              "运行本地或远程无中断固件更新工作流程。"
+            ],
+            [
+              "时间与评分",
+              "设置纪元时间，调整滞后，并显示模块链路评分。"
+            ]
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Command Line APIs"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.txt",
+            "wav_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_harvesting_builds_a_link_timeline",
+          "section_label": "数据采集",
+          "title": "遥测采集构建链路时间线",
+          "figure": {
+            "path": "figures/telemetry_timeline.svg",
+            "alt": "时间线显示主机轮询、事件阈值、远端链路对端查询和网络健康地图。",
+            "caption": "连续采集可以将当前遥测数据、事件日志和远程查询转化为网络范围的健康时间线。",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Host Software"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.txt",
+            "wav_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "deployment_readiness_checks",
+          "section_label": "就绪检查",
+          "title": "部署就绪检查",
+          "subtitle": "部署应验证行为，而不仅仅是字段是否存在。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "本地及远端链路对端",
+              "body": "确认主机能从本地模块和正确的远端端点获取数据。"
+            },
+            {
+              "title": "分支连接场景",
+              "body": "当一个端口映射到多个远端时，验证链路对端身份和每端点遥测数据。"
+            },
+            {
+              "title": "第三方光学",
+              "body": "在真实环境中出现合规与不合规光模块时，检查行为。"
+            },
+            {
+              "title": "纪元时间",
+              "body": "确保时间戳可以跨主机、模块、事件日志和监控工具进行关联。"
+            },
+            {
+              "title": "固件生命周期",
+              "body": "演练能力发现、传输、激活、提交、中止和恢复状态。"
+            },
+            {
+              "title": "仓库与 SDK",
+              "body": "确认部署策略预期的主机实现、工具和源代码可用性。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Other MCU Requirements, Host Software, Requirements and Repository"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "15-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_deployment_readiness_checks.txt",
+            "wav_file": "audio/module4/slide_08_deployment_readiness_checks.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_diagram",
+          "slug": "from_link_flap_to_root_cause",
+          "section_label": "故障排查",
+          "title": "从链路抖动到根本原因",
+          "figure": {
+            "path": "figures/link_flap_root_cause.mp4",
+            "media_type": "video",
+            "alt": "无声动画显示从链路抖动警报到健康评分、指标、事件日志、远程查询和基于证据的行动的故障排除过程。",
+            "caption": "实用的工作流程是在选择动作前结合分数、指标、事件历史、远端端点数据和主机时间线。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Overview and Host Software"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "11, 94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_09_from_link_flap_to_root_cause.txt",
+            "wav_file": "audio/module4/slide_09_from_link_flap_to_root_cause.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "reliability_depends_on_common_interfaces",
+          "title": "可靠性依赖统一接口",
+          "items": [
+            "固件管理是一个包含能力发现、状态检查、激活、提交和恢复行为的生命周期。",
+            "主机软件通过I2C本地通信，而合规模块则在带内获取远端链路对端的数据。",
+            "运维 API应公开遥测、事件日志、远程访问、固件更新、时间、迟滞和链路评分。",
+            "持续采集将当前状态和事件历史转化为链路时间线。",
+            "部署准备度意味着验证本地、远程、分支连接和混合兼容场景中的行为。"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Firmware Management Features and Host Software"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.txt",
+            "wav_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_deployment_workflow",
+          "title": "检验你的理解：部署工作流",
+          "subtitle": "回答一次即可继续。不要求正确，反馈后你可以重试。",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "为什么本地主机在规范模型中不直接与远端链路对端模块通信？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "主机与本地合规模块通信；本地模块通过带内通信获取远端数据。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "不支持远程遥测。",
+                  "correct": false,
+                  "feedback_incorrect": "远程遥测由本地模块通过带内通信提供。"
+                },
+                {
+                  "id": "c",
+                  "text": "只有遥测服务器可以请求远程光学数据。",
+                  "correct": false,
+                  "feedback_incorrect": "主机软件可以通过本地兼容模块请求远端数据；服务器汇总更高层次的健康信息。"
+                }
+              ],
+              "feedback_correct": "没错。本地模块桥接远程检索，而主机保持一条本地控制路径。",
+              "feedback_incorrect": "审查主机边界：本地主机通过I2C到本地模块，然后本地模块再通过带内通信访问远端对端。"
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "哪些主机/API功能支持大规模设备群的光学运维？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "本地和远程遥测数据下载。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "读取和清除事件日志、下载近期事件和滞后控制。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "本地和远程固件更新工作流程。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "忽略主机端的pre-FEC BER和不可纠正码字数据。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "没错。设备群运营需要当前的遥测数据、持久历史、远程访问、固件生命周期支持以及主机端上下文。",
+              "feedback_incorrect": "考虑完整运维链：当前遥测数据、事件历史、远程访问、固件管理、时间相关性、评分和主机端上下文。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Transceiver Communications and Command Line APIs"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_11_check_your_model_deployment_workflow.txt",
+            "wav_file": "audio/module4/slide_11_check_your_model_deployment_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "course_complete",
+          "slug": "course_complete_ocp_optics_reliability",
+          "title": "课程完成：增强遥测光学",
+          "course_title": "增强遥测光学",
+          "thank_you_message": "感谢您完成最后一个模块：固件、主机软件和部署准备。",
+          "cert_message": "你已经完成了光学可靠性课程。你现在可以解释增强的遥测如何将本地和远端端点、链路健康指标、事件历史、CDB工作流程、固件生命周期以及主机 API连接成一个基于证据的可靠性模型。",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "范围, Overview, Firmware Management Features, Host Software"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.txt",
+            "wav_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.wav",
+            "approved": true
+          }
+        }
+      ]
+    }
+  ],
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bZtjnyJAFD0Cp3lfNG5g",
+    "voice_name": "Lan Chen"
+  },
+  "metadata_language_name": "Simplified Chinese",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "zh-CN",
+    "source_course_sha256": "b8664ca9182f6df3294fb9dc37901611a366e168f8860a8bbd303021764404b2"
+  },
+  "ui_labels": {
+    "not_started": "未开始",
+    "completed": "已完成",
+    "course_overview": "课程概览",
+    "learning_objectives": "学习目标",
+    "reference": "参考资料",
+    "learn_more": "了解更多",
+    "opens_new_tab": "在新标签页中打开",
+    "learner_resource": "学习资源",
+    "open": "打开",
+    "video_controls": "视频控件",
+    "play_video": "播放视频",
+    "pause_video": "暂停视频",
+    "zoom_video": "放大视频",
+    "video_figure": "视频图示",
+    "zoom_figure": "放大图示",
+    "enlarged_figure": "放大的图示",
+    "lightbox_close_hint": "单击外部区域或按 Esc 键关闭",
+    "key_takeaways": "要点回顾",
+    "knowledge_check": "知识检查",
+    "submit": "提交",
+    "retry": "重试",
+    "correct": "回答正确。",
+    "review_feedback": "请查看反馈后重试。",
+    "select_answer": "请至少选择一个答案，然后提交。",
+    "module": "模块",
+    "module_complete": "模块 {module} 已完成",
+    "up_next": "下一模块",
+    "go_to_module": "前往模块 {module}",
+    "share_feedback": "分享反馈",
+    "survey_body": "请分享您的课程体验，帮助 OCP Academy 改进未来的学习内容。",
+    "course_complete": "课程已完成",
+    "theme": "主题",
+    "toggle_dark_mode": "切换深色模式",
+    "previous_slide": "上一张幻灯片",
+    "next_slide": "下一张幻灯片",
+    "play_pause_narration": "播放或暂停旁白",
+    "playback_speed": "播放速度",
+    "playback_speed_slider": "播放速度滑块",
+    "speed": "速度",
+    "toggle_fullscreen": "切换全屏",
+    "fullscreen": "全屏"
+  }
+}
