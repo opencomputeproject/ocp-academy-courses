@@ -1,0 +1,2419 @@
+{
+  "style": "Slides",
+  "course_slug": "introduction_to_emerging_optical_technologies_ko_kr",
+  "course_title": "차세대 광학 기술 소개",
+  "language": "ko-KR",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+    "voice_name": "Chris - Warm and clear"
+  },
+  "course_subtitle": "새로운 광학 접근법이 AI 인프라의 규모, 효율, 밀도, 지연 시간, 컴퓨팅 통합 과제를 해결하는 방법을 살펴봅니다.",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "차세대 기술",
+  "target_duration_minutes": 60,
+  "audience_level": "입문 및 중급 기술",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "emerging_optical_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "OPTICS"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP 아카데미"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+      "kind": "source_slides"
+    },
+    {
+      "url": "https://www.opencompute.org/documents/open-rack-base-specification-version-3-pdf",
+      "kind": "official_reference",
+      "title": "오픈 랙 베이스 사양 버전 3"
+    },
+    {
+      "url": "https://www.oiforum.com/oif-launches-the-industrys-first-co-packaging-standard-the-3-2t-co-packaged-module-implementation-agreement/",
+      "kind": "official_reference",
+      "title": "OIF 3.2T 공동 패키지 모듈 구현 협약"
+    },
+    {
+      "url": "https://sumitomoelectric.com/press/2026/02/prs011",
+      "kind": "official_reference",
+      "title": "SDM4 MCF MSA 발표"
+    },
+    {
+      "url": "https://www.3m.com/3M/en_US/p/c/electronics-components/interconnect-products/expanded-beam-optical-solutions/i/electronics/data-center/",
+      "kind": "manufacturer_reference",
+      "title": "3M 확장 빔 광학 솔루션"
+    },
+    {
+      "url": "https://www.usconec.com/ferrules/lensed",
+      "kind": "manufacturer_reference",
+      "title": "미국 Conec PRIZM 확장 빔 페룰"
+    },
+    {
+      "url": "https://blogs.microsoft.com/blog/2022/12/09/microsoft-acquires-lumenisity-an-innovator-in-hollow-core-fiber-hcf-cable/",
+      "kind": "industry_reference",
+      "title": "마이크로소프트 루메니시티 할로우 코어 광섬유 인수"
+    },
+    {
+      "url": "https://www.nature.com/articles/s41566-025-01747-5",
+      "kind": "research_reference",
+      "title": "네이처 포토닉스 할로우코어 섬유 감쇠 논문"
+    },
+    {
+      "url": "https://www.nvidia.com/en-us/solutions/quantum-computing/nvqlink/",
+      "kind": "manufacturer_reference",
+      "title": "NVIDIA NVQLink 간단한 사양"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "cpo",
+      "term": "CPO",
+      "tooltip": "코패키지드 옵틱스: 스위칭 ASIC 가까이에 광 엔진을 배치하여 전기 전송 거리를 줄이고 밀도를 높이는 방식입니다."
+    },
+    {
+      "id": "npo",
+      "term": "NPO",
+      "tooltip": "니어패키지드 옵틱스: 광학 부품을 스위치 패키지에 가깝게 옮기되 패키지 내부에 완전히 통합하지는 않는 방식입니다."
+    },
+    {
+      "id": "apo",
+      "term": "APO",
+      "tooltip": "면적형 패키지 광학: 광 I/O를 다이 또는 패키지 둘레뿐 아니라 다이 면을 통해 인출할 수 있게 하는 미래 지향적 통합 방식입니다."
+    },
+    {
+      "id": "ebo",
+      "term": "EBO",
+      "tooltip": "확장 빔 광학: 렌즈로 빔을 확장하고 시준하여 결합 인터페이스의 작은 오염물질에 대한 민감도를 낮추는 커넥터 설계입니다."
+    },
+    {
+      "id": "mttu",
+      "term": "MTTU",
+      "tooltip": "평균 개통 시간: 배포된 네트워크나 클러스터를 안정적인 운영 서비스 상태로 전환하는 데 걸리는 시간입니다."
+    },
+    {
+      "id": "ptmt",
+      "term": "PTMT",
+      "tooltip": "비접촉식이며 이물질에 강한 광 인터페이스를 위한 렌즈형 확장 빔 페룰 방식으로, EBO와 함께 비교 사례로 사용됩니다.",
+      "reference_label": "미국 Conec PRIZM 확장 빔 페룰",
+      "url": "https://www.usconec.com/ferrules/lensed"
+    },
+    {
+      "id": "mcf",
+      "term": "MCF",
+      "tooltip": "멀티코어 광섬유: 하나의 공유 클래딩 안에 여러 독립적인 코어가 있는 광섬유입니다."
+    },
+    {
+      "id": "hcf",
+      "term": "HCF",
+      "tooltip": "할로우 코어 광섬유: 고체 유리 코어 대신 주로 공기 속으로 빛을 유도하는 광섬유입니다."
+    },
+    {
+      "id": "qpu",
+      "term": "QPU",
+      "tooltip": "양자 처리 장치: 하이브리드 컴퓨팅 시스템에서 양자 회로를 처리하는 특수 가속기입니다."
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_ai_infrastructure_is_changing_optics",
+      "title": "AI 인프라가 광학을 바꾸는 이유",
+      "subtitle": "하이퍼스케일 AI 시스템이 차세대 광학 기술을 요구하는 배경.",
+      "module_badge_text": "모듈 1",
+      "next_module_title": "전력, 열, 정비성의 변화",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "AI 인프라가 광학을 바꾸는 이유",
+          "subtitle": "하이퍼스케일 AI 시스템이 차세대 광학 기술을 요구하는 배경.",
+          "version_chip": "신기술",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 1
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 4
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course_overview",
+          "title": "이 강좌가 답하는 네 가지 질문",
+          "subtitle": "각 모듈은 하나의 인프라 압력을 완화하기 위해 설계된 광학 기술과 연결됩니다.",
+          "modules_listed": [
+            "AI 인프라가 광학을 바꾸는 이유",
+            "전력, 열, 정비성의 변화",
+            "광 인프라의 밀도와 테스트 가능성",
+            "지연 시간, 양자 컴퓨팅, 도입 전망"
+          ],
+          "chips": [
+            {
+              "icon": "clock",
+              "text": "60분"
+            },
+            {
+              "icon": "audience",
+              "text": "입문부터 중급까지입니다"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "ai_fabrics_optical_first",
+          "section_label": "기술 지형",
+          "title": "AI 네트워크는 광학 우선 시스템으로 전환되고 있습니다",
+          "subtitle": "고속 스위치와 더 큰 네트워크는 광섬유 인프라를 시스템 수준의 제약 조건으로 만듭니다.",
+          "bullets": [
+            {
+              "bold_lead": "800G가 기준이 됩니다",
+              "text": "AI 백엔드 네트워크는 이미 800G를 일반적인 설계 포인트로 다루고 있으며, 1.6T 배포가 증가하고 있습니다."
+            },
+            {
+              "bold_lead": "클러스터 규모는 광학 기술 문제를 변화시킵니다",
+              "text": "더 많은 엔드포인트, 더 많은 스위치 래딕스, 더 많은 랙 규모 링크가 광섬유 경로와 커넥터 작업을 늘립니다."
+            },
+            {
+              "bold_lead": "플러거블 광모듈이 압박을 받고 있습니다",
+              "text": "포트와 광섬유 수가 증가함에 따라 전면 패널 밀도, 전력, 열, 서비스 접근성이 더 어려워집니다."
+            },
+            {
+              "bold_lead": "케이블 인프라는 성능의 일부입니다",
+              "text": "트레이 점유율, 굽힘 관리, 테스트 가능성, 청결 상태가 이제 서비스 활성화 시간과 가용 용량에 영향을 미칩니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_fabrics_optical_first.txt",
+            "wav_file": "audio/module1/slide_03_ai_fabrics_optical_first.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 4
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 9
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_grid",
+          "slug": "traditional_vs_ai",
+          "section_label": "운영 모델",
+          "title": "전통적인 데이터 센터와 AI 데이터 센터",
+          "subtitle": "AI 클러스터는 기존 엔터프라이즈 워크로드와는 다른 트래픽, 장애, 밀도 가정을 만듭니다.",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "전통 모델",
+              "body": "많은 독립적인 애플리케이션, 중간 정도의 동서 결합, 그리고 종종 작은 서비스 도메인에 영향을 미치는 네트워크 문제들이 있습니다.",
+              "tone": "traditional"
+            },
+            {
+              "title": "AI 모델",
+              "body": "대규모 동기식 학습 또는 추론 시스템, 밀집된 가속기 네트워크, 그리고 작업 효율성을 저하시킬 수 있는 링크 문제들.",
+              "tone": "ai"
+            },
+            {
+              "title": "설계 우선순위",
+              "body": "용량 계획은 예측 가능한 성장, 중복성, 그리고 범용 네트워크 갱신 주기에 중점을 둡니다.",
+              "tone": "traditional"
+            },
+            {
+              "title": "AI 우선순위",
+              "body": "설계는 낮은 지연, 높은 라딕스, 높은 광섬유 밀도, 빠른 서비스 활성화, 빠른 서비스 복구에 중점을 둡니다.",
+              "tone": "ai"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_traditional_vs_ai.txt",
+            "wav_file": "audio/module1/slide_04_traditional_vs_ai.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 7
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 8
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "gpu_generations_density",
+          "section_label": "스케일 신호",
+          "title": "GPU 세대가 광섬유 밀도를 높인다",
+          "figure": {
+            "path": "figures/gpu_generation_fiber_density.svg",
+            "alt": "타임라인은 AI 가속기 세대에 걸쳐 섬유 밀도 압력이 증가하고 있음을 보여줍니다.",
+            "caption": "가속기 생성은 증가하는 프론트엔드, 백엔드, 그리고 스케일업 광섬유 수요를 나타내는 유용한 대리 지표입니다.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 768 360\" aria-label=\"AI 세대별 광섬유 밀도 압력\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"48\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">AI 세대별 광섬유 밀도 압력</text>\n  <line x1=\"90\" y1=\"160\" x2=\"700\" y2=\"160\" stroke=\"#9ca3af\" stroke-width=\"6\" stroke-linecap=\"round\"/>\n  <polygon points=\"700,151 718,160 700,169\" fill=\"#9ca3af\"/>\n  <circle cx=\"90\" cy=\"160\" r=\"16\" fill=\"#343895\"/><text x=\"90\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">호퍼</text><text x=\"90\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">수백</text><text x=\"90\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">가닥</text><circle cx=\"285\" cy=\"160\" r=\"16\" fill=\"#5F6062\"/><text x=\"285\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">블랙웰</text><text x=\"285\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">800G 기준선</text><text x=\"285\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">1.6T 전환</text><circle cx=\"480\" cy=\"160\" r=\"16\" fill=\"#8DC63F\"/><text x=\"480\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">루빈</text><text x=\"480\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">더 밀집된 랙</text><text x=\"480\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">더 많은 광 연결</text><circle cx=\"675\" cy=\"160\" r=\"16\" fill=\"#D88911\"/><text x=\"675\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">파인만</text><text x=\"675\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">스케일업</text><text x=\"675\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">+ 스케일아웃</text>\n  <text x=\"384\" y=\"325\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">세대가 바뀐 때마다 물리적 인프라가 지원해야 하는 광 연결 수가 증가합니다.</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_gpu_generations_density.txt",
+            "wav_file": "audio/module1/slide_05_gpu_generations_density.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 9
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "full_slide_image",
+          "slug": "fe_be_fiber_growth",
+          "figure": {
+            "path": "figures/source_slide_9_fe_be_fiber_growth.png",
+            "alt": "호퍼, 블랙웰, 루빈, 파인만 GPU 세대에 걸친 프론트엔드 및 백엔드 광섬유 수 증가를 보여주는 타임라인 이미지.",
+            "source": "source_slide_image"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_06_fe_be_fiber_growth.txt",
+            "wav_file": "audio/module1/slide_06_fe_be_fiber_growth.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 9
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "scale_up_out_across",
+          "section_label": "스케일링 패턴",
+          "title": "스케일업, 스케일아웃, 그리고 스케일어크로스",
+          "subtitle": "'스케일'이라는 말은 세 가지 다른 광학 설계 문제를 숨기고 있습니다.",
+          "bullets": [
+            {
+              "bold_lead": "스케일업",
+              "text": "가속기를 랙 또는 랙 그룹 내에서 밀접하게 결합하며, 커넥터 접근성, 패키징, 정비성이 우선입니다."
+            },
+            {
+              "bold_lead": "스케일아웃",
+              "text": "스위치 래딕스, 광섬유 수, 링크 신뢰성이 지배적인 더 큰 학습 네트워크로 많은 시스템을 연결합니다."
+            },
+            {
+              "bold_lead": "스케일어크로스",
+              "text": "방, 복도 또는 인근 데이터 센터 건물 간 네트워크를 확장하며, 지연 시간과 도달 범위가 중심이 됩니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/scale_up_out_across.mp4",
+            "media_type": "video",
+            "alt": "무음 애니메이션이 랙 내부의 밀접하게 결합된 가속기 링크에서 다중 랙 네트워크로, 그리고 인근 데이터 센터 건물 간의 광 링크로 점차 넓어집니다.",
+            "caption": "스케일업, 스케일아웃, 스케일어크로스는 중첩된 도메인이지만, 각각은 지배적인 광학 제약 조건을 이동시킵니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "mobile_scroll": true,
+          "audio": {
+            "script_file": "audio/module1/slide_07_scale_up_out_across.txt",
+            "wav_file": "audio/module1/slide_07_scale_up_out_across.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 12
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 13
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 14
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 17
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "rack_architecture_network",
+          "section_label": "랙 규모",
+          "title": "랙 아키텍처가 네트워크의 일부가 되다",
+          "subtitle": "오픈 랙과 와이드 랙 설계는 전력, 냉각, 기계적 접근, 광섬유 배선 등을 동일한 결정에 포함시킵니다.",
+          "bullets": [
+            {
+              "bold_lead": "랙 폭과 전력 분배가 중요합니다",
+              "text": "더 넓은 장비 구역, 48V 분배, 고밀도 전력 선반은 광학 기술과 광섬유가 어디에 위치할 수 있는지에 영향을 미칩니다."
+            },
+            {
+              "bold_lead": "수냉 냉각은 서비스 경로를 변경합니다",
+              "text": "콜드 플레이트, 매니폴드, 블라인드 메이트 유체 연결은 광 연결성과 동일한 물리적 공간을 두고 경쟁합니다."
+            },
+            {
+              "bold_lead": "광학 기술은 유지보수 워크플로우에 적합해야 합니다",
+              "text": "조밀한 랙은 기술자가 과도한 광섬유 취급 없이 트레이를 교체하고 링크를 복원할 수 있을 때만 유용합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/rack_architecture_network.svg",
+            "alt": "전력, 냉각, 광학 기술 및 운영을 결합된 랙 규모 제약 조건으로 보여주는 흐름.",
+            "caption": "랙 설계는 점점 더 전력, 냉각, 광 라우팅, 서비스 워크플로우를 결합하고 있습니다.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 768 340\" aria-label=\"랙 설계가 네트워크 제약이 됨\">\n  <rect width=\"768\" height=\"340\" fill=\"#fff\"/><text x=\"384\" y=\"46\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">랙 설계가 네트워크 제약이 됨</text><rect x=\"40.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/><text x=\"115.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">전력</text><text x=\"115.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">48V 버스바</text><text x=\"115.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">더 높은 랙 하중</text><line x1=\"191.0\" y1=\"181.0\" x2=\"209.0\" y2=\"181.0\" stroke=\"#8DC63F\" stroke-width=\"4\"/><polygon points=\"209,173 219,181 209,189\" fill=\"#8DC63F\"/><rect x=\"219.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/><text x=\"294.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">냉각</text><text x=\"294.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">액체 루프</text><text x=\"294.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">블라인드 메이트</text><line x1=\"370.0\" y1=\"181.0\" x2=\"388.0\" y2=\"181.0\" stroke=\"#8DC63F\" stroke-width=\"4\"/><polygon points=\"388,173 398,181 388,189\" fill=\"#8DC63F\"/><rect x=\"398.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/><text x=\"473.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">광학 기술</text><text x=\"473.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">고밀도 광섬유</text><text x=\"473.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">서비스 경로</text><line x1=\"549.0\" y1=\"181.0\" x2=\"567.0\" y2=\"181.0\" stroke=\"#8DC63F\" stroke-width=\"4\"/><polygon points=\"567,173 577,181 567,189\" fill=\"#8DC63F\"/><rect x=\"577.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/><text x=\"652.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">운영</text><text x=\"652.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">서비스 활성화</text><text x=\"652.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">복구</text><text x=\"384\" y=\"306\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">밀집된 AI 랙은 기계, 열, 전기, 광학 선택지를 상호 의존하게 만듭니다.</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_08_rack_architecture_network.txt",
+            "wav_file": "audio/module1/slide_08_rack_architecture_network.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 19
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 20
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 21
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 22
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 23
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 24
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "인프라 문제는 대역폭보다 더 큽니다",
+          "items": [
+            "AI 네트워크는 속도, 밀도, 전력, 지연 시간, 정비성의 한계를 동시에 밀어붙입니다.",
+            "스케일업, 스케일아웃, 스케일어크로스는 서로 다른 광학 설계 압력을 만듭니다.",
+            "랙 아키텍처, 냉각, 유지보수 접근성이 이제 광 연결 결정에 영향을 미칩니다.",
+            "차세대 광학 기술은 그들이 완화하는 구체적인 제약에 따라 평가되어야 합니다."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_takeaways.txt",
+            "wav_file": "audio/module1/slide_09_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 14
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "모델 점검: AI 광학 드라이버",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "AI 클러스터가 더 밀집된 광학 인프라를 주도하는 가장 좋은 이유는 무엇일까요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "AI 네트워크는 랙과 시스템 간에 더 빠르고 긴밀하게 결합된 링크가 필요합니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "AI 클러스터는 스위치 간 연결이 필요 없게 만듭니다.",
+                  "correct": false,
+                  "feedback_incorrect": "AI 클러스터는 일반적으로 더 많은 고속 연결을 필요로 합니다. 압박은 링크 감소가 아니라 증가에서 옵니다."
+                },
+                {
+                  "id": "c",
+                  "text": "광섬유는 장거리 통신망에만 필요합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "AI 인프라에서는 광 링크가 데이터 센터 내부와 인근 데이터 센터 건물 간에도 사용됩니다."
+                }
+              ],
+              "feedback_correct": "맞아요. AI 네트워크의 규모와 결합은 고속 광 링크의 수와 중요성을 증가시킵니다.",
+              "feedback_incorrect": "스케일 패턴을 복습하세요. AI 네트워크는 링크 수와 각 링크의 운영 중요성을 모두 증가시킵니다."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "어떤 문장들이 설계 압력을 스케일링 패턴에 올바르게 매핑하나요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "스케일업은 종종 패키징, 전면 패널 접근성, 그리고 정비성에 중점을 둡니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "스케일아웃은 스위치 래딕스, 광섬유 수, 링크 신뢰성에 종종 스트레스를 줍니다.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "스케일어크로스는 지연 시간과 도달 거리를 더 중요하게 만드는 경우가 많습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "세 가지 패턴 모두 동일한 커넥터 교체로 해결됩니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞아요. 스케일링 패턴이 겹치지만, 각각은 광학 시스템의 다른 부분을 강조합니다.",
+              "feedback_incorrect": "세 가지 패턴 모델을 사용하세요: 스케일업, 스케일아웃, 스케일어크로스는 서로 관련되지만 구별되는 광학 설계 압력을 만듭니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 14
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 17
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 2,
+          "next_module_title": "전력, 열, 정비성의 변화",
+          "thank_you_message": "잘했어. 현재 상황은 AI 인프라가 단순히 링크의 데이터 전송률이 아니라 물리적 광 계층을 변화시키고 있습니다.",
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next.txt",
+            "wav_file": "audio/module1/slide_11_up_next.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "power_thermal_serviceability",
+      "title": "전력, 열, 정비성의 변화",
+      "subtitle": "CPO, 확장 빔, 후면 블라인드 메이트 설계가 광학 배치와 시스템 정비 방식을 어떻게 바꾸는지 살펴봅니다.",
+      "module_badge_text": "모듈 2",
+      "next_module_title": "광 인프라의 밀도와 테스트 가능성",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "전력, 열, 정비성의 변화",
+          "subtitle": "CPO, 확장 빔, 후면 블라인드 메이트 설계가 광학 배치와 시스템 정비 방식을 어떻게 바꾸는지 살펴봅니다.",
+          "version_chip": "신기술",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 26
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "분류할 설계 압력",
+          "subtitle": "이 모듈을 마치면 다음과 같은 내용을 할 수 있게 됩니다:",
+          "objectives": [
+            "왜 전기 범위, 전면 패널 공간, 열 부하가 광학 기술을 스위치 ASIC에 더 가깝게 밀어붙이고 있는지 설명해 주세요.",
+            "플러거블 광모듈, 니어 패키지 광학, 코패키지드 옵틱스(CPO)의 기본적인 차이를 설명해 주세요.",
+            "확장 빔 연결성이 먼지 민감도와 유지보수 워크플로우에 어떤 변화를 주는지 설명하세요.",
+            "더 밀집된 광적 집적으로 인한 정비성 트레이드오프를 파악하세요."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "pluggable_model_limits",
+          "section_label": "시스템 제한",
+          "title": "플러거블 모델이 시스템 한계에 부딪히다",
+          "subtitle": "전면 패널 광학 기술은 여전히 유용하지만, 고라딕스 AI 스위치는 그 한계를 드러냅니다.",
+          "bullets": [
+            {
+              "bold_lead": "전기 도달 거리는 전력 소모를 늘립니다",
+              "text": "더 긴 고속 전기 경로는 더 많은 신호 조절이 필요하며, 이는 전력과 열을 증가시킵니다."
+            },
+            {
+              "bold_lead": "전면 패널 공간이 부족합니다",
+              "text": "전통적인 케이지는 더 밀집된 광섬유 브레이크아웃에 필요한 동일한 전면 패널 공간을 차지합니다."
+            },
+            {
+              "bold_lead": "공기 흐름과 서비스 접근이 충돌한다",
+              "text": "광학 기술, 케이블 굴곡 반경, 냉각, 기술자 접근성 등이 시스템 전면에서 경쟁합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/pluggable_to_packaged.svg",
+            "alt": "플러거블 광 기술과 근접 또는 코패키지드 옵틱스(CPO)의 비교.",
+            "caption": "광학 변환을 스위칭 실리콘에 더 가깝게 옮기면 전기 전송 거리가 줄어들 수 있지만, 기계적 및 서비스 모델이 달라집니다.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 768 360\" aria-label=\"광변환은 ASIC에 더 가까워집니다\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"48\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">광변환은 ASIC에 더 가까워집니다</text>\n  <rect x=\"70\" y=\"92\" width=\"270\" height=\"180\" rx=\"14\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <rect x=\"428\" y=\"92\" width=\"270\" height=\"180\" rx=\"14\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/>\n  <text x=\"205\" y=\"132\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"800\" fill=\"#343895\">플러거블</text>\n  <text x=\"563\" y=\"132\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"800\" fill=\"#343895\">니어 패키지 또는 코패키지</text>\n  <text x=\"205\" y=\"170\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">전면 패널</text><text x=\"205\" y=\"194\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">더 긴 전기 경로</text><text x=\"205\" y=\"218\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">쉬운 교체</text>\n  <text x=\"563\" y=\"170\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">ASIC 근처</text><text x=\"563\" y=\"194\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">전기 경로 단축</text><text x=\"563\" y=\"218\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">새로운 서비스 모델</text>\n  <line x1=\"355\" y1=\"182\" x2=\"413\" y2=\"182\" stroke=\"#8DC63F\" stroke-width=\"5\" marker-end=\"url(#arrow)\"/>\n  <defs><marker id=\"arrow\" markerWidth=\"10\" markerHeight=\"10\" refX=\"8\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L9,3 L0,6 Z\" fill=\"#8DC63F\"/></marker></defs>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_pluggable_model_limits.txt",
+            "wav_file": "audio/module2/slide_03_pluggable_model_limits.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cpo",
+            "npo"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 17
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "cpo_moves_boundary",
+          "section_label": "아키텍처 전환",
+          "title": "코패키지드 옵틱스(CPO)가 경계를 이동시킵니다",
+          "figure": {
+            "path": "figures/source_slide_28_cpo_roadmap.png",
+            "alt": "구리 DAC와 플러거블 광학 기술에서 온보드, 2.5D, 칩렛, 3D CPO 접근법으로의 발전을 보여주는 CPO 로드맵 다이어그램.",
+            "caption": "이 로드맵은 광변환이 고대역폭에서 전기 도달 거리가 더 어려워질수록 점차 스위치 부품에 가까워지고 있음을 보여줍니다.",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_cpo_moves_boundary.txt",
+            "wav_file": "audio/module2/slide_04_cpo_moves_boundary.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cpo"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "apo_area_escape",
+          "section_label": "CPO를 넘어서",
+          "title": "둘레 인출을 넘어: 면적형 패키지 광학(APO)",
+          "figure": {
+            "alt": "광학 I/O가 다이 가장자리를 따라 나가는 주변부 인출과 광 입출력이 다이 면을 통해 다이 아래 광 엔진으로 나가는 APO 면적 인출을 비교한 단순화된 다이어그램입니다.",
+            "caption": "APO는 스케일링 모델을 변경합니다: 경계 기반 탈출은 엣지 길이에 따라 증가합니다; 면적 인출은 다이 페이스 면적과 함께 커질 수 있습니다.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 768 360\" aria-label=\"APO의 주변부 인출과 면적 인출 비교\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"38\" text-anchor=\"middle\" font-size=\"24\" font-weight=\"800\" fill=\"#343895\">광 I/O 인출 구조</text>\n\n  <rect x=\"48\" y=\"72\" width=\"304\" height=\"236\" rx=\"14\" fill=\"#F8FAFC\" stroke=\"#9CA3AF\" stroke-width=\"2.5\"/>\n  <text x=\"200\" y=\"104\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"800\" fill=\"#343895\">주변부 인출</text>\n  <text x=\"200\" y=\"128\" text-anchor=\"middle\" font-size=\"14\" fill=\"#5F6062\">I/O는 가장자리에서 나갑니다</text>\n  <rect x=\"126\" y=\"154\" width=\"148\" height=\"92\" rx=\"10\" fill=\"#EEF2F7\" stroke=\"#5F6062\" stroke-width=\"2\"/>\n  <text x=\"200\" y=\"196\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" fill=\"#343895\">다이 / 패키지</text>\n  <text x=\"200\" y=\"220\" text-anchor=\"middle\" font-size=\"13\" fill=\"#5F6062\">에지로 제한된 인출</text>\n  <g fill=\"#8DC63F\">\n    <circle cx=\"128\" cy=\"172\" r=\"4\"/><circle cx=\"128\" cy=\"190\" r=\"4\"/><circle cx=\"128\" cy=\"208\" r=\"4\"/><circle cx=\"128\" cy=\"226\" r=\"4\"/>\n    <circle cx=\"272\" cy=\"172\" r=\"4\"/><circle cx=\"272\" cy=\"190\" r=\"4\"/><circle cx=\"272\" cy=\"208\" r=\"4\"/><circle cx=\"272\" cy=\"226\" r=\"4\"/>\n    <circle cx=\"152\" cy=\"154\" r=\"4\"/><circle cx=\"176\" cy=\"154\" r=\"4\"/><circle cx=\"200\" cy=\"154\" r=\"4\"/><circle cx=\"224\" cy=\"154\" r=\"4\"/><circle cx=\"248\" cy=\"154\" r=\"4\"/>\n    <circle cx=\"152\" cy=\"246\" r=\"4\"/><circle cx=\"176\" cy=\"246\" r=\"4\"/><circle cx=\"200\" cy=\"246\" r=\"4\"/><circle cx=\"224\" cy=\"246\" r=\"4\"/><circle cx=\"248\" cy=\"246\" r=\"4\"/>\n  </g>\n  <rect x=\"110\" y=\"272\" width=\"180\" height=\"30\" rx=\"15\" fill=\"#E6EEF8\" stroke=\"#A7BCD3\"/>\n  <text x=\"200\" y=\"293\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"700\" fill=\"#343895\">둘레 길이에 따라 확장</text>\n\n  <rect x=\"416\" y=\"72\" width=\"304\" height=\"236\" rx=\"14\" fill=\"#FFF4DD\" stroke=\"#E0B76A\" stroke-width=\"2.5\"/>\n  <text x=\"568\" y=\"104\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"800\" fill=\"#343895\">면적 인출: APO</text>\n  <text x=\"568\" y=\"128\" text-anchor=\"middle\" font-size=\"14\" fill=\"#5F6062\">I/O는 다이 면을 통해 나갑니다</text>\n  <rect x=\"494\" y=\"154\" width=\"148\" height=\"88\" rx=\"10\" fill=\"#FFE8BC\" stroke=\"#B9802D\" stroke-width=\"2\"/>\n  <text x=\"568\" y=\"177\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" fill=\"#343895\">다이 면</text>\n  <g fill=\"#8DC63F\">\n    <circle cx=\"526\" cy=\"198\" r=\"4\"/><circle cx=\"547\" cy=\"198\" r=\"4\"/><circle cx=\"568\" cy=\"198\" r=\"4\"/><circle cx=\"589\" cy=\"198\" r=\"4\"/><circle cx=\"610\" cy=\"198\" r=\"4\"/>\n    <circle cx=\"526\" cy=\"218\" r=\"4\"/><circle cx=\"547\" cy=\"218\" r=\"4\"/><circle cx=\"568\" cy=\"218\" r=\"4\"/><circle cx=\"589\" cy=\"218\" r=\"4\"/><circle cx=\"610\" cy=\"218\" r=\"4\"/>\n  </g>\n  <rect x=\"510\" y=\"249\" width=\"116\" height=\"24\" rx=\"8\" fill=\"#DDF2E7\" stroke=\"#8DC63F\" stroke-width=\"2\"/>\n  <text x=\"568\" y=\"266\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"700\" fill=\"#343895\">다이 아래 광 엔진</text>\n  <rect x=\"478\" y=\"278\" width=\"180\" height=\"28\" rx=\"14\" fill=\"#FDE7BE\" stroke=\"#E0B76A\"/>\n  <text x=\"568\" y=\"297\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"700\" fill=\"#343895\">다이 면적에 따라 확장</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_apo_area_escape.txt",
+            "wav_file": "audio/module2/slide_05_apo_area_escape.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "apo"
+          ],
+          "source_refs": [
+            {
+              "source": "User-provided APO connectivity table",
+              "detail": "광 연결 옵션 면적형 패키지 광학(APO)을 활용"
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "what_cpo_saves",
+          "section_label": "효율성",
+          "title": "CPO가 개선하려는 것은 무엇인가",
+          "subtitle": "가장 강력한 CPO 논거는 부품 수준뿐 아니라 시스템 수준에서 나옵니다.",
+          "bullets": [
+            {
+              "bold_lead": "전력",
+              "text": "짧은 전기 경로는 고속 인터페이스와 관련된 신호 조절 전력을 줄일 수 있습니다."
+            },
+            {
+              "bold_lead": "열 헤드룸",
+              "text": "전기 전력 소모가 줄면 고밀도 스위칭 실리콘 주변에서 제거해야 할 열도 대체로 줄어듭니다."
+            },
+            {
+              "bold_lead": "전면 패널 밀도",
+              "text": "전통적인 전면 패널 트랜시버 케이지를 제거하면 고밀도 광섬유 연결에 새로운 선택지가 열립니다."
+            },
+            {
+              "bold_lead": "스위치 라딕스",
+              "text": "고밀도 광 I/O는 더 적은 계층이나 전면 패널 혼잡을 최소화한 더 큰 네트워크를 지원할 수 있습니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_what_cpo_saves.txt",
+            "wav_file": "audio/module2/slide_06_what_cpo_saves.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "cpo_tradeoffs",
+          "section_label": "트레이드오프",
+          "title": "CPO가 더 어렵게 만드는 것은 무엇인가요",
+          "subtitle": "광학 기술을 ASIC에 가까이 옮기면 일부 제약이 개선되고 다른 제약은 더 두드러집니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "정비 용이성",
+              "body": "고장 난 광학 기능 교체는 플러그 모듈을 교체하는 것보다 더 간단할 수 있습니다."
+            },
+            {
+              "title": "레이저 전략",
+              "body": "시스템은 통합, 원격 또는 외부 레이저 광원에 대해 명확한 선택이 필요할 수 있습니다."
+            },
+            {
+              "title": "열 결합",
+              "body": "광 엔진은 이제 고출력 실리콘과 좁은 냉각 경로 근처에 위치해 있습니다."
+            },
+            {
+              "title": "상호운용성",
+              "body": "폼팩터, 전기 인터페이스, 광섬유 부착, 관리 모델이 함께 성숙해야 합니다."
+            },
+            {
+              "title": "제조 규모",
+              "body": "패키징 정밀도, 수율, 공급망 준비 상태가 핵심 채택 요소가 됩니다."
+            },
+            {
+              "title": "운영 모델",
+              "body": "팀은 모니터링, 수리, 예비 부품 운영을 위한 새로운 플레이북이 필요합니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_cpo_tradeoffs.txt",
+            "wav_file": "audio/module2/slide_07_cpo_tradeoffs.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_bullets",
+          "slug": "from_package_to_interface",
+          "section_label": "전환",
+          "title": "패키지 통합에서 현장 인터페이스까지",
+          "subtitle": "CPO는 광학 부품의 위치를 바꾸고, EBO는 서비스 중 조밀한 인터페이스의 동작을 바꿉니다.",
+          "bullets": [
+            {
+              "bold_lead": "CPO는 전환 경계를 이동합니다",
+              "text": "패키지 수준의 이야기는 전기 도달 거리, 전력, 열, 그리고 더 조밀한 광 I/O에 관한 것입니다."
+            },
+            {
+              "bold_lead": "광섬유 인터페이스는 여전히 운영을 견딜 수 있어야 합니다",
+              "text": "조밀한 랙은 여전히 결합, 점검, 청소, 교체, 그리고 기술자가 신뢰할 수 있는 커넥터가 필요합니다."
+            },
+            {
+              "bold_lead": "EBO는 서비스 인터페이스를 대상으로 합니다",
+              "text": "확장 빔 광학 기술(EBO)은 렌즈 기술을 사용하여 결합된 광 경로를 작은 오염물질에 덜 민감하게 만듭니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_from_package_to_interface.txt",
+            "wav_file": "audio/module2/slide_08_from_package_to_interface.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "ebo"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "expanded_beam_cleanliness",
+          "section_label": "EBO 커넥터 동작",
+          "title": "확장 빔 광학(EBO)은 청결도 민감성을 낮춥니다",
+          "subtitle": "EBO는 빛을 팽창시키고 평행광으로 만들기 때문에 작은 오염물질이 신호 경로의 더 작은 부분만 차단합니다.",
+          "bullets": [
+            {
+              "bold_lead": "EBO 비접촉 결합",
+              "text": "광섬유 면은 물리적 접촉 커넥터와 같은 정밀도로 접촉할 필요가 없습니다."
+            },
+            {
+              "bold_lead": "더 큰 광 스폿",
+              "text": "EBO는 결합 면에서 작은 입자에 대한 연결을 덜 민감하게 만듭니다."
+            },
+            {
+              "bold_lead": "운영 목표",
+              "text": "기술자들이 커넥터를 점검하고 청소하는 데 드는 시간이 줄어들어 서비스 활성화와 복구가 더 빨라집니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/expanded_beam_dust_compare.mp4",
+            "media_type": "video",
+            "alt": "먼지가 물리적 접촉과 확장빔 광학 커넥터 경로에 미치는 영향을 비교하는 무음 애니메이션.",
+            "caption": "물리 접촉 커넥터는 광학 스팟을 결합면에 집중시키며; EBO는 빛을 퍼뜨리고 콜리메이트하여 같은 오염물질이 경로를 덜 막습니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_09_expanded_beam_cleanliness.txt",
+            "wav_file": "audio/module2/slide_09_expanded_beam_cleanliness.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "content_bullets",
+          "slug": "ebo_drivers_possibilities",
+          "section_label": "EBO 드라이버",
+          "title": "EBO가 먼지 이상의 중요성을 가진 이유",
+          "subtitle": "핵심 동인은 단순히 더 깨끗한 커넥터가 아닙니다; 서비스 활성화 속도, 서비스 모델의 밀도 증가, 그리고 작업 중 건드리는 광섬유가 적다는 점입니다.",
+          "bullets": [
+            {
+              "bold_lead": "MTTU 압력",
+              "text": "하이퍼스케일 환경에서는 수백만 개의 광섬유에 걸친 검사와 재세척이 일정 지연 위험이 될 수 있습니다."
+            },
+            {
+              "bold_lead": "EBO 및 PTMT 가능성",
+              "text": "비접촉 렌즈형 페룰은 오염 민감도를 낮추고, 밀집된 배열을 지원하며, 결합력을 낮출 수 있습니다."
+            },
+            {
+              "bold_lead": "후방 블라인드 메이트로 가는 경로",
+              "text": "더 반복 가능한 광학 결합은 트레이, 백플레인, 랙 후면 서비스 모델을 더 실용적으로 만듭니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_ebo_drivers_possibilities.txt",
+            "wav_file": "audio/module2/slide_10_ebo_drivers_possibilities.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "mttu",
+            "ptmt"
+          ],
+          "reference_links": [
+            {
+              "label": "3M EBO 데이터센터 솔루션",
+              "url": "https://www.3m.com/3M/en_US/p/c/electronics-components/interconnect-products/expanded-beam-optical-solutions/i/electronics/data-center/"
+            },
+            {
+              "label": "미국 코넥 렌즈 페룰",
+              "url": "https://www.usconec.com/ferrules/lensed"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "content_diagram",
+          "slug": "rear_blind_mate",
+          "section_label": "서비스 워크플로우",
+          "title": "후면 블라인드 메이트는 EBO와 PTMT를 기반으로 합니다",
+          "figure": {
+            "path": "figures/source_slide_31_blind_mate_example.png",
+            "alt": "액체, 광섬유, 광 플렉스 플레인, 트레이, 블라인드 메이트 커넥터, 버스바 요소를 포함한 후방 블라인드 메이트 전개 예시.",
+            "caption": "이 예시는 리어 블라인드 결합을 시스템 워크플로우로 보여줍니다: EBO와 PTMT 스타일의 광 인터페이스가 액체, 전원, 트레이, 버스바 연결을 반복 가능한 서비스 동작으로 연결합니다.",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_11_rear_blind_mate.txt",
+            "wav_file": "audio/module2/slide_11_rear_blind_mate.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "효율성은 시스템 속성입니다",
+          "items": [
+            "CPO는 전기 도달 거리, 전력, 열, 전면 패널 밀도를 목표로 합니다.",
+            "광학 기술을 실리콘에 더 가깝게 이동시키는 것은 정비성과 생태계 성숙도 문제에 대한 새로운 질문을 낳습니다.",
+            "EBO와 PTMT 스타일의 렌즈 페룰은 커넥터 오염에 대한 민감도를 줄여 서비스 활성화와 복구를 목표로 합니다.",
+            "리어 블라인드 메이트 설계는 그 커넥터 동작을 트레이 수준의 유지보수 워크플로우로 전환합니다."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_12_takeaways.txt",
+            "wav_file": "audio/module2/slide_12_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "모델 점검: 효율성 대 정비성",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "CPO가 스위치 시스템 전력을 줄일 수 있는 핵심 이유는 무엇인가요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "ASIC과 광변환 사이의 고속 전기 경로를 단축합니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "시스템에서 모든 광 커넥터를 제거합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "CPO는 광 변환이 이루어지는 위치를 바꾸지만, 시스템은 여전히 광섬유 부착과 서비스 인터페이스가 필요합니다."
+                },
+                {
+                  "id": "c",
+                  "text": "광섬유 자체의 전력 소비를 줄이게 만듭니다.",
+                  "correct": false,
+                  "feedback_incorrect": "절감 효과는 주로 고속 전기 도달 거리와 관련 전자기기 감소에서 나오며, 광섬유 전력 소비량 변경에서 나오지 않습니다."
+                }
+              ],
+              "feedback_correct": "맞아요. CPO는 고속 신호가 광 신호로 변환되기 전에 이동해야 하는 전기적 거리를 줄여줍니다.",
+              "feedback_incorrect": "전기와 광의 경계에 집중하세요. CPO는 그 경계를 스위칭 실리콘에 더 가깝게 움직입니다."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "EBO, PTMT 스타일 인터페이스, 리어 블라인드 메이트 연결성을 정확히 설명하는 문구는 무엇인가요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "EBO는 광학 인터페이스에서 먼지에 대한 민감도를 낮출 수 있습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "EBO와 PTMT 스타일의 인터페이스는 리어 블라인드메이트 광 연결을 더 실용적으로 만들 수 있습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "EBO는 테스트와 삽입 손실이 더 이상 중요하지 않다는 뜻입니다.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "블라인드메이트 정비성은 전원 및 냉각 인터페이스도 포함되어야 합니다.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "맞아요. 이 기술들은 운영 마찰을 목표로 하지만, 여전히 엄격한 링크 예산과 시스템 설계가 필요합니다.",
+              "feedback_incorrect": "이점과 과장을 구분하세요. EBO, PTMT 스타일 인터페이스, 블라인드 결합은 서비스 마찰을 줄일 수 있지만, 광학 공학을 완전히 없애지는 못합니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_13_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_13_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 3,
+          "next_module_title": "광 인프라의 밀도와 테스트 가능성",
+          "thank_you_message": "잘했어. 효율성 기술은 단순한 구성 패키지가 아니라 서비스 모델에 연결됩니다.",
+          "audio": {
+            "script_file": "audio/module2/slide_14_up_next.txt",
+            "wav_file": "audio/module2/slide_14_up_next.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "density_and_testability",
+      "title": "광 인프라의 밀도와 테스트 가능성",
+      "subtitle": "멀티코어 광섬유와 새로운 테스트 워크플로우가 물리적 광섬유 밀도 한계에 대응하는 방법.",
+      "module_badge_text": "모듈 3",
+      "next_module_title": "지연 시간, 양자 컴퓨팅, 도입 전망",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "광 인프라의 밀도와 테스트 가능성",
+          "subtitle": "멀티코어 광섬유와 새로운 테스트 워크플로우가 물리적 광섬유 밀도 한계에 대응하는 방법.",
+          "version_chip": "신기술",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 32
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "평가할 밀도 선택",
+          "subtitle": "이 모듈을 마치면 다음과 같은 내용을 할 수 있게 됩니다:",
+          "objectives": [
+            "트레이, 배관, 선반, 경로에서 섬유 수가 물리적 제약이 되는 이유를 설명해 주세요.",
+            "멀티코어 광섬유 및 공간 분할 다중화의 기본 개념을 설명해 주세요.",
+            "생태계 전환 과정에서 팬 인과 팬아웃 장치가 왜 중요한지 설명해 주세요.",
+            "멀티코어와 할로우 코어 광섬유 링크에 대한 테스트 시사점을 비교하세요."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "fiber_count_bottleneck",
+          "section_label": "물리적 인프라",
+          "title": "광섬유 수가 물리적 병목이 됩니다",
+          "subtitle": "더 많은 대역폭은 광학 인프라가 설치, 라우팅, 라벨링, 테스트 및 서비스 완료가 가능할 때만 유용합니다.",
+          "bullets": [
+            {
+              "bold_lead": "경로 채움",
+              "text": "오버헤드 트레이, 배관, 랙 매니저에는 유한한 부피와 굽힘 반경 제한이 있습니다."
+            },
+            {
+              "bold_lead": "무게 및 핸들링",
+              "text": "매우 많은 가닥 수는 케이블 무게와 설치 복잡성을 증가시킵니다."
+            },
+            {
+              "bold_lead": "운영 부하",
+              "text": "모든 추가 연결부, 경로, 테스트 지점이 서비스 활성화 및 유지보수의 일부가 됩니다."
+            },
+            {
+              "bold_lead": "밀도는 진단 가능해야 합니다",
+              "text": "고장 격리가 어려워진다면 더 작은 케이블만으로는 충분하지 않습니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_fiber_count_bottleneck.txt",
+            "wav_file": "audio/module3/slide_03_fiber_count_bottleneck.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 39
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "mcf_space_division",
+          "section_label": "광섬유 구조",
+          "title": "멀티코어 광섬유는 공간 분할 다중화를 사용합니다",
+          "figure": {
+            "path": "figures/mcf_scf_comparison.svg",
+            "alt": "단면도 및 측면 광 경로를 비교한 단일 코어 광섬유와 다중 코어 광섬유의 다이어그램입니다.",
+            "caption": "단일 코어 광섬유는 하나의 광 경로를 운반합니다; 멀티코어 광섬유는 더 높은 경로 밀도를 위해 여러 독립적인 코어를 공통 클래딩 안에 배치합니다.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_04_mcf_space_division.txt",
+            "wav_file": "audio/module3/slide_04_mcf_space_division.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "mcf"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "four_core_mcf",
+          "section_label": "생태계 방향",
+          "title": "4코어 MCF는 모든 것을 재건하지 않고 밀도를 목표로 합니다",
+          "subtitle": "떠오르는 방향은 단순한 광섬유 설계가 아닙니다; 이는 연결성 생태계 문제입니다.",
+          "bullets": [
+            {
+              "bold_lead": "상대 밀도 증가",
+              "text": "네 개의 코어는 동일한 기본 광섬유 외형 내에서 여러 독립적인 광 경로를 전달할 수 있습니다."
+            },
+            {
+              "bold_lead": "상호운용성이 가장 어려운 부분입니다",
+              "text": "트랜시버, 커넥터, 광섬유 배열 유닛, 팬아웃, 테스트 장비가 상호 호환되어야 합니다."
+            },
+            {
+              "bold_lead": "단기 브리지 장치는 중요합니다",
+              "text": "기존의 단일 코어 생태계는 MCF 링크 가장자리에서 팬 인과 팬아웃이 여전히 필요할 수 있습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/source_slide_35_mcf_space_savings_chart.png",
+            "alt": "단일 코어 및 다중 코어 광섬유 예시에서 케이블 직경과 공간 절감 효과를 비교한 차트입니다.",
+            "caption": "이 차트는 멀티코어 광섬유의 밀도 논거를 보여줍니다: 더 적은 덕트와 트레이 공간으로 더 많은 코어를 운반할 수 있습니다.",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_four_core_mcf.txt",
+            "wav_file": "audio/module3/slide_05_four_core_mcf.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "fan_in_fan_out",
+          "section_label": "전환 아키텍처",
+          "title": "팬-인/팬-아웃은 오래된 생태계와 새로운 생태계를 잇습니다",
+          "figure": {
+            "path": "figures/mcf_fan_in_fan_out_mapping.mp4",
+            "media_type": "video",
+            "alt": "무음 애니메이션으로, 네 개의 색상으로 구분된 단일 코어 광 경로가 하나의 멀티코어 광섬유 트렁크 내 팬인을 통해 각각 다른 코어로 매핑한 후 팬아웃을 통해 복원되는 모습을 보여줍니다.",
+            "caption": "팬인과 팬아웃은 코어 식별 정보을 보존하며, 컴팩트 MCF 트렁크는 하나의 공유 광섬유 구조를 통해 네 개의 광 경로를 전달합니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_06_fan_in_fan_out.txt",
+            "wav_file": "audio/module3/slide_06_fan_in_fan_out.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 36
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 37
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 39
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "cpo_harnesses",
+          "section_label": "패키징",
+          "title": "CPO 하네스는 컴팩트 광섬유 라우팅의 가치를 높입니다",
+          "subtitle": "실리콘 근처에 밀도가 높은 광 I/O는 컴팩트하고 잘 관리된 광섬유 라우팅의 가치를 높입니다.",
+          "bullets": [
+            {
+              "bold_lead": "패키징 압력 상승",
+              "text": "CPO와 고밀도 광 엔진은 스위치 패키지 근처에 수백 또는 수천 개의 광 경로를 배치할 수 있습니다."
+            },
+            {
+              "bold_lead": "하네스 설계가 아키텍처의 일부가 됩니다",
+              "text": "광섬유 어레이 유닛, 피치 변환, 라우팅 모듈이 시스템 설계의 일부가 됩니다."
+            },
+            {
+              "bold_lead": "케이블 인프라와 패키지가 연결됩니다",
+              "text": "조밀한 트렁크 전략은 보드 및 패키지 수준의 광 인터페이스에 깔끔하게 연결되어야 합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/cpo_harness.svg",
+            "alt": "광 엔진에서 광섬유 배열 장치, 하네스, 트렁크로 흐름이 흐릅니다.",
+            "caption": "광학 기술이 실리콘에 가까워질수록 컴팩트하고 반복 가능한 하네스가 더욱 중요해집니다.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 768 340\" aria-label=\"고밀도 광 I/O는 관리형 하네싱이 필요합니다\">\n  <rect width=\"768\" height=\"340\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"46\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">고밀도 광 I/O는 관리형 하네싱이 필요합니다</text>\n  <rect x=\"40\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"115.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">광 엔진</text><text x=\"115.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">다수의 고속 레인</text><text x=\"115.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">ASIC 근처</text>\n  <line x1=\"191\" y1=\"181\" x2=\"209\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"209,173 219,181 209,189\" fill=\"#8DC63F\"/>\n  <rect x=\"219\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/>\n  <text x=\"294.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">FAU</text><text x=\"294.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">피치</text><text x=\"294.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">전환</text>\n  <line x1=\"370\" y1=\"181\" x2=\"388\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"388,173 398,181 388,189\" fill=\"#8DC63F\"/>\n  <rect x=\"398\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"473.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">하네스</text><text x=\"473.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">관리형</text><text x=\"473.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">라우팅</text>\n  <line x1=\"549\" y1=\"181\" x2=\"567\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"567,173 577,181 567,189\" fill=\"#8DC63F\"/>\n  <rect x=\"577\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"652.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">트렁크</text><text x=\"652.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">케이블 인프라</text><text x=\"652.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">또는 랙</text>\n  <text x=\"384\" y=\"306\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">고밀도 광 패키지는 컴팩트하고 체계적인 광섬유 관리의 가치를 높입니다.</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_07_cpo_harnesses.txt",
+            "wav_file": "audio/module3/slide_07_cpo_harnesses.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 36
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 37
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_table",
+          "slug": "testing_new_failure_modes",
+          "section_label": "시험",
+          "title": "테스트는 새로운 고장 모드를 따라야 합니다",
+          "subtitle": "새로운 광섬유 유형은 기존 방법의 일부를 재사용할 수 있지만, 검사와 특성 분석의 기준은 달라집니다.",
+          "columns": [
+            "시험 영역",
+            "MCF 고려",
+            "HCF 고려"
+          ],
+          "rows": [
+            [
+              "커넥터 검사",
+              "여러 코어와 코어 위치를 검사합니다. 알고리즘은 모든 코어를 함께 봐야 할 수 있습니다.",
+              "피그테일이 사용되지 않을 경우 직접 HCF 끝면 검사는 새로운 알고리즘이 필요할 수 있습니다."
+            ],
+            [
+              "티어 1 인증",
+              "팬아웃 케이블이나 하이브리드 케이블은 기존 손실 테스터와 연결될 수 있지만, 원 코드 참조는 새로운 모듈이 필요할 수 있습니다.",
+              "피그테일은 현재 도구를 사용할 수 있습니다. HCF 커넥터를 직접 테스트하려면 시험 방법을 업데이트해야 합니다."
+            ],
+            [
+              "티어 2 / OTDR",
+              "기존 OTDR은 팬아웃이나 하이브리드를 통해 작업할 수 있으며, 매핑에 주의를 기울일 수 있습니다.",
+              "양방향 OTDR과 특수 해석은 전이와 굽힘이 다르게 작용하기 때문에 중요할 수 있습니다."
+            ],
+            [
+              "특성 분석",
+              "CD, PMD, 감쇠 프로파일은 고속 링크에 여전히 중요합니다.",
+              "감쇠 프로파일은 HCF 설계가 파장 최적화가 가능하기 때문에 중요합니다."
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_testing_new_failure_modes.txt",
+            "wav_file": "audio/module3/slide_08_testing_new_failure_modes.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "hcf"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 45
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "밀도 향상에는 생태계 준비가 필요합니다",
+          "items": [
+            "광섬유 밀도는 단순한 대역폭 문제가 아니라 물리적 설치 및 운영 문제입니다.",
+            "멀티코어 광섬유는 하나의 광섬유 구조 안에 여러 코어를 수용함으로써 부피를 줄일 수 있습니다.",
+            "팬 인과 팬아웃 장치는 기존 단일 코어 엔드포인트를 MCF 트렁크로 연결하는 데 도움을 줍니다.",
+            "테스트 방법은 더 밀집된 링크가 진단 가능하고 인증이 가능하도록 진화해야 합니다."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_takeaways.txt",
+            "wav_file": "audio/module3/slide_09_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 39
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "모델 점검: 밀도 및 테스트",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "왜 멀티코어 광섬유가 케이블 플랜트 압력을 줄일 수 있나요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "하나의 공유 광섬유 구조 내에 여러 독립적인 코어를 배치합니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "광 링크 테스트가 필요 없게 됩니다.",
+                  "correct": false,
+                  "feedback_incorrect": "MCF는 밀도를 변경하지만, 링크는 여전히 검사, 인증, 문제 해결이 필요합니다."
+                },
+                {
+                  "id": "c",
+                  "text": "이 시스템은 모든 트랜시버를 브리지 장치 없이도 네이티브로 호환되도록 만듭니다.",
+                  "correct": false,
+                  "feedback_incorrect": "단기적인 배포는 생태계가 성숙해지는 동안 팬인과 팬아웃 장치가 여전히 필요할 수 있습니다."
+                }
+              ],
+              "feedback_correct": "맞아요. MCF는 공유 광섬유 외형 내에 여러 코어를 배치함으로써 물리적 밀도를 해결합니다.",
+              "feedback_incorrect": "공간 밀도에 집중하세요. MCF는 물리적 부피를 줄이지만, 링크 엔지니어링을 완전히 없애지는 않습니다."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "신흥 MCF 및 HCF 배포에 적합한 테스트 고려사항은 무엇인가요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "MCF 검사는 한쪽 끝면에 여러 코어를 평가해야 할 수도 있습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "HCF 링크는 특별한 OTDR 분석과 파장 거동에 대한 주의가 필요할 수 있습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "팬아웃 케이블은 MCF 링크를 기존 시험 장비와 연결하는 데 도움을 줄 수 있습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "광섬유 밀도가 향상되면 링크 특성화는 더 이상 유용하지 않습니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞아요. 밀도 개선은 섬유 유형에 맞는 검사 및 특성화 방법과 함께 이루어져야 합니다.",
+              "feedback_incorrect": "적절한 모델은 밀도와 진단 가능성의 결합입니다. 새로운 광섬유 구조은 여전히 신뢰할 수 있는 테스트가 필요합니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 45
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 4,
+          "next_module_title": "지연 시간, 양자 컴퓨팅, 도입 전망",
+          "thank_you_message": "잘했어. 광밀도를 설치, 브리징, 테스트 가능성에 연결하셨고, 단순히 케이블 크기 청구로 취급하지 않으셨습니다.",
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next.txt",
+            "wav_file": "audio/module3/slide_11_up_next.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "latency_quantum_adoption_horizon",
+      "title": "지연 시간, 양자 컴퓨팅, 도입 전망",
+      "subtitle": "할로우 코어 광섬유와 하이브리드 양자-고전 시스템이 차세대 광학 환경에 자리 잡는 방식.",
+      "module_badge_text": "모듈 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "지연 시간, 양자 컴퓨팅, 도입 전망",
+          "subtitle": "할로우 코어 광섬유와 하이브리드 양자-고전 시스템이 차세대 광학 환경에 자리 잡는 방식.",
+          "version_chip": "신기술",
+          "audio": {
+            "script_file": "audio/module4/slide_01_title.txt",
+            "wav_file": "audio/module4/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 40
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 54
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "비교할 기술 성숙도",
+          "subtitle": "이 모듈을 마치면 다음과 같은 내용을 할 수 있게 됩니다:",
+          "objectives": [
+            "왜 할로우 코어 광섬유가 기존 고체 코어 섬유에 비해 전파 지연을 줄일 수 있는지 설명해 주세요.",
+            "반공명 공진 할로우 코어 유도의 기본 개념을 설명해 주세요.",
+            "AI 인프라 전반에 걸친 대규모 지연 시 낮은 지연이 중요한 부분을 파악하세요.",
+            "왜 QPU가 하이브리드 컴퓨팅 스택에서 특수한 가속기로 이해하는 것이 가장 좋은지 설명해 주세요.",
+            "도입 시점과 생태계 준비 상태에 따라 차세대 광학 기술을 비교하세요."
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_objectives.txt",
+            "wav_file": "audio/module4/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 43
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "hcf_changes_medium",
+          "section_label": "지연 시간",
+          "title": "할로우 코어 광섬유가 매질을 변화시킵니다",
+          "subtitle": "핵심 아이디어는 간단합니다: 고체 유리 대신 공기를 통해 더 많은 빛을 유도하는 것입니다.",
+          "bullets": [
+            {
+              "bold_lead": "전파 속도 향상",
+              "text": "빛은 실리카 유리보다 공기 중에서 진공 속도에 더 가깝게 이동합니다."
+            },
+            {
+              "bold_lead": "킬로미터당 지연 감소",
+              "text": "낮은 전파 지연은 작업 시간이나 서비스 배치에 영향을 줄 만큼 거리가 충분히 클 때 가장 중요합니다."
+            },
+            {
+              "bold_lead": "제조 역량은 여전히 중요합니다",
+              "text": "낮은 지연은 광섬유가 대규모로 생산, 연결, 테스트, 운영될 수 있을 때만 가치가 있습니다."
+            }
+          ],
+          "compact_table": {
+            "title": "매질별 전파 속도",
+            "columns": [
+              "재료",
+              "굴절률",
+              "빛의 속도 (m/s)"
+            ],
+            "rows": [
+              [
+                "항공",
+                "1.00",
+                "3.0 × 10⁸"
+              ],
+              [
+                "물",
+                "1.33",
+                "2.3 × 10⁸"
+              ],
+              [
+                "퍼스펙스",
+                "1.49",
+                "2.0 × 10⁸"
+              ],
+              [
+                "유리",
+                "1.50",
+                "2.0 × 10⁸"
+              ],
+              [
+                "다이아몬드",
+                "2.42",
+                "1.2 × 10⁸"
+              ]
+            ]
+          },
+          "figure": {
+            "path": "figures/source_slide_42_hcf_latency_visuals.png",
+            "alt": "DNANF 구조, 누설-손실 다이어그램, 그리고 과거 HCF 설계 예시를 보여주는 할로우 코어 광섬유 시각 자료.",
+            "caption": "이 이미지들은 지연 논의의 배경에 있는 할로우 코어 구조와 현대 DNANF 설계가 이전 HCF 접근법과 다른 이유를 보여줍니다.",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_03_hcf_changes_medium.txt",
+            "wav_file": "audio/module4/slide_03_hcf_changes_medium.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "hcf"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "anti_resonant_guidance",
+          "section_label": "작동 원리",
+          "title": "쉽게 이해하는 반공진 유도",
+          "figure": {
+            "path": "figures/hcf_anti_resonant_guidance.mp4",
+            "media_type": "video",
+            "alt": "중첩된 얇은 벽 유리막이 안쪽 공명 경계를 형성하는 무음의 개념 애니메이션이 공기로 가득 찬 핵심부에 빛의 펄스를 집중시키고, 중첩된 얇은 벽의 유리 막이 반공명 경계를 만듭니다.",
+            "caption": "중첩된 유리 미세구조는 클래딩과의 결합을 제한하여 가이드 광학 모드가 속이 빈 공기 코어에 집중되도록 합니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_04_anti_resonant_guidance.txt",
+            "wav_file": "audio/module4/slide_04_anti_resonant_guidance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 43
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_bullets",
+          "slug": "where_latency_matters",
+          "section_label": "사용 사례",
+          "title": "낮은 지연이 중요한 부분",
+          "subtitle": "HCF는 거리와 동기화가 성능 문제의 일부일 때 가장 매력적입니다.",
+          "bullets": [
+            {
+              "bold_lead": "스케일어크로스 네트워크",
+              "text": "인근 건물이나 캠퍼스는 전파 지연이 낮을 때 더 실용적이 될 수 있습니다."
+            },
+            {
+              "bold_lead": "분산 학습",
+              "text": "집합 통신은 많은 가속기가 공유 결과를 기다리기 때문에 느린 링크에 민감합니다."
+            },
+            {
+              "bold_lead": "위치 유연성",
+              "text": "낮은 지연은 사용 가능한 전력 근처에 용량을 배치하는 실질적인 반경을 확장할 수 있습니다."
+            },
+            {
+              "bold_lead": "지연 시간만이 유일한 지표는 아닙니다",
+              "text": "손실, 굽힘 민감도, 커넥터화, 접속, 시험 방법, 비용 등이 배포 가능성을 결정합니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_where_latency_matters.txt",
+            "wav_file": "audio/module4/slide_05_where_latency_matters.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "hcf_promise_friction",
+          "section_label": "준비도",
+          "title": "HCF의 가능성과 배포 과제",
+          "subtitle": "이 차트는 유망한 물리 현상과 배치 준비도를 구분하는 데 도움을 줍니다.",
+          "audio": {
+            "script_file": "audio/module4/slide_06_hcf_promise_friction.txt",
+            "wav_file": "audio/module4/slide_06_hcf_promise_friction.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 43
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            }
+          ],
+          "figure": {
+            "path": "figures/source_slide_44_hcf_attenuation_chart.png",
+            "alt": "DNANF 할로우 코어 광섬유 측정값을 다른 할로우 코어 및 실리카 벤치마크와 비교한 감쇠 차트.",
+            "caption": "이 차트는 파장 전반에 걸친 손실 거동에서 약속과 마찰 논의를 중심으로 합니다.",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "bullets": [
+            {
+              "bold_lead": "가능성: 낮은 지연 시간",
+              "text": "공기 유도 전파는 기존의 솔리드 코어 광섬유에 비해 지연을 줄일 수 있습니다."
+            },
+            {
+              "bold_lead": "가능성: 저손실 기술 발전",
+              "text": "최근의 할로우 코어 설계는 이전 설계보다 훨씬 더 나은 감쇠를 보여줍니다."
+            },
+            {
+              "bold_lead": "과제: 제조 규모",
+              "text": "복잡한 미세구조 광섬유는 반복적이고 경제적으로 생산되어야 합니다."
+            },
+            {
+              "bold_lead": "과제: 현장 생태계",
+              "text": "접속, 커넥터화, 굽힘 특성, 검사, 테스트 방법은 아직 성숙해야 합니다."
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_bullets",
+          "slug": "from_propagation_to_specialized_compute",
+          "section_label": "전환",
+          "title": "전파 속도에서 특화 연산까지",
+          "subtitle": "이제 데이터를 더 빠르게 이동하는 주제에서 특화 연산을 적용하는 주제로 넘어가되, 같은 시스템 준비도 관점을 유지합니다.",
+          "mobile_scroll": true,
+          "bullets": [
+            {
+              "bold_lead": "다른 제약 조건",
+              "text": "HCF는 물리적 링크 내 전파 지연을 목표로 하며; 양자 시스템은 특화 연산을 목표로 합니다."
+            },
+            {
+              "bold_lead": "같은 아키텍처 교훈",
+              "text": "구성 요소만으로는 시스템이 아닙니다. 연결성, 제어, 소프트웨어, 운영, 신뢰성이 실용적 가치를 결정합니다."
+            },
+            {
+              "bold_lead": "이 모듈의 관점",
+              "text": "QPU를 특수 가속기로 간주한 후, 그 도입 준비도를 단기적인 광학 기술과 비교하세요."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_from_propagation_to_specialized_compute.txt",
+            "wav_file": "audio/module4/slide_07_from_propagation_to_specialized_compute.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "qpu"
+          ],
+          "reference_links": [
+            {
+              "label": "양자 처리 장치를 데이터 센터 인프라에 통합하기",
+              "url": "https://academy.opencompute.org/learn/courses/51/integrating-quantum-processing-units-into-data-center-infrastructure"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 47
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "cpu_gpu_qpu",
+          "section_label": "컴퓨트 스택",
+          "title": "CPU, GPU, QPU: 작업에 맞는 다양한 엔진",
+          "subtitle": "유용한 사고 모델은 대체가 아니라 전문화입니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "CPU",
+              "body": "일반 오케스트레이션, 제어 흐름, 운영체제, 그리고 광범위한 애플리케이션 논리."
+            },
+            {
+              "title": "GPU",
+              "body": "고도로 병렬적인 결정론적 수학, 텐서 연산, 시뮬레이션 작업 부하, 가속 등이 있습니다."
+            },
+            {
+              "title": "QPU",
+              "body": "양자 현상이 유용한 자원이 되는 제한된 문제 유형를 위한 특수 양자 회로."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_cpu_gpu_qpu.txt",
+            "wav_file": "audio/module4/slide_08_cpu_gpu_qpu.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "hybrid_quantum_classical",
+          "section_label": "통합",
+          "title": "하이브리드 양자-고전 시스템은 저지연 통합이 필요합니다",
+          "subtitle": "QPU는 엄격히 통제된 고전 시스템의 일부로 작동할 때 데이터 센터 환경에서 유용해집니다.",
+          "mobile_scroll": true,
+          "bullets": [
+            {
+              "bold_lead": "고전 시스템의 조정",
+              "text": "CPU와 GPU는 작업을 준비하고, 제어 루프를 실행하며, 결과를 처리합니다."
+            },
+            {
+              "bold_lead": "양자 시스템의 특화",
+              "text": "QPU는 고전적으로 시뮬레이션하기 어려운 양자 회로를 실행합니다."
+            },
+            {
+              "bold_lead": "인터커넥트 지연 시간은 중요합니다",
+              "text": "보정, 제어, 오류 수정 워크플로우는 고전 자원과 양자 자원 간의 빠른 피드백에 의존합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/hybrid_quantum_classical.svg",
+            "alt": "CPU, GPU, QPU, 그리고 하이브리드 제어 루프 내 피드백을 보여주는 플로우.",
+            "caption": "하이브리드 시스템은 고전 가속기와 양자 프로세서 간의 빠른 피드백에 의존합니다.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 768 340\" aria-label=\"하이브리드 양자-고전 제어 루프\">\n  <rect width=\"768\" height=\"340\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"46\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">하이브리드 양자-고전 제어 루프</text>\n  <rect x=\"40\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"115.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">CPU</text><text x=\"115.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">오케스트라</text><text x=\"115.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">워크플로우</text>\n  <line x1=\"191\" y1=\"181\" x2=\"209\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"209,173 219,181 209,189\" fill=\"#8DC63F\"/>\n  <rect x=\"219\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"294.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">GPU</text><text x=\"294.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">가속해</text><text x=\"294.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">제어</text>\n  <line x1=\"370\" y1=\"181\" x2=\"388\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"388,173 398,181 388,189\" fill=\"#8DC63F\"/>\n  <rect x=\"398\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/>\n  <text x=\"473.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">QPU</text><text x=\"473.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">실행</text><text x=\"473.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">서킷</text>\n  <line x1=\"549\" y1=\"181\" x2=\"567\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"567,173 577,181 567,189\" fill=\"#8DC63F\"/>\n  <rect x=\"577\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"652.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">피드백</text><text x=\"652.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">측정</text><text x=\"652.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">맞아요</text>\n  <path d=\"M652.5 236 L652.5 270 L115.5 270 L115.5 246\" fill=\"none\" stroke=\"#343895\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polygon points=\"107.5,246 115.5,236 123.5,246\" fill=\"#343895\"/>\n  <text x=\"384\" y=\"292\" text-anchor=\"middle\" font-size=\"15\" font-weight=\"700\" fill=\"#343895\">측정 및 보정 오케스트레이션으로의 복귀</text>\n  <text x=\"384\" y=\"326\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">실용적인 양자 시스템은 독립형 박스가 아니라 저지연 루프입니다.</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_09_hybrid_quantum_classical.txt",
+            "wav_file": "audio/module4/slide_09_hybrid_quantum_classical.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 50
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 51
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "content_diagram",
+          "slug": "adoption_horizon",
+          "section_label": "로드맵 사고",
+          "title": "가까운 미래, 다음 단계, 그리고 이후의 전망",
+          "figure": {
+            "path": "figures/adoption_horizon.svg",
+            "alt": "도입 시점별로 차세대 광학 기술을 그룹화하는 타임라인.",
+            "caption": "채택 시점을 고정된 약속이 아닌 계획 범주로 사용하세요. 생태계 준비성은 기술을 더 일찍 또는 늦게 이동시킬 수 있습니다.",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 768 360\" aria-label=\"차세대 광학 기술 도입 지평선\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"48\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">차세대 광학 기술 도입 지평선</text>\n  <line x1=\"90\" y1=\"160\" x2=\"675\" y2=\"160\" stroke=\"#9ca3af\" stroke-width=\"6\" stroke-linecap=\"round\"/>\n  <circle cx=\"90\" cy=\"160\" r=\"16\" fill=\"#343895\"/><text x=\"90\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">지금</text><text x=\"90\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">800G</text><text x=\"90\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">밀도 압력</text><circle cx=\"285\" cy=\"160\" r=\"16\" fill=\"#5F6062\"/><text x=\"285\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">근처입니다</text><text x=\"285\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">CPO</text><text x=\"285\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">확장 빔</text><circle cx=\"480\" cy=\"160\" r=\"16\" fill=\"#8DC63F\"/><text x=\"480\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">다음</text><text x=\"480\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">MCF</text><text x=\"480\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">HCF 조종사</text><circle cx=\"675\" cy=\"160\" r=\"16\" fill=\"#343895\"/><text x=\"675\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">나중에</text><text x=\"675\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">하이브리드</text><text x=\"675\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">QPU 시스템</text>\n  <text x=\"384\" y=\"325\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">세대가 바뀐 때마다 물리적 인프라가 지원해야 하는 광 연결 수가 증가합니다.</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_10_adoption_horizon.txt",
+            "wav_file": "audio/module4/slide_10_adoption_horizon.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 54
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "미래는 단일 기술이 아니라 포트폴리오입니다",
+          "items": [
+            "HCF는 전파 지연을 목표로 하며, 거리 민감 네트워크의 설계 옵션을 확장할 수 있습니다.",
+            "QPU 통합은 저지연 고전 제어 루프에 의존하는 특수한 컴퓨팅 주제입니다.",
+            "CPO, 확장 빔, MCF, HCF, QPU 통합은 서로 다른 제약 조건을 해결합니다.",
+            "채택은 물리학, 패키징, 표준, 공급망, 테스트 가능성, 운영 준비 상태에 따라 달라집니다."
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_11_takeaways.txt",
+            "wav_file": "audio/module4/slide_11_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 52
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 54
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "모델 점검: 지연 및 성숙도",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "왜 할로우 코어 광섬유가 전파 지연을 줄일 수 있을까요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "주로 공기를 통해 빛을 유도하며, 공기 중에서는 단단한 유리보다 더 빠르게 이동합니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "광학 손실과 반사의 모든 원인을 제거합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "HCF는 지연을 줄일 수 있지만, 손실, 반사, 굽힘, 연결은 여전히 중요합니다."
+                },
+                {
+                  "id": "c",
+                  "text": "광학 신호를 더 빨리 전기 신호로 변환합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "HCF는 광 전파 매질에 관한 것이지, 이전의 전기 변환에 관한 것이 아닙니다."
+                }
+              ],
+              "feedback_correct": "맞아요. HCF는 대부분의 빛을 운반하는 매질을 변경하여 전파 지연을 낮춥니다.",
+              "feedback_incorrect": "매체에 집중하세요. HCF는 빛이 섬유 내부로 이동하는 위치를 바꿉니다."
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "어떤 연결이 기술을 1차 압력과 올바르게 연결하나요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "CPO는 주로 전기 도달 거리, 전력, 열, 전면 패널 제약 조건을 다룹니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "확장 빔은 주로 커넥터 오염 민감도와 서비스 워크플로우를 다룹니다.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "MCF는 주로 물리적 광섬유 밀도와 케이블 부피을 다룹니다.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "QPU 통합은 주로 AI 시스템에서 모든 CPU와 GPU를 대체합니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞아요. 각 기술은 실제 시스템에서는 상호작용하더라도 서로 다른 무게중심을 가지고 있습니다.",
+              "feedback_incorrect": "각 기술이 완화하는 주요 압력에 따라 분류하세요. QPU는 전면적인 대체물이 아니라 특수 가속기입니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_12_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_12_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "차세대 광학 기술 소개",
+          "thank_you_message": "마지막 모듈인 지연, 양자, 그리고 채택 지평선을 완료해 주셔서 감사합니다.",
+          "cert_message": "당신은 과정을 완료했습니다. 이제 차세대 광학 기술을 그들이 완화하려는 인프라 압력, 즉 규모, 효율성, 밀도, 지연 시간, 정비성, 특수 컴퓨팅 통합과 연결할 수 있습니다.",
+          "audio": {
+            "script_file": "audio/module4/slide_13_course_complete.txt",
+            "wav_file": "audio/module4/slide_13_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    }
+  ],
+  "metadata_language_name": "Korean",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "ko-KR",
+    "source_course_sha256": "38050c4ecc01f96fa5a131371f885e63ef19bebb384d791e0384a4eeac0844e5"
+  },
+  "ui_labels": {
+    "not_started": "시작 전",
+    "completed": "완료",
+    "course_overview": "과정 개요",
+    "learning_objectives": "학습 목표",
+    "reference": "참고 자료",
+    "learn_more": "자세히 보기",
+    "opens_new_tab": "새 탭에서 열림",
+    "learner_resource": "학습 자료",
+    "open": "열기",
+    "video_controls": "비디오 컨트롤",
+    "play_video": "비디오 재생",
+    "pause_video": "비디오 일시정지",
+    "zoom_video": "비디오 확대",
+    "video_figure": "비디오 도해",
+    "zoom_figure": "도해 확대",
+    "enlarged_figure": "확대된 도해",
+    "lightbox_close_hint": "바깥쪽을 클릭하거나 Esc 키를 눌러 닫으세요",
+    "key_takeaways": "핵심 요점",
+    "knowledge_check": "지식 확인",
+    "submit": "제출",
+    "retry": "다시 시도",
+    "correct": "정답입니다.",
+    "review_feedback": "피드백을 검토한 후 다시 시도하세요.",
+    "select_answer": "답을 하나 이상 선택한 후 제출하세요.",
+    "module": "모듈",
+    "module_complete": "모듈 {module} 완료",
+    "up_next": "다음 모듈",
+    "go_to_module": "모듈 {module}로 이동",
+    "share_feedback": "피드백 공유",
+    "survey_body": "과정에 대한 의견을 공유하여 OCP Academy의 향후 학습 콘텐츠 개선에 도움을 주세요.",
+    "course_complete": "과정 완료",
+    "theme": "테마",
+    "toggle_dark_mode": "다크 모드 전환",
+    "previous_slide": "이전 슬라이드",
+    "next_slide": "다음 슬라이드",
+    "play_pause_narration": "내레이션 재생 또는 일시정지",
+    "playback_speed": "재생 속도",
+    "playback_speed_slider": "재생 속도 슬라이더",
+    "speed": "속도",
+    "toggle_fullscreen": "전체 화면 전환",
+    "fullscreen": "전체 화면"
+  }
+}
