@@ -214,6 +214,7 @@ EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh two-phase-direct-liq
 
 Use pull requests for course improvements.
 
+- For new course or series contributions, please give a heads-up to the [OCP Academy](mailto:ocp-academy@opencompute.org) team at the OCP Foundation with an email and submission [here](https://forms.gle/xEMpXQf2F8Kthpc28). New submissions must align to the contributions and project areas of the OCP Community.
 - Edit slide text, quiz content, figures, and structure in `course.json`.
 - For Slides courses, edit narration in `courses/<course-path>/audio/moduleN/slide_*.txt`.
 - Store translated course sources in `courses/<course-path>/locales/<BCP-47 tag>/`; Slides locales are self-contained, while Scrolling locales overlay language-specific resources on the canonical course.
