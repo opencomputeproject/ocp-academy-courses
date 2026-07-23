@@ -1,0 +1,5 @@
+Bây giờ là thay đổi cốt lõi: ESUN Header. Ethernet tiêu chuẩn cho lưu lượng IP mang địa chỉ đích, địa chỉ nguồn, thẻ VLAN tùy chọn, EtherType, rồi đến IP Header, trước khi tới transport header và payload. IP Header dài 20 byte với IPv4 và có thể dài tới 40 byte với IPv6. Trong một mạng trung tâm dữ liệu đa mục đích, phần lớn thông tin này là cần thiết. Nhưng trong miền scale-up liên kết chặt chẽ, tuyến đường là tĩnh, miền L2 bao trùm toàn bộ fabric và thông điệp thường rất nhỏ.
+
+ESUN thay IP Header bằng ESUN Header 4 byte, được nhận diện bởi một EtherType mới gọi là EH-ET. Giá trị EtherType vẫn đang chờ cơ quan tiêu chuẩn cấp, nhưng cấu trúc đã được xác định. Kết quả là loại bỏ 20 đến 40 byte overhead trên mỗi gói và chỉ thêm lại 4 byte. Với thông điệp đồng bộ nhỏ, mức cải thiện goodput này rất đáng kể và được nhân lên qua hàng nghìn tỷ thông điệp trong một phiên huấn luyện thực tế.
+
+Đổi lại, một số khả năng từng nằm trong IP Header phải được khôi phục theo cách nhỏ gọn hơn: thông báo tắc nghẽn, phân loại lưu lượng và entropy dùng để băm trên các đường đi có chi phí bằng nhau. ESUN Header đưa từng khả năng đó trở lại dưới dạng phù hợp với scale-up.
