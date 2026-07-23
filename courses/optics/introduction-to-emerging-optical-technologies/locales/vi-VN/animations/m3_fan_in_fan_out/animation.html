@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="vi-VN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ánh xạ lõi Fan-In và Fan-Out</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 1280px;
+      height: 720px;
+      margin: 0;
+      overflow: hidden;
+      background: #f7f9fc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    svg { display: block; width: 1280px; height: 720px; }
+    text { letter-spacing: 0; }.stage-label {
+      font-size: 20px;
+      font-weight: 700;
+      fill: #343895;
+      paint-order: stroke fill;
+      stroke: #ffffff;
+      stroke-width: 5px;
+      stroke-linejoin: round;
+    }.stage-note {
+      font-size: 15px;
+      font-weight: 600;
+      fill: #5f6062;
+      paint-order: stroke fill;
+      stroke: #ffffff;
+      stroke-width: 4px;
+      stroke-linejoin: round;
+    }.lane-label { font-size: 16px; font-weight: 800; fill: #ffffff; }.callout-title { font-size: 21px; font-weight: 800; fill: #343895; }.callout-note { font-size: 16px; font-weight: 600; fill: #5f6062; }.status { font-size: 25px; font-weight: 800; fill: #1f2937; }
+  </style>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-label="Bốn đường dẫn quang lõi đơn đi qua đường dẫn fan-in vào đường trục đa lõi bốn lõi và quay trở lại qua fan-out đến bốn đường dẫn lõi đơn.">
+  <defs>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
+    </filter>
+    <filter id="glow-green" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feFlood flood-color="#8dc63f" flood-opacity="0.7"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-blue" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feFlood flood-color="#343895" flood-opacity="0.7"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-cyan" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feFlood flood-color="#00a7c4" flood-opacity="0.7"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-amber" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feFlood flood-color="#d88911" flood-opacity="0.7"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="#f7f9fc"/>
+  <rect x="34" y="28" width="1212" height="664" rx="22" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"/>
+
+  <g id="cross-section" transform="translate(640 145)">
+    <circle r="82" fill="#f4faef" stroke="#8dc63f" stroke-width="4"/>
+    <circle r="62" fill="#ffffff" stroke="#a6b0bf" stroke-width="3"/>
+    <circle cx="-25" cy="-25" r="13" fill="#8dc63f" stroke="#577b27" stroke-width="3"/>
+    <circle cx="25" cy="-25" r="13" fill="#343895" stroke="#24276e" stroke-width="3"/>
+    <circle cx="-25" cy="25" r="13" fill="#00a7c4" stroke="#007c91" stroke-width="3"/>
+    <circle cx="25" cy="25" r="13" fill="#d88911" stroke="#9b620c" stroke-width="3"/>
+    <circle id="core-ring-1" cx="-25" cy="-25" r="18" fill="none" stroke="#8dc63f" stroke-width="4" opacity="0"/>
+    <circle id="core-ring-2" cx="25" cy="-25" r="18" fill="none" stroke="#343895" stroke-width="4" opacity="0"/>
+    <circle id="core-ring-3" cx="-25" cy="25" r="18" fill="none" stroke="#00a7c4" stroke-width="4" opacity="0"/>
+    <circle id="core-ring-4" cx="25" cy="25" r="18" fill="none" stroke="#d88911" stroke-width="4" opacity="0"/>
+  </g>
+  <text x="744" y="128" class="callout-title">Lớp bọc chung</text>
+  <text x="744" y="154" class="callout-note">Bốn lõi độc lập</text>
+  <path d="M708 185 C760 205 788 232 808 282" fill="none" stroke="#8dc63f" stroke-width="3" stroke-dasharray="7 7"/>
+
+  <g>
+    <rect x="60" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
+    <text x="170" y="254" text-anchor="middle" class="stage-label">Cổng lõi đơn</text>
+    <text x="170" y="280" text-anchor="middle" class="stage-note">Bốn sợi riêng biệt</text>
+
+    <rect x="1000" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
+    <text x="1110" y="254" text-anchor="middle" class="stage-label">Cổng lõi đơn</text>
+    <text x="1110" y="280" text-anchor="middle" class="stage-note">Khôi phục ánh xạ ban đầu</text>
+  </g>
+
+  <g id="fan-in-device">
+    <path d="M280 276 L410 322 L410 430 L280 476 Z" fill="#eef0fb" stroke="#343895" stroke-width="4"/>
+    <text x="345" y="363" text-anchor="middle" class="stage-label">Fan-in</text>
+    <text x="345" y="389" text-anchor="middle" class="stage-note">Ánh xạ đường quang</text>
+    <text x="345" y="412" text-anchor="middle" class="stage-note">đến lõi MCF</text>
+  </g>
+
+  <g id="mcf-trunk">
+    <rect x="400" y="318" width="480" height="116" rx="54" fill="#edf6e6" stroke="#8dc63f" stroke-width="5"/>
+    <rect x="420" y="335" width="440" height="82" rx="38" fill="#ffffff" stroke="#bcc6d3" stroke-width="2"/>
+    <text x="640" y="468" text-anchor="middle" class="stage-label">Tuyến trục MCF 4 lõi</text>
+    <text x="640" y="494" text-anchor="middle" class="stage-note">Một đường truyền nhỏ gọn</text>
+  </g>
+
+  <g id="fan-out-device">
+    <path d="M870 322 L1000 276 L1000 476 L870 430 Z" fill="#eef7f9" stroke="#00a7c4" stroke-width="4"/>
+    <text x="935" y="363" text-anchor="middle" class="stage-label">Fan-out</text>
+    <text x="935" y="389" text-anchor="middle" class="stage-note">Tách các lõi</text>
+    <text x="935" y="412" text-anchor="middle" class="stage-note">thành đường riêng</text>
+  </g>
+
+  <g id="base-paths" fill="none" stroke-linecap="round">
+    <path id="lane-path-1" d="M92 318 H240 C325 318 342 342 430 350 H850 C938 342 955 318 1188 318" stroke="#8dc63f" stroke-width="9" opacity="0.42"/>
+    <path id="lane-path-2" d="M92 356 H240 C325 356 342 360 430 368 H850 C938 360 955 356 1188 356" stroke="#343895" stroke-width="9" opacity="0.42"/>
+    <path id="lane-path-3" d="M92 396 H240 C325 396 342 392 430 384 H850 C938 392 955 396 1188 396" stroke="#00a7c4" stroke-width="9" opacity="0.42"/>
+    <path id="lane-path-4" d="M92 434 H240 C325 434 342 410 430 402 H850 C938 410 955 434 1188 434" stroke="#d88911" stroke-width="9" opacity="0.42"/>
+  </g>
+
+  <g id="port-labels">
+    <g><circle cx="92" cy="318" r="17" fill="#6fa030"/><text x="92" y="324" text-anchor="middle" class="lane-label">1</text></g>
+    <g><circle cx="92" cy="356" r="17" fill="#343895"/><text x="92" y="362" text-anchor="middle" class="lane-label">2</text></g>
+    <g><circle cx="92" cy="396" r="17" fill="#008aa2"/><text x="92" y="402" text-anchor="middle" class="lane-label">3</text></g>
+    <g><circle cx="92" cy="434" r="17" fill="#b8730e"/><text x="92" y="440" text-anchor="middle" class="lane-label">4</text></g>
+    <g><circle cx="1188" cy="318" r="17" fill="#6fa030"/><text x="1188" y="324" text-anchor="middle" class="lane-label">1</text></g>
+    <g><circle cx="1188" cy="356" r="17" fill="#343895"/><text x="1188" y="362" text-anchor="middle" class="lane-label">2</text></g>
+    <g><circle cx="1188" cy="396" r="17" fill="#008aa2"/><text x="1188" y="402" text-anchor="middle" class="lane-label">3</text></g>
+    <g><circle cx="1188" cy="434" r="17" fill="#b8730e"/><text x="1188" y="440" text-anchor="middle" class="lane-label">4</text></g>
+  </g>
+
+  <g id="pulses"></g>
+
+  <g id="status-band">
+    <rect x="212" y="575" width="856" height="76" rx="18" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
+    <circle cx="260" cy="613" r="13" fill="#8dc63f"/>
+    <text id="status-text" x="640" y="622" text-anchor="middle" class="status">Bốn đường quang, một tuyến trục nhỏ gọn</text>
+  </g>
+</svg>
+
+<script>
+  const duration = 16;
+  const colors = ['#8dc63f', '#343895', '#00a7c4', '#d88911'];
+  const filters = ['url(#glow-green)', 'url(#glow-blue)', 'url(#glow-cyan)', 'url(#glow-amber)'];
+  const paths = [1, 2, 3, 4].map((n) => document.getElementById(`lane-path-${n}`));
+  const pulses = document.getElementById('pulses');
+  const statusText = document.getElementById('status-text');
+  const statusBand = document.getElementById('status-band');
+  const fanIn = document.getElementById('fan-in-device');
+  const trunk = document.getElementById('mcf-trunk');
+  const fanOut = document.getElementById('fan-out-device');
+  const coreRings = [1, 2, 3, 4].map((n) => document.getElementById(`core-ring-${n}`));
+  const pulseNodes = [];
+
+  colors.forEach((color, lane) => {
+    const trail = [];
+    for (let i = 0; i < 8; i += 1) {
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('r', i === 0? '10': String(Math.max(3, 8 - i * 0.65)));
+      circle.setAttribute('fill', color);
+      circle.setAttribute('filter', filters[lane]);
+      circle.setAttribute('opacity', '0');
+      pulses.appendChild(circle);
+      trail.push(circle);
+    }
+    pulseNodes.push(trail);
+  });
+
+  function clamp(value, min = 0, max = 1) {
+    return Math.min(max, Math.max(min, value));
+  }
+
+  function smoothstep(value) {
+    const x = clamp(value);
+    return x * x * (3 - 2 * x);
+  }
+
+  function windowValue(value, start, end, feather = 0.08) {
+    const enter = smoothstep((value - start) / feather);
+    const leave = 1 - smoothstep((value - (end - feather)) / feather);
+    return clamp(Math.min(enter, leave));
+  }
+
+  function setStageEmphasis(progress) {
+    const fanInStrength = windowValue(progress, 0.12, 0.37, 0.09);
+    const trunkStrength = windowValue(progress, 0.30, 0.75, 0.10);
+    const fanOutStrength = windowValue(progress, 0.68, 0.94, 0.09);
+    fanIn.setAttribute('opacity', '1');
+    trunk.setAttribute('opacity', '1');
+    fanOut.setAttribute('opacity', '1');
+    fanIn.style.filter = fanInStrength > 0.25? 'url(#shadow)': '';
+    trunk.style.filter = trunkStrength > 0.25? 'url(#shadow)': '';
+    fanOut.style.filter = fanOutStrength > 0.25? 'url(#shadow)': '';
+
+    const ringStrength = trunkStrength * (0.55 + 0.45 * Math.sin(progress * Math.PI * 18) ** 2);
+    coreRings.forEach((ring, index) => {
+      ring.setAttribute('opacity', String(ringStrength * 0.78));
+      ring.setAttribute('r', String(18 + ringStrength * (5 + index * 0.4)));
+    });
+  }
+
+  function setStatus(t, progress) {
+    let message = 'Bốn đường quang, một tuyến trục nhỏ gọn';
+    if (t >= 1.2 && t < 4.6) message = 'Bốn đường dẫn lõi đơn đi vào với danh tính riêng biệt';
+    else if (t >= 4.6 && t < 7.2) message = 'Fan-in ánh xạ từng đường quang vào một lõi MCF cụ thể';
+    else if (t >= 7.2 && t < 10.9) message = 'Bốn lõi độc lập truyền trong một lớp bọc chung';
+    else if (t >= 10.9 && t < 14.6) message = 'Fan-out khôi phục đúng bốn đường quang ban đầu';
+    statusText.textContent = message;
+
+    const dynamicStrength = t < 1.2 || t > 14.8? 0: Math.sin(Math.PI * clamp((t - 1.2) / 13.6));
+    const green = Math.round(244 - 10 * dynamicStrength);
+    statusBand.querySelector('rect').setAttribute('fill', `rgb(${green}, 250, ${green - 5})`);
+    setStageEmphasis(progress);
+  }
+
+  window.renderAt = function renderAt(rawTime) {
+    const t = ((rawTime % duration) + duration) % duration;
+    const movement = clamp((t - 1.2) / 12.9);
+    const progress = smoothstep(movement);
+    let opacity = smoothstep((t - 0.8) / 0.6);
+    if (t > 14.35) opacity *= 1 - smoothstep((t - 14.35) / 0.65);
+
+    paths.forEach((path, lane) => {
+      const length = path.getTotalLength();
+      pulseNodes[lane].forEach((circle, index) => {
+        const trailProgress = progress - index * 0.0075;
+        if (trailProgress <= 0 || trailProgress >= 1 || opacity <= 0.001) {
+          circle.setAttribute('opacity', '0');
+          return;
+        }
+        const point = path.getPointAtLength(trailProgress * length);
+        circle.setAttribute('cx', String(point.x));
+        circle.setAttribute('cy', String(point.y));
+        circle.setAttribute('opacity', String(opacity * Math.max(0.08, 1 - index * 0.115)));
+      });
+    });
+
+    setStatus(t, progress);
+  };
+
+  window.renderAt(0);
+</script>
+</body>
+</html>

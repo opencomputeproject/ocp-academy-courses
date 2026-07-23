@@ -1,0 +1,2419 @@
+{
+  "style": "Slides",
+  "course_slug": "introduction_to_emerging_optical_technologies_zh_tw",
+  "course_title": "新興光學技術導論",
+  "language": "zh-TW",
+  "course_subtitle": "新型光學技術如何應對 AI 基礎設施在規模、能效、密度、延遲和計算整合方面的挑戰。",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "新興光學技術",
+  "target_duration_minutes": 60,
+  "audience_level": "入門至中級技術人員",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "emerging_optical_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "OPTICS"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP學院"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+      "kind": "source_slides"
+    },
+    {
+      "url": "https://www.opencompute.org/documents/open-rack-base-specification-version-3-pdf",
+      "kind": "official_reference",
+      "title": "開放機架規範版本3"
+    },
+    {
+      "url": "https://www.oiforum.com/oif-launches-the-industrys-first-co-packaging-standard-the-3-2t-co-packaged-module-implementation-agreement/",
+      "kind": "official_reference",
+      "title": "OIF 3.2T 聯合封裝模組實現協議"
+    },
+    {
+      "url": "https://sumitomoelectric.com/press/2026/02/prs011",
+      "kind": "official_reference",
+      "title": "SDM4 MCF MSA 公告"
+    },
+    {
+      "url": "https://www.3m.com/3M/en_US/p/c/electronics-components/interconnect-products/expanded-beam-optical-solutions/i/electronics/data-center/",
+      "kind": "manufacturer_reference",
+      "title": "3M 擴束光學 光學解決方案"
+    },
+    {
+      "url": "https://www.usconec.com/ferrules/lensed",
+      "kind": "manufacturer_reference",
+      "title": "US Conec PRIZM的擴束光學費羅爾斯"
+    },
+    {
+      "url": "https://blogs.microsoft.com/blog/2022/12/09/microsoft-acquires-lumenisity-an-innovator-in-hollow-core-fiber-hcf-cable/",
+      "kind": "industry_reference",
+      "title": "Microsoft 光度空芯光纖（HCF）收購"
+    },
+    {
+      "url": "https://www.nature.com/articles/s41566-025-01747-5",
+      "kind": "research_reference",
+      "title": "自然光子學空芯光纖（HCF）衰減論文"
+    },
+    {
+      "url": "https://www.nvidia.com/en-us/solutions/quantum-computing/nvqlink/",
+      "kind": "manufacturer_reference",
+      "title": "NVIDIA NVQLink 快速規範"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "cpo",
+      "term": "CPO",
+      "tooltip": "共封裝光學：將光引擎部署在交換 ASIC 附近，以縮短高速電氣傳輸距離並提高密度。"
+    },
+    {
+      "id": "npo",
+      "term": "NPO",
+      "tooltip": "近封裝光學：將光學器件移到交換晶片封裝附近，但不完全整合在封裝內部。"
+    },
+    {
+      "id": "apo",
+      "term": "APO",
+      "tooltip": "面域封裝光學：一種面向未來的整合方式，光學 I/O 可從晶片表面引出，而不只受限於晶片或封裝邊緣。"
+    },
+    {
+      "id": "ebo",
+      "term": "EBO",
+      "tooltip": "擴束光學：使用透鏡擴充套件並準直光束，降低對接介面處微小汙染物的敏感性。"
+    },
+    {
+      "id": "mttu",
+      "term": "MTTU",
+      "tooltip": "平均開通時間：從部署開始到網路或叢集穩定投入生產服務所需的時間。"
+    },
+    {
+      "id": "ptmt",
+      "term": "PTMT",
+      "tooltip": "一種透鏡式擴束插芯方案，本課程將其與 EBO 並列，作為非接觸、耐顆粒汙染光介面的示例。",
+      "reference_label": "US Conec PRIZM 擴束插芯",
+      "url": "https://www.usconec.com/ferrules/lensed"
+    },
+    {
+      "id": "mcf",
+      "term": "MCF",
+      "tooltip": "多芯光纖：在同一包層內包含多個獨立纖芯的光纖。"
+    },
+    {
+      "id": "hcf",
+      "term": "HCF",
+      "tooltip": "空芯光纖：主要讓光在空氣中傳播，而不是在實心玻璃纖芯中傳播的光纖。"
+    },
+    {
+      "id": "qpu",
+      "term": "QPU",
+      "tooltip": "量子處理單元：混合計算系統中用於執行量子電路的專用加速器。"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_ai_infrastructure_is_changing_optics",
+      "title": "AI 基礎設施為何正在改變光學技術",
+      "subtitle": "超大規模 AI 系統推動新興光學技術發展的基礎設施壓力。",
+      "module_badge_text": "模組 1",
+      "next_module_title": "功耗、散熱與可維護性的轉變",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "AI 基礎設施為何正在改變光學技術",
+          "subtitle": "超大規模 AI 系統推動新興光學技術發展的基礎設施壓力。",
+          "version_chip": "新興光學技術",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 1
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 4
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course_overview",
+          "title": "本課程回答的四個問題",
+          "subtitle": "每個模組都將一種基礎設施壓力與旨在緩解它的光學技術聯絡起來。",
+          "modules_listed": [
+            "AI 基礎設施為何正在改變光學技術",
+            "功耗、散熱與可維護性的轉變",
+            "光纖基礎設施的密度與可測試性",
+            "延遲、量子計算與技術採用前景"
+          ],
+          "chips": [
+            {
+              "icon": "clock",
+              "text": "60 分鐘"
+            },
+            {
+              "icon": "audience",
+              "text": "入門到中級"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "ai_fabrics_optical_first",
+          "section_label": "技術版圖",
+          "title": "AI 網路正在轉向“光學優先”",
+          "subtitle": "更高速的交換機和更大的網路將光纖基礎設施變成系統級的限制。",
+          "bullets": [
+            {
+              "bold_lead": "800G 成為基線",
+              "text": "AI 後端網路已普遍將 800G 作為設計基線，1.6T 的部署也在加速。"
+            },
+            {
+              "bold_lead": "叢集規模改變了光學問題",
+              "text": "更多端點、更大的交換機埠規模和更多機架級鏈路，會增加光纖路徑與連線點的數量。"
+            },
+            {
+              "bold_lead": "可插拔光模組承受著壓力",
+              "text": "隨著埠數量和光纖數量的增加，前面板密度、功耗、散熱和維護空間都面臨更大壓力。"
+            },
+            {
+              "bold_lead": "光纜基礎設施直接影響系統表現",
+              "text": "托盤填充、彎曲管理、測試一致性和清潔度現在都會影響開通時間和可用容量。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_fabrics_optical_first.txt",
+            "wav_file": "audio/module1/slide_03_ai_fabrics_optical_first.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 4
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 9
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_grid",
+          "slug": "traditional_vs_ai",
+          "section_label": "執行模式",
+          "title": "傳統資料中心與 AI 資料中心",
+          "subtitle": "AI 叢集在流量、故障和密度假設上與傳統企業工作負載不同。",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "傳統模式",
+              "body": "許多獨立應用，相對鬆散的東西向耦合，以及常影響較小服務域的網路問題。",
+              "tone": "traditional"
+            },
+            {
+              "title": "AI 模式",
+              "body": "大型同步訓練或推理系統、密集的加速器網路以及可能降低作業效率的鏈路問題。",
+              "tone": "ai"
+            },
+            {
+              "title": "設計優先順序",
+              "body": "容量規劃側重於可預測的增長、冗餘和通用網路更新週期。",
+              "tone": "traditional"
+            },
+            {
+              "title": "AI 優先順序",
+              "body": "設計注重低延遲、高基數、高光纖密度、快速開通和快速服務恢復。",
+              "tone": "ai"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_traditional_vs_ai.txt",
+            "wav_file": "audio/module1/slide_04_traditional_vs_ai.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 7
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 8
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "gpu_generations_density",
+          "section_label": "規模訊號",
+          "title": "GPU 世代演進推動光纖密度增長",
+          "figure": {
+            "path": "figures/gpu_generation_fiber_density.svg",
+            "alt": "時間線展示光纖密度壓力如何隨 AI 加速器世代演進而上升。",
+            "caption": "加速器世代演進可作為前端、後端和縱向擴充套件（Scale-up）光纖需求增長的有效訊號。",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" font-family=\"PingFang TC, Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif\" viewBox=\"0 0 768 360\" aria-label=\"AI 世代演進帶來的光纖密度壓力\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"48\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">AI 世代演進帶來的光纖密度壓力</text>\n  <line x1=\"90\" y1=\"160\" x2=\"700\" y2=\"160\" stroke=\"#9ca3af\" stroke-width=\"6\" stroke-linecap=\"round\"/>\n  <polygon points=\"700,151 718,160 700,169\" fill=\"#9ca3af\"/>\n  <circle cx=\"90\" cy=\"160\" r=\"16\" fill=\"#343895\"/><text x=\"90\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">Hopper</text><text x=\"90\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">數百根</text><text x=\"90\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">光纖</text><circle cx=\"285\" cy=\"160\" r=\"16\" fill=\"#5F6062\"/><text x=\"285\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">Blackwell</text><text x=\"285\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">800G 基線</text><text x=\"285\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">1.6T 加速部署</text><circle cx=\"480\" cy=\"160\" r=\"16\" fill=\"#8DC63F\"/><text x=\"480\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">Rubin</text><text x=\"480\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">機架密度更高</text><text x=\"480\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">光模組更多</text><circle cx=\"675\" cy=\"160\" r=\"16\" fill=\"#D88911\"/><text x=\"675\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">Feynman</text><text x=\"675\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">縱向擴充套件（Scale-up）</text><text x=\"675\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">與橫向擴充套件（Scale-out）</text>\n  <text x=\"384\" y=\"325\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">每一代系統都會增加物理基礎設施必須承載的光連線數量。</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_gpu_generations_density.txt",
+            "wav_file": "audio/module1/slide_05_gpu_generations_density.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 9
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "full_slide_image",
+          "slug": "fe_be_fiber_growth",
+          "figure": {
+            "path": "figures/source_slide_9_fe_be_fiber_growth.png",
+            "alt": "時間線展示 Hopper、Blackwell、Rubin 和 Feynman GPU 世代中前端與後端光纖數量的增長。",
+            "source": "source_slide_image"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_06_fe_be_fiber_growth.txt",
+            "wav_file": "audio/module1/slide_06_fe_be_fiber_growth.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 9
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "scale_up_out_across",
+          "section_label": "擴充套件模式",
+          "title": "Scale-up、Scale-out 與 Scale-across",
+          "subtitle": "“規模”一詞掩蓋了三種不同的光學設計問題。",
+          "bullets": [
+            {
+              "bold_lead": "縱向擴充套件（Scale-up）",
+              "text": "將加速器緊密耦合在機架組內，連接器接入、封裝和可維護性成為主要約束。"
+            },
+            {
+              "bold_lead": "橫向擴充套件（Scale-out）",
+              "text": "將多個系統連線到更大的訓練網路中，交換機埠規模、光纖數量和鏈路可靠性佔據主導地位。"
+            },
+            {
+              "bold_lead": "跨域擴充套件（Scale-across）",
+              "text": "將網路延伸到房間、機房或鄰近的資料中心建築之間，延遲和傳輸距離成為核心約束。"
+            }
+          ],
+          "figure": {
+            "path": "figures/scale_up_out_across.mp4",
+            "media_type": "video",
+            "alt": "無聲動畫從緊密耦合的加速器鏈路在機架內放大到多機架網路，再到附近資料中心建築之間的光鏈路。",
+            "caption": "縱向擴充套件（Scale-up）、橫向擴充套件（Scale-out）和跨域擴充套件（Scale-across）形成彼此巢狀的擴充套件域，但每一層的主要光學約束都不同。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "mobile_scroll": true,
+          "audio": {
+            "script_file": "audio/module1/slide_07_scale_up_out_across.txt",
+            "wav_file": "audio/module1/slide_07_scale_up_out_across.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 12
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 13
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 14
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 17
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "rack_architecture_network",
+          "section_label": "機架級設計",
+          "title": "機架架構成為網路設計的一部分",
+          "subtitle": "Open Rack 和寬機架設計使電力、冷卻、機械訪問和光纖佈線成為同一決策的一部分。",
+          "bullets": [
+            {
+              "bold_lead": "機架寬度和功率分配很重要",
+              "text": "更寬的裝置區域、48V分佈和高密度電源架會影響光學器件和光纖的佈置位置。"
+            },
+            {
+              "bold_lead": "液冷改變了維護通道",
+              "text": "冷板、歧管和盲插流體連接器會與光學連線爭奪相同的物理空間。"
+            },
+            {
+              "bold_lead": "光學器件必須符合維護流程",
+              "text": "密集機架只有在技術人員能夠更換托盤和修復鏈路，而無需過度擾動其他連線的情況下才有用。"
+            }
+          ],
+          "figure": {
+            "path": "figures/rack_architecture_network.svg",
+            "alt": "流程圖展示供電、散熱、光學和運維如何成為相互耦合的機架級約束。",
+            "caption": "機架設計越來越多地將電源、冷卻、光纖佈線和服務流程相結合。",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" font-family=\"PingFang TC, Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif\" viewBox=\"0 0 768 340\" aria-label=\"機架設計成為網路約束條件\">\n  <rect width=\"768\" height=\"340\" fill=\"#fff\"/><text x=\"384\" y=\"46\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">機架設計成為網路約束條件</text><rect x=\"40.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/><text x=\"115.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">供電</text><text x=\"115.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">48V 母線</text><text x=\"115.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">更高機架負載</text><line x1=\"191.0\" y1=\"181.0\" x2=\"209.0\" y2=\"181.0\" stroke=\"#8DC63F\" stroke-width=\"4\"/><polygon points=\"209,173 219,181 209,189\" fill=\"#8DC63F\"/><rect x=\"219.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/><text x=\"294.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">散熱</text><text x=\"294.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">液冷迴路</text><text x=\"294.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">盲插介面</text><line x1=\"370.0\" y1=\"181.0\" x2=\"388.0\" y2=\"181.0\" stroke=\"#8DC63F\" stroke-width=\"4\"/><polygon points=\"388,173 398,181 388,189\" fill=\"#8DC63F\"/><rect x=\"398.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/><text x=\"473.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">光學</text><text x=\"473.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">高密度光纖</text><text x=\"473.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">維護通道</text><line x1=\"549.0\" y1=\"181.0\" x2=\"567.0\" y2=\"181.0\" stroke=\"#8DC63F\" stroke-width=\"4\"/><polygon points=\"567,173 577,181 567,189\" fill=\"#8DC63F\"/><rect x=\"577.0\" y=\"126\" width=\"151.0\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/><text x=\"652.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">運維</text><text x=\"652.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">開通</text><text x=\"652.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">恢復</text><text x=\"384\" y=\"306\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">高密度 AI 機架使機械、散熱、電氣和光學設計相互依賴。</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_08_rack_architecture_network.txt",
+            "wav_file": "audio/module1/slide_08_rack_architecture_network.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 19
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 20
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 21
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 22
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 23
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 24
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "基礎設施挑戰不止是頻寬",
+          "items": [
+            "AI 網路將光學系統同時推動多個極限：速度、密度、功率、延遲和可維護性。",
+            "縱向擴充套件（Scale-up）、橫向擴充套件（Scale-out）和跨域擴充套件（Scale-across）產生了不同的光學設計壓力。",
+            "機架架構、散熱和維護接入現在塑造了光連線決策。",
+            "新興光學技術應根據其所緩解的具體約束來評估。"
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_takeaways.txt",
+            "wav_file": "audio/module1/slide_09_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 14
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "檢驗你的理解：AI 光學技術驅動因素",
+          "subtitle": "回答一次即可繼續。不要求正確，反饋後你可以重試。",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "AI 叢集推動更密集的光學基礎設施的最佳原因是什麼？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "AI 網路需要更多高速、緊密耦合的機架和系統鏈路。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "AI 叢集消除了交換機間連線的需求。",
+                  "correct": false,
+                  "feedback_incorrect": "AI 叢集通常需要更多高速連線。壓力來自更多的鏈路，而不是更少。"
+                },
+                {
+                  "id": "c",
+                  "text": "光纖僅用於長途載波網路。",
+                  "correct": false,
+                  "feedback_incorrect": "在AI 基礎設施中，光鏈路也用於資料中心內部以及附近資料中心建築之間。"
+                }
+              ],
+              "feedback_correct": "沒錯。AI 網路的規模和耦合增加了高速光鏈路的數量和重要性。",
+              "feedback_incorrect": "複習三種擴充套件模式。AI 網路增加鏈路數量和每條鏈路的運維重要性。"
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "哪些語句正確地將設計壓力對映到擴充套件模式？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "縱向擴充套件（Scale-up）經常強調封裝、前面板可及性和可維護性。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "橫向擴充套件（Scale-out）通常強調交換機埠規模、光纖數量和鏈路的可靠性。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "跨域擴充套件（Scale-across）通常會讓延遲和覆蓋更為重要。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "這三種模式都可以透過更換同一種連接器來解決。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "沒錯。這些擴充套件模式有重疊，但每個模式強調光學系統的不同部分。",
+              "feedback_incorrect": "使用三模式模型：縱向擴充套件（Scale-up）、橫向擴充套件（Scale-out）和跨域擴充套件（Scale-across）產生相關但不同的光學壓力。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 11
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 14
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 17
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 2,
+          "next_module_title": "功耗、散熱與可維護性的轉變",
+          "thank_you_message": "幹得漂亮。你看到的是：AI 基礎設施正在改變物理光學層，而不僅僅是鏈路上的資料速率。",
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next.txt",
+            "wav_file": "audio/module1/slide_11_up_next.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "power_thermal_serviceability",
+      "title": "功耗、散熱與可維護性的轉變",
+      "subtitle": "CPO、擴束光學與後部盲插設計如何改變光學器件的位置和系統維護方式。",
+      "module_badge_text": "模組 2",
+      "next_module_title": "光纖基礎設施的密度與可測試性",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "功耗、散熱與可維護性的轉變",
+          "subtitle": "CPO、擴束光學與後部盲插設計如何改變光學器件的位置和系統維護方式。",
+          "version_chip": "新興光學技術",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 26
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "你將分析的設計壓力",
+          "subtitle": "本模組結束時，你將能夠：",
+          "objectives": [
+            "解釋為什麼電氣傳輸距離、前面板空間和熱負荷會把光學元件推得更靠近交換 ASIC。",
+            "請描述可插拔光模組、近封裝和共封裝光學（CPO）的基本區別。",
+            "解釋擴束光學連線如何改變灰塵敏感性和維護流程。",
+            "識別更密集光學整合帶來的可維護性權衡。"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "pluggable_model_limits",
+          "section_label": "系統極限",
+          "title": "可插拔光模組模式面臨系統極限",
+          "subtitle": "前面板光學系統依然有用，但高基數AI交換機暴露了其限制。",
+          "bullets": [
+            {
+              "bold_lead": "高速電氣傳輸需要功耗",
+              "text": "更長的高速電氣路徑需要更多的訊號處理，這會增加功率和熱量。"
+            },
+            {
+              "bold_lead": "前面板空間日益緊張",
+              "text": "傳統模組籠會佔用寶貴的前面板空間，並限制光纖密度。"
+            },
+            {
+              "bold_lead": "氣流與維護空間相互衝突",
+              "text": "光學系統、電纜彎曲半徑、冷卻和技術人員的進出都在系統前端競爭。"
+            }
+          ],
+          "figure": {
+            "path": "figures/pluggable_to_packaged.svg",
+            "alt": "可插拔光模組與近封裝與共封裝光學的比較。",
+            "caption": "將光電轉換點移近交換晶片會減少電氣傳輸距離，但會改變機械和服務模型。",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" font-family=\"PingFang TC, Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif\" viewBox=\"0 0 768 360\" aria-label=\"光電轉換逐步靠近 ASIC\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"48\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">光電轉換逐步靠近 ASIC</text>\n  <rect x=\"70\" y=\"92\" width=\"270\" height=\"180\" rx=\"14\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <rect x=\"428\" y=\"92\" width=\"270\" height=\"180\" rx=\"14\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/>\n  <text x=\"205\" y=\"132\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"800\" fill=\"#343895\">可插拔光模組</text>\n  <text x=\"563\" y=\"132\" text-anchor=\"middle\" font-size=\"22\" font-weight=\"800\" fill=\"#343895\">近封裝或共封裝</text>\n  <text x=\"205\" y=\"170\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">前面板</text><text x=\"205\" y=\"194\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">較長電氣路徑</text><text x=\"205\" y=\"218\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">易於更換</text>\n  <text x=\"563\" y=\"170\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">靠近 ASIC</text><text x=\"563\" y=\"194\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">較短電氣路徑</text><text x=\"563\" y=\"218\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">新維護模式</text>\n  <line x1=\"355\" y1=\"182\" x2=\"413\" y2=\"182\" stroke=\"#8DC63F\" stroke-width=\"5\" marker-end=\"url(#arrow)\"/>\n  <defs><marker id=\"arrow\" markerWidth=\"10\" markerHeight=\"10\" refX=\"8\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L9,3 L0,6 Z\" fill=\"#8DC63F\"/></marker></defs>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_pluggable_model_limits.txt",
+            "wav_file": "audio/module2/slide_03_pluggable_model_limits.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cpo",
+            "npo"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 17
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "cpo_moves_boundary",
+          "section_label": "架構轉變",
+          "title": "共封裝光學（CPO）改變光電轉換邊界",
+          "figure": {
+            "path": "figures/source_slide_28_cpo_roadmap.png",
+            "alt": "CPO路線圖，展示了從銅質DAC和可插拔光模組向板載光學、2.5D、Chiplet 和 3D CPO 方案的逐步推進。",
+            "caption": "該路線圖顯示，隨著高頻寬下高速電氣傳輸距離越來越受限，光轉換逐漸靠近交換機元件。",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_cpo_moves_boundary.txt",
+            "wav_file": "audio/module2/slide_04_cpo_moves_boundary.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cpo"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "apo_area_escape",
+          "section_label": "超越 CPO",
+          "title": "超越邊緣引出：面域封裝光學（APO）",
+          "figure": {
+            "alt": "簡化圖對比了周邊引出（光學I/O從晶片邊緣引出）與APO面積引出（光學I/O穿過晶片表面連線到晶片下方的光引擎）。",
+            "caption": "APO 改變了擴充套件模型：周邊引出隨邊長擴充套件，面積引出則可隨晶片表面積擴充套件。",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" font-family=\"PingFang TC, Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif\" viewBox=\"0 0 768 360\" aria-label=\"APO 的周邊引出與面積引出對比\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"38\" text-anchor=\"middle\" font-size=\"24\" font-weight=\"800\" fill=\"#343895\">光學I/O引出幾何</text>\n\n  <rect x=\"48\" y=\"72\" width=\"304\" height=\"236\" rx=\"14\" fill=\"#F8FAFC\" stroke=\"#9CA3AF\" stroke-width=\"2.5\"/>\n  <text x=\"200\" y=\"104\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"800\" fill=\"#343895\">周邊引出</text>\n  <text x=\"200\" y=\"128\" text-anchor=\"middle\" font-size=\"14\" fill=\"#5F6062\">I/O 從邊緣引出</text>\n  <rect x=\"126\" y=\"154\" width=\"148\" height=\"92\" rx=\"10\" fill=\"#EEF2F7\" stroke=\"#5F6062\" stroke-width=\"2\"/>\n  <text x=\"200\" y=\"196\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" fill=\"#343895\">晶片 / 封裝</text>\n  <text x=\"200\" y=\"220\" text-anchor=\"middle\" font-size=\"13\" fill=\"#5F6062\">受邊緣長度限制</text>\n  <g fill=\"#8DC63F\">\n    <circle cx=\"128\" cy=\"172\" r=\"4\"/><circle cx=\"128\" cy=\"190\" r=\"4\"/><circle cx=\"128\" cy=\"208\" r=\"4\"/><circle cx=\"128\" cy=\"226\" r=\"4\"/>\n    <circle cx=\"272\" cy=\"172\" r=\"4\"/><circle cx=\"272\" cy=\"190\" r=\"4\"/><circle cx=\"272\" cy=\"208\" r=\"4\"/><circle cx=\"272\" cy=\"226\" r=\"4\"/>\n    <circle cx=\"152\" cy=\"154\" r=\"4\"/><circle cx=\"176\" cy=\"154\" r=\"4\"/><circle cx=\"200\" cy=\"154\" r=\"4\"/><circle cx=\"224\" cy=\"154\" r=\"4\"/><circle cx=\"248\" cy=\"154\" r=\"4\"/>\n    <circle cx=\"152\" cy=\"246\" r=\"4\"/><circle cx=\"176\" cy=\"246\" r=\"4\"/><circle cx=\"200\" cy=\"246\" r=\"4\"/><circle cx=\"224\" cy=\"246\" r=\"4\"/><circle cx=\"248\" cy=\"246\" r=\"4\"/>\n  </g>\n  <rect x=\"110\" y=\"272\" width=\"180\" height=\"30\" rx=\"15\" fill=\"#E6EEF8\" stroke=\"#A7BCD3\"/>\n  <text x=\"200\" y=\"293\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"700\" fill=\"#343895\">隨邊長擴充套件</text>\n\n  <rect x=\"416\" y=\"72\" width=\"304\" height=\"236\" rx=\"14\" fill=\"#FFF4DD\" stroke=\"#E0B76A\" stroke-width=\"2.5\"/>\n  <text x=\"568\" y=\"104\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"800\" fill=\"#343895\">面積引出：APO</text>\n  <text x=\"568\" y=\"128\" text-anchor=\"middle\" font-size=\"14\" fill=\"#5F6062\">I/O 穿過晶片表面</text>\n  <rect x=\"494\" y=\"154\" width=\"148\" height=\"88\" rx=\"10\" fill=\"#FFE8BC\" stroke=\"#B9802D\" stroke-width=\"2\"/>\n  <text x=\"568\" y=\"177\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" fill=\"#343895\">晶片表面</text>\n  <g fill=\"#8DC63F\">\n    <circle cx=\"526\" cy=\"198\" r=\"4\"/><circle cx=\"547\" cy=\"198\" r=\"4\"/><circle cx=\"568\" cy=\"198\" r=\"4\"/><circle cx=\"589\" cy=\"198\" r=\"4\"/><circle cx=\"610\" cy=\"198\" r=\"4\"/>\n    <circle cx=\"526\" cy=\"218\" r=\"4\"/><circle cx=\"547\" cy=\"218\" r=\"4\"/><circle cx=\"568\" cy=\"218\" r=\"4\"/><circle cx=\"589\" cy=\"218\" r=\"4\"/><circle cx=\"610\" cy=\"218\" r=\"4\"/>\n  </g>\n  <rect x=\"510\" y=\"249\" width=\"116\" height=\"24\" rx=\"8\" fill=\"#DDF2E7\" stroke=\"#8DC63F\" stroke-width=\"2\"/>\n  <text x=\"568\" y=\"266\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"700\" fill=\"#343895\">晶片下方光引擎</text>\n  <rect x=\"478\" y=\"278\" width=\"180\" height=\"28\" rx=\"14\" fill=\"#FDE7BE\" stroke=\"#E0B76A\"/>\n  <text x=\"568\" y=\"297\" text-anchor=\"middle\" font-size=\"14\" font-weight=\"700\" fill=\"#343895\">隨晶片面積擴充套件</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_apo_area_escape.txt",
+            "wav_file": "audio/module2/slide_05_apo_area_escape.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "apo"
+          ],
+          "source_refs": [
+            {
+              "source": "User-provided APO connectivity table",
+              "detail": "光纖連線選項面域封裝光學（APO）"
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "what_cpo_saves",
+          "section_label": "能效",
+          "title": "CPO 能夠節省什麼",
+          "subtitle": "CPO 最有力的價值在於系統級收益，而不僅是單個元件的改進。",
+          "bullets": [
+            {
+              "bold_lead": "動力",
+              "text": "較短的電路徑可以降低高速介面所需的訊號調節功率。"
+            },
+            {
+              "bold_lead": "熱餘量",
+              "text": "電能越少，通常意味著交換晶片附近需要移除的熱量通常也會減少。"
+            },
+            {
+              "bold_lead": "前面板密度",
+              "text": "擺脫傳統前面板收發器籠的限制為高密度光纖連線開啟了新的選擇。"
+            },
+            {
+              "bold_lead": "交換機埠規模",
+              "text": "更高密度的光學I/O可以支援更大規模的網路，且層數更少或前面板擁堵較少。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_what_cpo_saves.txt",
+            "wav_file": "audio/module2/slide_06_what_cpo_saves.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "cpo_tradeoffs",
+          "section_label": "權衡",
+          "title": "CPO 帶來的新挑戰",
+          "subtitle": "將光學元件靠近ASIC可以改善一些約束，同時也使其他約束更清晰。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "可維護性",
+              "body": "更換故障的光學功能可能比更換可插拔光模組更加困難。"
+            },
+            {
+              "title": "鐳射策略",
+              "body": "系統可能需要明確的整合、遠端或外部鐳射源選擇。"
+            },
+            {
+              "title": "熱耦合",
+              "body": "光引擎現在靠近高功率矽和緊湊的冷卻路徑。"
+            },
+            {
+              "title": "互操作性",
+              "body": "形態、電氣介面、光纖連線和管理模型必須共同成熟。"
+            },
+            {
+              "title": "製造規模",
+              "body": "封裝精度、產率和供應鏈準備度成為主要的採用因素。"
+            },
+            {
+              "title": "運維模型",
+              "body": "團隊需要新的運維手冊來監控、維修和鑑定系統。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_cpo_tradeoffs.txt",
+            "wav_file": "audio/module2/slide_07_cpo_tradeoffs.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_bullets",
+          "slug": "from_package_to_interface",
+          "section_label": "過渡",
+          "title": "從封裝整合到現場連線介面",
+          "subtitle": "CPO 改變光學器件的部署位置；EBO 改變高密度介面在維護過程中的表現。",
+          "bullets": [
+            {
+              "bold_lead": "CPO移動轉換邊界",
+              "text": "封裝層面的變化包括更短的電氣傳輸距離、功率、熱量和更密集的光學I/O。"
+            },
+            {
+              "bold_lead": "光纖介面仍需經受現場運維考驗",
+              "text": "密集機架仍然需要能夠連線、檢查、清潔、更換並被技術人員信任的連接器。"
+            },
+            {
+              "bold_lead": "EBO 針對服務介面",
+              "text": "擴束光學（EBO），利用透鏡使對接的光路對微小汙染物的敏感度降低。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_from_package_to_interface.txt",
+            "wav_file": "audio/module2/slide_08_from_package_to_interface.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "ebo"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "expanded_beam_cleanliness",
+          "section_label": "EBO 連接器行為",
+          "title": "擴束光學（EBO）降低對潔淨度的敏感性",
+          "subtitle": "EBO會擴充套件並準直光束，因此一個小汙染物阻擋訊號路徑中的較小部分。",
+          "bullets": [
+            {
+              "bold_lead": "EBO 非接觸耦合",
+              "text": "光纖端面不需要像物理接觸連接器那樣精確地接觸。"
+            },
+            {
+              "bold_lead": "較大的光斑",
+              "text": "EBO使連線對對接介面上的小顆粒敏感度降低。"
+            },
+            {
+              "bold_lead": "運維目標",
+              "text": "由於技術人員在檢查和重新清潔連接器上花費的時間更少，因此其開通和恢復速度更快。"
+            }
+          ],
+          "figure": {
+            "path": "figures/expanded_beam_dust_compare.mp4",
+            "media_type": "video",
+            "alt": "無聲動畫比較灰塵對物理接觸連接器和擴束光學連接器光路的影響。",
+            "caption": "物理接觸連接器將光斑集中在對接面；EBO 擴充套件並準直光束，因此同樣大小的汙染物只會遮擋更小比例的光路。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_09_expanded_beam_cleanliness.txt",
+            "wav_file": "audio/module2/slide_09_expanded_beam_cleanliness.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "content_bullets",
+          "slug": "ebo_drivers_possibilities",
+          "section_label": "EBO 驅動因素",
+          "title": "EBO 的價值不止在於應對灰塵",
+          "subtitle": "驅動因素不只是連接器清潔度，還包括更快開通、更高密度維護，以及減少對其他光纖的擾動。",
+          "bullets": [
+            {
+              "bold_lead": "MTTU 壓力",
+              "text": "在超大規模時，數百萬根光纖的檢查和重新清潔可能成為計劃風險。"
+            },
+            {
+              "bold_lead": "EBO 與 PTMT 的潛力",
+              "text": "非接觸式透鏡插芯可降低汙染敏感性，支援高密度陣列，並減小對接力。"
+            },
+            {
+              "bold_lead": "通往後部盲插",
+              "text": "更可重複的光學配合使托盤、背板和機架後部維護模式更實用。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_ebo_drivers_possibilities.txt",
+            "wav_file": "audio/module2/slide_10_ebo_drivers_possibilities.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "mttu",
+            "ptmt"
+          ],
+          "reference_links": [
+            {
+              "label": "3M EBO資料中心解決方案",
+              "url": "https://www.3m.com/3M/en_US/p/c/electronics-components/interconnect-products/expanded-beam-optical-solutions/i/electronics/data-center/"
+            },
+            {
+              "label": "US Conec透鏡式插芯",
+              "url": "https://www.usconec.com/ferrules/lensed"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "content_diagram",
+          "slug": "rear_blind_mate",
+          "section_label": "維護工作流程程",
+          "title": "後部盲插由 EBO 與 PTMT 推動",
+          "figure": {
+            "path": "figures/source_slide_31_blind_mate_example.png",
+            "alt": "後部盲插部署示例，包含液體、光纖、光學柔性連線平面、托盤、盲插連接器和母線元件。",
+            "caption": "此示例展示了後部盲插作為系統工作流程程：EBO和PTMT式光學介面將液冷、電源、托盤和母線介面結合起來，實現可重複的服務動作。",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_11_rear_blind_mate.txt",
+            "wav_file": "audio/module2/slide_11_rear_blind_mate.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "能效是系統屬性",
+          "items": [
+            "CPO針對電氣傳輸距離、功率、熱量和前面板密度。",
+            "光學向矽的推進引發了新的可維護性和生態系統成熟度問題。",
+            "EBO 和 PTMT 式透鏡插芯透過降低對連接器汙染的敏感度，針對開通和恢復。",
+            "後部盲插設計將連接器行為轉化為托盤級別的維護流程。"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_12_takeaways.txt",
+            "wav_file": "audio/module2/slide_12_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "檢驗你的理解：能效與可維護性",
+          "subtitle": "回答一次即可繼續。不要求正確，反饋後你可以重試。",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "CPO 能夠降低交換機系統功耗的核心原因是什麼？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "它縮短了ASIC與光學轉換之間的高速電路徑。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "它會移除系統中的所有光學連接器。",
+                  "correct": false,
+                  "feedback_incorrect": "CPO 改變了光電轉換的位置，但系統仍然需要光纖連線和服務介面。"
+                },
+                {
+                  "id": "c",
+                  "text": "它使光纖本身的功耗更低。",
+                  "correct": false,
+                  "feedback_incorrect": "節省主要來自於減少高速電氣傳輸距離及相關電子裝置，而非改變光纖功耗。"
+                }
+              ],
+              "feedback_correct": "沒錯。CPO減少高速訊號在成為光學訊號前必須透過的電氣距離。",
+              "feedback_incorrect": "關注電光邊界。CPO將邊界更靠近交換晶片。"
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "哪些說法準確描述了EBO、PTMT 式介面和後部盲插連線？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "EBO可以降低光學介面對灰塵的敏感度。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "EBO和PTMT風格介面可以使後部盲插光連線更實用。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "EBO意味著測試和插入損耗不再重要。",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "盲插可維護性還必須設計出電源和散熱介面。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "沒錯。這些技術針對運維阻力，但仍需嚴格的鏈路預算和系統設計。",
+              "feedback_incorrect": "區分好處和誇張。EBO、PTMT式介面和盲插可以減少維護阻力，但並不能消除光學工程。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_13_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_13_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 25
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 30
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 31
+            }
+          ]
+        },
+        {
+          "id": 14,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 3,
+          "next_module_title": "光纖基礎設施的密度與可測試性",
+          "thank_you_message": "幹得漂亮。你把效率技術連線到維護模式，而不僅僅是元件封裝。",
+          "audio": {
+            "script_file": "audio/module2/slide_14_up_next.txt",
+            "wav_file": "audio/module2/slide_14_up_next.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "density_and_testability",
+      "title": "光纖基礎設施的密度與可測試性",
+      "subtitle": "多芯光纖（MCF）與新型測試流程如何應對光纖密度的物理極限。",
+      "module_badge_text": "模組 3",
+      "next_module_title": "延遲、量子計算與技術採用前景",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "光纖基礎設施的密度與可測試性",
+          "subtitle": "多芯光纖（MCF）與新型測試流程如何應對光纖密度的物理極限。",
+          "version_chip": "新興光學技術",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 32
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "你將評估的密度方案",
+          "subtitle": "本模組結束時，你將能夠：",
+          "objectives": [
+            "解釋為什麼托盤、管道、機架和走線路徑會對光纖數量形成物理限制。",
+            "請描述多芯光纖（MCF）和空間多工的基本思想。",
+            "解釋為什麼在生態系統過渡期間需要扇入和扇出裝置。",
+            "比較多芯光纖與空芯光纖（HCF）鏈路的測試影響。"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "fiber_count_bottleneck",
+          "section_label": "物理基礎設施",
+          "title": "光纖數量成為物理瓶頸",
+          "subtitle": "只有當光纖裝置能夠安裝、佈線、標記、測試和維護時，頻寬才是有用的。",
+          "bullets": [
+            {
+              "bold_lead": "通路填充",
+              "text": "架空托盤、導管和機架管理器的體積和彎曲半徑均有限制。"
+            },
+            {
+              "bold_lead": "重量與操控",
+              "text": "極高的光纖數量會增加電纜的重量和安裝複雜度。"
+            },
+            {
+              "bold_lead": "運維負荷",
+              "text": "每一個額外的連線點、路線和測試點都成為開通和維護的一部分。"
+            },
+            {
+              "bold_lead": "密度必須保持可診斷性",
+              "text": "如果故障難以隔離，較小的電纜是不夠的。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_fiber_count_bottleneck.txt",
+            "wav_file": "audio/module3/slide_03_fiber_count_bottleneck.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 39
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "mcf_space_division",
+          "section_label": "光纖結構",
+          "title": "多芯光纖（MCF）利用空間多工",
+          "figure": {
+            "path": "figures/mcf_scf_comparison.svg",
+            "alt": "單芯光纖和多芯光纖（MCF）的對比圖，結合截面和側視光路。",
+            "caption": "單芯光纖承載一條光路；多芯光纖（MCF）將多個獨立纖芯置於同一包層內，以提高路徑密度。",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_04_mcf_space_division.txt",
+            "wav_file": "audio/module3/slide_04_mcf_space_division.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "mcf"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "four_core_mcf",
+          "section_label": "生態演進",
+          "title": "四芯 MCF 以密度為目標，而無需重建整個生態",
+          "subtitle": "新興方向不僅是光纖設計；更是連線生態系統的問題。",
+          "bullets": [
+            {
+              "bold_lead": "更高的相對密度",
+              "text": "四個纖芯可以在同一基本光纖結構內承載多條獨立的光路。"
+            },
+            {
+              "bold_lead": "互操作性才是難點",
+              "text": "收發機、連接器、光纖陣列單元、扇出裝置和測試裝置必須對齊。"
+            },
+            {
+              "bold_lead": "近期橋接裝置很重要",
+              "text": "現有的單芯生態系統可能仍需在MCF鏈路邊緣實現扇入和扇出。"
+            }
+          ],
+          "figure": {
+            "path": "figures/source_slide_35_mcf_space_savings_chart.png",
+            "alt": "單芯和多芯光纖（MCF）示例的電纜直徑和空間節省對比圖表。",
+            "caption": "這張圖展示了 MCF 的密度優勢：在更少的管道和托盤空間內可以承載更多纖芯。",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_four_core_mcf.txt",
+            "wav_file": "audio/module3/slide_05_four_core_mcf.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "fan_in_fan_out",
+          "section_label": "過渡架構",
+          "title": "扇入/扇出連線新舊生態",
+          "figure": {
+            "path": "figures/mcf_fan_in_fan_out_mapping.mp4",
+            "media_type": "video",
+            "alt": "無聲動畫顯示四條顏色編碼的單芯光路透過扇出對映到單個多芯光纖（MCF）幹線內的不同纖芯，然後透過扇出恢復為獨立光路。",
+            "caption": "扇入和扇出保持纖芯身份，而緊湊的 MCF 幹線透過一個共享光纖結構承載四條光路。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_06_fan_in_fan_out.txt",
+            "wav_file": "audio/module3/slide_06_fan_in_fan_out.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 36
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 37
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 39
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "cpo_harnesses",
+          "section_label": "封裝",
+          "title": "CPO 線束提升緊湊光纖佈線的價值",
+          "subtitle": "靠近矽的密集光I/O使得緊湊且管理良好的光纖佈線更具價值。",
+          "bullets": [
+            {
+              "bold_lead": "封裝壓力上升",
+              "text": "CPO 和高密度光引擎可以在交換機封裝附近佈置數百甚至數千條光路。"
+            },
+            {
+              "bold_lead": "線束設計成為架構問題",
+              "text": "光纖陣列單元、節距轉換和佈線模組成為系統設計的一部分。"
+            },
+            {
+              "bold_lead": "基礎設施與封裝相銜接",
+              "text": "高密度主幹策略必須乾淨地連線到板級和封裝級光介面。"
+            }
+          ],
+          "figure": {
+            "path": "figures/cpo_harness.svg",
+            "alt": "從光引擎連線到光纖陣列單元、線束和主幹線。",
+            "caption": "光學器件越接近矽，緊湊且可重複的線束變得越重要。",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" font-family=\"PingFang TC, Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif\" viewBox=\"0 0 768 340\" aria-label=\"高密度光學 I/O 需要受控線束\">\n  <rect width=\"768\" height=\"340\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"46\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">高密度光學 I/O 需要受控線束</text>\n  <rect x=\"40\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"115.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">光引擎</text><text x=\"115.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">多通道</text><text x=\"115.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">靠近 ASIC</text>\n  <line x1=\"191\" y1=\"181\" x2=\"209\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"209,173 219,181 209,189\" fill=\"#8DC63F\"/>\n  <rect x=\"219\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/>\n  <text x=\"294.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">FAU</text><text x=\"294.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">節距</text><text x=\"294.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">轉換</text>\n  <line x1=\"370\" y1=\"181\" x2=\"388\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"388,173 398,181 388,189\" fill=\"#8DC63F\"/>\n  <rect x=\"398\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"473.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">線束</text><text x=\"473.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">規範</text><text x=\"473.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">佈線</text>\n  <line x1=\"549\" y1=\"181\" x2=\"567\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"567,173 577,181 567,189\" fill=\"#8DC63F\"/>\n  <rect x=\"577\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"652.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">主幹</text><text x=\"652.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">接入機房</text><text x=\"652.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">或機架</text>\n  <text x=\"384\" y=\"306\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">高密度光學封裝提高了緊湊、規範的光纖管理價值。</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_07_cpo_harnesses.txt",
+            "wav_file": "audio/module3/slide_07_cpo_harnesses.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 36
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 37
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_table",
+          "slug": "testing_new_failure_modes",
+          "section_label": "測試",
+          "title": "測試方法必須跟隨新的失效模式",
+          "subtitle": "新興的光纖型別可以重複使用部分現有方法，但檢測和表徵假設會發生變化。",
+          "columns": [
+            "測試領域",
+            "MCF考量",
+            "HCF考量"
+          ],
+          "rows": [
+            [
+              "連接器檢查",
+              "檢查多個纖芯及其位置；演算法可能需要同時識別所有纖芯。",
+              "當不使用尾線（pigtails）時，直接HCF端面檢測可能需要新的演算法。"
+            ],
+            [
+              "一級認證",
+              "扇出線或混合電纜可以橋接到電流損耗測試儀，但單跳線參考法可能需要新的適配模組。",
+              "使用尾纖時可以沿用現有工具；直接測試 HCF 連接器則需要更新方法。"
+            ],
+            [
+              "第二層 / OTDR",
+              "現有的OTDR可以透過扇出或混合方式工作，同時注重對映。",
+              "雙向OTDR和特殊分析很重要，因為過渡和彎曲的行為不同。"
+            ],
+            [
+              "特性表徵",
+              "CD、PMD和衰減曲線對於高速鏈路依然具有重要意義。",
+              "衰減曲線很重要，因為HCF設計可以對波長進行最佳化。"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_testing_new_failure_modes.txt",
+            "wav_file": "audio/module3/slide_08_testing_new_failure_modes.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "hcf"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 45
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "密度增長需要整個生態系統就緒",
+          "items": [
+            "光纖密度是物理安裝和運維的問題，而不僅僅是頻寬問題。",
+            "多芯光纖（MCF）透過在一個光纖結構中攜帶多個纖芯來減少體積。",
+            "扇入和扇出裝置幫助將現有單芯端點橋接到MCF幹線。",
+            "檢測方法必須不斷發展，以確保更密集的鏈路仍可診斷和認證。"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_takeaways.txt",
+            "wav_file": "audio/module3/slide_09_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 34
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 35
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 39
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "檢驗你的理解：密度與測試",
+          "subtitle": "回答一次即可繼續。不要求正確，反饋後你可以重試。",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "為什麼多芯光纖（MCF）可以降低光纜基礎設施壓力？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "它將多個獨立的纖芯放置在一個共享的光纖結構中。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "這樣就無需測試光鏈路了。",
+                  "correct": false,
+                  "feedback_incorrect": "MCF會改變密度，但鏈路仍需檢查、認證和排查。"
+                },
+                {
+                  "id": "c",
+                  "text": "它使所有收發器在沒有橋接裝置的情況下原生相容。",
+                  "correct": false,
+                  "feedback_incorrect": "在生態系統成熟期間，近期部署可能仍需扇入和扇出裝置。"
+                }
+              ],
+              "feedback_correct": "沒錯。MCF透過在共享光纖結構內放置多個纖芯來解決物理密度問題。",
+              "feedback_incorrect": "關注空間密度。MCF減少了物理體積，但並不能消除鏈路工程。"
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "對於新興MCF和HCF部署，哪些測試考慮是合理的？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "MCF檢查可能需要評估一端面的多個纖芯。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "HCF 鏈路可能需要特殊的 OTDR 分析和對波長行為的關注。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "扇出電纜可以幫助將MCF連線到現有測試裝置。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "一旦光纖密度提升，鏈路表徵就不再有用。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "沒錯。密度改進必須配合適合該光纖型別的檢測和表徵方法。",
+              "feedback_incorrect": "正確的模型是密度加可診斷性。新的光纖結構仍需可靠的測試。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 38
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 45
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 4,
+          "next_module_title": "延遲、量子計算與技術採用前景",
+          "thank_you_message": "幹得漂亮。你把光學密度與安裝、橋接和可測試性聯絡起來，而不是僅僅把它當作電纜尺寸的主張來看待。",
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next.txt",
+            "wav_file": "audio/module3/slide_11_up_next.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "latency_quantum_adoption_horizon",
+      "title": "延遲、量子計算與技術採用前景",
+      "subtitle": "空芯光纖（HCF）與混合量子-經典系統在新興光學技術版圖中的位置。",
+      "module_badge_text": "模組 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "延遲、量子計算與技術採用前景",
+          "subtitle": "空芯光纖（HCF）與混合量子-經典系統在新興光學技術版圖中的位置。",
+          "version_chip": "新興光學技術",
+          "audio": {
+            "script_file": "audio/module4/slide_01_title.txt",
+            "wav_file": "audio/module4/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 40
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 54
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "你將比較的技術成熟度",
+          "subtitle": "本模組結束時，你將能夠：",
+          "objectives": [
+            "解釋為什麼空芯光纖（HCF）可以相比傳統實芯光纖降低傳播延遲。",
+            "請描述空芯光纖中的反諧振導光背後的通俗概念。",
+            "識別跨域擴充套件（Scale-across）AI 基礎設施中低延遲的重要性。",
+            "請解釋為什麼QPU最好被理解為混合計算棧中的專用加速器。",
+            "比較新興光學技術，按採用前景和生態系統就緒度進行比較。"
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_objectives.txt",
+            "wav_file": "audio/module4/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 43
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "hcf_changes_medium",
+          "section_label": "延遲",
+          "title": "空芯光纖（HCF）改變傳輸介質",
+          "subtitle": "核心理念很簡單：讓更多光線透過空氣而非實心玻璃。",
+          "bullets": [
+            {
+              "bold_lead": "傳播速度提升",
+              "text": "光在空氣中傳播的速度比石英玻璃中更接近真空速度。"
+            },
+            {
+              "bold_lead": "延遲每公里下降",
+              "text": "當距離足夠大，足以影響工作負載時序或計算資源部署時，較低的傳播延遲最為重要。"
+            },
+            {
+              "bold_lead": "製造依然重要",
+              "text": "低延遲只有在光纖能夠大規模生產、連線、測試和運維時才有價值。"
+            }
+          ],
+          "compact_table": {
+            "title": "按介質劃分的傳播速度",
+            "columns": [
+              "材料",
+              "折射率",
+              "光速（m/s）"
+            ],
+            "rows": [
+              [
+                "航空",
+                "1.00",
+                "3.0 × 10⁸"
+              ],
+              [
+                "水",
+                "1.33",
+                "2.3 × 10⁸"
+              ],
+              [
+                "有機玻璃",
+                "1.49",
+                "2.0 × 10⁸"
+              ],
+              [
+                "玻璃",
+                "1.50",
+                "2.0 × 10⁸"
+              ],
+              [
+                "鑽石",
+                "2.42",
+                "1.2 × 10⁸"
+              ]
+            ]
+          },
+          "figure": {
+            "path": "figures/source_slide_42_hcf_latency_visuals.png",
+            "alt": "空芯光纖（HCF）展示DNANF結構、洩漏損耗圖及歷史HCF設計示例的視覺化圖。",
+            "caption": "這些影象展示了延遲討論背後的空芯結構，以及現代DNANF設計與早期 HCF 方法的不同之處。",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_03_hcf_changes_medium.txt",
+            "wav_file": "audio/module4/slide_03_hcf_changes_medium.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "hcf"
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "anti_resonant_guidance",
+          "section_label": "工作原理",
+          "title": "用通俗語言理解反諧振導光",
+          "figure": {
+            "path": "figures/hcf_anti_resonant_guidance.mp4",
+            "media_type": "video",
+            "alt": "無聲概念動畫展示光脈衝集中在空芯光纖（HCF）充氣空芯，巢狀的薄壁玻璃膜形成反共振邊界。",
+            "caption": "巢狀的玻璃微觀結構限制了與包層的耦合，因此導光模集中在空心氣芯中。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_04_anti_resonant_guidance.txt",
+            "wav_file": "audio/module4/slide_04_anti_resonant_guidance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 43
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_bullets",
+          "slug": "where_latency_matters",
+          "section_label": "應用場景",
+          "title": "低延遲在哪些場景重要",
+          "subtitle": "當距離和同步成為效能問題的一部分時，HCF 的優勢最明顯。",
+          "bullets": [
+            {
+              "bold_lead": "跨域擴充套件（Scale-across）網路",
+              "text": "當傳播延遲較低時，附近的建築或園區會變得更實用。"
+            },
+            {
+              "bold_lead": "分散式訓練",
+              "text": "集合通訊操作對鏈路延遲非常敏感，因為許多加速器等待共享結果。"
+            },
+            {
+              "bold_lead": "選址靈活性",
+              "text": "更低的延遲可以擴大將容量放置在可用電源附近的實際半徑。"
+            },
+            {
+              "bold_lead": "延遲並不是唯一的指標",
+              "text": "損耗、彎曲靈敏度、連線方式、接頭、測試方法和成本仍決定可部署性。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_where_latency_matters.txt",
+            "wav_file": "audio/module4/slide_05_where_latency_matters.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "hcf_promise_friction",
+          "section_label": "就緒度",
+          "title": "HCF 的潛力與部署阻力",
+          "subtitle": "該圖表有助於區分有前景的物理效果與部署準備情況。",
+          "audio": {
+            "script_file": "audio/module4/slide_06_hcf_promise_friction.txt",
+            "wav_file": "audio/module4/slide_06_hcf_promise_friction.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 42
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 43
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            }
+          ],
+          "figure": {
+            "path": "figures/source_slide_44_hcf_attenuation_chart.png",
+            "alt": "衰減圖比較 DNANF 的測量結果與其他空芯光纖及石英光纖基準。",
+            "caption": "該圖表將潛力與部署阻力的討論錨定在跨波長的測量損耗行為中。",
+            "source": "reuse",
+            "extract_from": {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 44,
+              "method": "cropped from rendered source slide"
+            }
+          },
+          "bullets": [
+            {
+              "bold_lead": "承諾：降低延遲",
+              "text": "氣導傳播相比傳統實芯光纖可以減少延遲。"
+            },
+            {
+              "bold_lead": "承諾：低損耗進展",
+              "text": "近期的空心設計顯示出比早期結構更好的衰減。"
+            },
+            {
+              "bold_lead": "挑戰：規模製造",
+              "text": "複雜的微結構光纖必須重複且經濟地生產。"
+            },
+            {
+              "bold_lead": "挑戰：現場生態系統",
+              "text": "接頭、連線、彎曲行為、檢查和測試方法仍需成熟。"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_bullets",
+          "slug": "from_propagation_to_specialized_compute",
+          "section_label": "過渡",
+          "title": "從傳播速度轉向專用計算",
+          "subtitle": "模組現已從快速傳輸資料轉向應用專用計算，採用相同的系統就緒度視角。",
+          "mobile_scroll": true,
+          "bullets": [
+            {
+              "bold_lead": "不同的約束",
+              "text": "HCF 針對物理鏈路中的傳播延遲；量子系統則面向專用計算。"
+            },
+            {
+              "bold_lead": "同樣的架構原則",
+              "text": "僅僅是元件本身並不是系統本身。連線性、控制、軟體、運維和可靠性決定了實際價值。"
+            },
+            {
+              "bold_lead": "本模組的觀察視角",
+              "text": "將QPU視為一個專用加速器，然後將其採用準備度與近期光學技術進行比較。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_from_propagation_to_specialized_compute.txt",
+            "wav_file": "audio/module4/slide_07_from_propagation_to_specialized_compute.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "qpu"
+          ],
+          "reference_links": [
+            {
+              "label": "將量子處理單元整合到資料中心基礎設施中",
+              "url": "https://academy.opencompute.org/learn/courses/51/integrating-quantum-processing-units-into-data-center-infrastructure"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 47
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "cpu_gpu_qpu",
+          "section_label": "計算棧",
+          "title": "CPU、GPU 與 QPU：不同任務使用不同引擎",
+          "subtitle": "有用的心智模型是專用化，而非相互替代。",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "CPU",
+              "body": "通用編排、控制流、作業系統以及廣泛的應用邏輯。"
+            },
+            {
+              "title": "GPU",
+              "body": "高度並行的確定性數學、張量運算、模擬與其他加速工作負載。"
+            },
+            {
+              "title": "QPU",
+              "body": "專門的量子電路，適用於特定問題類別，量子行為是有用的資源。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_cpu_gpu_qpu.txt",
+            "wav_file": "audio/module4/slide_08_cpu_gpu_qpu.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "hybrid_quantum_classical",
+          "section_label": "整合",
+          "title": "混合量子-經典系統需要低延遲整合",
+          "subtitle": "當QPU能夠作為嚴格控制的經典系統的一部分時，在資料中心環境中變得非常有用。",
+          "mobile_scroll": true,
+          "bullets": [
+            {
+              "bold_lead": "經典系統編排",
+              "text": "CPU和GPU負責準備工作、執行控制迴圈並處理結果。"
+            },
+            {
+              "bold_lead": "量子系統執行專用任務",
+              "text": "QPU執行的量子電路難以用經典模擬。"
+            },
+            {
+              "bold_lead": "互聯延遲很重要",
+              "text": "校準、控制和糾錯工作流程程依賴於經典資源與量子資源之間的快速反饋。"
+            }
+          ],
+          "figure": {
+            "path": "figures/hybrid_quantum_classical.svg",
+            "alt": "流程圖展示 CPU、GPU、QPU 與反饋構成的混合控制閉環。",
+            "caption": "混合系統依賴經典加速器和量子處理器之間的快速反饋。",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" font-family=\"PingFang TC, Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif\" viewBox=\"0 0 768 340\" aria-label=\"量子-經典混合控制閉環\">\n  <rect width=\"768\" height=\"340\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"46\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">量子-經典混合控制閉環</text>\n  <rect x=\"40\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"115.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">CPU</text><text x=\"115.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">編排</text><text x=\"115.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">工作流程</text>\n  <line x1=\"191\" y1=\"181\" x2=\"209\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"209,173 219,181 209,189\" fill=\"#8DC63F\"/>\n  <rect x=\"219\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"294.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">GPU</text><text x=\"294.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">加速</text><text x=\"294.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">控制</text>\n  <line x1=\"370\" y1=\"181\" x2=\"388\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"388,173 398,181 388,189\" fill=\"#8DC63F\"/>\n  <rect x=\"398\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F4FAEF\" stroke=\"#8DC63F\" stroke-width=\"3\"/>\n  <text x=\"473.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">QPU</text><text x=\"473.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">執行</text><text x=\"473.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">量子電路</text>\n  <line x1=\"549\" y1=\"181\" x2=\"567\" y2=\"181\" stroke=\"#8DC63F\" stroke-width=\"4\" stroke-linecap=\"round\"/><polygon points=\"567,173 577,181 567,189\" fill=\"#8DC63F\"/>\n  <rect x=\"577\" y=\"126\" width=\"151\" height=\"110\" rx=\"12\" fill=\"#F8FAFC\" stroke=\"#9ca3af\" stroke-width=\"3\"/>\n  <text x=\"652.5\" y=\"160\" text-anchor=\"middle\" font-size=\"19\" font-weight=\"800\" fill=\"#343895\">反饋</text><text x=\"652.5\" y=\"190\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">測量</text><text x=\"652.5\" y=\"212\" text-anchor=\"middle\" font-size=\"15\" fill=\"#5F6062\">校正</text>\n  <path d=\"M652.5 236 L652.5 270 L115.5 270 L115.5 246\" fill=\"none\" stroke=\"#343895\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><polygon points=\"107.5,246 115.5,236 123.5,246\" fill=\"#343895\"/>\n  <text x=\"384\" y=\"292\" text-anchor=\"middle\" font-size=\"15\" font-weight=\"700\" fill=\"#343895\">測量和校正結果返回編排層</text>\n  <text x=\"384\" y=\"326\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">實用的量子系統是低延遲閉環，而不是孤立的裝置。</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_09_hybrid_quantum_classical.txt",
+            "wav_file": "audio/module4/slide_09_hybrid_quantum_classical.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 50
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 51
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "content_diagram",
+          "slug": "adoption_horizon",
+          "section_label": "路線圖思維",
+          "title": "近期、下一階段與更遠未來",
+          "figure": {
+            "path": "figures/adoption_horizon.svg",
+            "alt": "按技術採用前景分組新興光學技術的時間線。",
+            "caption": "將採用前景作為規劃類別，而非固定承諾。生態系統就緒度可以提前或推遲技術。",
+            "source": "svg_inline",
+            "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" font-family=\"PingFang TC, Microsoft JhengHei, Noto Sans CJK TC, Arial, sans-serif\" viewBox=\"0 0 768 360\" aria-label=\"新興光學技術的採用前景\">\n  <rect width=\"768\" height=\"360\" fill=\"#fff\"/>\n  <text x=\"384\" y=\"48\" text-anchor=\"middle\" font-size=\"26\" font-weight=\"800\" fill=\"#343895\">新興光學技術的採用前景</text>\n  <line x1=\"90\" y1=\"160\" x2=\"675\" y2=\"160\" stroke=\"#9ca3af\" stroke-width=\"6\" stroke-linecap=\"round\"/>\n  <circle cx=\"90\" cy=\"160\" r=\"16\" fill=\"#343895\"/><text x=\"90\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">近期</text><text x=\"90\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">800G</text><text x=\"90\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">密度壓力</text><circle cx=\"285\" cy=\"160\" r=\"16\" fill=\"#5F6062\"/><text x=\"285\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">中近期</text><text x=\"285\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">CPO</text><text x=\"285\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">擴束光學</text><circle cx=\"480\" cy=\"160\" r=\"16\" fill=\"#8DC63F\"/><text x=\"480\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">下一階段</text><text x=\"480\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">MCF</text><text x=\"480\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">HCF 試點</text><circle cx=\"675\" cy=\"160\" r=\"16\" fill=\"#343895\"/><text x=\"675\" y=\"208\" text-anchor=\"middle\" font-size=\"20\" font-weight=\"700\" fill=\"#343895\">長期</text><text x=\"675\" y=\"242\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">混合</text><text x=\"675\" y=\"266\" text-anchor=\"middle\" font-size=\"16\" fill=\"#5F6062\">QPU 系統</text>\n  <text x=\"384\" y=\"325\" text-anchor=\"middle\" font-size=\"17\" fill=\"#5F6062\">每一代系統都會增加物理基礎設施必須承載的光連線數量。</text>\n</svg>"
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_10_adoption_horizon.txt",
+            "wav_file": "audio/module4/slide_10_adoption_horizon.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 28
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 54
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "未來將是技術組合，而非單一技術",
+          "items": [
+            "HCF針對傳播延遲，並可擴充套件對距離敏感的網路的設計選項。",
+            "QPU整合是一個依賴低延遲經典控制環路的專用計算課題。",
+            "CPO、擴束光學、MCF、HCF和QPU整合解決了不同的約束。",
+            "採用取決於物理學、封裝、標準、供應鏈、可測試性和運維準備度。"
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_11_takeaways.txt",
+            "wav_file": "audio/module4/slide_11_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 46
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 49
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 52
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 54
+            }
+          ]
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "檢驗你的理解：延遲與成熟度",
+          "subtitle": "回答一次即可繼續。不要求正確，反饋後你可以重試。",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "為什麼空芯光纖（HCF）可以減少傳播延遲？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "它主要透過空氣引導光線，在空氣中光線傳播速度比實心玻璃快。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "它消除了所有光學損耗和反射的來源。",
+                  "correct": false,
+                  "feedback_incorrect": "HCF可以降低延遲，但損耗、反射、彎曲和連接器仍然重要。"
+                },
+                {
+                  "id": "c",
+                  "text": "它能更快地將光訊號轉換為電訊號。",
+                  "correct": false,
+                  "feedback_incorrect": "HCF關注的是光的傳播介質，而非早期的電轉換。"
+                }
+              ],
+              "feedback_correct": "沒錯。HCF透過改變承載大部分光的介質來降低傳播延遲。",
+              "feedback_incorrect": "關注傳播介質本身。HCF改變光線在光纖內部傳播的位置。"
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "哪些對映正確地將技術與一次壓力聯絡起來？",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "CPO主要解決高速電氣傳輸距離、功率、熱量和前面板限制。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "擴束光學主要涉及連接器汙染敏感性和服務流程。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "MCF主要解決物理光纖密度和電纜體積問題。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "QPU整合主要取代AI 系統中的所有 CPU 和 GPU。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "沒錯。每種技術都有不同的重心，儘管它們在真實系統中相互作用。",
+              "feedback_incorrect": "按各技術釋放的主要壓力進行分類。QPU是專用加速器，而非通用替代方案。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_12_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_12_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 10
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 27
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 29
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 33
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 41
+            },
+            {
+              "source": "NEW - OCP Academy - Emerging Technologies Slides_DRAFT_R 4.pptx",
+              "slide": 48
+            }
+          ]
+        },
+        {
+          "id": 13,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "新興光學技術導論",
+          "thank_you_message": "感謝您完成了最後一個模組：延遲、量子與技術採用前景。",
+          "cert_message": "你已經完成了課程。你現在可以將新興光學技術與它們旨在緩解的基礎設施壓力連線起來：規模、效率、密度、延遲、可維護性以及專用計算整合。",
+          "audio": {
+            "script_file": "audio/module4/slide_13_course_complete.txt",
+            "wav_file": "audio/module4/slide_13_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    }
+  ],
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "1AKkSX7KMPHIWuz76m0n",
+    "voice_name": "Tiffy"
+  },
+  "metadata_language_name": "Chinese (Traditional)",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "zh-TW",
+    "source_course_sha256": "38050c4ecc01f96fa5a131371f885e63ef19bebb384d791e0384a4eeac0844e5"
+  },
+  "ui_labels": {
+    "not_started": "未開始",
+    "completed": "已完成",
+    "course_overview": "課程概覽",
+    "learning_objectives": "學習目標",
+    "reference": "參考資料",
+    "learn_more": "瞭解更多",
+    "opens_new_tab": "在新標籤頁中開啟",
+    "learner_resource": "學習資源",
+    "open": "開啟",
+    "video_controls": "影片控制元件",
+    "play_video": "播放影片",
+    "pause_video": "暫停影片",
+    "zoom_video": "放大影片",
+    "video_figure": "影片圖示",
+    "zoom_figure": "放大圖示",
+    "enlarged_figure": "放大的圖示",
+    "lightbox_close_hint": "單擊外部區域或按 Esc 鍵關閉",
+    "key_takeaways": "要點回顧",
+    "knowledge_check": "知識檢查",
+    "submit": "提交",
+    "retry": "重試",
+    "correct": "回答正確。",
+    "review_feedback": "請檢視反饋後重試。",
+    "select_answer": "請至少選擇一個答案，然後提交。",
+    "module": "模組",
+    "module_complete": "模組 {module} 已完成",
+    "up_next": "下一模組",
+    "go_to_module": "前往模組 {module}",
+    "share_feedback": "分享反饋",
+    "survey_body": "請分享您的課程體驗，幫助 OCP Academy 改進未來的學習內容。",
+    "course_complete": "課程已完成",
+    "theme": "主題",
+    "toggle_dark_mode": "切換深色模式",
+    "previous_slide": "上一張幻燈片",
+    "next_slide": "下一張幻燈片",
+    "play_pause_narration": "播放或暫停旁白",
+    "playback_speed": "播放速度",
+    "playback_speed_slider": "播放速度滑塊",
+    "speed": "速度",
+    "toggle_fullscreen": "切換全屏",
+    "fullscreen": "全屏"
+  }
+}

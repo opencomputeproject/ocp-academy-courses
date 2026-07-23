@@ -65,7 +65,9 @@ before environment defaults; `--engine` and `--voice` remain explicit command
 overrides. Maintained locale scaffolds set Korean `Chris - Warm and clear`
 (`PDoCXqBQFGsvfO0hNkEs`), the approved Japanese voice
 (`b34JylakFZPlGS0BnwyY`), Simplified Chinese `Lan Chen`
-(`bZtjnyJAFD0Cp3lfNG5g`), Brazilian Portuguese `Carla`
+(`bZtjnyJAFD0Cp3lfNG5g`), Traditional Chinese `Tiffy`
+(`1AKkSX7KMPHIWuz76m0n`), Vietnamese `Nhu`
+(`A5w1fw5x0uXded1LDvZp`), Brazilian Portuguese `Carla`
 (`m151rjrbWXbBqyq56tly`), and Latin American Spanish `Ninoska`
 (`zl1Ut8dvwcVSuQSB9XkG`).
 
