@@ -1,0 +1,837 @@
+{
+  "style": "Slides",
+  "language": "vi-VN",
+  "course_slug": "esun_academy_vi_vn",
+  "course_title": "OCP ESUN",
+  "course_subtitle": "Ethernet cho mạng scale-up — khóa học kỹ thuật chuyên sâu về Đặc tả cơ sở ESUN, Bản sửa đổi 1.0.",
+  "tagline": "Đổi mới siêu quy mô do cộng đồng dẫn dắt, dành cho mọi người",
+  "spec_version_chip": "Đặc tả v1.0",
+  "target_duration_minutes": 20,
+  "audience_level": "kỹ thuật chuyên sâu",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "esun_course_logo.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "ESUN"
+  },
+  "sources": [
+    {
+      "path": "OCP ESUN - Network Operator Requirements - Base Specification Rev 1.0 FINAL.pdf",
+      "kind": "spec"
+    },
+    {
+      "path": "ocp-esun-ethernet-for-scale-up-network-final-reviewaddressed.pptx",
+      "kind": "summit_slides"
+    },
+    {
+      "path": "https://www.opencompute.org/blog/introducing-esun-advancing-ethernet-for-scale-up-ai-infrastructure-at-ocp",
+      "kind": "blog"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "esun_overview",
+      "title": "OCP ESUN: Ethernet cho mạng scale-up",
+      "subtitle": "Vì sao Ethernet scale-up tồn tại, những gì thay đổi trên đường truyền và phần cứng của bạn phải làm gì để tuân thủ.",
+      "module_badge_text": "Mô-đun 1",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "OCP ESUN",
+          "subtitle": "Ethernet cho mạng scale-up",
+          "version_chip": "Đặc tả cơ sở v1.0 · Có hiệu lực ngày 9 tháng 2 năm 2026",
+          "tagline": "Tác giả: Manoj Wadekar (Meta), Rajesh Sankaran (Microsoft)",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "spec",
+              "page": 1
+            }
+          ],
+          "hero_links": [
+            {
+              "label": "Đọc Đặc tả ESUN 1.0",
+              "icon": "📄",
+              "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+            },
+            {
+              "label": "Đọc blog công bố của OCP",
+              "icon": "📝",
+              "url": "https://www.opencompute.org/blog/introducing-esun-advancing-ethernet-for-scale-up-ai-infrastructure-at-ocp"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Bạn sẽ học được gì",
+          "subtitle": "Sau khóa học 20 phút này, bạn sẽ có thể…",
+          "objectives": [
+            "Phân biệt mạng scale-up với mạng scale-out và mạng front-end.",
+            "Nêu ba xu hướng khiến ngành cần một đặc tả riêng cho scale-up.",
+            "Phân tích từng trường của ESUN Header 4 byte và giải thích mỗi trường thay thế thành phần nào.",
+            "Mô tả toàn bộ cơ chế fabric — PFC, CBFC, ECN, LLR, Flow Label và TTL.",
+            "Liệt kê yêu cầu tuân thủ cho endpoint và switch, đồng thời xác định vai trò của bảo mật."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_objectives.txt",
+            "wav_file": "audio/module1/slide_02_objectives.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "esun"
+          ]
+        },
+        {
+          "id": 3,
+          "mobile_scroll": true,
+          "type": "content_two_column",
+          "slug": "scaleup_networks",
+          "section_label": "Định vị",
+          "title": "Mạng scale-up trong hệ thống AI",
+          "subtitle": "Ba loại mạng cùng tồn tại trong một cụm AI hiện đại. Đừng nhầm lẫn chúng.",
+          "bullets": [
+            {
+              "bold_lead": "Front-end:",
+              "text": "kết nối người dùng, lưu trữ và thế giới bên ngoài. Hoạt động như một mạng trung tâm dữ liệu thông thường."
+            },
+            {
+              "bold_lead": "Scale-out:",
+              "text": "kết nối các rack để thực hiện phép toán tập thể trên hàng trăm đến hàng nghìn nút."
+            },
+            {
+              "bold_lead": "Scale-up:",
+              "text": "fabric liên kết chặt chẽ bên trong hệ thống mà nhà phát triển xem như một bộ tăng tốc khổng lồ."
+            },
+            {
+              "bold_lead": "Đặc tính lưu lượng:",
+              "text": "song song mô hình — thông điệp nhỏ, đồng bộ thường xuyên, không chấp nhận jitter hoặc mất gói."
+            },
+            {
+              "bold_lead": "Bước nhảy quy mô:",
+              "text": "từ 8 GPU mỗi nút (Llama 4) lên ≥1.000 GPU trải rộng nhiều rack (thế hệ tiếp theo)."
+            }
+          ],
+          "figure": {
+            "path": "figures/scaleup_topology_vi.svg",
+            "alt": "Tô-pô mạng scale-up, scale-out và front-end",
+            "caption": "Mạng front-end, scale-up và scale-out trên hai rack chứa các nút CPU+bộ tăng tốc. Nguồn: bộ slide OCP ESUN Summit.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_03_scaleup_networks.txt",
+            "wav_file": "audio/module1/slide_03_scaleup_networks.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "deck",
+              "slide": 3
+            }
+          ],
+          "term_refs": [
+            "scale_up_network",
+            "model_parallel_traffic"
+          ],
+          "reference_links": [
+            {
+              "label": "Đặc tả cơ sở OCP ESUN",
+              "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "why_esun_now",
+          "section_label": "Động lực",
+          "title": "Vì sao cần ESUN, và vì sao là lúc này",
+          "subtitle": "Ba xu hướng khiến scale-up vượt quá mục đích thiết kế ban đầu của Ethernet tiêu chuẩn.",
+          "bullets": [
+            {
+              "bold_lead": "Độ trễ:",
+              "text": "nhà phát triển muốn toàn bộ miền scale-up hoạt động như một bộ tăng tốc duy nhất — mạng không được khiến tài nguyên tính toán phải chờ."
+            },
+            {
+              "bold_lead": "Hiệu năng:",
+              "text": "GPU rất đắt; kernel hợp nhất cần truyền tải xác định với overhead thấp. Mỗi byte header tiết kiệm được là thêm một byte tensor được truyền."
+            },
+            {
+              "bold_lead": "Độ ổn định:",
+              "text": "khi miền mở rộng, phạm vi ảnh hưởng cũng tăng. Giảm 20% băng thông trong miền 128 bộ tăng tốc → suy giảm khoảng 5% hiệu năng đầu-cuối."
+            },
+            {
+              "bold_lead": "Giải pháp:",
+              "text": "phát triển Ethernet thay vì thay thế nó, tiếp tục sử dụng quang học, silicon và công cụ hiện có."
+            }
+          ],
+          "figure": {
+            "source": "svg_inline",
+            "svg": "<svg viewBox=\"0 0 780 400\" xmlns=\"http://www.w3.org/2000/svg\" style=\"max-width:100%;height:auto;\" role=\"img\" aria-label=\"Scale jump from 8 GPUs to 1,000 GPUs\">\n  <defs>\n    <marker id=\"arrowhead\" markerWidth=\"10\" markerHeight=\"10\" refX=\"8\" refY=\"3\" orient=\"auto\">\n      <polygon points=\"0 0, 10 3, 0 6\" fill=\"#6FA030\"/>\n    </marker>\n    <style>\n      .ttl { font: 600 14px 'Open Sans', system-ui, sans-serif; fill: #1a1a1a; }\n      .sub { font: 400 11px 'Open Sans', system-ui, sans-serif; fill: #5F6062; }\n      .big { font: 800 36px 'Open Sans', system-ui, sans-serif; fill: #6FA030; }\n      .tag { font: 600 12px 'Open Sans', system-ui, sans-serif; fill: #6FA030; }\n    </style>\n  </defs>\n\n  <!-- LEFT: Thời kỳ Llama 4 - single node, 8 GPUs -->\n  <text x=\"140\" y=\"30\" text-anchor=\"middle\" class=\"ttl\">Thời kỳ Llama 4</text>\n  <text x=\"140\" y=\"48\" text-anchor=\"middle\" class=\"sub\">một nút, một backplane</text>\n  <rect x=\"30\" y=\"60\" width=\"220\" height=\"180\" rx=\"10\" fill=\"#f5f7fa\" stroke=\"#d0d5db\" stroke-width=\"1.5\"/>\n  <!-- 8 GPU icons in 2 rows of 4 -->\n  <g>\n    <rect x=\"50\" y=\"80\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n    <rect x=\"100\" y=\"80\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n    <rect x=\"150\" y=\"80\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n    <rect x=\"200\" y=\"80\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n    <rect x=\"50\" y=\"130\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n    <rect x=\"100\" y=\"130\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n    <rect x=\"150\" y=\"130\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n    <rect x=\"200\" y=\"130\" width=\"38\" height=\"38\" rx=\"4\" fill=\"#8DC63F\" stroke=\"#6FA030\"/>\n  </g>\n  <text x=\"140\" y=\"210\" text-anchor=\"middle\" class=\"big\">8</text>\n  <text x=\"140\" y=\"232\" text-anchor=\"middle\" class=\"sub\">GPU trong miền scale-up</text>\n\n  <!-- ARROW -->\n  <line x1=\"268\" y1=\"150\" x2=\"395\" y2=\"150\" stroke=\"#8DC63F\" stroke-width=\"3\" marker-end=\"url(#arrowhead)\"/>\n  <text x=\"332\" y=\"140\" text-anchor=\"middle\" class=\"tag\">Mục tiêu ESUN</text>\n  <text x=\"332\" y=\"172\" text-anchor=\"middle\" class=\"sub\">scale-up đa rack</text>\n\n  <!-- RIGHT: next-gen, ≥1000 GPUs across many racks -->\n  <text x=\"580\" y=\"30\" text-anchor=\"middle\" class=\"ttl\">Nền tảng thế hệ tiếp theo</text>\n  <text x=\"580\" y=\"48\" text-anchor=\"middle\" class=\"sub\">miền scale-up trải rộng nhiều rack</text>\n  <rect x=\"420\" y=\"70\" width=\"100\" height=\"110\" rx=\"8\" fill=\"#f5f7fa\" stroke=\"#d0d5db\" stroke-width=\"1.2\"/>\n  <rect x=\"430.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"530\" y=\"70\" width=\"100\" height=\"110\" rx=\"8\" fill=\"#f5f7fa\" stroke=\"#d0d5db\" stroke-width=\"1.2\"/>\n  <rect x=\"540.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"640\" y=\"70\" width=\"100\" height=\"110\" rx=\"8\" fill=\"#f5f7fa\" stroke=\"#d0d5db\" stroke-width=\"1.2\"/>\n  <rect x=\"650.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"79.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"90.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"102.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"114.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"126.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"137.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"149.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"161.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"420\" y=\"190\" width=\"100\" height=\"110\" rx=\"8\" fill=\"#f5f7fa\" stroke=\"#d0d5db\" stroke-width=\"1.2\"/>\n  <rect x=\"430.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"430.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"444.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"458.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"472.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"486.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"500.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"530\" y=\"190\" width=\"100\" height=\"110\" rx=\"8\" fill=\"#f5f7fa\" stroke=\"#d0d5db\" stroke-width=\"1.2\"/>\n  <rect x=\"540.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"540.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"554.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"568.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"582.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"596.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"610.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"640\" y=\"190\" width=\"100\" height=\"110\" rx=\"8\" fill=\"#f5f7fa\" stroke=\"#d0d5db\" stroke-width=\"1.2\"/>\n  <rect x=\"650.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"199.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"210.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"222.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"234.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"246.0\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"257.8\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"269.5\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"650.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"664.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"678.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"692.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"706.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <rect x=\"720.1\" y=\"281.2\" width=\"9.8\" height=\"9.8\" rx=\"1\" fill=\"#8DC63F\" stroke=\"#6FA030\" stroke-width=\"0.4\"/>\n  <text x=\"580\" y=\"335\" text-anchor=\"middle\" class=\"big\">&#8805; 1,000</text>\n  <text x=\"580\" y=\"358\" text-anchor=\"middle\" class=\"sub\">GPU trong miền scale-up</text>\n</svg>\n",
+            "alt": "Bước nhảy từ 8 GPU mỗi nút lên ít nhất 1.000 GPU trải rộng nhiều rack",
+            "caption": "Thời kỳ Llama 4: 8 GPU trong một chassis. Mục tiêu thế hệ tiếp theo: ≥1.000 GPU trải rộng nhiều rack."
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_why_esun_now.txt",
+            "wav_file": "audio/module1/slide_04_why_esun_now.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "spec",
+              "section": "4 Trends Driving Scale-Up Networks"
+            }
+          ],
+          "term_refs": [
+            "goodput"
+          ]
+        },
+        {
+          "id": 5,
+          "mobile_scroll": true,
+          "type": "content_two_column",
+          "slug": "esun_scope",
+          "section_label": "Phạm vi",
+          "title": "Phạm vi và trọng tâm của ESUN",
+          "subtitle": "Chủ đích thu hẹp phạm vi: định dạng khung và chuyển mạch Ethernet cho scale-up, không hơn.",
+          "bullets": [
+            {
+              "bold_lead": "Trong phạm vi:",
+              "text": "định dạng khung L2/L3, header hiệu quả, khôi phục lỗi cấp liên kết và truyền tải không mất dữ liệu."
+            },
+            {
+              "bold_lead": "Ngoài phạm vi:",
+              "text": "giao vận phía host, tầng ứng dụng và các giao thức không phải Ethernet."
+            },
+            {
+              "bold_lead": "Ranh giới:",
+              "text": "phân tách rõ chức năng mạng và host — các nhà cung cấp có thể hội tụ mà không áp đặt kiến trúc bộ tăng tốc."
+            },
+            {
+              "bold_lead": "v1.0 tối thiểu:",
+              "text": "đường cơ sở để nhà cung cấp có thể xây dựng và xuất xưởng ngay; các phiên bản sau cam kết tương thích ngược."
+            },
+            {
+              "bold_lead": "Bổ trợ:",
+              "text": "các tính năng giao vận đang phát triển trong UEC được giữ ngoài v1.0 cho đến khi ổn định."
+            }
+          ],
+          "figure": {
+            "path": "figures/esun_focus_stack_vi.svg",
+            "alt": "Các trọng tâm kỹ thuật của ESUN: định dạng khung L2/L3, header hiệu quả, khôi phục lỗi và truyền tải không mất dữ liệu",
+            "caption": "XPU nằm trên các tầng giao vận (OCP SUE Transport màu xanh lá). ESUN chi phối Ethernet Header, Data Link và PHY. Nguồn: bộ slide OCP ESUN Summit.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_esun_scope.txt",
+            "wav_file": "audio/module1/slide_05_esun_scope.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "deck",
+              "slide": 5
+            },
+            {
+              "source": "spec",
+              "section": "3 Scope"
+            }
+          ],
+          "term_refs": [
+            "uec"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "header_efficiency",
+          "section_label": "Hiệu quả header",
+          "title": "Thay IP Header bằng EH",
+          "figure": {
+            "path": "figures/header_efficiency_animation.mp4",
+            "media_type": "video",
+            "poster": "figures/header_efficiency_animation_poster.png",
+            "alt": "Hoạt ảnh không tiếng cho thấy IP Header 20–40 byte trong khung Ethernet tiêu chuẩn thu gọn thành ESUN Header 4 byte, trong khi định dạng khung Ethernet và payload vẫn giữ nguyên.",
+            "caption": "Chuyển từ Ethernet/IP tiêu chuẩn sang ESUN: loại bỏ 20–40 byte IP Header, thêm ESUN Header 4 byte và dùng các trường nhỏ gọn để khôi phục những điều khiển miền scale-up cần.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "preload": "metadata"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_06_header_efficiency.txt",
+            "wav_file": "audio/module1/slide_06_header_efficiency.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "spec",
+              "section": "5.1 Header Efficiency"
+            }
+          ],
+          "term_refs": [
+            "esun_header",
+            "eh_et"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "header_fields",
+          "section_label": "Định nghĩa ESUN Header",
+          "title": "ESUN Header theo từng trường",
+          "figure": {
+            "path": "figures/eh_definition_vi.svg",
+            "alt": "Bố cục bit của ESUN Header: Rev (2b), F, EH-CoS (3b), EH-ECN (2b), Flow Label (16b), TTL (4b), UD (2b), RSVD (2b)",
+            "caption": "Tổng cộng 32 bit. Rev (2b) = 00 cho v1.0. F xác nhận Flow Label hợp lệ. EH-CoS thay 802.1p/DSCP; EH-ECN được mã hóa như ECN trong IP-TOS. Flow Label bổ sung entropy cho phép băm. TTL ngăn vòng lặp. UD là trường đầu-cuối. Switch thay đổi ECN hoặc TTL phải tính lại FCS.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_07_header_fields.txt",
+            "wav_file": "audio/module1/slide_07_header_fields.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "spec",
+              "section": "5.2 New ESUN Header Definition"
+            }
+          ],
+          "term_refs": [
+            "eh_cos",
+            "eh_ecn",
+            "flow_label",
+            "ttl"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "fabric",
+          "section_label": "Không mất dữ liệu, phân loại, có khả năng phục hồi",
+          "title": "ESUN so với Ethernet tiêu chuẩn — cơ chế fabric",
+          "figure": {
+            "path": "figures/feature_compare_vi.svg",
+            "alt": "So sánh Ethernet tiêu chuẩn và ESUN về CM cấp liên kết, phản hồi fabric, phân loại lưu lượng, khả năng phục hồi và cân bằng tải, cùng tô-pô nhiều hop",
+            "caption": "Tắc nghẽn tạm thời: PFC + CBFC. Kéo dài: EH-ECN. Phân loại: EH-CoS. Phục hồi: LLR + EH-Flow Label. Nhiều hop: EH-TTL + EH-ECN. CBFC và LLR được kế thừa từ UEC.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_08_fabric.txt",
+            "wav_file": "audio/module1/slide_08_fabric.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "spec",
+              "section": "5.3 Lossless, differentiated and resilient Hierarchical Topologies"
+            }
+          ],
+          "term_refs": [
+            "pfc",
+            "cbfc",
+            "llr"
+          ],
+          "reference_links": [
+            {
+              "label": "Ultra Ethernet Consortium",
+              "url": "https://ultraethernet.org/"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "mobile_scroll": true,
+          "type": "content_table",
+          "slug": "conformance_security",
+          "section_label": "Tuân thủ và bảo mật",
+          "title": "Yêu cầu đối với endpoint và switch",
+          "subtitle": "Ngoài ra: chuyển tiếp dựa trên DA tĩnh; bảo mật dùng MACsec ở L2 (IPSec không còn áp dụng).",
+          "columns": [
+            "Tính năng",
+            "Endpoint (host)",
+            "Switch",
+            "Ghi chú"
+          ],
+          "rows": [
+            [
+              "PFC",
+              "Bắt buộc",
+              "Bắt buộc",
+              "Cấu hình được theo từng cổng"
+            ],
+            [
+              "CBFC",
+              "Tùy chọn",
+              "Bắt buộc",
+              "Từ UEC; không mất dữ liệu với hiệu quả bộ nhớ"
+            ],
+            [
+              "LLR",
+              "Tùy chọn",
+              "Bắt buộc",
+              "Từ UEC; khôi phục BER liên kết tại chỗ"
+            ],
+            [
+              "EH-CoS",
+              "Bắt buộc (thiết lập)",
+              "Bắt buộc (tuân theo)",
+              "Ưu tiên hơn 802.1Q CoS và CBFC TC"
+            ],
+            [
+              "EH-ECN",
+              "Bắt buộc (phản hồi)",
+              "Bắt buộc (đánh dấu)",
+              "Mã hóa như ECN trong IP-TOS"
+            ],
+            [
+              "F + EH-Flow Label",
+              "Bắt buộc (thiết lập)",
+              "Bắt buộc (băm)",
+              "Dùng khi F=1 cùng với DA/SA"
+            ],
+            [
+              "EH-TTL",
+              "Bắt buộc (thiết lập)",
+              "Bắt buộc (giảm)",
+              "Loại bỏ tại 0; tính lại FCS khi thay đổi"
+            ],
+            [
+              "MAC learning / aging",
+              "—",
+              "Không sử dụng",
+              "Chỉ cấu hình DA tĩnh"
+            ],
+            [
+              "Phát quảng bá DA không xác định",
+              "—",
+              "Không được phép",
+              "Bị đặc tả cấm"
+            ],
+            [
+              "IPSec",
+              "Không áp dụng",
+              "Không áp dụng",
+              "Không có IP Header để bảo vệ"
+            ],
+            [
+              "MACsec",
+              "Được hỗ trợ (L2)",
+              "Được hỗ trợ (L2)",
+              "Mã hóa liên kết điểm-điểm"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_conformance_security.txt",
+            "wav_file": "audio/module1/slide_09_conformance_security.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "spec",
+              "section": "6 Product Requirements"
+            },
+            {
+              "source": "spec",
+              "section": "7 ESUN Requirements"
+            },
+            {
+              "source": "spec",
+              "section": "5.4 Security"
+            }
+          ],
+          "term_refs": [
+            "macsec",
+            "ipsec"
+          ],
+          "reference_links": [
+            {
+              "label": "Bảng yêu cầu ESUN",
+              "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "content_grid",
+          "slug": "summary_resources",
+          "section_label": "Tóm tắt và bước tiếp theo",
+          "title": "Tiếp tục từ đâu",
+          "mobile_scroll": true,
+          "subtitle": "Ba điểm chính: ESUN phát triển Ethernet chứ không thay thế · EH 4 byte là thay đổi trung tâm · PFC+CBFC, EH-ECN, EH-CoS, LLR, Flow Label và TTL tạo thành một cơ chế fabric hoàn chỉnh. Phiên bản 1.1 đang được phát triển và cam kết tương thích ngược.",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "icon": "📄",
+              "title": "Đặc tả ESUN 1.0",
+              "body": "Đặc tả cơ sở do Meta và Microsoft biên soạn, có hiệu lực ngày 9 tháng 2 năm 2026.",
+              "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf",
+              "link_text": "opencompute.org/documents/ocp-esun-…"
+            },
+            {
+              "icon": "📝",
+              "title": "Blog công bố của OCP",
+              "body": "“Giới thiệu ESUN: Phát triển Ethernet cho hạ tầng AI scale-up tại OCP.”",
+              "url": "https://www.opencompute.org/blog/introducing-esun-advancing-ethernet-for-scale-up-ai-infrastructure-at-ocp",
+              "link_text": "opencompute.org/blog/introducing-esun"
+            },
+            {
+              "icon": "🎬",
+              "title": "Video đề xuất",
+              "body": "OCP công bố đặc tả mạng AI scale-up mới — ESUN, do Manoj Wadekar (Meta) trình bày tại OCP EMEA Summit 2026.",
+              "url": "https://www.youtube.com/watch?v=nfGMqLUrMnw",
+              "link_text": "Xem phiên ESUN trên YouTube"
+            },
+            {
+              "icon": "🌐",
+              "title": "OCP Networking Project",
+              "body": "Trang chủ nhóm công tác cho ESUN 1.0, 1.1 và các phiên bản sau. Hãy tham gia danh sách thư và đóng góp.",
+              "url": "https://www.opencompute.org/community/networking",
+              "link_text": "opencompute.org/community/networking"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_summary.txt",
+            "wav_file": "audio/module1/slide_10_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Kiểm tra mô hình tư duy về ESUN",
+          "subtitle": "Trả lời một lần để tiếp tục. Không bắt buộc trả lời đúng và bạn có thể thử lại.",
+          "questions": [
+            {
+              "id": "m1_q1_header_efficiency",
+              "prompt": "Thay đổi định dạng gói tin cốt lõi mà ESUN áp dụng cho lưu lượng scale-up là gì?",
+              "shuffle_choices": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Thay IP Header bằng ESUN Header 4 byte trong khi vẫn giữ định dạng khung Ethernet.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Thêm một IP extension header lớn hơn để switch tiếp tục dùng các trường định tuyến IP.",
+                  "correct": false,
+                  "feedback_incorrect": "ESUN đi theo hướng ngược lại: loại bỏ IP Header trong miền scale-up này và chỉ khôi phục các trường cần thiết trong một ESUN Header nhỏ hơn."
+                },
+                {
+                  "id": "c",
+                  "text": "Thay Ethernet bằng một giao thức fabric độc quyền chỉ dành cho bộ tăng tốc.",
+                  "correct": false,
+                  "feedback_incorrect": "Nội dung khóa học nhấn mạnh ESUN phát triển Ethernet thay vì thay thế, qua đó giữ lại quang học, silicon và công cụ vận hành Ethernet."
+                },
+                {
+                  "id": "d",
+                  "text": "Yêu cầu gắn thẻ VLAN cho mọi gói scale-up để mang class of service.",
+                  "correct": false,
+                  "feedback_incorrect": "ESUN được thiết kế cho các miền scale-up không cần VLAN; EH-CoS mang thông tin class of service trong ESUN Header."
+                }
+              ],
+              "feedback_correct": "Chính xác. ESUN giữ định dạng khung Ethernet, loại bỏ 20–40 byte overhead của IP Header và thêm ESUN Header 4 byte nhỏ gọn.",
+              "feedback_incorrect": "Hãy xem lại slide về hiệu quả header. ESUN giữ định dạng khung Ethernet và thay IP Header bằng một ESUN Header nhỏ gọn."
+            },
+            {
+              "id": "m1_q2_switch_requirements",
+              "multiple": true,
+              "prompt": "Những hành vi nào là bắt buộc đối với switch ESUN? Chọn tất cả đáp án đúng.",
+              "shuffle_choices": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Hỗ trợ PFC, CBFC và LLR với khả năng cấu hình theo từng cổng khi được quy định.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Dùng Flow Label để băm khi bit F được thiết lập.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Giảm EH-TTL khi chuyển tiếp và loại bỏ gói có TTL về 0.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Phát quảng bá gói ESUN có địa chỉ đích không xác định cho đến khi MAC learning hội tụ.",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "Áp dụng IPSec trực tiếp lên ESUN Header để bảo mật liên kết.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Chính xác. Switch ESUN hỗ trợ các tính năng không mất dữ liệu và phục hồi, băm theo Flow Label khi hợp lệ, đồng thời dùng EH-TTL để ngăn vòng lặp.",
+              "feedback_incorrect": "Hãy tập trung vào bảng tuân thủ: switch ESUN chuyển tiếp theo địa chỉ đích tĩnh, không được phát quảng bá đến đích ESUN không xác định và dùng MACsec thay cho IPSec để bảo mật liên kết Layer 2."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "spec",
+              "section": "5.1 Header Efficiency"
+            },
+            {
+              "source": "spec",
+              "section": "6 Product Requirements"
+            },
+            {
+              "source": "spec",
+              "section": "7 ESUN Requirements"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Đặc tả cơ sở OCP ESUN",
+              "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_11_knowledge_check.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "reference_links": [
+            {
+              "label": "Đặc tả ESUN 1.0",
+              "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+            },
+            {
+              "label": "Công bố OCP ESUN",
+              "url": "https://www.opencompute.org/blog/introducing-esun-advancing-ethernet-for-scale-up-ai-infrastructure-at-ocp"
+            },
+            {
+              "label": "Phiên ESUN Summit",
+              "url": "https://www.youtube.com/watch?v=nfGMqLUrMnw"
+            },
+            {
+              "label": "OCP Networking Project",
+              "url": "https://www.opencompute.org/community/networking"
+            }
+          ],
+          "thank_you_message": "Cảm ơn bạn đã hoàn thành Mô-đun 1: OCP ESUN — Ethernet cho mạng scale-up.",
+          "course_title": "OCP ESUN",
+          "cert_message": "Bạn đã hoàn thành khóa học OCP ESUN bằng tiếng Việt. Hãy áp dụng kiến thức đã học vào thiết kế mạng scale-up và đánh giá tuân thủ trong thực tế.",
+          "survey": {
+            "button_text": "Chia sẻ phản hồi"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_12_course_complete.txt",
+            "wav_file": "audio/module1/slide_12_course_complete.wav",
+            "approved": true
+          }
+        }
+      ]
+    }
+  ],
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "term_glossary": [
+    {
+      "id": "esun",
+      "term": "ESUN",
+      "tooltip": "Ethernet cho mạng scale-up; bước phát triển Ethernet của OCP dành cho hạ tầng AI scale-up.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "scale_up_network",
+      "term": "Mạng scale-up",
+      "tooltip": "Fabric độ trễ thấp cho phép GPU hoặc XPU hoạt động như một miền bộ tăng tốc liên kết chặt chẽ duy nhất.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "model_parallel_traffic",
+      "term": "Lưu lượng song song mô hình",
+      "tooltip": "Lưu lượng đồng bộ và trao đổi dữ liệu nhỏ, thường xuyên, được dùng khi mô hình được chia trên nhiều bộ tăng tốc.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "goodput",
+      "term": "Goodput",
+      "tooltip": "Lượng payload hữu ích được truyền sau khi loại bỏ overhead giao thức.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "uec",
+      "term": "UEC",
+      "tooltip": "Ultra Ethernet Consortium; nguồn của các cơ chế CBFC và LLR được ESUN tham chiếu.",
+      "reference_label": "Ultra Ethernet Consortium",
+      "url": "https://ultraethernet.org/"
+    },
+    {
+      "id": "esun_header",
+      "term": "ESUN Header (EH)",
+      "tooltip": "Header 4 byte thay thế IP Header trong các gói ESUN.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "eh_et",
+      "term": "EH-ET",
+      "tooltip": "EtherType mới dùng để nhận diện ESUN Header; giá trị vẫn đang chờ được cấp.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "eh_cos",
+      "term": "EH-CoS",
+      "tooltip": "Trường class of service 3 bit của ESUN, thay cho DSCP và cơ chế phân loại lưu lượng kiểu 802.1p.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "eh_ecn",
+      "term": "EH-ECN",
+      "tooltip": "Trường thông báo tắc nghẽn 2 bit được mã hóa như IP ECN.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "flow_label",
+      "term": "Flow Label",
+      "tooltip": "Trường entropy 16 bit do nguồn thiết lập để cân bằng tải xác định.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "ttl",
+      "term": "TTL",
+      "tooltip": "Trường Time To Live 4 bit, giảm tại mỗi hop để ngăn vòng lặp.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "pfc",
+      "term": "PFC",
+      "tooltip": "Priority Flow Control cho tắc nghẽn tạm thời ở cấp liên kết.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "cbfc",
+      "term": "CBFC",
+      "tooltip": "Credit-Based Flow Control; cơ chế credit phía nhận do UEC định nghĩa.",
+      "reference_label": "Ultra Ethernet Consortium",
+      "url": "https://ultraethernet.org/"
+    },
+    {
+      "id": "llr",
+      "term": "LLR",
+      "tooltip": "Link Level Retry; cơ chế khôi phục cục bộ cho lỗi cấp liên kết do UEC định nghĩa.",
+      "reference_label": "Ultra Ethernet Consortium",
+      "url": "https://ultraethernet.org/"
+    },
+    {
+      "id": "macsec",
+      "term": "MACsec",
+      "tooltip": "Cơ chế mã hóa điểm-điểm Layer 2 được khuyến nghị vì ESUN loại bỏ IP Header.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    },
+    {
+      "id": "ipsec",
+      "term": "IPSec",
+      "tooltip": "Bảo mật tầng IP không còn áp dụng trực tiếp khi ESUN thay thế IP Header.",
+      "reference_label": "Đặc tả cơ sở OCP ESUN",
+      "url": "https://www.opencompute.org/documents/ocp-esun-network-operator-requirements-base-specification-rev-1-0-final-pdf"
+    }
+  ],
+  "metadata_language_name": "Vietnamese",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "A5w1fw5x0uXded1LDvZp",
+    "voice_name": "Nhu"
+  },
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "vi-VN",
+    "source_course_sha256": "2bdd39eb9bc33e813a306a6614c26afd69ee1d513d716d7c845616976e69276b"
+  },
+  "ui_labels": {
+    "not_started": "Chưa bắt đầu",
+    "completed": "Đã hoàn thành",
+    "module": "Mô-đun",
+    "module_complete": "Đã hoàn thành mô-đun {module}",
+    "course_complete": "Hoàn thành khóa học",
+    "course_overview": "Tổng quan khóa học",
+    "learning_objectives": "Mục tiêu học tập",
+    "key_takeaways": "Điểm chính",
+    "knowledge_check": "Kiểm tra kiến thức",
+    "submit": "Gửi",
+    "retry": "Thử lại",
+    "quiz_gate_note": "Để tiếp tục, hãy gửi mỗi câu hỏi ít nhất một lần. Bạn có thể tiếp tục dù trả lời đúng hay sai và có thể thử lại.",
+    "quiz_gate_warning": "Hãy gửi mỗi câu hỏi ít nhất một lần trước khi sang trang tiếp theo.",
+    "select_answer": "Hãy chọn ít nhất một đáp án rồi gửi.",
+    "correct": "Trả lời đúng.",
+    "review_feedback": "Hãy xem phản hồi rồi thử lại.",
+    "narration_hint": "Lời thuyết minh sẽ tự động bắt đầu. Nhấn phím mũi tên phải hoặc phím cách để sang trang tiếp theo.",
+    "theme": "Giao diện",
+    "toggle_dark_mode": "Bật hoặc tắt chế độ tối",
+    "previous_slide": "Slide trước",
+    "next_slide": "Slide tiếp theo",
+    "play_pause_narration": "Phát hoặc tạm dừng lời thuyết minh",
+    "playback_speed": "Tốc độ phát",
+    "playback_speed_slider": "Điều chỉnh tốc độ phát",
+    "speed": "Tốc độ",
+    "toggle_fullscreen": "Bật hoặc tắt toàn màn hình",
+    "fullscreen": "Toàn màn hình",
+    "video_controls": "Điều khiển video",
+    "play_video": "Phát video",
+    "pause_video": "Tạm dừng video",
+    "zoom_video": "Phóng to video",
+    "video_figure": "Hình minh họa video",
+    "zoom_figure": "Phóng to hình",
+    "enlarged_figure": "Hình phóng to",
+    "lightbox_close_hint": "Nhấp bên ngoài hoặc nhấn Esc để đóng.",
+    "opens_new_tab": "Mở trong thẻ mới",
+    "learner_resource": "Tài nguyên học tập",
+    "open": "Mở",
+    "learn_more": "Tìm hiểu thêm",
+    "reference": "Tài liệu tham khảo",
+    "course_intro": "Giới thiệu khóa học OCP Academy",
+    "skip_intro": "Bỏ qua phần giới thiệu",
+    "share_feedback": "Chia sẻ phản hồi",
+    "survey_body": "Bạn có thể dành vài phút giúp chúng tôi cải thiện không? Phản hồi gửi cho nhóm phát triển sẽ được dùng để cải thiện khóa học này và các khóa học trong tương lai. Người tham gia sẽ được chọn ngẫu nhiên để nhận quà lưu niệm.",
+    "default_module_thanks": "Cảm ơn bạn đã hoàn thành mô-đun {module}, “{title}”.",
+    "default_course_wrap": "Bạn đã hoàn thành tất cả các mô-đun của {course}. Hy vọng nội dung khóa học sẽ hữu ích cho công việc thực tế của bạn.",
+    "up_next": "Tiếp theo",
+    "go_to_module": "Đi đến mô-đun {module}"
+  }
+}

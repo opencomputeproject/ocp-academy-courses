@@ -1,0 +1,5 @@
+ESUN Header dài chính xác 4 byte, tức 32 bit. Hai bit đầu tiên là Rev, số phiên bản cho phép phát triển header trong tương lai mà không phá vỡ hệ thống đã triển khai. Với phiên bản 1.0, Rev bằng không không. Tiếp theo là F, một bit cho biết Flow Label có hợp lệ hay không. Khi F được thiết lập, switch phải dùng Flow Label để băm xác định.
+
+EH-CoS dài 3 bit và biểu thị class of service của ESUN. Trường này thay thế mức ưu tiên 802.1p ở L2 và các bit DSCP trong IP-TOS. Ba bit tạo ra tám lớp lưu lượng. Khi thẻ 802.1Q và CBFC cũng mang class of service, EH-CoS được ưu tiên theo đặc tả. Sau đó là EH-ECN dài 2 bit, được mã hóa giống ECN trong IP-TOS. Endpoint thông báo khả năng ECN, switch đánh dấu khi gặp tắc nghẽn và giao vận tại endpoint phản hồi.
+
+Khối lớn nhất là Flow Label dài 16 bit, do nguồn thiết lập để bổ sung entropy cân bằng tải cùng địa chỉ đích và địa chỉ nguồn. TTL dài 4 bit. Mỗi switch giảm TTL khi chuyển tiếp và loại bỏ gói khi TTL về 0, nhờ đó ngăn vòng lặp. UD gồm 2 bit do endpoint tạo và sử dụng theo kiểu đầu-cuối. Hai bit cuối được dành riêng. Bất kỳ switch nào thay đổi ECN hoặc TTL đều phải tính lại FCS.
