@@ -1,0 +1,2081 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_networking_project_optics_reliability_vi_vn",
+  "course_title": "Đo từ xa quang học nâng cao",
+  "language": "vi-VN",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "A5w1fw5x0uXded1LDvZp",
+    "voice_name": "Nhu"
+  },
+  "course_subtitle": "Đo từ xa nâng cao giúp xác định thành phần nào gặp lỗi, ở đâu và vì sao trong các mạng quang AI.",
+  "tagline": "Đổi mới siêu quy mô dựa vào cộng đồng cho tất cả mọi người",
+  "spec_version_chip": "Thông số đo từ xa nâng cao - 2026",
+  "index_footer_line": "OCP Luồng công việc về độ tin cậy quang học của Dự án mạng: Thông số đo từ xa nâng cao - 2026",
+  "target_duration_minutes": 50,
+  "audience_level": "trung cấp kỹ thuật",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "ocp_optics_reliability_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "QUANG HỌC"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+      "kind": "specification source"
+    },
+    {
+      "path": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf",
+      "kind": "public specification reference"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "pmd",
+      "term": "PMD",
+      "tooltip": "Chi tiết triển khai phụ thuộc vào phương tiện vật lý cho đường dẫn mô-đun quang.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "cmis",
+      "term": "CMIS",
+      "tooltip": "Đặc tả giao diện quản lý chung được sử dụng để quản lý bộ thu phát mô-đun quang cắm được.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "i2c",
+      "term": "I2C",
+      "tooltip": "Giao diện quản lý cục bộ hai dây được máy chủ sử dụng để liên lạc với bộ thu phát cục bộ.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "vdm",
+      "term": "VDM",
+      "tooltip": "Các trang Giám sát Chẩn đoán Đa năng trong CMIS được sử dụng bởi nhiều giá trị đo từ xa của mô-đun.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "snr",
+      "term": "SNR",
+      "tooltip": "Tỷ lệ tín hiệu trên tạp âm; một phép đo chất lượng tín hiệu được sử dụng cho làn đường máy chủ và đường dây.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "fec",
+      "term": "FEC",
+      "tooltip": "Chuyển tiếp sửa lỗi; hành vi sửa lỗi được sử dụng để hiểu ứng suất liên kết và các lỗi không thể sửa được.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "ber",
+      "term": "BER",
+      "tooltip": "Tỷ lệ lỗi bit; tỷ lệ bit bị lỗi trên tổng số bit được truyền, được sử dụng để định lượng chất lượng liên kết.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "ddmi",
+      "term": "DDMI",
+      "tooltip": "Các giá trị giao diện giám sát chẩn đoán kỹ thuật số và các cờ cảnh báo hoặc cảnh báo được mô-đun báo cáo.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "cdb",
+      "term": "CDB",
+      "tooltip": "Khối dữ liệu lệnh; cơ chế lệnh-phản hồi CMIS được sử dụng để thu thập và truyền dữ liệu đo từ xa.",
+      "reference_label": "OCP thông số kỹ thuật đo từ xa quang học",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "the_ai_fabric_visibility_problem",
+      "title": "Vấn đề về khả năng quan sát trong mạng AI",
+      "subtitle": "Đo từ xa nâng cao như một mô hình vận hành cho các điểm cuối quang cục bộ và từ xa.",
+      "module_badge_text": "Mô-đun 1",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "the_ai_fabric_visibility_problem",
+          "title": "Vấn đề về khả năng quan sát trong mạng AI",
+          "subtitle": "Đo từ xa nâng cao để tìm các sự cố liên kết quang trên các điểm cuối cục bộ và từ xa.",
+          "version_chip": "Thông số đo từ xa nâng cao - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phạm vi và Tổng quan"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.txt",
+            "wav_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "the_reliability_questions_this_course_answers",
+          "title": "Các câu hỏi về độ tin cậy mà khóa học này trả lời",
+          "subtitle": "Bốn mô-đun chuyển từ vấn đề vận hành sang quy trình trên máy chủ có thể triển khai.",
+          "modules_listed": [
+            "Vấn đề về khả năng quan sát trong mạng AI",
+            "Số liệu, cờ và tình trạng liên kết",
+            "CDB Quy trình làm việc, Nhật ký sự kiện và Truy cập từ xa",
+            "Firmware, phần mềm host và mức độ sẵn sàng triển khai"
+          ],
+          "chips": [
+            {
+              "text": "Tổng cộng khoảng 50 phút"
+            },
+            {
+              "text": "Đối tượng kỹ thuật trung cấp"
+            },
+            {
+              "text": "Tham chiếu thông số kỹ thuật OCP công khai"
+            },
+            {
+              "text": "OCP Tình nguyện viên cộng đồng từ Credo và Oracle"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thông số đo từ xa quang học OCP công khai",
+              "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phạm vi và Tổng quan"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.txt",
+            "wav_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "link_flaps_become_fabric_scale_events",
+          "section_label": "Trình điều khiển vận hành",
+          "title": "Dao động trạng thái liên kết trở thành sự kiện trên toàn mạng",
+          "subtitle": "Các loại mạng AI lớn khiến điểm mù quang học trở nên đắt đỏ vì một triệu chứng cục bộ có thể có nguyên nhân từ xa.",
+          "bullets": [
+            {
+              "bold_lead": "Thêm điểm cuối",
+              "text": "Mạng kết nối nhiều bộ tăng tốc, bộ chuyển mạch, thiết bị quang học và điểm cuối của máy chủ, do đó, một triệu chứng vật lý có thể vượt qua nhiều ranh giới quyền sở hữu."
+            },
+            {
+              "bold_lead": "Ít truy cập trực tiếp hơn",
+              "text": "Các thiết bị đầu cuối bằng kim loại trần hoặc từ xa có thể ẩn mô-đun quang học phía xa khỏi người vận hành nhìn thấy cảnh báo bộ chuyển mạch."
+            },
+            {
+              "bold_lead": "Chi phí ngừng hoạt động cao hơn",
+              "text": "Dao động trạng thái liên kết có thể làm gián đoạn quy trình đào tạo, trình độ chuyên môn hoặc dịch vụ phụ thuộc vào tình trạng mạng có thể dự đoán được."
+            },
+            {
+              "bold_lead": "Cần bằng chứng chung",
+              "text": "Người vận hành cần đo từ xa nhất quán giữa các nhà cung cấp và kiểu dáng trước khi có thể so sánh các triệu chứng trên quy mô lớn."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tác động và phạm vi"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "9-10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.txt",
+            "wav_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "the_three_part_software_stack",
+          "section_label": "Ngăn xếp phần mềm",
+          "title": "Ngăn xếp phần mềm ba phần",
+          "subtitle": "Thông số kỹ thuật này tách hệ thống thành việc triển khai bộ thu phát, phần mềm host và tích hợp máy chủ thu thập dữ liệu đo từ xa.",
+          "bullets": [
+            {
+              "bold_lead": "Firmware và số liệu thu phát",
+              "text": "Mô-đun này thu thập dữ liệu đo từ xa cục bộ và từ xa, duy trì lịch sử sự kiện và hiển thị hành vi lệnh chung."
+            },
+            {
+              "bold_lead": "Phần mềm lưu trữ trên switch",
+              "text": "Các mô-đun thăm dò máy chủ, yêu cầu dữ liệu cục bộ hoặc từ xa và chuẩn bị đầu ra hoạt động thông qua SDK hoặc các công cụ dòng lệnh."
+            },
+            {
+              "bold_lead": "Tích hợp máy chủ từ xa",
+              "text": "Máy chủ có thể biên dịch và tóm tắt tình trạng mạng tổng thể, nhưng việc triển khai nó vẫn phụ thuộc vào người dùng và nằm ngoài phạm vi thông số kỹ thuật."
+            }
+          ],
+          "figure": {
+            "path": "figures/software_stack.svg",
+            "alt": "Ngăn xếp phần mềm đo từ xa gồm ba phần từ firmware của bộ thu phát đến phần mềm host đến máy chủ thu thập dữ liệu đo từ xa.",
+            "caption": "Thông số kỹ thuật tập trung vào hoạt động của bộ thu phát và giao diện chung với phần mềm host; thiết kế máy chủ thu thập dữ liệu đo từ xa được cố ý để lại cho người vận hành.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phạm vi"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_the_three_part_software_stack.txt",
+            "wav_file": "audio/module1/slide_04_the_three_part_software_stack.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_bullets",
+          "slug": "what_the_specification_includes_and_excludes",
+          "section_label": "Phạm vi",
+          "title": "Thông số kỹ thuật bao gồm và loại trừ những gì",
+          "subtitle": "Sự đóng góp này nhắm đến hành vi đo từ xa phổ biến mà không cần cố gắng sở hữu mọi hệ thống giám sát ở trên nó.",
+          "bullets": [
+            {
+              "bold_lead": "Giá trong phạm vi",
+              "text": "Thông số kỹ thuật áp dụng cho các bộ thu phát tương thích 400G, 800G và 1.6T."
+            },
+            {
+              "bold_lead": "PMD độc lập",
+              "text": "Mô hình đo từ xa nhằm mục đích độc lập với việc triển khai phụ thuộc vào phương tiện vật lý-phương tiện của mô-đun."
+            },
+            {
+              "bold_lead": "Được xây dựng trên CMIS",
+              "text": "Thông số kỹ thuật này sử dụng các hàm OIF CMIS 5.x và bổ sung các định nghĩa cũng như sửa đổi để tăng cường khả năng đo từ xa."
+            },
+            {
+              "bold_lead": "Máy chủ vẫn mở",
+              "text": "Việc triển khai máy chủ từ xa phụ thuộc vào người dùng và không nằm trong phạm vi của tài liệu."
+            }
+          ],
+          "term_refs": [
+            "pmd",
+            "cmis"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phạm vi"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.txt",
+            "wav_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "six_functions_of_a_compliant_transceiver",
+          "section_label": "Chức năng cốt lõi",
+          "title": "Sáu chức năng của bộ thu phát tuân thủ",
+          "subtitle": "Thông số kỹ thuật biến dữ liệu mô-đun thô thành mô hình khả năng quan sát chung cho các hoạt động.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Giám sát chế độ nhiệm vụ",
+              "body": "Thu thập số liệu thống kê về các máy thu hướng về phía máy chủ và hướng về phía đường dây trong khi liên kết đang hoạt động."
+            },
+            {
+              "title": "Báo cáo tình trạng liên kết",
+              "body": "Theo dõi và ghi lại dữ liệu đo từ xa thông qua thước đo sức khỏe chung thay vì các bộ đếm riêng biệt."
+            },
+            {
+              "title": "Nhận dạng từ xa",
+              "body": "Sử dụng giao tiếp trong băng tần để trao đổi dữ liệu giữa các bộ thu phát ở cả hai đầu của liên kết."
+            },
+            {
+              "title": "Ghi nhật ký sự kiện",
+              "body": "Thông báo, đánh dấu thời gian và lưu giữ các sự kiện quan trọng trong bộ nhớ mô-đun không thay đổi."
+            },
+            {
+              "title": "Cập nhật firmware vô tận",
+              "body": "Hỗ trợ cập nhật firmware cục bộ và từ xa mà không yêu cầu gián đoạn dịch vụ làm mục tiêu vận hành."
+            },
+            {
+              "title": "Thu hoạch ký chủ",
+              "body": "Kích hoạt phần mềm bộ chuyển mạch để thu thập dữ liệu đo từ xa và chuẩn bị truyền trực tuyến đến máy chủ thu thập dữ liệu đo từ xa."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tổng quan"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "11"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.txt",
+            "wav_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "a_link_is_more_than_one_fiber_path",
+          "section_label": "Mô hình liên kết",
+          "title": "Một liên kết có nhiều hơn một đường dẫn sợi quang",
+          "figure": {
+            "path": "figures/link_segments_telemetry.mp4",
+            "media_type": "video",
+            "alt": "Hoạt ảnh im lặng hiển thị các phân đoạn liên kết điện, quang và máy chủ chuyển mạch với khả năng định vị từ xa.",
+            "caption": "Phép đo từ xa ở cấp độ phân đoạn tách liên kết điện mô-đun chuyển mạch, đường dẫn quang và liên kết điện mô-đun máy chủ thành bằng chứng được giám sát độc lập.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Yêu cầu cấp cao: liên kết điểm-điểm"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.txt",
+            "wav_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "breakout_links_multiply_remote_endpoints",
+          "section_label": "Liên kết đột phá",
+          "title": "Các liên kết breakout làm tăng số lượng đầu xa",
+          "figure": {
+            "path": "figures/source_docx_breakout_segments.png",
+            "alt": "Ví dụ về liên kết quang đột phá trong đó một mô-đun chuyển mạch kết nối với nhiều mô-đun máy chủ.",
+            "caption": "Trong các trường hợp sử dụng đột phá hoặc ngẫu nhiên, một cổng chuyển đổi có thể cần đo từ xa độc lập từ nhiều đầu xa.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Yêu cầu cấp cao: liên kết đột phá"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.txt",
+            "wav_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "visibility_starts_with_a_shared_model",
+          "title": "Khả năng quan sát bắt đầu từ một mô hình chung",
+          "items": [
+            "Vấn đề vận hành là tìm ra phân đoạn bị lỗi chứ không chỉ nhận thấy trạng thái liên kết đã thay đổi.",
+            "Ranh giới được tiêu chuẩn hóa là hoạt động của bộ thu phát và giao diện chung với phần mềm host.",
+            "Quang học tuân thủ dự kiến sẽ hỗ trợ việc thu thập dữ liệu đo từ xa cục bộ và từ xa.",
+            "Liên kết đột phá khiến việc nhận dạng điểm cuối và giám sát từ xa độc lập trở nên cần thiết.",
+            "Thiết kế máy chủ từ xa vẫn phụ thuộc vào người vận hành, nhưng mô hình mô-đun-đến-máy chủ có thể phổ biến."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phạm vi và Tổng quan"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.txt",
+            "wav_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "check_your_model_visibility_and_scope",
+          "title": "Kiểm tra mô hình: Khả năng quan sát và phạm vi",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không gián đoạn và bạn có thể thử lại sau khi phản hồi.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "Phương pháp đo từ xa quang học nâng cao khoảng cách hiển thị chính nhằm mục đích thu hẹp khoảng cách tầm nhìn chính là gì?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Cảnh báo liên kết cục bộ có thể không tiết lộ phân đoạn cục bộ, quang hoặc từ xa nào đã gây ra sự cố.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Máy chủ thu thập dữ liệu đo từ xa cần một triển khai bắt buộc đối với mọi nhà khai thác.",
+                  "correct": false,
+                  "feedback_incorrect": "Thông số kỹ thuật này khiến việc triển khai máy chủ từ xa phụ thuộc vào người dùng. Công việc chung là ở bộ thu phát và giao diện máy chủ."
+                },
+                {
+                  "id": "c",
+                  "text": "Mọi mô-đun quang đều cần có thiết kế phụ thuộc vào phương tiện vật lý giống nhau.",
+                  "correct": false,
+                  "feedback_incorrect": "Phạm vi dự định là PMD độc lập, do đó, một mô hình đo từ xa chung có thể áp dụng cho các quá trình triển khai."
+                }
+              ],
+              "feedback_correct": "Đúng. Giá trị là bằng chứng cục bộ và từ xa ánh xạ các triệu chứng tới phân đoạn bị lỗi.",
+              "feedback_incorrect": "Xem lại mô hình khả năng quan sát: mục tiêu là kết nối các triệu chứng cục bộ với bằng chứng điểm cuối cục bộ, quang học và từ xa."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "Những chức năng nào thuộc mô hình đo từ xa của máy thu phát và máy chủ tuân thủ?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Giám sát liên kết chế độ nhiệm vụ và thu thập số liệu thống kê.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Nhận dạng từ xa trong băng tần và trao đổi dữ liệu giữa các đối tác liên kết.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Thông báo sự kiện có thể lập trình và ghi nhật ký sự kiện không thay đổi.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Kiến trúc sản phẩm máy chủ thu thập dữ liệu đo từ xa cần thiết.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng. Mô hình chia sẻ bao gồm các chức năng mô-đun và máy chủ, trong khi việc triển khai máy chủ vẫn mở.",
+              "feedback_incorrect": "Giữ ranh giới rõ ràng: hành vi mô-đun tuân thủ và việc thu thập máy chủ được chuẩn hóa; việc triển khai máy chủ từ xa không được quy định."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phạm vi và Tổng quan"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.txt",
+            "wav_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next_metrics_and_link_health",
+          "title": "Tiếp theo: Số liệu và tình trạng liên kết",
+          "next_module_number": 2,
+          "next_module_title": "Số liệu, cờ và tình trạng liên kết",
+          "thank_you_message": "Làm tốt lắm - bạn đã hoàn thành mô hình khả năng quan sát cho độ tin cậy quang học OCP.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu đo từ xa mô-đun"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_metrics_and_link_health.txt",
+            "wav_file": "audio/module1/slide_11_up_next_metrics_and_link_health.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Số liệu, cờ và tình trạng liên kết"
+    },
+    {
+      "id": 2,
+      "slug": "metrics_flags_and_link_health",
+      "title": "Chỉ số, cờ trạng thái và tình trạng liên kết",
+      "subtitle": "Các danh mục đo từ xa, cờ tóm tắt, mặt nạ và điểm tình trạng liên kết thuộc danh mục kém nhất.",
+      "module_badge_text": "Mô-đun 2",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "metrics_flags_and_link_health",
+          "title": "Chỉ số, cờ trạng thái và tình trạng liên kết",
+          "subtitle": "Cách quang học tuân thủ biến các phép đo thô thành trạng thái liên kết có thể thực hiện được.",
+          "version_chip": "Thông số đo từ xa nâng cao - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Trạng thái mô-đun và số liệu đo từ xa"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_01_metrics_flags_and_link_health.txt",
+            "wav_file": "audio/module2/slide_01_metrics_flags_and_link_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "signals_you_will_interpret",
+          "title": "Các tín hiệu bạn sẽ diễn giải",
+          "subtitle": "Đến cuối mô-đun này, bạn sẽ có thể phân loại phép đo từ xa và giải thích cách tóm tắt tình trạng liên kết.",
+          "objectives": [
+            "Phân biệt các truy vấn đo từ xa cục bộ và từ xa ở cấp độ khái niệm.",
+            "Phân loại các số liệu phổ biến thành các danh mục chất lượng, lỗi, phục hồi, môi trường và bối cảnh.",
+            "Giải thích lý do tại sao điểm tình trạng liên kết lại được quyết định bởi danh mục yếu nhất chứ không phải mức trung bình.",
+            "Mô tả cách cờ và mặt nạ giúp người vận hành tập trung giám sát hành vi."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu đo từ xa mô-đun"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_signals_you_will_interpret.txt",
+            "wav_file": "audio/module2/slide_02_signals_you_will_interpret.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "local_and_remote_queries_use_one_mental_model",
+          "section_label": "Mô hình truy vấn",
+          "title": "Truy vấn cục bộ và từ xa dùng chung một mô hình",
+          "subtitle": "Máy chủ yêu cầu mô-đun cục bộ; mô-đun cục bộ có thể trả về dữ liệu của chính nó hoặc truy xuất dữ liệu của đối tác trong băng tần.",
+          "bullets": [
+            {
+              "bold_lead": "Truy vấn cục bộ",
+              "text": "Máy chủ yêu cầu đo từ xa từ mô-đun mà nó có thể tiếp cận trực tiếp qua I2C."
+            },
+            {
+              "bold_lead": "Truy vấn từ xa",
+              "text": "Mô-đun cục bộ lấy dữ liệu đo từ xa từ một đầu xa của liên kết và gửi nó trở lại cùng một máy chủ."
+            },
+            {
+              "bold_lead": "Nhận thức đột phá",
+              "text": "Các yêu cầu từ xa có thể cần xác định đối tác hoặc cổng nào đang được truy vấn."
+            }
+          ],
+          "figure": {
+            "path": "figures/local_remote_query_model.svg",
+            "alt": "Máy chủ truy vấn mô-đun cục bộ qua I2C và mô-đun cục bộ tiếp cận đầu xa trong băng tần.",
+            "caption": "Quy trình làm việc nhất quán của máy chủ vẫn có thể phân biệt dữ liệu cục bộ, dữ liệu từ xa và danh tính đối tác đột phá.",
+            "source": "svg_inline"
+          },
+          "term_refs": [
+            "i2c"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Trạng thái mô-đun và số liệu đo từ xa"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.txt",
+            "wav_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_bullets",
+          "slug": "status_pages_establish_the_baseline",
+          "section_label": "Trang cơ sở",
+          "title": "Các trang trạng thái thiết lập đường cơ sở",
+          "subtitle": "Mô-đun hiển thị trạng thái, cấu hình, VDM, CDB, dữ liệu tải và nhà cung cấp tiêu chuẩn ở mức cao.",
+          "bullets": [
+            {
+              "bold_lead": "CMIS Ngân hàng 0",
+              "text": "Các trang mô-đun phổ biến cung cấp thông tin nhận dạng, trạng thái và kiểm soát cơ bản."
+            },
+            {
+              "bold_lead": "Trang cấu hình và trạng thái",
+              "text": "Các trang tiêu chuẩn thiết lập trạng thái hoạt động trước khi diễn giải phép đo từ xa nâng cao."
+            },
+            {
+              "bold_lead": "VDM và các trang đo từ xa",
+              "text": "Nhiều giá trị đo được căn chỉnh theo khái niệm CMIS VDM và được lưu trữ để máy chủ truy cập."
+            },
+            {
+              "bold_lead": "CDB và các trang dữ liệu tải",
+              "text": "Các khu vực lệnh và dữ liệu tải hỗ trợ truy xuất dữ liệu đo từ xa, nhật ký sự kiện và phản hồi lớn hơn."
+            },
+            {
+              "bold_lead": "Trang nhà cung cấp",
+              "text": "Các khu vực dành riêng cho nhà cung cấp có thể vẫn tồn tại, nhưng khóa học tập trung vào giao diện hoạt động chung."
+            }
+          ],
+          "term_refs": [
+            "vdm"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Trạng thái mô-đun và số liệu đo từ xa"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_status_pages_establish_the_baseline.txt",
+            "wav_file": "audio/module2/slide_04_status_pages_establish_the_baseline.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "optical_and_electrical_quality_metrics",
+          "section_label": "Số liệu chất lượng",
+          "title": "Số liệu chất lượng quang và điện",
+          "subtitle": "Các phép đo chất lượng giúp tách biệt các vấn đề quang học phía đường truyền khỏi các vấn đề điện phía máy chủ.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "SNR",
+              "body": "Tỷ số tín hiệu trên nhiễu của các lane quang và lane điện phía host."
+            },
+            {
+              "title": "Chiều cao mắt",
+              "body": "Các phép đo chiều cao mắt phía máy chủ và phía đường dây cho biết biên độ tín hiệu."
+            },
+            {
+              "title": "PAM4 LTP",
+              "body": "Các tham số chuyển đổi mức giúp mô tả hành vi tín hiệu của máy chủ và đường truyền PAM4."
+            },
+            {
+              "title": "ước tính MPI",
+              "body": "Ước tính nhiễu đa đường giúp xác định hiệu ứng phản xạ quang học hoặc đường dẫn."
+            },
+            {
+              "title": "Máy chủ so với dòng",
+              "body": "Việc tách các giá trị hướng về phía máy chủ và hướng về phía đường dây giúp bản địa hóa phân khúc yếu."
+            },
+            {
+              "title": "Chế độ xem trên mỗi làn đường",
+              "body": "Các giá trị cấp độ làn ngăn không cho một làn xuống cấp biến mất trong bản tóm tắt cấp cổng."
+            }
+          ],
+          "term_refs": [
+            "snr"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu đo từ xa mô-đun"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-14"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.txt",
+            "wav_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "error_and_recovery_metrics",
+          "section_label": "Lỗi và Phục hồi",
+          "title": "Chỉ số lỗi và khả năng phục hồi",
+          "subtitle": "Bộ đếm lỗi và hành vi khôi phục cho biết liên kết chỉ bị nhiễu hay thực sự bị mất dịch vụ.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "TrướcFEC BER",
+              "body": "Hành vi lỗi bit trước khi sửa cho thấy ứng suất liên kết thô."
+            },
+            {
+              "title": "biểu đồ FEC",
+              "body": "Lỗi tích lũy trên mỗi khung FEC giúp mô tả tải hiệu chỉnh."
+            },
+            {
+              "title": "Từ mã không thể sửa được",
+              "body": "Những lỗi mà việc sửa chữa không thể khắc phục được sẽ dẫn đến tình trạng xuống cấp liên kết nghiêm trọng hơn."
+            },
+            {
+              "title": "Liên kết lại",
+              "body": "Bộ đếm thu thập và thả liên kết cho thấy sự không ổn định theo thời gian."
+            },
+            {
+              "title": "LOS và LOL",
+              "body": "Các sự kiện mất tín hiệu và mất liên kết xác định các chuyển đổi trạng thái cần có lịch sử."
+            },
+            {
+              "title": "Thời gian hoạt động",
+              "body": "Thời gian đã trôi qua kể từ lần liên kết cuối cùng cung cấp bối cảnh phục hồi và ổn định."
+            }
+          ],
+          "term_refs": [
+            "ber",
+            "fec"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu đo từ xa mô-đun"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "14"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_error_and_recovery_metrics.txt",
+            "wav_file": "audio/module2/slide_06_error_and_recovery_metrics.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "environment_and_module_context",
+          "section_label": "Số liệu bối cảnh",
+          "title": "Bối cảnh môi trường và mô-đun",
+          "subtitle": "Nhiệt độ, công suất, nhận dạng nối tiếp và cảnh báo biến các phép đo thành bằng chứng có thể theo dõi được.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Nhiệt độ mô-đun",
+              "body": "Nhiệt độ mô-đun cho biết liệu điều kiện nhiệt có thể góp phần vào chất lượng liên kết hay không."
+            },
+            {
+              "title": "Nhiệt độ laze",
+              "body": "Nhiệt độ laser cung cấp bối cảnh thiết bị quang học cho hành vi trôi dạt và cảnh báo."
+            },
+            {
+              "title": "Điện áp",
+              "body": "Bối cảnh cung cấp giúp liên hệ các vấn đề liên kết với điều kiện điện cục bộ."
+            },
+            {
+              "title": "công suất Rx",
+              "body": "Công suất quang nhận được giúp tách biệt hiện tượng mất đường quang khỏi các hiện tượng khác."
+            },
+            {
+              "title": "DDMI cảnh báo",
+              "body": "Cờ báo động và cảnh báo hiển thị các điểm vượt ngưỡng được mô-đun báo cáo."
+            },
+            {
+              "title": "Số sê-ri",
+              "body": "Các trường nhận dạng liên kết phép đo từ xa và lịch sử sự kiện với mô-đun vật lý."
+            }
+          ],
+          "term_refs": [
+            "ddmi"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu đo từ xa của mô-đun và thông tin từ xa"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "14-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_environment_and_module_context.txt",
+            "wav_file": "audio/module2/slide_07_environment_and_module_context.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "link_health_score_uses_the_worst_category",
+          "section_label": "Mô hình điểm",
+          "title": "Điểm tình trạng liên kết lấy hạng mục yếu nhất",
+          "figure": {
+            "path": "figures/link_health_minimum_score.mp4",
+            "media_type": "video",
+            "alt": "Hoạt ảnh im lặng hiển thị nhiều điểm danh mục tình trạng liên kết trong đó tình trạng được báo cáo thuộc danh mục yếu nhất.",
+            "caption": "Quy tắc danh mục tối thiểu giúp một trường xấu không bị che dấu bởi các phép đo lành mạnh hơn ở nơi khác.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Công thức tính điểm đánh giá"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "49-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.txt",
+            "wav_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "flags_and_masks_keep_monitoring_actionable",
+          "section_label": "Cờ trạng thái và mask",
+          "title": "Cờ trạng thái và mask giữ cho giám sát có thể hành động",
+          "subtitle": "Cờ tóm tắt hiển thị trạng thái; mặt nạ cho phép việc triển khai kiểm soát bộ đếm nào ảnh hưởng đến điểm số.",
+          "bullets": [
+            {
+              "bold_lead": "Cờ tóm tắt",
+              "text": "Cờ có thể cho biết nhóm số liệu có vượt ngưỡng hay cần sự chú ý của người vận hành hay không."
+            },
+            {
+              "bold_lead": "Mặt nạ tùy chỉnh",
+              "text": "Mặt nạ có thể bao gồm hoặc loại trừ các bộ đếm đã chọn khỏi phép tính điểm tình trạng liên kết."
+            },
+            {
+              "bold_lead": "điều chỉnh hoạt động",
+              "text": "Việc triển khai có thể giảm tiếng ồn mà không làm mất mô hình số liệu dùng chung."
+            }
+          ],
+          "figure": {
+            "path": "figures/flags_and_masks.svg",
+            "alt": "Sơ đồ hiển thị các điều khiển mặt nạ cung cấp bản tóm tắt cờ cho tình trạng liên kết.",
+            "caption": "Cờ trạng thái và mask giúp việc giám sát vẫn đủ phổ biến để so sánh và đủ linh hoạt để vận hành.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Báo cáo tóm tắt cờ từ xa và mặt nạ tùy chỉnh"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "45-48"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.txt",
+            "wav_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "metrics_should_point_to_action",
+          "title": "Số liệu nên hướng tới hành động",
+          "items": [
+            "Đo từ xa cục bộ và từ xa sử dụng cùng một mô hình vận hành lấy máy chủ làm trung tâm.",
+            "Các thước đo chất lượng tách biệt hành vi điện phía máy chủ với hành vi quang học phía đường dây.",
+            "Các giá trị lỗi, khôi phục và thời gian hoạt động cho biết liên kết có bị nhiễu, không ổn định hay không.",
+            "Các trường môi trường và nhận dạng giúp các phép đo có thể truy nguyên được tới phần cứng thực.",
+            "Điểm tình trạng liên kết sử dụng danh mục yếu nhất để tránh ẩn trường bị lỗi."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu đo từ xa của mô-đun và Công thức tính điểm xếp hạng"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_metrics_should_point_to_action.txt",
+            "wav_file": "audio/module2/slide_10_metrics_should_point_to_action.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_metrics_and_scores",
+          "title": "Kiểm tra mô hình: Chỉ số và điểm tình trạng",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không gián đoạn và bạn có thể thử lại sau khi phản hồi.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "Tại sao điểm tình trạng liên kết lại sử dụng danh mục yếu nhất thay vì mức trung bình?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Một danh mục xấu có thể khiến liên kết trở nên không đáng tin cậy ngay cả khi các danh mục khác vẫn hoạt động tốt.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Không thể tính được giá trị trung bình từ các trường đo từ xa.",
+                  "correct": false,
+                  "feedback_incorrect": "Giá trị trung bình có thể được tính toán nhưng chúng có thể ẩn trường sẽ thúc đẩy hành động."
+                },
+                {
+                  "id": "c",
+                  "text": "Chỉ có năng lượng quang mới quan trọng đối với tình trạng liên kết.",
+                  "correct": false,
+                  "feedback_incorrect": "Công suất quang rất hữu ích nhưng mô hình cũng xem xét chất lượng điện, lỗi, hành vi phục hồi và bối cảnh."
+                }
+              ],
+              "feedback_correct": "Chính xác. Điểm số được thiết kế để duy trì tín hiệu hành động từ loại yếu nhất.",
+              "feedback_incorrect": "Xem lại mô hình điểm: việc tóm tắt không được che giấu một hạng mục không đạt."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "Những mục nào là bằng chứng đo từ xa hữu ích để chẩn đoán tình trạng liên kết?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "SNR, chiều cao của mắt, PAM4 LTP và ước tính MPI.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Biểu đồ trướcFEC BER, FEC, liên kết lại, LOS và LOL.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Nhiệt độ mô-đun, nhiệt độ laser, công suất quang nhận được và nhận dạng nối tiếp.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Chỉ có kết quả đạt/không đạt cuối cùng từ bảng điều khiển bên ngoài.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng. Chẩn đoán hữu ích kết hợp chất lượng, lỗi, khả năng phục hồi, môi trường và bối cảnh nhận dạng.",
+              "feedback_incorrect": "Sử dụng mô hình danh mục: tình trạng liên kết cần chất lượng, lỗi, khả năng phục hồi, môi trường và bằng chứng nhận dạng chứ không chỉ là kết quả bảng điều khiển cuối cùng."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu đo từ xa của mô-đun và Công thức tính điểm xếp hạng"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.txt",
+            "wav_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "up_next",
+          "slug": "up_next_cdb_and_event_workflows",
+          "title": "Tiếp theo: Quy trình CDB và sự kiện",
+          "next_module_number": 3,
+          "next_module_title": "CDB Quy trình làm việc, Nhật ký sự kiện và Truy cập từ xa",
+          "thank_you_message": "Làm tốt lắm - bạn đã hoàn thành mô-đun đo từ xa và tình trạng liên kết.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Bộ thu phát CDB Thực hiện"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.txt",
+            "wav_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "CDB Quy trình làm việc, Nhật ký sự kiện và Truy cập từ xa"
+    },
+    {
+      "id": 3,
+      "slug": "cdb_workflows_event_logs_and_remote_access",
+      "title": "Quy trình CDB, nhật ký sự kiện và truy cập từ xa",
+      "subtitle": "Mẫu lệnh-phản hồi di chuyển dữ liệu từ xa, lịch sử sự kiện và dữ liệu xa hơn.",
+      "module_badge_text": "Mô-đun 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "cdb_workflows_event_logs_and_remote_access",
+          "title": "Quy trình CDB, nhật ký sự kiện và truy cập từ xa",
+          "subtitle": "Cách các yêu cầu đo từ xa, trả lời, nhật ký và truy cập từ xa di chuyển qua giao diện mô-đun.",
+          "version_chip": "Thông số đo từ xa nâng cao - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Bộ thu phát CDB Thực hiện"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-18"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.txt",
+            "wav_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "workflows_you_will_trace",
+          "title": "Các quy trình bạn sẽ theo dõi",
+          "subtitle": "Khi kết thúc mô-đun này, bạn sẽ có thể thực hiện theo hành vi lệnh, nhật ký và truy cập từ xa.",
+          "objectives": [
+            "Theo dõi quy trình lệnh-phản hồi CDB gồm bốn bước.",
+            "Mô tả lý do tại sao Trang 9Fh và vùng dữ liệu tải mở rộng lại quan trọng mà không cần ghi nhớ bản đồ byte.",
+            "Giải thích cách nhật ký sự kiện không thay đổi lưu giữ câu chuyện lỗi.",
+            "Phân biệt truy cập byte từ xa với truy cập trang từ xa về mặt khái niệm."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Bộ thu phát CDB Triển khai và quản lý nhật ký sự kiện"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_workflows_you_will_trace.txt",
+            "wav_file": "audio/module3/slide_02_workflows_you_will_trace.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "cdb_is_a_command_reply_workflow",
+          "section_label": "Mẫu CDB",
+          "title": "CDB sử dụng quy trình lệnh-phản hồi",
+          "figure": {
+            "path": "figures/cdb_command_reply.mp4",
+            "media_type": "video",
+            "alt": "Hoạt ảnh im lặng hiển thị quy trình gồm bốn bước CDB từ chuẩn bị lệnh cho đến truy xuất câu trả lời.",
+            "caption": "Một chuỗi lệnh CDB điển hình sẽ chuẩn bị tin nhắn, kích hoạt việc thực thi, trạng thái thăm dò trạng thái và truy xuất câu trả lời sau khi hoàn thành.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "cdb"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Bộ thu phát CDB Thực hiện"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.txt",
+            "wav_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "page_9fh_carries_the_control_conversation",
+          "section_label": "Trang kiểm soát",
+          "title": "Trang 9Fh đảm nhiệm trao đổi điều khiển",
+          "subtitle": "Trang điều khiển chứa các cấu trúc lệnh và trả lời; khóa học nhấn mạnh vào mẫu hơn là từng trường byte.",
+          "bullets": [
+            {
+              "bold_lead": "Tiêu đề lệnh",
+              "text": "Máy chủ ghi nhận dạng lệnh và thông tin yêu cầu liên quan."
+            },
+            {
+              "bold_lead": "Tiêu đề trả lời",
+              "text": "Mô-đun trả về siêu dữ liệu hoàn thành và phản hồi sau khi thực thi."
+            },
+            {
+              "bold_lead": "Dữ liệu tải cục bộ",
+              "text": "Các tin nhắn nhỏ hơn có thể sử dụng vùng dữ liệu tải cục bộ trước khi cần các trang mở rộng."
+            }
+          ],
+          "figure": {
+            "path": "figures/page_9f_structure.svg",
+            "alt": "Trang 9Fh cấu trúc đơn giản hóa với tiêu đề lệnh, tiêu đề trả lời và dữ liệu tải cục bộ.",
+            "caption": "Trang 9Fh là trang nhắn tin CDB giữa máy chủ và mô-đun trong thông số kỹ thuật.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Cấu trúc trang điều khiển"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-17"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.txt",
+            "wav_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "extended_payload_handles_larger_transfers",
+          "section_label": "Kích thước dữ liệu tải",
+          "title": "Dữ liệu tải mở rộng hỗ trợ truyền dữ liệu lớn hơn",
+          "subtitle": "Khi dữ liệu tải cục bộ không đủ, các trang dữ liệu tải được đánh dấu sẽ mang các phản hồi lớn hơn.",
+          "bullets": [
+            {
+              "bold_lead": "Dữ liệu tải cục bộ đầu tiên",
+              "text": "Các lệnh và phản hồi nhỏ có thể sử dụng không gian dữ liệu tải cục bộ."
+            },
+            {
+              "bold_lead": "Các trang dữ liệu tải mở rộng",
+              "text": "Các trang được đánh dấu từ A0h đến AFh cung cấp khả năng dữ liệu tải lớn hơn trong thông số kỹ thuật."
+            },
+            {
+              "bold_lead": "Trường độ dài và tính toàn vẹn",
+              "text": "Độ dài dữ liệu tải và các trường kiểm tra giúp phần mềm biết những gì cần truy xuất và xác thực."
+            }
+          ],
+          "figure": {
+            "path": "figures/extended_payload.svg",
+            "alt": "Sơ đồ dữ liệu tải mở rộng được đơn giản hóa hiển thị dữ liệu tải cục bộ và các trang từ A0h đến AFh.",
+            "caption": "Thông số kỹ thuật mô tả các trang dữ liệu tải mở rộng cho dữ liệu lệnh lớn hơn, lên tới 2048 byte.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Dữ liệu tải mở rộng"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "17"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.txt",
+            "wav_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "status_registers_tell_the_host_when_to_read",
+          "section_label": "Trạng thái lệnh",
+          "title": "Thanh ghi trạng thái cho host biết khi nào cần đọc",
+          "subtitle": "Trạng thái hoàn thành và thất bại là một phần của quy trình, không phải là việc dọn dẹp tùy chọn.",
+          "bullets": [
+            {
+              "bold_lead": "Trạng thái bận",
+              "text": "Máy chủ dự kiến việc thực thi lệnh sẽ mất thời gian và theo dõi tiến trình bằng cách thăm dò trạng thái."
+            },
+            {
+              "bold_lead": "Cờ hoàn thành",
+              "text": "Trạng thái hoàn thành cho phần mềm biết khi nào có thể đọc được câu trả lời."
+            },
+            {
+              "bold_lead": "Xử lý lỗi",
+              "text": "Một lệnh không thành công phải được xử lý rõ ràng thay vì được hiểu là phép đo từ xa hợp lệ."
+            },
+            {
+              "bold_lead": "Phần mềm lặp lại",
+              "text": "Hành vi trạng thái nhất quán cho phép SDK và công cụ dòng lệnh trở thành quy trình đáng tin cậy của người vận hành."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Thanh ghi trạng thái lệnh"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "18"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.txt",
+            "wav_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_retrieval_follows_the_same_pattern",
+          "section_label": "Lệnh đo từ xa",
+          "title": "Truy xuất dữ liệu đo từ xa theo cùng một mẫu",
+          "figure": {
+            "path": "figures/telemetry_retrieval_flow.svg",
+            "alt": "Máy chủ yêu cầu đo từ xa, mô-đun cục bộ thu thập dữ liệu cục bộ hoặc từ xa và phản hồi trả về các trường sức khỏe.",
+            "caption": "Truy xuất từ xa sử dụng cùng một lệnh, trạng thái và mẫu trả lời cho dù dữ liệu là cục bộ hay từ xa.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Đo từ xa"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "28-45"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.txt",
+            "wav_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "event_logs_preserve_the_failure_story",
+          "section_label": "Lịch sử sự kiện",
+          "title": "Nhật ký sự kiện lưu lại diễn biến sự cố",
+          "subtitle": "Nhật ký sự kiện không thay đổi cho phép người vận hành kiểm tra những gì đã xảy ra, không chỉ xem liên kết hiện tại trông như thế nào.",
+          "bullets": [
+            {
+              "bold_lead": "Bộ đệm tròn không bay hơi",
+              "text": "Mô-đun này ghi lại các sự kiện quan trọng trong bộ nhớ vẫn tồn tại trong quy trình bảo trì và nguồn điện thông thường."
+            },
+            {
+              "bold_lead": "Trình tự UID",
+              "text": "Một giá trị chuỗi duy nhất giúp xây dựng lại thứ tự sự kiện, bao gồm cả hành vi bao quanh."
+            },
+            {
+              "bold_lead": "Dấu thời gian và ID sự kiện",
+              "text": "Mỗi mục nhập mang thời gian và loại sự kiện để các triệu chứng có thể tương quan với dữ liệu máy chủ và mạng."
+            },
+            {
+              "bold_lead": "Đầu ra con người có thể đọc được",
+              "text": "API host phải làm cho các sự kiện gần đây có thể đọc được thay vì buộc phải diễn giải trường bit trong khi xảy ra sự cố."
+            }
+          ],
+          "figure": {
+            "path": "figures/source_docx_event_log_example.png",
+            "alt": "Ví dụ về ảnh chụp màn hình phân tích cú pháp nhật ký sự kiện từ tài liệu đặc tả.",
+            "caption": "Thông số kỹ thuật bao gồm một ví dụ về nhật ký sự kiện được phân tích cú pháp; quy trình hướng tới người học phải duy trì thứ tự sự kiện, thời gian và ý nghĩa sự kiện.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Quản lý nhật ký sự kiện"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "53-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.txt",
+            "wav_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_grid",
+          "slug": "hysteresis_prevents_noise_from_burying_signal",
+          "section_label": "Kiểm soát sự kiện",
+          "title": "Hysteresis ngăn nhiễu che khuất tín hiệu",
+          "subtitle": "Việc vượt ngưỡng lặp đi lặp lại cần được kiểm soát để nhật ký vẫn hữu ích trong thời gian không ổn định.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Ngưỡng sự kiện",
+              "body": "Các sự kiện có thể được ghi lại cho liên kết lên, liên kết xuống, LOS, LOL, nhiệt độ, nguồn Rx, Pre-FEC BER, FEC thùng, v.v."
+            },
+            {
+              "title": "Cửa sổ trễ",
+              "body": "Thông số kỹ thuật liệt kê giá trị trễ sự kiện 10 giây mặc định cho điều khiển API."
+            },
+            {
+              "title": "Ít tiếng ồn trùng lặp",
+              "body": "Một cửa sổ giúp ngăn việc chuyển tiếp liên kết lặp đi lặp lại làm quá tải nhật ký."
+            },
+            {
+              "title": "Hành vi có thể lập trình",
+              "body": "Lệnh máy chủ có thể đọc hoặc ghi các giá trị trễ sự kiện cho các điểm cuối cục bộ và từ xa."
+            },
+            {
+              "title": "Dòng thời gian rõ ràng hơn",
+              "body": "Người vận hành có thể tập trung vào các sự kiện riêng biệt thay vì hàng tá mục nhập ngưỡng lặp lại."
+            },
+            {
+              "title": "Kiểm tra phiên bản",
+              "body": "Giá trị sản xuất cuối cùng phải được xác minh dựa trên bản sửa đổi thông số kỹ thuật đã công bố."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "ID nhật ký sự kiện, loại, ngưỡng và API phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "53-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.txt",
+            "wav_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "content_two_column",
+          "slug": "remote_cmis_access_reaches_the_far_endpoint",
+          "section_label": "Truy cập từ xa",
+          "title": "Truy cập từ xa CMIS đến đầu xa",
+          "subtitle": "Truy cập từ xa cho phép phần mềm host truy xuất thông tin từ mô-đun đầu xa thông qua mô-đun tuân thủ cục bộ.",
+          "bullets": [
+            {
+              "bold_lead": "Truy cập byte",
+              "text": "Sử dụng yêu cầu được nhắm mục tiêu khi phần mềm cần một trường nhỏ hoặc phạm vi hẹp từ điểm cuối từ xa."
+            },
+            {
+              "bold_lead": "Truy cập trang",
+              "text": "Sử dụng yêu cầu hướng trang khi phần mềm cần ảnh chụp nhanh trang CMIS lớn hơn."
+            },
+            {
+              "bold_lead": "Ranh giới tin cậy giống nhau",
+              "text": "Máy chủ vẫn liên lạc với mô-đun cục bộ; mô-đun cục bộ lấy dữ liệu từ xa trong băng tần."
+            }
+          ],
+          "figure": {
+            "path": "figures/remote_cmis_access.svg",
+            "alt": "So sánh truy cập byte CMIS từ xa và truy cập trang.",
+            "caption": "Truy cập byte và trang từ xa khác nhau về kích thước và trường hợp sử dụng, nhưng cả hai đều bảo toàn mô hình điều khiển host cục bộ thành mô-đun cục bộ.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Truy cập đăng ký từ xa CMIS"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "65-73"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.txt",
+            "wav_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "cdb_turns_telemetry_into_an_operational_workflow",
+          "title": "CDB biến dữ liệu đo từ xa thành quy trình vận hành",
+          "items": [
+            "CDB sử dụng trình tự chuẩn bị, kích hoạt, thăm dò và truy xuất có thể lặp lại.",
+            "Trang 9Fh và vùng dữ liệu tải hỗ trợ trao đổi lệnh và trả lời; bản đồ byte vẫn còn trong thông số kỹ thuật.",
+            "Kiểm tra trạng thái bảo vệ người vận hành khỏi coi các lệnh chưa hoàn thành hoặc bị lỗi là dữ liệu hợp lệ.",
+            "Nhật ký sự kiện lưu giữ bằng chứng theo thứ tự, được đánh dấu thời gian sau những lỗi nhất thời.",
+            "Quyền truy cập CMIS từ xa cho phép máy chủ kiểm tra đầu xa thông qua mô-đun tuân thủ cục bộ."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Bộ thu phát CDB Triển khai thông qua truy cập từ xa CMIS"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-73"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.txt",
+            "wav_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "check_your_model_cdb_and_events",
+          "title": "Kiểm tra mô hình của bạn: CDB và Sự kiện",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không gián đoạn và bạn có thể thử lại sau khi phản hồi.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "Trình tự nào mô tả đúng nhất về tương tác CDB điển hình?",
+              "shuffle_choices": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Chuẩn bị lệnh, kích hoạt nó, thăm dò trạng thái, truy xuất câu trả lời.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Truy xuất câu trả lời, kích hoạt lệnh, chuẩn bị tiêu đề, bỏ qua trạng thái.",
+                  "correct": false,
+                  "feedback_incorrect": "Câu trả lời được đọc sau khi hoàn thành lệnh và việc thăm dò trạng thái là một phần của quy trình."
+                },
+                {
+                  "id": "c",
+                  "text": "Thăm dò trạng thái một lần khi khởi động, sau đó đọc tất cả dữ liệu đo từ xa mà không cần lệnh.",
+                  "correct": false,
+                  "feedback_incorrect": "Trạng thái được kiểm tra cho từng quy trình của lệnh. Truy xuất từ ​​xa vẫn sử dụng hành vi ra lệnh và trả lời."
+                }
+              ],
+              "feedback_correct": "Đúng. Trình tự bốn bước đó là quy trình CDB cốt lõi.",
+              "feedback_incorrect": "Xem lại mẫu lệnh: chuẩn bị, kích hoạt, thăm dò, truy xuất."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "Những đặc điểm nào giúp chẩn đoán vạt liên kết sau khi triệu chứng tức thời đã qua?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Nhật ký sự kiện không thay đổi với trình tự và dấu thời gian.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Truy cập CMIS từ xa để kiểm tra đầu xa.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Truy xuất dữ liệu đo từ xa được kiểm tra trạng thái thay vì đọc các câu trả lời cũ.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Loại bỏ hiện tượng trễ sự kiện để mỗi lần vượt ngưỡng trùng lặp luôn được ghi lại.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng. Nhật ký lâu dài, khả năng quan sát từ xa và trạng thái lệnh kỷ luật đều giúp bảo tồn bằng chứng.",
+              "feedback_incorrect": "Hãy suy nghĩ về đường dẫn bằng chứng: lưu giữ lịch sử sự kiện, tiếp cận đầu xa và xác minh việc hoàn thành lệnh trước khi tin cậy vào câu trả lời."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Bộ thu phát CDB Triển khai và CDB Quản lý nhật ký sự kiện"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_12_check_your_model_cdb_and_events.txt",
+            "wav_file": "audio/module3/slide_12_check_your_model_cdb_and_events.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 13,
+          "type": "up_next",
+          "slug": "up_next_firmware_and_host_readiness",
+          "title": "Tiếp theo: Firmware và sự sẵn sàng của host",
+          "next_module_number": 4,
+          "next_module_title": "Firmware, phần mềm host và mức độ sẵn sàng triển khai",
+          "thank_you_message": "Làm tốt lắm - bạn đã hoàn thành mô-đun quy trình lệnh-phản hồi và sự kiện.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tính năng quản lý firmware và phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.txt",
+            "wav_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Firmware, phần mềm host và mức độ sẵn sàng triển khai"
+    },
+    {
+      "id": 4,
+      "slug": "firmware_host_software_and_deployment_readiness",
+      "title": "Firmware, phần mềm host và mức độ sẵn sàng triển khai",
+      "subtitle": "Các hoạt động trong vòng đời và công cụ máy chủ giúp biến phép đo từ xa thành độ tin cậy của đội xe.",
+      "module_badge_text": "Mô-đun 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "firmware_host_software_and_deployment_readiness",
+          "title": "Firmware, phần mềm host và mức độ sẵn sàng triển khai",
+          "subtitle": "Cách đo từ xa, truy cập từ xa, quản lý firmware và API host trở thành các hoạt động ở quy mô nhóm.",
+          "version_chip": "Thông số đo từ xa nâng cao - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tính năng quản lý firmware và phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.txt",
+            "wav_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "operations_you_will_connect",
+          "title": "Các hoạt động vận hành bạn sẽ kết nối",
+          "subtitle": "Khi kết thúc mô-đun này, bạn sẽ có thể giải thích độ tin cậy hỗ trợ vòng đời và công cụ máy chủ như thế nào.",
+          "objectives": [
+            "Mô tả việc quản lý phần mềm cục bộ và từ xa ở cấp độ khả năng.",
+            "Giải thích tại sao phần mềm host giao tiếp với mô-đun cục bộ ngay cả khi yêu cầu dữ liệu từ xa.",
+            "Xác định các danh mục dòng lệnh API hỗ trợ quy trình của người vận hành.",
+            "Kết nối việc thu thập dữ liệu từ xa, lịch sử sự kiện và tổng hợp máy chủ vào một mô hình sẵn sàng triển khai."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tính năng quản lý firmware và phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_operations_you_will_connect.txt",
+            "wav_file": "audio/module4/slide_02_operations_you_will_connect.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "firmware_management_supports_local_and_remote_optics",
+          "section_label": "Khả năng phần mềm",
+          "title": "Quản lý firmware hỗ trợ mô-đun quang cục bộ và từ xa",
+          "subtitle": "Thông số kỹ thuật bao gồm cả luồng firmware do CMIS xác định và khả năng nâng cấp từ xa do nhà cung cấp xác định.",
+          "bullets": [
+            {
+              "bold_lead": "Dòng chảy cục bộ tiêu chuẩn",
+              "text": "Quản lý firmware CMIS được xác định bao gồm việc tải xuống, kích hoạt và giám sát trạng thái hình ảnh do máy chủ kiểm soát."
+            },
+            {
+              "bold_lead": "Đường dẫn nâng cấp từ xa",
+              "text": "Các lệnh do nhà cung cấp xác định trong thông số kỹ thuật cho phép nâng cấp firmware từ xa thông qua giao tiếp trong băng tần."
+            },
+            {
+              "bold_lead": "Khám phá khả năng",
+              "text": "Phần mềm phải xác định những tính năng quản lý firmware nào khả dụng trước khi bắt đầu cập nhật."
+            }
+          ],
+          "figure": {
+            "path": "figures/source_docx_firmware_upgrade_flow.png",
+            "alt": "Sơ đồ quy trình nâng cấp firmware từ tài liệu thông số kỹ thuật.",
+            "caption": "Hình nguồn hiển thị quy trình nâng cấp firmware CMIS; khóa học coi nó như một mô hình vòng đời hơn là một mục tiêu ghi nhớ.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tính năng quản lý phần mềm"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.txt",
+            "wav_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "hitless_update_is_a_lifecycle_pattern",
+          "section_label": "Cập nhật vòng đời",
+          "title": "Cập nhật không gián đoạn là một mẫu vòng đời",
+          "figure": {
+            "path": "figures/source_docx_block_download_flow.png",
+            "alt": "Sơ đồ luồng tải xuống khối firmware từ tài liệu thông số kỹ thuật.",
+            "caption": "Luồng tải xuống theo khối củng cố ý tưởng rằng cập nhật firmware là một vòng đời có trạng thái với các hành vi kiểm tra, thử lại, hoàn thành và cam kết.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tính năng quản lý phần mềm"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-93"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.txt",
+            "wav_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "host_software_owns_the_local_conversation",
+          "section_label": "Ranh giới máy chủ",
+          "title": "Phần mềm host kiểm soát trao đổi cục bộ",
+          "subtitle": "Máy chủ giao tiếp qua I2C với mô-đun tuân thủ cục bộ; mô-đun cục bộ lấy dữ liệu từ xa.",
+          "bullets": [
+            {
+              "bold_lead": "Điểm kiểm soát cục bộ",
+              "text": "Tất cả giao tiếp thu phát tuân thủ với host cục bộ được thực hiện qua I2C trong thông số kỹ thuật."
+            },
+            {
+              "bold_lead": "Truy xuất từ xa",
+              "text": "Khi dữ liệu từ xa được yêu cầu, bộ thu phát cục bộ sẽ truy xuất nó và gửi nó đến máy chủ."
+            },
+            {
+              "bold_lead": "Không có đường dẫn từ xa trực tiếp",
+              "text": "Máy chủ cục bộ không giao tiếp trực tiếp với các mô-đun đầu xa."
+            }
+          ],
+          "figure": {
+            "path": "figures/host_local_conversation.svg",
+            "alt": "Máy chủ giao tiếp với mô-đun cục bộ qua I2C trong khi mô-đun cục bộ truy xuất dữ liệu đầu xa trong băng tần.",
+            "caption": "Host vẫn giao tiếp cục bộ; mô-đun tuân thủ làm cầu nối đến đầu xa.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Truyền thông thu phát"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.txt",
+            "wav_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "command_line_apis_become_operator_tools",
+          "section_label": "API toán tử",
+          "title": "API dòng lệnh trở thành công cụ vận hành",
+          "subtitle": "API host SDK và dòng lệnh hiển thị các khả năng chung của mô-đun dưới dạng quy trình có thể lặp lại.",
+          "columns": [
+            "API danh mục",
+            "sử dụng toán tử"
+          ],
+          "rows": [
+            [
+              "Truy cập tiêu chuẩn CMIS",
+              "Đọc các thanh ghi cục bộ và trạng thái mô-đun tiêu chuẩn."
+            ],
+            [
+              "Truy cập CMIS từ xa",
+              "Trích xuất dữ liệu CMIS tiêu chuẩn từ đầu xa của liên kết."
+            ],
+            [
+              "Tải xuống từ xa",
+              "Hiển thị các thông số đo từ xa mô-đun cục bộ hoặc từ xa."
+            ],
+            [
+              "Nhật ký sự kiện",
+              "Đọc, tải xuống, xóa và điều chỉnh lịch sử sự kiện cục bộ hoặc từ xa."
+            ],
+            [
+              "Cập nhật firmware",
+              "Chạy quy trình cập nhật firmware cục bộ hoặc từ xa."
+            ],
+            [
+              "Thời gian và đánh giá",
+              "Đặt thời gian kỷ nguyên, điều chỉnh độ trễ và khả năng quan sát điểm tình trạng liên kết mô-đun."
+            ]
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "API dòng lệnh"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.txt",
+            "wav_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_harvesting_builds_a_link_timeline",
+          "section_label": "thu hoạch",
+          "title": "Thu thập dữ liệu đo từ xa tạo dòng thời gian liên kết",
+          "figure": {
+            "path": "figures/telemetry_timeline.svg",
+            "alt": "Dòng thời gian hiển thị thăm dò trạng thái của máy chủ, ngưỡng sự kiện, truy vấn đầu xa và bản đồ tình trạng mạng.",
+            "caption": "Việc thu thập liên tục có thể biến phép đo từ xa, nhật ký sự kiện và truy vấn từ xa hiện tại thành dòng thời gian về sức khỏe trên toàn cơ cấu.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.txt",
+            "wav_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "deployment_readiness_checks",
+          "section_label": "Kiểm tra sự sẵn sàng",
+          "title": "Kiểm tra mức độ sẵn sàng triển khai",
+          "subtitle": "Việc triển khai phải xác minh hành vi, không chỉ liệu các trường có tồn tại hay không.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Đầu gần và đầu xa",
+              "body": "Xác nhận máy chủ có thể truy xuất dữ liệu từ các mô-đun cục bộ và các điểm cuối từ xa chính xác."
+            },
+            {
+              "title": "Các trường hợp đột phá",
+              "body": "Xác minh danh tính đối tác và đo từ xa theo từng điểm cuối khi một cổng ánh xạ tới nhiều phía từ xa."
+            },
+            {
+              "title": "Quang học của bên thứ ba",
+              "body": "Kiểm tra hành vi khi quang học tuân thủ và không tuân thủ xuất hiện trong môi trường thực tế."
+            },
+            {
+              "title": "thời đại",
+              "body": "Đảm bảo dấu thời gian có thể tương quan giữa máy chủ, mô-đun, nhật ký sự kiện và công cụ giám sát."
+            },
+            {
+              "title": "Vòng đời của phần mềm cơ sở",
+              "body": "Thực hiện các trạng thái khám phá, chuyển giao, kích hoạt, cam kết, hủy bỏ và phục hồi."
+            },
+            {
+              "title": "Kho lưu trữ và SDK",
+              "body": "Xác nhận việc triển khai máy chủ, công cụ và tính khả dụng của nguồn mà chính sách triển khai mong đợi."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Các yêu cầu khác của MCU, Phần mềm host, Yêu cầu và Kho lưu trữ"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "15-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_deployment_readiness_checks.txt",
+            "wav_file": "audio/module4/slide_08_deployment_readiness_checks.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_diagram",
+          "slug": "from_link_flap_to_root_cause",
+          "section_label": "Khắc phục sự cố",
+          "title": "Từ dao động liên kết đến nguyên nhân gốc",
+          "figure": {
+            "path": "figures/link_flap_root_cause.mp4",
+            "media_type": "video",
+            "alt": "Hoạt ảnh im lặng hiển thị cách khắc phục sự cố từ cảnh báo dao động liên kết thông qua điểm tình trạng, số liệu, nhật ký sự kiện, truy vấn từ xa và hành động dựa trên bằng chứng.",
+            "caption": "Quy trình làm việc thực tế kết hợp điểm số, số liệu, lịch sử sự kiện, dữ liệu điểm cuối từ xa và dòng thời gian lưu trữ trước khi chọn hành động.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tổng quan và phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "11, 94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_09_from_link_flap_to_root_cause.txt",
+            "wav_file": "audio/module4/slide_09_from_link_flap_to_root_cause.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "reliability_depends_on_common_interfaces",
+          "title": "Độ tin cậy phụ thuộc vào giao diện chung",
+          "items": [
+            "Quản lý phần mềm cơ sở là một vòng đời với hoạt động khám phá khả năng, kiểm tra trạng thái, kích hoạt, cam kết và phục hồi.",
+            "Phần mềm host giao tiếp cục bộ qua I2C trong khi các mô-đun tuân thủ truy xuất dữ liệu của đầu xa trong băng tần.",
+            "API của nhân viên vận hành phải hiển thị dữ liệu đo từ xa, nhật ký sự kiện, truy cập từ xa, cập nhật firmware, thời gian, độ trễ và xếp hạng liên kết.",
+            "Việc thu thập liên tục biến lịch sử sự kiện và trạng thái hiện tại thành dòng thời gian liên kết.",
+            "Sẵn sàng triển khai có nghĩa là xác minh hành vi trong các trường hợp cục bộ, từ xa, đột phá và tương thích hỗn hợp."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Tính năng quản lý firmware và phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.txt",
+            "wav_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_deployment_workflow",
+          "title": "Kiểm tra mô hình của bạn: Quy trình triển khai",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không gián đoạn và bạn có thể thử lại sau khi phản hồi.",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "Tại sao host cục bộ không giao tiếp trực tiếp với các mô-đun đầu xa trong mô hình thông số kỹ thuật?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Máy chủ giao tiếp với mô-đun tuân thủ cục bộ; mô-đun cục bộ lấy dữ liệu từ xa trong băng tần.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Đo từ xa không được hỗ trợ.",
+                  "correct": false,
+                  "feedback_incorrect": "Đo từ xa được hỗ trợ thông qua mô-đun cục bộ và liên lạc trong băng tần."
+                },
+                {
+                  "id": "c",
+                  "text": "Chỉ máy chủ thu thập dữ liệu đo từ xa mới có thể yêu cầu dữ liệu quang từ xa.",
+                  "correct": false,
+                  "feedback_incorrect": "Phần mềm host có thể yêu cầu dữ liệu từ xa thông qua mô-đun tuân thủ cục bộ; máy chủ tổng hợp thông tin sức khỏe cấp cao hơn."
+                }
+              ],
+              "feedback_correct": "Đúng. Mô-đun cục bộ kết nối truy xuất từ ​​xa trong khi máy chủ giữ một đường dẫn điều khiển cục bộ.",
+              "feedback_incorrect": "Xem lại ranh giới máy chủ: host cục bộ đến mô-đun cục bộ qua I2C, sau đó mô-đun cục bộ đến đầu xa trong băng tần."
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "Tính năng máy chủ/API nào hỗ trợ các hoạt động quang học quy mô toàn bộ hệ thống?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Tải xuống firmware cục bộ và từ xa.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Đọc nhật ký sự kiện, xóa, tải xuống sự kiện gần đây và kiểm soát độ trễ.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Quy trình cập nhật firmware cục bộ và từ xa.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Bỏ qua pre-FEC BER phía máy chủ và dữ liệu từ mã không thể sửa được.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng. Hoạt động của nhóm cần đo từ xa hiện tại, lịch sử lâu dài, truy cập từ xa, hỗ trợ vòng đời firmware và bối cảnh phía máy chủ.",
+              "feedback_incorrect": "Hãy suy nghĩ về chuỗi hoạt động đầy đủ: đo từ xa hiện tại, lịch sử sự kiện, truy cập từ xa, quản lý firmware, tương quan thời gian, xếp hạng và bối cảnh phía máy chủ."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "API dòng lệnh và truyền thông thu phát"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_11_check_your_model_deployment_workflow.txt",
+            "wav_file": "audio/module4/slide_11_check_your_model_deployment_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "course_complete",
+          "slug": "course_complete_ocp_optics_reliability",
+          "title": "Hoàn thành khóa học: Đo từ xa quang học nâng cao",
+          "course_title": "Đo từ xa quang học nâng cao",
+          "thank_you_message": "Cảm ơn bạn đã hoàn thành mô-đun cuối cùng: Firmware, Phần mềm host và Mức độ sẵn sàng triển khai.",
+          "cert_message": "Bạn đã hoàn thành khóa học về độ tin cậy quang học. Giờ đây, bạn có thể giải thích cách đo từ xa nâng cao kết nối các điểm cuối cục bộ và từ xa, số liệu tình trạng liên kết, lịch sử sự kiện, quy trình CDB, vòng đời firmware và API host thành mô hình độ tin cậy dựa trên bằng chứng.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Phạm vi, Tổng quan, Tính năng quản lý phần mềm, Phần mềm host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.txt",
+            "wav_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.wav",
+            "approved": true
+          }
+        }
+      ]
+    }
+  ],
+  "metadata_language_name": "Vietnamese",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "vi-VN",
+    "source_course_sha256": "b8664ca9182f6df3294fb9dc37901611a366e168f8860a8bbd303021764404b2"
+  }
+}

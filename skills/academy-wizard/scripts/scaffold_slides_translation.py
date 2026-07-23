@@ -47,10 +47,20 @@ LOCALE_NARRATION_DEFAULTS = {
         "voice_id": "m151rjrbWXbBqyq56tly",
         "voice_name": "Carla",
     },
+    "vi": {
+        "engine": "elevenlabs",
+        "voice_id": "A5w1fw5x0uXded1LDvZp",
+        "voice_name": "Nhu",
+    },
     "zh-CN": {
         "engine": "elevenlabs",
         "voice_id": "bZtjnyJAFD0Cp3lfNG5g",
         "voice_name": "Lan Chen",
+    },
+    "zh-TW": {
+        "engine": "elevenlabs",
+        "voice_id": "1AKkSX7KMPHIWuz76m0n",
+        "voice_name": "Tiffy",
     },
 }
 
