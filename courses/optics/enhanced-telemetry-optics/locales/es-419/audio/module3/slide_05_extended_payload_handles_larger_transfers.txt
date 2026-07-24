@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+No todas las respuestas encajan cómodamente en la zona local carga útil. La especificación describe páginas extendidas carga útil, de A0h a AFh, para transferencias más grandes. Indica una capacidad de hasta 2048 bytes.
+
+La idea operativa es sencilla. El flujo de trabajo de comandos no cambia, pero el área de datos crece. El software sigue preparando un comando, lo activa, consulta el estado y recupera la respuesta. La diferencia es que parte de la respuesta puede estar en páginas ampliadas de carga útil en lugar de solo en las carga útil locales.
+
+La longitud y los campos de comprobación importan porque el host debe saber cuántos datos pertenecen a la respuesta y si se han recuperado correctamente. Transferencias más grandes hacen que la disciplina sea más importante, no menos.
+La carga útil extendido es especialmente relevante para respuestas y registros más ricos. A medida que la telemetría se vuelve más útil, las respuestas pueden necesitar más espacio. El flujo de trabajo debería escalar sin convertir cada respuesta mayor en un caso especial.

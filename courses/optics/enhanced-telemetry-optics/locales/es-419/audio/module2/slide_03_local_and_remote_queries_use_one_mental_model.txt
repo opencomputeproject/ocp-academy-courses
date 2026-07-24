@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+El software del host no debería necesitar un modelo mental diferente para cada lado de un enlace. Habla con el transceptor local por el cuadrado C. Desde ahí, el comando puede solicitar datos locales, o puede pedir al módulo local que recupere datos de un socio de enlace remoto a través de la interfaz en banda.
+
+Esto es especialmente importante en casos de brotes. El módulo local puede tener más de un socio remoto, por lo que la solicitud debe preservar suficiente contexto de endpoint para devolver los datos correctos.
+
+Para el operador, el beneficio es la consistencia. El host sigue siendo el punto de control. El módulo local compatible se convierte en el puente hacia la visibilidad remota. Ese es el modelo operativo detrás de muchas de las métricas que revisaremos a continuación.
+Este modelo también protege las herramientas de la fragmentación. Si las consultas locales y remotas comparten un flujo de trabajo, software del host puede exponer una experiencia de operador consistente incluso cuando la fuente de datos está en el lado opuesto del enlace.
