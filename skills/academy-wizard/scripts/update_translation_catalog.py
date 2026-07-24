@@ -27,6 +27,19 @@ LOCALE_LABEL_OVERRIDES = {
     "zh-TW": "Chinese (Traditional)",
 }
 
+SERIES_TITLE_OVERRIDES = {
+    "intro-to-ocp": "Intro to OCP",
+    "open-rack-v3": "Open Rack",
+    "optics": "Optics",
+}
+
+SLUG_ACRONYMS = {
+    "ai": "AI",
+    "ocp": "OCP",
+}
+
+SLUG_LOWERCASE_WORDS = {"and", "for", "in", "of", "the", "to"}
+
 
 @dataclass(frozen=True)
 class Translation:
@@ -70,12 +83,90 @@ def load_json(path: Path) -> dict:
 
 
 def course_title(course_root: Path, canonical: dict) -> str:
+    title = ""
     readme = course_root / "README.md"
     if readme.is_file():
         for line in readme.read_text(encoding="utf-8").splitlines():
             if line.startswith("# "):
-                return line[2:].strip()
-    return str(canonical.get("course_title") or course_root.name)
+                title = line[2:].strip()
+                break
+    if not title:
+        title = str(canonical.get("course_title") or course_root.name)
+    return title
+
+
+def repository_layout_series_folders(readme: str) -> set[str]:
+    match = re.search(
+        r"^## Repository layout\s*$\n(.*?)(?=^##\s|\Z)",
+        readme,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    if not match:
+        raise SystemExit("README.md must contain a Repository layout section.")
+    child_counts: dict[str, int] = {}
+    current_folder: str | None = None
+    for line in match.group(1).splitlines():
+        top_level = re.fullmatch(r"  ([A-Za-z0-9][A-Za-z0-9._-]*)/\s*", line)
+        if top_level:
+            current_folder = top_level.group(1)
+            child_counts.setdefault(current_folder, 0)
+            continue
+        if re.fullmatch(r"    [^/\s][^/]*/\s*", line) and current_folder:
+            child_counts[current_folder] += 1
+    return {folder for folder, count in child_counts.items() if count > 1}
+
+
+def title_from_slug(slug: str) -> str:
+    if slug in SERIES_TITLE_OVERRIDES:
+        return SERIES_TITLE_OVERRIDES[slug]
+    words = []
+    for index, token in enumerate(slug.split("-")):
+        lower = token.casefold()
+        if lower in SLUG_ACRONYMS:
+            words.append(SLUG_ACRONYMS[lower])
+        elif index and lower in SLUG_LOWERCASE_WORDS:
+            words.append(lower)
+        else:
+            words.append(token.capitalize())
+    return " ".join(words)
+
+
+def series_titles(repo_root: Path, translations: list[Translation]) -> dict[str, str]:
+    readme = (repo_root / "README.md").read_text(encoding="utf-8")
+    layout_series = repository_layout_series_folders(readme)
+    represented_folders = set()
+    for item in translations:
+        parts = item.course_path.parts
+        if len(parts) >= 3 and parts[0] == "courses":
+            represented_folders.add(parts[1])
+    return {
+        folder: title_from_slug(folder)
+        for folder in represented_folders
+        if folder in layout_series
+    }
+
+
+def add_series_titles(
+    repo_root: Path, translations: list[Translation]
+) -> list[Translation]:
+    prefixes = series_titles(repo_root, translations)
+    result = []
+    for item in translations:
+        parts = item.course_path.parts
+        series = prefixes.get(parts[1]) if len(parts) >= 3 else None
+        title = item.course_title
+        if series and not title.casefold().startswith(f"{series}: ".casefold()):
+            title = f"{series}: {title}"
+        result.append(
+            Translation(
+                course_path=item.course_path,
+                course_title=title,
+                language_label=item.language_label,
+                locale=item.locale,
+                locale_path=item.locale_path,
+            )
+        )
+    return result
 
 
 def language_label(locale: str, localized: dict) -> str:
@@ -114,7 +205,7 @@ def collect_translations(repo_root: Path) -> list[Translation]:
                 locale_path=locale_root.relative_to(repo_root),
             )
         )
-    return translations
+    return add_series_titles(repo_root, translations)
 
 
 def render_table(translations: list[Translation]) -> str:
