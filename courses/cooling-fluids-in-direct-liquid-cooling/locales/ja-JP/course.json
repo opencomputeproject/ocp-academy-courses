@@ -1,0 +1,1855 @@
+{
+  "style": "Slides",
+  "language": "ja-JP",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "b34JylakFZPlGS0BnwyY",
+    "model_id": "eleven_multilingual_v2"
+  },
+  "course_slug": "cooling_fluids_in_direct_liquid_cooling_ja_jp",
+  "course_title": "直接液体冷却 (DLC) の冷却液",
+  "course_subtitle": "単相 TCS 導入のための流動的なガイダンス",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "水性熱伝達流体の使用に関するガイドライン",
+  "target_duration_minutes": 35,
+  "audience_level": "中間",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "cooling_fluids_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "流体"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP アカデミー"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "二相 コールド プレート ベースの水冷ラックで誘電体 熱伝達流体 を使用するためのガイドライン",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "直接液体冷却。プロセッサーや加速器などの発熱コンポーネントの近くで液体が熱を除去する冷却アプローチ。",
+      "reference_label": "OCP 冷却環境",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "冷却液分配ユニット。冷却剤を汲み上げて調整し、TCS と施設システムの間で熱を伝達する装置。",
+      "reference_label": "OCP 冷却環境",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "テクノロジー冷却システム。 CDU とラックまたはサーバー冷却ハードウェアの間の閉じた二次ループ。",
+      "reference_label": "ASHRAE/OCP の使用法",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "施設用水システム。 TCS 境界の外側の施設側ループ。",
+      "reference_label": "OCP 冷却環境",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "25 パーセント プロピレングリコール を含む 熱伝達流体、単相 チップ直接冷却 の冷却に一般的に使用されます。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "qd",
+      "term": "QD",
+      "tooltip": "クイックディスコネクト。ループ内で流体接続の確立と切断を可能にするサービス コネクタ。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "iat",
+      "term": "IAT",
+      "tooltip": "無機添加剤技術。多くの場合、リン酸塩、ケイ酸塩、ホウ酸塩、または関連する無機物 腐食防止剤 が使用されます。"
+    },
+    {
+      "id": "oat",
+      "term": "OAT",
+      "tooltip": "有機酸テクノロジーは、長寿命の腐食保護に関連する冷却剤抑制剤のアプローチです。"
+    },
+    {
+      "id": "hoat",
+      "term": "HOAT",
+      "tooltip": "有機酸と少量の無機化学物質を組み合わせたハイブリッド有機酸テクノロジー。"
+    },
+    {
+      "id": "azole",
+      "term": "アゾール",
+      "tooltip": "腐食防止剤 ファミリーは、銅および黄色の金属を保護するために使用されます。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tss",
+      "term": "TSS",
+      "tooltip": "総浮遊固体。流体中に浮遊する粒子。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tds",
+      "term": "TDS",
+      "tooltip": "総溶解固形分。流体中の溶解物質。導電率に関係します。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cfu",
+      "term": "CFU/ml",
+      "tooltip": "液体中の微生物の数に使用される、ミリリットルあたりのコロニー形成単位。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "icp",
+      "term": "ICP",
+      "tooltip": "誘導結合プラズマ分析。可溶性イオンと金属汚染の特定に使用されます。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "sds",
+      "term": "SDS",
+      "tooltip": "安全データシート。危険性、取り扱い、保管、PPE、および廃棄に関する情報を記載したサプライヤー文書。",
+      "reference_label": "OSHA SDS の概要",
+      "url": "https://www.osha.gov/hazcom/safety-data-sheets"
+    },
+    {
+      "id": "coa",
+      "term": "COA",
+      "tooltip": "分析証明書。製品の品質または製造された流体の適合性を示す製造業者の文書。",
+      "reference_label": "OCP 単相 ガイダンス草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "latent_heat",
+      "term": "潜熱",
+      "tooltip": "沸騰や凝縮などの相変化中に吸収または放出される熱。",
+      "reference_label": "OCP 二相 ガイドライン",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "id": "tdp",
+      "term": "TDP",
+      "definition": "熱設計力",
+      "tooltip": "熱設計力。冷却能力をサイジングする際に使用されるプロセッサーまたはアクセラレーターの電力および熱設計の定格。正確な意味はベンダーによって異なる場合があります。"
+    },
+    {
+      "id": "ashrae",
+      "term": "ASHRAE",
+      "definition": "米国暖房冷凍空調技術者協会",
+      "tooltip": "米国加熱冷凍空調技術者協会。 ASHRAE は、データセンターの温度に関するガイダンスとコースで使用される用語を公開しています。",
+      "reference_label": "ASHRAE",
+      "url": "https://www.ashrae.org/"
+    },
+    {
+      "id": "astm",
+      "term": "ASTM",
+      "definition": "ASTM 国際",
+      "tooltip": "ASTM 国際。材料、流体、腐食試験の試験方法が一般的に参照される標準化団体。",
+      "reference_label": "ASTM 国際",
+      "url": "https://www.astm.org/"
+    },
+    {
+      "id": "qa",
+      "term": "QA",
+      "definition": "品質保証",
+      "tooltip": "品質保証。流体の状態、サプライヤーの証拠、動作データが想定内であることを検証するために使用されるテストと記録管理。"
+    },
+    {
+      "id": "ppe",
+      "term": "PPE",
+      "definition": "個人用保護具",
+      "tooltip": "個人用保護具。 SDS および現地の安全手順から選択された手袋、保護眼鏡、その他の管理。",
+      "reference_label": "OSHA PPE の概要",
+      "url": "https://www.osha.gov/personal-protective-equipment"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_single_phase_fluids_matter",
+      "title": "DLC で 単相 液体が重要な理由",
+      "subtitle": "流動的な境界、緊急性、情報源の規律、そして二相のコントラスト。",
+      "module_badge_text": "モジュール 1",
+      "motion_intro": {
+        "eyebrow": "モジュール 1",
+        "title": "DLC で 単相 液体が重要な理由",
+        "subtitle": "流動的な境界、緊急性、情報源の規律、そして二相のコントラスト。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "直接液体冷却 (DLC) の冷却液",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "subtitle": "単相 TCS 流体の選択、コミッショニング、監視、および操作。",
+          "version_chip": "水性熱伝達流体の使用に関するガイドライン",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "course_overview",
+          "title": "コースのロードマップ",
+          "slug": "course_roadmap",
+          "subtitle": "4 つのモジュールは、アーキテクチャおよび流体ファミリから運用規律に移行します。",
+          "modules_listed": [
+            "DLC で 単相 液体が重要な理由",
+            "単相 流体の選択と指定",
+            "コミッショニング、ループの充填と保護",
+            "監視・保守・運用判断"
+          ],
+          "chips": [
+            {
+              "icon": "時間",
+              "text": "30～40分コース"
+            },
+            {
+              "icon": "レベル",
+              "text": "中級の技術者対象"
+            },
+            {
+              "icon": "範囲",
+              "text": "単相 DLC 液体"
+            }
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_roadmap.txt",
+            "wav_file": "audio/module1/slide_02_course_roadmap.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        },
+        {
+          "type": "content_grid",
+          "title": "AI 熱密度が冷却問題を変える",
+          "slug": "ai_heat_density_changes_the_cooling_problem",
+          "section_label": "なぜ今なのか",
+          "subtitle": "より高いチップパワーとより高密度なラックにより、TCS 流体の信頼性が変動します。",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "上位チップ TDP",
+              "body": "アクセルレーターは、快適な空気のみの限界を超えて熱を押し上げます。",
+              "icon": "1"
+            },
+            {
+              "title": "高密度ラック",
+              "body": "ラックあたりのコンピューティングが増加すると、各ループの決定の結果が増加します。",
+              "icon": "2"
+            },
+            {
+              "title": "残留空気が残る",
+              "body": "多くの場合、液体はほとんどの熱を運びますが、ラック内のすべての荷物が熱を運ぶわけではありません。",
+              "icon": "3"
+            },
+            {
+              "title": "稼働時間のリスクが高まる",
+              "body": "流動的な問題は、コンピューティングの可用性の問題になる可能性があります。",
+              "icon": "4"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
+            "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tdp",
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Where the Fluid Lives",
+          "slug": "where_the_fluid_lives",
+          "section_label": "システム境界",
+          "figure": {
+            "path": "figures/tcs_loop.svg",
+            "alt": "テクノロジー冷却システム と CDU の間のループ",
+            "caption": "このコースは、CDU と IT 機器の間の閉ループ TCS に焦点を当てます。"
+          },
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "15-17"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
+            "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cdu",
+            "fws",
+            "ashrae"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "単相 範囲内の流体ファミリ",
+          "slug": "single_phase_fluid_families_in_scope",
+          "section_label": "範囲",
+          "figure": {
+            "path": "figures/fluid_families.svg",
+            "alt": "処理水とPG25は対象範囲内ですが、二相冷媒は延期されています",
+            "caption": "このコースの実用的なガイダンスは、処理水と PG25 スタイルの 単相 ループを対象としています。"
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
+            "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "オペレーターの 4 つの質問",
+          "slug": "the_four_operator_questions",
+          "section_label": "Operator Framing",
+          "subtitle": "互換性、漏洩、監視、専門知識など、流動的な不安は現実的です。",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "互換性",
+              "body": "液体はすべての 接液材料 を保護しますか?",
+              "icon": "1"
+            },
+            {
+              "title": "漏れ",
+              "body": "液体が現れるはずのない場所に現れた場合はどうなりますか?",
+              "icon": "2"
+            },
+            {
+              "title": "Monitoring",
+              "body": "何をサンプリングし、傾向を分析し、エスカレーションする必要がありますか?",
+              "icon": "3"
+            },
+            {
+              "title": "専門知識",
+              "body": "運用中の化学的決定は誰が行うのでしょうか?",
+              "icon": "4"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
+            "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_two_column",
+          "title": "二相 液体は別のコースです",
+          "slug": "two_phase_fluids_are_a_different_course",
+          "section_label": "Contrast",
+          "subtitle": "単相 水/PG25 ルールと 二相 冷媒ルールを組み合わせないでください。",
+          "bullets": [
+            {
+              "bold_lead": "単相",
+              "text": "水または PG25 は主に 顕熱 として熱を運び、化学的なメンテナンスが必要です。"
+            },
+            {
+              "bold_lead": "二相",
+              "text": "低沸点誘電体冷媒は 潜熱 に依存しており、圧力、蒸気、パージ管理が必要です。"
+            },
+            {
+              "bold_lead": "Common ground",
+              "text": "互換性分野、SDS、COA、記録、および流体とシステムの調整。"
+            }
+          ],
+          "figure": {
+            "path": "figures/single_vs_two_phase.svg",
+            "alt": "単相 の液体は 顕熱 を使用し、二相 の冷媒は 潜熱 を使用します",
+            "caption": "二相 流動的な教育は、二相 DLC コースでご覧いただけます。"
+          },
+          "reference_links": [
+            {
+              "label": "OCP 二相 液体ガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            }
+          ],
+          "term_refs": [
+            "latent_heat",
+            "sds",
+            "coa"
+          ],
+          "source_refs": [
+            {
+              "source": "二相 コールド プレート ベースの水冷ラックで誘電体 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "slides": "6-13"
+            },
+            {
+              "source": "二相 コールド プレート ベースの水冷ラックで誘電体 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "timestamp": "03:12-09:15"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
+            "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "標準とソースマップ",
+          "slug": "standards_and_source_map",
+          "section_label": "ソースの規律",
+          "figure": {
+            "path": "figures/standards_map.svg",
+            "alt": "DLC流体ガイダンスの規格とソースマップ",
+            "caption": "流動的なガイダンスは、地域標準、テスト方法、および製品固有の治療計画の積み重ねです。"
+          },
+          "reference_links": [
+            {
+              "label": "OCP 冷却環境",
+              "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
+            "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "astm"
+          ]
+        },
+        {
+          "type": "takeaways",
+          "title": "モジュール 1 の概要",
+          "slug": "module_1_summary",
+          "items": [
+            "このコースは、単相 TCS の流体、つまり処理水と PG25 に焦点を当てます。",
+            "二相 冷媒の値は 潜熱 に由来するため、別の学習パスが必要です。",
+            "流動的なガイダンスはライフサイクル規律であり、1 回限りの調達ステップではありません。",
+            "互換性、監視、記録が繰り返し取り上げられるテーマです。"
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module1/slide_09_module_1_summary.txt",
+            "wav_file": "audio/module1/slide_09_module_1_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module1/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "体液の境界を確認する",
+          "subtitle": "続行するには 1 回答えてください。正確である必要はなく、再試行できます。",
+          "questions": [
+            {
+              "id": "m1q1",
+              "prompt": "このコースの流動的な範囲を最もよく表しているのはどれですか?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "従来の空冷ラック内のエアフロー管理。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "単相、チップ直接冷却 コールドプレート ループ内の水ベースの 熱伝達流体。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "二相 コールドプレート に使用される低沸点誘電体冷媒。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "建物冷却塔の施設側のみの水処理。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正解です。このコースは、直接液体冷却 の テクノロジー冷却システム で使用される 単相 水ベースの液体に焦点を当てます。",
+              "feedback_incorrect": "対象となるのは、チップ直接冷却 コールドプレート ループで使用される 単相 水ベースの液体であり、設備水や 二相 冷媒ではありません。"
+            },
+            {
+              "id": "m1q2",
+              "prompt": "単相 流体プログラムの操作上の質問に含まれる項目はどれですか?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "A",
+                  "text": "どのような流体の種類と濃度が指定されているか。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "流量ニーズを変更せずに、低沸点冷媒を 単相 冷却剤として実行できるかどうか。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "流体の健全性 を定義する化学的限界とテスト。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "どの材料、フィルター、およびサービス方法が流体に接触するか。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正解です。流体の選択、化学的制御、適合性、濾過、およびサービスの実施はすべてプログラムに含まれます。",
+              "feedback_incorrect": "単相 プログラムは、流体の選択、化学的制限、接液材料、ろ過、およびサービス実践を中心に構築されています。"
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "次へ - 単相 流体の選択と指定",
+          "slug": "up_next_choosing_and_specifying_single_phase_flu",
+          "next_module_number": 2,
+          "next_module_title": "単相 流体の選択と指定",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
+            "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "単相 流体の選択と指定"
+    },
+    {
+      "id": 2,
+      "slug": "choosing_single_phase_fluids",
+      "title": "単相 流体の選択と指定",
+      "subtitle": "水、PG25、化学ウィンドウ、阻害剤、および適合性の証拠。",
+      "module_badge_text": "モジュール 2",
+      "motion_intro": {
+        "eyebrow": "モジュール 2",
+        "title": "単相 流体の選択と指定",
+        "subtitle": "水、PG25、化学ウィンドウ、阻害剤、および適合性の証拠。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "単相 流体の選択と指定",
+          "slug": "choosing_and_specifying_single_phase_fluids",
+          "subtitle": "水、PG25、化学ウィンドウ、抑制剤、および接液材料の適合性。",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
+            "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "あなたが分類する選択の決定",
+          "slug": "selection_decisions_you_will_classify",
+          "subtitle": "このモジュールを完了すると、次のことができるようになります...",
+          "objectives": [
+            "パフォーマンスとメンテナンスのトレードオフを使用して、処理水と PG25 を比較します。",
+            "単相 TCS ループを保護する流体品質目標を特定します。",
+            "腐食抑制と堆積物にとって抑制剤の化学的性質が重要である理由を説明します。",
+            "流体の選択を 接液材料 およびサプライヤーの証拠に関連付けます。"
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
+            "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "水とPG25のトレードオフ",
+          "slug": "water_versus_pg25_tradeoffs",
+          "section_label": "液体の選択",
+          "figure": {
+            "path": "figures/water_pg25_tradeoff.svg",
+            "alt": "処理水とPG25のトレードオフ",
+            "caption": "水は熱性能に有利です。 PG25 は、濃度が維持されている場合の生体静的動作マージンを追加します。"
+          },
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
+            "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "そのまま使用できる 液体の品質目標",
+          "slug": "ready_to_use_fluid_quality_targets",
+          "section_label": "流体ターゲット",
+          "subtitle": "水ベース 熱伝達流体 の選択されたドラフト値。",
+          "columns": [
+            "パラメータ",
+            "ドラフトターゲット",
+            "なぜそれが重要なのか"
+          ],
+          "rows": [
+            [
+              "TSS",
+              "<5ppm",
+              "粒子とフィルターまたはマイクロチャネルのリスク"
+            ],
+            [
+              "TDS",
+              "処理後 <1000 ppm",
+              "溶解固形物と汚染の傾向"
+            ],
+            [
+              "導電率",
+              "25 ℃で <2000 uS/cm",
+              "溶解物質に対する簡単なフィールド信号"
+            ],
+            [
+              "pH",
+              "8.0～10.5",
+              "腐食および処理化学ウィンドウ"
+            ],
+            [
+              "全硬度",
+              "CaCO3 として <30 ppm",
+              "補給水の水質とスケールリスク"
+            ],
+            [
+              "細菌",
+              "<1 を入力 CFU/ml;操作 <100 CFU/ml",
+              "生物付着 コントロール"
+            ],
+            [
+              "アゾール",
+              ">100 ppm または治療計画ごと",
+              "銅とイエローメタルの保護"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "azole"
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 1
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
+            "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "動作温度と化学物質のウィンドウ",
+          "slug": "operating_temperature_and_chemistry_window",
+          "section_label": "動作範囲",
+          "subtitle": "温度は互換性要件の一部です。",
+          "bullets": [
+            {
+              "bold_lead": "代表的な範囲",
+              "text": "TCS ループは、ドラフト ガイダンスでは 49 ℃ 以下と記載されています。"
+            },
+            {
+              "bold_lead": "予想天井",
+              "text": "追加のレビューがなければ、動作温度が 66 ℃を超えることはないと予想されます。"
+            },
+            {
+              "bold_lead": "互換性トリガー",
+              "text": "温度が高い場合は、接液材料 および処理化学の見直しが必要です。"
+            },
+            {
+              "bold_lead": "現地の状況",
+              "text": "最大表面よどみ温度を IT および コールドプレート のサプライヤーに確認してください。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "52-54"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
+            "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "腐食防止剤: IAT、OAT、および HOAT",
+          "slug": "corrosion_inhibitors_iat_oat_and_hoat",
+          "section_label": "阻害剤の化学",
+          "figure": {
+            "path": "figures/inhibitor_timeline.svg",
+            "alt": "水から IAT OAT および HOAT までの冷却剤抑制剤の化学タイムライン",
+            "caption": "抑制剤戦略は、腐食保護、耐用年数、および汚染物質の感受性に影響を与えます。"
+          },
+          "term_refs": [
+            "iat",
+            "oat",
+            "hoat"
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "硬水、スケール、堆積物のリスク",
+          "slug": "hard_water_scale_and_deposit_risk",
+          "section_label": "預金",
+          "figure": {
+            "path": "figures/hard_water_scale.svg",
+            "alt": "硬水イオンはスケールを形成し、マイクロチャネルを脅かす可能性があります",
+            "caption": "カルシウムとマグネシウムは小さな化学信号であり、稼働時間に大きな影響を及ぼします。"
+          },
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
+            "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "接液材料 と互換性",
+          "slug": "wetted_materials_and_compatibility",
+          "section_label": "互換性",
+          "figure": {
+            "path": "figures/wetted_materials.svg",
+            "alt": "接液材料 互換性マップ",
+            "caption": "材料の変更も流体の互換性イベントです。"
+          },
+          "term_refs": [
+            "qd"
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "46-51"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
+            "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "資格とサプライヤーの証拠",
+          "slug": "qualification_and_supplier_evidence",
+          "section_label": "証拠",
+          "subtitle": "仕様は、注文書の発行後に監査できるようにする必要があります。",
+          "bullets": [
+            {
+              "bold_lead": "COA",
+              "text": "製造された製品の品質と適合性を確認します。"
+            },
+            {
+              "bold_lead": "SDS",
+              "text": "取り扱い、危険性、PPE、保管、および廃棄に関する情報を定義します。"
+            },
+            {
+              "bold_lead": "治療計画",
+              "text": "ローカル 運転限界、テスト、および修正措置を設定します。"
+            },
+            {
+              "bold_lead": "適合確認",
+              "text": "流体を 接液材料 および動作条件に結び付けます。"
+            },
+            {
+              "bold_lead": "記録",
+              "text": "ハードウェアのリフレッシュ サイクルを通じて決定を保持します。"
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds",
+            "ppe"
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "31-36"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
+            "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "モジュール 2 のまとめ",
+          "slug": "module_2_summary",
+          "items": [
+            "熱性能だけを重視して流体を選択しないでください。",
+            "流動的なターゲットは事務処理ではなく、操作信号です。",
+            "抑制剤の化学的性質は、腐食、堆積物、およびモニタリングに影響を与えます。",
+            "接液材料 リストと動作温度によって互換性が定義されます。",
+            "COA、SDS、治療計画、および記録により、決定が監査可能になります。"
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module2/slide_10_module_2_summary.txt",
+            "wav_file": "audio/module2/slide_10_module_2_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module2/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "液体の選択を確認してください",
+          "subtitle": "続行するには 1 回答えてください。正確である必要はなく、再試行できます。",
+          "questions": [
+            {
+              "id": "m2q1",
+              "prompt": "処理水の代わりに PG25 を選択する場合の主なトレードオフは何ですか?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "PG25 は常に、同じ 流量 の水よりも多くの熱を奪います。",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "PG25 により、互換性の証拠が不要になります。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "PG25 は凍結防止と防止剤パッケージの利点を追加できますが、水に対する熱容量が減少します。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "PG25 ループは 二相 冷媒システムに変わります。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正解です。 PG25 は有用ですが、熱容量の低下と流体特性の変化を考慮する必要があります。",
+              "feedback_incorrect": "トレードオフは、PG25 の方が自動的に優れているということではありません。これは、水に対する熱容量を低減しながら、凍結防止剤の必要性に役立ちます。"
+            },
+            {
+              "id": "m2q2",
+              "prompt": "流動的な認定パッケージに属する証拠はどれですか?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "一般的な流体ファミリー名のみで、濃度や材料に関するコンテキストはありません。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "そのまま使用できる 濃度、pH、導電率、阻害剤限界などの化学値。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "運転限界、サンプリング、およびメンテナンス対応に関するサプライヤー ガイダンス。",
+                  "correct": true
+                },
+                {
+                  "id": "B",
+                  "text": "接液金属、ポリマー、エラストマー、コネクタの互換性の証拠。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正解です。資格には、化学、材料の適合性、およびサプライヤーの操作ガイダンスが必要です。",
+              "feedback_incorrect": "一般的な流体名だけでは十分ではありません。パッケージには化学目標、正確な材料、およびサプライヤーのガイダンスが必要です。"
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "次へ - コミッショニング、ループの充填と保護",
+          "slug": "up_next_commissioning_filling_and_protecting_the",
+          "next_module_number": 3,
+          "next_module_title": "コミッショニング、ループの充填と保護",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
+            "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "コミッショニング、ループの充填と保護"
+    },
+    {
+      "id": 3,
+      "slug": "commissioning_filling_protecting_loop",
+      "title": "コミッショニング、ループの充填と保護",
+      "subtitle": "保守可能な設計、互換性のある充填方法、濾過、起動記録、および 微生物管理。",
+      "module_badge_text": "モジュール 3",
+      "motion_intro": {
+        "eyebrow": "モジュール 3",
+        "title": "コミッショニング、ループの充填と保護",
+        "subtitle": "保守可能な設計、互換性のある充填方法、濾過、起動記録、および 微生物管理。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "コミッショニング、ループの充填と保護",
+          "slug": "commissioning_filling_and_protecting_the_loop",
+          "subtitle": "保守可能な設計、漏れチェック、洗浄、充填、濾過、および 微生物管理。",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
+            "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "コミッショニング 適用する実践方法",
+          "slug": "commissioning_practices_you_will_apply",
+          "subtitle": "このモジュールを完了すると、次のことができるようになります...",
+          "objectives": [
+            "スムーズなサービスを可能にする設計上の特徴について説明します。",
+            "新規および既存のシステムのクリーンな起動と充填の実践について説明します。",
+            "コールドプレート マイクロチャネルを保護する濾過の選択肢を特定します。",
+            "微生物管理の実践と殺生物剤の注意事項を認識します。"
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
+            "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "保守性を考慮した機械設計",
+          "slug": "mechanical_design_for_serviceability",
+          "section_label": "デザイン",
+          "subtitle": "液体プログラムでは、サンプリング、追加、排出、分離するために物理的なアクセスが必要です。",
+          "bullets": [
+            {
+              "bold_lead": "排水および充填アクセス",
+              "text": "ポートは液体の交換と制御された追加をサポートする必要があります。"
+            },
+            {
+              "bold_lead": "薬液注入",
+              "text": "このループにより、サプライヤー主導の化学調整が可能になる必要があります。"
+            },
+            {
+              "bold_lead": "完全な排水",
+              "text": "汚染物質や微生物集団が閉じ込められるデッドレッグを回避します。"
+            },
+            {
+              "bold_lead": "互換性のあるサービス ハードウェア",
+              "text": "フィーダー、リザーバー、ブラダー、シールは接液部材料リストに従う必要があります。"
+            },
+            {
+              "bold_lead": "運用の継続性",
+              "text": "ブリードアンドフィード構成により、ループがオンラインのままでもサービスをサポートできます。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "60-68"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
+            "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "新しいシステムのクリーニングとフラッシュのシーケンス",
+          "slug": "new_system_cleaning_and_flush_sequence",
+          "section_label": "新しいシステム",
+          "figure": {
+            "path": "figures/commissioning_sequence.mp4",
+            "media_type": "video",
+            "poster": "figures/commissioning_sequence_poster.png",
+            "alt": "コールドプレート を分離して新しい テクノロジー冷却システム をフラッシュし、コールドプレート を接続して再度フラッシュし、ベースライン をサンプリングして記録する前に最終流体で満たす様子を示すサイレント アニメーション。",
+            "caption": "段階的なフラッシュにより、最終的な流体充填と ベースライン サンプルの前に、建築物の破片が コールドプレート マイクロチャネルから遠ざけられます。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "85-98"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
+            "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "ループに入れてはいけないもの",
+          "slug": "what_not_to_put_in_the_loop",
+          "section_label": "回避",
+          "subtitle": "管理されていない洗浄剤や添加剤は、腐食、残留物、または堆積物のリスクにつながる可能性があります。",
+          "bullets": [
+            {
+              "bold_lead": "監視のない清掃員を避ける",
+              "text": "洗剤と化学クリーナーについては、供給業者の指導が必要です。"
+            },
+            {
+              "bold_lead": "残留ケイ酸塩を避ける",
+              "text": "ケイ酸塩はマイクロチャネル内で沈殿し、堆積する可能性があります。"
+            },
+            {
+              "bold_lead": "地域の退院規則を尊重する",
+              "text": "排水する前に、自治体または規制の要件を確認してください。"
+            },
+            {
+              "bold_lead": "最終流体を保護する",
+              "text": "承認された治療計画以外の添加物を導入しないでください。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "106-110"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
+            "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "スタートアップ サンプリングと ベースライン レコード",
+          "slug": "startup_sampling_and_baseline_records",
+          "section_label": "ベースライン",
+          "subtitle": "最初のクリーンなサンプルは、将来の傾向を解釈するための基準点となります。",
+          "bullets": [
+            {
+              "bold_lead": "循環する",
+              "text": "ループを実行し、最終起動時に漏れがないか確認します。"
+            },
+            {
+              "bold_lead": "エア抜き",
+              "text": "ベースライン サンプリングの前に、必要に応じて閉じ込められた空気を除去してください。"
+            },
+            {
+              "bold_lead": "各ループのサンプル",
+              "text": "各 TCS ループから代表的な流体をキャプチャします。"
+            },
+            {
+              "bold_lead": "明確にラベルを付ける",
+              "text": "レコード単位、流体のアイデンティティ、日付、および起動条件。"
+            },
+            {
+              "bold_lead": "記録を残しておく",
+              "text": "流体の寿命に関するベースラインの証拠を保持します。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "111-113"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
+            "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "濾過戦略",
+          "slug": "filtration_strategy",
+          "section_label": "粒子と生物汚染物質",
+          "figure": {
+            "path": "figures/filtration_strategy.svg",
+            "alt": "インラインおよびサイドストリーム濾過戦略",
+            "caption": "フィルターは、コールドプレート マイクロチャネルよりも保守が簡単である必要があります。"
+          },
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "61-66"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module3/slide_07_filtration_strategy.txt",
+            "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "微生物管理 および 生物付着",
+          "slug": "microbial_control_and_biofouling",
+          "section_label": "生物学",
+          "subtitle": "微生物管理 は熱伝達を保護しますが、殺生物剤の使用は管理し続ける必要があります。",
+          "bullets": [
+            {
+              "bold_lead": "ターゲット",
+              "text": "運用上の総生菌数を 100 未満に保つ CFU/ml。"
+            },
+            {
+              "bold_lead": "アクションレベル",
+              "text": "1000 CFU/ml を超える場合は殺生物処理を強く推奨します。"
+            },
+            {
+              "bold_lead": "殺生剤の種類",
+              "text": "非酸化性殺生物剤はラベルごとに必要な場合にのみ使用してください。"
+            },
+            {
+              "bold_lead": "ハロゲンを避ける",
+              "text": "塩素および類似の化学物質は腐食の危険性を引き起こす可能性があります。"
+            },
+            {
+              "bold_lead": "蓄積に注意する",
+              "text": "頻繁に添加すると、有機物や汚染物質が蓄積する可能性があります。"
+            }
+          ],
+          "term_refs": [
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "116-118"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
+            "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "モジュール 3 のまとめ",
+          "slug": "module_3_summary",
+          "items": [
+            "流体サービスがクリーンかつ安全に実行できるようにループを設計します。",
+            "リークチェック液と洗浄薬品は最終システムと互換性がある必要があります。",
+            "スタートアップ サンプリングでは、以降のすべての監視のために ベースライン が作成されます。",
+            "サイドストリームろ過と 微生物管理 が コールドプレート マイクロチャネルを保護します。",
+            "Project Deschutes は、有用なフィルター設計の例を提供しています。"
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module3/slide_09_module_3_summary.txt",
+            "wav_file": "audio/module3/slide_09_module_3_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module3/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "コミッショニング の規律を確認してください",
+          "subtitle": "続行するには 1 回答えてください。正確である必要はなく、再試行できます。",
+          "questions": [
+            {
+              "id": "m3q1",
+              "prompt": "新しいシステムのクリーンな起動を最もよくサポートするシーケンスはどれですか?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "コミッショニング 時間を節約するために、利用可能な冷却剤を現場の水と混ぜてください。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "まずシステムに水を充填し、数か月後に洗浄が必要かどうかを判断します。",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "出荷時は液体が新品であったため、サンプリングをスキップします。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "ループを清掃してフラッシュし、清浄度を確認し、承認された液体を充填して、ベースライン 記録を確立します。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正解です。スタートアップは、動作前にループを保護し、将来の傾向レビューのために ベースライン を作成する必要があります。",
+              "feedback_incorrect": "コミッショニング は、充填前に洗浄およびフラッシュし、承認された液体を使用し、通常の操作の前に ベースライン 記録を確立する必要があります。"
+            },
+            {
+              "id": "m3q2",
+              "prompt": "サービス中のループの保護に役立つのはどれですか?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "充填、フラッシュ、漏れ対応、サンプルの記録を保管します。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "量が少なくなったときは、必ず未確認の水または別の液体を補充してください。",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "殺生物剤やその他の処理を追加する前に、サプライヤーのガイダンスに従ってください。",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "互換性のあるフィルターを使用し、ストレーナーまたはフィルターには保守可能な場所を使用してください。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正解です。保守性、記録、濾過、管理された処理により、液体とハードウェアが保護されます。",
+              "feedback_incorrect": "気軽に補充しないでください。互換性のあるフィルタリング、記録、サプライヤー主導の処理決定によりループを保護します。"
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "次へ - 流体の健全性 の監視と操作",
+          "slug": "up_next_monitoring_and_operating_for_fluid_healt",
+          "next_module_number": 4,
+          "next_module_title": "監視・保守・運用判断",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
+            "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "監視・保守・運用判断"
+    },
+    {
+      "id": 4,
+      "slug": "monitoring_maintenance_operational_judgment",
+      "title": "監視・保守・運用判断",
+      "subtitle": "定期テスト、ラボ QA、傾向の解釈、調整、混合、耐用年数、および文書化。",
+      "module_badge_text": "モジュール 4",
+      "motion_intro": {
+        "eyebrow": "モジュール 4",
+        "title": "監視・保守・運用判断",
+        "subtitle": "定期テスト、ラボ QA、傾向の解釈、調整、混合、耐用年数、および文書化。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "流体の健全性の監視と操作",
+          "slug": "monitoring_and_operating_for_fluid_health",
+          "subtitle": "テストスケジュール、傾向の解釈、調整、混合、および文書化。",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
+            "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "あなたが下す運用上の判断",
+          "slug": "operating_judgments_you_will_make",
+          "subtitle": "このモジュールを完了すると、次のことができるようになります...",
+          "objectives": [
+            "定期的および実験室での体液の健康状態の検査を特定します。",
+            "ベースライン とトレンド ロジックを使用して結果を解釈します。",
+            "管理された調整と投与方法について説明します。",
+            "混合流体が監視と修正を複雑にする理由を説明してください。",
+            "更新サイクルとトラブルシューティングをサポートする記録を維持します。"
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
+            "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "定期的な監視スケジュール",
+          "slug": "routine_monitoring_schedule",
+          "section_label": "ケイデンス",
+          "subtitle": "パラメータが仕様から外れると、監視計画をより強化する必要があります。",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "スタートアップ",
+              "body": "最初の充填と循環の直後にテストしてください。",
+              "icon": "1"
+            },
+            {
+              "title": "四半期ごと",
+              "body": "通常の運用中に定期的なオンサイトチェックを実行します。",
+              "icon": "2"
+            },
+            {
+              "title": "仕様外の場合は毎週",
+              "body": "パラメータが範囲に戻るまで周波数を上げます。",
+              "icon": "3"
+            },
+            {
+              "title": "研究室QA",
+              "body": "1 年間は四半期ごと、安定している場合は 6 か月ごと。",
+              "icon": "4"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "120-125"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
+            "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "qa"
+          ]
+        },
+        {
+          "type": "content_table",
+          "title": "オンサイトテストセット",
+          "slug": "on_site_test_set",
+          "section_label": "フィールドチェック",
+          "subtitle": "定期テストは、エスカレーションとラボのフォローアップを導く迅速なシグナルです。",
+          "columns": [
+            "現地確認",
+            "信号",
+            "典型的なアクション"
+          ],
+          "rows": [
+            [
+              "導電率",
+              "溶解物または汚染",
+              "ベースライン と上昇率を比較する"
+            ],
+            [
+              "pH",
+              "化学ウィンドウ",
+              "治療計画内で確認する"
+            ],
+            [
+              "硬度",
+              "補給水または浸出のリスク",
+              "Ca/Mgの供給源を調査する"
+            ],
+            [
+              "総生菌数",
+              "微生物の活動",
+              "再検査またはサプライヤーのガイダンスに従って治療する"
+            ],
+            [
+              "アゾール",
+              "銅の保護",
+              "トレンドの枯渇とアクションのしきい値"
+            ],
+            [
+              "濁度・外観",
+              "粒子または透明度の変化",
+              "フィルターとサンプル履歴を検査する"
+            ],
+            [
+              "フィルターローディング",
+              "粒子または生物付着物の負担",
+              "高ければ交換または調査する"
+            ]
+          ],
+          "term_refs": [
+            "azole",
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 4
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module4/slide_04_on_site_test_set.txt",
+            "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "研究室 QA および ICP 分析",
+          "slug": "laboratory_qa_and_icp_analysis",
+          "section_label": "ラボビュー",
+          "subtitle": "独立した分析は、流体のドリフト、汚染、腐食副産物を区別するのに役立ちます。",
+          "columns": [
+            "ラボチェック",
+            "それが何を明らかにするのに役立つのか",
+            "なぜそれが重要なのか"
+          ],
+          "rows": [
+            [
+              "TSS および TDS",
+              "粒子と溶解物質",
+              "清潔さと汚染を追跡します"
+            ],
+            [
+              "濾過済み/濾過されていない金属",
+              "銅、鉄、亜鉛、クロム、ニッケル",
+              "腐食または材料の放出を示します"
+            ],
+            [
+              "ICP 分析",
+              "元素プロファイル",
+              "時間の経過とともに水質が変化することを記録する"
+            ],
+            [
+              "濁度",
+              "液体の透明度と粒子",
+              "フィルターと入金の決定をサポート"
+            ],
+            [
+              "腐食クーポンを使用した場合",
+              "補足的な腐食の証拠",
+              "コールドプレート ジオメトリを完全に表現していない可能性があります"
+            ],
+            [
+              "書面による評価",
+              "技術的な解釈",
+              "データを行動指針に変える"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "icp"
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 5
+            },
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraph": "126"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
+            "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "数字だけでなくトレンドを読む",
+          "slug": "reading_the_trend_not_just_the_number",
+          "section_label": "トレンドロジック",
+          "figure": {
+            "path": "figures/monitoring_framework.svg",
+            "alt": "流体の健全性 システムの健全性と 流体の健全性 を分離する監視フレームワーク",
+            "caption": "ベースライン とトレンドの方向を使用して、システムの健全性を 流体の健全性 と区別します。"
+          },
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "121-128"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
+            "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "調整とサプライヤー主導の投与",
+          "slug": "adjustments_and_supplier_guided_dosing",
+          "section_label": "是正措置",
+          "subtitle": "投与量を制御するには、既知の量、供給業者の指導、循環、再検査、および記録が必要です。",
+          "bullets": [
+            {
+              "bold_lead": "既知のボリューム",
+              "text": "ループボリュームがなければ投与量を安全に計算することはできません。"
+            },
+            {
+              "bold_lead": "サプライヤーへのガイダンス",
+              "text": "治療計画と技術サポートに従ってのみ調整してください。"
+            },
+            {
+              "bold_lead": "循環する",
+              "text": "フォローアップサンプリングの前に 30 分間混合します。"
+            },
+            {
+              "bold_lead": "再テスト",
+              "text": "調整結果が範囲内に収まったことを確認します。"
+            },
+            {
+              "bold_lead": "文書",
+              "text": "記録日、システム、添加剤の種類、量、およびレポート。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "129-134"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
+            "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "流体の混合と相互運用性",
+          "slug": "fluid_mixing_and_interoperability",
+          "section_label": "相互運用性",
+          "figure": {
+            "path": "figures/mixing_decision.svg",
+            "alt": "流体混合判定ロジック",
+            "caption": "混合は、流体特有の証拠を必要とする制御されたイベントとして扱うのが最適です。"
+          },
+          "term_refs": [
+            "iat",
+            "oat"
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
+            "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "文書と提出物",
+          "slug": "documentation_and_submittals",
+          "section_label": "記録",
+          "subtitle": "液体、材料、またはサンプルの解釈が変更された場合は、それを記録してください。",
+          "bullets": [
+            {
+              "bold_lead": "流体のアイデンティティ",
+              "text": "ソース、COA、SDS、および各システムの分析。"
+            },
+            {
+              "bold_lead": "システムボリューム",
+              "text": "阻害剤または添加剤の投与量を計算するために必要です。"
+            },
+            {
+              "bold_lead": "調整履歴",
+              "text": "日付、量、添加剤の種類、分析レポート。"
+            },
+            {
+              "bold_lead": "建設資材",
+              "text": "金属、エラストマー、プラスチック、フィルター、シール、および代替品。"
+            },
+            {
+              "bold_lead": "治療計画",
+              "text": "動作パラメータ、テストスケジュール、製品ドキュメント。"
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds"
+          ],
+          "source_refs": [
+            {
+              "source": "単相 コールド プレート ベースの水冷ラックで水ベース 熱伝達流体 を使用するためのガイドライン",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "143-151"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
+            "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "モジュール 4 のまとめ",
+          "slug": "module_4_summary",
+          "items": [
+            "日常的なチェックとラボ QA を併用してください。",
+            "個別の値だけではなく、ベースライン に対する傾向を解釈します。",
+            "化学的調整は、サプライヤーが指導する管理された手順に従ってのみ行ってください。",
+            "流体の混合を監視の複雑さを変化させるイベントとして扱います。",
+            "将来のオペレーターが信頼できる記録を維持します。"
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module4/slide_10_module_4_summary.txt",
+            "wav_file": "audio/module4/slide_10_module_4_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module4/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "操作上の判断を確認してください",
+          "subtitle": "続行するには 1 回答えてください。正確である必要はなく、再試行できます。",
+          "questions": [
+            {
+              "id": "m4q1",
+              "prompt": "日常的な体液健康状態の結果を解釈する最良の方法は何ですか?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "メソッド、履歴、操作コンテキストを確認せずに、単一の数値に反応します。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "アクションを決定する前に、ベースライン、制限、および最近の変更に対して結果の傾向を調べます。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "値が変化した場合はすぐに化学物質を投与してください。",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "現場のテストストリップが許容できる場合は、検査結果を無視してください。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正解です。動作の判断は、傾向、ベースライン、限界値、テスト方法、およびコンテキストに基づいて行われます。",
+              "feedback_incorrect": "単一の値では十分ではありません。行動する前に、傾向、ベースライン、限界値、テスト方法、および操作コンテキストを使用してください。"
+            },
+            {
+              "id": "m4q2",
+              "prompt": "液体を混合したり、化学的調整を行ったりする前に何をすべきですか?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "ラボまたはオンサイトの結果を使用して、調整が機能したかどうかを確認します。",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "関係する正確な流体と材料については、サプライヤーのガイダンスと適合性を確認してください。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "すべての抑制された水ベースの流体は交換可能であると仮定します。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "変更、日付、液体バッチ、濃度、およびアクションの理由を文書化します。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正解です。混合と投与には、サプライヤーの指導、文書化、およびフォローアップ検証が必要です。",
+              "feedback_incorrect": "互換性を想定しないでください。互換性を確認し、アクションを文書化して、結果を検証します。"
+            }
+          ]
+        },
+        {
+          "type": "course_complete",
+          "title": "直接液体冷却 (DLC) の冷却液",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "course_title": "直接液体冷却 (DLC) の冷却液",
+          "cert_message": "単相 DLC 液体コースを完了しました。これらの概念を適用する場合は、OCP ガイダンス、サプライヤー治療計画、および現地の業務記録を併用してください。",
+          "thank_you_message": "モジュール 4: モニタリング、メンテナンス、運用判断を完了していただきありがとうございます。",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata_language_name": "Japanese",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "ja-JP",
+    "source_course_sha256": "085233653e612c3ab97b2e834f2fbcf2562a736cc7ec71a13539cd84175559cb"
+  },
+  "ui_labels": {
+    "not_started": "未開始",
+    "completed": "完了",
+    "module": "モジュール",
+    "module_complete": "モジュール {module} 完了",
+    "course_complete": "コース完了",
+    "course_overview": "コース概要",
+    "learning_objectives": "学習目標",
+    "key_takeaways": "要点",
+    "knowledge_check": "理解度チェック",
+    "submit": "送信",
+    "retry": "再試行",
+    "quiz_gate_note": "続行するには、各設問を一度送信してください。正誤にかかわらず先へ進め、再試行もできます。",
+    "quiz_gate_warning": "次へ進む前に、各設問を一度送信してください。",
+    "select_answer": "1つ以上の回答を選択してから送信してください。",
+    "correct": "正解です。",
+    "review_feedback": "フィードバックを確認してから再試行してください。",
+    "narration_hint": "ナレーションは自動的に始まります。→キーまたはスペースキーで次へ進みます。",
+    "theme": "テーマ",
+    "toggle_dark_mode": "ダークモードを切り替える",
+    "previous_slide": "前のスライド",
+    "next_slide": "次のスライド",
+    "play_pause_narration": "ナレーションを再生または一時停止",
+    "playback_speed": "再生速度",
+    "playback_speed_slider": "再生速度を調整",
+    "speed": "速度",
+    "toggle_fullscreen": "全画面表示を切り替える",
+    "fullscreen": "全画面表示",
+    "video_controls": "動画コントロール",
+    "play_video": "動画を再生",
+    "pause_video": "動画を一時停止",
+    "zoom_video": "動画を拡大",
+    "video_figure": "動画図",
+    "zoom_figure": "図を拡大",
+    "enlarged_figure": "拡大図",
+    "lightbox_close_hint": "外側をクリックするかEscキーを押して閉じます。",
+    "opens_new_tab": "新しいタブで開きます",
+    "learner_resource": "学習リソース",
+    "open": "開く",
+    "learn_more": "詳しく見る",
+    "reference": "参考資料",
+    "course_intro": "OCP Academy コースイントロ",
+    "skip_intro": "イントロをスキップ",
+    "share_feedback": "フィードバックを送る",
+    "survey_body": "数分お時間をいただき、改善にご協力いただけますか。開発チームへのフィードバックは、このコースと今後のコースの改善に活用します。回答者の中から抽選で記念品をお送りします。",
+    "default_module_thanks": "モジュール {module}「{title}」を修了していただき、ありがとうございます。",
+    "default_course_wrap": "{course}の全モジュールを修了しました。このコースで学んだ内容が実務に役立つことを願っています。",
+    "up_next": "次のコース",
+    "go_to_module": "モジュール {module}へ進む"
+  },
+  "index_footer_line": "OCP ESUN · 仕様 v1.0 · 日本語版"
+}

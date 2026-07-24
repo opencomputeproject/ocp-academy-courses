@@ -17,6 +17,24 @@ Course-owned SVG, PNG, and MP4 teaching assets are stored in `figures/`. Editabl
 | 3 | Commissioning, Filling, and Protecting the Loop | Serviceable design, compatible fill practices, filtration, startup records, and microbial control. |
 | 4 | Monitoring, Maintenance, and Operational Judgment | Routine tests, lab QA, trend interpretation, adjustments, mixing, useful life, and documentation. |
 
+## Language editions
+
+English is the canonical source in this folder. Self-contained translated
+authoring sources are available under `locales/` for:
+
+- Korean (`ko-KR`)
+- Japanese (`ja-JP`)
+- Simplified Chinese (`zh-CN`)
+- Traditional Chinese (`zh-TW`)
+- Vietnamese (`vi-VN`)
+- Brazilian Portuguese (`pt-BR`)
+- Latin American Spanish (`es-419`)
+
+Each edition preserves the English slide structure, technical facts, quiz
+correctness, and reference URLs while localizing learner-facing text, narration
+scripts, figures, the commissioning animation, controls, and accessibility
+labels. Locale metadata records the approved ElevenLabs voice and model.
+
 ## Build
 
 From the repository root:
@@ -24,6 +42,19 @@ From the repository root:
 ```bash
 export ELEVENLABS_API_KEY="<your key>"
 ./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling
+```
+
+Build any translated edition independently:
+
+```bash
+export ELEVENLABS_API_KEY="<your key>"
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling/locales/ko-KR
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling/locales/ja-JP
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling/locales/zh-CN
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling/locales/zh-TW
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling/locales/vi-VN
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling/locales/pt-BR
+./scripts/build-course.sh cooling-fluids-in-direct-liquid-cooling/locales/es-419
 ```
 
 The finished SCORM folder and LMS zip are created under `build/`.

@@ -1,0 +1,1856 @@
+{
+  "style": "Slides",
+  "language": "ko-KR",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+    "voice_name": "Chris - Warm and clear",
+    "model_id": "eleven_multilingual_v2"
+  },
+  "course_slug": "cooling_fluids_in_direct_liquid_cooling_ko_kr",
+  "course_title": "직접 액체 냉각 (DLC)의 냉각 유체",
+  "course_subtitle": "단상 TCS 칩 직접 냉각 배포에 대한 유연한 지침",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "수성 열전달 유체 사용 지침",
+  "target_duration_minutes": 35,
+  "audience_level": "중급",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "cooling_fluids_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "유체"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP 아카데미"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "2상 냉각판 기반 액체 냉각 랙에서 유전체 열전달 유체 사용에 대한 지침",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "직접 액체 냉각. 액체가 프로세서나 가속기와 같은 발열 구성 요소 근처에서 열을 제거하는 냉각 방식입니다.",
+      "reference_label": "OCP 냉각 환경",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "냉각수 분배 장치. 냉각수를 펌핑 및 조절하고 TCS와 시설 시스템 간에 열을 전달하는 장비입니다.",
+      "reference_label": "OCP 냉각 환경",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "기술 냉각 시스템. CDU과 랙 또는 서버 냉각 하드웨어 사이의 닫힌 보조 루프입니다.",
+      "reference_label": "ASHRAE/OCP 사용법",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "설비 용수 시스템. TCS 경계 외부의 시설 측 루프입니다.",
+      "reference_label": "OCP 냉각 환경",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "25% 프로필렌글리콜를 포함하는 열전달 유체, 일반적으로 단상 칩 직접 냉각 냉각에 사용됩니다.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "qd",
+      "term": "QD",
+      "tooltip": "퀵 디스커넥트. 루프에서 유체 연결을 만들고 끊을 수 있는 서비스 커넥터입니다.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "iat",
+      "term": "IAT",
+      "tooltip": "인산염, 규산염, 붕산염 또는 관련 무기물부식 억제제을 사용하는 무기 첨가 기술."
+    },
+    {
+      "id": "oat",
+      "term": "OAT",
+      "tooltip": "긴 수명의 부식 방지와 관련된 냉각수 억제제 접근 방식인 유기산 기술."
+    },
+    {
+      "id": "hoat",
+      "term": "HOAT",
+      "tooltip": "유기산과 소량의 무기화학을 결합한 하이브리드 유기산 기술."
+    },
+    {
+      "id": "azole",
+      "term": "아졸레",
+      "tooltip": "구리 및 황색 금속을 보호하는 데 사용되는 부식 억제제 제품군입니다.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tss",
+      "term": "TSS",
+      "tooltip": "총 부유 물질. 유체에 부유하는 입자.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tds",
+      "term": "TDS",
+      "tooltip": "총 용존 고형물. 전도성과 관련된 유체에 용해된 물질입니다.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cfu",
+      "term": "CFU/ml",
+      "tooltip": "액체 내 미생물 수에 사용되는 밀리리터당 집락 형성 단위입니다.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "icp",
+      "term": "ICP",
+      "tooltip": "유도 결합 플라즈마 분석은 수용성 이온과 금속 오염을 식별하는 데 사용됩니다.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "sds",
+      "term": "SDS",
+      "tooltip": "안전보건자료. 위험, 취급, 보관, PPE 및 폐기 정보가 포함된 공급업체 문서입니다.",
+      "reference_label": "OSHA SDS 개요",
+      "url": "https://www.osha.gov/hazcom/safety-data-sheets"
+    },
+    {
+      "id": "coa",
+      "term": "COA",
+      "tooltip": "분석 증명서. 제조된 유체에 대한 제품 품질 또는 적합성을 보여주는 제조업체 문서입니다.",
+      "reference_label": "OCP 단상 지침 초안",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "latent_heat",
+      "term": "잠열",
+      "tooltip": "비등 또는 응축과 같은 상 변화 중에 흡수되거나 방출되는 열입니다.",
+      "reference_label": "OCP 2상 지침",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "id": "tdp",
+      "term": "TDP",
+      "definition": "열 설계 전력",
+      "tooltip": "열 설계 능력. 냉각 용량을 결정할 때 사용되는 프로세서 또는 가속기 전력 및 열 설계 등급입니다. 정확한 의미는 공급업체에 따라 다를 수 있습니다."
+    },
+    {
+      "id": "ashrae",
+      "term": "ASHRAE",
+      "definition": "미국 난방, 냉동 및 공조 엔지니어 협회",
+      "tooltip": "미국 난방, 냉동 및 공조 엔지니어 협회. ASHRAE은 과정에서 사용되는 데이터 센터 열 지침 및 용어를 게시합니다.",
+      "reference_label": "ASHRAE",
+      "url": "https://www.ashrae.org/"
+    },
+    {
+      "id": "astm",
+      "term": "ASTM",
+      "definition": "ASTM 국제",
+      "tooltip": "ASTM 국제. 재료, 유체 및 부식 테스트에 대해 일반적으로 참조되는 테스트 방법을 갖춘 표준 기관입니다.",
+      "reference_label": "ASTM 국제",
+      "url": "https://www.astm.org/"
+    },
+    {
+      "id": "qa",
+      "term": "QA",
+      "definition": "품질 보증",
+      "tooltip": "품질 보증. 유체 상태, 공급업체 증거, 운영 데이터가 기대치에 부합하는지 확인하는 데 사용되는 테스트 및 기록 보관입니다."
+    },
+    {
+      "id": "ppe",
+      "term": "PPE",
+      "definition": "개인 보호 장비",
+      "tooltip": "개인 보호 장비. SDS 및 현지 안전 절차에서 선택한 장갑, 눈 보호구 및 기타 통제 장치.",
+      "reference_label": "OSHA PPE 개요",
+      "url": "https://www.osha.gov/personal-protective-equipment"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_single_phase_fluids_matter",
+      "title": "단상 DLC에서 유체가 중요한 이유",
+      "subtitle": "유연한 경계, 긴급성, 소스 규율 및 2상 대비.",
+      "module_badge_text": "모듈 1",
+      "motion_intro": {
+        "eyebrow": "모듈 1",
+        "title": "단상 DLC에서 유체가 중요한 이유",
+        "subtitle": "유연한 경계, 긴급성, 소스 규율 및 2상 대비."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "직접 액체 냉각 (DLC)의 냉각 유체",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "subtitle": "단상 TCS 유체 선택, 시운전, 모니터링 및 작동.",
+          "version_chip": "수성 열전달 유체 사용 지침",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "course_overview",
+          "title": "코스 로드맵",
+          "slug": "course_roadmap",
+          "subtitle": "4개의 모듈은 아키텍처 및 유동 제품군에서 운영 분야로 이동합니다.",
+          "modules_listed": [
+            "단상 DLC에서 유체가 중요한 이유",
+            "단상 유체 선택 및 지정",
+            "시운전, 루프 채우기 및 보호",
+            "모니터링, 유지 관리 및 운영 판단"
+          ],
+          "chips": [
+            {
+              "icon": "시간",
+              "text": "30~40분 코스"
+            },
+            {
+              "icon": "레벨",
+              "text": "중급 기술 대상"
+            },
+            {
+              "icon": "범위",
+              "text": "단상 DLC 유체"
+            }
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_roadmap.txt",
+            "wav_file": "audio/module1/slide_02_course_roadmap.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        },
+        {
+          "type": "content_grid",
+          "title": "AI 열 밀도로 인해 냉각 문제가 변경됨",
+          "slug": "ai_heat_density_changes_the_cooling_problem",
+          "section_label": "왜 지금인가?",
+          "subtitle": "더 높은 칩 성능과 더 밀도가 높은 랙으로 인해 TCS 유동이 신뢰성 변수가 됩니다.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "더 높은 칩 TDP",
+              "body": "가속기는 편안한 공기 전용 한계를 넘어 열을 밀어냅니다.",
+              "icon": "1"
+            },
+            {
+              "title": "밀도가 높은 랙",
+              "body": "랙당 컴퓨팅이 많을수록 각 루프 결정의 결과가 높아집니다.",
+              "icon": "2"
+            },
+            {
+              "title": "잔여 공기가 남아 있음",
+              "body": "액체는 대부분의 열을 운반하는 경우가 많지만 랙의 모든 부하를 운반하는 것은 아닙니다.",
+              "icon": "3"
+            },
+            {
+              "title": "가동 시간 위험 증가",
+              "body": "유체 문제는 컴퓨팅 가용성 문제가 될 수 있습니다.",
+              "icon": "4"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
+            "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tdp",
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "유체가 사는 곳",
+          "slug": "where_the_fluid_lives",
+          "section_label": "시스템 경계",
+          "figure": {
+            "path": "figures/tcs_loop.svg",
+            "alt": "기술 냉각 시스템 CDU와 콜드 플레이트 사이의 루프",
+            "caption": "이 과정은 CDU와 IT 장비 사이의 닫힌 TCS 루프에 중점을 둡니다."
+          },
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "15-17"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
+            "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cdu",
+            "fws",
+            "ashrae"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "단상 범위 내 유체 계열",
+          "slug": "single_phase_fluid_families_in_scope",
+          "section_label": "범위",
+          "figure": {
+            "path": "figures/fluid_families.svg",
+            "alt": "처리된 물과 PG25는 범위에 포함되고 2상 냉매는 연기됩니다.",
+            "caption": "이 과정의 실행 가능한 지침은 처리된 물과 PG25 스타일 단상 루프에 대한 것입니다."
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
+            "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "네 가지 운영자 질문",
+          "slug": "the_four_operator_questions",
+          "section_label": "연산자 프레이밍",
+          "subtitle": "유체 불안은 실용적입니다: 호환성, 누출, 모니터링 및 전문 지식.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "호환성",
+              "body": "유체가 접액 재료마다 보호합니까?",
+              "icon": "1"
+            },
+            {
+              "title": "누출",
+              "body": "액체가 있어서는 안 되는 곳에 액체가 나타나면 어떻게 됩니까?",
+              "icon": "2"
+            },
+            {
+              "title": "모니터링",
+              "body": "무엇을 샘플링하고, 추세를 파악하고, 에스컬레이션해야 합니까?",
+              "icon": "3"
+            },
+            {
+              "title": "전문성",
+              "body": "운영 중 화학 결정은 누가 소유합니까?",
+              "icon": "4"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
+            "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_two_column",
+          "title": "2상 수액은 다른 과정입니다",
+          "slug": "two_phase_fluids_are_a_different_course",
+          "section_label": "대비",
+          "subtitle": "단상 물/PG25 규칙을 2상 냉매 규칙과 결합하지 마십시오.",
+          "bullets": [
+            {
+              "bold_lead": "단상",
+              "text": "물 또는 PG25는 주로 현열로 열을 전달하며 화학적 유지 관리가 필요합니다."
+            },
+            {
+              "bold_lead": "2상",
+              "text": "저비점 유전체 냉매는 잠열에 의존하며 압력, 증기 및 퍼지 관리가 필요합니다."
+            },
+            {
+              "bold_lead": "공통점",
+              "text": "호환성 규율, SDS, COA, 기록 및 유체-시스템 정렬."
+            }
+          ],
+          "figure": {
+            "path": "figures/single_vs_two_phase.svg",
+            "alt": "단상 유체는 현열를 사용하고 2상 냉매는 잠열를 사용합니다.",
+            "caption": "2상 유동적 교육은 2상 DLC 강좌에서 만나보실 수 있습니다."
+          },
+          "reference_links": [
+            {
+              "label": "OCP 2상 유체 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            }
+          ],
+          "term_refs": [
+            "latent_heat",
+            "sds",
+            "coa"
+          ],
+          "source_refs": [
+            {
+              "source": "2상 냉각판 기반 액체 냉각 랙에서 유전체 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "slides": "6-13"
+            },
+            {
+              "source": "2상 냉각판 기반 액체 냉각 랙에서 유전체 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "timestamp": "03:12-09:15"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
+            "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "표준 및 소스 맵",
+          "slug": "standards_and_source_map",
+          "section_label": "소스 분야",
+          "figure": {
+            "path": "figures/standards_map.svg",
+            "alt": "DLC 유체 안내에 대한 표준 및 소스 맵",
+            "caption": "유동적 지침은 커뮤니티 표준, 테스트 방법 및 제품별 치료 계획의 스택입니다."
+          },
+          "reference_links": [
+            {
+              "label": "OCP 냉각 환경",
+              "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
+            "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "astm"
+          ]
+        },
+        {
+          "type": "takeaways",
+          "title": "모듈 1 요약",
+          "slug": "module_1_summary",
+          "items": [
+            "이 과정은 단상 TCS 유체, 즉 처리된 물과 PG25에 중점을 둡니다.",
+            "2상 냉매의 값은 잠열에서 나오므로 별도의 학습 경로가 필요합니다.",
+            "유동적 지침은 일회성 조달 단계가 아닌 라이프사이클 규율입니다.",
+            "호환성, 모니터링 및 기록은 반복되는 주제입니다."
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module1/slide_09_module_1_summary.txt",
+            "wav_file": "audio/module1/slide_09_module_1_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module1/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "유체 경계를 확인하세요",
+          "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m1q1",
+              "prompt": "이 과정의 유동적 범위를 가장 잘 설명하는 설명은 무엇입니까?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "기존 공냉식 랙 내부의 공기 흐름 관리.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "단상, 칩 직접 냉각 냉각판 루프의 수성 열전달 유체.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "2상 콜드 플레이트에 사용되는 저비점 유전체 냉매입니다.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "냉각탑 건설을 위한 시설측 수처리 전용입니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞습니다. 이 과정은 직접 액체 냉각의 기술 냉각 시스템에 사용되는 단상 수성 유체에 중점을 둡니다.",
+              "feedback_incorrect": "범위는 시설용수 또는 2상 냉매가 아닌 칩 직접 냉각 냉각판 루프에 사용되는 단상 수성 유체입니다."
+            },
+            {
+              "id": "m1q2",
+              "prompt": "단상 유체 프로그램에 대한 운영 질문에 속하는 항목은 무엇입니까?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "A",
+                  "text": "어떤 유체 계열과 농도가 지정되어 있습니까?",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "저비점 냉매를 흐름 요구 사항을 변경하지 않고 단상 냉각수로 사용할 수 있는지 여부입니다.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "유체 상태을 정의하는 화학 한계 및 테스트는 무엇입니까?",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "유체에 닿는 재료, 필터 및 서비스 방식.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "맞습니다. 유체 선택, 화학 제어, 호환성, 여과 및 서비스 실습이 모두 프로그램에 속합니다.",
+              "feedback_incorrect": "단상 프로그램은 유체 선택, 화학물질 한도, 접액 재료, 여과 및 서비스 관행을 중심으로 구축되었습니다."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "다음 단계 - 단상 유체 선택 및 지정",
+          "slug": "up_next_choosing_and_specifying_single_phase_flu",
+          "next_module_number": 2,
+          "next_module_title": "단상 유체 선택 및 지정",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
+            "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "단상 유체 선택 및 지정"
+    },
+    {
+      "id": 2,
+      "slug": "choosing_single_phase_fluids",
+      "title": "단상 유체 선택 및 지정",
+      "subtitle": "물, PG25, 화학 창, 억제제 및 호환성 증거.",
+      "module_badge_text": "모듈 2",
+      "motion_intro": {
+        "eyebrow": "모듈 2",
+        "title": "단상 유체 선택 및 지정",
+        "subtitle": "물, PG25, 화학 창, 억제제 및 호환성 증거."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "단상 유체 선택 및 지정",
+          "slug": "choosing_and_specifying_single_phase_fluids",
+          "subtitle": "물, PG25, 화학 창, 억제제 및 습식 물질 호환성.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
+            "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "분류할 선택 결정",
+          "slug": "selection_decisions_you_will_classify",
+          "subtitle": "이 모듈을 마치면 다음을 수행할 수 있습니다.",
+          "objectives": [
+            "성능과 유지 관리의 절충점을 사용하여 처리된 물과 PG25을 비교합니다.",
+            "단상 TCS 루프를 보호하는 유체 품질 목표를 식별합니다.",
+            "억제제 화학이 부식 제어 및 침전물에 중요한 이유를 설명하십시오.",
+            "유체 선택을 접액 재료 및 공급업체 증거에 연결합니다."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
+            "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "물 대 PG25 절충안",
+          "slug": "water_versus_pg25_tradeoffs",
+          "section_label": "유체 선택",
+          "figure": {
+            "path": "figures/water_pg25_tradeoff.svg",
+            "alt": "처리된 물과 PG25 절충점",
+            "caption": "물은 열 성능을 선호합니다. PG25은 농도가 유지될 때 생체정역학적 운영 마진을 추가합니다."
+          },
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
+            "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "바로 사용할 수 있는 유체 품질 목표",
+          "slug": "ready_to_use_fluid_quality_targets",
+          "section_label": "유체 타겟",
+          "subtitle": "수성 열전달 유체에 대해 선택된 초안 값.",
+          "columns": [
+            "매개변수",
+            "초안 대상",
+            "왜 중요한가요?"
+          ],
+          "rows": [
+            [
+              "TSS",
+              "<5ppm",
+              "입자 및 필터 또는 마이크로채널 위험"
+            ],
+            [
+              "TDS",
+              "처리 후 <1000ppm",
+              "용존 고형물 및 오염 추세"
+            ],
+            [
+              "전도도",
+              "25°C에서 <2000uS/cm",
+              "용해된 물질에 대한 간편한 현장 신호"
+            ],
+            [
+              "pH",
+              "8.0~10.5",
+              "부식 및 처리 화학 창"
+            ],
+            [
+              "총 경도",
+              "CaCO3로 <30ppm",
+              "보충수 수질 및 스케일 위험"
+            ],
+            [
+              "박테리아",
+              "채우기 <1 CFU/ml; 작업 <100 CFU/ml",
+              "생물 오염 제어"
+            ],
+            [
+              "아졸레스",
+              ">100ppm 또는 치료 계획당",
+              "구리 및 황색 금속 보호"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "azole"
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 1
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
+            "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "작동 온도 및 화학성 창",
+          "slug": "operating_temperature_and_chemistry_window",
+          "section_label": "작동 봉투",
+          "subtitle": "온도는 호환성 요구 사항의 일부입니다.",
+          "bullets": [
+            {
+              "bold_lead": "일반적인 범위",
+              "text": "TCS 루프는 지침 초안에서 49°C 이하로 설명됩니다."
+            },
+            {
+              "bold_lead": "예상한도",
+              "text": "추가 검토 없이 작동 온도가 66°C를 초과하지 않을 것으로 예상됩니다."
+            },
+            {
+              "bold_lead": "호환성 트리거",
+              "text": "온도가 높을수록 접액 재료 및 처리 화학에 대한 검토가 필요합니다."
+            },
+            {
+              "bold_lead": "현지 상황",
+              "text": "IT 및 콜드 플레이트 공급업체에 최대 표면 정체 온도를 확인하십시오."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "52-54"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
+            "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "부식 억제제: IAT, OAT 및 HOAT",
+          "slug": "corrosion_inhibitors_iat_oat_and_hoat",
+          "section_label": "억제제 화학",
+          "figure": {
+            "path": "figures/inhibitor_timeline.svg",
+            "alt": "물에서 IAT OAT 및 HOAT까지의 냉각수 억제제 화학 타임라인",
+            "caption": "억제제 전략은 부식 방지, 서비스 수명 및 오염 물질 민감도에 영향을 미칩니다."
+          },
+          "term_refs": [
+            "iat",
+            "oat",
+            "hoat"
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "경수, 규모 및 예금 위험",
+          "slug": "hard_water_scale_and_deposit_risk",
+          "section_label": "예금",
+          "figure": {
+            "path": "figures/hard_water_scale.svg",
+            "alt": "경수 이온은 스케일을 형성하고 마이크로채널을 위협할 수 있습니다.",
+            "caption": "칼슘과 마그네슘은 가동 시간에 큰 영향을 미치는 작은 화학 신호입니다."
+          },
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
+            "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "접액 재료 및 호환성",
+          "slug": "wetted_materials_and_compatibility",
+          "section_label": "호환성",
+          "figure": {
+            "path": "figures/wetted_materials.svg",
+            "alt": "접액 재료 호환성 맵",
+            "caption": "재료 변경도 유체 호환성 이벤트입니다."
+          },
+          "term_refs": [
+            "qd"
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "46-51"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
+            "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "자격 및 공급업체 증거",
+          "slug": "qualification_and_supplier_evidence",
+          "section_label": "증거",
+          "subtitle": "구매 주문이 완료된 후 사양을 감사할 수 있어야 합니다.",
+          "bullets": [
+            {
+              "bold_lead": "COA",
+              "text": "제조된 제품의 품질과 적합성을 확인합니다."
+            },
+            {
+              "bold_lead": "SDS",
+              "text": "취급, 위험, PPE, 보관 및 폐기 정보를 정의합니다."
+            },
+            {
+              "bold_lead": "치료 계획",
+              "text": "로컬 운전 한계, 테스트 및 수정 조치를 설정합니다."
+            },
+            {
+              "bold_lead": "호환성 확인",
+              "text": "유체를 접액 재료 및 작동 조건에 연결합니다."
+            },
+            {
+              "bold_lead": "기록",
+              "text": "하드웨어 갱신 주기를 통해 결정을 보존합니다."
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds",
+            "ppe"
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "31-36"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
+            "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "모듈 2 요약",
+          "slug": "module_2_summary",
+          "items": [
+            "열 성능만으로 유체를 선택하지 마십시오.",
+            "유동 표적은 서류가 아닌 작동 신호입니다.",
+            "억제제 화학은 부식, 침전물 및 모니터링에 영향을 미칩니다.",
+            "접액 재료 목록과 작동 온도는 호환성을 정의합니다.",
+            "COA, SDS, 치료 계획 및 기록을 통해 결정을 감사할 수 있습니다."
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module2/slide_10_module_2_summary.txt",
+            "wav_file": "audio/module2/slide_10_module_2_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module2/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "유체 선택을 확인하십시오",
+          "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m2q1",
+              "prompt": "처리된 물 대신 PG25을 선택할 때의 주요 장단점은 무엇입니까?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "PG25는 항상 동일한 유량에서 물보다 더 많은 열을 제거합니다.",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "PG25 호환성 증거가 필요하지 않습니다.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "PG25은 동결 방지 및 억제제 패키지 이점을 추가할 수 있지만 물에 비해 열 용량이 감소합니다.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "PG25는 루프를 2상 냉매 시스템으로 전환합니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞습니다. PG25가 유용할 수 있지만 낮은 열용량과 유체 특성 변화를 고려해야 합니다.",
+              "feedback_incorrect": "절충점은 PG25이 자동으로 더 좋다는 것이 아닙니다. 이는 물 대비 열용량을 줄이면서 동결 및 억제제 요구 사항을 충족하는 데 도움이 될 수 있습니다."
+            },
+            {
+              "id": "m2q2",
+              "prompt": "유체 적격성 평가 패키지에는 어떤 증거가 속합니까?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "농도나 물질적 맥락이 없는 일반적인 유체 제품군 이름만 사용됩니다.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "바로 사용할 수 있는 농도, pH, 전도도 및 억제제 한계와 같은 화학 값.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "운전 한계, 샘플링 및 유지보수 응답에 대한 공급업체 지침.",
+                  "correct": true
+                },
+                {
+                  "id": "B",
+                  "text": "습식 금속, 폴리머, 엘라스토머 및 커넥터에 대한 호환성 증거.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "맞습니다. 자격을 얻으려면 화학, 재료 호환성 및 공급업체 운영 지침이 필요합니다.",
+              "feedback_incorrect": "일반적인 유체 이름으로는 충분하지 않습니다. 패키지에는 화학 목표, 정확한 재료 및 공급업체 지침이 필요합니다."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "다음 - 시운전, 루프 채우기 및 보호",
+          "slug": "up_next_commissioning_filling_and_protecting_the",
+          "next_module_number": 3,
+          "next_module_title": "시운전, 루프 채우기 및 보호",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
+            "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "시운전, 루프 채우기 및 보호"
+    },
+    {
+      "id": 3,
+      "slug": "commissioning_filling_protecting_loop",
+      "title": "시운전, 루프 채우기 및 보호",
+      "subtitle": "서비스 가능한 설계, 호환 가능한 충전 방식, 여과, 시작 기록 및 미생물 제어.",
+      "module_badge_text": "모듈 3",
+      "motion_intro": {
+        "eyebrow": "모듈 3",
+        "title": "시운전, 루프 채우기 및 보호",
+        "subtitle": "서비스 가능한 설계, 호환 가능한 충전 방식, 여과, 시작 기록 및 미생물 제어."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "시운전, 루프 채우기 및 보호",
+          "slug": "commissioning_filling_and_protecting_the_loop",
+          "subtitle": "서비스 가능한 설계, 누출 점검, 청소, 충전, 여과 및 미생물 제어.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
+            "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "시운전 적용할 관행",
+          "slug": "commissioning_practices_you_will_apply",
+          "subtitle": "이 모듈을 마치면 다음을 수행할 수 있습니다.",
+          "objectives": [
+            "유동적인 서비스를 가능하게 하는 설계 특징을 설명하세요.",
+            "신규 및 기존 시스템에 대한 클린 스타트업 및 채우기 관행을 설명합니다.",
+            "콜드 플레이트 마이크로채널을 보호하는 필터 선택을 식별합니다.",
+            "미생물 통제 관행과 살생물제 주의 사항을 인식합니다."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
+            "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "서비스 용이성을 위한 기계 설계",
+          "slug": "mechanical_design_for_serviceability",
+          "section_label": "디자인",
+          "subtitle": "유체 프로그램에는 샘플링, 추가, 배수 및 분리를 위한 물리적 접근이 필요합니다.",
+          "bullets": [
+            {
+              "bold_lead": "배수 및 충전 접근",
+              "text": "포트는 유체 교체 및 제어된 추가를 지원해야 합니다."
+            },
+            {
+              "bold_lead": "약품 주입",
+              "text": "루프는 공급자가 주도하는 화학 조정을 허용해야 합니다."
+            },
+            {
+              "bold_lead": "배수 완료",
+              "text": "오염물질이나 미생물 개체군을 가두는 막다른 골목을 피하십시오."
+            },
+            {
+              "bold_lead": "호환 가능한 서비스 하드웨어",
+              "text": "피더, 저장소, 블래더 및 씰은 접액 재료 목록을 따라야 합니다."
+            },
+            {
+              "bold_lead": "운영 연속성",
+              "text": "블리드 앤 피드 배열은 루프가 온라인 상태를 유지하는 동안 서비스를 지원할 수 있습니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "60-68"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
+            "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "새로운 시스템 청소 및 세척 순서",
+          "slug": "new_system_cleaning_and_flush_sequence",
+          "section_label": "새로운 시스템",
+          "figure": {
+            "path": "figures/commissioning_sequence.mp4",
+            "media_type": "video",
+            "poster": "figures/commissioning_sequence_poster.png",
+            "alt": "새로운 기술 냉각 시스템가 격리된 콜드 플레이트로 플러시되고 연결된 콜드 플레이트로 다시 플러시된 다음 기준선을 샘플링하고 기록하기 전에 최종 유체로 채워지는 것을 보여주는 무성 애니메이션입니다.",
+            "caption": "단계적 플러시는 최종 유체 채우기 및 기준선 샘플 전에 콜드 플레이트 마이크로채널에서 건축 잔해를 멀리합니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "85-98"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
+            "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "루프에 넣지 말아야 할 것",
+          "slug": "what_not_to_put_in_the_loop",
+          "section_label": "회피",
+          "subtitle": "통제되지 않은 세척제와 첨가제는 부식, 잔류물 또는 침전 위험을 초래할 수 있습니다.",
+          "bullets": [
+            {
+              "bold_lead": "감독되지 않은 청소부 피하기",
+              "text": "세제 및 화학 세척제에는 공급업체 지침이 필요합니다."
+            },
+            {
+              "bold_lead": "잔류 규산염을 피하십시오",
+              "text": "규산염은 마이크로채널에 침전 및 침전될 수 있습니다."
+            },
+            {
+              "bold_lead": "현지 배출 규칙을 존중하세요.",
+              "text": "배수하기 전에 지방자치단체나 규제 요건에 문의하세요."
+            },
+            {
+              "bold_lead": "최종 유체를 보호하세요",
+              "text": "승인된 치료 계획 이외의 첨가물을 도입하지 마십시오."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "106-110"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
+            "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "시작 샘플링 및 기준선 기록",
+          "slug": "startup_sampling_and_baseline_records",
+          "section_label": "기준선",
+          "subtitle": "첫 번째 깨끗한 샘플은 향후 추세 해석을 위한 기준점입니다.",
+          "bullets": [
+            {
+              "bold_lead": "순환하다",
+              "text": "루프를 실행하고 최종 시작 중에 누출이 있는지 확인하십시오."
+            },
+            {
+              "bold_lead": "블리드 에어",
+              "text": "기준선 샘플링 전에 필요한 곳에 갇힌 공기를 제거하십시오."
+            },
+            {
+              "bold_lead": "각 루프 샘플링",
+              "text": "각 TCS 루프에서 대표적인 유체를 캡처합니다."
+            },
+            {
+              "bold_lead": "명확하게 라벨을 붙이세요",
+              "text": "기록 단위, 유체 ID, 날짜 및 시작 조건."
+            },
+            {
+              "bold_lead": "기록을 유지하세요",
+              "text": "유체 수명에 대한 기준선 증거를 유지합니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "111-113"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
+            "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "여과 전략",
+          "slug": "filtration_strategy",
+          "section_label": "입자 및 생물오염물질",
+          "figure": {
+            "path": "figures/filtration_strategy.svg",
+            "alt": "인라인 및 부류 여과 전략",
+            "caption": "필터는 콜드 플레이트 마이크로채널보다 서비스하기가 더 쉽습니다."
+          },
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "61-66"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module3/slide_07_filtration_strategy.txt",
+            "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "미생물 제어 및 생물 오염",
+          "slug": "microbial_control_and_biofouling",
+          "section_label": "생물학",
+          "subtitle": "미생물 제어은 열 전달을 보호하지만 살생물제 사용은 통제되어야 합니다.",
+          "bullets": [
+            {
+              "bold_lead": "대상",
+              "text": "작동 가능한 총 생존 박테리아를 100CFU/ml 미만으로 유지하십시오."
+            },
+            {
+              "bold_lead": "행동 수준",
+              "text": "살생물제 처리는 1000CFU/ml 이상에서 적극 권장됩니다."
+            },
+            {
+              "bold_lead": "살생물제 유형",
+              "text": "필요한 경우에만 라벨에 따라 비산화 살생물제를 사용하십시오."
+            },
+            {
+              "bold_lead": "할로겐을 피하세요",
+              "text": "염소 및 유사한 화학 물질은 부식 위험을 유발할 수 있습니다."
+            },
+            {
+              "bold_lead": "시계 상승",
+              "text": "자주 첨가하면 유기물이나 오염물질이 축적될 수 있습니다."
+            }
+          ],
+          "term_refs": [
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "116-118"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
+            "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "모듈 3 요약",
+          "slug": "module_3_summary",
+          "items": [
+            "유체 서비스가 깨끗하고 안전하게 이루어질 수 있도록 루프를 설계하십시오.",
+            "누출 점검액과 세척용 화학물질은 최종 시스템과 호환되어야 합니다.",
+            "시작 샘플링은 이후의 모든 모니터링을 위해 기준선을 생성합니다.",
+            "부류 여과 및 미생물 제어는 콜드 플레이트 마이크로채널을 보호합니다.",
+            "Project Deschutes는 유용한 필터 설계 예를 제공합니다."
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module3/slide_09_module_3_summary.txt",
+            "wav_file": "audio/module3/slide_09_module_3_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module3/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "시운전 규율을 확인하세요",
+          "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m3q1",
+              "prompt": "깨끗한 새 시스템 시작을 가장 잘 지원하는 시퀀스는 무엇입니까?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "시운전 시간을 절약하려면 사용 가능한 냉각수를 현장 물과 혼합하십시오.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "먼저 시스템을 채우고 몇 달 후에 청소가 필요한지 결정하십시오.",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "배송 당시 유체가 새 제품이었으므로 샘플링을 건너뛰십시오.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "루프를 청소 및 세척하고, 청결도를 확인하고, 승인된 유체를 채운 다음 기준선 기록을 수립합니다.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "맞습니다. 스타트업은 작동 전에 루프를 보호하고 향후 추세 검토를 위해 기준선를 생성해야 합니다.",
+              "feedback_incorrect": "시운전 충전하기 전에 청소하고 세척해야 하며, 승인된 유체를 사용하고, 정상 작동 전에 기준선 기록을 수립해야 합니다."
+            },
+            {
+              "id": "m3q2",
+              "prompt": "서비스 중에 루프를 보호하는 데 도움이 되는 방법은 무엇입니까?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "채우기, 플러시, 누출 반응 및 샘플 기록을 보관하십시오.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "볼륨이 낮을 때마다 확인되지 않은 물이나 다른 액체를 보충하세요.",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "살생물제나 기타 처리제를 추가하기 전에 공급업체 지침을 따르십시오.",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "스트레이너 또는 필터에 호환되는 필터와 서비스 가능한 위치를 사용하십시오.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "맞습니다. 서비스 용이성, 기록, 여과 및 통제된 처리로 유체와 하드웨어를 보호합니다.",
+              "feedback_incorrect": "아무렇게나 마무리하지 마십시오. 호환 가능한 필터링, 기록, 공급업체 기반 처리 결정을 통해 루프를 보호하세요."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "다음 단계 - 유체 상태에 대한 모니터링 및 작동",
+          "slug": "up_next_monitoring_and_operating_for_fluid_healt",
+          "next_module_number": 4,
+          "next_module_title": "모니터링, 유지 관리 및 운영 판단",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
+            "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "모니터링, 유지 관리 및 운영 판단"
+    },
+    {
+      "id": 4,
+      "slug": "monitoring_maintenance_operational_judgment",
+      "title": "모니터링, 유지 관리 및 운영 판단",
+      "subtitle": "정기 테스트, 실험실QA, 추세 해석, 조정, 혼합, 유효 수명 및 문서화.",
+      "module_badge_text": "모듈 4",
+      "motion_intro": {
+        "eyebrow": "모듈 4",
+        "title": "모니터링, 유지 관리 및 운영 판단",
+        "subtitle": "정기 테스트, 실험실QA, 추세 해석, 조정, 혼합, 유효 수명 및 문서화."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "유체 상태에 대한 모니터링 및 작동",
+          "slug": "monitoring_and_operating_for_fluid_health",
+          "subtitle": "테스트 일정, 추세 해석, 조정, 혼합 및 문서화.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
+            "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "당신이 내릴 운영 판단",
+          "slug": "operating_judgments_you_will_make",
+          "subtitle": "이 모듈을 마치면 다음을 수행할 수 있습니다.",
+          "objectives": [
+            "일상적인 검사실 체액 건강 검사를 식별합니다.",
+            "기준선 및 추세 논리를 사용하여 결과를 해석합니다.",
+            "조절된 조정 및 투여 방법을 설명합니다.",
+            "혼합 유체가 모니터링 및 수정을 복잡하게 만드는 이유를 설명하십시오.",
+            "갱신 주기 및 문제 해결을 지원하는 기록을 유지하십시오."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
+            "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "정기 모니터링 일정",
+          "slug": "routine_monitoring_schedule",
+          "section_label": "케이던스",
+          "subtitle": "매개변수가 사양을 벗어나면 모니터링 계획이 더욱 강화되어야 합니다.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "시작",
+              "body": "초기 충전 및 순환 후 즉시 테스트하십시오.",
+              "icon": "1"
+            },
+            {
+              "title": "분기별",
+              "body": "정상 작동 중에 정기적인 현장 점검을 수행합니다.",
+              "icon": "2"
+            },
+            {
+              "title": "사양을 벗어나는 경우 매주",
+              "body": "매개변수가 범위로 돌아올 때까지 주파수를 늘립니다.",
+              "icon": "3"
+            },
+            {
+              "title": "연구실 QA",
+              "body": "1년 동안 분기별로 실시하고, 안정적이면 6개월 간격으로 실시합니다.",
+              "icon": "4"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "120-125"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
+            "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "qa"
+          ]
+        },
+        {
+          "type": "content_table",
+          "title": "현장 테스트 세트",
+          "slug": "on_site_test_set",
+          "section_label": "현장 점검",
+          "subtitle": "정기 테스트는 에스컬레이션 및 실험실 후속 조치를 안내하는 빠른 신호입니다.",
+          "columns": [
+            "현장 확인",
+            "신호",
+            "일반적인 조치"
+          ],
+          "rows": [
+            [
+              "전도도",
+              "용해된 물질 또는 오염",
+              "기준선와 상승률 비교"
+            ],
+            [
+              "pH",
+              "화학 창",
+              "치료 계획 내에서 확인"
+            ],
+            [
+              "경도",
+              "보충수 또는 침출 위험",
+              "Ca/Mg의 출처 조사"
+            ],
+            [
+              "총 생존 박테리아",
+              "미생물 활동",
+              "공급업체 지침에 따라 재테스트 또는 처리"
+            ],
+            [
+              "아졸레스",
+              "구리 보호",
+              "추세 고갈 및 조치 임계값"
+            ],
+            [
+              "탁도/외관",
+              "입자 또는 선명도 변화",
+              "필터 및 샘플 기록 검사"
+            ],
+            [
+              "필터 로딩",
+              "입자 또는 생물오염물질 부담",
+              "높은 경우 교체하거나 조사하십시오."
+            ]
+          ],
+          "term_refs": [
+            "azole",
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 4
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module4/slide_04_on_site_test_set.txt",
+            "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "실험실 QA 및 ICP 분석",
+          "slug": "laboratory_qa_and_icp_analysis",
+          "section_label": "실험실 보기",
+          "subtitle": "독립적인 분석을 통해 유체 드리프트, 오염 및 부식 부산물을 구별하는 데 도움이 됩니다.",
+          "columns": [
+            "실험실 점검",
+            "그것이 밝혀내는 데 도움이 되는 것",
+            "왜 중요한가요?"
+          ],
+          "rows": [
+            [
+              "TSS 및 TDS",
+              "입자 및 용해된 물질",
+              "청결도 및 오염도 추적"
+            ],
+            [
+              "여과된/비여과된 금속",
+              "구리, 철, 아연, 크롬, 니켈",
+              "부식 또는 물질 방출을 나타냅니다."
+            ],
+            [
+              "ICP 분석",
+              "원소 프로필",
+              "시간에 따른 수질 변화를 문서화합니다."
+            ],
+            [
+              "탁도",
+              "유체 선명도 및 입자",
+              "필터 및 예금 결정 지원"
+            ],
+            [
+              "부식 쿠폰 사용 시",
+              "보충 부식 증거",
+              "콜드 플레이트 기하학을 완전히 표현하지 못할 수 있음"
+            ],
+            [
+              "서면평가",
+              "기술적 해석",
+              "데이터를 행동 지침으로 전환"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "icp"
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 5
+            },
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraph": "126"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
+            "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "숫자만 보는 것이 아니라 추세를 읽는 것",
+          "slug": "reading_the_trend_not_just_the_number",
+          "section_label": "추세 논리",
+          "figure": {
+            "path": "figures/monitoring_framework.svg",
+            "alt": "유체 상태 시스템 상태와 유체 상태를 분리하는 모니터링 프레임워크",
+            "caption": "기준선 및 추세 방향을 사용하여 시스템 상태를 유체 상태와 구별합니다."
+          },
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "121-128"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
+            "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "조정 및 공급업체별 투여량",
+          "slug": "adjustments_and_supplier_guided_dosing",
+          "section_label": "시정 조치",
+          "subtitle": "조절된 투여량에는 알려진 용량, 공급업체 지침, 순환, 재시험 및 기록이 필요합니다.",
+          "bullets": [
+            {
+              "bold_lead": "알려진 볼륨",
+              "text": "루프 용량 없이는 투여량을 안전하게 계산할 수 없습니다."
+            },
+            {
+              "bold_lead": "공급업체 지침",
+              "text": "치료 계획 및 기술 지원에 따라서만 조정하십시오."
+            },
+            {
+              "bold_lead": "순환하다",
+              "text": "후속 샘플링 전에 30분 동안 혼합합니다."
+            },
+            {
+              "bold_lead": "재테스트",
+              "text": "조정 결과가 범위 안으로 이동했음을 확인합니다."
+            },
+            {
+              "bold_lead": "문서",
+              "text": "날짜, 시스템, 첨가제 유형, 금액 및 보고서를 기록합니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "129-134"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
+            "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "유체 혼합 및 상호 운용성",
+          "slug": "fluid_mixing_and_interoperability",
+          "section_label": "상호 운용성",
+          "figure": {
+            "path": "figures/mixing_decision.svg",
+            "alt": "유체 혼합 결정 논리",
+            "caption": "혼합은 유체별 증거가 필요한 통제된 사건으로 가장 잘 처리됩니다."
+          },
+          "term_refs": [
+            "iat",
+            "oat"
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
+            "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "문서 및 제출물",
+          "slug": "documentation_and_submittals",
+          "section_label": "기록",
+          "subtitle": "유체, 재료 또는 샘플의 해석이 변경되면 기록하십시오.",
+          "bullets": [
+            {
+              "bold_lead": "유동적 정체성",
+              "text": "소스, COA, SDS 및 각 시스템에 대한 분석을 수행합니다."
+            },
+            {
+              "bold_lead": "시스템 볼륨",
+              "text": "억제제 또는 추가 용량을 계산하는 데 필요합니다."
+            },
+            {
+              "bold_lead": "조정 내역",
+              "text": "날짜, 금액, 첨가물 유형 및 분석 보고서."
+            },
+            {
+              "bold_lead": "건축 자재",
+              "text": "금속, 엘라스토머, 플라스틱, 필터, 씰 및 교체품."
+            },
+            {
+              "bold_lead": "치료 계획",
+              "text": "작동 매개변수, 테스트 일정 및 제품 문서."
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds"
+          ],
+          "source_refs": [
+            {
+              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "143-151"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
+            "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "모듈 4 요약",
+          "slug": "module_4_summary",
+          "items": [
+            "정기 점검과 실습 QA을 함께 사용하세요.",
+            "고립된 값만 해석하는 것이 아니라 기준선에 대한 추세를 해석합니다.",
+            "통제된 공급자 안내 절차를 통해서만 화학적 조정을 수행하십시오.",
+            "모니터링 복잡성을 변경하는 이벤트로 유체 혼합을 처리합니다.",
+            "미래의 운영자가 신뢰할 수 있는 기록을 유지하십시오."
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module4/slide_10_module_4_summary.txt",
+            "wav_file": "audio/module4/slide_10_module_4_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module4/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "귀하의 운영 판단을 확인하십시오",
+          "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m4q1",
+              "prompt": "일상적인 체액 건강 결과를 해석하는 가장 좋은 방법은 무엇입니까?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "방법, 기록, 운영 컨텍스트를 확인하지 않고 단일 숫자에 반응합니다.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "조치를 결정하기 전에 기준선, 제한 사항 및 최근 변경 사항에 대한 결과 추세를 살펴보세요.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "값이 변경될 때마다 즉시 화학 물질을 투여합니다.",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "현장 테스트 스트립이 허용 가능한 것으로 보이면 실험실 결과를 무시하십시오.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞습니다. 작동 판단은 추세, 기준선, 한계, 테스트 방법 및 상황에 따라 결정됩니다.",
+              "feedback_incorrect": "단일 값으로는 충분하지 않습니다. 조치를 취하기 전에 추세, 기준선, 한계, 테스트 방법 및 작동 컨텍스트를 사용하십시오."
+            },
+            {
+              "id": "m4q2",
+              "prompt": "유체를 혼합하거나 화학적 조정을 하기 전에 어떤 일이 일어나야 합니까?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "실험실 또는 현장 결과를 사용하여 조정이 효과가 있었는지 확인하십시오.",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "관련된 정확한 유체 및 재료에 대한 공급업체 지침 및 호환성을 확인하십시오.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "모든 금지된 수성 유체는 상호 교환 가능하다고 가정합니다.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "변경 사항, 날짜, 유체 배치, 농도 및 조치 이유를 문서화합니다.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "맞습니다. 혼합 및 투여에는 공급업체 지침, 문서화 및 후속 검증이 필요합니다.",
+              "feedback_incorrect": "호환성을 가정하지 마십시오. 호환성을 확인하고, 조치를 문서화하고, 결과를 확인하십시오."
+            }
+          ]
+        },
+        {
+          "type": "course_complete",
+          "title": "직접 액체 냉각 (DLC)의 냉각 유체",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "course_title": "직접 액체 냉각 (DLC)의 냉각 유체",
+          "cert_message": "귀하는 단상 DLC 유체 과정을 완료했습니다. 이러한 개념을 적용할 때 OCP 지침, 공급업체 처리 계획 및 현지 운영 기록을 함께 사용하십시오.",
+          "thank_you_message": "모듈 4: 모니터링, 유지 관리 및 운영 판단을 완료해 주셔서 감사합니다.",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata_language_name": "Korean",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "ko-KR",
+    "source_course_sha256": "085233653e612c3ab97b2e834f2fbcf2562a736cc7ec71a13539cd84175559cb"
+  },
+  "ui_labels": {
+    "not_started": "시작 전",
+    "completed": "완료",
+    "module": "모듈",
+    "module_complete": "모듈 {module} 완료",
+    "course_complete": "과정 완료",
+    "course_overview": "과정 개요",
+    "learning_objectives": "학습 목표",
+    "key_takeaways": "핵심 요약",
+    "knowledge_check": "지식 확인",
+    "submit": "제출",
+    "retry": "다시 시도",
+    "quiz_gate_note": "계속하려면 각 문항을 한 번씩 제출하세요. 정답 여부와 관계없이 진행할 수 있으며 다시 시도할 수 있습니다.",
+    "quiz_gate_warning": "다음으로 이동하기 전에 각 문항을 한 번씩 제출하세요.",
+    "select_answer": "답을 하나 이상 선택한 후 제출하세요.",
+    "correct": "정답입니다.",
+    "review_feedback": "피드백을 확인한 후 다시 시도하세요.",
+    "narration_hint": "내레이션은 자동으로 시작됩니다. → 키 또는 스페이스바를 눌러 다음으로 이동하세요.",
+    "theme": "테마",
+    "toggle_dark_mode": "다크 모드 전환",
+    "previous_slide": "이전 슬라이드",
+    "next_slide": "다음 슬라이드",
+    "play_pause_narration": "내레이션 재생 또는 일시 정지",
+    "playback_speed": "재생 속도",
+    "playback_speed_slider": "재생 속도 조절",
+    "speed": "속도",
+    "toggle_fullscreen": "전체 화면 전환",
+    "fullscreen": "전체 화면",
+    "video_controls": "동영상 컨트롤",
+    "play_video": "동영상 재생",
+    "pause_video": "동영상 일시 정지",
+    "zoom_video": "동영상 확대",
+    "video_figure": "동영상 그림",
+    "zoom_figure": "그림 확대",
+    "enlarged_figure": "확대된 그림",
+    "lightbox_close_hint": "바깥쪽을 클릭하거나 Esc 키를 눌러 닫으세요.",
+    "opens_new_tab": "새 탭에서 열림",
+    "learner_resource": "학습 자료",
+    "open": "열기",
+    "learn_more": "자세히 보기",
+    "reference": "참고 자료",
+    "course_intro": "OCP Academy 과정 인트로",
+    "skip_intro": "인트로 건너뛰기",
+    "share_feedback": "의견 보내기",
+    "survey_body": "몇 분만 시간을 내어 개선에 도움을 주시겠어요? 개발팀에 의견을 보내 주시면 이 과정과 향후 과정을 발전시키는 데 활용하겠습니다. 응답자 가운데 일부를 무작위로 선정해 기념품을 드립니다.",
+    "default_module_thanks": "모듈 {module}을 완료해 주셔서 감사합니다: {title}",
+    "default_course_wrap": "{course}의 모든 모듈을 완료했습니다. 이 과정에서 배운 내용을 현업에 적용하는 데 도움이 되기를 바랍니다.",
+    "up_next": "다음 과정",
+    "go_to_module": "모듈 {module}로 이동"
+  },
+  "index_footer_line": "OCP ESUN · 사양 v1.0 · 한국어판"
+}

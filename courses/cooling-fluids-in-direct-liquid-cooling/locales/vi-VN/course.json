@@ -1,0 +1,1855 @@
+{
+  "style": "Slides",
+  "language": "vi-VN",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "A5w1fw5x0uXded1LDvZp",
+    "voice_name": "Nhu",
+    "model_id": "eleven_flash_v2_5"
+  },
+  "course_slug": "cooling_fluids_in_direct_liquid_cooling_vi_vn",
+  "course_title": "Chất lỏng làm mát trong làm mát trực tiếp bằng chất lỏng (DLC)",
+  "course_subtitle": "Một pha TCS hướng dẫn linh hoạt cho việc triển khai trực tiếp đến chip",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Hướng dẫn sử dụng chất lỏng truyền nhiệt gốc nước",
+  "target_duration_minutes": 35,
+  "audience_level": "trung gian",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "cooling_fluids_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "Chất lỏng"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Học viện"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Hướng dẫn sử dụng chất điện môi chất lỏng truyền nhiệt trong hai pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "Làm mát trực tiếp bằng chất lỏng. Một phương pháp làm mát trong đó chất lỏng loại bỏ nhiệt ở gần các bộ phận tạo nhiệt như bộ xử lý hoặc máy gia tốc.",
+      "reference_label": "OCP Môi trường làm mát",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "Bộ phân phối chất làm mát. Thiết bị bơm và điều hòa chất làm mát cũng như truyền nhiệt giữa TCS và hệ thống cơ sở.",
+      "reference_label": "OCP Môi trường làm mát",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "Hệ thống làm mát công nghệ. Vòng thứ cấp khép kín giữa CDU và phần cứng làm mát giá đỡ hoặc máy chủ.",
+      "reference_label": "Mức sử dụng ASHRAE/OCP",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "Hệ thống nước cơ sở. Vòng lặp phía cơ sở nằm ngoài ranh giới TCS.",
+      "reference_label": "OCP Môi trường làm mát",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "Chất lỏng truyền nhiệt với 25 phần trăm propylene glycol, thường được sử dụng trong làm mát một pha trực tiếp đến chip.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "qd",
+      "term": "QD",
+      "tooltip": "Khớp nối nhanh. Một đầu nối dịch vụ cho phép tạo và ngắt các kết nối linh hoạt trong vòng lặp.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "iat",
+      "term": "IAT",
+      "tooltip": "Công nghệ phụ gia vô cơ, thường sử dụng phốt phát, silicat, borat hoặc vô cơ liên quan chất ức chế ăn mòn."
+    },
+    {
+      "id": "oat",
+      "term": "OAT",
+      "tooltip": "Công nghệ axit hữu cơ, phương pháp ức chế chất làm mát gắn liền với khả năng bảo vệ chống ăn mòn có tuổi thọ cao hơn."
+    },
+    {
+      "id": "hoat",
+      "term": "HOAT",
+      "tooltip": "Công nghệ axit hữu cơ lai, kết hợp axit hữu cơ với một lượng nhỏ hóa học vô cơ."
+    },
+    {
+      "id": "azole",
+      "term": "Azol",
+      "tooltip": "Dòng chất ức chế ăn mòn được sử dụng để bảo vệ kim loại đồng và vàng.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tss",
+      "term": "TSS",
+      "tooltip": "Tổng chất rắn lơ lửng. Các hạt lơ lửng trong chất lỏng.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tds",
+      "term": "TDS",
+      "tooltip": "Tổng chất rắn hòa tan. Chất hòa tan trong chất lỏng, liên quan đến độ dẫn điện.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cfu",
+      "term": "CFU/ml",
+      "tooltip": "Đơn vị hình thành khuẩn lạc trên mililit, được sử dụng để đếm số lượng vi sinh vật trong chất lỏng.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "icp",
+      "term": "ICP",
+      "tooltip": "Phân tích plasma kết hợp cảm ứng, được sử dụng để xác định các ion hòa tan và ô nhiễm kim loại.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "sds",
+      "term": "SDS",
+      "tooltip": "Bảng dữ liệu an toàn. Tài liệu của nhà cung cấp có thông tin về các mối nguy hiểm, cách xử lý, lưu trữ, PPE và thông tin thải bỏ.",
+      "reference_label": "Tổng quan về OSHA SDS",
+      "url": "https://www.osha.gov/hazcom/safety-data-sheets"
+    },
+    {
+      "id": "coa",
+      "term": "COA",
+      "tooltip": "Giấy chứng nhận phân tích. Tài liệu của nhà sản xuất cho thấy chất lượng hoặc sự phù hợp của sản phẩm đối với chất lỏng được sản xuất.",
+      "reference_label": "OCP một pha dự thảo hướng dẫn",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "latent_heat",
+      "term": "Nhiệt ẩn",
+      "tooltip": "Nhiệt được hấp thụ hoặc giải phóng trong quá trình thay đổi pha, chẳng hạn như sôi hoặc ngưng tụ.",
+      "reference_label": "Hướng dẫn OCP hai pha",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "id": "tdp",
+      "term": "TDP",
+      "definition": "Công suất thiết kế nhiệt",
+      "tooltip": "Công suất thiết kế nhiệt. Công suất bộ xử lý hoặc bộ tăng tốc và xếp hạng thiết kế nhiệt được sử dụng khi định cỡ công suất làm mát; ý nghĩa chính xác có thể khác nhau tùy theo nhà cung cấp."
+    },
+    {
+      "id": "ashrae",
+      "term": "ASHRAE",
+      "definition": "Hiệp hội kỹ sư sưởi ấm, làm lạnh và điều hòa không khí Hoa Kỳ",
+      "tooltip": "Hiệp hội kỹ sư sưởi ấm, làm lạnh và điều hòa không khí Hoa Kỳ. ASHRAE xuất bản hướng dẫn về nhiệt của trung tâm dữ liệu và thuật ngữ được sử dụng trong khóa học.",
+      "reference_label": "ASHRAE",
+      "url": "https://www.ashrae.org/"
+    },
+    {
+      "id": "astm",
+      "term": "ASTM",
+      "definition": "ASTM Quốc tế",
+      "tooltip": "ASTM Quốc tế. Một tổ chức tiêu chuẩn có các phương pháp thử nghiệm thường được tham khảo để thử nghiệm vật liệu, chất lỏng và ăn mòn.",
+      "reference_label": "ASTM Quốc tế",
+      "url": "https://www.astm.org/"
+    },
+    {
+      "id": "qa",
+      "term": "QA",
+      "definition": "Đảm bảo chất lượng",
+      "tooltip": "Đảm bảo chất lượng. Kiểm tra và lưu trữ hồ sơ được sử dụng để xác minh rằng tình trạng chất lỏng, bằng chứng của nhà cung cấp và dữ liệu vận hành vẫn nằm trong mức mong đợi."
+    },
+    {
+      "id": "ppe",
+      "term": "PPE",
+      "definition": "Thiết bị bảo hộ cá nhân",
+      "tooltip": "Thiết bị bảo vệ cá nhân. Găng tay, bảo vệ mắt và các biện pháp kiểm soát khác được chọn từ SDS và các quy trình an toàn tại địa phương.",
+      "reference_label": "Tổng quan về OSHA PPE",
+      "url": "https://www.osha.gov/personal-protective-equipment"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_single_phase_fluids_matter",
+      "title": "Tại sao một pha Chất lỏng quan trọng trong DLC",
+      "subtitle": "Ranh giới linh hoạt, mức độ khẩn cấp, nguyên tắc nguồn và độ tương phản hai pha.",
+      "module_badge_text": "Mô-đun 1",
+      "motion_intro": {
+        "eyebrow": "Mô-đun 1",
+        "title": "Tại sao một pha Chất lỏng quan trọng trong DLC",
+        "subtitle": "Ranh giới linh hoạt, mức độ khẩn cấp, nguyên tắc nguồn và độ tương phản hai pha."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Chất lỏng làm mát trong làm mát trực tiếp bằng chất lỏng (DLC)",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "subtitle": "Một pha TCS lựa chọn chất lỏng, chạy thử, giám sát và vận hành.",
+          "version_chip": "Hướng dẫn sử dụng chất lỏng truyền nhiệt gốc nước",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "course_overview",
+          "title": "Lộ trình khóa học",
+          "slug": "course_roadmap",
+          "subtitle": "Bốn mô-đun chuyển từ kiến trúc và dòng linh hoạt sang kỷ luật vận hành.",
+          "modules_listed": [
+            "Tại sao một pha Chất lỏng quan trọng trong DLC",
+            "Chọn và chỉ định chất lỏng một pha",
+            "Chạy thử, Làm đầy và bảo vệ vòng lặp",
+            "Giám sát, bảo trì và đánh giá hoạt động"
+          ],
+          "chips": [
+            {
+              "icon": "Thời gian",
+              "text": "Khóa học 30-40 phút"
+            },
+            {
+              "icon": "Cấp độ",
+              "text": "Đối tượng kỹ thuật trung cấp"
+            },
+            {
+              "icon": "Phạm vi",
+              "text": "Một pha DLC chất lỏng"
+            }
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_roadmap.txt",
+            "wav_file": "audio/module1/slide_02_course_roadmap.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        },
+        {
+          "type": "content_grid",
+          "title": "Mật độ nhiệt AI thay đổi vấn đề làm mát",
+          "slug": "ai_heat_density_changes_the_cooling_problem",
+          "section_label": "Tại sao bây giờ",
+          "subtitle": "Công suất chip cao hơn và giá đỡ dày đặc hơn làm cho chất lỏng TCS trở thành một biến số có độ tin cậy.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "Chip cao hơn TDP",
+              "body": "Máy gia tốc đẩy nhiệt vượt quá giới hạn thoải mái chỉ dành cho không khí.",
+              "icon": "1"
+            },
+            {
+              "title": "Giá đỡ dày đặc hơn",
+              "body": "Tính toán nhiều hơn trên mỗi giá làm tăng kết quả của mỗi quyết định vòng lặp.",
+              "icon": "2"
+            },
+            {
+              "title": "Không khí còn sót lại",
+              "body": "Chất lỏng thường mang nhiều nhiệt nhất, nhưng không phải mọi tải trong giá.",
+              "icon": "3"
+            },
+            {
+              "title": "Cổ phần thời gian hoạt động tăng",
+              "body": "Các vấn đề về chất lỏng có thể trở thành vấn đề về tính khả dụng của máy tính.",
+              "icon": "4"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
+            "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tdp",
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Nơi chất lỏng sống",
+          "slug": "where_the_fluid_lives",
+          "section_label": "Ranh giới hệ thống",
+          "figure": {
+            "path": "figures/tcs_loop.svg",
+            "alt": "Vòng lặp hệ thống làm mát công nghệ giữa CDU và tấm lạnh",
+            "caption": "Khóa học tập trung vào vòng lặp TCS khép kín giữa CDU và thiết bị CNTT."
+          },
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "15-17"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
+            "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cdu",
+            "fws",
+            "ashrae"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Một pha Các dòng linh hoạt trong phạm vi",
+          "slug": "single_phase_fluid_families_in_scope",
+          "section_label": "Phạm vi",
+          "figure": {
+            "path": "figures/fluid_families.svg",
+            "alt": "Nước đã xử lý và PG25 nằm trong phạm vi áp dụng trong khi hai pha chất làm lạnh được hoãn lại",
+            "caption": "Hướng dẫn hữu ích trong khóa học này dành cho nước đã xử lý và các vòng lặp PG25 kiểu một pha."
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
+            "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "Bốn câu hỏi của người vận hành",
+          "slug": "the_four_operator_questions",
+          "section_label": "Đóng khung toán tử",
+          "subtitle": "Sự lo lắng về chất lỏng là thực tế: khả năng tương thích, rò rỉ, giám sát và chuyên môn.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "Khả năng tương thích",
+              "body": "Chất lỏng có bảo vệ mọi vật liệu tiếp xúc với chất lỏng không?",
+              "icon": "1"
+            },
+            {
+              "title": "Rò rỉ",
+              "body": "Điều gì xảy ra khi chất lỏng xuất hiện ở nơi không nên xuất hiện?",
+              "icon": "2"
+            },
+            {
+              "title": "Giám sát",
+              "body": "Những gì cần được lấy mẫu, xu hướng và báo cáo?",
+              "icon": "3"
+            },
+            {
+              "title": "Chuyên môn",
+              "body": "Ai là người có quyền quyết định hóa học trong quá trình hoạt động?",
+              "icon": "4"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
+            "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_two_column",
+          "title": "Hai pha Chất lỏng là một khóa học khác",
+          "slug": "two_phase_fluids_are_a_different_course",
+          "section_label": "Tương phản",
+          "subtitle": "Không kết hợp các quy tắc một pha nước/PG25 với quy tắc chất làm lạnh hai pha.",
+          "bullets": [
+            {
+              "bold_lead": "Một pha",
+              "text": "nước hoặc PG25 mang nhiệt chủ yếu dưới dạng nhiệt hiện và cần được bảo trì hóa học."
+            },
+            {
+              "bold_lead": "Hai pha",
+              "text": "chất làm lạnh điện môi có điểm sôi thấp dựa vào nhiệt ẩn và yêu cầu quản lý áp suất, hơi và thanh lọc."
+            },
+            {
+              "bold_lead": "Điểm chung",
+              "text": "nguyên tắc tương thích, SDS, COA, bản ghi và căn chỉnh chất lỏng với hệ thống."
+            }
+          ],
+          "figure": {
+            "path": "figures/single_vs_two_phase.svg",
+            "alt": "Một pha chất lỏng sử dụng nhiệt hiện trong khi hai pha chất làm lạnh sử dụng nhiệt ẩn",
+            "caption": "Hai pha giáo dục linh hoạt có thể được tìm thấy trong khóa học hai pha DLC."
+          },
+          "reference_links": [
+            {
+              "label": "OCP hai pha hướng dẫn về chất lỏng",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            }
+          ],
+          "term_refs": [
+            "latent_heat",
+            "sds",
+            "coa"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất điện môi chất lỏng truyền nhiệt trong hai pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "slides": "6-13"
+            },
+            {
+              "source": "Hướng dẫn sử dụng chất điện môi chất lỏng truyền nhiệt trong hai pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "timestamp": "03:12-09:15"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
+            "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Bản đồ nguồn và tiêu chuẩn",
+          "slug": "standards_and_source_map",
+          "section_label": "Kỷ luật nguồn",
+          "figure": {
+            "path": "figures/standards_map.svg",
+            "alt": "Tiêu chuẩn và bản đồ nguồn cho hướng dẫn chất lỏng DLC",
+            "caption": "Hướng dẫn về chất lỏng là tập hợp các tiêu chuẩn cộng đồng, phương pháp thử nghiệm và kế hoạch điều trị dành riêng cho sản phẩm."
+          },
+          "reference_links": [
+            {
+              "label": "OCP Môi trường làm mát",
+              "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
+            "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "astm"
+          ]
+        },
+        {
+          "type": "takeaways",
+          "title": "Tóm tắt mô-đun 1",
+          "slug": "module_1_summary",
+          "items": [
+            "Khóa học tập trung vào chất lỏng một pha TCS: nước đã qua xử lý và PG25.",
+            "Hai pha chất làm lạnh cần có lộ trình học tập riêng vì giá trị của chúng đến từ nhiệt ẩn.",
+            "Hướng dẫn linh hoạt là một nguyên tắc trong vòng đời, không phải là bước mua sắm một lần.",
+            "Khả năng tương thích, giám sát và ghi lại là các chủ đề định kỳ."
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module1/slide_09_module_1_summary.txt",
+            "wav_file": "audio/module1/slide_09_module_1_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module1/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Kiểm tra ranh giới chất lỏng của bạn",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không cần thiết và bạn có thể thử lại.",
+          "questions": [
+            {
+              "id": "m1q1",
+              "prompt": "Câu nào mô tả đúng nhất phạm vi linh hoạt của khóa học này?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "Quản lý luồng không khí bên trong các giá đỡ làm mát bằng không khí truyền thống.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Một pha, chất lỏng truyền nhiệt gốc nước trong trực tiếp đến chip vòng tấm nguội.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "Chất làm lạnh điện môi có điểm sôi thấp được sử dụng cho hai pha tấm lạnh.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Chỉ xử lý nước tại cơ sở để xây dựng tháp giải nhiệt.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng. Khóa học này tập trung vào một pha chất lỏng gốc nước được sử dụng trong hệ thống làm mát công nghệ cho làm mát trực tiếp bằng chất lỏng.",
+              "feedback_incorrect": "Phạm vi là chất lỏng gốc nước một pha được sử dụng trong vòng lặp tấm lạnh trực tiếp đến chip, không phải nước cơ sở hoặc chất làm lạnh hai pha."
+            },
+            {
+              "id": "m1q2",
+              "prompt": "Những mục nào thuộc câu hỏi vận hành của chương trình chất lỏng một pha?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "A",
+                  "text": "Họ chất lỏng và nồng độ được chỉ định.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Liệu chất làm lạnh có nhiệt độ sôi thấp có thể chạy dưới dạng chất làm mát một pha mà không thay đổi nhu cầu dòng chảy hay không.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Những giới hạn và thử nghiệm hóa học nào xác định tình trạng chất lỏng.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "Những vật liệu, bộ lọc và phương pháp bảo trì nào tiếp xúc với chất lỏng.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Đúng. Lựa chọn chất lỏng, kiểm soát hóa học, khả năng tương thích, lọc và thực hành dịch vụ đều nằm trong chương trình.",
+              "feedback_incorrect": "Chương trình một pha được xây dựng xoay quanh việc lựa chọn chất lỏng, giới hạn hóa học, vật liệu tiếp xúc với chất lỏng, lọc và thực hành dịch vụ."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "Tiếp theo - Chọn và chỉ định chất lỏng một pha",
+          "slug": "up_next_choosing_and_specifying_single_phase_flu",
+          "next_module_number": 2,
+          "next_module_title": "Chọn và chỉ định chất lỏng một pha",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
+            "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Chọn và chỉ định chất lỏng một pha"
+    },
+    {
+      "id": 2,
+      "slug": "choosing_single_phase_fluids",
+      "title": "Chọn và chỉ định chất lỏng một pha",
+      "subtitle": "Nước, PG25, cửa sổ hóa học, chất ức chế và bằng chứng tương thích.",
+      "module_badge_text": "Mô-đun 2",
+      "motion_intro": {
+        "eyebrow": "Mô-đun 2",
+        "title": "Chọn và chỉ định chất lỏng một pha",
+        "subtitle": "Nước, PG25, cửa sổ hóa học, chất ức chế và bằng chứng tương thích."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Chọn và chỉ định chất lỏng một pha",
+          "slug": "choosing_and_specifying_single_phase_fluids",
+          "subtitle": "Nước, PG25, cửa sổ hóa học, chất ức chế và khả năng tương thích vật liệu tiếp xúc với chất lỏng.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
+            "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "Quyết định lựa chọn bạn sẽ phân loại",
+          "slug": "selection_decisions_you_will_classify",
+          "subtitle": "Đến cuối mô-đun này, bạn sẽ có thể...",
+          "objectives": [
+            "So sánh nước đã xử lý và PG25 bằng cách sử dụng các cân bằng giữa hiệu suất và bảo trì.",
+            "Xác định các mục tiêu chất lượng chất lỏng bảo vệ các vòng lặp một pha TCS.",
+            "Giải thích tại sao hóa chất ức chế lại quan trọng đối với việc kiểm soát ăn mòn và tạo cặn.",
+            "Kết nối lựa chọn chất lỏng với vật liệu tiếp xúc với chất lỏng và bằng chứng của nhà cung cấp."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
+            "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Sự cân bằng giữa nước và PG25",
+          "slug": "water_versus_pg25_tradeoffs",
+          "section_label": "Lựa chọn chất lỏng",
+          "figure": {
+            "path": "figures/water_pg25_tradeoff.svg",
+            "alt": "Sự cân bằng giữa nước đã qua xử lý và PG25",
+            "caption": "Nước ủng hộ hiệu suất nhiệt. PG25 bổ sung biên độ vận hành tĩnh sinh học khi nồng độ được duy trì."
+          },
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
+            "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "Pha sẵn để sử dụng Mục tiêu chất lượng chất lỏng",
+          "slug": "ready_to_use_fluid_quality_targets",
+          "section_label": "Mục tiêu linh hoạt",
+          "subtitle": "Các giá trị nháp đã chọn cho chất lỏng truyền nhiệt dựa trên nước.",
+          "columns": [
+            "Tham số",
+            "Mục tiêu dự thảo",
+            "Tại sao nó quan trọng"
+          ],
+          "rows": [
+            [
+              "TSS",
+              "<5 trang/phút",
+              "Rủi ro về hạt và bộ lọc hoặc vi kênh"
+            ],
+            [
+              "TDS",
+              "<1000 trang/phút sau khi điều trị",
+              "Chất rắn hòa tan và xu hướng ô nhiễm"
+            ],
+            [
+              "Độ dẫn điện",
+              "<2000 uS/cm2 ở 25 độ C",
+              "Tín hiệu trường dễ dàng cho vật liệu hòa tan"
+            ],
+            [
+              "độ pH",
+              "8,0 đến 10,5",
+              "Cửa sổ hóa học ăn mòn và xử lý"
+            ],
+            [
+              "Tổng độ cứng",
+              "<30 ppm tính theo CaCO3",
+              "Chất lượng nước trang điểm và rủi ro cặn"
+            ],
+            [
+              "Vi khuẩn",
+              "Điền <1 CFU/ml; hoạt động <100 CFU/ml",
+              "Điều khiển bám bẩn sinh học"
+            ],
+            [
+              "Azo",
+              ">100 ppm hoặc mỗi Kế hoạch điều trị",
+              "Bảo vệ đồng và kim loại màu vàng"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "azole"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 1
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
+            "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Cửa sổ nhiệt độ và hóa học hoạt động",
+          "slug": "operating_temperature_and_chemistry_window",
+          "section_label": "Phong bì hoạt động",
+          "subtitle": "Nhiệt độ là một phần của yêu cầu tương thích.",
+          "bullets": [
+            {
+              "bold_lead": "Phạm vi điển hình",
+              "text": "Vòng lặp TCS được mô tả là dưới 49 độ C trong hướng dẫn dự thảo."
+            },
+            {
+              "bold_lead": "Mức trần dự kiến",
+              "text": "Hoạt động dự kiến sẽ không vượt quá 66 độ C nếu không có sự xem xét bổ sung."
+            },
+            {
+              "bold_lead": "Trình kích hoạt khả năng tương thích",
+              "text": "Nhiệt độ cao hơn đòi hỏi phải xem xét vật liệu tiếp xúc với chất lỏng và hóa chất xử lý."
+            },
+            {
+              "bold_lead": "Điều kiện địa phương",
+              "text": "Xác nhận nhiệt độ ổn định bề mặt tối đa với các nhà cung cấp IT và tấm lạnh."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "52-54"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
+            "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Chất ức chế ăn mòn: IAT, OAT và HOAT",
+          "slug": "corrosion_inhibitors_iat_oat_and_hoat",
+          "section_label": "Hóa chất ức chế",
+          "figure": {
+            "path": "figures/inhibitor_timeline.svg",
+            "alt": "Dòng thời gian hóa học của chất ức chế làm mát từ nước đến IAT OAT và HOAT",
+            "caption": "Chiến lược ức chế ảnh hưởng đến khả năng chống ăn mòn, tuổi thọ sử dụng và độ nhạy cảm với chất gây ô nhiễm."
+          },
+          "term_refs": [
+            "iat",
+            "oat",
+            "hoat"
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Rủi ro về Nước cứng, cặn và cặn lắng",
+          "slug": "hard_water_scale_and_deposit_risk",
+          "section_label": "Tiền gửi",
+          "figure": {
+            "path": "figures/hard_water_scale.svg",
+            "alt": "Các ion nước cứng có thể hình thành cặn và đe dọa các vi mạch",
+            "caption": "Canxi và magie là những tín hiệu hóa học nhỏ nhưng có ảnh hưởng lớn đến thời gian hoạt động."
+          },
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
+            "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Vật liệu tiếp xúc với chất lỏng và khả năng tương thích",
+          "slug": "wetted_materials_and_compatibility",
+          "section_label": "Khả năng tương thích",
+          "figure": {
+            "path": "figures/wetted_materials.svg",
+            "alt": "Vật liệu tiếp xúc với chất lỏng bản đồ tương thích",
+            "caption": "Sự thay đổi vật liệu cũng là một sự kiện tương thích với chất lỏng."
+          },
+          "term_refs": [
+            "qd"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "46-51"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
+            "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Bằng chứng về năng lực và nhà cung cấp",
+          "slug": "qualification_and_supplier_evidence",
+          "section_label": "Bằng chứng",
+          "subtitle": "Thông số kỹ thuật phải được kiểm tra sau khi đơn đặt hàng không còn nữa.",
+          "bullets": [
+            {
+              "bold_lead": "COA",
+              "text": "xác nhận chất lượng và sự phù hợp của sản phẩm được sản xuất."
+            },
+            {
+              "bold_lead": "SDS",
+              "text": "xác định thông tin về cách xử lý, mối nguy hiểm, PPE, lưu trữ và thải bỏ."
+            },
+            {
+              "bold_lead": "Kế hoạch điều trị",
+              "text": "đặt giới hạn vận hành cục bộ, kiểm tra và hành động khắc phục."
+            },
+            {
+              "bold_lead": "Xác nhận tương thích",
+              "text": "liên kết chất lỏng với vật liệu tiếp xúc với chất lỏng và điều kiện vận hành."
+            },
+            {
+              "bold_lead": "Hồ sơ",
+              "text": "duy trì các quyết định thông qua các chu kỳ làm mới phần cứng."
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds",
+            "ppe"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "31-36"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
+            "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "Tóm tắt mô-đun 2",
+          "slug": "module_2_summary",
+          "items": [
+            "Không chọn chất lỏng chỉ dựa trên hiệu suất nhiệt.",
+            "Mục tiêu linh hoạt là tín hiệu hoạt động, không phải giấy tờ.",
+            "Hóa chất ức chế ảnh hưởng đến sự ăn mòn, cặn lắng và giám sát.",
+            "Danh sách vật liệu tiếp xúc với chất lỏng và nhiệt độ vận hành xác định khả năng tương thích.",
+            "COA, SDS, kế hoạch điều trị và hồ sơ giúp cho quyết định có thể được kiểm tra."
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module2/slide_10_module_2_summary.txt",
+            "wav_file": "audio/module2/slide_10_module_2_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module2/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Kiểm tra lựa chọn chất lỏng của bạn",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không cần thiết và bạn có thể thử lại.",
+          "questions": [
+            {
+              "id": "m2q1",
+              "prompt": "Sự cân bằng chính khi chọn PG25 thay vì nước đã qua xử lý là gì?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "PG25 luôn loại bỏ nhiều nhiệt hơn nước trong cùng một lưu lượng.",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "PG25 loại bỏ nhu cầu về bằng chứng tương thích.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "PG25 có thể bổ sung các lợi ích của gói bảo vệ chống đóng băng và chất ức chế, nhưng nó làm giảm khả năng tỏa nhiệt so với nước.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "PG25 biến vòng lặp thành hệ thống làm lạnh hai pha.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng. PG25 có thể hữu ích, nhưng phải tính đến những thay đổi về công suất nhiệt và tính chất chất lỏng thấp hơn.",
+              "feedback_incorrect": "Sự đánh đổi không phải là PG25 tự động tốt hơn. Nó có thể đáp ứng nhu cầu đóng băng và ức chế, đồng thời giảm khả năng sinh nhiệt so với nước."
+            },
+            {
+              "id": "m2q2",
+              "prompt": "Bằng chứng nào thuộc về gói đánh giá chất lỏng?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "Chỉ có một họ chất lỏng chung chung, không có nồng độ hoặc bối cảnh vật chất.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Pha sẵn để sử dụng các giá trị hóa học như nồng độ, độ pH, độ dẫn điện và giới hạn chất ức chế.",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "Hướng dẫn của nhà cung cấp về giới hạn vận hành, lấy mẫu và phản hồi bảo trì.",
+                  "correct": true
+                },
+                {
+                  "id": "B",
+                  "text": "Bằng chứng về khả năng tương thích đối với kim loại ướt, polyme, chất đàn hồi và đầu nối.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Đúng. Trình độ chuyên môn cần có tính chất hóa học, khả năng tương thích của vật liệu và hướng dẫn vận hành của nhà cung cấp.",
+              "feedback_incorrect": "Một tên chất lỏng chung chung là không đủ. Gói này cần có mục tiêu hóa học, vật liệu chính xác và hướng dẫn của nhà cung cấp."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "Tiếp theo - chạy thử, Điền và Bảo vệ vòng lặp",
+          "slug": "up_next_commissioning_filling_and_protecting_the",
+          "next_module_number": 3,
+          "next_module_title": "Chạy thử, Làm đầy và bảo vệ vòng lặp",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
+            "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Chạy thử, Làm đầy và bảo vệ vòng lặp"
+    },
+    {
+      "id": 3,
+      "slug": "commissioning_filling_protecting_loop",
+      "title": "Chạy thử, Làm đầy và bảo vệ vòng lặp",
+      "subtitle": "Thiết kế có thể sử dụng được, thực hành điền tương thích, lọc, bản ghi khởi động và kiểm soát vi sinh.",
+      "module_badge_text": "Mô-đun 3",
+      "motion_intro": {
+        "eyebrow": "Mô-đun 3",
+        "title": "Chạy thử, Làm đầy và bảo vệ vòng lặp",
+        "subtitle": "Thiết kế có thể sử dụng được, thực hành điền tương thích, lọc, bản ghi khởi động và kiểm soát vi sinh."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Chạy thử, Làm đầy và bảo vệ vòng lặp",
+          "slug": "commissioning_filling_and_protecting_the_loop",
+          "subtitle": "Thiết kế có thể sử dụng được, kiểm tra rò rỉ, làm sạch, làm đầy, lọc và kiểm soát vi sinh.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
+            "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "Chạy thử Các phương pháp bạn sẽ áp dụng",
+          "slug": "commissioning_practices_you_will_apply",
+          "subtitle": "Đến cuối mô-đun này, bạn sẽ có thể...",
+          "objectives": [
+            "Giải thích các tính năng thiết kế giúp cho dịch vụ trở nên trôi chảy.",
+            "Mô tả các phương pháp khởi động sạch và lấp đầy cho các hệ thống mới và hiện có.",
+            "Xác định các lựa chọn lọc để bảo vệ vi kênh tấm lạnh.",
+            "Nhận biết các phương pháp kiểm soát vi sinh vật và cảnh báo về chất diệt khuẩn."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
+            "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Thiết kế cơ khí cho khả năng phục vụ",
+          "slug": "mechanical_design_for_serviceability",
+          "section_label": "Thiết kế",
+          "subtitle": "Chương trình chất lỏng cần có quyền truy cập vật lý vào mẫu, thêm, xả và cô lập.",
+          "bullets": [
+            {
+              "bold_lead": "Truy cập thoát nước và lấp đầy",
+              "text": "các cổng nên hỗ trợ thay thế chất lỏng và bổ sung có kiểm soát."
+            },
+            {
+              "bold_lead": "Tiêm hóa chất",
+              "text": "vòng lặp sẽ cho phép điều chỉnh hóa học theo hướng dẫn của nhà cung cấp."
+            },
+            {
+              "bold_lead": "Thoát nước hoàn chỉnh",
+              "text": "tránh những điểm chết bẫy các chất gây ô nhiễm hoặc quần thể vi sinh vật."
+            },
+            {
+              "bold_lead": "Phần cứng dịch vụ tương thích",
+              "text": "máng ăn, bể chứa, bong bóng, bịt kín phải tuân theo danh mục vật liệu làm ướt."
+            },
+            {
+              "bold_lead": "Hoạt động liên tục",
+              "text": "sắp xếp chảy máu và cấp liệu có thể hỗ trợ dịch vụ trong khi vòng lặp vẫn trực tuyến."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "60-68"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
+            "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Trình tự xả và làm sạch hệ thống mới",
+          "slug": "new_system_cleaning_and_flush_sequence",
+          "section_label": "Hệ thống mới",
+          "figure": {
+            "path": "figures/commissioning_sequence.mp4",
+            "media_type": "video",
+            "poster": "figures/commissioning_sequence_poster.png",
+            "alt": "Hoạt ảnh im lặng hiển thị hệ thống làm mát công nghệ mới được xả bằng tấm lạnh cách ly, xả lại bằng tấm lạnh được kết nối rồi đổ đầy chất lỏng cuối cùng trước khi lấy mẫu và ghi lại đường cơ sở.",
+            "caption": "Quá trình xả theo giai đoạn giúp các mảnh vụn xây dựng tránh xa các vi mạch tấm lạnh trước khi đổ chất lỏng cuối cùng và mẫu đường cơ sở.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "85-98"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
+            "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Những gì không nên đưa vào vòng lặp",
+          "slug": "what_not_to_put_in_the_loop",
+          "section_label": "Tránh né",
+          "subtitle": "Chất tẩy rửa và chất phụ gia không được kiểm soát có thể gây ra nguy cơ ăn mòn, cặn hoặc cặn lắng.",
+          "bullets": [
+            {
+              "bold_lead": "Tránh những người dọn dẹp không được giám sát",
+              "text": "chất tẩy rửa và chất tẩy rửa hóa học cần có hướng dẫn của nhà cung cấp."
+            },
+            {
+              "bold_lead": "Tránh dư lượng silicat",
+              "text": "silicat có thể kết tủa và lắng đọng trong các vi kênh."
+            },
+            {
+              "bold_lead": "Tôn trọng các quy định xả thải của địa phương",
+              "text": "tham khảo các yêu cầu của thành phố hoặc quy định trước khi thoát nước."
+            },
+            {
+              "bold_lead": "Bảo vệ chất lỏng cuối cùng",
+              "text": "không đưa thêm chất phụ gia ngoài phác đồ xử lý đã được phê duyệt."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "106-110"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
+            "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Lấy mẫu khởi động và bản ghi đường cơ sở",
+          "slug": "startup_sampling_and_baseline_records",
+          "section_label": "Đường cơ sở",
+          "subtitle": "Mẫu sạch đầu tiên là điểm tham chiếu để giải thích xu hướng trong tương lai.",
+          "bullets": [
+            {
+              "bold_lead": "Lưu hành",
+              "text": "chạy vòng lặp và kiểm tra rò rỉ trong lần khởi động cuối cùng."
+            },
+            {
+              "bold_lead": "Chảy máu không khí",
+              "text": "loại bỏ không khí bị mắc kẹt khi cần thiết trước khi lấy mẫu đường cơ sở."
+            },
+            {
+              "bold_lead": "Lấy mẫu từng vòng lặp",
+              "text": "thu chất lỏng đại diện từ mỗi vòng TCS."
+            },
+            {
+              "bold_lead": "Dán nhãn rõ ràng",
+              "text": "đơn vị ghi, nhận dạng chất lỏng, ngày tháng và tình trạng khởi động."
+            },
+            {
+              "bold_lead": "Giữ kỷ lục",
+              "text": "giữ lại đường cơ sở bằng chứng về tuổi thọ của chất lỏng."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "111-113"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
+            "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "Chiến lược lọc",
+          "slug": "filtration_strategy",
+          "section_label": "Các hạt và chất bẩn sinh học",
+          "figure": {
+            "path": "figures/filtration_strategy.svg",
+            "alt": "Chiến lược lọc nội tuyến và dòng phụ",
+            "caption": "Bộ lọc phải dễ bảo trì hơn vi kênh tấm lạnh."
+          },
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "61-66"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module3/slide_07_filtration_strategy.txt",
+            "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Kiểm soát vi sinh và bám bẩn sinh học",
+          "slug": "microbial_control_and_biofouling",
+          "section_label": "Sinh học",
+          "subtitle": "Kiểm soát vi sinh bảo vệ sự truyền nhiệt nhưng việc sử dụng chất diệt khuẩn phải được kiểm soát.",
+          "bullets": [
+            {
+              "bold_lead": "Mục tiêu",
+              "text": "duy trì tổng số vi khuẩn khả thi hoạt động dưới 100 CFU/ml."
+            },
+            {
+              "bold_lead": "Cấp độ hành động",
+              "text": "nên xử lý bằng chất diệt khuẩn trên 1000 CFU/ml."
+            },
+            {
+              "bold_lead": "Loại diệt khuẩn",
+              "text": "chỉ sử dụng chất diệt khuẩn không oxy hóa nếu cần thiết và theo đúng nhãn."
+            },
+            {
+              "bold_lead": "Tránh halogen",
+              "text": "clo và hóa chất tương tự có thể tạo ra nguy cơ ăn mòn."
+            },
+            {
+              "bold_lead": "Xem sự tích tụ",
+              "text": "bổ sung thường xuyên có thể tạo ra sự tích tụ chất hữu cơ hoặc chất gây ô nhiễm."
+            }
+          ],
+          "term_refs": [
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "116-118"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
+            "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "Tóm tắt mô-đun 3",
+          "slug": "module_3_summary",
+          "items": [
+            "Thiết kế vòng lặp để dịch vụ chất lỏng có thể được thực hiện một cách sạch sẽ và an toàn.",
+            "Chất lỏng kiểm tra rò rỉ và hóa chất tẩy rửa phải tương thích với hệ thống cuối cùng.",
+            "Lấy mẫu khởi động tạo ra đường cơ sở để theo dõi sau này.",
+            "Lọc bên lề và kiểm soát vi sinh bảo vệ tấm lạnh vi kênh.",
+            "Project Deschutes cung cấp một ví dụ thiết kế bộ lọc hữu ích."
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module3/slide_09_module_3_summary.txt",
+            "wav_file": "audio/module3/slide_09_module_3_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module3/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Kiểm tra kỷ luật chạy thử của bạn",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không cần thiết và bạn có thể thử lại.",
+          "questions": [
+            {
+              "id": "m3q1",
+              "prompt": "Trình tự nào hỗ trợ tốt nhất cho quá trình khởi động hệ thống mới sạch sẽ?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "Trộn mọi chất làm mát có sẵn với nước tại công trường để tiết kiệm thời gian chạy thử.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Đổ đầy hệ thống trước, sau đó quyết định xem có cần vệ sinh sau vài tháng hay không.",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "Bỏ qua việc lấy mẫu vì chất lỏng còn mới khi vận chuyển.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Làm sạch và xả sạch vòng lặp, xác minh độ sạch, đổ đầy chất lỏng đã được phê duyệt, sau đó thiết lập các bản ghi đường cơ sở.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Đúng. Khởi động nên bảo vệ vòng lặp trước khi vận hành và tạo đường cơ sở để xem xét xu hướng trong tương lai.",
+              "feedback_incorrect": "Chạy thử phải làm sạch và xả sạch trước khi đổ đầy, sử dụng chất lỏng đã được phê duyệt và thiết lập các bản ghi đường cơ sở trước khi vận hành bình thường."
+            },
+            {
+              "id": "m3q2",
+              "prompt": "Những phương pháp thực hành nào giúp bảo vệ vòng lặp trong quá trình bảo trì?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "Lưu giữ hồ sơ điền, xả, phản ứng rò rỉ và mẫu.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Đổ đầy nước chưa được xác minh hoặc chất lỏng khác bất cứ khi nào thể tích thấp.",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "Làm theo hướng dẫn của nhà cung cấp trước khi thêm chất diệt khuẩn hoặc phương pháp xử lý khác.",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "Sử dụng các bộ lọc tương thích và các vị trí có thể sử dụng được cho bộ lọc hoặc bộ lọc.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Đúng. Khả năng bảo trì, hồ sơ, lọc và xử lý có kiểm soát sẽ bảo vệ chất lỏng và phần cứng.",
+              "feedback_incorrect": "Đừng đầu hàng một cách tình cờ. Bảo vệ vòng lặp bằng các quyết định lọc, hồ sơ và xử lý tương thích do nhà cung cấp hướng dẫn."
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "Tiếp theo - Giám sát và vận hành cho tình trạng chất lỏng",
+          "slug": "up_next_monitoring_and_operating_for_fluid_healt",
+          "next_module_number": 4,
+          "next_module_title": "Giám sát, bảo trì và đánh giá hoạt động",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
+            "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Giám sát, bảo trì và đánh giá hoạt động"
+    },
+    {
+      "id": 4,
+      "slug": "monitoring_maintenance_operational_judgment",
+      "title": "Giám sát, bảo trì và đánh giá hoạt động",
+      "subtitle": "Kiểm tra định kỳ, phòng thí nghiệm QA, diễn giải xu hướng, điều chỉnh, pha trộn, thời gian sử dụng hữu ích và tài liệu.",
+      "module_badge_text": "Mô-đun 4",
+      "motion_intro": {
+        "eyebrow": "Mô-đun 4",
+        "title": "Giám sát, bảo trì và đánh giá hoạt động",
+        "subtitle": "Kiểm tra định kỳ, phòng thí nghiệm QA, diễn giải xu hướng, điều chỉnh, pha trộn, thời gian sử dụng hữu ích và tài liệu."
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "Giám sát và vận hành cho tình trạng chất lỏng",
+          "slug": "monitoring_and_operating_for_fluid_health",
+          "subtitle": "Lịch trình kiểm tra, giải thích xu hướng, điều chỉnh, trộn và tài liệu.",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
+            "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "Những phán đoán thực hiện mà bạn sẽ đưa ra",
+          "slug": "operating_judgments_you_will_make",
+          "subtitle": "Đến cuối mô-đun này, bạn sẽ có thể...",
+          "objectives": [
+            "Xác định các xét nghiệm sức khỏe chất lỏng thông thường và trong phòng thí nghiệm.",
+            "Sử dụng đường cơ sở và logic xu hướng để diễn giải kết quả.",
+            "Mô tả các phương pháp điều chỉnh và định lượng có kiểm soát.",
+            "Giải thích tại sao chất lỏng hỗn hợp làm phức tạp việc theo dõi và điều chỉnh.",
+            "Duy trì các bản ghi hỗ trợ chu kỳ làm mới và khắc phục sự cố."
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
+            "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "Lịch giám sát định kỳ",
+          "slug": "routine_monitoring_schedule",
+          "section_label": "Nhịp",
+          "subtitle": "Kế hoạch giám sát sẽ trở nên chặt chẽ hơn khi một tham số vượt ra khỏi thông số kỹ thuật.",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "Khởi động",
+              "body": "kiểm tra ngay sau khi nạp và lưu thông lần đầu.",
+              "icon": "1"
+            },
+            {
+              "title": "Hàng quý",
+              "body": "thực hiện kiểm tra tại chỗ thường xuyên trong quá trình hoạt động bình thường.",
+              "icon": "2"
+            },
+            {
+              "title": "Hàng tuần khi hết thông số kỹ thuật",
+              "body": "tăng tần số cho đến khi tham số trở về phạm vi.",
+              "icon": "3"
+            },
+            {
+              "title": "Phòng thí nghiệm QA",
+              "body": "hàng quý trong một năm, sau đó định kỳ sáu tháng nếu ổn định.",
+              "icon": "4"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "120-125"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
+            "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "qa"
+          ]
+        },
+        {
+          "type": "content_table",
+          "title": "Bộ kiểm tra tại chỗ",
+          "slug": "on_site_test_set",
+          "section_label": "Kiểm tra hiện trường",
+          "subtitle": "Các xét nghiệm định kỳ là tín hiệu nhanh hướng dẫn việc tăng cấp và theo dõi trong phòng thí nghiệm.",
+          "columns": [
+            "Kiểm tra tại chỗ",
+            "Tín hiệu",
+            "Hành động điển hình"
+          ],
+          "rows": [
+            [
+              "Độ dẫn điện",
+              "Vật liệu hòa tan hoặc ô nhiễm",
+              "So sánh với đường cơ sở và tốc độ tăng"
+            ],
+            [
+              "độ pH",
+              "Cửa sổ hóa học",
+              "Xác nhận trong kế hoạch điều trị"
+            ],
+            [
+              "Độ cứng",
+              "Nước trang điểm hoặc nguy cơ rò rỉ",
+              "Điều tra nguồn Ca/Mg"
+            ],
+            [
+              "Tổng số vi khuẩn sống",
+              "Hoạt động của vi sinh vật",
+              "Kiểm tra lại hoặc xử lý theo hướng dẫn của nhà cung cấp"
+            ],
+            [
+              "Azo",
+              "Bảo vệ đồng",
+              "Suy giảm xu hướng và ngưỡng hành động"
+            ],
+            [
+              "Độ đục/sự xuất hiện",
+              "Các hạt hoặc thay đổi độ trong",
+              "Kiểm tra bộ lọc và lịch sử mẫu"
+            ],
+            [
+              "Đang tải bộ lọc",
+              "Gánh nặng hạt hoặc chất bẩn sinh học",
+              "Thay thế hoặc điều tra nếu cao"
+            ]
+          ],
+          "term_refs": [
+            "azole",
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 4
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module4/slide_04_on_site_test_set.txt",
+            "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "Phòng thí nghiệm QA và ICP Phân tích",
+          "slug": "laboratory_qa_and_icp_analysis",
+          "section_label": "Chế độ xem phòng thí nghiệm",
+          "subtitle": "Phân tích độc lập giúp phân biệt các sản phẩm phụ trôi dạt, ô nhiễm và ăn mòn của chất lỏng.",
+          "columns": [
+            "Kiểm tra phòng thí nghiệm",
+            "Những gì nó giúp tiết lộ",
+            "Tại sao nó quan trọng"
+          ],
+          "rows": [
+            [
+              "TSS và TDS",
+              "Các hạt và vật liệu hòa tan",
+              "Theo dõi độ sạch và ô nhiễm"
+            ],
+            [
+              "Kim loại đã lọc / chưa lọc",
+              "Đồng, sắt, kẽm, crom, niken",
+              "Cho thấy sự ăn mòn hoặc giải phóng vật liệu"
+            ],
+            [
+              "Phân tích ICP",
+              "Hồ sơ nguyên tố",
+              "Ghi lại sự thay đổi chất lượng nước theo thời gian"
+            ],
+            [
+              "Độ đục",
+              "Độ trong của chất lỏng và các hạt",
+              "Hỗ trợ các quyết định lọc và gửi tiền"
+            ],
+            [
+              "Phiếu ăn mòn nếu sử dụng",
+              "Bằng chứng ăn mòn bổ sung",
+              "Có thể không thể hiện đầy đủ hình học tấm lạnh"
+            ],
+            [
+              "Đánh giá bằng văn bản",
+              "Giải thích kỹ thuật",
+              "Biến dữ liệu thành hướng dẫn hành động"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "icp"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 5
+            },
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraph": "126"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
+            "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Đọc xu hướng, không chỉ là con số",
+          "slug": "reading_the_trend_not_just_the_number",
+          "section_label": "Logic xu hướng",
+          "figure": {
+            "path": "figures/monitoring_framework.svg",
+            "alt": "Tình trạng chất lỏng khung giám sát tách biệt tình trạng hệ thống và tình trạng chất lỏng",
+            "caption": "Sử dụng đường cơ sở và hướng xu hướng để phân biệt tình trạng hệ thống với tình trạng chất lỏng."
+          },
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "121-128"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
+            "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Điều chỉnh và định lượng theo hướng dẫn của nhà cung cấp",
+          "slug": "adjustments_and_supplier_guided_dosing",
+          "section_label": "Hành động khắc phục",
+          "subtitle": "Việc kiểm soát liều lượng cần biết khối lượng, hướng dẫn của nhà cung cấp, lưu thông, kiểm tra lại và ghi lại.",
+          "bullets": [
+            {
+              "bold_lead": "Khối lượng đã biết",
+              "text": "không thể tính toán liều lượng một cách an toàn nếu không có thể tích vòng lặp."
+            },
+            {
+              "bold_lead": "Hướng dẫn nhà cung cấp",
+              "text": "chỉ điều chỉnh theo kế hoạch điều trị và hỗ trợ kỹ thuật."
+            },
+            {
+              "bold_lead": "Lưu hành",
+              "text": "trộn trong 30 phút trước khi lấy mẫu tiếp theo."
+            },
+            {
+              "bold_lead": "Kiểm tra lại",
+              "text": "xác nhận việc điều chỉnh đã chuyển kết quả vào phạm vi."
+            },
+            {
+              "bold_lead": "Tài liệu",
+              "text": "ngày ghi, hệ thống, loại phụ gia, số lượng và báo cáo."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "129-134"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
+            "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "Trộn chất lỏng và khả năng tương tác",
+          "slug": "fluid_mixing_and_interoperability",
+          "section_label": "Khả năng tương tác",
+          "figure": {
+            "path": "figures/mixing_decision.svg",
+            "alt": "Logic quyết định trộn chất lỏng",
+            "caption": "Việc trộn lẫn được xử lý tốt nhất như một sự kiện được kiểm soát cần có bằng chứng cụ thể về chất lỏng."
+          },
+          "term_refs": [
+            "iat",
+            "oat"
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
+            "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "Tài liệu và đệ trình",
+          "slug": "documentation_and_submittals",
+          "section_label": "Hồ sơ",
+          "subtitle": "Nếu nó làm thay đổi chất lỏng, vật liệu hoặc cách diễn giải mẫu, hãy ghi lại nó.",
+          "bullets": [
+            {
+              "bold_lead": "Nhận dạng chất lỏng",
+              "text": "nguồn, COA, SDS và phân tích cho từng hệ thống."
+            },
+            {
+              "bold_lead": "Âm lượng hệ thống",
+              "text": "cần thiết để tính toán liều lượng chất ức chế hoặc chất phụ gia."
+            },
+            {
+              "bold_lead": "Lịch sử điều chỉnh",
+              "text": "ngày, số lượng, loại phụ gia và báo cáo phân tích."
+            },
+            {
+              "bold_lead": "Vật liệu xây dựng",
+              "text": "kim loại, chất đàn hồi, nhựa, bộ lọc, con dấu và chất thay thế."
+            },
+            {
+              "bold_lead": "Kế hoạch điều trị",
+              "text": "thông số vận hành, lịch trình thử nghiệm và tài liệu sản phẩm."
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds"
+          ],
+          "source_refs": [
+            {
+              "source": "Hướng dẫn sử dụng chất lỏng truyền nhiệt nền nước trong một pha Giá đỡ làm mát bằng chất lỏng dạng tấm lạnh",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "143-151"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
+            "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "Tóm tắt mô-đun 4",
+          "slug": "module_4_summary",
+          "items": [
+            "Sử dụng các biện pháp kiểm tra định kỳ và lab QA cùng nhau.",
+            "Giải thích các xu hướng theo đường cơ sở chứ không chỉ các giá trị riêng biệt.",
+            "Chỉ thực hiện điều chỉnh hóa học thông qua các quy trình được kiểm soát do nhà cung cấp hướng dẫn.",
+            "Hãy coi việc trộn chất lỏng như một sự kiện làm thay đổi độ phức tạp của việc giám sát.",
+            "Duy trì hồ sơ mà các nhà khai thác trong tương lai có thể tin tưởng."
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module4/slide_10_module_4_summary.txt",
+            "wav_file": "audio/module4/slide_10_module_4_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module4/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Kiểm tra phán đoán điều hành của bạn",
+          "subtitle": "Trả lời một lần để tiếp tục. Độ chính xác là không cần thiết và bạn có thể thử lại.",
+          "questions": [
+            {
+              "id": "m4q1",
+              "prompt": "Cách tốt nhất để giải thích kết quả sức khỏe chất lỏng thông thường là gì?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "Phản ứng với một số duy nhất mà không kiểm tra phương pháp, lịch sử hoặc bối cảnh vận hành.",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "Xu hướng kết quả theo đường cơ sở, giới hạn và những thay đổi gần đây trước khi quyết định hành động.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Liều hóa chất ngay lập tức bất cứ khi nào có bất kỳ giá trị nào thay đổi.",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "Bỏ qua kết quả xét nghiệm khi que thử tại chỗ có vẻ chấp nhận được.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng. Phán quyết vận hành xuất phát từ xu hướng, đường cơ sở, giới hạn, phương pháp thử nghiệm và bối cảnh.",
+              "feedback_incorrect": "Một giá trị duy nhất là không đủ. Sử dụng xu hướng, đường cơ sở, giới hạn, phương pháp thử nghiệm và bối cảnh vận hành trước khi hành động."
+            },
+            {
+              "id": "m4q2",
+              "prompt": "Điều gì nên xảy ra trước khi trộn chất lỏng hoặc thực hiện điều chỉnh hóa học?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "Sử dụng kết quả trong phòng thí nghiệm hoặc tại chỗ để xác minh xem việc điều chỉnh có hiệu quả hay không.",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "Xác nhận hướng dẫn của nhà cung cấp và khả năng tương thích đối với chất lỏng và vật liệu chính xác có liên quan.",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "Giả sử tất cả các chất lỏng gốc nước bị ức chế đều có thể thay thế cho nhau.",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "Ghi lại sự thay đổi, ngày tháng, lô chất lỏng, nồng độ và lý do hành động.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Đúng. Việc trộn và định lượng cần có hướng dẫn, tài liệu và xác minh tiếp theo của nhà cung cấp.",
+              "feedback_incorrect": "Đừng cho rằng có thể thay thế cho nhau. Xác nhận tính tương thích, ghi lại hành động và xác minh kết quả."
+            }
+          ]
+        },
+        {
+          "type": "course_complete",
+          "title": "Chất lỏng làm mát trong làm mát trực tiếp bằng chất lỏng (DLC)",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "course_title": "Chất lỏng làm mát trong làm mát trực tiếp bằng chất lỏng (DLC)",
+          "cert_message": "Bạn đã hoàn thành khóa học về chất lỏng một pha DLC. Sử dụng đồng thời hướng dẫn OCP, kế hoạch xử lý của nhà cung cấp và hồ sơ vận hành tại địa phương khi áp dụng các khái niệm này.",
+          "thank_you_message": "Cảm ơn bạn đã hoàn thành Mô-đun 4: Giám sát, Bảo trì và Đánh giá Vận hành.",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata_language_name": "Vietnamese",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "vi-VN",
+    "source_course_sha256": "085233653e612c3ab97b2e834f2fbcf2562a736cc7ec71a13539cd84175559cb"
+  },
+  "ui_labels": {
+    "not_started": "Chưa bắt đầu",
+    "completed": "Đã hoàn thành",
+    "module": "Mô-đun",
+    "module_complete": "Đã hoàn thành mô-đun {module}",
+    "course_complete": "Hoàn thành khóa học",
+    "course_overview": "Tổng quan khóa học",
+    "learning_objectives": "Mục tiêu học tập",
+    "key_takeaways": "Điểm chính",
+    "knowledge_check": "Kiểm tra kiến thức",
+    "submit": "Gửi",
+    "retry": "Thử lại",
+    "quiz_gate_note": "Để tiếp tục, hãy gửi mỗi câu hỏi ít nhất một lần. Bạn có thể tiếp tục dù trả lời đúng hay sai và có thể thử lại.",
+    "quiz_gate_warning": "Hãy gửi mỗi câu hỏi ít nhất một lần trước khi sang trang tiếp theo.",
+    "select_answer": "Hãy chọn ít nhất một đáp án rồi gửi.",
+    "correct": "Trả lời đúng.",
+    "review_feedback": "Hãy xem phản hồi rồi thử lại.",
+    "narration_hint": "Lời thuyết minh sẽ tự động bắt đầu. Nhấn phím mũi tên phải hoặc phím cách để sang trang tiếp theo.",
+    "theme": "Giao diện",
+    "toggle_dark_mode": "Bật hoặc tắt chế độ tối",
+    "previous_slide": "Slide trước",
+    "next_slide": "Slide tiếp theo",
+    "play_pause_narration": "Phát hoặc tạm dừng lời thuyết minh",
+    "playback_speed": "Tốc độ phát",
+    "playback_speed_slider": "Điều chỉnh tốc độ phát",
+    "speed": "Tốc độ",
+    "toggle_fullscreen": "Bật hoặc tắt toàn màn hình",
+    "fullscreen": "Toàn màn hình",
+    "video_controls": "Điều khiển video",
+    "play_video": "Phát video",
+    "pause_video": "Tạm dừng video",
+    "zoom_video": "Phóng to video",
+    "video_figure": "Hình minh họa video",
+    "zoom_figure": "Phóng to hình",
+    "enlarged_figure": "Hình phóng to",
+    "lightbox_close_hint": "Nhấp bên ngoài hoặc nhấn Esc để đóng.",
+    "opens_new_tab": "Mở trong thẻ mới",
+    "learner_resource": "Tài nguyên học tập",
+    "open": "Mở",
+    "learn_more": "Tìm hiểu thêm",
+    "reference": "Tài liệu tham khảo",
+    "course_intro": "Giới thiệu khóa học OCP Academy",
+    "skip_intro": "Bỏ qua phần giới thiệu",
+    "share_feedback": "Chia sẻ phản hồi",
+    "survey_body": "Bạn có thể dành vài phút giúp chúng tôi cải thiện không? Phản hồi gửi cho nhóm phát triển sẽ được dùng để cải thiện khóa học này và các khóa học trong tương lai. Người tham gia sẽ được chọn ngẫu nhiên để nhận quà lưu niệm.",
+    "default_module_thanks": "Cảm ơn bạn đã hoàn thành mô-đun {module}, “{title}”.",
+    "default_course_wrap": "Bạn đã hoàn thành tất cả các mô-đun của {course}. Hy vọng nội dung khóa học sẽ hữu ích cho công việc thực tế của bạn.",
+    "up_next": "Tiếp theo",
+    "go_to_module": "Đi đến mô-đun {module}"
+  }
+}

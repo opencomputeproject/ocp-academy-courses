@@ -1,0 +1,1856 @@
+{
+  "style": "Slides",
+  "language": "zh-TW",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "1AKkSX7KMPHIWuz76m0n",
+    "voice_name": "Tiffy",
+    "model_id": "eleven_multilingual_v2"
+  },
+  "course_slug": "cooling_fluids_in_direct_liquid_cooling_zh_tw",
+  "course_title": "直接液冷(DLC) 中的冷卻液",
+  "course_subtitle": "單相TCS晶片直冷部署的流暢指導",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "水基使用指南傳熱流體",
+  "target_duration_minutes": 35,
+  "audience_level": "中間",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "cooling_fluids_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "流體"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP 學院"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "在兩相冷板液冷機架中使用電介質傳熱流體的指南",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "直接液冷。一種冷卻方法，其中液體消除處理器或加速器等發熱組件附近的熱量。",
+      "reference_label": "OCP 冷卻環境",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "冷卻液分配單元。泵送和調節冷卻劑以及在 TCS 和設施系統之間傳遞熱量的設備。",
+      "reference_label": "OCP 冷卻環境",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "技術冷卻系統。 CDU 與機架或伺服器冷卻硬體之間的閉合輔助迴路。",
+      "reference_label": "ASHRAE/OCP 用法",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "設施水系統。 TCS 邊界之外的設施側環路。",
+      "reference_label": "OCP 冷卻環境",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "具有 25%丙二醇的傳熱流體，常用於單相晶片直冷冷卻。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "qd",
+      "term": "QD",
+      "tooltip": "快速接頭。一種服務連接器，允許在迴路中建立和斷開流體連接。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "iat",
+      "term": "IAT",
+      "tooltip": "無機添加劑技術，通常使用磷酸鹽、矽酸鹽、硼酸鹽或相關無機物緩蝕劑。"
+    },
+    {
+      "id": "oat",
+      "term": "OAT",
+      "tooltip": "有機酸技術，一種與更長壽命的腐蝕保護相關的冷卻劑抑制劑方法。"
+    },
+    {
+      "id": "hoat",
+      "term": "HOAT",
+      "tooltip": "混合有機酸技術，將有機酸與少量無機化學結合。"
+    },
+    {
+      "id": "azole",
+      "term": "唑類",
+      "tooltip": "用於保護銅和黃色金屬的緩蝕劑系列。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tss",
+      "term": "TSS",
+      "tooltip": "總懸浮固體。懸浮在流體中的顆粒。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "tds",
+      "term": "TDS",
+      "tooltip": "總溶解固體。流體中溶解的物質，與電導率有關。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "cfu",
+      "term": "CFU/ml",
+      "tooltip": "每毫升菌落形成單位，用於液體中的微生物數。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "icp",
+      "term": "ICP",
+      "tooltip": "電感耦合等離子體分析，用於識別可溶性離子和金屬污染物。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "sds",
+      "term": "SDS",
+      "tooltip": "安全資料表。包含危險、處理、儲存、PPE 和處置資訊的供應商文件。",
+      "reference_label": "OSHA SDS 概述",
+      "url": "https://www.osha.gov/hazcom/safety-data-sheets"
+    },
+    {
+      "id": "coa",
+      "term": "COA",
+      "tooltip": "分析證書。顯示所製造流體的產品品質或合規性的製造商文件。",
+      "reference_label": "OCP單相指導草案",
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+    },
+    {
+      "id": "latent_heat",
+      "term": "潛熱",
+      "tooltip": "在相變（例如沸騰或冷凝）過程中吸收或釋放的熱量。",
+      "reference_label": "OCP兩相指南",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "id": "tdp",
+      "term": "TDP",
+      "definition": "熱設計功率",
+      "tooltip": "熱設計功率。確定冷卻能力時使用的處理器或加速器功率和熱設計額定值；確切的含義可能因供應商而異。"
+    },
+    {
+      "id": "ashrae",
+      "term": "ASHRAE",
+      "definition": "美國暖氣、冷氣與空調工程師學會",
+      "tooltip": "美國暖氣、冷氣和空調工程師協會。 ASHRAE 發布資料中心熱指南和課程使用的術語。",
+      "reference_label": "ASHRAE",
+      "url": "https://www.ashrae.org/"
+    },
+    {
+      "id": "astm",
+      "term": "ASTM",
+      "definition": "ASTM 國際",
+      "tooltip": "ASTM 國際。一個標準組織，其測試方法通常被材料、流體和腐蝕測試引用。",
+      "reference_label": "ASTM 國際",
+      "url": "https://www.astm.org/"
+    },
+    {
+      "id": "qa",
+      "term": "QA",
+      "definition": "品質保證",
+      "tooltip": "品質保證。用於驗證流體狀況、供應商證據和操作資料是否符合預期的測試和記錄保存。"
+    },
+    {
+      "id": "ppe",
+      "term": "PPE",
+      "definition": "個人防護裝備",
+      "tooltip": "個人防護裝備。手套、護目鏡和從 SDS 和當地安全程序中選擇的其他控制措施。",
+      "reference_label": "OSHA PPE 概述",
+      "url": "https://www.osha.gov/personal-protective-equipment"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_single_phase_fluids_matter",
+      "title": "為什麼單相液體在DLC中很重要",
+      "subtitle": "流動的邊界、緊迫性、源紀律和兩相對比。",
+      "module_badge_text": "模組 1",
+      "motion_intro": {
+        "eyebrow": "模組 1",
+        "title": "為什麼單相液體在DLC中很重要",
+        "subtitle": "流動的邊界、緊迫性、源紀律和兩相對比。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "直接液冷(DLC) 中的冷卻液",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "subtitle": "單相TCS 流體選擇、試運轉、監控與操作。",
+          "version_chip": "水基使用指南傳熱流體",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "course_overview",
+          "title": "課程路線圖",
+          "slug": "course_roadmap",
+          "subtitle": "四個模組從架構和流體系列轉向操作規程。",
+          "modules_listed": [
+            "為什麼單相液體在DLC中很重要",
+            "選擇和指定單相流體",
+            "試運轉，填充和保護循環",
+            "監控、維護和操作判斷"
+          ],
+          "chips": [
+            {
+              "icon": "時間",
+              "text": "30-40 分鐘課程"
+            },
+            {
+              "icon": "等級",
+              "text": "中級技術觀眾"
+            },
+            {
+              "icon": "適用範圍",
+              "text": "單相DLC 液體"
+            }
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_roadmap.txt",
+            "wav_file": "audio/module1/slide_02_course_roadmap.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        },
+        {
+          "type": "content_grid",
+          "title": "AI熱密度改變散熱問題",
+          "slug": "ai_heat_density_changes_the_cooling_problem",
+          "section_label": "為什麼現在",
+          "subtitle": "更高的晶片功率和更密集的機架使 TCS 流體成為可靠性變數。",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "更高的晶片 TDP",
+              "body": "加速器將熱量推至舒適的純空氣限制之外。",
+              "icon": "1"
+            },
+            {
+              "title": "更密集的機架",
+              "body": "每個機架的計算量增加會增加每個循環決策的結果。",
+              "icon": "2"
+            },
+            {
+              "title": "殘留空氣",
+              "body": "液體通常攜帶大部分熱量，但並不是機架中的所有負載。",
+              "icon": "3"
+            },
+            {
+              "title": "正常運轉時間的風險增加",
+              "body": "流體問題可能會變成計算可用性問題。",
+              "icon": "4"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
+            "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tdp",
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "液體存在的地方",
+          "slug": "where_the_fluid_lives",
+          "section_label": "系統邊界",
+          "figure": {
+            "path": "figures/tcs_loop.svg",
+            "alt": "技術冷卻系統在 CDU 和冷板之間循環",
+            "caption": "本課程重點在於 CDU 和 IT 設備之間的閉環 TCS。"
+          },
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "15-17日"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
+            "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "cdu",
+            "fws",
+            "ashrae"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "單相範圍內的流體族",
+          "slug": "single_phase_fluid_families_in_scope",
+          "section_label": "適用範圍",
+          "figure": {
+            "path": "figures/fluid_families.svg",
+            "alt": "處理過的水和 PG25 在範圍內，而兩相冷媒則被延後",
+            "caption": "本課程中可行的指導適用於處理過的水和PG25型單相循環。"
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
+            "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "四個操作員問題",
+          "slug": "the_four_operator_questions",
+          "section_label": "算子取景",
+          "subtitle": "液體焦慮是實用的：相容性、洩漏、監控和專業知識。",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "相容性",
+              "body": "該液體會保護每個接液材料嗎？",
+              "icon": "1"
+            },
+            {
+              "title": "洩漏",
+              "body": "當液體出現在不該出現的地方時會發生什麼事？",
+              "icon": "2"
+            },
+            {
+              "title": "監控",
+              "body": "應該對哪些內容進行採樣、趨勢分析和升級？",
+              "icon": "3"
+            },
+            {
+              "title": "專業知識",
+              "body": "操作期間誰擁有化學決策權？",
+              "icon": "4"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
+            "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_two_column",
+          "title": "兩相液體是不同的課程",
+          "slug": "two_phase_fluids_are_a_different_course",
+          "section_label": "對比",
+          "subtitle": "請勿將單相水/PG25 規則與兩相冷媒規則結合。",
+          "bullets": [
+            {
+              "bold_lead": "單相",
+              "text": "水或PG25主要以顯熱的形式攜帶熱量，並且需要化學維持。"
+            },
+            {
+              "bold_lead": "兩相",
+              "text": "低沸點介電冷媒依賴潛熱並需要壓力、蒸汽和吹掃管理。"
+            },
+            {
+              "bold_lead": "共同點",
+              "text": "相容性規則、SDS、COA、記錄和流體與系統的對齊。"
+            }
+          ],
+          "figure": {
+            "path": "figures/single_vs_two_phase.svg",
+            "alt": "單相流體使用顯熱，而兩相冷媒使用潛熱",
+            "caption": "兩相流體教育可以在兩相DLC課程中找到。"
+          },
+          "reference_links": [
+            {
+              "label": "OCP兩相液體指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            }
+          ],
+          "term_refs": [
+            "latent_heat",
+            "sds",
+            "coa"
+          ],
+          "source_refs": [
+            {
+              "source": "在兩相冷板液冷機架中使用電介質傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "slides": "6-13"
+            },
+            {
+              "source": "在兩相冷板液冷機架中使用電介質傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "timestamp": "03:12-09:15"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
+            "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "標準和來源圖",
+          "slug": "standards_and_source_map",
+          "section_label": "來源學科",
+          "figure": {
+            "path": "figures/standards_map.svg",
+            "alt": "DLC 流體引導的標準與源圖",
+            "caption": "液體指導是一系列社區標準、測試方法和產品特定的治療計劃。"
+          },
+          "reference_links": [
+            {
+              "label": "OCP 冷卻環境",
+              "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
+            "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "astm"
+          ]
+        },
+        {
+          "type": "takeaways",
+          "title": "模組 1 總結",
+          "slug": "module_1_summary",
+          "items": [
+            "本課程重點介紹單相TCS 流體：處理過的水和 PG25。",
+            "兩相冷媒需要單獨的學習路徑，因為它們的價值來自潛熱。",
+            "流動指導是一種生命週期規則，而不是一次性採購步驟。",
+            "相容性、監控和記錄是反覆出現的主題。"
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module1/slide_09_module_1_summary.txt",
+            "wav_file": "audio/module1/slide_09_module_1_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module1/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "檢查你的流體邊界",
+          "subtitle": "回答一次即可繼續。不要求正確性，您可以重試。",
+          "questions": [
+            {
+              "id": "m1q1",
+              "prompt": "哪一句話最能描述本課程的流動範圍？",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "傳統風冷機架內的氣流管理。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "單相，水基傳熱流體在晶片直冷冷板循環中。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "用於兩相冷板的低沸點介電冷媒。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "僅用於建築冷卻水塔的設施側水處理。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正確。本課程重點介紹直接液冷技術冷卻系統中使用的單相水基流體。",
+              "feedback_incorrect": "範圍是晶片直冷冷板迴路中使用的單相水基流體，而不是設施水或兩相冷媒。"
+            },
+            {
+              "id": "m1q2",
+              "prompt": "哪些項目屬於單相流體程序的操作問題？",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "A",
+                  "text": "指定了哪些流體系列和濃度。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "低沸點冷媒是否可以作為單相冷卻劑運作而不改變流量需求。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "哪些化學限制和測試定義了流體健康狀況。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "哪些材料、過濾器和維修實務會接觸流體。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正確。流體選擇、化學控制、相容性、過濾和維修實踐都屬於該計劃。",
+              "feedback_incorrect": "單相計劃圍繞流體選擇、化學限制、接液材料、過濾和維修實踐而構建。"
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "接下來 - 選擇和指定單相流體",
+          "slug": "up_next_choosing_and_specifying_single_phase_flu",
+          "next_module_number": 2,
+          "next_module_title": "選擇和指定單相流體",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
+            "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "選擇和指定單相流體"
+    },
+    {
+      "id": 2,
+      "slug": "choosing_single_phase_fluids",
+      "title": "選擇和指定單相流體",
+      "subtitle": "水、PG25、化學視窗、抑制劑和相容性證據。",
+      "module_badge_text": "模組2",
+      "motion_intro": {
+        "eyebrow": "模組2",
+        "title": "選擇和指定單相流體",
+        "subtitle": "水、PG25、化學視窗、抑制劑和相容性證據。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "選擇和指定單相流體",
+          "slug": "choosing_and_specifying_single_phase_fluids",
+          "subtitle": "水、PG25、化學窗口、抑制劑和接液材料相容性。",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
+            "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "您將分類的選擇決策",
+          "slug": "selection_decisions_you_will_classify",
+          "subtitle": "學完本模組後，您將能夠...",
+          "objectives": [
+            "使用性能和維護權衡來比較處理過的水和PG25。",
+            "確定保護單相TCS 迴路的流體品質目標。",
+            "解釋為什麼抑制劑化學對於腐蝕控制和沈積物很重要。",
+            "將流體選擇連接到接液材料和供應商證據。"
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
+            "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "水與 PG25 的權衡",
+          "slug": "water_versus_pg25_tradeoffs",
+          "section_label": "流體選擇",
+          "figure": {
+            "path": "figures/water_pg25_tradeoff.svg",
+            "alt": "處理過的水和 PG25 的權衡",
+            "caption": "水有利於熱性能。 PG25 在濃度不變時增加生物靜態操作裕度。"
+          },
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
+            "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "即用型流體質量目標",
+          "slug": "ready_to_use_fluid_quality_targets",
+          "section_label": "流體目標",
+          "subtitle": "水基的選定吃水值傳熱流體。",
+          "columns": [
+            "參數",
+            "草案目標",
+            "為什麼這很重要"
+          ],
+          "rows": [
+            [
+              "TSS",
+              "<5 ppm",
+              "顆粒和過濾器或微通道風險"
+            ],
+            [
+              "TDS",
+              "處理後<1000 ppm",
+              "溶解固體和污染趨勢"
+            ],
+            [
+              "電導率",
+              "25 攝氏度時 <2000 uS/cm",
+              "溶解物質的簡易現場訊號"
+            ],
+            [
+              "酸鹼度",
+              "8.0 至 10.5",
+              "腐蝕和處理化學窗口"
+            ],
+            [
+              "總硬度",
+              "<30 ppm（以 CaCO3 計）",
+              "補給水水質及水垢風險"
+            ],
+            [
+              "細菌",
+              "填充<1 CFU/ml;操作 <100 CFU/ml",
+              "生物污損控制"
+            ],
+            [
+              "唑類",
+              ">100 ppm 或依照治療計劃",
+              "銅和黃色金屬保護"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "azole"
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 1
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
+            "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "工作溫度和化學窗口",
+          "slug": "operating_temperature_and_chemistry_window",
+          "section_label": "操作範圍",
+          "subtitle": "溫度是相容性要求的一部分。",
+          "bullets": [
+            {
+              "bold_lead": "典型範圍",
+              "text": "TCS循環在草案指南中被描述為低於攝氏49度。"
+            },
+            {
+              "bold_lead": "預期上限",
+              "text": "未經額外審查，預計運轉溫度不會超過攝氏 66 度。"
+            },
+            {
+              "bold_lead": "相容性觸發",
+              "text": "更高的溫度需要審查接液材料和處理化學。"
+            },
+            {
+              "bold_lead": "當地狀況",
+              "text": "與 IT 和冷板供應商確認最大表面停滯溫度。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "52-54"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
+            "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "緩蝕劑：IAT、OAT 和 HOAT",
+          "slug": "corrosion_inhibitors_iat_oat_and_hoat",
+          "section_label": "抑制劑化學",
+          "figure": {
+            "path": "figures/inhibitor_timeline.svg",
+            "alt": "從水到 IAT OAT 和 HOAT 的冷卻劑抑制劑化學時間表",
+            "caption": "抑制劑策略影響腐蝕防護、使用壽命和污染物敏感性。"
+          },
+          "term_refs": [
+            "iat",
+            "oat",
+            "hoat"
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "硬水、水垢和沈積物風險",
+          "slug": "hard_water_scale_and_deposit_risk",
+          "section_label": "存款",
+          "figure": {
+            "path": "figures/hard_water_scale.svg",
+            "alt": "硬水離子會形成水垢並威脅微通道",
+            "caption": "鈣和鎂是微小的化學訊號，會對正常運作時間產生很大的影響。"
+          },
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
+            "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "接液材料和相容性",
+          "slug": "wetted_materials_and_compatibility",
+          "section_label": "相容性",
+          "figure": {
+            "path": "figures/wetted_materials.svg",
+            "alt": "接液材料相容性圖",
+            "caption": "材料變化也是流體相容性事件。"
+          },
+          "term_refs": [
+            "qd"
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "46-51"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
+            "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "資格和供應商證據",
+          "slug": "qualification_and_supplier_evidence",
+          "section_label": "證據",
+          "subtitle": "採購訂單消失後，規範應該可以審核。",
+          "bullets": [
+            {
+              "bold_lead": "COA",
+              "text": "確認製造的產品品質和一致性。"
+            },
+            {
+              "bold_lead": "SDS",
+              "text": "定義處理、危險、PPE、儲存和處置資訊。"
+            },
+            {
+              "bold_lead": "治療計劃",
+              "text": "設定本地運轉限值、測試和糾正措施。"
+            },
+            {
+              "bold_lead": "相容性確認",
+              "text": "將流體與接液材料和操作條件連結起來。"
+            },
+            {
+              "bold_lead": "記錄",
+              "text": "透過硬體刷新周期保留決策。"
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds",
+            "ppe"
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "31-36"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
+            "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "模組 2 總結",
+          "slug": "module_2_summary",
+          "items": [
+            "不要僅根據熱性能來選擇流體。",
+            "流動目標是操作訊號，而不是文書工作。",
+            "抑制劑化學會影響腐蝕、沉積物和監測。",
+            "接液材料清單和工作溫度定義相容性。",
+            "COA、SDS、治療計劃和記錄使決策可審計。"
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module2/slide_10_module_2_summary.txt",
+            "wav_file": "audio/module2/slide_10_module_2_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module2/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "檢查您的流體選擇",
+          "subtitle": "回答一次即可繼續。不要求正確性，您可以重試。",
+          "questions": [
+            {
+              "id": "m2q1",
+              "prompt": "選擇 PG25 而不是處理過的水時，主要的權衡是什麼？",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "在相同的流量下，PG25 總是比水帶走更多的熱量。",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "PG25 消除了相容性證據的需要。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "PG25 可以增加防凍保護和抑制劑包的優點，但與水相比，它會降低熱容量。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "PG25 將迴路變成兩相冷媒系統。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正確。 PG25 可能有用，但必須考慮較低的熱容量和流體性質的變化。",
+              "feedback_incorrect": "權衡並不是 PG25 就自動變得更好。它可以幫助滿足冷凍和抑制劑的需求，同時降低與水相比的熱容量。"
+            },
+            {
+              "id": "m2q2",
+              "prompt": "哪些證據屬於流體鑑定包？",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "D",
+                  "text": "只是一個通用的流體家族名稱，沒有濃度或材料背景。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "即用型化學值，例如濃度、pH、電導率和抑制劑限值。",
+                  "correct": true
+                },
+                {
+                  "id": "C",
+                  "text": "運轉限值、抽樣和維護回應的供應商指南。",
+                  "correct": true
+                },
+                {
+                  "id": "B",
+                  "text": "接液金屬、聚合物、彈性體和連接器的兼容性證據。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正確。資格需要化學、材料相容性和供應商操作指導。",
+              "feedback_incorrect": "通用的流體名稱是不夠的。此包裝需要化學目標、精確的材料和供應商指導。"
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "接下來 -試運轉，填充和保護循環",
+          "slug": "up_next_commissioning_filling_and_protecting_the",
+          "next_module_number": 3,
+          "next_module_title": "試運轉，填充和保護循環",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
+            "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "試運轉，填充和保護循環"
+    },
+    {
+      "id": 3,
+      "slug": "commissioning_filling_protecting_loop",
+      "title": "試運轉，填充和保護循環",
+      "subtitle": "實用的設計、相容的填充實務、過濾、啟動記錄和微生物控制。",
+      "module_badge_text": "模組 3",
+      "motion_intro": {
+        "eyebrow": "模組 3",
+        "title": "試運轉，填充和保護循環",
+        "subtitle": "實用的設計、相容的填充實務、過濾、啟動記錄和微生物控制。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "試運轉，填充和保護循環",
+          "slug": "commissioning_filling_and_protecting_the_loop",
+          "subtitle": "耐用設計、洩漏檢查、清潔、填充、過濾和微生物控制。",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
+            "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "試運轉您將應用的實踐",
+          "slug": "commissioning_practices_you_will_apply",
+          "subtitle": "學完本模組後，您將能夠...",
+          "objectives": [
+            "解釋使流體服務成為可能的設計特徵。",
+            "描述新系統和現有系統的清潔啟動和填充實踐。",
+            "確定保護冷板微通道的過濾選擇。",
+            "了解微生物控制實務和殺菌劑注意事項。"
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
+            "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "適用性的機械設計",
+          "slug": "mechanical_design_for_serviceability",
+          "section_label": "設計",
+          "subtitle": "流體程式需要實體存取來採樣、添加、排出和隔離。",
+          "bullets": [
+            {
+              "bold_lead": "排水和填充通道",
+              "text": "端口應支援液體更換和控制添加。"
+            },
+            {
+              "bold_lead": "化學注射",
+              "text": "此迴路應允許供應商指導的化學調整。"
+            },
+            {
+              "bold_lead": "徹底排水",
+              "text": "避免捕獲污染物或微生物種群的死角。"
+            },
+            {
+              "bold_lead": "相容的服務硬體",
+              "text": "供料器、儲液器、氣囊和密封件必須遵循接液材料清單。"
+            },
+            {
+              "bold_lead": "營運連續性",
+              "text": "當迴路保持在線時，放氣和供給裝置可以支援服務。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "60-68"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
+            "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "新系統清潔和沖洗順序",
+          "slug": "new_system_cleaning_and_flush_sequence",
+          "section_label": "新系統",
+          "figure": {
+            "path": "figures/commissioning_sequence.mp4",
+            "media_type": "video",
+            "poster": "figures/commissioning_sequence_poster.png",
+            "alt": "無聲動畫顯示新的技術冷卻系統與隔離的冷板一起沖洗，再次與連接的冷板沖洗，然後在採樣和記錄基準線之前填充最終液體。",
+            "caption": "在最終液體填充和基準線樣品之前，分階段沖洗可以使建築碎片遠離冷板微通道。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "85-98"
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
+            "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "什麼不應該放入循環中",
+          "slug": "what_not_to_put_in_the_loop",
+          "section_label": "迴避",
+          "subtitle": "不受控制的清潔劑和添加劑可能會導致腐蝕、殘留或沉積風險。",
+          "bullets": [
+            {
+              "bold_lead": "避免使用無人監督的清潔工",
+              "text": "洗滌劑和化學清潔劑需要供應商指導。"
+            },
+            {
+              "bold_lead": "避免殘留矽酸鹽",
+              "text": "矽酸鹽可以在微通道中沉澱和沈積。"
+            },
+            {
+              "bold_lead": "遵守當地排放規定",
+              "text": "排水前請諮詢市政或監管要求。"
+            },
+            {
+              "bold_lead": "保護最終流體",
+              "text": "不要在批准的治療計劃之外引入添加劑。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "106-110"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
+            "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "啟動採樣和基準線記錄",
+          "slug": "startup_sampling_and_baseline_records",
+          "section_label": "基準線",
+          "subtitle": "第一個乾淨樣本是未來趨勢解讀的參考點。",
+          "bullets": [
+            {
+              "bold_lead": "流通",
+              "text": "運行循環並在最終啟動期間檢查是否有洩漏。"
+            },
+            {
+              "bold_lead": "排氣",
+              "text": "在基準線採樣之前根據需要除去殘留的空氣。"
+            },
+            {
+              "bold_lead": "對每個循環進行採樣",
+              "text": "從每個 TCS 環路中捕獲代表性流體。"
+            },
+            {
+              "bold_lead": "標示清晰",
+              "text": "記錄單位、流體身分、日期和啟動條件。"
+            },
+            {
+              "bold_lead": "保留記錄",
+              "text": "保留基準線流體壽命的證據。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "111-113"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
+            "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "tcs"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "title": "過濾策略",
+          "slug": "filtration_strategy",
+          "section_label": "顆粒和生物污垢",
+          "figure": {
+            "path": "figures/filtration_strategy.svg",
+            "alt": "在線和側流過濾策略",
+            "caption": "過濾器應該比冷板微通道更容易維護。"
+          },
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "61-66"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module3/slide_07_filtration_strategy.txt",
+            "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "微生物控制和生物污損",
+          "slug": "microbial_control_and_biofouling",
+          "section_label": "生物學",
+          "subtitle": "微生物控制保護熱傳遞，但必須控制殺菌劑的使用。",
+          "bullets": [
+            {
+              "bold_lead": "目標",
+              "text": "將可運行的活細菌總數保持在 100 以下 CFU/ml。"
+            },
+            {
+              "bold_lead": "行動層級",
+              "text": "強烈建議使用 1000 以上的殺菌劑處理 CFU/ml。"
+            },
+            {
+              "bold_lead": "殺菌劑類型",
+              "text": "僅在需要時並按照標籤使用非氧化性殺菌劑。"
+            },
+            {
+              "bold_lead": "避免鹵素",
+              "text": "氯和類似的化學物質會產生腐蝕風險。"
+            },
+            {
+              "bold_lead": "觀察累積情況",
+              "text": "頻繁添加會造成有機物或污染物累積。"
+            }
+          ],
+          "term_refs": [
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "116-118"
+            }
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
+            "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "模組 3 總結",
+          "slug": "module_3_summary",
+          "items": [
+            "設計迴路，以便可以清潔、安全地完成流體服務。",
+            "洩漏檢查液和清潔化學品必須與最終系統相容。",
+            "啟動採樣會為以後的所有監控建立基準線。",
+            "側流過濾和微生物控制保護冷板微通道。",
+            "Deschutes 專案提供了一個有用的濾波器設計範例。"
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module3/slide_09_module_3_summary.txt",
+            "wav_file": "audio/module3/slide_09_module_3_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module3/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_10_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "檢視你的試運轉紀律",
+          "subtitle": "回答一次即可繼續。不要求正確性，您可以重試。",
+          "questions": [
+            {
+              "id": "m3q1",
+              "prompt": "哪個順序最能支援乾淨的新系統啟動？",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "將任何可用的冷卻劑與現場水混合以節省試運轉時間。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "先填充系統，幾個月後再決定是否需要清潔。",
+                  "correct": false
+                },
+                {
+                  "id": "D",
+                  "text": "跳過取樣，因為運送時液體是新的。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "清潔並沖洗迴路，驗證清潔度，填充經批准的液體，然後建立基準線記錄。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正確。啟動時應在運行前保護迴路並建立基準線以供未來趨勢回顧。",
+              "feedback_incorrect": "試運轉應在加註前進行清潔和沖洗，使用核准的液體，並在正常操作前建立基準線記錄。"
+            },
+            {
+              "id": "m3q2",
+              "prompt": "哪些做法有助於在使用期間保護迴路？",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "保留填充、沖洗、洩漏反應和樣本記錄。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "當容量較低時，用未經驗證的水或其他液體加滿。",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "在添加殺菌劑或其他處理方法之前，請遵循供應商的指導。",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "使用相容的過濾器和可維修的過濾器或過濾器位置。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正確。可維護性、記錄、過濾和受控處理可保護流體和硬體。",
+              "feedback_incorrect": "不要隨意加滿。透過相容的過濾、記錄和供應商指導的處理決策來保護迴路。"
+            }
+          ]
+        },
+        {
+          "type": "up_next",
+          "title": "接下來 -流體健康狀況的監控和操作",
+          "slug": "up_next_monitoring_and_operating_for_fluid_healt",
+          "next_module_number": 4,
+          "next_module_title": "監控、維護和操作判斷",
+          "id": 11,
+          "audio": {
+            "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
+            "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "監控、維護和操作判斷"
+    },
+    {
+      "id": 4,
+      "slug": "monitoring_maintenance_operational_judgment",
+      "title": "監控、維護和操作判斷",
+      "subtitle": "常規測試、實驗室品質保證、趨勢解釋、調整、混合、使用壽命和文件。",
+      "module_badge_text": "模組 4",
+      "motion_intro": {
+        "eyebrow": "模組 4",
+        "title": "監控、維護和操作判斷",
+        "subtitle": "常規測試、實驗室品質保證、趨勢解釋、調整、混合、使用壽命和文件。"
+      },
+      "slides": [
+        {
+          "type": "title",
+          "title": "監控與操作流體健康狀況",
+          "slug": "monitoring_and_operating_for_fluid_health",
+          "subtitle": "測試計劃、趨勢解釋、調整、混合和文件。",
+          "id": 1,
+          "audio": {
+            "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
+            "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "objectives",
+          "title": "您將做出的操作判斷",
+          "slug": "operating_judgments_you_will_make",
+          "subtitle": "學完本模組後，您將能夠...",
+          "objectives": [
+            "確定常規和實驗室液體健康測試。",
+            "使用基準線和趨勢邏輯來解釋結果。",
+            "描述受控調整和劑量實務。",
+            "解釋為什麼混合流體會使監測和校正變得複雜。",
+            "維護支援刷新周期和故障排除的記錄。"
+          ],
+          "id": 2,
+          "audio": {
+            "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
+            "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_grid",
+          "title": "日常監測時間表",
+          "slug": "routine_monitoring_schedule",
+          "section_label": "節奏",
+          "subtitle": "當參數偏離規範時，監控計畫應該變得更加嚴格。",
+          "grid_cols": 4,
+          "cards": [
+            {
+              "title": "啟動",
+              "body": "初次填充和循環後立即進行測試。",
+              "icon": "1"
+            },
+            {
+              "title": "季刊",
+              "body": "在正常運作期間進行例行現場檢查。",
+              "icon": "2"
+            },
+            {
+              "title": "超出規格時每週一次",
+              "body": "增加頻率直至參數回傳範圍。",
+              "icon": "3"
+            },
+            {
+              "title": "實驗室 QA",
+              "body": "一年每季一次，如果穩定則每六個月一次。",
+              "icon": "4"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "120-125"
+            }
+          ],
+          "id": 3,
+          "audio": {
+            "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
+            "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "qa"
+          ]
+        },
+        {
+          "type": "content_table",
+          "title": "現場測試裝置",
+          "slug": "on_site_test_set",
+          "section_label": "現場檢查",
+          "subtitle": "常規測試是指導升級和實驗室後續行動的快速訊號。",
+          "columns": [
+            "現場檢查",
+            "訊號",
+            "典型動作"
+          ],
+          "rows": [
+            [
+              "電導率",
+              "溶解的物質或污染物",
+              "與基準線比較和上升率"
+            ],
+            [
+              "酸鹼度",
+              "化學之窗",
+              "在治療計劃內確認"
+            ],
+            [
+              "硬度",
+              "補給水或浸出風險",
+              "研究 Ca/Mg 的來源"
+            ],
+            [
+              "活菌總數",
+              "微生物活性",
+              "根據供應商指南重新測試或處理"
+            ],
+            [
+              "唑類",
+              "銅保護",
+              "趨勢消耗和行動閾值"
+            ],
+            [
+              "濁度/外觀",
+              "顆粒或透明度變化",
+              "檢查過濾器和樣本歷史記錄"
+            ],
+            [
+              "過濾器裝載",
+              "顆粒或生物污垢負荷",
+              "更換或調查是否高"
+            ]
+          ],
+          "term_refs": [
+            "azole",
+            "cfu"
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 4
+            }
+          ],
+          "id": 4,
+          "audio": {
+            "script_file": "audio/module4/slide_04_on_site_test_set.txt",
+            "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_table",
+          "title": "實驗室QA和ICP分析",
+          "slug": "laboratory_qa_and_icp_analysis",
+          "section_label": "實驗室視圖",
+          "subtitle": "獨立分析有助於區分流體漂移、污染和腐蝕副產品。",
+          "columns": [
+            "實驗室檢查",
+            "它有助於揭示什麼",
+            "為什麼這很重要"
+          ],
+          "rows": [
+            [
+              "TSS 和 TDS",
+              "顆粒和溶解物質",
+              "追蹤清潔度和污染情況"
+            ],
+            [
+              "過濾/未過濾的金屬",
+              "銅、鐵、鋅、鉻、鎳",
+              "表示腐蝕或材料釋放"
+            ],
+            [
+              "ICP分析",
+              "元素概況",
+              "記錄水質隨時間的變化"
+            ],
+            [
+              "濁度",
+              "流體透明度和顆粒",
+              "支援過濾和存款決策"
+            ],
+            [
+              "腐蝕優惠券（如果使用）",
+              "補充腐蝕證據",
+              "可能無法完全代表冷板幾何形狀"
+            ],
+            [
+              "書面評價",
+              "科技解讀",
+              "將數據轉化為行動指導"
+            ]
+          ],
+          "term_refs": [
+            "tss",
+            "tds",
+            "icp"
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "table": 5
+            },
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraph": "126"
+            }
+          ],
+          "id": 5,
+          "audio": {
+            "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
+            "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "解讀趨勢，而不僅僅是數字",
+          "slug": "reading_the_trend_not_just_the_number",
+          "section_label": "趨勢邏輯",
+          "figure": {
+            "path": "figures/monitoring_framework.svg",
+            "alt": "流體健康狀況監控框架將系統健康狀況與流體健康狀況分開",
+            "caption": "使用基準線和趨勢方向區分系統運作狀況與流體健康狀況。"
+          },
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "121-128"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
+            "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "調整和供應商指導的劑量",
+          "slug": "adjustments_and_supplier_guided_dosing",
+          "section_label": "糾正措施",
+          "subtitle": "受控劑量需要已知的體積、供應商指導、循環、重新測試和記錄。",
+          "bullets": [
+            {
+              "bold_lead": "已知體積",
+              "text": "沒有環體積就無法安全地計算劑量。"
+            },
+            {
+              "bold_lead": "供應商指導",
+              "text": "僅根據治療方案和技術支援進行調整。"
+            },
+            {
+              "bold_lead": "流通",
+              "text": "後續取樣前混合 30 分鐘。"
+            },
+            {
+              "bold_lead": "重新測試",
+              "text": "確認調整將結果移至範圍內。"
+            },
+            {
+              "bold_lead": "文件",
+              "text": "記錄日期、系統、添加劑類型、數量和報告。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "129-134"
+            }
+          ],
+          "id": 7,
+          "audio": {
+            "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
+            "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_diagram",
+          "title": "流體混合和互通性",
+          "slug": "fluid_mixing_and_interoperability",
+          "section_label": "互通性",
+          "figure": {
+            "path": "figures/mixing_decision.svg",
+            "alt": "流體混合決策邏輯",
+            "caption": "混合最好被視為需要特定液體證據的受控事件。"
+          },
+          "term_refs": [
+            "iat",
+            "oat"
+          ],
+          "id": 8,
+          "audio": {
+            "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
+            "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "content_bullets",
+          "title": "文件和提交資料",
+          "slug": "documentation_and_submittals",
+          "section_label": "記錄",
+          "subtitle": "如果它改變了流體、材料或樣品的解釋，請記錄下來。",
+          "bullets": [
+            {
+              "bold_lead": "流體特性",
+              "text": "源、COA、SDS，並對每個系統進行分析。"
+            },
+            {
+              "bold_lead": "系統體積",
+              "text": "計算抑制劑或添加劑劑量所需的。"
+            },
+            {
+              "bold_lead": "調整歷史",
+              "text": "日期、數量、添加劑類型和分析報告。"
+            },
+            {
+              "bold_lead": "結構材料",
+              "text": "金屬、彈性體、塑膠、過濾器、密封件和替代品。"
+            },
+            {
+              "bold_lead": "治療方案",
+              "text": "操作參數、測試計劃和產品文件。"
+            }
+          ],
+          "term_refs": [
+            "coa",
+            "sds"
+          ],
+          "source_refs": [
+            {
+              "source": "在單相冷板液冷機架中使用水基傳熱流體的指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+              "paragraphs": "143-151"
+            }
+          ],
+          "id": 9,
+          "audio": {
+            "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
+            "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
+            "approved": true
+          }
+        },
+        {
+          "type": "takeaways",
+          "title": "模組 4 總結",
+          "slug": "module_4_summary",
+          "items": [
+            "將常規檢查和實驗室 QA 結合使用。",
+            "根據基準線解釋趨勢，而不是單獨的孤立值。",
+            "僅透過受控的供應商指導程序進行化學調整。",
+            "將流體混合視為改變監控複雜性的事件。",
+            "維護未來操作員可以信任的記錄。"
+          ],
+          "id": 10,
+          "audio": {
+            "script_file": "audio/module4/slide_10_module_4_summary.txt",
+            "wav_file": "audio/module4/slide_10_module_4_summary.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module4/slide_11_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_11_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "檢查你的操作判斷",
+          "subtitle": "回答一次即可繼續。不要求正確性，您可以重試。",
+          "questions": [
+            {
+              "id": "m4q1",
+              "prompt": "解釋常規液體健康結果的最佳方法是什麼？",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "B",
+                  "text": "對單一數字做出反應，無需檢查方法、歷史記錄或操作上下文。",
+                  "correct": false
+                },
+                {
+                  "id": "A",
+                  "text": "在決定採取行動之前，根據基準線、限制和最近的變更對結果進行趨勢分析。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "當任何值發生變化時，立即添加化學物質。",
+                  "correct": false
+                },
+                {
+                  "id": "C",
+                  "text": "當現場測試條看起來可以接受時，請忽略實驗室結果。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正確。操作判斷來自趨勢、基準值、限制、測試方法和背景。",
+              "feedback_incorrect": "單一值是不夠的。在採取行動之前，請使用趨勢、基準值、限制、測試方法和操作環境。"
+            },
+            {
+              "id": "m4q2",
+              "prompt": "在混合流體或進行化學調整之前應該發生什麼？",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "C",
+                  "text": "使用實驗室或現場結果來驗證調整是否有效。",
+                  "correct": true
+                },
+                {
+                  "id": "A",
+                  "text": "確認供應商對所涉及的確切流體和材料的指導和相容性。",
+                  "correct": true
+                },
+                {
+                  "id": "D",
+                  "text": "假設所有受抑制的水基液體都是可互換的。",
+                  "correct": false
+                },
+                {
+                  "id": "B",
+                  "text": "記錄變更、日期、液體批次、濃度和採取措施的原因。",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "正確。混合和劑量需要供應商的指導、文件和後續驗證。",
+              "feedback_incorrect": "不要假設可互換性。確認相容性、記錄操作並驗證結果。"
+            }
+          ]
+        },
+        {
+          "type": "course_complete",
+          "title": "直接液冷(DLC) 中的冷卻液",
+          "slug": "cooling_fluids_in_direct_liquid_cooling",
+          "course_title": "直接液冷(DLC) 中的冷卻液",
+          "cert_message": "您已完成單相DLC 液體課程。在應用這些概念時，請結合使用 OCP 指南、供應商處理計畫和本機作業記錄。",
+          "thank_you_message": "感謝您完成第 4 單元：監控、維護與操作判斷。",
+          "id": 12,
+          "audio": {
+            "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
+            "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "dlc"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata_language_name": "Chinese (Traditional)",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "zh-TW",
+    "source_course_sha256": "085233653e612c3ab97b2e834f2fbcf2562a736cc7ec71a13539cd84175559cb"
+  },
+  "ui_labels": {
+    "not_started": "未開始",
+    "completed": "已完成",
+    "module": "模組",
+    "module_complete": "模組 {module} 已完成",
+    "course_complete": "課程完成",
+    "course_overview": "課程概覽",
+    "learning_objectives": "學習目標",
+    "key_takeaways": "要點",
+    "knowledge_check": "知識檢查",
+    "submit": "提交",
+    "retry": "重試",
+    "quiz_gate_note": "要繼續，請至少提交每道題一次。無論答案是否正確都可以繼續，並可重試。",
+    "quiz_gate_warning": "請先提交每道題一次，再進入下一頁。",
+    "select_answer": "請至少選擇一個答案後再提交。",
+    "correct": "回答正確。",
+    "review_feedback": "請檢視反饋後重試。",
+    "narration_hint": "旁白會自動開始。按右箭頭鍵或空格鍵進入下一頁。",
+    "theme": "主題",
+    "toggle_dark_mode": "切換深色模式",
+    "previous_slide": "上一頁",
+    "next_slide": "下一頁",
+    "play_pause_narration": "播放或暫停旁白",
+    "playback_speed": "播放速度",
+    "playback_speed_slider": "調整播放速度",
+    "speed": "速度",
+    "toggle_fullscreen": "切換全屏",
+    "fullscreen": "全屏",
+    "video_controls": "影片控制",
+    "play_video": "播放影片",
+    "pause_video": "暫停影片",
+    "zoom_video": "放大影片",
+    "video_figure": "影片圖示",
+    "zoom_figure": "放大圖示",
+    "enlarged_figure": "放大的圖示",
+    "lightbox_close_hint": "單擊外部區域或按 Esc 鍵關閉。",
+    "opens_new_tab": "在新標籤頁中開啟",
+    "learner_resource": "學習資源",
+    "open": "開啟",
+    "learn_more": "瞭解更多",
+    "reference": "參考資料",
+    "course_intro": "OCP Academy 課程介紹",
+    "skip_intro": "跳過介紹",
+    "share_feedback": "提交反饋",
+    "survey_body": "您願意花幾分鐘幫助我們改進嗎？您提供給開發團隊的反饋將用於改進本課程和未來課程。我們會從參與者中隨機抽取獲獎者並贈送紀念品。",
+    "default_module_thanks": "感謝您完成模組 {module}“{title}”。",
+    "default_course_wrap": "您已完成 {course} 的所有模組。希望本課程內容能幫助您開展實際工作。",
+    "up_next": "下一門課程",
+    "go_to_module": "前往模組 {module}"
+  },
+  "index_footer_line": "OCP ESUN · 規範 v1.0 · 中文版"
+}
