@@ -1,5 +1,11 @@
-Một fabric không mất dữ liệu, có phân loại và có khả năng phục hồi cần nhiều cơ chế phối hợp. Tắc nghẽn tạm thời, chẳng hạn microburst ngắn do incast, được xử lý ở liên kết bằng PFC. ESUN bổ sung CBFC, cơ chế Credit-Based Flow Control do UEC định nghĩa. CBFC cho phép phía nhận cấp credit rõ ràng, giúp thiết kế switch dùng ít bộ nhớ đệm hơn mà vẫn bảo đảm không mất dữ liệu. Switch phải hỗ trợ cả PFC và CBFC.
+Một fabric không mất dữ liệu, có phân loại và có khả năng phục hồi cần nhiều cơ chế phối hợp. Tắc nghẽn tạm thời, chẳng hạn microburst ngắn do incast, được xử lý ở liên kết bằng PFC.
+
+ESUN bổ sung CBFC, cơ chế Credit-Based Flow Control do UEC định nghĩa. CBFC cho phép phía nhận cấp credit rõ ràng, giúp thiết kế switch dùng ít bộ nhớ đệm hơn mà vẫn bảo đảm không mất dữ liệu. Switch phải hỗ trợ cả PFC và CBFC.
 
 Tắc nghẽn kéo dài dùng ECN. Vì không có IP Header để mang ECN, ESUN đặt nó trong ESUN Header dưới dạng EH-ECN. Mã hóa 2 bit và phản ứng của endpoint tương tự IP ECN. Phân loại lưu lượng nằm trong EH-CoS: 3 bit, tám lớp, không cần VLAN.
 
-Khả năng phục hồi ở cấp liên kết do LLR đảm nhiệm. Cơ chế này cũng đến từ UEC và cho phép khôi phục lỗi bit tại chỗ mà không chuyển mọi frame bị mất lên giao vận đầu-cuối. Cân bằng tải trên tô-pô phân cấp dùng Flow Label trong EH làm entropy bổ sung cho phép băm, giúp phân phối đường đi mà vẫn giữ thứ tự gói. Cuối cùng, EH-TTL ngăn vòng lặp nhiều hop. Mỗi switch giảm TTL và loại bỏ gói khi giá trị về 0. Kết hợp lại, các cơ chế này tạo ra một fabric scale-up hoàn chỉnh trên silicon Ethernet phổ biến.
+Khả năng phục hồi ở cấp liên kết do LLR đảm nhiệm. Cơ chế này cũng đến từ UEC và cho phép khôi phục lỗi bit tại chỗ mà không chuyển mọi frame bị mất lên giao vận đầu-cuối.
+
+Cân bằng tải trên tô-pô phân cấp dùng Flow Label trong EH làm entropy bổ sung cho phép băm, giúp phân phối đường đi mà vẫn giữ thứ tự gói. Cuối cùng, EH-TTL ngăn vòng lặp nhiều hop. Mỗi switch giảm TTL và loại bỏ gói khi giá trị về 0.
+
+Kết hợp lại, các cơ chế này tạo ra một fabric scale-up hoàn chỉnh trên silicon Ethernet phổ biến.
