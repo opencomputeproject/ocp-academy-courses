@@ -78,6 +78,19 @@ For Vietnamese (`vi` and regional variants), use
 use `eleven_multilingual_v2`; the API may return billable audio even though
 that model does not support Vietnamese.
 
+Before submitting any localized video script to ElevenLabs, run the shared
+model/language preflight:
+
+```bash
+python scripts/elevenlabs_model_support.py <BCP-47-tag> <model-id>
+```
+
+The check uses ElevenLabs' live model catalog when credentials are available
+and otherwise permits only combinations in its bundled official-documentation
+table. Do not generate a paid sample when the result is unsupported or
+unverifiable. When another dubbing language is added, record its model in the
+dubbing manifest and run this preflight before the first segment.
+
 For Simplified Chinese (`zh-CN` or `zh-Hans`), use the approved ElevenLabs Lan
 Chen voice (`bZtjnyJAFD0Cp3lfNG5g`) unless the user selects another voice.
 

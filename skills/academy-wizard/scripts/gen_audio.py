@@ -4,13 +4,13 @@ gen_audio.py — turn approved narration .txt files into .wav files.
 
 Usage:
     python gen_audio.py <course.json> [--module N] [--engine elevenlabs|openai|say]
-                       [--voice <voice_id>] [--force]
+                       [--voice <voice_id>] [--model <model_id>] [--force]
                        [--allow-local-fallback-for-partial]
 
 Defaults: walk every module and every slide; use top-level `narration` engine and
 voice metadata when present, otherwise pick the engine from environment variables
 (ELEVENLABS_API_KEY, then OPENAI_API_KEY, otherwise macOS `say`). Command-line
-engine/voice options are explicit overrides. Skip existing .wav files unless
+engine/voice/model options are explicit overrides. Skip existing .wav files unless
 --force.
 
 The narration script for each slide must already exist at the path declared in
@@ -33,6 +33,13 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+
+from elevenlabs_model_support import (
+    default_model_for_language,
+    primary_language_code,
+    should_send_language_code,
+    validate_model_language,
+)
 
 
 def narration_config(course: dict) -> dict:
@@ -70,15 +77,24 @@ def pick_voice_id(requested: str | None, course: dict, engine: str) -> str | Non
     return None
 
 
-def pick_model_id(course: dict, engine: str) -> str | None:
+def pick_model_id(
+    course: dict,
+    engine: str,
+    requested: str | None = None,
+) -> str | None:
     if engine != "elevenlabs":
         return None
+    if requested:
+        return requested
     configured = narration_config(course)
     configured_engine = str(configured.get("engine") or "").strip().lower()
     configured_model = str(configured.get("model_id") or "").strip()
     if configured_model and configured_engine in ("", engine):
         return configured_model
-    return os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2")
+    environment_model = str(os.getenv("ELEVENLABS_MODEL") or "").strip()
+    if environment_model:
+        return environment_model
+    return default_model_for_language(course.get("language"))
 
 
 def need(cmd: str) -> str | None:
@@ -120,6 +136,7 @@ def synth_elevenlabs(
     out_wav: Path,
     voice_id: str | None,
     model_id: str | None,
+    language_code: str | None,
 ) -> None:
     import urllib.request
     api_key = os.environ["ELEVENLABS_API_KEY"]
@@ -130,7 +147,7 @@ def synth_elevenlabs(
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_22050"
     # speed (0.7–1.2) controls pacing. 1.0 reads slowly for dense technical
     # material; 1.15–1.20 is a good range. Override with ELEVENLABS_SPEED.
-    body = json.dumps({
+    payload = {
         "text": text,
         "model_id": model_id
         or os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
@@ -139,7 +156,10 @@ def synth_elevenlabs(
             "similarity_boost": float(os.getenv("ELEVENLABS_SIMILARITY", "0.75")),
             "speed":            float(os.getenv("ELEVENLABS_SPEED",      "1.18")),
         },
-    }).encode("utf-8")
+    }
+    if language_code and should_send_language_code(str(payload["model_id"])):
+        payload["language_code"] = language_code
+    body = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=body, method="POST", headers={
         "xi-api-key": api_key,
         "content-type": "application/json",
@@ -201,6 +221,7 @@ def main():
     p.add_argument("--module", type=int)
     p.add_argument("--engine", choices=list(SYNTHS.keys()))
     p.add_argument("--voice", help="engine-specific voice id")
+    p.add_argument("--model", help="ElevenLabs model id")
     p.add_argument("--force", action="store_true", help="re-synth even if .wav exists")
     p.add_argument(
         "--allow-local-fallback-for-partial",
@@ -219,10 +240,15 @@ def main():
     out_dir = args.course_json.resolve().parent
     try:
         engine = pick_engine(args.engine, course)
+        model_id = pick_model_id(course, engine, args.model)
     except ValueError as error:
         sys.exit(str(error))
     voice_id = pick_voice_id(args.voice, course, engine)
-    model_id = pick_model_id(course, engine)
+    language_code = (
+        primary_language_code(course.get("language"))
+        if engine == "elevenlabs"
+        else None
+    )
     print(f"engine: {engine}")
     if voice_id:
         print(f"voice: {voice_id}")
@@ -231,7 +257,13 @@ def main():
 
     if engine == "elevenlabs":
         def synth(text: str, wav_path: Path) -> None:
-            synth_elevenlabs(text, wav_path, voice_id, model_id)
+            synth_elevenlabs(
+                text,
+                wav_path,
+                voice_id,
+                model_id,
+                language_code,
+            )
     elif engine == "openai":
         def synth(text: str, wav_path: Path) -> None:
             synth_openai(text, wav_path, voice_id)
@@ -281,6 +313,27 @@ def main():
         for err in errors:
             print(f"  - {err}", file=sys.stderr)
         sys.exit(1)
+
+    needs_synthesis = any(args.force or not job[3].exists() for job in jobs)
+    if engine == "elevenlabs" and needs_synthesis:
+        api_key = os.getenv("ELEVENLABS_API_KEY")
+        if not api_key:
+            sys.exit(
+                "Audio generation blocked before synthesis: "
+                "ELEVENLABS_API_KEY is not set."
+            )
+        try:
+            validation_source = validate_model_language(
+                str(model_id),
+                course.get("language"),
+                api_key=api_key,
+            )
+        except (RuntimeError, ValueError) as error:
+            sys.exit(str(error))
+        print(
+            "model/language preflight: "
+            f"{model_id} supports {language_code} ({validation_source})"
+        )
 
     n_done = 0
     n_skip = 0

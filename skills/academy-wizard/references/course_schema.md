@@ -15,7 +15,8 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "narration": {
     "engine": "elevenlabs",
     "voice_id": "Course-specific ElevenLabs voice ID",
-    "voice_name": "Human-readable voice name"
+    "voice_name": "Human-readable voice name",
+    "model_id": "eleven_multilingual_v2"
   },
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
@@ -69,7 +70,13 @@ overrides. Maintained locale scaffolds set Korean `Chris - Warm and clear`
 (`1AKkSX7KMPHIWuz76m0n`), Vietnamese `Nhu`
 (`A5w1fw5x0uXded1LDvZp`) with `eleven_flash_v2_5`, Brazilian Portuguese `Carla`
 (`m151rjrbWXbBqyq56tly`), and Latin American Spanish `Ninoska`
-(`zl1Ut8dvwcVSuQSB9XkG`).
+(`zl1Ut8dvwcVSuQSB9XkG`). Every maintained locale scaffold writes an explicit
+`model_id`. Before paid ElevenLabs synthesis, `gen_audio.py` verifies that model
+against the primary language in `language` using the live ElevenLabs model
+catalog, with a bundled official-documentation table as a fail-safe for known
+models. Unsupported or unverifiable combinations are blocked before any text
+is submitted. Additions to the maintained locale table must include a model and
+pass `scripts/elevenlabs_model_support.py <language> <model>`.
 
 ## Presentation style
 
