@@ -70,12 +70,18 @@ def load_json(path: Path) -> dict:
 
 
 def course_title(course_root: Path, canonical: dict) -> str:
+    title = ""
     readme = course_root / "README.md"
     if readme.is_file():
         for line in readme.read_text(encoding="utf-8").splitlines():
             if line.startswith("# "):
-                return line[2:].strip()
-    return str(canonical.get("course_title") or course_root.name)
+                title = line[2:].strip()
+                break
+    if not title:
+        title = str(canonical.get("course_title") or course_root.name)
+    if course_root.parent.name == "open-rack-v3" and not title.startswith("Open Rack: "):
+        title = f"Open Rack: {title}"
+    return title
 
 
 def language_label(locale: str, localized: dict) -> str:
