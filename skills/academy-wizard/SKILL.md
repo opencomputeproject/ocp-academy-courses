@@ -30,7 +30,10 @@ locale independently. Use `scripts/scaffold_slides_translation.py` to create the
 locale branch; do not begin from generated HTML or a copied SCORM ZIP.
 Before committing translated sources, run
 `scripts/update_translation_catalog.py` from the repository root so the root
-README lists every translated course and non-English language edition.
+README lists every translated course and non-English language edition. The
+catalog groups multi-course series by prepending the series name derived from
+the README Repository layout, then sorts rows alphabetically by the displayed
+row name.
 
 ## Translate an existing Scrolling course
 
@@ -233,7 +236,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | `scripts/zip_for_lms.py` | Build a strict upload zip from `imsmanifest.xml` runtime files only |
 | `scripts/course_delivery_summary.py` | Generate delivery metadata and module duration summaries from `course.json` and final audio |
 | `scripts/scaffold_slides_translation.py` | Create a self-contained locale source branch without modifying the canonical course |
-| `scripts/update_translation_catalog.py` | Refresh or check the root README Translations table from committed locale sources |
+| `scripts/update_translation_catalog.py` | Refresh or check the alphabetized root README Translations table, including series-name prefixes for multi-course folders in Repository layout |
 | `scripts/scaffold_scrolling_translation.py` | Create a lightweight Scrolling locale that overlays language-specific resources on canonical media |
 | `scripts/mix_localized_video.py` | Replace source audio with a voice-only master over normalized, ducked AcademyWizard background music |
 

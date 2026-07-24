@@ -194,9 +194,14 @@ python skills/academy-wizard/scripts/update_translation_catalog.py --check
 The updater derives non-English language columns and translated-course rows
 from `courses/**/locales/*/course.json`. It preserves the link above the table
 to the OCP Academy Translated Learning page and uses `—` when a course does not
-have an edition in a listed language. Commit the README change with the locale
-source. Do not commit a new or removed translation while `--check` reports that
-the table is stale.
+have an edition in a listed language. When a folder in the README Repository
+layout contains more than one child course, the updater treats it as a series,
+prepends its series name to every translated row in that folder, and
+alphabetizes the table by the resulting displayed row name. Add a series-title
+override in the updater only when the folder slug cannot be humanized to the
+intended series name. Commit the README change with the locale source. Do not
+commit a new or removed translation while `--check` reports that the table is
+stale.
 
 ## Review, validation, and delivery
 
