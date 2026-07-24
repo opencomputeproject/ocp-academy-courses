@@ -75,3 +75,29 @@ Build each Simplified Chinese course separately:
 ./scripts/build-course.sh intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-CN
 ./scripts/build-course.sh intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-CN
 ```
+
+## Traditional Chinese editions
+
+The Traditional Chinese Scrolling sources live under `locales/zh-TW/` within
+each course. They include translated course content, Traditional Chinese
+captions, and localized video narration. Build each course separately:
+
+```bash
+./scripts/build-course.sh intro-to-ocp/module-1-the-ocp-origins/locales/zh-TW
+./scripts/build-course.sh intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/zh-TW
+./scripts/build-course.sh intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-TW
+./scripts/build-course.sh intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-TW
+```
+
+## Vietnamese editions
+
+The Vietnamese Scrolling sources live under `locales/vi-VN/` within each
+course. They include translated course content, Vietnamese captions, and
+localized video narration. Build each course separately:
+
+```bash
+./scripts/build-course.sh intro-to-ocp/module-1-the-ocp-origins/locales/vi-VN
+./scripts/build-course.sh intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/vi-VN
+./scripts/build-course.sh intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/vi-VN
+./scripts/build-course.sh intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/vi-VN
+```

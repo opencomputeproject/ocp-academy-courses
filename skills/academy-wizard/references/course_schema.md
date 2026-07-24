@@ -15,7 +15,9 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "narration": {
     "engine": "elevenlabs",
     "voice_id": "Course-specific ElevenLabs voice ID",
-    "voice_name": "Human-readable voice name"
+    "voice_name": "Human-readable voice name",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable"
   },
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
@@ -67,9 +69,24 @@ overrides. Maintained locale scaffolds set Korean `Chris - Warm and clear`
 (`b34JylakFZPlGS0BnwyY`), Simplified Chinese `Lan Chen`
 (`bZtjnyJAFD0Cp3lfNG5g`), Traditional Chinese `Tiffy`
 (`1AKkSX7KMPHIWuz76m0n`), Vietnamese `Nhu`
-(`A5w1fw5x0uXded1LDvZp`), Brazilian Portuguese `Carla`
+(`A5w1fw5x0uXded1LDvZp`) with `eleven_flash_v2_5`, Brazilian Portuguese `Carla`
 (`m151rjrbWXbBqyq56tly`), and Latin American Spanish `Ninoska`
-(`zl1Ut8dvwcVSuQSB9XkG`).
+(`zl1Ut8dvwcVSuQSB9XkG`). Every maintained locale scaffold writes an explicit
+`model_id`. Before paid ElevenLabs synthesis, `gen_audio.py` verifies that model
+against the primary language in `language` using the live ElevenLabs model
+catalog, with a bundled official-documentation table as a fail-safe for known
+models. Unsupported or unverifiable combinations are blocked before any text
+is submitted. Additions to the maintained locale table must include a model and
+pass `scripts/elevenlabs_model_support.py <language> <model>`.
+
+`model_id` is the reproducible pin and takes precedence. When it is omitted,
+`model_policy` chooses a use-case profile: `stable` (the default) prefers
+Multilingual v2 for the professional technical narration it supports, then
+Flash v2.5, then v3; `expressive` prefers v3; and `balanced` prefers Flash v2.5.
+The fallback to v3 lets newly added v3-only languages work without pretending
+that a larger version number is automatically a better technical narrator.
+Before v3 synthesis, require live voice metadata: reject Professional Voice
+Clones and require `eleven_v3` in `high_quality_base_model_ids`.
 
 ## Presentation style
 

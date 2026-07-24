@@ -110,20 +110,50 @@ course design includes it.
 
 Use these maintained ElevenLabs locale defaults:
 
-| Locale | Voice | Voice ID |
-|---|---|---|
-| `ko` and regional variants | Chris - Warm and clear | `PDoCXqBQFGsvfO0hNkEs` |
-| `ja` and regional variants | Approved Japanese voice | `b34JylakFZPlGS0BnwyY` |
-| `zh-CN` | Lan Chen | `bZtjnyJAFD0Cp3lfNG5g` |
-| `zh-TW` | Tiffy | `1AKkSX7KMPHIWuz76m0n` |
-| `vi` and regional variants | Nhu | `A5w1fw5x0uXded1LDvZp` |
-| `pt-BR` | Carla, Brazilian Portuguese | `m151rjrbWXbBqyq56tly` |
-| `es-419` | Ninoska, Latin American accent | `zl1Ut8dvwcVSuQSB9XkG` |
+| Locale | Voice | Voice ID | Model |
+|---|---|---|---|
+| `ko` and regional variants | Chris - Warm and clear | `PDoCXqBQFGsvfO0hNkEs` | `eleven_multilingual_v2` |
+| `ja` and regional variants | Approved Japanese voice | `b34JylakFZPlGS0BnwyY` | `eleven_multilingual_v2` |
+| `zh-CN` | Lan Chen | `bZtjnyJAFD0Cp3lfNG5g` | `eleven_multilingual_v2` |
+| `zh-TW` | Tiffy | `1AKkSX7KMPHIWuz76m0n` | `eleven_multilingual_v2` |
+| `vi` and regional variants | Nhu | `A5w1fw5x0uXded1LDvZp` | `eleven_flash_v2_5` |
+| `pt-BR` | Carla, Brazilian Portuguese | `m151rjrbWXbBqyq56tly` | `eleven_multilingual_v2` |
+| `es-419` | Ninoska, Latin American accent | `zl1Ut8dvwcVSuQSB9XkG` | `eleven_multilingual_v2` |
 
 The translation scaffold records the matching default under top-level
 `narration`, and `gen_audio.py` honors that course-specific engine and voice
 automatically. Do not substitute another voice unless the user explicitly
 selects one; use `--voice` for an intentional one-time override.
+
+Vietnamese narration must use `eleven_flash_v2_5` (or a later model with
+explicit Vietnamese support). Do not use `eleven_multilingual_v2` for
+Vietnamese. The maintained Vietnamese scaffold records Flash v2.5 as
+`narration.model_id`, and `gen_audio.py` honors that model automatically.
+
+Before the first paid request, `gen_audio.py` checks the chosen model against
+the course's BCP 47 language using ElevenLabs' live model catalog. If live model
+metadata is unavailable, only combinations in the bundled official-documentation
+table are allowed. The check fails closed for unsupported or unknown
+combinations because ElevenLabs may ignore an unsupported `language_code`
+instead of rejecting the request. When adding a maintained locale, add an
+explicit `model_id` to `LOCALE_NARRATION_DEFAULTS`; the scaffold validates every
+entry at startup. Also run:
+
+```bash
+python scripts/elevenlabs_model_support.py <BCP-47-tag> <model-id> \
+  --voice-id <voice-id>
+```
+
+Do not upgrade a technical course merely because a model ID has a larger
+version number. ElevenLabs currently describes Multilingual v2 as its most
+stable long-form model and recommends it for professional content, audiobooks,
+and video narration. Use `narration.model_policy: "stable"` by default. Use
+`"expressive"` or `--model eleven_v3` only after the user approves a v3 sample;
+v3 is more expressive but more variable, has a lower per-request character
+limit, does not support SSML break tags, and does not currently support
+Professional Voice Clones. AcademyWizard automatically falls through to v3 for
+a language unsupported by Multilingual v2 and Flash v2.5, but blocks before
+generation unless the selected voice's live metadata explicitly lists v3.
 
 After editorial approval, synthesize the locale audio and run
 `audio_tail_report.py --fail-on-flags`. Regenerate only flagged clips. Do not

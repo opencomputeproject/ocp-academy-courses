@@ -24,6 +24,8 @@ import shutil
 import sys
 from pathlib import Path
 
+from elevenlabs_model_support import validate_model_language
+
 
 LANGUAGE_TAG_RE = re.compile(r"^[A-Za-z]{2,3}(?:-[A-Za-z0-9]{2,8})*$")
 
@@ -32,35 +34,42 @@ LOCALE_NARRATION_DEFAULTS = {
         "engine": "elevenlabs",
         "voice_id": "zl1Ut8dvwcVSuQSB9XkG",
         "voice_name": "Ninoska",
+        "model_id": "eleven_multilingual_v2",
     },
     "ja": {
         "engine": "elevenlabs",
         "voice_id": "b34JylakFZPlGS0BnwyY",
+        "model_id": "eleven_multilingual_v2",
     },
     "ko": {
         "engine": "elevenlabs",
         "voice_id": "PDoCXqBQFGsvfO0hNkEs",
         "voice_name": "Chris - Warm and clear",
+        "model_id": "eleven_multilingual_v2",
     },
     "pt-BR": {
         "engine": "elevenlabs",
         "voice_id": "m151rjrbWXbBqyq56tly",
         "voice_name": "Carla",
+        "model_id": "eleven_multilingual_v2",
     },
     "vi": {
         "engine": "elevenlabs",
         "voice_id": "A5w1fw5x0uXded1LDvZp",
         "voice_name": "Nhu",
+        "model_id": "eleven_flash_v2_5",
     },
     "zh-CN": {
         "engine": "elevenlabs",
         "voice_id": "bZtjnyJAFD0Cp3lfNG5g",
         "voice_name": "Lan Chen",
+        "model_id": "eleven_multilingual_v2",
     },
     "zh-TW": {
         "engine": "elevenlabs",
         "voice_id": "1AKkSX7KMPHIWuz76m0n",
         "voice_name": "Tiffy",
+        "model_id": "eleven_multilingual_v2",
     },
 }
 
@@ -92,6 +101,16 @@ def locale_narration_default(language: str) -> dict | None:
     if default is None:
         default = LOCALE_NARRATION_DEFAULTS.get(primary_language)
     return dict(default) if default else None
+
+
+def validate_locale_narration_defaults() -> None:
+    for language, default in LOCALE_NARRATION_DEFAULTS.items():
+        model_id = str(default.get("model_id") or "").strip()
+        if not model_id:
+            raise ValueError(
+                f"Maintained locale {language!r} is missing narration.model_id."
+            )
+        validate_model_language(model_id, language)
 
 
 def copy_tree_if_present(source_root: Path, target_root: Path, name: str) -> None:
@@ -157,6 +176,11 @@ def reset_audio_approvals(course: dict, target_root: Path) -> int:
 
 
 def main() -> None:
+    try:
+        validate_locale_narration_defaults()
+    except (RuntimeError, ValueError) as error:
+        sys.exit(f"Invalid maintained narration default: {error}")
+
     parser = argparse.ArgumentParser()
     parser.add_argument("source_course_json", type=Path)
     parser.add_argument("language_tag")
