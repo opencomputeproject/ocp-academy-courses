@@ -1,0 +1,1523 @@
+{
+  "style": "Slides",
+  "language": "vi-VN",
+  "course_slug": "project_deschutes_v1_0_vi_vn",
+  "course_title": "OCP Project Deschutes",
+  "course_subtitle": "Đặc tả bộ phân phối chất làm mát (CDU) v1.0",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Thông số kỹ thuật v1.0 · Tháng 2 năm 2026",
+  "target_duration_minutes": 40,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "deschutes_logo.svg",
+    "academy_logo": "ocp_academy_logo.svg",
+    "badge_text": "CDU",
+    "motion_intro_logo": "ocp_academy_white.svg"
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Project Deschutes: Data Center Facilities V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-final-2025-09-05-pdf"
+    },
+    {
+      "kind": "ocp_emea_summit_recording",
+      "title": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+      "url": "https://www.youtube.com/watch?v=OKYj_J66VWM"
+    },
+    {
+      "kind": "google_cloud_blog",
+      "title": "AI infrastructure is hot. New power distribution and liquid cooling infrastructure can help",
+      "url": "https://cloud.google.com/blog/topics/systems/enabling-1-mw-it-racks-and-liquid-cooling-at-ocp-emea-summit"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_deschutes_why_now",
+      "title": "Tại sao Deschutes, tại sao lại là bây giờ",
+      "subtitle": "Động lực, kiến trúc FWS → CDU → TCS và thông số chính của v1.0.",
+      "module_badge_text": "Mô-đun 1",
+      "next_module_title": "Kiến trúc & Hiệu suất CDU",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Giới thiệu về Project Deschutes",
+          "subtitle": "Google đóng góp mở 2 MW CDU, hiện đã có sẵn cho ngành công nghiệp",
+          "version_chip": "Thông số kỹ thuật v1.0 · Tháng 2 năm 2026",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "overview",
+          "title": "Ba mô-đun, một bức tranh toàn diện",
+          "subtitle": "Từ động lực đến nội bộ và triển khai — dựa trên đặc tả v1.0.",
+          "modules_listed": [
+            "Tại sao Deschutes, tại sao lại là bây giờ",
+            "Kiến trúc & Hiệu suất CDU",
+            "Triển khai, Chuỗi cung ứng & Lời kêu gọi hành động"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "~40 phút tổng cộng"
+            },
+            {
+              "icon": "🎓",
+              "text": "Đối tượng trung gian"
+            },
+            {
+              "icon": "📄",
+              "text": "Dựa trên Thông số kỹ thuật v1.0 · Tháng 2 năm 2026",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf"
+            },
+            {
+              "icon": "🎥",
+              "text": "Xem đoạn teaser sơn lót OCP Academy Liquid Cooling",
+              "url": "https://www.youtube.com/watch?v=bIePDFht0uU"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_overview.txt",
+            "wav_file": "audio/module1/slide_02_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 3
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "ai_challenge",
+          "section_label": "Tại sao lại là bây giờ",
+          "title": "Thách thức làm mát AI/ML",
+          "subtitle": "Mật độ giá đỡ đang vượt quá khả năng làm mát bằng không khí.",
+          "bullets": [
+            {
+              "bold_lead": "Mật độ công suất giá đỡ >100 kW",
+              "text": "Hiện nay phổ biến trong các cụm AI/ML — vượt quá giới hạn thực tế của làm mát bằng không khí."
+            },
+            {
+              "bold_lead": "Làm mát bằng chất lỏng trực tiếp (DLC)",
+              "text": "truyền nhiệt tại chip qua các tấm lạnh + một vòng phụ chuyên dụng. Công suất thấp hơn, diện tích sàn nhỏ hơn."
+            },
+            {
+              "bold_lead": "Mảnh ghép còn thiếu:",
+              "text": "một CDU tiêu chuẩn, công bố công khai, hiệu suất cao ở quy mô đa megawatt — cầu nối giữa nước lạnh của cơ sở và các tấm lạnh rack."
+            },
+            {
+              "bold_lead": "Project Deschutes nhắm đúng vào khoảng cách đó:",
+              "text": "Công suất nhiệt 2 MW, hiệu suất thủy lực hàng đầu ngành, mở và có sẵn cho mọi nhà cung cấp."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_challenge.txt",
+            "wav_file": "audio/module1/slide_03_ai_challenge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "dlc",
+            "cdu"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "cdu_role_bridge",
+          "section_label": "Kiến trúc",
+          "title": "Vị trí của CDU: FWS → CDU → TCS",
+          "subtitle": "CDU là điểm kiểm soát chính xác giữa nhà máy nước xây dựng và các tấm lạnh rack.",
+          "figure": {
+            "path": "figures/cdu_flow_bridge.webm",
+            "media_type": "video",
+            "poster": "figures/cdu_flow_bridge_poster.png",
+            "alt": "Hoạt hình im lặng về dòng cung lạnh và dòng trả ấm giữa hệ thống nước cơ sở, Project Deschutes CDU và hệ thống làm mát công nghệ. Hai vòng chất lỏng trao đổi nhiệt mà không trộn lẫn.",
+            "caption": "CDU chỉ lấy lượng nước cơ sở cần thiết để giữ độ chênh nhiệt tiếp cận cố định 3°C, đồng thời cung cấp 500 GPM ở nhiệt độ 80–90 psi đến vòng IT.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_cdu_role_bridge.txt",
+            "wav_file": "audio/module1/slide_04_cdu_role_bridge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ],
+          "term_refs": [
+            "fws",
+            "tcs",
+            "approach_temperature",
+            "differential_pressure",
+            "heat_exchanger"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "google_experience",
+          "section_label": "Phả hệ",
+          "title": "Dựa trên hơn 7 năm vận hành ở quy mô siêu lớn",
+          "subtitle": "Lần đầu tiên được công bố tại Hội nghị thượng đỉnh EMEA năm OCP 2025, đã được nâng cấp lên phiên bản 1.0 thông qua phản hồi cộng đồng mở.",
+          "bullets": [
+            {
+              "bold_lead": "Google là CDU thế hệ thứ 5.",
+              "text": "Được cung cấp thông tin từ hơn 7 năm làm mát bằng chất lỏng ở quy mô siêu lớn."
+            },
+            {
+              "bold_lead": ">1 GW Deschutes thế hệ trước đã triển khai.",
+              "text": "Dữ liệu thực tế về những gì thất bại, cách thức và những gì cần thiết kế lại."
+            },
+            {
+              "bold_lead": "Lần đầu tiên được công bố tại OCP Hội nghị thượng đỉnh EMEA 2025.",
+              "text": "Google đã phát hành bản nháp v0.8 để lấy ý kiến cộng đồng từ công chúng."
+            },
+            {
+              "bold_lead": "v1.0 = sự gắn kết cộng đồng trở nên hiện thực.",
+              "text": "Nhiều tháng đóng góp từ nhà cung cấp và vận hành, cải tiến thiết kế cho sản xuất, và dữ liệu độ tin cậy bơm được cập nhật."
+            },
+            {
+              "bold_lead": "Mở sổ tay vận hành.",
+              "text": "BOM, chất lượng sản xuất, đóng gói, dán nhãn mã vạch, xác thực và quy trình FRU đều được công bố."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Tổng quan Project Deschutes CDU — hai góc nhìn hiển thị đơn vị với các chú thích được gắn nhãn.",
+            "caption": "Hình 3.3.1 từ thông số kỹ thuật v1.0 — tổng quan CDU với các kết nối chính/phụ, hộp điều khiển, bơm và bộ trao đổi nhiệt được ghi nhãn.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_google_experience.txt",
+            "wav_file": "audio/module1/slide_05_google_experience.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "high_level_specs",
+          "section_label": "Thông số kỹ thuật",
+          "title": "Thông số kỹ thuật tiêu đề (Bảng thông số 3.1)",
+          "columns": [
+            "Thông số kỹ thuật",
+            "Giá trị"
+          ],
+          "rows": [
+            [
+              "dòng chảy IT",
+              "500 GPM"
+            ],
+            [
+              "Lưu lượng cơ sở @ 0,25 GPM/kW",
+              "500 GPM"
+            ],
+            [
+              "IT dP có sẵn",
+              "80–90 psi"
+            ],
+            [
+              "Cơ sở dP",
+              "15–30 psi"
+            ],
+            [
+              "Áp suất vận hành",
+              "0–130 psig"
+            ],
+            [
+              "Tải nhiệt",
+              "2.000 kW (2 MW)"
+            ],
+            [
+              "độ chênh nhiệt tiếp cận",
+              "3 °C"
+            ],
+            [
+              "Nhiệt độ chất lỏng hoạt động",
+              "18–55 °C"
+            ],
+            [
+              "Trọng lượng CDU (ướt / khô)",
+              "6.900 / 5.300 lb"
+            ],
+            [
+              "Tiêu thụ điện năng",
+              "74 kW"
+            ],
+            [
+              "Điện áp bơm",
+              "380–416 VAC, 3 pha"
+            ],
+            [
+              "bộ trao đổi nhiệt",
+              "Truyền chất lỏng với chất lỏng, hai lần đi"
+            ],
+            [
+              "Chất làm mát",
+              "Nước DI, PG25"
+            ],
+            [
+              "Kích thước CDU (R × C × D)",
+              "65,25 × 91,44 × 42,29 in"
+            ],
+            [
+              "sự dư thừa",
+              "2 máy bơm N+1 · 3 HX song song · nguồn cấp kép"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_high_level_specs.txt",
+            "wav_file": "audio/module1/slide_06_high_level_specs.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "di_water",
+            "pg25"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "key_takeaways_m1",
+          "title": "Những gì bạn đã học được",
+          "items": [
+            "Thông số CDU mở đầu tiên được đóng góp cho Open Compute Project, dựa trên thiết kế thế hệ thứ năm của Google.",
+            "Thiết kế cho AI/ML: công suất nhiệt 2 MW ở độ chênh nhiệt tiếp cận 3 °C, với 80-90 psi trên vòng IT.",
+            "Điểm điều khiển chính xác giữa hệ thống nước cơ sở và hệ thống làm mát công nghệ.",
+            "Mọi số liệu đều có thể truy nguyên đến thông số v1.0 chính thức ngày 26 tháng 2 năm 2026.",
+            "Công bố lần đầu tại OCP EMEA Summit 2025, sau đó hoàn thiện thành v1.0 nhờ phản hồi cộng đồng mở."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_key_takeaways_m1.txt",
+            "wav_file": "audio/module1/slide_07_key_takeaways_m1.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m1",
+          "title": "Kiểm tra mô hình tư duy Deschutes của bạn",
+          "subtitle": "Trả lời một lần để tiếp tục. Không bắt buộc phải chính xác, bạn có thể thử lại.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check_m1.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check_m1.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m1_cooling_architecture",
+              "prompt": "Vai trò của Deschutes CDU trong kiến trúc FWS → CDU → TCS là gì?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Nó kết nối nước trong cơ sở và vòng làm mát sạch IT, kiểm soát việc cung cấp chất làm mát đồng thời truyền nhiệt trở lại phía cơ sở.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Nó thay thế hoàn toàn nhà máy nước lạnh trong tòa nhà.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "Nó chỉ là thiết bị giám sát luồng khí rack.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Nó phân phối rack nguồn điện trong lối đi nóng.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng vậy. Deschutes là cầu nối chất lỏng có kiểm soát giữa hệ thống nước cơ sở và hệ thống làm mát công nghệ.",
+              "feedback_incorrect": "Xem lại kiến trúc trang chiếu. Con CDU nằm giữa FWS và TCS; Nó không thay thế nhà máy của cơ sở hoặc hoạt động như một thiết bị phân phối điện."
+            },
+            {
+              "id": "m1_headline_specs",
+              "multiple": true,
+              "prompt": "Những giá trị tiêu đề nào thuộc đặc tả CDU Project Deschutes v1.0?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Tải nhiệt 2 MW ở độ chênh nhiệt tiếp cận 3 °C.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Lưu lượng 500 GPM IT với 80–90 psi có sẵn chênh áp.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Lưu lượng cơ sở 500 GPM ở tốc độ 15–30 psi ở tải định mức.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Một thiết kế kín, độc quyền chỉ có sẵn cho một nhà cung cấp.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng vậy. Những giá trị này tóm tắt các mục tiêu nhiệt, thủy lực phía IT và phía cơ sở được nhấn mạnh trong Mô-đun 1.",
+              "feedback_incorrect": "Hãy xem lại Bảng Thông số 3.1. Deschutes mở, và các con số chính bao gồm 2 MW, tiếp cận 3 °C, 500 GPM, và các dải áp suất công bố."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next_m1",
+          "next_module_number": 2,
+          "next_module_title": "Kiến trúc & Hiệu suất CDU",
+          "thank_you_message": "Làm tốt lắm — bạn đã hoàn thành Mô-đun 1: Tại sao Deschutes, Tại sao bây giờ.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_up_next_m1.txt",
+            "wav_file": "audio/module1/slide_08_up_next_m1.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "cdu_architecture_performance",
+      "title": "Kiến trúc & Hiệu suất CDU",
+      "subtitle": "Bên trong CDU v1.0 — vỏ vật lý, phụ kiện, bộ bơm/HX/cảm biến, điều khiển, điện, hot-swap.",
+      "module_badge_text": "Mô-đun 2",
+      "next_module_title": "Triển khai, Chuỗi cung ứng & Lời kêu gọi hành động",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m2_title",
+          "title": "Kiến trúc & Hiệu suất CDU",
+          "subtitle": "Mở thiết bị — các bộ phận bên trong v1.0, từ đầu đến cuối",
+          "version_chip": "Thông số kỹ thuật v1.0 · Tháng 2 năm 2026",
+          "audio": {
+            "script_file": "audio/module2/slide_01_m2_title.txt",
+            "wav_file": "audio/module2/slide_01_m2_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "physical",
+          "section_label": "phong bì vật lý",
+          "title": "Kiểu dáng, Trọng lượng & Cơ học",
+          "bullets": [
+            {
+              "bold_lead": "Kích thước:",
+              "text": "65,25\" Chiều rộng × 91,44\" chiều cao × 42,29\" chiều rộng; Chiều cao đóng gói tối đa 100\"."
+            },
+            {
+              "bold_lead": "Trọng lượng:",
+              "text": "5.300 lb khô, 6.900 lb ướt — cấu trúc sàn và neo địa chấn phù hợp."
+            },
+            {
+              "bold_lead": "Khung, bánh xe, lắp brackets.",
+              "text": "Lăn vào vị trí, neo chặt, lắp ráp ống nước."
+            },
+            {
+              "bold_lead": "Ống thép không gỉ.",
+              "text": "Vật liệu thấm nước chỉ giới hạn ở thép không gỉ, đồng, EPDM. Không có đồng thau phủ niken trên vòng phụ."
+            },
+            {
+              "bold_lead": "điện giật & rung động:",
+              "text": "IEC 60068-2-27 hoạt động (3,5 G, 11 ms half-sin); 30 G, không phẫu thuật; ASTM vận chuyển D4169."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Hai góc nhìn CAD của Project Deschutes CDU cho thấy các kết nối bên chính và phụ, vỏ điều khiển, bơm, HX, giao diện địa chấn.",
+            "caption": "Hình 3.3.1 — Project Deschutes CDU. Thiết bị này được thiết kế để chịu được các sự kiện vận chuyển, lăn và động đất, không chỉ vận hành sạch sẽ.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_02_physical.txt",
+            "wav_file": "audio/module2/slide_02_physical.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 17
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "mechanical_features",
+          "section_label": "Phụ kiện & Lọc",
+          "title": "Tính năng cơ khí: Được thiết kế cho hoạt động lâu dài",
+          "bullets": [
+            {
+              "bold_lead": "Victaulic + Hỗn hợp khớp nối ba kẹp.",
+              "text": "Tối ưu hóa để giảm thiểu rủi ro tích hợp, giảm sụt áp suất, đơn giản hóa các điểm tiếp xúc dịch vụ."
+            },
+            {
+              "bold_lead": "Lọc nhiều lớp:",
+              "text": "Bộ lọc chính 500 μm; Dây phụ chính 25–44 μm; 0,2 μm lọc vi mô dòng nhánh ở ~3 GPM."
+            },
+            {
+              "bold_lead": "Bộ tách khí Spirovent",
+              "text": "liên tục thanh lọc các khí hòa tan."
+            },
+            {
+              "bold_lead": "Bình giãn nở dòng chảy qua.",
+              "text": "Phiên bản 1.0 bổ sung khả năng bảo trì phía trước — bài học trực tiếp từ các thế hệ trước."
+            },
+            {
+              "bold_lead": "Ống dẫn EPDM được đóng rắn bằng oxy hóa.",
+              "text": "Ưu tiên cho sự ổn định lâu dài của elastomer."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_victaulic_triclamp.png",
+            "alt": "Ảnh chú thích cho thấy cách các đầu nối Victaulic và Tri-clamp được sắp xếp quanh bộ trao đổi nhiệt và cổ hồi.",
+            "caption": "Hình 3.3.4 — kết hợp tối ưu giữa phụ kiện Victaulic và kẹp ba giúp giảm thiểu rủi ro tích hợp và giảm áp suất.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_mechanical_features.txt",
+            "wav_file": "audio/module2/slide_03_mechanical_features.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 15
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            }
+          ],
+          "term_refs": [
+            "epdm"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "hydraulic_performance",
+          "section_label": "Hiệu suất thủy lực",
+          "title": "500 GPM ở 80–90 psi — Với các đường cong đã công bố",
+          "bullets": [
+            {
+              "bold_lead": "Mục tiêu phụ (IT):",
+              "text": "500 GPM @ 80–90 psi có sẵn dP — đủ áp suất cho rack ống góp + hàng chục tấm lạnh."
+            },
+            {
+              "bold_lead": "Chế độ bình thường:",
+              "text": "hai bơm trong N+1 (thông số kỹ thuật đường cong trang 19, chất lỏng PG25)."
+            },
+            {
+              "bold_lead": "Chế độ dự phòng:",
+              "text": "Một bơm, áp suất giảm (thông số kỹ thuật trang 20) — đủ thời gian để lên lịch thay thế thay vì tuyên bố mất điện."
+            },
+            {
+              "bold_lead": "Cơ sở vật chất (chính):",
+              "text": "500 GPM @ 15–30 psi ở tải định mức — chỉ bằng mức tải thực sự mà thiết bị cần."
+            },
+            {
+              "bold_lead": "Phong bì:",
+              "text": "0–130 psig hoạt động, giảm áp suất 130 psi, cổng telemetry ngắt kết nối nhanh Parker N-S-P-251 ORB6."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_hydraulic_n_plus_1.png",
+            "alt": "CDU đường cong thủy lực phía phụ, vận hành hai bơm (N+1), chất lỏng PG25.",
+            "caption": "Hình 5.1.1 — hiệu suất thủy lực phía phụ (áp suất khả dụng) với vận hành 2 bơm.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_hydraulic_performance.txt",
+            "wav_file": "audio/module2/slide_04_hydraulic_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 19
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 20
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "thermal_performance",
+          "section_label": "Hiệu suất nhiệt",
+          "title": "Độ chênh nhiệt tiếp cận 3 °C ở 2 MW - tốt hơn ở hầu hết mức tải",
+          "bullets": [
+            {
+              "bold_lead": "Ba HX chạy song song.",
+              "text": "Giảm áp suất, dự phòng cho dịch vụ."
+            },
+            {
+              "bold_lead": "Nhà cung cấp nguồn gốc:",
+              "text": "Alfa Laval CB210-276AH (Mã sản phẩm 30751 6274 3)."
+            },
+            {
+              "bold_lead": "Tiêu đề:",
+              "text": "Tiếp cận 3 °C @ tải nhiệt 2 MW, 500 GPM mỗi bên."
+            },
+            {
+              "bold_lead": "Hiệu suất thực tế tốt hơn là trên tiêu đề.",
+              "text": "Bảng 5.3 công bố 7 điểm hoạt động — ví dụ: 2,3 °C @ 2.150 kW / 545 GPM; 1,6 °C @ 640 kW / 162 GPM."
+            },
+            {
+              "bold_lead": "Phạm vi chất làm mát:",
+              "text": "18–55 °C; Nước DI (ChemTreat, Garratt-Callahan, Veolia) hoặc PG25."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_approach_vs_flow.png",
+            "alt": "bộ trao đổi nhiệt đường cong hiệu suất nhiệt — độ chênh nhiệt tiếp cận giảm theo dòng chảy.",
+            "caption": "Hình 5.3.2 — độ chênh nhiệt tiếp cận so với dòng chảy ở tải nhiệt 2 MW, bộ trao đổi nhiệt hai lần.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_thermal_performance.txt",
+            "wav_file": "audio/module2/slide_05_thermal_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 21
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 22
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "core_components_sensors",
+          "section_label": "Thành phần & Telemetry",
+          "title": "Các thành phần lõi theo số hiệu linh kiện",
+          "bullets": [
+            {
+              "bold_lead": "Bơm:",
+              "text": "Speck TOEMA065200 — 500 GPM @ 112 psi, 37 kW, không có niêm phong. N+1 thừa thãi."
+            },
+            {
+              "bold_lead": "VFD:",
+              "text": "ABB ACH580-31-065A-4 (NEMA Type 12) — phiên bản 1.0 bổ sung phụ kiện bảo trì."
+            },
+            {
+              "bold_lead": "Van điều khiển chính:",
+              "text": "Belimo B6500."
+            },
+            {
+              "bold_lead": "Bộ trao đổi nhiệt:",
+              "text": "Alfa Laval CB210-276AH × 3 song song."
+            },
+            {
+              "bold_lead": "Dữ liệu từ xa:",
+              "text": "T + P trên cả 4 đa tạp; lưu lượng ± 0,5%; RPM & công suất trên mỗi bơm; Phát hiện rò rỉ 3 vùng; pH nước làm mát + độ dẫn điện."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_secondary_loop.png",
+            "alt": "Ảnh chú thích phía phụ (IT) của CDU với bơm, bộ lọc, bộ trao đổi nhiệt và đồng hồ lưu lượng được ghi nhãn.",
+            "caption": "Hình 3.3.2 — đặc điểm vòng dòng chảy thứ cấp (kỹ thuật/IT): 4× bộ lọc, đồng hồ lưu lượng phụ, bơm, van cách ly, Victaulic phụ kiện.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_06_core_components_sensors.txt",
+            "wav_file": "audio/module2/slide_06_core_components_sensors.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 12
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 24
+            }
+          ],
+          "term_refs": [
+            "vfd"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "controls_power_hotswap",
+          "section_label": "Điều khiển & Công suất",
+          "title": "PLC với hai vòng điều khiển + nguồn cấp kép",
+          "subtitle": "Modbus/TCP, IPv4 + IPv6 hai ngăn xếp, các thành phần phụ dự phòng có thể hoán đổi nóng.",
+          "figure": {
+            "path": "figures/plc_control_loops.webm",
+            "media_type": "video",
+            "poster": "figures/plc_control_loops_poster.png",
+            "alt": "Hoạt hình im lặng cho thấy PLC sử dụng phản hồi áp suất chênh lệch để kiểm soát tốc độ bơm phụ, phản hồi nhiệt độ tiếp cận để kiểm soát van sơ cấp, và nguồn cấp AC dự phòng duy trì khả năng kiểm soát.",
+            "caption": "Hai vòng điều khiển chạy đồng thời: tốc độ bơm giữ điểm đặt áp suất chênh lệch thứ cấp trong khi vị trí van chính giữ độ chênh nhiệt tiếp cận 3 °C.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_07_controls_power_hotswap.txt",
+            "wav_file": "audio/module2/slide_07_controls_power_hotswap.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 26
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 27
+            }
+          ],
+          "term_refs": [
+            "plc",
+            "modbus_tcp",
+            "ipv6_dual_stack"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "key_takeaways_m2",
+          "title": "Những gì bạn đã học được",
+          "items": [
+            "Kích thước: 65 x 91 x 42 inch, khối lượng khi nạp chất lỏng khoảng 6.900 lb; phù hợp để vận chuyển, di chuyển và cố định.",
+            "Lọc nhiều tầng: 500 µm → 25-44 µm → dòng nhánh 0,2 µm, được thiết kế để vận hành sạch trong nhiều năm.",
+            "Hiệu suất thủy lực: 500 GPM @ 80-90 psi, có đường cong hiệu suất hai bơm và một bơm.",
+            "Hiệu suất nhiệt: độ chênh nhiệt tiếp cận 3 °C ở 2 MW, tốt hơn thông số trong phần lớn phạm vi vận hành.",
+            "Thành phần chính: bơm Speck, ABB VFD, van Belimo và Alfa Laval HX.",
+            "PLC: Modbus/TCP, IPv4 + IPv6, hai vòng điều khiển mặc định(tốc độ bơm, van chính) và các bộ phận thay nóng."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_key_takeaways_m2.txt",
+            "wav_file": "audio/module2/slide_08_key_takeaways_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m2",
+          "title": "Kiểm tra kiến thức kiến trúc của bạn",
+          "subtitle": "Trả lời một lần để tiếp tục. Không bắt buộc phải chính xác, bạn có thể thử lại.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check_m2.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check_m2.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m2_hydraulic_target",
+              "prompt": "Phát biểu nào mô tả tốt nhất mục tiêu thủy lực phía phụ đã công bố?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "500 GPM về phía IT với 80–90 psi chênh áp có sẵn.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "500 GPM ở phía cơ sở với 80–90 psi chênh áp có sẵn.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "15–30 psi có sẵn ở phía IT với tải định mức.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Một điểm lưu lượng cố định duy nhất không có đường cong hiệu suất được công bố.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng vậy. Mục tiêu phụ hoặc IT là 500 GPM với 80–90 psi có sẵn ở hạ lưu.",
+              "feedback_incorrect": "Xem lại trang chiếu hiệu suất thủy lực. Các psi 80–90 có sẵn chênh áp nằm ở phía IT; Áp suất cơ sở nằm trong phạm vi thấp hơn."
+            },
+            {
+              "id": "m2_controls_strategy",
+              "multiple": true,
+              "prompt": "Những điều khiển và câu lệnh telemetry nào được Module 2 hỗ trợ?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "PLC hỗ trợ Modbus/TCP với mạng IPv4 và IPv6 hai ngăn xếp.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Tốc độ bơm được kiểm soát để duy trì chênh áp phía IT.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Van điều khiển chính điều chỉnh để duy trì độ chênh nhiệt tiếp cận.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Đồng hồ đo lưu lượng phụ được thiết kế cho dịch vụ thay thế nóng có điện.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng vậy. Mô hình điều khiển kết hợp mạng lưới PLC, kiểm soát tốc độ bơm và kiểm soát nhiệt độ tiếp cận van sơ cấp.",
+              "feedback_incorrect": "Kiểm tra chi tiết điều khiển và bảo trì. Đồng hồ đo lưu lượng thứ cấp cần dịch vụ tắt nguồn CDU, trong khi các vòng PLC và điều khiển vẫn là trung tâm hoạt động."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 18
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next_m2",
+          "next_module_number": 3,
+          "next_module_title": "Triển khai, Chuỗi cung ứng & Lời kêu gọi hành động",
+          "thank_you_message": "Làm tốt lắm — bạn đã hoàn thành Module 2: CDU Kiến trúc & Hiệu suất.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_up_next_m2.txt",
+            "wav_file": "audio/module2/slide_09_up_next_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "deployment_supply_chain_call_to_action",
+      "title": "Triển khai, Chuỗi cung ứng & Lời kêu gọi hành động",
+      "subtitle": "Redmond HAC, kiến trúc nguồn điện rack, mô hình nhà cung cấp ba tầng, FRUs, và cách tham gia.",
+      "module_badge_text": "Mô-đun 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m3_title",
+          "title": "Triển khai, Chuỗi cung ứng & Lời kêu gọi hành động",
+          "subtitle": "Từ thông số kỹ thuật đến sàn trung tâm dữ liệu",
+          "version_chip": "Thông số kỹ thuật v1.0 · Tháng 2 năm 2026",
+          "audio": {
+            "script_file": "audio/module3/slide_01_m3_title.txt",
+            "wav_file": "audio/module3/slide_01_m3_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "redmond_hac",
+          "section_label": "Thông số kỹ thuật đồng hành",
+          "title": "Redmond - Giao diện ngăn cách lối đi nóng",
+          "bullets": [
+            {
+              "bold_lead": "Mục 18 cùng tiêu chuẩn.",
+              "text": "Cấu trúc trung tâm dữ liệu đi kèm để triển khai CDU vào."
+            },
+            {
+              "bold_lead": "Phong bì giá đỡ:",
+              "text": "28\" W, lên đến 50\" D, 80,7–90,55\" H — vai kề vai, độ sâu phối hợp."
+            },
+            {
+              "bold_lead": "Lối đi:",
+              "text": "54\" lạnh; 68.4\" nóng (với RDHx) hoặc 102\" nóng (không có nóng)."
+            },
+            {
+              "bold_lead": "Trần cao 14′.",
+              "text": "Phù hợp với hầu hết các trung tâm dữ liệu colo trên toàn thế giới — trực tiếp vào, không phải xây dựng lại cơ sở."
+            },
+            {
+              "bold_lead": "Bốn mức độ quan trọng:",
+              "text": "100.5\" (ống góp tường), 115.5\", 127.5\", 139.5\" (khay cáp). Phía trên = không gian ống PCW có thể thay thế."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_redmond_structure.png",
+            "alt": "Sơ đồ chú thích cấu trúc Redmond ngăn cách lối đi nóng với giá đỡ dầm chữ X, móc treo khay cáp, tấm đế và giá đỡ dẫn cáp.",
+            "caption": "Hình 18.5.1 — cấu trúc Redmond HAC. Các cột dọc trên các tấm đế 5\" × 5\" hỗ trợ các dầm chữ X bên cho các giá đỡ trên ống góp tường; Móc treo khay cáp được gắn vào các chiều đứng.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_02_redmond_hac.txt",
+            "wav_file": "audio/module3/slide_02_redmond_hac.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 54
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 56
+            }
+          ],
+          "term_refs": [
+            "hac",
+            "rdhx"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "cdu_placement",
+          "section_label": "Nguồn điện + Làm mát",
+          "title": "CDU + Sức mạnh giá đỡ: \"4 thành 3\"",
+          "bullets": [
+            {
+              "bold_lead": "8 × ống dẫn bus 600 A ở lối đi nóng",
+              "text": "(4 cái mỗi bên) cấp nguồn điện xuống hàng."
+            },
+            {
+              "bold_lead": "\"4 tạo thành 3\" dự phòng.",
+              "text": "Mỗi rack được cấp 4 cấp liệu, chỉ cần 3 cấp khi tải đầy — tổn thất cấp nhiên liệu đơn lẻ không thể nhìn thấy đối với rack."
+            },
+            {
+              "bold_lead": "90 kW cho mỗi điểm rack",
+              "text": "hỗ trợ trong khoảng thời gian 1 giây với 3 trong 4 nguồn cung cấp hoạt động."
+            },
+            {
+              "bold_lead": "IEC hộp vòi nước 60309,",
+              "text": "5 chân, 30/32 A, 230/240 VAC Wye — tiêu chuẩn toàn cầu, EMEA / NA / Nhật Bản."
+            },
+            {
+              "bold_lead": "Cơ sở vật chất:",
+              "text": "Dự phòng UPS ≥ dự phòng cấp nguồn; Dự phòng máy phát điện phải hỗ trợ cả 4 nguồn cấp."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_placement.png",
+            "alt": "Bố cục sàn thể hiện vị trí CDU so với cấu trúc Redmond với các kết nối đường ống chính và phụ.",
+            "caption": "Hình 18.13.1 — Đặt CDU trên sàn với các kết nối đường ống chính (cơ sở) và phụ (IT).",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdu_placement.txt",
+            "wav_file": "audio/module3/slide_03_cdu_placement.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 60
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 65
+            }
+          ],
+          "term_refs": [
+            "four_makes_three"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_table",
+          "slug": "supply_chain",
+          "section_label": "Mô hình chuỗi cung ứng",
+          "title": "Mô hình nhà cung cấp ba tầng",
+          "subtitle": "Được thiết kế cho thời gian giao hàng toàn cầu từ 10–12 tuần với chi phí cạnh tranh.",
+          "columns": [
+            "Tier",
+            "Mô tả",
+            "Count",
+            "Thời gian chuẩn bị",
+            "Các trang web sản xuất"
+          ],
+          "rows": [
+            [
+              "AVL",
+              "Danh sách Nhà cung cấp được phê duyệt — sản xuất đang hoạt động cho các triển khai Google",
+              "2",
+              "4 tuần",
+              "1–3"
+            ],
+            [
+              "R-AVL",
+              "Đã được duyệt — trạng thái dự phòng đầy đủ điều kiện, sẵn sàng kích hoạt",
+              "2",
+              "4 tuần",
+              "1–2"
+            ],
+            [
+              "RVL",
+              "Danh sách nhà cung cấp được đề xuất — tự chứng nhận theo tiêu chuẩn; có thể bán cho các CSP và colo khác",
+              "6+",
+              "4 tuần",
+              "1–2"
+            ],
+            [
+              "AVL thành phần",
+              "Mỗi thành phần quan trọng (HX, bơm, VFD, nguồn điện, đường ống, cảm biến)",
+              "2–3",
+              "8–12 tuần",
+              "1–2"
+            ],
+            [
+              "Thành phần RVL",
+              "Theo từng thành phần, tự chứng nhận",
+              "2+",
+              "8 tuần",
+              "1–2"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_supply_chain.txt",
+            "wav_file": "audio/module3/slide_04_supply_chain.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+              "page": 9
+            }
+          ],
+          "term_refs": [
+            "supplier_tiers"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "maintenance_frus",
+          "section_label": "Khả năng bảo trì",
+          "title": "Thiết bị bảo trì & thay thế tại hiện trường",
+          "bullets": [
+            {
+              "bold_lead": "Thiết kế có thể bảo trì phía trước.",
+              "text": "Cả hai bộ lọc, lọc vi mô dòng nhánh, bồn giãn nở, bảng điều khiển — tất cả đều truy cập phía trước."
+            },
+            {
+              "bold_lead": "Bơm:",
+              "text": "Bơm A phía trước, bơm B phía sau (hoặc bên nếu bị chặn). Điểm ngắt kiểm soát + van cách ly + lỗ thoát nước."
+            },
+            {
+              "bold_lead": "Cải tiến v1.0:",
+              "text": "Phụ kiện VFD khoảng trống + bình giãn nở có thể bảo trì phía trước — những bài học trực tiếp từ các thế hệ trước."
+            },
+            {
+              "bold_lead": "Ngoại lệ:",
+              "text": "Đồng hồ đo lưu lượng phụ yêu cầu CDU nguồn điện — dịch vụ sự kiện theo lịch trình."
+            },
+            {
+              "bold_lead": "Truy xuất mã vạch đầy đủ.",
+              "text": "Mục 17: Mã nhà sản xuất, GPN, MPN, S/N, COO, mã ngày trên nhãn vàng PMS 803C."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_pump_a_service.png",
+            "alt": "Bơm A được bảo dưỡng từ phía trước CDU với các điểm ngắt kiểm soát ở đầu vào và đầu ra.",
+            "caption": "Hình 13.2.1 — Dịch vụ bơm A từ phía trước CDU. Cả hai máy bơm đều có van cách ly, cổng xả và nguồn điện kết nối.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_maintenance_frus.txt",
+            "wav_file": "audio/module3/slide_05_maintenance_frus.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 39
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 41
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 47
+            }
+          ],
+          "term_refs": [
+            "fru"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "slug": "pump_service_sequence",
+          "section_label": "Trình tự dịch vụ",
+          "title": "Cách ly, xả, ngắt điện, ngắt kết nối, tháo rời",
+          "subtitle": "Bơm dự phòng duy trì dòng chảy trong khi nhánh dịch vụ được đảm bảo an toàn để tháo dỡ.",
+          "figure": {
+            "path": "figures/pump_service_sequence.webm",
+            "media_type": "video",
+            "poster": "figures/pump_service_sequence_poster.png",
+            "alt": "Hoạt hình im lặng của chuỗi dịch vụ bơm được kiểm soát: bơm dự phòng duy trì dòng chảy trong khi nhánh dịch vụ được cách ly, thoát nước, không mang điện, ngắt kết nối và tháo ra qua lớp vỏ dịch vụ phía trước.",
+            "caption": "Chuỗi dịch vụ bảo vệ con người, giữ chất làm mát và vận hành liên tục. Bơm A thoát ra từ phía trước; Bơm B thường ra từ phía sau.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_06_pump_service_sequence.txt",
+            "wav_file": "audio/module3/slide_06_pump_service_sequence.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 26
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 39
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 40
+            }
+          ],
+          "id": 6
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "get_involved",
+          "section_label": "Tham gia",
+          "title": "Tài nguyên & Bước tiếp theo",
+          "subtitle": "Bốn liên kết chính thức — spec, community, marketplace và loạt sách giới thiệu OCP Academy.",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Spec v1.0 PDF",
+              "body": "Tải về bản đặc tả chính thức tháng 2 năm 2026 — nguồn thông tin cho mọi con số trong khóa học này.",
+              "icon": "📄",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf",
+              "link_text": "opencompute.org/documents/…deschutes-v1-0-pdf"
+            },
+            {
+              "title": "CDU Dự án phụ",
+              "body": "Dự án phụ OCP bộ phân phối chất làm mát — nhóm làm việc, các cộng tác viên, các cuộc thảo luận đang diễn ra.",
+              "icon": "👥",
+              "url": "https://www.opencompute.org/community/coolant-distribution-unit",
+              "link_text": "opencompute.org/community/coolant-distribution-unit"
+            },
+            {
+              "title": "Thị trường OCP",
+              "body": "Duyệt các CDU dựa trên Deschutes từ nhiều nhà cung cấp — được lọc theo danh mục CDU.",
+              "icon": "🛍️",
+              "url": "https://www.opencompute.org/products?cloud_products%5BrefinementList%5D%5Bhardware.categories.Liquid%20Cooling%20%26%20Thermal%20Management%5D%5B0%5D=Coolant%20Distribution%20Unit%20%28CDU%29",
+              "link_text": "opencompute.org/products (CDU filter)"
+            },
+            {
+              "title": "Sơn lót làm mát bằng chất lỏng",
+              "body": "Kế hoạch học tập cơ bản gồm bốn khóa học của OCP Academy — những kiến thức cơ bản rộng hơn về làm mát bằng chất lỏng.",
+              "icon": "🎓",
+              "url": "https://academy.opencompute.org/learn/learning-plans/5/liquid-cooling-technologies-overview",
+              "link_text": "academy.opencompute.org/…liquid-cooling-technologies-overview"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_get_involved.txt",
+            "wav_file": "audio/module3/slide_06_get_involved.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "key_takeaways_m3",
+          "title": "Những gì bạn đã học được",
+          "items": [
+            "Thiết bị Redmond HAC được giao theo cùng một thông số; hai thiết bị tạo thành khoang làm mát bằng chất lỏng 2 MW hoàn chỉnh.",
+            "Đồng thiết kế điện và làm mát: dự phòng 4-makes-3, 8 x 600 A bus duct, 90 kW cho mỗi vị trí rack.",
+            "Bộ lọc, bơm, bình giãn nở và bảng điều khiển đều bảo trì được từ phía trước; v1.0 cải thiện khả năng bảo trì VFD và bình giãn nở.",
+            "Mô hình nhà cung cấp ba tầng: AVL(2) + R-AVL(2) + RVL(6+), hướng tới thời gian giao hàng toàn cầu 10-12 tuần.",
+            "Thông số luôn mở và tiếp tục phát triển; các bản sửa đổi tương lai sẽ tích hợp phản hồi sản xuất và xác thực."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_key_takeaways_m3.txt",
+            "wav_file": "audio/module3/slide_07_key_takeaways_m3.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m3",
+          "title": "Kiểm tra Quyết định Triển khai",
+          "subtitle": "Trả lời một lần để tiếp tục. Không bắt buộc phải chính xác, bạn có thể thử lại.",
+          "audio": {
+            "script_file": "audio/module3/slide_08_knowledge_check_m3.txt",
+            "wav_file": "audio/module3/slide_08_knowledge_check_m3.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m3_redmond_role",
+              "prompt": "Giao diện Redmond đóng góp gì bên cạnh Deschutes CDU?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Một cấu trúc chứa và triển khai theo lối đi nóng đi kèm cho khoang làm mát bằng chất lỏng.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Thay thế cho toàn bộ dự phòng điện cấp rack.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "Một mặt điều khiển độc quyền chỉ bằng phần mềm, không có hướng dẫn bố trí vật lý.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Một quy tắc yêu cầu mỗi lần triển khai phải xây dựng lại shell cơ sở từ đầu.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng vậy. Redmond mang lại cho CDU một môi trường triển khai vật lý được định nghĩa và lặp lại.",
+              "feedback_incorrect": "Xem lại Redmond trang chiếu. Vai trò của nó là một kết nối ngăn nóng và giao diện khoang đi kèm, không thay thế thiết kế điện hay quy hoạch cơ sở."
+            },
+            {
+              "id": "m3_deployment_model",
+              "multiple": true,
+              "prompt": "Những câu lệnh nào phù hợp với mô hình triển khai và vận hành được đề cập trong Mô-đun 3?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Mẫu 4-makes-3 rack power sử dụng bốn nguồn cấp, với ba nguồn đủ cho tải đầy đủ.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Mô hình nhà cung cấp bao gồm các tầng AVL, R-AVL và RVL để mở rộng khả năng cung cấp.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Bộ lọc, bơm, bình giãn nở và bảng điều khiển được thiết kế dựa trên khả năng bảo trì tại hiện trường.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Đặc tả đã hoàn chỉnh, đóng kín và không nhằm mục đích phản hồi cộng đồng.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Đúng vậy. Mô-đun 3 liên kết với dự phòng nguồn điện, các cấp nhà cung cấp, khả năng phục vụ và sự tham gia liên tục của cộng đồng.",
+              "feedback_incorrect": "Xem lại những điểm rút ra cuối cùng của mô-đun. Deschutes mở và luôn phát triển, với các mô hình triển khai, dịch vụ và chuỗi cung ứng được thiết kế cho quy mô."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "OCP Project Deschutes",
+          "thank_you_message": "Cảm ơn bạn đã hoàn thành Mô-đun 3: Triển khai, Chuỗi cung ứng & Kêu gọi hành động.",
+          "cert_message": "Bạn đã hoàn thành tất cả các mô-đun của khóa học OCP Academy Project Deschutes. Bước tiếp theo của bạn: mở bản mô tả, đánh giá nó so với việc triển khai của bạn, và tương tác với nhóm làm việc OCP CDU. Mở là chìa khóa để mở rộng quy mô.",
+          "audio": {
+            "script_file": "audio/module3/slide_08_course_complete.txt",
+            "wav_file": "audio/module3/slide_08_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    }
+  ],
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "Làm mát bằng chất lỏng trực tiếp loại bỏ nhiệt ở cấp chip hoặc máy chủ bằng cách sử dụng tấm lạnh và vòng làm mát chuyên dụng."
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "bộ phân phối chất làm mát: cầu nối chất lỏng-chất lỏng kiểm soát dòng chảy chất làm mát, áp suất và truyền nhiệt giữa nước trong cơ sở và thiết bị IT."
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "hệ thống nước cơ sở: vòng nước làm lạnh hoặc ngưng tụ phía tòa nhà cấp nước cho phía chính CDU."
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "hệ thống làm mát công nghệ: vòng làm mát thứ cấp sạch phục vụ rack các ống nạp và tấm lạnh."
+    },
+    {
+      "id": "approach_temperature",
+      "term": "độ chênh nhiệt tiếp cận",
+      "tooltip": "Sự khác biệt giữa nguồn cung lạnh TCS rời khỏi CDU và nguồn FWS lạnh đi vào nó; Deschutes mục tiêu 3 °C."
+    },
+    {
+      "id": "differential_pressure",
+      "term": "dP",
+      "tooltip": "chênh áp: đầu áp suất có sẵn để đẩy chất làm mát qua các ống nặng, ống dẫn và tấm lạnh."
+    },
+    {
+      "id": "heat_exchanger",
+      "term": "HX",
+      "tooltip": "bộ trao đổi nhiệt: truyền nhiệt giữa các vòng lặp mà không trộn lẫn cơ sở và IT chất lỏng làm mát."
+    },
+    {
+      "id": "di_water",
+      "term": "Nước DI",
+      "tooltip": "Nước khử ion: nước được xử lý để loại bỏ các ion hòa tan có thể ảnh hưởng đến ăn mòn hoặc dẫn điện."
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "Hỗn hợp làm mát propylene glycol với nồng độ glycol khoảng 25%."
+    },
+    {
+      "id": "epdm",
+      "term": "EPDM",
+      "tooltip": "Monome ethylene propylene diene: chất đàn hồi dùng cho ống và phớt tương thích với chất làm mát."
+    },
+    {
+      "id": "vfd",
+      "term": "VFD",
+      "tooltip": "biến tần: Điều khiển tốc độ động cơ, được sử dụng ở đây để kiểm soát tốc độ bơm và hiệu quả."
+    },
+    {
+      "id": "plc",
+      "term": "PLC",
+      "tooltip": "Bộ điều khiển logic lập trình: bộ điều khiển công nghiệp chạy CDU vòng điều khiển, cảnh báo và giao diện."
+    },
+    {
+      "id": "modbus_tcp",
+      "term": "Modbus/TCP",
+      "tooltip": "Giao thức truyền thông công nghiệp truyền tải thông điệp Modbus qua mạng TCP/IP tiêu chuẩn."
+    },
+    {
+      "id": "ipv6_dual_stack",
+      "term": "IPv6 ngăn xếp kép",
+      "tooltip": "Hỗ trợ mạng cho IPv4 và IPv6 cùng lúc."
+    },
+    {
+      "id": "hac",
+      "term": "HAC",
+      "tooltip": "ngăn cách lối đi nóng: một cấu trúc quản lý không khí nóng thải quanh hàng rack."
+    },
+    {
+      "id": "rdhx",
+      "term": "RDHx",
+      "tooltip": "bộ trao đổi nhiệt cửa sau: thiết bị làm mát cửa sau rack được tham chiếu trong kích thước lối đi Redmond."
+    },
+    {
+      "id": "four_makes_three",
+      "term": "4 thành 3",
+      "tooltip": "Bố trí nguồn điện giá đỡ có bốn nguồn cấp và bất kỳ ba nguồn nào cũng có thể hỗ trợ tải đầy đủ."
+    },
+    {
+      "id": "supplier_tiers",
+      "term": "AVL / R-AVL / RVL",
+      "tooltip": "Các cấp nhà cung cấp: nhà cung cấp đã được phê duyệt đang hoạt động, nhà cung cấp được phê duyệt đã được đặt trước, và nhà cung cấp được đề xuất hoặc tự chứng nhận."
+    },
+    {
+      "id": "fru",
+      "term": "FRU",
+      "tooltip": "bộ phận có thể thay thế tại hiện trường: một linh kiện được thiết kế để thay thế trong quá trình phục vụ hiện trường."
+    }
+  ],
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "A5w1fw5x0uXded1LDvZp",
+    "voice_name": "Nhu",
+    "model_id": "eleven_flash_v2_5"
+  },
+  "metadata_language_name": "Vietnamese",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "vi-VN",
+    "source_course_sha256": "c28948f618e63f4be412b2084d2976144b102cf127a6923b0c70a5d5c4600d4e"
+  },
+  "ui_labels": {
+    "not_started": "Chưa bắt đầu",
+    "completed": "Đã hoàn thành",
+    "module": "Mô-đun",
+    "module_complete": "Đã hoàn thành mô-đun {module}",
+    "course_complete": "Hoàn thành khóa học",
+    "course_overview": "Tổng quan khóa học",
+    "learning_objectives": "Mục tiêu học tập",
+    "key_takeaways": "Điểm chính",
+    "knowledge_check": "Kiểm tra kiến thức",
+    "submit": "Gửi",
+    "retry": "Thử lại",
+    "quiz_gate_note": "Để tiếp tục, hãy gửi mỗi câu hỏi ít nhất một lần. Bạn có thể tiếp tục dù trả lời đúng hay sai và có thể thử lại.",
+    "quiz_gate_warning": "Hãy gửi mỗi câu hỏi ít nhất một lần trước khi sang trang tiếp theo.",
+    "select_answer": "Hãy chọn ít nhất một đáp án rồi gửi.",
+    "correct": "Trả lời đúng.",
+    "review_feedback": "Hãy xem phản hồi rồi thử lại.",
+    "narration_hint": "Lời thuyết minh sẽ tự động bắt đầu. Nhấn phím mũi tên phải hoặc phím cách để sang trang tiếp theo.",
+    "theme": "Giao diện",
+    "toggle_dark_mode": "Bật hoặc tắt chế độ tối",
+    "previous_slide": "Slide trước",
+    "next_slide": "Slide tiếp theo",
+    "play_pause_narration": "Phát hoặc tạm dừng lời thuyết minh",
+    "playback_speed": "Tốc độ phát",
+    "playback_speed_slider": "Điều chỉnh tốc độ phát",
+    "speed": "Tốc độ",
+    "toggle_fullscreen": "Bật hoặc tắt toàn màn hình",
+    "fullscreen": "Toàn màn hình",
+    "video_controls": "Điều khiển video",
+    "play_video": "Phát video",
+    "pause_video": "Tạm dừng video",
+    "zoom_video": "Phóng to video",
+    "video_figure": "Hình minh họa video",
+    "zoom_figure": "Phóng to hình",
+    "enlarged_figure": "Hình phóng to",
+    "lightbox_close_hint": "Nhấp bên ngoài hoặc nhấn Esc để đóng.",
+    "opens_new_tab": "Mở trong thẻ mới",
+    "learner_resource": "Tài nguyên học tập",
+    "open": "Mở",
+    "learn_more": "Tìm hiểu thêm",
+    "reference": "Tài liệu tham khảo",
+    "course_intro": "Giới thiệu khóa học OCP Academy",
+    "skip_intro": "Bỏ qua phần giới thiệu",
+    "share_feedback": "Chia sẻ phản hồi",
+    "survey_body": "Bạn có thể dành vài phút giúp chúng tôi cải thiện không? Phản hồi gửi cho nhóm phát triển sẽ được dùng để cải thiện khóa học này và các khóa học trong tương lai. Người tham gia sẽ được chọn ngẫu nhiên để nhận quà lưu niệm.",
+    "default_module_thanks": "Cảm ơn bạn đã hoàn thành mô-đun {module}, “{title}”.",
+    "default_course_wrap": "Bạn đã hoàn thành tất cả các mô-đun của {course}. Hy vọng nội dung khóa học sẽ hữu ích cho công việc thực tế của bạn.",
+    "up_next": "Tiếp theo",
+    "go_to_module": "Đi đến mô-đun {module}"
+  }
+}

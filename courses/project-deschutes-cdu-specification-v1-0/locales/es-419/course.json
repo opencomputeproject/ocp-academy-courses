@@ -1,0 +1,1523 @@
+{
+  "style": "Slides",
+  "language": "es-419",
+  "course_slug": "project_deschutes_v1_0_es_419",
+  "course_title": "OCP Project Deschutes",
+  "course_subtitle": "unidad de distribución de refrigerante (CDU) Especificación v1.0",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Especificación v1.0 · Febrero de 2026",
+  "target_duration_minutes": 40,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "deschutes_logo.svg",
+    "academy_logo": "ocp_academy_logo.svg",
+    "badge_text": "CDU",
+    "motion_intro_logo": "ocp_academy_white.svg"
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Project Deschutes: Data Center Facilities V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-final-2025-09-05-pdf"
+    },
+    {
+      "kind": "ocp_emea_summit_recording",
+      "title": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+      "url": "https://www.youtube.com/watch?v=OKYj_J66VWM"
+    },
+    {
+      "kind": "google_cloud_blog",
+      "title": "AI infrastructure is hot. New power distribution and liquid cooling infrastructure can help",
+      "url": "https://cloud.google.com/blog/topics/systems/enabling-1-mw-it-racks-and-liquid-cooling-at-ocp-emea-summit"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_deschutes_why_now",
+      "title": "¿Por qué Deschutes, por qué ahora",
+      "subtitle": "Motivación, la arquitectura FWS → CDU → TCS y las especificaciones principales de la versión 1.0.",
+      "module_badge_text": "Módulo 1",
+      "next_module_title": "CDU Arquitectura y Rendimiento",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Introducción a Project Deschutes",
+          "subtitle": "Google abierta 2 MW CDU contribuciones, ahora disponible para la industria",
+          "version_chip": "Especificación v1.0 · Febrero de 2026",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "overview",
+          "title": "Tres módulos, una visión completa",
+          "subtitle": "Desde la motivación hasta los componentes internos y el despliegue — basado en la especificación v1.0.",
+          "modules_listed": [
+            "¿Por qué Deschutes, por qué ahora",
+            "CDU Arquitectura y Rendimiento",
+            "Despliegue, cadena de suministro y llamada a la acción"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "~40 minutos en total"
+            },
+            {
+              "icon": "🎓",
+              "text": "Público intermedio"
+            },
+            {
+              "icon": "📄",
+              "text": "Basado en la Spec v1.0 · Febrero 2026",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf"
+            },
+            {
+              "icon": "🎥",
+              "text": "Mira el adelanto del primer de OCP Academy Liquid Cooling",
+              "url": "https://www.youtube.com/watch?v=bIePDFht0uU"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_overview.txt",
+            "wav_file": "audio/module1/slide_02_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 3
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "ai_challenge",
+          "section_label": "¿Por qué ahora",
+          "title": "El reto de la refrigeración AI/ML",
+          "subtitle": "La densidad de los racks supera lo que la refrigeración por aire puede soportar.",
+          "bullets": [
+            {
+              "bold_lead": "Densidades de potencia en rack >100 kW",
+              "text": "Ahora es común en AI/ML cúmulos — mucho más allá del límite práctico de refrigeración por aire."
+            },
+            {
+              "bold_lead": "Refrigeración líquida directa (DLC)",
+              "text": "Mueve el calor en el chip mediante placas frías + un bucle secundario dedicado. Menor potencia, superficie de suelo más pequeña."
+            },
+            {
+              "bold_lead": "La pieza que faltaba:",
+              "text": "Un CDU estandarizado, publicado abiertamente y de alto rendimiento a escala de varios megavatios: el puente entre el agua fría de la instalación y las placas frías rack."
+            },
+            {
+              "bold_lead": "Project Deschutes apunta exactamente a esa brecha:",
+              "text": "Capacidad térmica de 2 MW, rendimiento hidráulico líder en la industria, abierto y disponible para todos los proveedores."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_challenge.txt",
+            "wav_file": "audio/module1/slide_03_ai_challenge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "dlc",
+            "cdu"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "cdu_role_bridge",
+          "section_label": "Arquitectura",
+          "title": "Dónde se sitúa el CDU: FWS → CDU → TCS",
+          "subtitle": "El CDU es el punto de control preciso entre la planta de agua del edificio y rack placas frías.",
+          "figure": {
+            "path": "figures/cdu_flow_bridge.webm",
+            "media_type": "video",
+            "poster": "figures/cdu_flow_bridge_poster.png",
+            "alt": "Animación silenciosa de suministro frío y flujo cálido de retorno entre la sistema de agua de la instalación, Project Deschutes CDU y sistema de refrigeración tecnológica. Los dos bucles de fluidos intercambian calor sin mezclarse.",
+            "caption": "El CDU solo extrae tanta agua de la instalación como necesaria para mantener una temperatura de aproximación fija de 3°C, mientras entrega 500 GPM a 80–90 psi al circuito IT.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_cdu_role_bridge.txt",
+            "wav_file": "audio/module1/slide_04_cdu_role_bridge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ],
+          "term_refs": [
+            "fws",
+            "tcs",
+            "approach_temperature",
+            "differential_pressure",
+            "heat_exchanger"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "google_experience",
+          "section_label": "Linaje",
+          "title": "Basado en más de 7 años de operación a hiperescala",
+          "subtitle": "Anunciado por primera vez en la OCP EMEA Summit 2025, iterado hasta la versión 1.0 mediante comentarios abiertos de la comunidad.",
+          "bullets": [
+            {
+              "bold_lead": "Google quinta generación CDU.",
+              "text": "Informado por más de 7 años de enfriamiento líquido a hiperescala."
+            },
+            {
+              "bold_lead": ">1 GW de Deschutes de generación anterior desplegados.",
+              "text": "Datos realistas sobre qué falla, cómo y qué rediseñar."
+            },
+            {
+              "bold_lead": "Anunciado por primera vez en OCP Cumbre EMEA 2025.",
+              "text": "Google publicado el borrador v0.8 para recibir comentarios de la comunidad pública."
+            },
+            {
+              "bold_lead": "v1.0 = Compromiso con la comunidad hecho realidad.",
+              "text": "Meses de aportaciones de proveedores y operadores, refinamientos en el diseño para la fabricación y datos actualizados de fiabilidad de las bombas."
+            },
+            {
+              "bold_lead": "Abre el manual operativo.",
+              "text": "BOM, calidad de fabricación, envases, etiquetado de códigos de barras, validación y FRU procedimientos, todos publicados."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Project Deschutes CDU resumen: dos vistas que muestran la unidad con las llamadas etiquetadas.",
+            "caption": "Figura 3.3.1 de la especificación v1.0 — CDU resumen con las conexiones primarias/secundarias, la carcasa de control, las bombas y los intercambiadores de calor etiquetados.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_google_experience.txt",
+            "wav_file": "audio/module1/slide_05_google_experience.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "high_level_specs",
+          "section_label": "Especificaciones",
+          "title": "Especificaciones principales (Tabla Técnica 3.1)",
+          "columns": [
+            "Especificaciones",
+            "Valor"
+          ],
+          "rows": [
+            [
+              "IT flujo",
+              "500 GPM"
+            ],
+            [
+              "Caudal de la instalación @ 0,25 GPM/kW",
+              "500 GPM"
+            ],
+            [
+              "IT dP disponible",
+              "80–90 psi"
+            ],
+            [
+              "Instalaciones dP",
+              "15–30 psi"
+            ],
+            [
+              "Presión de funcionamiento",
+              "0–130 psig"
+            ],
+            [
+              "Carga térmica",
+              "2.000 kW (2 MW)"
+            ],
+            [
+              "temperatura de aproximación",
+              "3 °C"
+            ],
+            [
+              "Temperatura de funcionamiento del líquido",
+              "18–55 °C"
+            ],
+            [
+              "CDU peso (mojado / seco)",
+              "6.900 / 5.300 lb"
+            ],
+            [
+              "Consumo eléctrico",
+              "74 kW"
+            ],
+            [
+              "Tensión de la bomba",
+              "380–416 VAC, trifásica"
+            ],
+            [
+              "intercambiador de calor",
+              "Líquido a líquido, doble paso"
+            ],
+            [
+              "Refrigerantes",
+              "DI agua, PG25"
+            ],
+            [
+              "CDU dimensiones (O × H × D)",
+              "65,25 × 91,44 × 42,29 pulgadas"
+            ],
+            [
+              "Redundancia",
+              "2 bombas N+1 · 3 HX en paralelo · Alimentación dual"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_high_level_specs.txt",
+            "wav_file": "audio/module1/slide_06_high_level_specs.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "di_water",
+            "pg25"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "key_takeaways_m1",
+          "title": "Lo que aprendiste",
+          "items": [
+            "Primera especificación abierta de CDU aportada al Open Compute Project, basada en el diseño de quinta generación de Google.",
+            "Diseñada para AI/ML: capacidad térmica de 2 MW con aproximación de 3 °C y 80-90 psi disponibles en el circuito IT.",
+            "Punto de control preciso entre el sistema de agua de la instalación y el sistema de refrigeración tecnológica.",
+            "Todos los valores se pueden rastrear hasta la especificación oficial v1.0, del 26 de febrero de 2026.",
+            "Anunciada en OCP EMEA Summit 2025 y perfeccionada hasta v1.0 mediante comentarios abiertos de la comunidad."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_key_takeaways_m1.txt",
+            "wav_file": "audio/module1/slide_07_key_takeaways_m1.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m1",
+          "title": "Revisa tu modelo mental Deschutes",
+          "subtitle": "Responde una vez para continuar. No es necesario que la corrección sea necesaria, y puedes volver a intentarlo.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check_m1.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check_m1.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m1_cooling_architecture",
+              "prompt": "¿Cuál es el papel del Deschutes CDU en la arquitectura FWS → CDU → TCS?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Conecta el agua de la instalación con el circuito de refrigerante de IT limpia, controlando la entrega del refrigerante mientras transfiere el calor de vuelta al lado de la instalación.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Sustituye por completo la planta de agua fría del edificio.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "Es solo un dispositivo de monitorización para rack flujo de aire.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Distribuye rack alimentaciones eléctricas en el pasillo caliente.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correcto. Deschutes es el puente controlado de líquido a líquido entre el sistema de agua de la instalación y el sistema de refrigeración tecnológica.",
+              "feedback_incorrect": "Revisa la diapositiva arquitectónica. El CDU se sitúa entre FWS y TCS; no sustituye la planta de la instalación ni actúa como dispositivo de distribución eléctrica."
+            },
+            {
+              "id": "m1_headline_specs",
+              "multiple": true,
+              "prompt": "¿Qué valores de titulares pertenecen a la especificación CDU Project Deschutes v1.0?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "2 MW carga térmica a 3 °C temperatura de aproximación.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "500 GPM IT caudal con 80–90 psi disponibles presión diferencial.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "500 GPM caudal de la instalación a 15–30 psi a carga nominal.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Un diseño cerrado y propietario disponible solo para un proveedor.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correcto. Estos valores resumen los objetivos térmicos, hidráulicos del lado IT y del lado de la instalación enfatizados en el Módulo 1.",
+              "feedback_incorrect": "Echa un vistazo a la Tabla Especial 3.1. Deschutes está abierto, y los números clave incluyen 2 MW, aproximación a 3 °C, 500 GPM y los rangos de presión publicados."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next_m1",
+          "next_module_number": 2,
+          "next_module_title": "CDU Arquitectura y Rendimiento",
+          "thank_you_message": "Buen trabajo — has terminado el Módulo 1: Por qué Deschutes, Por qué ahora.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_up_next_m1.txt",
+            "wav_file": "audio/module1/slide_08_up_next_m1.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "cdu_architecture_performance",
+      "title": "CDU Arquitectura y Rendimiento",
+      "subtitle": "Dentro del CDU v1.0 — envolvente físico, conectores, conjunto de bomba/HX/sensores, controles, electricidad, cambio en caliente.",
+      "module_badge_text": "Módulo 2",
+      "next_module_title": "Despliegue, cadena de suministro y llamada a la acción",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m2_title",
+          "title": "CDU Arquitectura y Rendimiento",
+          "subtitle": "Abrir la unidad — los internos de la v1.0, de extremo a extremo",
+          "version_chip": "Especificación v1.0 · Febrero de 2026",
+          "audio": {
+            "script_file": "audio/module2/slide_01_m2_title.txt",
+            "wav_file": "audio/module2/slide_01_m2_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "physical",
+          "section_label": "Envolvente físico",
+          "title": "Factor de forma, peso y mecánica",
+          "bullets": [
+            {
+              "bold_lead": "Dimensiones:",
+              "text": "65,25\" Ancho × 91,44\" Alto × 42,29\" D; Altura máxima de 100\" empaquetada."
+            },
+            {
+              "bold_lead": "Peso:",
+              "text": "5.300 lb en seco, 6.900 lb en húmedo — estructura de planta y anclaje sísmico en consecuencia."
+            },
+            {
+              "bold_lead": "Chasis, ruedas, montaje brackets.",
+              "text": "Enrollado en su sitio, anclado, instalado."
+            },
+            {
+              "bold_lead": "Tubería de acero inoxidable.",
+              "text": "Materiales húmedos limitados a acero inoxidable, cobre EPDM. No hay latón niquelado en el lazo secundario."
+            },
+            {
+              "bold_lead": "descarga eléctrica y vibración:",
+              "text": "IEC 60068-2-27 en funcionamiento (3,5 G, 11 ms semisenoidal); 30 G no operado; ASTM transporte D4169."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Dos vistas CAD del Project Deschutes CDU mostrando conexiones laterales primarias y secundarias, carcasa de control, bombas, HX interfaz sísmica.",
+            "caption": "Figura 3.3.1 — el Project Deschutes CDU. La unidad está diseñada para sobrevivir a eventos de navegación, balanceo y sísmios, no solo para operar limpiamente.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_02_physical.txt",
+            "wav_file": "audio/module2/slide_02_physical.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 17
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "mechanical_features",
+          "section_label": "Conexiones y filtración",
+          "title": "Características mecánicas: Diseñadas para una operación a largo plazo",
+          "bullets": [
+            {
+              "bold_lead": "Victaulic + mezcla de fijación con tres abrazaderas.",
+              "text": "Optimizado para minimizar el riesgo de integración, reducir la caída de presión y simplificar los puntos de contacto de servicio."
+            },
+            {
+              "bold_lead": "Filtración en capas:",
+              "text": "filtrador primario de 500 μm; secundaria principal de 25–44 μm; 0,2 μm microfiltración de corriente lateral a ~3 GPM."
+            },
+            {
+              "bold_lead": "Separador de aire espirovento",
+              "text": "purga gases disueltos de forma continua."
+            },
+            {
+              "bold_lead": "Depósito de expansión de flujo directo.",
+              "text": "La versión 1.0 añadió la facilidad de servicio frontal — lección directa de generaciones anteriores."
+            },
+            {
+              "bold_lead": "Mangueras de EPDM curadas con peróxido.",
+              "text": "Prefiere la estabilidad a largo plazo de los elastómeros."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_victaulic_triclamp.png",
+            "alt": "Fotos anotadas que muestran cómo los conectores Victaulic y Tri-clamp están dispuestos alrededor de los intercambiadores de calor y el colector.",
+            "caption": "Figura 3.3.4 — la combinación optimizada de conexiones Victaulic y Tri-clamp minimiza el riesgo de integración y la caída de presión.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_mechanical_features.txt",
+            "wav_file": "audio/module2/slide_03_mechanical_features.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 15
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            }
+          ],
+          "term_refs": [
+            "epdm"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "hydraulic_performance",
+          "section_label": "Rendimiento hidráulico",
+          "title": "500 GPM a 80–90 psi — con curvas publicadas",
+          "bullets": [
+            {
+              "bold_lead": "Objetivo secundario (IT):",
+              "text": "500 GPM @ 80–90 psi disponibles dP — suficiente carga para rack colectores + decenas de placas frías."
+            },
+            {
+              "bold_lead": "Modo normal:",
+              "text": "dos bombas en N+1 (curva de especificación p. 19, fluido PG25)."
+            },
+            {
+              "bold_lead": "Modo de respaldo:",
+              "text": "Una bomba, presión reducida (especificación p. 20) — tiempo suficiente para programar un cambio en lugar de declarar un corte de energía."
+            },
+            {
+              "bold_lead": "Instalación (primaria):",
+              "text": "500 GPM @ 15–30 psi a carga nominal — solo lo que la unidad realmente necesite."
+            },
+            {
+              "bold_lead": "Sobre:",
+              "text": "0–130 psig en funcionamiento, 130 psi de alivio de presión, puertos de telemetría Parker N-S-P-251 ORB6 de desconexión rápida."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_hydraulic_n_plus_1.png",
+            "alt": "CDU curva hidráulica secundaria, funcionamiento de dos bombas (N+1), fluido PG25.",
+            "caption": "Figura 5.1.1 — Rendimiento hidráulico secundario (presión disponible) con funcionamiento de 2 bombas.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_hydraulic_performance.txt",
+            "wav_file": "audio/module2/slide_04_hydraulic_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 19
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 20
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "thermal_performance",
+          "section_label": "Rendimiento térmico",
+          "title": "Aproximación de 3 °C a 2 MW - mejor en la mayoría de las cargas",
+          "bullets": [
+            {
+              "bold_lead": "Tres HX de doble paso en paralelo.",
+              "text": "Menor caída de presión, redundancia para el servicio."
+            },
+            {
+              "bold_lead": "Proveedor de primera fuente:",
+              "text": "Alfa Laval CB210-276AH (Ítem 30751 6274 3)."
+            },
+            {
+              "bold_lead": "Titular:",
+              "text": "Aproximación de 3 °C @ 2 MW carga térmica, 500 GPM cada lado."
+            },
+            {
+              "bold_lead": "El rendimiento real es mejor que el titular.",
+              "text": "La Tabla 5.3 publica 7 puntos operativos — por ejemplo, 2,3 °C @ 2.150 kW / 545 GPM; 1,6 °C @ 640 kW / 162 GPM."
+            },
+            {
+              "bold_lead": "Rango de refrigerante:",
+              "text": "18–55 °C; Agua DI (formulaciones ChemTreat, Garratt-Callahan, Veolia) o PG25."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_approach_vs_flow.png",
+            "alt": "intercambiador de calor curva de rendimiento térmico — temperatura de aproximación disminuye con el flujo.",
+            "caption": "Figura 5.3.2 — temperatura de aproximación frente a caudal a 2 MW de carga térmica, intercambiador de calor de doble paso.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_thermal_performance.txt",
+            "wav_file": "audio/module2/slide_05_thermal_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 21
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 22
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "core_components_sensors",
+          "section_label": "Componentes y telemetría",
+          "title": "Componentes principales por número de pieza",
+          "bullets": [
+            {
+              "bold_lead": "Bombeo:",
+              "text": "Speck TOEMA065200 — 500 GPM @ 112 psi, 37 kW, sin sello. N+1 redundante."
+            },
+            {
+              "bold_lead": "VFD:",
+              "text": "ABB ACH580-31-065A-4 (NEMA Tipo 12) — la versión 1.0 añadió accesorios de mantenimiento."
+            },
+            {
+              "bold_lead": "Válvula de control primaria:",
+              "text": "Belimo B6500."
+            },
+            {
+              "bold_lead": "Intercambiadores de calor:",
+              "text": "Alfa Laval CB210-276AH × 3 en paralelo."
+            },
+            {
+              "bold_lead": "Telemetría:",
+              "text": "T + P en las 4 variedades; caudal ± 0,5%; RPM por bomba y potencia; detección de fugas en 3 zonas; pH del refrigerante + conductividad eléctrica."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_secondary_loop.png",
+            "alt": "Foto anotada del lado secundario (IT) del CDU con bombas, filtros, intercambiadores de calor y el caudalímetro etiquetados.",
+            "caption": "Figura 3.3.2 — características del bucle de flujo secundario (técnico/IT): filtros 4×, medidor de caudal secundario, bombas, válvulas de aislamiento Victaulic conexiones.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_06_core_components_sensors.txt",
+            "wav_file": "audio/module2/slide_06_core_components_sensors.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 12
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 24
+            }
+          ],
+          "term_refs": [
+            "vfd"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "controls_power_hotswap",
+          "section_label": "Controles y potencia",
+          "title": "PLC con dos bucles de control + alimentación dual",
+          "subtitle": "Modbus/TCP, IPv4 + IPv6 subcomponentes redundantes de doble pila, intercambiables en caliente.",
+          "figure": {
+            "path": "figures/plc_control_loops.webm",
+            "media_type": "video",
+            "poster": "figures/plc_control_loops_poster.png",
+            "alt": "Animación silenciosa que muestra al PLC usando retroalimentación de presión diferencial para controlar la velocidad de la bomba secundaria, retroalimentación de temperatura de aproximación para controlar la válvula primaria y alimentaciones de AC redundantes manteniendo la disponibilidad de control.",
+            "caption": "Dos bucles de control funcionan simultáneamente: la velocidad de la bomba mantiene el punto de ajuste de presión diferencial secundaria mientras que la posición de la válvula primaria mantiene el temperatura de aproximación de 3 °C.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_07_controls_power_hotswap.txt",
+            "wav_file": "audio/module2/slide_07_controls_power_hotswap.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 26
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 27
+            }
+          ],
+          "term_refs": [
+            "plc",
+            "modbus_tcp",
+            "ipv6_dual_stack"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "key_takeaways_m2",
+          "title": "Lo que aprendiste",
+          "items": [
+            "Dimensiones: 65 x 91 x 42 pulgadas, peso en operación de aproximadamente 6.900 lb; preparada para envío, traslado y anclaje.",
+            "Filtración por capas: 500 µm → 25-44 µm → corriente lateral de 0,2 µm, diseñada para años de operación limpia.",
+            "Rendimiento hidráulico: 500 GPM @ 80-90 psi, con curvas publicadas para dos bombas y una bomba.",
+            "Rendimiento térmico: aproximación de 3 °C a 2 MW, superior a la especificación en la mayor parte del rango operativo.",
+            "Componentes principales: bombas Speck, ABB VFD, válvula Belimo y Alfa Laval HX.",
+            "PLC: Modbus/TCP, IPv4 + IPv6, dos bucles predeterminados(velocidad de bomba, válvula primaria) y subcomponentes hot-swap."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_key_takeaways_m2.txt",
+            "wav_file": "audio/module2/slide_08_key_takeaways_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m2",
+          "title": "Comprueba tu comprensión de arquitectura",
+          "subtitle": "Responde una vez para continuar. No es necesario que la corrección sea necesaria, y puedes volver a intentarlo.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check_m2.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check_m2.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m2_hydraulic_target",
+              "prompt": "¿Qué afirmación describe mejor el objetivo hidráulico publicado en el lado secundario?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "500 GPM en el lado IT con 80–90 psi de presión diferencial disponible.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "500 GPM en el lado de las instalaciones con entre 80 y 90 psi de presión diferencial disponibles.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "15–30 psi disponibles en el lado IT a carga nominal.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Un único punto de flujo fijo sin curvas de rendimiento publicadas.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correcto. El objetivo IT o secundario es de 500 GPM con 80–90 psi disponibles aguas abajo.",
+              "feedback_incorrect": "Revisa el rendimiento hidráulico diapositiva. El psi 80–90 disponible presión diferencial es del lado IT; La presión de la instalación es un rango más bajo."
+            },
+            {
+              "id": "m2_controls_strategy",
+              "multiple": true,
+              "prompt": "¿Qué controles y sentencias de telemetría soportan el Módulo 2?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "El PLC soporta Modbus/TCP con IPv4 y IPv6 redes dual-stack.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "La velocidad de la bomba se controla para mantener IT lado presión diferencial.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "La válvula de control primaria modula para mantener temperatura de aproximación.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "El caudalímetro secundario está diseñado para el servicio de intercambio en caliente con potencia.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correcto. El modelo de control combina PLC red, control de velocidad de la bomba y control de aproximación de válvulas primarias-temperatura.",
+              "feedback_incorrect": "Revisa los controles y los detalles de mantenimiento. El medidor de caudal secundario requiere CDU servicio de apagado, mientras que el PLC y los bucles de control permanecen centrales para el funcionamiento."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 18
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next_m2",
+          "next_module_number": 3,
+          "next_module_title": "Despliegue, cadena de suministro y llamada a la acción",
+          "thank_you_message": "Buen trabajo — has terminado el Módulo 2: Arquitectura CDU y Rendimiento.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_up_next_m2.txt",
+            "wav_file": "audio/module2/slide_09_up_next_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "deployment_supply_chain_call_to_action",
+      "title": "Despliegue, cadena de suministro y llamada a la acción",
+      "subtitle": "Redmond HAC, arquitectura de potencia rack, el modelo de proveedor de tres niveles, FRUs y cómo participar.",
+      "module_badge_text": "Módulo 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m3_title",
+          "title": "Despliegue, cadena de suministro y llamada a la acción",
+          "subtitle": "Desde la especificación hasta el suelo del centro de datos",
+          "version_chip": "Especificación v1.0 · Febrero de 2026",
+          "audio": {
+            "script_file": "audio/module3/slide_01_m3_title.txt",
+            "wav_file": "audio/module3/slide_01_m3_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "redmond_hac",
+          "section_label": "Especialización de compañero",
+          "title": "Redmond - Interfaz de contención del pasillo caliente",
+          "bullets": [
+            {
+              "bold_lead": "Sección 18 de la misma especificación.",
+              "text": "Estructura complementaria de centro de datos para desplegar el CDU en."
+            },
+            {
+              "bold_lead": "Sobre de estante:",
+              "text": "28\" de ancho, hasta 50\" de re, 80,7–90,55\" de alto — hombro con hombro, profundidades de mezcla y combinación."
+            },
+            {
+              "bold_lead": "Pasillos:",
+              "text": "54\" de frío; 68,4\" caliente (con RDHx) o 102\" caliente (sin eso)."
+            },
+            {
+              "bold_lead": "Techo de 14 pies.",
+              "text": "Encaja en la mayoría de los centros de datos de Colorado del mundo — los que se instalan sin reserva, no que la reconstrucción de las instalaciones."
+            },
+            {
+              "bold_lead": "Cuatro elevaciones críticas:",
+              "text": "100,5\" (colector de pared), 115,5\", 127,5\", 139,5\" (bandejas de cables). Por encima de eso = espacio de tubería PCW fungible."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_redmond_structure.png",
+            "alt": "Diagrama anotado de la estructura Redmond contención de pasillo caliente con soportes en X, colgadores para bandejas de cables, placas base y montaje en conductos colectores.",
+            "caption": "Figura 18.5.1 — Redmond HAC estructura. Postes verticales en placas de base de 5\" × 5\" sostienen vigas laterales en X para montajes en el colector de pared; Los colgadores para la bandeja de cables se fijan a las verticales.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_02_redmond_hac.txt",
+            "wav_file": "audio/module3/slide_02_redmond_hac.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 54
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 56
+            }
+          ],
+          "term_refs": [
+            "hac",
+            "rdhx"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "cdu_placement",
+          "section_label": "Alimentación + Refrigeración",
+          "title": "CDU + Potencia del rack: \"4 hace 3\"",
+          "bullets": [
+            {
+              "bold_lead": "Conductos de autobús de 8 × 600 A en el pasillo caliente",
+              "text": "(4 por lado) alimenta la corriente por la hilera."
+            },
+            {
+              "bold_lead": "\"4 hace 3\" redundancia.",
+              "text": "Cada rack alimentado por 4 alimentaciones, solo 3 necesarias a plena carga — la pérdida de un solo avance es invisible para el rack."
+            },
+            {
+              "bold_lead": "90 kW por rack spot",
+              "text": "soportada en escalas de tiempo de 1 segundo con 3 de 4 alimentaciones operativas."
+            },
+            {
+              "bold_lead": "IEC cajas de grifo 60309,",
+              "text": "5 pines, 30/32 A, 230/240 VAC Wye — estándar global, EMEA / NA / Japón."
+            },
+            {
+              "bold_lead": "Instalación:",
+              "text": "redundancia de UPS ≥ redundancia de alimentación; La redundancia del generador debe soportar las 4 alimentaciones."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_placement.png",
+            "alt": "Distribución del suelo que muestra la ubicación de CDU respecto a la estructura Redmond con conexiones de tuberías primarias y secundarias.",
+            "caption": "Figura 18.13.1 — CDU colocación en el suelo con conexiones primarias (instalación) y secundarias (IT).",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdu_placement.txt",
+            "wav_file": "audio/module3/slide_03_cdu_placement.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 60
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 65
+            }
+          ],
+          "term_refs": [
+            "four_makes_three"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_table",
+          "slug": "supply_chain",
+          "section_label": "Modelo de cadena de suministro",
+          "title": "Modelo de Proveedor de Tres Niveles",
+          "subtitle": "Diseñado para plazos de entrega mundiales de 10 a 12 semanas a un coste competitivo.",
+          "columns": [
+            "Nivel",
+            "Descripción",
+            "Conde",
+            "Tiempo de espera",
+            "Sitios de fabricación"
+          ],
+          "rows": [
+            [
+              "AVL",
+              "Lista de proveedores aprobados — producción activa para despliegues de Google",
+              "2",
+              "4 semanas",
+              "1–3"
+            ],
+            [
+              "R-AVL",
+              "Reservado Aprobado — lista de espera totalmente cualificada, lista para activarse",
+              "2",
+              "4 semanas",
+              "1–2"
+            ],
+            [
+              "RVL",
+              "Lista de proveedores recomendados — autocalificado según la especificación; puede vender a otros CSP y colos",
+              "6+",
+              "4 semanas",
+              "1–2"
+            ],
+            [
+              "Componente AVL",
+              "Por componente crítico (HX, bomba, VFD, fuente de alimentación, tuberías, sensores)",
+              "2–3",
+              "8–12 semanas",
+              "1–2"
+            ],
+            [
+              "RVL de componentes",
+              "Por componente, autocualificado",
+              "2+",
+              "8 semanas",
+              "1–2"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_supply_chain.txt",
+            "wav_file": "audio/module3/slide_04_supply_chain.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+              "page": 9
+            }
+          ],
+          "term_refs": [
+            "supplier_tiers"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "maintenance_frus",
+          "section_label": "Disponibilidad",
+          "title": "Mantenimiento y unidades reemplazables en el campo",
+          "bullets": [
+            {
+              "bold_lead": "En el frente es útil por diseño.",
+              "text": "Ambos filtros, microfiltración de corriente lateral, depósito de expansión, panel de control — todo de acceso frontal."
+            },
+            {
+              "bold_lead": "Bombas:",
+              "text": "Bomba A delante, bomba B detrás (o lateral si está bloqueada). Puntos de rotura controlados + válvulas de aislamiento + conductos de drenaje."
+            },
+            {
+              "bold_lead": "Mejoras en la versión 1.0:",
+              "text": "VFD accesorios de espacio libre + depósito de expansión delantero en servicio — lecciones directas de generaciones anteriores."
+            },
+            {
+              "bold_lead": "Excepción:",
+              "text": "El medidor de caudal secundario requiere CDU servicio de apagado — evento programado."
+            },
+            {
+              "bold_lead": "Trazabilidad completa de códigos de barras.",
+              "text": "Sección 17: ID del fabricante, GPN, MPN, s/n, COO, código de fecha en una etiqueta amarilla PMS 803C."
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_pump_a_service.png",
+            "alt": "La bomba A se atendía desde la parte delantera del CDU con puntos de interrupción controlados en la entrada y salida.",
+            "caption": "Figura 13.2.1 — Servicio de bombeo A desde la parte frontal del CDU. Ambas bombas tienen válvulas de aislamiento, conductos de drenaje y alimentación conectada.",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_maintenance_frus.txt",
+            "wav_file": "audio/module3/slide_05_maintenance_frus.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 39
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 41
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 47
+            }
+          ],
+          "term_refs": [
+            "fru"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "slug": "pump_service_sequence",
+          "section_label": "Secuencia de servicio",
+          "title": "Aislar, drenar, desenergizar, desconectar, retirar",
+          "subtitle": "La bomba redundante mantiene el flujo mientras la rama de servicio se hace segura para su retirada.",
+          "figure": {
+            "path": "figures/pump_service_sequence.webm",
+            "media_type": "video",
+            "poster": "figures/pump_service_sequence_poster.png",
+            "alt": "Animación silenciosa de una secuencia de servicio contenida de bomba: la bomba redundante mantiene el flujo mientras la rama de servicio se aísla, drena, desenergizado, desconecta y se retira a través de la envoltura de servicio frontal.",
+            "caption": "La secuencia de servicio protege a las personas, la contención del refrigerante y el funcionamiento continuo. La bomba A sale por delante; La bomba B normalmente sale por la parte trasera.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_06_pump_service_sequence.txt",
+            "wav_file": "audio/module3/slide_06_pump_service_sequence.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 26
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 39
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 40
+            }
+          ],
+          "id": 6
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "get_involved",
+          "section_label": "Involúcrate",
+          "title": "Recursos y próximos pasos",
+          "subtitle": "Cuatro enlaces canónicos: especulación, comunidad, mercado y la serie de introducción OCP Academy.",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "PDF de especificaciones v1.0",
+              "body": "Descarga la especificación oficial de febrero de 2026 — fuente de verdad para cada número de este curso.",
+              "icon": "📄",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf",
+              "link_text": "opencompute.org/documents/…deschutes-v1-0-pdf"
+            },
+            {
+              "title": "CDU Subproyecto",
+              "body": "El OCP unidad de distribución de refrigerante subproyecto — grupo de trabajo, colaboradores, discusiones continuas.",
+              "icon": "👥",
+              "url": "https://www.opencompute.org/community/coolant-distribution-unit",
+              "link_text": "opencompute.org/community/coolant-distribution-unit"
+            },
+            {
+              "title": "OCP Marketplace",
+              "body": "Explora CDU basados en Deschutes de varios proveedores — filtrados a la categoría CDU.",
+              "icon": "🛍️",
+              "url": "https://www.opencompute.org/products?cloud_products%5BrefinementList%5D%5Bhardware.categories.Liquid%20Cooling%20%26%20Thermal%20Management%5D%5B0%5D=Coolant%20Distribution%20Unit%20%28CDU%29",
+              "link_text": "opencompute.org/products (CDU filter)"
+            },
+            {
+              "title": "Imprimador refrigerante líquido",
+              "body": "El plan introductorio de cuatro cursos de OCP Academy — fundamentos más amplios de la refrigeración líquida.",
+              "icon": "🎓",
+              "url": "https://academy.opencompute.org/learn/learning-plans/5/liquid-cooling-technologies-overview",
+              "link_text": "academy.opencompute.org/…liquid-cooling-technologies-overview"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_get_involved.txt",
+            "wav_file": "audio/module3/slide_06_get_involved.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "key_takeaways_m3",
+          "title": "Lo que aprendiste",
+          "items": [
+            "Las unidades Redmond HAC se suministran con la misma especificación; dos forman una bahía completa de refrigeración líquida de 2 MW.",
+            "Energía y refrigeración codiseñadas: redundancia 4-makes-3, 8 x 600 A de bus duct y 90 kW por posición de rack.",
+            "Filtros, bombas, depósito de expansión y panel de control admiten servicio frontal; v1.0 mejora el servicio del VFD y del depósito.",
+            "Modelo de proveedor de tres niveles: AVL(2) + R-AVL(2) + RVL(6+), con objetivo global de 10-12 semanas de entrega.",
+            "La especificación permanece abierta y en evolución; las futuras revisiones incorporarán comentarios de fabricación y validación."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_key_takeaways_m3.txt",
+            "wav_file": "audio/module3/slide_07_key_takeaways_m3.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m3",
+          "title": "Comprobar las decisiones de despliegue",
+          "subtitle": "Responde una vez para continuar. No es necesario que la corrección sea necesaria, y puedes volver a intentarlo.",
+          "audio": {
+            "script_file": "audio/module3/slide_08_knowledge_check_m3.txt",
+            "wav_file": "audio/module3/slide_08_knowledge_check_m3.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m3_redmond_role",
+              "prompt": "¿Qué aporta la interfaz Redmond junto con la Deschutes CDU?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Una estructura complementaria de contención y despliegue de pasillo caliente para la bahía refrigerada por líquido.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Un reemplazo para toda la redundancia eléctrica de nivel rack.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "Un plano de control propietario solo por software sin guía de diseño físico.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Una norma que establece que cada despliegue debe reconstruir la estructura de la instalación desde cero.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correcto. Redmond proporciona al CDU un entorno físico definido y repetible.",
+              "feedback_incorrect": "Revisa el Redmond diapositiva. Su función es un complemento de contención de pasillo caliente e interfaz de bahía, no un sustituto del diseño eléctrico o la planificación de instalaciones."
+            },
+            {
+              "id": "m3_deployment_model",
+              "multiple": true,
+              "prompt": "¿Qué afirmaciones coinciden con el modelo de despliegue y operación cubierto en el Módulo 3?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "El modelo de potencia de 4-fabrica-3 rack utiliza cuatro alimentaciones, de las cuales tres son suficientes para carga completa.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "El modelo de proveedor incluye niveles AVL, R-AVL y RVL para ampliar la disponibilidad.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Los filtros, bombas, el vaso de expansión y el panel de control están diseñados en torno a la disponibilidad en campo.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "La especificación es completa, cerrada y no está destinada a recibir comentarios de la comunidad.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correcto. El Módulo 3 relaciona la redundancia de energía, los niveles de proveedores, la disponibilidad y la participación continua de la comunidad.",
+              "feedback_incorrect": "Revisa los puntos clave finales del módulo. Deschutes es abierta y en evolución, con patrones de despliegue, servicio y cadena de suministro diseñados para escalar."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "OCP Project Deschutes",
+          "thank_you_message": "Gracias por completar el Módulo 3: Despliegue, Cadena de Suministro y Llamada a la Acción.",
+          "cert_message": "Has completado todos los módulos del curso OCP Academy Project Deschutes. Tu siguiente paso: abre la especificación, avalíala en función de tu propio despliegue y colabora con el grupo de trabajo OCP CDU. La apertura es la clave de la escala.",
+          "audio": {
+            "script_file": "audio/module3/slide_08_course_complete.txt",
+            "wav_file": "audio/module3/slide_08_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    }
+  ],
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "La refrigeración líquida directa elimina el calor a nivel del chip o servidor usando placas frías y un circuito dedicado de refrigerante."
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "unidad de distribución de refrigerante: el puente líquido-líquido que controla el flujo de refrigerante, la presión y la transferencia de calor entre el agua de la instalación y el equipo IT."
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "sistema de agua de la instalación: el circuito de agua refrigerada o de condensador del lado del edificio que alimenta el lado CDU primario."
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "sistema de refrigeración tecnológica: el circuito de refrigerante secundario limpio que sirve rack colectores y placas frías."
+    },
+    {
+      "id": "approach_temperature",
+      "term": "temperatura de aproximación",
+      "tooltip": "Diferencia entre el suministro de TCS fría que sale del CDU y el suministro de FWS frío que entra en él; Deschutes objetivos de 3 °C."
+    },
+    {
+      "id": "differential_pressure",
+      "term": "dP",
+      "tooltip": "presión diferencial: la cabeza de presión disponible para empujar el refrigerante a través de colectores, mangueras y placas frías."
+    },
+    {
+      "id": "heat_exchanger",
+      "term": "HX",
+      "tooltip": "intercambiador de calor: transfiere calor entre circuitos sin mezclar la instalación y IT fluidos refrigerantes."
+    },
+    {
+      "id": "di_water",
+      "term": "Agua DI",
+      "tooltip": "Agua desionizada: agua tratada para eliminar iones disueltos que pueden afectar la corrosión o la conductividad."
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "Mezcla de refrigerante propilenglicol con una concentración de glicol aproximada del 25%."
+    },
+    {
+      "id": "epdm",
+      "term": "EPDM",
+      "tooltip": "Monómero de dieno propileno etileno: elastómero utilizado para mangueras y sellos compatibles con refrigerante."
+    },
+    {
+      "id": "vfd",
+      "term": "VFD",
+      "tooltip": "variador de frecuencia: controla la velocidad del motor, utilizada aquí para el control de la velocidad y eficiencia de la bomba."
+    },
+    {
+      "id": "plc",
+      "term": "PLC",
+      "tooltip": "Controlador lógico programable: el controlador industrial que ejecuta bucles de control, alarmas e interfaces CDU."
+    },
+    {
+      "id": "modbus_tcp",
+      "term": "Modbus/TCP",
+      "tooltip": "Protocolo de comunicaciones industriales que transporta mensajes Modbus a través de redes TCP/IP estándar."
+    },
+    {
+      "id": "ipv6_dual_stack",
+      "term": "IPv6 doble pila",
+      "tooltip": "Soporte en red para IPv4 y IPv6 al mismo tiempo."
+    },
+    {
+      "id": "hac",
+      "term": "HAC",
+      "tooltip": "contención de pasillo caliente: una estructura que gestiona el aire caliente de escape alrededor de la fila rack."
+    },
+    {
+      "id": "rdhx",
+      "term": "RDHx",
+      "tooltip": "intercambiador de calor de puerta trasera: un dispositivo de refrigeración rack de puerta trasera mencionado en las dimensiones del pasillo Redmond."
+    },
+    {
+      "id": "four_makes_three",
+      "term": "4 hace 3",
+      "tooltip": "Disposición de alimentación en rack donde hay cuatro alimentaciones y cualquier tres puede soportar carga completa."
+    },
+    {
+      "id": "supplier_tiers",
+      "term": "AVL / R-AVL / RVL",
+      "tooltip": "Niveles de proveedores: proveedores aprobados activos, proveedores aprobados reservados y proveedores recomendados o autocalificados."
+    },
+    {
+      "id": "fru",
+      "term": "FRU",
+      "tooltip": "unidad reemplazable en campo: un componente diseñado para ser intercambiado durante el servicio de campo."
+    }
+  ],
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "zl1Ut8dvwcVSuQSB9XkG",
+    "voice_name": "Ninoska",
+    "model_id": "eleven_multilingual_v2"
+  },
+  "metadata_language_name": "Spanish (LATAM)",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "es-419",
+    "source_course_sha256": "c28948f618e63f4be412b2084d2976144b102cf127a6923b0c70a5d5c4600d4e"
+  },
+  "ui_labels": {
+    "not_started": "No iniciado",
+    "completed": "Completado",
+    "module": "Módulo",
+    "module_complete": "Módulo {module} completado",
+    "course_complete": "Curso completado",
+    "course_overview": "Descripción del curso",
+    "learning_objectives": "Objetivos de aprendizaje",
+    "key_takeaways": "Puntos clave",
+    "knowledge_check": "Comprobación de conocimientos",
+    "submit": "Enviar",
+    "retry": "Volver a intentar",
+    "quiz_gate_note": "Para continuar, envíe cada pregunta una vez. Puede avanzar independientemente de la respuesta y volver a intentarlo.",
+    "quiz_gate_warning": "Envíe cada pregunta una vez antes de avanzar.",
+    "select_answer": "Seleccione al menos una respuesta antes de enviar.",
+    "correct": "Correcto.",
+    "review_feedback": "Revise los comentarios antes de volver a intentarlo.",
+    "narration_hint": "La narración comienza automáticamente. Use la flecha derecha o la barra espaciadora para avanzar.",
+    "theme": "Tema",
+    "toggle_dark_mode": "Alternar modo oscuro",
+    "previous_slide": "Diapositiva anterior",
+    "next_slide": "Siguiente diapositiva",
+    "play_pause_narration": "Reproducir o pausar la narración",
+    "playback_speed": "Velocidad de reproducción",
+    "playback_speed_slider": "Ajustar la velocidad de reproducción",
+    "speed": "Velocidad",
+    "toggle_fullscreen": "Alternar pantalla completa",
+    "fullscreen": "Pantalla completa",
+    "video_controls": "Controles de video",
+    "play_video": "Reproducir video",
+    "pause_video": "Pausar video",
+    "zoom_video": "Ampliar video",
+    "video_figure": "Figura en video",
+    "zoom_figure": "Ampliar figura",
+    "enlarged_figure": "Figura ampliada",
+    "lightbox_close_hint": "Haga clic fuera o presione Esc para cerrar.",
+    "opens_new_tab": "Se abre en una pestaña nueva",
+    "learner_resource": "Recurso de aprendizaje",
+    "open": "Abrir",
+    "learn_more": "Más información",
+    "reference": "Referencia",
+    "course_intro": "Introducción del curso OCP Academy",
+    "skip_intro": "Omitir introducción",
+    "share_feedback": "Enviar comentarios",
+    "survey_body": "¿Puede dedicar unos minutos para ayudarnos a mejorar? Sus comentarios al equipo de desarrollo se usarán para mejorar este curso y los próximos. Sortearemos obsequios entre quienes respondan.",
+    "default_module_thanks": "Gracias por completar el módulo {module}: {title}",
+    "default_course_wrap": "Completó todos los módulos de {course}. Esperamos que este contenido le resulte útil en su trabajo.",
+    "up_next": "Siguiente curso",
+    "go_to_module": "Ir al módulo {module}"
+  }
+}

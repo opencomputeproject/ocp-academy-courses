@@ -1,0 +1,1523 @@
+{
+  "style": "Slides",
+  "language": "ja-JP",
+  "course_slug": "project_deschutes_v1_0_ja_jp",
+  "course_title": "OCP Project Deschutes",
+  "course_subtitle": "冷却液分配ユニット (CDU) 仕様 v1.0",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "仕様v1.0 ·2026年2月",
+  "target_duration_minutes": 40,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "deschutes_logo.svg",
+    "academy_logo": "ocp_academy_logo.svg",
+    "badge_text": "CDU",
+    "motion_intro_logo": "ocp_academy_white.svg"
+  },
+  "sources": [
+    {
+      "kind": "ocp_contribution_pdf",
+      "title": "Project Deschutes: Data Center Facilities V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-final-2025-09-05-pdf"
+    },
+    {
+      "kind": "ocp_emea_summit_recording",
+      "title": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+      "url": "https://www.youtube.com/watch?v=OKYj_J66VWM"
+    },
+    {
+      "kind": "google_cloud_blog",
+      "title": "AI infrastructure is hot. New power distribution and liquid cooling infrastructure can help",
+      "url": "https://cloud.google.com/blog/topics/systems/enabling-1-mw-it-racks-and-liquid-cooling-at-ocp-emea-summit"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_deschutes_why_now",
+      "title": "なぜDeschutes、なぜ今なのか",
+      "subtitle": "動機、FWS → CDU → TCSアーキテクチャ、そしてv1.0のヘッドラインスペック。",
+      "module_badge_text": "モジュール1",
+      "next_module_title": "CDU アーキテクチャとパフォーマンス",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Project Deschutes入門",
+          "subtitle": "Googleのオープン2 MW CDU貢献が業界に提供されました",
+          "version_chip": "仕様v1.0 ·2026年2月",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "overview",
+          "title": "三つのモジュール、一つの完全な全体像",
+          "subtitle": "動機から内部構造、展開まで、v1.0仕様に基づき。",
+          "modules_listed": [
+            "なぜDeschutes、なぜ今なのか",
+            "CDU アーキテクチャとパフォーマンス",
+            "展開、サプライチェーンおよび行動喚起"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "~合計40分"
+            },
+            {
+              "icon": "🎓",
+              "text": "中間層"
+            },
+            {
+              "icon": "📄",
+              "text": "Spec v1.0 ·2026年2月",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf"
+            },
+            {
+              "icon": "🎥",
+              "text": "OCP Academy Liquid Cooling プライマーのティーザーをご覧ください",
+              "url": "https://www.youtube.com/watch?v=bIePDFht0uU"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_overview.txt",
+            "wav_file": "audio/module1/slide_02_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 3
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "ai_challenge",
+          "section_label": "なぜ今なのか",
+          "title": "AI/ML冷却チャレンジ",
+          "subtitle": "ラック密度が空冷の対応範囲を超えています。",
+          "bullets": [
+            {
+              "bold_lead": "ラック電源密度>100 kW",
+              "text": "現在ではAI/MLクラスターで一般的であり、空冷の実用限界をはるかに超えています。"
+            },
+            {
+              "bold_lead": "直接液体冷却(DLC)",
+              "text": "冷却板+専用の二次ループを介してチップの熱を移動させます。消費電力が低く、床面積も小さくなります。"
+            },
+            {
+              "bold_lead": "欠けていたピース:",
+              "text": "標準化され、公開されている高性能CDUで、数メガワット規模で、施設の冷水とrack冷蔵板の架け橋となります。"
+            },
+            {
+              "bold_lead": "Project Deschutesまさにそのギャップを狙っています:",
+              "text": "2 MW熱容量、業界をリードする油圧性能、すべての供給者が利用可能であること。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_challenge.txt",
+            "wav_file": "audio/module1/slide_03_ai_challenge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "dlc",
+            "cdu"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "cdu_role_bridge",
+          "section_label": "建築",
+          "title": "CDUの位置付け: FWS → CDU → TCS",
+          "subtitle": "CDUは建物の水処理装置と冷蔵板の間の正確な制御点rack。",
+          "figure": {
+            "path": "figures/cdu_flow_bridge.webm",
+            "media_type": "video",
+            "poster": "figures/cdu_flow_bridge_poster.png",
+            "alt": "施設水システム、Project Deschutes CDU、テクノロジー冷却システム間で冷たい供給と温められた戻りの静かなアニメーションが流れます。2つの流体ループは混合せずに熱を交換します。",
+            "caption": "CDUは固定3°Cのアプローチ温度水を保持するのに必要な量だけを供給し、80〜90 psiで500 GPMをITループに供給します。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_cdu_role_bridge.txt",
+            "wav_file": "audio/module1/slide_04_cdu_role_bridge.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ],
+          "term_refs": [
+            "fws",
+            "tcs",
+            "approach_temperature",
+            "differential_pressure",
+            "heat_exchanger"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "google_experience",
+          "section_label": "血統",
+          "title": "7年以上のハイパースケール運用実績を基盤に",
+          "subtitle": "OCP年のEMEAサミット2025で初めて発表され、オープンなコミュニティのフィードバックを通じてv1.0へと進化しました。",
+          "bullets": [
+            {
+              "bold_lead": "Google 5代目のCDUです。",
+              "text": "7年以上にわたるハイパースケールでの水冷の経験に基づいています。"
+            },
+            {
+              "bold_lead": ">1 GWの先代Deschutesが展開されました。",
+              "text": "何が故障し、どのように、何を再設計すべきかの実在データ。"
+            },
+            {
+              "bold_lead": "EMEAサミット2025 OCPで初めて発表されました。",
+              "text": "Google v0.8ドラフトを公開し、コミュニティの一般意見を募りました。"
+            },
+            {
+              "bold_lead": "v1.0 = コミュニティの関与を現実に実現。",
+              "text": "数か月にわたるサプライヤーやオペレーターからの意見、製造設計の改良、ポンプ信頼性データの更新。"
+            },
+            {
+              "bold_lead": "作戦作戦のプレイブックをオープンにしましょう。",
+              "text": "BOM、製造品質、パッケージ、バーコードラベル、検証、FRU手順がすべて公開されています。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Project Deschutes CDU概要 — ラベル付きのコールアウトを表示したユニットの2つのビュー。",
+            "caption": "図3.3.1 v1.0仕様からの — 一次・二次接続、制御エンクロージャー、ポンプ、熱交換器をラベル付けした概要CDU。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_google_experience.txt",
+            "wav_file": "audio/module1/slide_05_google_experience.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "high_level_specs",
+          "section_label": "仕様",
+          "title": "ヘッドライン仕様(仕様表3.1)",
+          "columns": [
+            "仕様",
+            "価値"
+          ],
+          "rows": [
+            [
+              "ITフロー",
+              "500 GPM"
+            ],
+            [
+              "施設流量 @ 0.25 GPM/kW",
+              "500 GPM"
+            ],
+            [
+              "IT dP",
+              "80〜90 psi"
+            ],
+            [
+              "施設dP",
+              "15〜30 psi"
+            ],
+            [
+              "作動圧力",
+              "0–130 psig"
+            ],
+            [
+              "熱負荷",
+              "2,000 kW(2 MW)"
+            ],
+            [
+              "アプローチ温度",
+              "3°C"
+            ],
+            [
+              "動作液温",
+              "18〜55°C"
+            ],
+            [
+              "CDU重量(ウェット/ドライ)",
+              "6,900 / 5,300 lb"
+            ],
+            [
+              "消費電力",
+              "74 kW"
+            ],
+            [
+              "ポンプ電圧",
+              "380–416 VAC、3相"
+            ],
+            [
+              "熱交換器",
+              "液体から液体への二重通過"
+            ],
+            [
+              "冷却材",
+              "DIウォーター、PG25"
+            ],
+            [
+              "CDU寸法(W × H × D)",
+              "65.25 × 91.44 × 42.29インチ"
+            ],
+            [
+              "冗長性",
+              "ポンプ2台N+1 ·3 HX 並列 ·デュアルフィード電源"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_high_level_specs.txt",
+            "wav_file": "audio/module1/slide_06_high_level_specs.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            }
+          ],
+          "term_refs": [
+            "di_water",
+            "pg25"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "key_takeaways_m1",
+          "title": "学んだこと",
+          "items": [
+            "Open Compute Projectに提供された初の公開CDU仕様で、Googleの第5世代設計を基盤としています。",
+            "AI/ML向け設計: 3 °Cのアプローチ温度で2 MWの熱容量、ITループで80-90 psiを確保。",
+            "施設水システムとテクノロジー冷却システムの間にある精密な制御点。",
+            "すべての数値は2026年2月26日付の公式v1.0仕様で確認できます。",
+            "OCP EMEA Summit 2025で初公開され、公開コミュニティの意見を反映してv1.0になりました。"
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_key_takeaways_m1.txt",
+            "wav_file": "audio/module1/slide_07_key_takeaways_m1.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m1",
+          "title": "Deschutesのメンタルモデルを確認してください",
+          "subtitle": "一度だけ答えて続けてください。正確さは必須ではなく、再挑戦も可能です。",
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check_m1.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check_m1.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m1_cooling_architecture",
+              "prompt": "FWS → CDU → TCSアーキテクチャにおけるDeschutes CDUの役割は何でしょうか?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "この装置は施設の水とクリーンIT冷却材ループを橋渡しし、冷却材の供給を制御しながら熱を施設側に戻します。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "建物の冷水プラントを完全に置き換えます。",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "これはrack気流の監視装置に過ぎません。",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "ホット通路にrack電線を配ります。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "その通りです。Deschutesは施設水システムとテクノロジー冷却システムをつなぐ制御された液体間橋です。",
+              "feedback_incorrect": "アーキテクチャスライドを見直しましょう。CDUはFWSとTCSの間に位置しています。施設の設備を置き換えたり、電力配電装置としての役割を果たしたりするわけではありません。"
+            },
+            {
+              "id": "m1_headline_specs",
+              "multiple": true,
+              "prompt": "どのヘッドライン値がProject Deschutes v1.0 CDU仕様に該当しますか?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "3°C アプローチ温度で2 MW熱負荷。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "500 GPM IT流量で、利用可能な差圧は80〜90 psiです。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "定格負荷時の施設流量は500 GPM、15〜30 psiで発生しています。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "閉鎖的で独自設計で、1つの供給者のみに提供されています。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "その通りです。これらの値はモジュール1で強調された熱的、IT側の油圧的目標、施設側の目標をまとめたものです。",
+              "feedback_incorrect": "Spec表3.1を振り返ってみてください。Deschutesはオープンで、主要な数値には2 MW、3°Cアプローチ、500 GPM、そして公表されている圧力範囲が含まれます。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 11
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next_m1",
+          "next_module_number": 2,
+          "next_module_title": "CDU アーキテクチャとパフォーマンス",
+          "thank_you_message": "素晴らしい仕事ですね — モジュール1「なぜDeschutes、なぜ今」を終えましたか。",
+          "audio": {
+            "script_file": "audio/module1/slide_08_up_next_m1.txt",
+            "wav_file": "audio/module1/slide_08_up_next_m1.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "cdu_architecture_performance",
+      "title": "CDU アーキテクチャとパフォーマンス",
+      "subtitle": "v1.0の内部CDU — 物理的な封筒、継手、ポンプ/HX/センサースイート、制御、電気、ホットスワップ。",
+      "module_badge_text": "モジュール2",
+      "next_module_title": "展開、サプライチェーンおよび行動喚起",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m2_title",
+          "title": "CDU アーキテクチャとパフォーマンス",
+          "subtitle": "ユニットを開ける — v1.0の内部構造を端から端まで",
+          "version_chip": "仕様v1.0 ·2026年2月",
+          "audio": {
+            "script_file": "audio/module2/slide_01_m2_title.txt",
+            "wav_file": "audio/module2/slide_01_m2_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "physical",
+          "section_label": "物理的エンベロープ",
+          "title": "形状、重量、機械",
+          "bullets": [
+            {
+              "bold_lead": "寸法:",
+              "text": "幅65.25インチ × 高さ91.44インチ × 42.29インチ D;最大パッケージ高さは100インチです。"
+            },
+            {
+              "bold_lead": "重量:",
+              "text": "乾燥5,300ポンド、湿潤6,900ポンド — 床構造と地震アンカーの計画を立ててください。"
+            },
+            {
+              "bold_lead": "フレーム、キャスター、取り付け brackets。",
+              "text": "所定の位置に転がり込み、固定され、配管が整備された。"
+            },
+            {
+              "bold_lead": "ステンレス製の配管。",
+              "text": "濡れた材料はステンレス、銅、EPDMに限られています。セカンダリーループにはニッケルメッキの真鍮はありません。"
+            },
+            {
+              "bold_lead": "感電と振動:",
+              "text": "IEC 60068-2-27 作動(3.5 G、11 ms ハーフサイン);30G非作戦用;ASTM D4169 交通手段。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_overview.png",
+            "alt": "Project Deschutes CDUの2 CADビューで、一次側と二次側の接続、制御囲い、ポンプ、HX、地震界面を示しています。",
+            "caption": "図3.3.1 — Project Deschutes CDU。このユニットは、単にクリーンに運用するだけでなく、輸送、転がり、地震にも耐えられるように設計されています。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_02_physical.txt",
+            "wav_file": "audio/module2/slide_02_physical.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 17
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "mechanical_features",
+          "section_label": "継手とろ過",
+          "title": "機械的特徴:長期運用を想定して設計",
+          "bullets": [
+            {
+              "bold_lead": "Victaulic+トライクランプフィッティングミックス。",
+              "text": "統合リスクを最小限に抑え、圧力低下を抑え、サービスの接点を簡素化する最適化を図っています。"
+            },
+            {
+              "bold_lead": "層別ろ過:",
+              "text": "500μmの一次ストレーナー;主二次25〜44μm;0.2μmのサイドストリーム精密ろ過、~3 GPM。"
+            },
+            {
+              "bold_lead": "スピロベント空気分離器",
+              "text": "パージは溶けたガスを連続的に排出します。"
+            },
+            {
+              "bold_lead": "流れ込み膨張タンク。",
+              "text": "v1.0はフロントサイドの整備性を追加しました。これは前世代からの直接的な教訓です。"
+            },
+            {
+              "bold_lead": "過酸化水素硬化EPDMホース。",
+              "text": "長期的なエラストマーの安定性のために好まれます。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_victaulic_triclamp.png",
+            "alt": "熱交換器やマニホールドの周囲に、Victaulicおよびトライクランプの継手がどのように配置されているかを示す注釈付き写真。",
+            "caption": "図3.3.4 — Victaulicとトライクランプ継手の最適化された混合により、統合リスクと圧力損失が最小化されます。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_mechanical_features.txt",
+            "wav_file": "audio/module2/slide_03_mechanical_features.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 15
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 16
+            }
+          ],
+          "term_refs": [
+            "epdm"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "hydraulic_performance",
+          "section_label": "油圧性能",
+          "title": "500 GPM 80–90 psi — 公表された曲線付き",
+          "bullets": [
+            {
+              "bold_lead": "二次的(IT)ターゲット:",
+              "text": "500 GPM @ 80〜90 psi利用可能なdP — rackマニホールド+数十台のコールドプレートに十分なヘッド。"
+            },
+            {
+              "bold_lead": "ノーマルモード:",
+              "text": "N+1に2つのポンプ(仕様P.19曲線、PG25流体)。"
+            },
+            {
+              "bold_lead": "フォールバックモード:",
+              "text": "ポンプ1台、低圧(仕様書20ページ)—停止を宣言せずにスワップをスケジューリングするのに十分な時間。"
+            },
+            {
+              "bold_lead": "施設(プライマリー):",
+              "text": "定格負荷で500 GPM @ 15〜30 psi — ユニットが実際に必要とする量だけです。"
+            },
+            {
+              "bold_lead": "封筒:",
+              "text": "0–130 psig作動中、130 psi圧力解放、パーカーN-S-P-251 ORB6クイックディスコネトテレメトリーポート。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_hydraulic_n_plus_1.png",
+            "alt": "CDU二次側油圧曲線、2ポンプ(N+1)作動、PG25流体。",
+            "caption": "図5.1.1 — 2ポンプ運転時の二次側油圧性能(利用可能な圧力)。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_hydraulic_performance.txt",
+            "wav_file": "audio/module2/slide_04_hydraulic_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 19
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 20
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "thermal_performance",
+          "section_label": "熱性能",
+          "title": "2 MWで3 °Cのアプローチ温度 - ほとんどの負荷でさらに良好",
+          "bullets": [
+            {
+              "bold_lead": "3台のデュアルパスHX並列で。",
+              "text": "圧力損失が低くなり、サービス用の冗長性が確保されています。"
+            },
+            {
+              "bold_lead": "ファーストソースベンダー:",
+              "text": "Alfa Laval CB210-276AH(項目番号30751 6274 3)。"
+            },
+            {
+              "bold_lead": "見出し:",
+              "text": "3°Cのアプローチ @ 2 MW熱負荷、両側それぞれ500 GPM。"
+            },
+            {
+              "bold_lead": "本当のパフォーマンスは見出しよりも優れています。",
+              "text": "表5.3は7つの操作点を公開しています — 例:2.3°C @ 2,150 kW / 545 GPM;1.6°C @ 640 kW / 162 GPM。"
+            },
+            {
+              "bold_lead": "冷却材の範囲:",
+              "text": "18〜55°C;DI水(ChemTreat、Garratt-Callahan、Veoliaの配合)またはPG25。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_approach_vs_flow.png",
+            "alt": "熱交換器熱性能曲線 — アプローチ温度は流量とともに下がります。",
+            "caption": "図5.3.2 — 2 MW熱負荷におけるアプローチ温度と流量の対比、デュアルパス熱交換器。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_thermal_performance.txt",
+            "wav_file": "audio/module2/slide_05_thermal_performance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 21
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 22
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "core_components_sensors",
+          "section_label": "コンポーネントとテレメトリー",
+          "title": "部品番号別コアコンポーネント",
+          "bullets": [
+            {
+              "bold_lead": "ポンプ:",
+              "text": "Speck TOEMA065200 — 500 GPM @ 112 psi、37 kW、シールなし。N+1冗長です。"
+            },
+            {
+              "bold_lead": "VFD:",
+              "text": "ABB ACH580-31-065A-4(NEMAタイプ12)— v1.0で整備性アクセサリーが追加されました。"
+            },
+            {
+              "bold_lead": "一次制御弁:",
+              "text": "Belimo B6500。"
+            },
+            {
+              "bold_lead": "熱交換器:",
+              "text": "Alfa Laval CB210-276AHは3つの並列に並×。"
+            },
+            {
+              "bold_lead": "テレメトリー:",
+              "text": "4つの多様体すべてでT + P;流量±0.5%;ポンプごとの電力RPMと出力、3ゾーン漏れ検出;冷却水のpH+電気伝導率。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_secondary_loop.png",
+            "alt": "CDUの二次側(IT側)にポンプ、フィルター、熱交換器、流量計がラベル付けされた注釈付き写真。",
+            "caption": "図3.3.2 — 二次(技術的/IT)流量ループの特徴:4×フィルター、二次流量計、ポンプ、隔離弁、Victaulic継手。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_06_core_components_sensors.txt",
+            "wav_file": "audio/module2/slide_06_core_components_sensors.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 12
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 23
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 24
+            }
+          ],
+          "term_refs": [
+            "vfd"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "controls_power_hotswap",
+          "section_label": "制御と動力",
+          "title": "PLC 2つの制御ループ+デュアルフィード電源",
+          "subtitle": "Modbus/TCP、IPv4 + IPv6デュアルスタック、ホットスワップ可能な冗長なサブコンポーネント。",
+          "figure": {
+            "path": "figures/plc_control_loops.webm",
+            "media_type": "video",
+            "poster": "figures/plc_control_loops_poster.png",
+            "alt": "無音アニメーションで、PLCが差圧フィードバックで二次ポンプ速度を制御し、接近温度フィードバックで一次バルブを制御し、冗長な供給ACが制御の可用性を維持する様子を映し出します。",
+            "caption": "2つの制御ループが同時に動作します。ポンプ回転数は二次差圧力設定値を保持し、一次バルブ位置は3°Cの設定アプローチ温度を保持します。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_07_controls_power_hotswap.txt",
+            "wav_file": "audio/module2/slide_07_controls_power_hotswap.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 26
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 27
+            }
+          ],
+          "term_refs": [
+            "plc",
+            "modbus_tcp",
+            "ipv6_dual_stack"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "key_takeaways_m2",
+          "title": "学んだこと",
+          "items": [
+            "物理仕様: 65 x 91 x 42インチ、湿潤重量約6,900lb。輸送、移動、固定に対応。",
+            "多段ろ過: 500 µm → 25-44 µm → 0.2 µmサイドストリーム。長期の清浄運転を想定。",
+            "油圧性能: 500 GPM @ 80-90 psi、2ポンプと1ポンプの性能曲線を公開。",
+            "熱性能: 2 MWで3 °Cのアプローチ温度。運転範囲の大部分で仕様を上回ります。",
+            "主要部品: Speckポンプ、ABB VFD、Belimoバルブ、Alfa Laval HX。",
+            "PLC: Modbus/TCP、IPv4 + IPv6、2つの標準制御ループ(ポンプ速度、一次バルブ)、ホットスワップ部品。"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_key_takeaways_m2.txt",
+            "wav_file": "audio/module2/slide_08_key_takeaways_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m2",
+          "title": "アーキテクチャの理解を確認してください",
+          "subtitle": "一度だけ答えて続けてください。正確さは必須ではなく、再挑戦も可能です。",
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check_m2.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check_m2.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m2_hydraulic_target",
+              "prompt": "公表されている二次側油圧ターゲットを最もよく表す記述は何でしょうか?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "IT側には500 GPM、利用可能な差圧は80〜90 psiです。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "施設側には500 GPM、利用可能な差圧は80〜90 psiです。",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "定格負荷時にはIT側に15〜30 psi可能です。",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "パフォーマンスカーブを公開していない単一の固定流量点。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "その通りです。ITまたは副側の目標は500 GPMで、下流には80〜90 psiが利用可能です。",
+              "feedback_incorrect": "油圧性能スライドを確認してください。利用可能な80〜90 psiの差圧はIT、施設の圧力はより低い範囲です。"
+            },
+            {
+              "id": "m2_controls_strategy",
+              "multiple": true,
+              "prompt": "モジュール2でサポートされているコントロールやテレメトリーステートメントはどれですか?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "PLCはIPv4およびIPv6デュアルスタックネットワークによるModbus/TCPをサポートしています。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "ポンプの速度はIT側の 差圧 を維持するために制御されています。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "一次制御バルブは制御を調節して制御アプローチ温度を維持します。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "セカンダリ流量計は電源付きのホットスワップサービス用に設計されています。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "その通りです。制御モデルはPLCネットワーク、ポンプ速度制御、一次バルブアプローチ温度制御を組み合わせています。",
+              "feedback_incorrect": "制御とメンテナンスの詳細を確認してください。二次流量計は電源オフCDU必要ですが、PLCと制御ループは動作の中心に位置します。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 18
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next_m2",
+          "next_module_number": 3,
+          "next_module_title": "展開、サプライチェーンおよび行動喚起",
+          "thank_you_message": "よくやったね — モジュール2:CDU建築とパフォーマンスを終えたね。",
+          "audio": {
+            "script_file": "audio/module2/slide_09_up_next_m2.txt",
+            "wav_file": "audio/module2/slide_09_up_next_m2.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "deployment_supply_chain_call_to_action",
+      "title": "展開、サプライチェーンおよび行動喚起",
+      "subtitle": "Redmond HAC、rack電力アーキテクチャ、三層サプライヤーモデル、FRUs、そして参加方法について。",
+      "module_badge_text": "モジュール3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "m3_title",
+          "title": "展開、サプライチェーンおよび行動喚起",
+          "subtitle": "仕様からデータセンターフロアへ",
+          "version_chip": "仕様v1.0 ·2026年2月",
+          "audio": {
+            "script_file": "audio/module3/slide_01_m3_title.txt",
+            "wav_file": "audio/module3/slide_01_m3_title.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 2,
+          "type": "content_two_column",
+          "slug": "redmond_hac",
+          "section_label": "コンパニオンスペック",
+          "title": "Redmond - ホットアイルコンテインメント・インターフェース",
+          "bullets": [
+            {
+              "bold_lead": "同じ仕様の第18条。",
+              "text": "CDUを展開するためのコンパニオンデータセンター構造。"
+            },
+            {
+              "bold_lead": "ラックエンベロープ:",
+              "text": "幅28インチ、最大50インチ幅、高さ80.7〜90.55インチ — 肩と肩までの深さ、ミックス&マッチの深さ。"
+            },
+            {
+              "bold_lead": "通路:",
+              "text": "54インチの冷たい;68.4インチのホット(RDHx使用)または102インチのホット(なし)です。"
+            },
+            {
+              "bold_lead": "天井は14フィート。",
+              "text": "世界中のほとんどのコロデータセンターに当てはまる――施設の再建ではなく、ドロップイン。"
+            },
+            {
+              "bold_lead": "4つの重要な立面:",
+              "text": "100.5インチ(ウォールマニホールド)、115.5インチ、127.5インチ、139.5インチ(ケーブルトレイ)。それ以上は=代替可能なPCWパイプ空間。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_redmond_structure.png",
+            "alt": "Xビーム支持、ケーブルトレイハンガー、ベースプレート、バスダクトマウントを備えたRedmond ホットアイルコンテインメント構造の注釈付き図。",
+            "caption": "図18.5.1 — Redmond HAC構造。5インチ×5インチのベースプレートに垂直のポストを設置し、壁マニホールドマウント用の横Xビームを支えます。ケーブルトレイハンガーは垂直部に取り付けられます。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_02_redmond_hac.txt",
+            "wav_file": "audio/module3/slide_02_redmond_hac.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 54
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 56
+            }
+          ],
+          "term_refs": [
+            "hac",
+            "rdhx"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "cdu_placement",
+          "section_label": "パワー+クーリング",
+          "title": "CDU + ラックパワー:「4 Makes 3」",
+          "bullets": [
+            {
+              "bold_lead": "ホット通路×600Aバスダクト8本",
+              "text": "(片側4本ずつ)列にパワーを供給します。"
+            },
+            {
+              "bold_lead": "「4で3」という冗長性。",
+              "text": "各rack 4本の給弾で給弾され、満載時は3本だけで十分です。単一の給電損失はrackには見えません。"
+            },
+            {
+              "bold_lead": "1 rackスポットあたり90 kW",
+              "text": "1秒単位でサポートされ、4フィード中3フィードが稼働しています。"
+            },
+            {
+              "bold_lead": "IEC 60309のタップボックス、",
+              "text": "5ピン、30/32A、230/240 VACワイ — グローバル標準、EMEA / NA / 日本。"
+            },
+            {
+              "bold_lead": "施設:",
+              "text": "UPS冗長≥フィード冗長性;発電機の冗長性は4つのすべての給電をサポートしなければなりません。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_cdu_placement.png",
+            "alt": "Redmond構造に対するCDU配置を示す床のレイアウトで、一次および二次配管接続が見られます。",
+            "caption": "図18.13.1 — 一次(施設)および二次(IT)配管接続による床上のCDU配置。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdu_placement.txt",
+            "wav_file": "audio/module3/slide_03_cdu_placement.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 60
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 65
+            }
+          ],
+          "term_refs": [
+            "four_makes_three"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_table",
+          "slug": "supply_chain",
+          "section_label": "サプライチェーンモデル",
+          "title": "三層サプライヤーモデル",
+          "subtitle": "世界中で10〜12週間のリードタイムを想定し、競争力のあるコストで設計されています。",
+          "columns": [
+            "ティア",
+            "概要",
+            "伯爵",
+            "リードタイム",
+            "製造現場"
+          ],
+          "rows": [
+            [
+              "AVL",
+              "承認ベンダーリスト — Google展開のためのアクティブ本番",
+              "2",
+              "4週間",
+              "1–3"
+            ],
+            [
+              "R-AVL",
+              "予約済み 承認済み — 完全資格のある待機、起動準備完了",
+              "2",
+              "4週間",
+              "1–2"
+            ],
+            [
+              "RVL",
+              "推奨ベンダーリスト — 仕様に自己認定;他のCSPやコロに販売することができます",
+              "6+",
+              "4週間",
+              "1–2"
+            ],
+            [
+              "構成要素AVL",
+              "重要部品ごと(HX、ポンプ、VFD、電源ユニット、配管、センサー)",
+              "2–3",
+              "8〜12週",
+              "1–2"
+            ],
+            [
+              "コンポーネントRVL",
+              "コンポーネントごと、自己限定",
+              "2+",
+              "8週間",
+              "1–2"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_supply_chain.txt",
+            "wav_file": "audio/module3/slide_04_supply_chain.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Google's Open Spec CDU contribution to the industry",
+              "page": 9
+            }
+          ],
+          "term_refs": [
+            "supplier_tiers"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "maintenance_frus",
+          "section_label": "稼働可能性",
+          "title": "整備および現場交換可能なユニット",
+          "bullets": [
+            {
+              "bold_lead": "設計上、フロントサービス可能な設計です。",
+              "text": "両方のフィルター、サイドストリーム精密ろ過、膨張タンク、コントロールパネル――すべて正面アクセスです。"
+            },
+            {
+              "bold_lead": "ポンプ:",
+              "text": "ポンプAは前、ポンプBは後ろ(または詰まっている場合は側面)です。制御ブレークポイント+アイソレーションバルブ+ドレインポート。"
+            },
+            {
+              "bold_lead": "v1.0の改善点:",
+              "text": "VFDクリアランスアクセサリー+前面メンテナンス可能な膨張タンク — 前世代からの直接的な教訓。"
+            },
+            {
+              "bold_lead": "例外:",
+              "text": "二次流量計は電源オフCDU予定されたイベントサービスが必要です。"
+            },
+            {
+              "bold_lead": "完全なバーコードのトレーサビリティ。",
+              "text": "セクション17:製造者ID、GPN、MPN、S/N、COO、PMS 803C黄色ラベルの日付コード。"
+            }
+          ],
+          "figure": {
+            "path": "figures/fig_pump_a_service.png",
+            "alt": "ポンプAはCDUの前方から給水し、入口と出口に制御されたブレークポイントを設けていました。",
+            "caption": "図13.2.1 — CDUの前面からポンプAのサービス。両ポンプともアイソレーションバルブ、ドレインポート、コネクター付きの電源を備えています。",
+            "source": "reuse"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_maintenance_frus.txt",
+            "wav_file": "audio/module3/slide_05_maintenance_frus.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 39
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 41
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 47
+            }
+          ],
+          "term_refs": [
+            "fru"
+          ]
+        },
+        {
+          "type": "content_diagram",
+          "slug": "pump_service_sequence",
+          "section_label": "サービスシーケンス",
+          "title": "隔離、排水、電源遮断、切り離し、取り外し",
+          "subtitle": "冗長なポンプが流量を維持し、サービス部門が安全に撤去できるように整備されます。",
+          "figure": {
+            "path": "figures/pump_service_sequence.webm",
+            "media_type": "video",
+            "poster": "figures/pump_service_sequence_poster.png",
+            "alt": "封じ込められたポンプサービスシーケンスのサイレントアニメーション:冗長ポンプが流量を維持し、サービスブランチは隔離、排水、無電圧、切断され、フロントサービスエンベロープを通じて取り外されます。",
+            "caption": "サービスシーケンスは人を保護し、冷却材の封じ込め、継続的な運転を可能にします。ポンプAは前方から出てきます。ポンプBは通常、後部から排出されます。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_06_pump_service_sequence.txt",
+            "wav_file": "audio/module3/slide_06_pump_service_sequence.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 25
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 26
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 39
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 40
+            }
+          ],
+          "id": 6
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "get_involved",
+          "section_label": "参加しましょう",
+          "title": "リソースと今後のステップ",
+          "subtitle": "4つのカノニカルリンク — spec、community、marketplace、そしてOCP Academyプライマーシリーズ。",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "スペック v1.0 PDF",
+              "body": "2026年2月の公式仕様をダウンロードしてください — このコースのすべての数値の真実の情報源です。",
+              "icon": "📄",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf",
+              "link_text": "opencompute.org/documents/…deschutes-v1-0-pdf"
+            },
+            {
+              "title": "CDUサブプロジェクト",
+              "body": "OCP 冷却液分配ユニットサブプロジェクト — ワーキンググループ、貢献者、継続的な議論。",
+              "icon": "👥",
+              "url": "https://www.opencompute.org/community/coolant-distribution-unit",
+              "link_text": "opencompute.org/community/coolant-distribution-unit"
+            },
+            {
+              "title": "OCP マーケットプレイス",
+              "body": "複数のサプライヤーのDeschutesベースのCDUをCDUカテゴリに絞り込み検索できます。",
+              "icon": "🛍️",
+              "url": "https://www.opencompute.org/products?cloud_products%5BrefinementList%5D%5Bhardware.categories.Liquid%20Cooling%20%26%20Thermal%20Management%5D%5B0%5D=Coolant%20Distribution%20Unit%20%28CDU%29",
+              "link_text": "opencompute.org/products (CDU filter)"
+            },
+            {
+              "title": "液体冷却プライマー",
+              "body": "OCP Academyの4コース入門学習プラン — より広範な液冷の基礎。",
+              "icon": "🎓",
+              "url": "https://academy.opencompute.org/learn/learning-plans/5/liquid-cooling-technologies-overview",
+              "link_text": "academy.opencompute.org/…liquid-cooling-technologies-overview"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_get_involved.txt",
+            "wav_file": "audio/module3/slide_06_get_involved.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "key_takeaways_m3",
+          "title": "学んだこと",
+          "items": [
+            "Redmond HACユニットは同一仕様で出荷され、2台で完全な2 MW液冷ベイを構成します。",
+            "電力と冷却の共同設計: 4-makes-3冗長構成、8 x 600 Aバスダクト、rack位置あたり90 kW。",
+            "フィルター、ポンプ、膨張タンク、制御盤は前面から保守可能。v1.0ではVFDと膨張タンクの保守性も向上。",
+            "3層サプライヤーモデル: AVL(2) + R-AVL(2) + RVL(6+)、世界で10-12週のリードタイムを目標。",
+            "仕様は公開のもとで進化し、今後の改訂に製造と検証のフィードバックを反映します。"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_key_takeaways_m3.txt",
+            "wav_file": "audio/module3/slide_07_key_takeaways_m3.wav",
+            "approved": true
+          },
+          "source_refs": []
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check_m3",
+          "title": "デプロイメント決定をチェック",
+          "subtitle": "一度だけ答えて続けてください。正確さは必須ではなく、再挑戦も可能です。",
+          "audio": {
+            "script_file": "audio/module3/slide_08_knowledge_check_m3.txt",
+            "wav_file": "audio/module3/slide_08_knowledge_check_m3.wav",
+            "approved": true
+          },
+          "questions": [
+            {
+              "id": "m3_redmond_role",
+              "prompt": "RedmondインターフェースはDeschutes CDUと並んで何をもたらしているのでしょうか?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "液冷ベイのホット通路格納および展開構造物として伴う。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "すべてのrackレベルの電気冗長性の代替です。",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "物理的なレイアウトガイダンスがない独自のソフトウェア専用制御プレーン。",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "すべての展開で施設の殻を一から再構築しなければならないというルールです。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "その通りです。Redmond CDUに定義され、繰り返し可能な物理的な展開環境を提供します。",
+              "feedback_incorrect": "Redmond スライドを見直してください。その役割は、電気設計や施設計画の代替ではなく、ホットアイルの囲い込みおよびベイインターフェースの補助的な役割を果たします。"
+            },
+            {
+              "id": "m3_deployment_model",
+              "multiple": true,
+              "prompt": "モジュール3で扱う展開および運用モデルに合致する文はどれですか?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "4-makes-3 rackパワーモデルは4本の給電を使用し、3本でフルロードに十分です。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "サプライヤーモデルにはAVL、R-AVL、RVLの各階層が含まれ、入手可能性を広げています。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "フィルター、ポンプ、膨張タンク、制御パネルは現場でのメンテナンス性を前提に設計されています。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "仕様書は完全でクローズドであり、コミュニティからのフィードバックを目的としていません。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "その通りです。モジュール3は、電力冗長性、サプライヤー階層、整備性、そして継続的なコミュニティ関与を結びつけています。",
+              "feedback_incorrect": "最終モジュールの要点を見直しましょう。Deschutesはオープンで進化しており、展開、サービス、サプライチェーンのパターンはスケールを想定して設計されています。"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 53
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities V1.0.0",
+              "page": 64
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "OCP Project Deschutes",
+          "thank_you_message": "モジュール3:展開、サプライチェーン、行動喚起のご回答、ご参加いただきありがとうございます。",
+          "cert_message": "OCP Academy Project Deschutesコースのすべてのモジュールを修了しています。次のステップは、仕様書を開き、自分のデプロイメントと比較して評価し、OCP CDUワーキンググループと連携することです。オープンがスケールの鍵です。",
+          "audio": {
+            "script_file": "audio/module3/slide_08_course_complete.txt",
+            "wav_file": "audio/module3/slide_08_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ]
+    }
+  ],
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "term_glossary": [
+    {
+      "id": "dlc",
+      "term": "DLC",
+      "tooltip": "直接液冷は、冷却板と専用の冷却ループを使ってチップやサーバーレベルで熱を除去します。"
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "冷却液分配ユニット:冷却材の流れ、圧力、熱伝達を制御する液体間橋IT。"
+    },
+    {
+      "id": "fws",
+      "term": "FWS",
+      "tooltip": "施設水システム:建物側の冷却水または凝縮水ループで、CDU主側に水を供給します。"
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "テクノロジー冷却システム:マニホールドと冷流板rack供給するクリーンな二次冷却ループ。"
+    },
+    {
+      "id": "approach_temperature",
+      "term": "アプローチ温度",
+      "tooltip": "CDUから出る冷TCS供給とFWSに入る冷水供給の違い;Deschutes 3°Cを目標にしています。"
+    },
+    {
+      "id": "differential_pressure",
+      "term": "dP",
+      "tooltip": "差圧:冷却水をマニホールド、ホース、冷流板を通じて押し出すための圧力ヘッド。"
+    },
+    {
+      "id": "heat_exchanger",
+      "term": "HX",
+      "tooltip": "熱交換器:施設とIT冷却液を混ぜずにループ間で熱を伝達します。"
+    },
+    {
+      "id": "di_water",
+      "term": "DI水",
+      "tooltip": "脱イオン水:腐食や導電性に影響を与える溶解イオンを除去するために処理された水です。"
+    },
+    {
+      "id": "pg25",
+      "term": "PG25",
+      "tooltip": "プロピレングリコール冷却液の混合物で、グリコール濃度は約25%です。"
+    },
+    {
+      "id": "epdm",
+      "term": "EPDM",
+      "tooltip": "エチレンプロピレンジエンモノマー:冷却材互換ホースやシールに使用されるエラストマー。"
+    },
+    {
+      "id": "vfd",
+      "term": "VFD",
+      "tooltip": "可変周波数ドライブ:モーターの速度を制御し、ここではポンプの速度制御と効率に使われます。"
+    },
+    {
+      "id": "plc",
+      "term": "PLC",
+      "tooltip": "プログラマブルロジックコントローラ:制御ループ、アラーム、インターフェースCDU動作する産業用コントローラです。"
+    },
+    {
+      "id": "modbus_tcp",
+      "term": "Modbus/TCP",
+      "tooltip": "標準TCP/IPネットワーク上でModbusメッセージを運ぶ産業用通信プロトコル。"
+    },
+    {
+      "id": "ipv6_dual_stack",
+      "term": "IPv6二重積層",
+      "tooltip": "IPv4とIPv6の両方を同時にネットワークでサポートすること。"
+    },
+    {
+      "id": "hac",
+      "term": "HAC",
+      "tooltip": "ホットアイルコンテインメント:rack列の周囲に熱い排気空気を管理する構造物です。"
+    },
+    {
+      "id": "rdhx",
+      "term": "RDHx",
+      "tooltip": "リアドア熱交換器:Redmond通路寸法で言及されているrackリアドア冷却装置。"
+    },
+    {
+      "id": "four_makes_three",
+      "term": "4は3になる",
+      "tooltip": "ラック電源配置で、4本の給電線があり、任意の3本がフルロードを支えられます。"
+    },
+    {
+      "id": "supplier_tiers",
+      "term": "AVL / R-AVL / RVL",
+      "tooltip": "サプライヤー階層:アクティブ承認ベンダー、予約承認ベンダー、推奨または自己認定ベンダー。"
+    },
+    {
+      "id": "fru",
+      "term": "FRU",
+      "tooltip": "フィールド交換可能ユニット:現場サービス中に交換できる部品です。"
+    }
+  ],
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "b34JylakFZPlGS0BnwyY",
+    "model_id": "eleven_multilingual_v2",
+    "voice_name": "Japanese voice"
+  },
+  "metadata_language_name": "Japanese",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "ja-JP",
+    "source_course_sha256": "c28948f618e63f4be412b2084d2976144b102cf127a6923b0c70a5d5c4600d4e"
+  },
+  "ui_labels": {
+    "not_started": "未開始",
+    "completed": "完了",
+    "module": "モジュール",
+    "module_complete": "モジュール {module} 完了",
+    "course_complete": "コース完了",
+    "course_overview": "コース概要",
+    "learning_objectives": "学習目標",
+    "key_takeaways": "要点",
+    "knowledge_check": "理解度チェック",
+    "submit": "送信",
+    "retry": "再試行",
+    "quiz_gate_note": "続行するには、各設問を一度送信してください。正誤にかかわらず先へ進め、再試行もできます。",
+    "quiz_gate_warning": "次へ進む前に、各設問を一度送信してください。",
+    "select_answer": "1つ以上の回答を選択してから送信してください。",
+    "correct": "正解です。",
+    "review_feedback": "フィードバックを確認してから再試行してください。",
+    "narration_hint": "ナレーションは自動的に始まります。→キーまたはスペースキーで次へ進みます。",
+    "theme": "テーマ",
+    "toggle_dark_mode": "ダークモードを切り替える",
+    "previous_slide": "前のスライド",
+    "next_slide": "次のスライド",
+    "play_pause_narration": "ナレーションを再生または一時停止",
+    "playback_speed": "再生速度",
+    "playback_speed_slider": "再生速度を調整",
+    "speed": "速度",
+    "toggle_fullscreen": "全画面表示を切り替える",
+    "fullscreen": "全画面表示",
+    "video_controls": "動画コントロール",
+    "play_video": "動画を再生",
+    "pause_video": "動画を一時停止",
+    "zoom_video": "動画を拡大",
+    "video_figure": "動画図",
+    "zoom_figure": "図を拡大",
+    "enlarged_figure": "拡大図",
+    "lightbox_close_hint": "外側をクリックするかEscキーを押して閉じます。",
+    "opens_new_tab": "新しいタブで開きます",
+    "learner_resource": "学習リソース",
+    "open": "開く",
+    "learn_more": "詳しく見る",
+    "reference": "参考資料",
+    "course_intro": "OCP Academy コースイントロ",
+    "skip_intro": "イントロをスキップ",
+    "share_feedback": "フィードバックを送る",
+    "survey_body": "数分お時間をいただき、改善にご協力いただけますか。開発チームへのフィードバックは、このコースと今後のコースの改善に活用します。回答者の中から抽選で記念品をお送りします。",
+    "default_module_thanks": "モジュール {module}「{title}」を修了していただき、ありがとうございます。",
+    "default_course_wrap": "{course}の全モジュールを修了しました。このコースで学んだ内容が実務に役立つことを願っています。",
+    "up_next": "次のコース",
+    "go_to_module": "モジュール {module}へ進む"
+  }
+}
