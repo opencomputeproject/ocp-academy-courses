@@ -40,5 +40,5 @@ The finished SCORM folder and LMS zip are created under `build/`.
 The original research files are not included in this repository. Public learner/source references used by the course include:
 
 - OCP white paper: OCP Ready™ Requirements for Energy Storage Systems
-- OCP Energy Storage Systems project
+- OCP Energy project
 - 2026 OCP EMEA Summit presentation: ESS in Hyperscale & AI Data Centers: OCP Ready™ Requirements Update
