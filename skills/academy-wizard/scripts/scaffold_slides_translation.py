@@ -51,6 +51,7 @@ LOCALE_NARRATION_DEFAULTS = {
         "engine": "elevenlabs",
         "voice_id": "A5w1fw5x0uXded1LDvZp",
         "voice_name": "Nhu",
+        "model_id": "eleven_flash_v2_5",
     },
     "zh-CN": {
         "engine": "elevenlabs",

@@ -2,6 +2,7 @@
 
 Status: **localized-mix-ready-for-course-build**
 Voice: **Nhu** (`A5w1fw5x0uXded1LDvZp`)
+Model: **`eleven_flash_v2_5`**
 Audio policy: **localized narration with AcademyWizard background music**
 
 | Segment | Window | English | Vietnamese |
@@ -30,4 +31,6 @@ Technical values, years, voltages, OCP names, and confirmed source terminology a
 
 The source audio stream will not be mapped. The aligned Vietnamese voice-only master will be mixed over the same AcademyWizard music asset used by the other language editions.
 
-The original source-language audio is excluded. The localized video, caption track, and voice timing were validated before publication. Maximum applied tempo adjustment: **1.0226×**.
+Narration-time music ducking: threshold **0.003**, ratio **12.0:1**, attack **80.0 ms**, release **500.0 ms**.
+
+The original source-language audio is excluded. The localized video, caption track, and voice timing were validated before publication. Maximum applied tempo adjustment: **1.0000×**.

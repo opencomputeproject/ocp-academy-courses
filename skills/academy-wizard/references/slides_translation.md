@@ -125,6 +125,11 @@ The translation scaffold records the matching default under top-level
 automatically. Do not substitute another voice unless the user explicitly
 selects one; use `--voice` for an intentional one-time override.
 
+Vietnamese narration must use `eleven_flash_v2_5` (or a later model with
+explicit Vietnamese support). Do not use `eleven_multilingual_v2` for
+Vietnamese. The maintained Vietnamese scaffold records Flash v2.5 as
+`narration.model_id`, and `gen_audio.py` honors that model automatically.
+
 After editorial approval, synthesize the locale audio and run
 `audio_tail_report.py --fail-on-flags`. Regenerate only flagged clips. Do not
 render or package after a required knowledge-check audio failure.

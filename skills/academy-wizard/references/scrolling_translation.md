@@ -73,6 +73,11 @@ Validate the final single audio stream, language tag, audible music before and
 between narration, foreground narration level, end fade, absence of mapped
 source audio, and packaged-video hash.
 
+For Vietnamese (`vi` and regional variants), use
+`eleven_flash_v2_5` or a later model with explicit Vietnamese support. Do not
+use `eleven_multilingual_v2`; the API may return billable audio even though
+that model does not support Vietnamese.
+
 For Simplified Chinese (`zh-CN` or `zh-Hans`), use the approved ElevenLabs Lan
 Chen voice (`bZtjnyJAFD0Cp3lfNG5g`) unless the user selects another voice.
 

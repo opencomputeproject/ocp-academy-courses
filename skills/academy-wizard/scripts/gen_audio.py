@@ -70,6 +70,17 @@ def pick_voice_id(requested: str | None, course: dict, engine: str) -> str | Non
     return None
 
 
+def pick_model_id(course: dict, engine: str) -> str | None:
+    if engine != "elevenlabs":
+        return None
+    configured = narration_config(course)
+    configured_engine = str(configured.get("engine") or "").strip().lower()
+    configured_model = str(configured.get("model_id") or "").strip()
+    if configured_model and configured_engine in ("", engine):
+        return configured_model
+    return os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2")
+
+
 def need(cmd: str) -> str | None:
     return shutil.which(cmd)
 
@@ -104,7 +115,12 @@ def synth_say(text: str, out_wav: Path) -> None:
             aiff.replace(out_wav)
 
 
-def synth_elevenlabs(text: str, out_wav: Path, voice_id: str | None) -> None:
+def synth_elevenlabs(
+    text: str,
+    out_wav: Path,
+    voice_id: str | None,
+    model_id: str | None,
+) -> None:
     import urllib.request
     api_key = os.environ["ELEVENLABS_API_KEY"]
     # Default voice: Leo v2 — reads measured and authoritative for technical
@@ -116,7 +132,8 @@ def synth_elevenlabs(text: str, out_wav: Path, voice_id: str | None) -> None:
     # material; 1.15–1.20 is a good range. Override with ELEVENLABS_SPEED.
     body = json.dumps({
         "text": text,
-        "model_id": os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
+        "model_id": model_id
+        or os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
         "voice_settings": {
             "stability":        float(os.getenv("ELEVENLABS_STABILITY",  "0.55")),
             "similarity_boost": float(os.getenv("ELEVENLABS_SIMILARITY", "0.75")),
@@ -205,10 +222,21 @@ def main():
     except ValueError as error:
         sys.exit(str(error))
     voice_id = pick_voice_id(args.voice, course, engine)
+    model_id = pick_model_id(course, engine)
     print(f"engine: {engine}")
     if voice_id:
         print(f"voice: {voice_id}")
-    synth = SYNTHS[engine]
+    if model_id:
+        print(f"model: {model_id}")
+
+    if engine == "elevenlabs":
+        def synth(text: str, wav_path: Path) -> None:
+            synth_elevenlabs(text, wav_path, voice_id, model_id)
+    elif engine == "openai":
+        def synth(text: str, wav_path: Path) -> None:
+            synth_openai(text, wav_path, voice_id)
+    else:
+        synth = synth_say
 
     jobs = []
     errors: list[str] = []
@@ -271,10 +299,7 @@ def main():
             continue
         wav_path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            if engine in ("elevenlabs", "openai"):
-                synth(text, wav_path, voice_id)
-            else:
-                synth(text, wav_path)
+            synth(text, wav_path)
             n_done += 1
             print(f"  OK {wav_path.relative_to(out_dir)}")
         except Exception as e:
