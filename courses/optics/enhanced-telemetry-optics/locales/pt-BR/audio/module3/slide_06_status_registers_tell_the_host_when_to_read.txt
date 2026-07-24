@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+A verificação de status é o que mantém um fluxo de trabalho comando-resposta honesto. Um módulo pode estar ocupado. Um comando pode ser concluído com sucesso. Um comando pode falhar. software do host precisa saber qual estado está vendo antes de considerar uma resposta válida.
+
+Por isso, a especificação inclui C D B registros de status de comando e indicadores de conclusão. O objetivo não é apenas completar o comando. O objetivo é tornar o comportamento host repetível.
+
+Uma ferramenta de operador confiável não deve adivinhar que telemetria está pronto. Ele deve acionar o comando, consultar a conclusão, lidar claramente com a falha e então recuperar a resposta. Essa disciplina de software é o que permite que o comportamento de módulos de baixo nível se torne uma evidência operacional confiável.
+Bom comportamento de status também melhora a automação. Um script pode retentar com segurança, recuar, reportar uma falha de comando ou parar antes de apresentar dados obsoletos. Essa é a diferença entre uma ferramenta útil e um atalho arriscado.

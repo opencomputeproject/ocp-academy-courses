@@ -1,0 +1,7 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+C D B da a host y módulo un patrón comando-respuesta. La especificación describe una secuencia típica en cuatro pasos.
+
+Primero, el host prepara el mensaje de comando rellenando los campos de cabecera requeridos y carga útil. Segundo, activa el comando escribiendo el mensaje en la ubicación adecuada. Tercero, consulta los registros de estado C D B para monitorizar el progreso. Cuarto, cuando el comando está completo, recupera el encabezado de respuesta y carga útil.
+
+Ese patrón es la columna vertebral de este módulo. Ya sea que el host recupere telemetría, pida registros del registro de eventos o utilice un área más grande de carga útil, la disciplina operativa es la misma: escribir la solicitud, activarla, comprobar el estado y luego leer la respuesta.
+Los cuatro pasos también facilitan la resolución de problemas cuando el software falla. Puedes preguntar si el comando se formó correctamente, si se activó, si se leyó el estado y si la respuesta coincidió con la finalización.

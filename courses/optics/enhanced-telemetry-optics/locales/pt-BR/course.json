@@ -1,0 +1,2138 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_networking_project_optics_reliability_pt_br",
+  "course_title": "Telemetria óptica avançada",
+  "language": "pt-BR",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "m151rjrbWXbBqyq56tly",
+    "voice_name": "Carla",
+    "model_id": "eleven_multilingual_v2"
+  },
+  "course_subtitle": "Telemetria avançada para identificar o que falhou, onde e por quê em redes ópticas de AI.",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Especialização A telemetria avançada - 2026",
+  "index_footer_line": "OCP Fluxo de Trabalho de Confiabilidade em Óptica do Projeto de Redes: Especificação A telemetria avançada - 2026",
+  "target_duration_minutes": 50,
+  "audience_level": "Técnico intermediário",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "ocp_optics_reliability_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "ÓPTICA"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+      "kind": "specification source"
+    },
+    {
+      "path": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf",
+      "kind": "public specification reference"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "pmd",
+      "term": "PMD",
+      "tooltip": "Detalhes de implementação dependentes do meio físico para o caminho do módulo óptico.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "cmis",
+      "term": "CMIS",
+      "tooltip": "Especificação comum de interface de gerenciamento usada para o gerenciamento de transceptores conectável.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "i2c",
+      "term": "I2C",
+      "tooltip": "Interface de gerenciamento local de dois fios usada pelo host para se comunicar com o transceptor local.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "vdm",
+      "term": "VDM",
+      "tooltip": "Páginas de Monitoramento de Diagnóstico Versátil em CMIS usadas por muitos valores de módula telemetria.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "snr",
+      "term": "SNR",
+      "tooltip": "Relação sinal-ruído; uma medição de qualidade de sinal usada para host e faixas de linha.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "fec",
+      "term": "FEC",
+      "tooltip": "Correção de erros para frente; Comportamento de correção de erros usado para entender estresse de ligação e falhas não corrigíveis.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "ber",
+      "term": "BER",
+      "tooltip": "Taxa de erro de bits; a razão entre os bits errados e o total de bits transmitidos, usada para quantificar a qualidade do link.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "ddmi",
+      "term": "DDMI",
+      "tooltip": "Diagnósticos digitais monitorando valores da interface e alertas ou alertas reportados pelo módulo.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    },
+    {
+      "id": "cdb",
+      "term": "CDB",
+      "tooltip": "Bloco de Dados de Comando; um mecanismo CMIS comando-resposta usado para coleta e transferência telemetria.",
+      "reference_label": "OCP óptica telemetria especificação pública",
+      "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "the_ai_fabric_visibility_problem",
+      "title": "O problema de visibilidade das redes de AI",
+      "subtitle": "Enhanced telemetria como modelo operacional para endpoints ópticos locais e remotos.",
+      "module_badge_text": "Módulo 1",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "the_ai_fabric_visibility_problem",
+          "title": "O problema de visibilidade das redes de AI",
+          "subtitle": "A telemetria avançada para identificar problemas de ligação óptica em endpoints locais e remotos.",
+          "version_chip": "Especialização A telemetria avançada - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Escopo e Visão Geral"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.txt",
+            "wav_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "the_reliability_questions_this_course_answers",
+          "title": "As Perguntas sobre Confiabilidade que este curso responde",
+          "subtitle": "Quatro módulos passam do problema operacional para fluxos de trabalho implantáveis host.",
+          "modules_listed": [
+            "O problema de visibilidade das redes de AI",
+            "Métricas, sinalizadores e integridade do link",
+            "Fluxos de trabalho CDB, logs de eventos e acesso remoto",
+            "Firmware, software do host e prontidão para implantação"
+          ],
+          "chips": [
+            {
+              "text": "Cerca de 50 minutos no total"
+            },
+            {
+              "text": "Público técnico intermediário"
+            },
+            {
+              "text": "Referência pública de especificação OCP"
+            },
+            {
+              "text": "OCP Voluntários da comunidade de Credo e Oracle"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Especificação pública de óptica telemetria",
+              "url": "https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Escopo e Visão Geral"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.txt",
+            "wav_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "link_flaps_become_fabric_scale_events",
+          "section_label": "Motorista Operacional",
+          "title": "Oscilações de link se tornam eventos em escala de rede",
+          "subtitle": "Grandes redes de AI tornam os pontos cegos ópticos caros porque um sintoma local pode ter uma causa remota.",
+          "bullets": [
+            {
+              "bold_lead": "Mais pontos finais",
+              "text": "As redes conectam muitos aceleradores, switches, ópticas e endpoints de servidor, então um sintoma físico pode cruzar vários limites de propriedade."
+            },
+            {
+              "bold_lead": "Menor acesso direto",
+              "text": "Endpoints de metal nu ou remotos podem esconder o módulo óptico do lado oculto do operador que vê o alarme do interruptor."
+            },
+            {
+              "bold_lead": "Maior custo de tempo de inatividade",
+              "text": "Uma oscilação do link pode interromper fluxos de trabalho de treinamento, qualificação ou serviço que dependem da saúde previsível da rede."
+            },
+            {
+              "bold_lead": "Necessidade de evidências comuns",
+              "text": "Os operadores precisam de telemetria consistente entre fornecedores e fatores de forma antes de poderem comparar sintomas em larga escala."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Impacto e Alcance"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "9-10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.txt",
+            "wav_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "the_three_part_software_stack",
+          "section_label": "Pilha de Software",
+          "title": "A pilha de software em três partes",
+          "subtitle": "A especificação separa o sistema em implementação de transceptor, software do host e integração com servidor de telemetria.",
+          "bullets": [
+            {
+              "bold_lead": "Firmware e métricas do transceptor",
+              "text": "O módulo coleta telemetria local e remoto, mantém histórico de eventos e expõe comportamentos comuns de comandos."
+            },
+            {
+              "bold_lead": "software do host no Switch",
+              "text": "O host consulta módulos, solicita dados locais ou remotos e prepara a saída operacional por meio de ferramentas SDK ou de linha de comando."
+            },
+            {
+              "bold_lead": "Integração com servidor de telemetria",
+              "text": "Um servidor pode compilar e resumir a saúde geral da rede, mas sua implementação permanece dependente do usuário e fora do escopo da especificação."
+            }
+          ],
+          "figure": {
+            "path": "figures/software_stack.svg",
+            "alt": "Pilha de software telemetria em três partes, do firmware do transceptor para o servidor software do host e a telemetria.",
+            "caption": "A especificação foca no comportamento do transceptor e na interface comum parao software do host; O design do servidor de telemetria é intencionalmente deixado a cargo dos operadores.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Escopo"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_the_three_part_software_stack.txt",
+            "wav_file": "audio/module1/slide_04_the_three_part_software_stack.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_bullets",
+          "slug": "what_the_specification_includes_and_excludes",
+          "section_label": "Escopo",
+          "title": "O que a especificação inclui e exclui",
+          "subtitle": "A contribuição mira comportamentos comuns telemetria sem tentar possuir todos os sistemas de monitoramento acima dela.",
+          "bullets": [
+            {
+              "bold_lead": "Taxas no escopo",
+              "text": "A especificação se aplica a transceptores compatíveis com 400G, 800G e 1.6T."
+            },
+            {
+              "bold_lead": "PMD independente",
+              "text": "O modela telemetria é projetado para ser independente da implementação dependente do módulo físico-mídia."
+            },
+            {
+              "bold_lead": "Construído em CMIS",
+              "text": "A especialização usa funções OIF CMIS 5.x e adiciona definições e modificações para aprimorar telemetria."
+            },
+            {
+              "bold_lead": "Servidor deixado aberto",
+              "text": "A implementação do servidor de telemetria depende do usuário e não está dentro do escopo do documento."
+            }
+          ],
+          "term_refs": [
+            "pmd",
+            "cmis"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Escopo"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.txt",
+            "wav_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "six_functions_of_a_compliant_transceiver",
+          "section_label": "Funções Principais",
+          "title": "Seis Funções de um Transceptor Compatível",
+          "subtitle": "A especificação transforma dados brutos do módulo em um modelo comum de visibilidade para operações.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Monitoramento em modo missão",
+              "body": "Colete estatísticas sobre receptores voltados para o host e para a linha enquanto o link está em serviço."
+            },
+            {
+              "title": "Relatório de saúde por links",
+              "body": "Rastree e registre telemetria por meio de uma métrica comum de vida, em vez de contadores isolados."
+            },
+            {
+              "title": "Identificação remota",
+              "body": "Use comunicação em banda para trocar dados entre os transceptores em ambas as extremidades de um link."
+            },
+            {
+              "title": "Registro de eventos",
+              "body": "Notificar, marcar o tempo e preservar eventos importantes na memória não volátil do módulo."
+            },
+            {
+              "title": "Sem acertos atualização de firmware",
+              "body": "Suporte atualização de firmware local e remoto sem exigir interrupção do serviço como objetivo operacional."
+            },
+            {
+              "title": "Coleta pelo host",
+              "body": "Ative o software do switch para coletar telemetria e prepare-o para streaming em um servidor telemetria."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Visão geral"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "11"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.txt",
+            "wav_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.wav",
+            "approved": true
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "a_link_is_more_than_one_fiber_path",
+          "section_label": "Modelo de Enlace",
+          "title": "Um link é mais de um caminho de fibra",
+          "figure": {
+            "path": "figures/link_segments_telemetry.mp4",
+            "media_type": "video",
+            "alt": "Animação silenciosa mostrando segmentos de ligação elétrica, óptica e host elétrica com localizaçãa telemetria.",
+            "caption": "O nível segmenta telemetria separa o link elétrico switch-module, o caminho óptico e o link elétrico-host-módulo em evidências monitoradas independentemente.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Requisitos de Alto Nível: links ponto a ponto"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.txt",
+            "wav_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "breakout_links_multiply_remote_endpoints",
+          "section_label": "Links de Destaque",
+          "title": "Links breakout multiplicam endpoints remotos",
+          "figure": {
+            "path": "figures/source_docx_breakout_segments.png",
+            "alt": "Exemplo de link óptico breakout onde um módulo de switch se conecta a múltiplos módulos host.",
+            "caption": "Em casos de uso de breakout ou embaralhamento, uma porta de switch pode precisar de telemetria independente de mais de um parceiro remoto.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Requisitos de Alto Nível: links de breakout"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.txt",
+            "wav_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "visibility_starts_with_a_shared_model",
+          "title": "A visibilidade começa com um modelo compartilhado",
+          "items": [
+            "O problema operacional é encontrar o segmento que está falhando, não apenas perceber que um link mudou de estado.",
+            "A fronteira padronizada é o comportamento do transceptor e a interface comum parao software do host.",
+            "Espera-se que ópticas compatíveis suportem a coleta local e remota de telemetria.",
+            "Links de separação tornam essenciais a identidade do endpoint e o monitoramento remoto independente.",
+            "O design de servidor de telemetria permanece dependente do operador, mas o modelo módulo-para-host pode ser comum."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Escopo e Visão Geral"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.txt",
+            "wav_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "check_your_model_visibility_and_scope",
+          "title": "Verifique seu modelo: visibilidade e escopo",
+          "subtitle": "Responda uma vez para continuar. Não é necessário ter correção, e você pode tentar novamente após feedback.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "Qual é a principal diferença de visibilidade que a óptica telemetria avançada deve fechar?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Um alarme de ligação local pode não revelar qual segmento local, óptico ou remoto causou o problema.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Servidores telemetria precisam de uma implementação obrigatória para cada operador.",
+                  "correct": false,
+                  "feedback_incorrect": "A especificação deixa a implementação do servidor de telemetria dependente do usuário. O trabalho comum ocorre na interface transceptor e host."
+                },
+                {
+                  "id": "c",
+                  "text": "Todo módulo óptico precisa do mesmo design dependente do meio físico.",
+                  "correct": false,
+                  "feedback_incorrect": "O escopo é projetado para ser independente de PMD, para que um modelo comum telemetria possa ser aplicado entre implementações."
+                }
+              ],
+              "feedback_correct": "Correto. O valor é uma evidência local e remota que mapeia os sintomas para o segmento que está falhando.",
+              "feedback_incorrect": "Revise o modelo de visibilidade: o objetivo é conectar sintomas locais com evidências locais, ópticas e extremidade remota."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "Quais funções pertencem ao transceptor compliant e ao modelo de telemetria do host?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Monitoramento de link em modo missão e coleta de estatísticas.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Identificação remota in-band e troca de dados entre parceiros de link.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Notificação de eventos programável e registro de eventos não voláteis.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Uma arquitetura de produto de servidor de telemetria obrigatória.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correto. O modelo compartilhado inclui funções de módulo e host, enquanto a implementação do servidor permanece aberta.",
+              "feedback_incorrect": "Mantenha a fronteira livre: o comportamento dos módulos conformes e a coleta pelo host são padronizadas; A implementação do servidor de telemetria não é prescrita."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Escopo e Visão Geral"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-12"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.txt",
+            "wav_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next_metrics_and_link_health",
+          "title": "A seguir: Métricas e integridade do link",
+          "next_module_number": 2,
+          "next_module_title": "Métricas, sinalizadores e integridade do link",
+          "thank_you_message": "Bom trabalho - você terminou o modelo de visibilidade para confiabilidade óptica OCP.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Módula telemetria Dados"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_metrics_and_link_health.txt",
+            "wav_file": "audio/module1/slide_11_up_next_metrics_and_link_health.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Métricas, sinalizadores e integridade do link"
+    },
+    {
+      "id": 2,
+      "slug": "metrics_flags_and_link_health",
+      "title": "Métricas, sinalizadores e integridade do link",
+      "subtitle": "telemetria categorias, flags de resumo, máscaras e a pior categoria link-saúde.",
+      "module_badge_text": "Módulo 2",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "metrics_flags_and_link_health",
+          "title": "Métricas, sinalizadores e integridade do link",
+          "subtitle": "Como ópticas compatíveis transformam medições brutas em estado de ligação acionável.",
+          "version_chip": "Especialização A telemetria avançada - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Status do Módulo e Métricas telemetria"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_01_metrics_flags_and_link_health.txt",
+            "wav_file": "audio/module2/slide_01_metrics_flags_and_link_health.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "signals_you_will_interpret",
+          "title": "Sinais que você interpretará",
+          "subtitle": "Ao final deste módulo, você será capaz de classificar telemetria e explicar como integridade do link é resumido.",
+          "objectives": [
+            "Distinga consultas locais e remotas telemetria em nível conceitual.",
+            "Classifique métricas comuns em categorias de qualidade, erro, recuperação, ambiental e contexto.",
+            "Explique por que a pontuação de integridade do link é impulsionada pela categoria mais fraca em vez de uma média.",
+            "Descreva como bandeiras e máscaras ajudam os operadores a focar no monitoramento do comportamento."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Módula telemetria Dados"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_signals_you_will_interpret.txt",
+            "wav_file": "audio/module2/slide_02_signals_you_will_interpret.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "local_and_remote_queries_use_one_mental_model",
+          "section_label": "Modelo de Consulta",
+          "title": "Consultas Locais e Remotas Usam Um Modelo Mental",
+          "subtitle": "O host solicita o módulo local; O módulo local pode devolver seus próprios dados ou recuperar dados parceiros na banda.",
+          "bullets": [
+            {
+              "bold_lead": "Consulta local",
+              "text": "O host solicita telemetria do módulo que ele pode alcançar diretamente sobre I2C."
+            },
+            {
+              "bold_lead": "Consulta remota",
+              "text": "O módulo local recupera telemetria de um parceiro de link remoto e o apresenta de volta ao mesmo host."
+            },
+            {
+              "bold_lead": "Conscientização sobre o breakout",
+              "text": "Requisições remotas podem precisar identificar qual parceiro ou porta está sendo consultada."
+            }
+          ],
+          "figure": {
+            "path": "figures/local_remote_query_model.svg",
+            "alt": "host consulta o módulo local sobre I2C e o módulo local alcança o parceiro remoto, na banda.",
+            "caption": "Um fluxo de trabalho consistente host ainda pode distinguir dados locais, dados remotos e identidade de parceiro separado.",
+            "source": "svg_inline"
+          },
+          "term_refs": [
+            "i2c"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Status do Módulo e Métricas telemetria"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.txt",
+            "wav_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_bullets",
+          "slug": "status_pages_establish_the_baseline",
+          "section_label": "Páginas de Linha de Base",
+          "title": "Páginas de Status Estabelecem a Linha de Base",
+          "subtitle": "O módulo expõe o status padrão CMIS, configuração, VDM, CDB, carga útil e áreas de fornecedores em um nível alto.",
+          "bullets": [
+            {
+              "bold_lead": "CMIS Banco 0",
+              "text": "Páginas comuns de módulos fornecem informações básicas de identidade, status e controle."
+            },
+            {
+              "bold_lead": "Páginas de configuração e status",
+              "text": "Páginas padrão estabelecem o estado operacional antes que a telemetria aprimorada seja interpretado."
+            },
+            {
+              "bold_lead": "VDM e telemetria páginas",
+              "text": "Muitos valores medidos alinham-se com os conceitos de CMIS VDM e são armazenados para acesso host."
+            },
+            {
+              "bold_lead": "CDB e carga útil páginas",
+              "text": "As áreas de comando e carga útil suportam recuperação de telemetria, logs de eventos e respostas maiores."
+            },
+            {
+              "bold_lead": "Páginas dos fornecedores",
+              "text": "Áreas específicas de fornecedores ainda podem existir, mas o curso foca na interface operacional comum."
+            }
+          ],
+          "term_refs": [
+            "vdm"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Status do Módulo e Métricas telemetria"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_status_pages_establish_the_baseline.txt",
+            "wav_file": "audio/module2/slide_04_status_pages_establish_the_baseline.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "optical_and_electrical_quality_metrics",
+          "section_label": "Métricas de Qualidade",
+          "title": "Métricas de Qualidade Óptica e Elétrica",
+          "subtitle": "As medições de qualidade ajudam a separar os problemas ópticos do lado da linha dos problemas elétricos do lado do hospedeiro.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "SNR",
+              "body": "Relação sinal-ruído nas faixas ópticas de linha e nas faixas elétricas host."
+            },
+            {
+              "title": "Altura dos olhos",
+              "body": "Medições da altura dos olhos do lado do hospedeiro e do lado da linha indicam a margem do sinal."
+            },
+            {
+              "title": "PAM4 LTP",
+              "body": "Parâmetros de transição de nível ajudam a caracterizar o comportamento dos sinais de host e linha PAM4."
+            },
+            {
+              "title": "Estimativa de MPI",
+              "body": "As estimativas de interferência multicaminho ajudam a identificar efeitos ópticos de reflexão ou caminho."
+            },
+            {
+              "title": "host vs linha",
+              "body": "Separar os valores voltados para o host e para a linha ajuda a localizar o segmento fraco."
+            },
+            {
+              "title": "Vista por faixa",
+              "body": "Valores em nível de faixa impedem que uma faixa degradada desapareça dentro de um resumo em nível de porta."
+            }
+          ],
+          "term_refs": [
+            "snr"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Módula telemetria Dados"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-14"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.txt",
+            "wav_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.wav",
+            "approved": true
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "error_and_recovery_metrics",
+          "section_label": "Erros e Recuperação",
+          "title": "Métricas de erro e recuperação",
+          "subtitle": "Contadores de erros e comportamento de recuperação mostram se um link está apenas ruidoso ou realmente perdendo o serviço.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Pré-FEC BER",
+              "body": "O comportamento de erro de bit antes da correção mostra tensão bruto no link."
+            },
+            {
+              "title": "histograma FEC",
+              "body": "Erros acumulados por quadro FEC ajudam a caracterizar a carga de correção."
+            },
+            {
+              "title": "Palavras-código não corrigíveis",
+              "body": "Falhas que a correção não consegue corrigir apontam para uma degradação mais grave do link."
+            },
+            {
+              "title": "Relinks",
+              "body": "Contadores de drop de link e reaquisição mostram instabilidade ao longo do tempo."
+            },
+            {
+              "title": "LOS e LOL",
+              "body": "Eventos de perda de sinal e perda de ligação identificam transições de estado que precisam de histórico."
+            },
+            {
+              "title": "Uptime",
+              "body": "O tempo decorrido desde a última conexão fornece contexto de recuperação e estabilidade."
+            }
+          ],
+          "term_refs": [
+            "ber",
+            "fec"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Módula telemetria Dados"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "14"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_error_and_recovery_metrics.txt",
+            "wav_file": "audio/module2/slide_06_error_and_recovery_metrics.wav",
+            "approved": true
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "environment_and_module_context",
+          "section_label": "Métricas de Contexto",
+          "title": "Ambiente e Contexto do Módulo",
+          "subtitle": "Temperatura, energia, identidade serial e avisos transformam medições em evidências rastreáveis.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Temperatura do módulo",
+              "body": "A temperatura do módulo indica se condições térmicas podem contribuir para a qualidade do link."
+            },
+            {
+              "title": "Temperatura do laser",
+              "body": "A temperatura do laser fornece contexto de dispositivo óptico para o comportamento de deriva e alarme."
+            },
+            {
+              "title": "Tensão",
+              "body": "O contexto de fornecimento ajuda a correlacionar problemas de ligação com as condições elétricas locais."
+            },
+            {
+              "title": "Potência Rx",
+              "body": "A potência óptica recebida ajuda a separar a perda de caminho óptico de outros sintomas."
+            },
+            {
+              "title": "DDMI avisos",
+              "body": "Alarmes e alertas revelam as travessias de limiar relatadas pelo módulo."
+            },
+            {
+              "title": "Número de série",
+              "body": "Campos de identidade vinculam telemetria e o histórico de eventos ao módulo físico."
+            }
+          ],
+          "term_refs": [
+            "ddmi"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Módula telemetria Dados e telemetria Informações"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "14-15"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_environment_and_module_context.txt",
+            "wav_file": "audio/module2/slide_07_environment_and_module_context.wav",
+            "approved": true
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "link_health_score_uses_the_worst_category",
+          "section_label": "Modelo de Pontuação",
+          "title": "A pontuação de integridade do link usa a pior categoria",
+          "figure": {
+            "path": "figures/link_health_minimum_score.mp4",
+            "media_type": "video",
+            "alt": "Animação silenciosa mostrando múltiplas pontuações de categoria de saúde de links, onde a saúde reportada segue a categoria mais fraca.",
+            "caption": "A regra da categoria mínima impede que um campo ruim seja mascarado por medições mais saudáveis em outros lugares.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Fórmula de Pontuação de Avaliação"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "49-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.txt",
+            "wav_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "flags_and_masks_keep_monitoring_actionable",
+          "section_label": "Bandeiras e Máscaras",
+          "title": "Sinalizadores e máscaras mantêm o monitoramento acionável",
+          "subtitle": "Bandeiras de resumo tornam o estado visível; Máscaras permitem que os implantes controlem quais contra-ataques influenciam a pontuação.",
+          "bullets": [
+            {
+              "bold_lead": "Bandeiras resumo",
+              "text": "Flags podem mostrar se grupos métricos ultrapassaram limiares ou precisam de atenção do operador."
+            },
+            {
+              "bold_lead": "Máscaras personalizadas",
+              "text": "Máscaras podem incluir ou excluir contadores selecionados dos cálculos de link-health-score."
+            },
+            {
+              "bold_lead": "Ajuste operacional",
+              "text": "Uma implantação pode reduzir o ruído sem perder o modelo de métrica compartilhada."
+            }
+          ],
+          "figure": {
+            "path": "figures/flags_and_masks.svg",
+            "alt": "Diagrama mostrando o resumo da bandeira alimentando controles de máscara para integridade do link.",
+            "caption": "Bandeiras e máscaras ajudam a monitorar a se manter comum o suficiente para comparar e flexíveis o bastante para operar.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "telemetria Relatórios de Resumo de Bandeiras e Máscara Personalizada"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "45-48"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.txt",
+            "wav_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "metrics_should_point_to_action",
+          "title": "Métricas devem apontar para ação",
+          "items": [
+            "Local e remota telemetria usam o mesmo modelo operacional centrado no host.",
+            "Métricas de qualidade separam o comportamento elétrico do lado do host do comportamento óptico do lado da linha.",
+            "Os valores de erro, recuperação e tempo de atividade mostram se um link está ruidoso, instável ou com falha.",
+            "Campos ambientais e de identidade tornam as medições rastreáveis a hardware real.",
+            "A pontuação de link-saúde usa a categoria mais fraca para evitar esconder um campo que falha."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Módula telemetria Fórmula de Dados e Pontuação de Avaliação"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_metrics_should_point_to_action.txt",
+            "wav_file": "audio/module2/slide_10_metrics_should_point_to_action.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_metrics_and_scores",
+          "title": "Verifique seu modelo: métricas e pontuações",
+          "subtitle": "Responda uma vez para continuar. Não é necessário ter correção, e você pode tentar novamente após feedback.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "Por que a pontuação de integridade do link usa a categoria mais fraca em vez de uma média?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Uma única categoria ruim pode tornar um link pouco confiável mesmo quando outras categorias são saudáveis.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Médias são impossíveis de calcular a partir dos campos telemetria.",
+                  "correct": false,
+                  "feedback_incorrect": "Médias podem ser calculadas, mas podem esconder o campo que deveria impulsionar a ação."
+                },
+                {
+                  "id": "c",
+                  "text": "Apenas a potência óptica importa para integridade do link.",
+                  "correct": false,
+                  "feedback_incorrect": "A potência óptica é útil, mas o modelo também considera qualidade elétrica, erros, comportamento de recuperação e contexto."
+                }
+              ],
+              "feedback_correct": "Correto. A pontuação é projetada para preservar o sinal de ação da categoria mais fraca.",
+              "feedback_incorrect": "Revise o modelo de pontuação: a sumarização não deve mascarar uma categoria que falha."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "Quais itens são evidências úteis telemetria para diagnosticar integridade do link?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "SNR, altura dos olhos, PAM4 LTP e MPI estimação.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Histogramas pré-FEC BER, FEC histogramas, relinks, LOS e LOL.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Temperatura do módulo, temperatura do laser, potência óptica recebida e identidade serial.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Apenas o resultado final de aprovação/reprovação de um painel externo.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correto. Diagnóstico útil combina qualidade, erro, recuperação, ambiente e contexto de identidade.",
+              "feedback_incorrect": "Use o modelo de categoria: integridade do link precisa de qualidade, erros, recuperação, ambiente e evidências de identidade, não apenas um resultado final do painel."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Módula telemetria Fórmula de Dados e Pontuação de Avaliação"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "13-52"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.txt",
+            "wav_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "up_next",
+          "slug": "up_next_cdb_and_event_workflows",
+          "title": "A seguir: CDB e fluxos de trabalho de eventos",
+          "next_module_number": 3,
+          "next_module_title": "Fluxos de trabalho CDB, logs de eventos e acesso remoto",
+          "thank_you_message": "Bom trabalho - você terminou a telemetria e o módulo link-saúde.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Implementação do Transceptor CDB"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.txt",
+            "wav_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Fluxos de trabalho CDB, logs de eventos e acesso remoto"
+    },
+    {
+      "id": 3,
+      "slug": "cdb_workflows_event_logs_and_remote_access",
+      "title": "Fluxos de trabalho CDB, logs de eventos e acesso remoto",
+      "subtitle": "O padrão comando-resposta que move telemetria, histórico de eventos e dados de extremidade oposta.",
+      "module_badge_text": "Módulo 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "cdb_workflows_event_logs_and_remote_access",
+          "title": "Fluxos de trabalho CDB, logs de eventos e acesso remoto",
+          "subtitle": "Coma telemetria solicitações, respostas, logs e acessos distantes se movem pela interface do módulo.",
+          "version_chip": "Especialização A telemetria avançada - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Implementação do Transceptor CDB"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-18"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.txt",
+            "wav_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "workflows_you_will_trace",
+          "title": "Fluxos de Trabalho que Você Vai Rastrear",
+          "subtitle": "Ao final deste módulo, você será capaz de acompanhar o comportamento de comando, registro e acesso remoto.",
+          "objectives": [
+            "Rastreie o fluxo de trabalho de quatro etapas CDB comando-resposta.",
+            "Descreva por que as áreas da Page 9Fh e áreas estendidas carga útil importam sem decorar mapas de bytes.",
+            "Explique como logs de eventos não voláteis preservam uma história de falha.",
+            "Distinga o acesso remoto por bytes do acesso remoto à página conceitualmente."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Implementação do Transceptor CDB e Gerenciamento de log de eventos"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_workflows_you_will_trace.txt",
+            "wav_file": "audio/module3/slide_02_workflows_you_will_trace.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "cdb_is_a_command_reply_workflow",
+          "section_label": "CDB Padrão",
+          "title": "CDB É um fluxo de trabalho comando-resposta",
+          "figure": {
+            "path": "figures/cdb_command_reply.mp4",
+            "media_type": "video",
+            "alt": "Animação silenciosa mostrando um fluxo de trabalho de quatro etapas CDB, desde a preparação do comando até a recuperação da resposta.",
+            "caption": "Uma sequência típica de comandos CDB prepara a mensagem, aciona a execução, consulta o status e recupera a resposta após a conclusão.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "cdb"
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Implementação do Transceptor CDB"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.txt",
+            "wav_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "page_9fh_carries_the_control_conversation",
+          "section_label": "Página de Controle",
+          "title": "A página 9Fh carrega a conversa sobre o controle",
+          "subtitle": "A página de controle contém estruturas de comando e resposta; O curso enfatiza o padrão em vez de cada campo de byte.",
+          "bullets": [
+            {
+              "bold_lead": "Cabeçalho de comando",
+              "text": "O host escreve a identidade do comando e as informações relacionadas da solicitação."
+            },
+            {
+              "bold_lead": "Cabeçalho da resposta",
+              "text": "O módulo retorna metadados de conclusão e resposta após a execução."
+            },
+            {
+              "bold_lead": "Local carga útil",
+              "text": "Mensagens menores podem usar a área local carga útil antes que páginas estendidas sejam necessárias."
+            }
+          ],
+          "figure": {
+            "path": "figures/page_9f_structure.svg",
+            "alt": "A página 9Fh simplificou a estrutura com cabeçalho de comando, cabeçalho de resposta e carga útil local.",
+            "caption": "A página 9Fh é a página de mensagens CDB entre host e o módulo na especificação.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Estrutura da Página de Controle"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-17"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.txt",
+            "wav_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "extended_payload_handles_larger_transfers",
+          "section_label": "carga útil Tamanho",
+          "title": "A carga útil estendida lida com transferências maiores",
+          "subtitle": "Quando o carga útil local não é suficiente, as páginas carga útil acumuladas recebem respostas maiores.",
+          "bullets": [
+            {
+              "bold_lead": "Primeiro o carga útil local",
+              "text": "Comandos pequenos e respostas podem usar o espaço local carga útil."
+            },
+            {
+              "bold_lead": "Páginas estendidas carga útil",
+              "text": "Páginas acumuladas A0h a AFh fornecem maior capacidade carga útil na especificação."
+            },
+            {
+              "bold_lead": "Campos de comprimento e integridade",
+              "text": "carga útil comprimento e campos de verificação ajudam o software a saber o que deve recuperar e validar."
+            }
+          ],
+          "figure": {
+            "path": "figures/extended_payload.svg",
+            "alt": "Diagrama simplificado estendido carga útil mostrando páginas locais carga útil e A0h a AFh.",
+            "caption": "A especificação descreve páginas estendidas carga útil para dados de comandos maiores, até 2048 bytes.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Estendido carga útil"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "17"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.txt",
+            "wav_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "status_registers_tell_the_host_when_to_read",
+          "section_label": "Status de Comando",
+          "title": "Registradores de status informam ao host quando ler",
+          "subtitle": "O status de conclusão e falha fazem parte do fluxo de trabalho, não são uma limpeza opcional.",
+          "bullets": [
+            {
+              "bold_lead": "Estado movimentado",
+              "text": "O host deve esperar que a execução do comando leve tempo e o progresso do questionamento."
+            },
+            {
+              "bold_lead": "Bandeiras de conclusão",
+              "text": "O status de conclusão informa ao software quando a resposta pode ser lida."
+            },
+            {
+              "bold_lead": "Manuseio de falhas",
+              "text": "Um comando falhado deve ser tratado explicitamente, e não interpretado como válida telemetria."
+            },
+            {
+              "bold_lead": "Software repetível",
+              "text": "O comportamento consistente de status permite que SDKs e ferramentas de linha de comando se tornem fluxos de trabalho confiáveis para operadores."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB Registros de Status de Comando"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "18"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.txt",
+            "wav_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_retrieval_follows_the_same_pattern",
+          "section_label": "telemetria Comando",
+          "title": "A recuperação de telemetria segue o mesmo padrão",
+          "figure": {
+            "path": "figures/telemetry_retrieval_flow.svg",
+            "alt": "host solicita telemetria, módulo local coleta dados locais ou remotos e responde devolvendo campos de saúde.",
+            "caption": "A recuperaçãa telemetria usa o mesmo comando, status e padrão de resposta, seja o dado local ou remoto.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "telemetria"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "28-45"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.txt",
+            "wav_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "event_logs_preserve_the_failure_story",
+          "section_label": "Histórico do Evento",
+          "title": "Registros de Eventos Preservam a História de Falha",
+          "subtitle": "Logs de eventos não voláteis permitem que os operadores inspecionem o que aconteceu, não apenas como o link está agora.",
+          "bullets": [
+            {
+              "bold_lead": "Buffer circular não volátil",
+              "text": "O módulo registra eventos críticos na memória que sobrevivem aos fluxos normais de energia e serviço."
+            },
+            {
+              "bold_lead": "Sequência UID",
+              "text": "Um valor único de sequência ajuda a reconstruir a ordem dos eventos, incluindo o comportamento de wraparound."
+            },
+            {
+              "bold_lead": "Carimbo de tempo e ID de evento",
+              "text": "Cada entrada carrega o tempo e o tipo de evento, então os sintomas podem ser correlacionados com host e dados de fabrico."
+            },
+            {
+              "bold_lead": "Saída legível por humanos",
+              "text": "host APIs devem tornar eventos recentes legíveis em vez de forçar a interpretação de campos de bits durante um incidente."
+            }
+          ],
+          "figure": {
+            "path": "figures/source_docx_event_log_example.png",
+            "alt": "Exemplo de captura de tela de análise do log de eventos do documento de especificação.",
+            "caption": "A especificação inclui um exemplo de log de eventos analisado; Fluxos de trabalho voltados para o aprendiz devem preservar a ordem, o tempo e o significado dos eventos.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "CDB log de eventos Gestão"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "53-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.txt",
+            "wav_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "content_grid",
+          "slug": "hysteresis_prevents_noise_from_burying_signal",
+          "section_label": "Controle de Eventos",
+          "title": "A histerese impede que o ruído oculte o sinal",
+          "subtitle": "Travessias repetidas de limiar precisam de controle para que os troncos permaneçam úteis durante períodos instáveis.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Eventos limiar",
+              "body": "Eventos podem ser registrados para bins de link-up, link-down, LOS, LOL, temperatura, potência Rx, pré-FEC BER, FEC bins e mais."
+            },
+            {
+              "title": "Janela de histerese",
+              "body": "A especificação lista um valor padrão de histerese de evento de 10 segundos para o controle API."
+            },
+            {
+              "title": "Menos ruído duplicado",
+              "body": "Uma janela ajuda a evitar que transições repetidas de link sobrecarreguem o log."
+            },
+            {
+              "title": "Comportamento programável",
+              "body": "comandos host podem ler ou gravar valores de histerese de eventos para endpoints locais e remotos."
+            },
+            {
+              "title": "Linha do tempo mais clara",
+              "body": "Os operadores podem focar em eventos distintos em vez de dezenas de entradas limiar repetidas."
+            },
+            {
+              "title": "Verificação de versão",
+              "body": "Os valores finais de produção devem ser verificados em relação à revisão publicada da especificação."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "log de eventos IDs, Tipos, Limiares e APIs software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "53-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.txt",
+            "wav_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.wav",
+            "approved": true
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 10,
+          "type": "content_two_column",
+          "slug": "remote_cmis_access_reaches_the_far_endpoint",
+          "section_label": "Acesso Remoto",
+          "title": "Acesso remoto CMIS alcança o extremo distante",
+          "subtitle": "O acesso remoto permite que software do host recupere informações do módulo parceiro por meio do módulo local compatível.",
+          "bullets": [
+            {
+              "bold_lead": "Acesso por bytes",
+              "text": "Use uma requisição direcionada quando o software precisar de um campo pequeno ou um intervalo estreito da extremidade remota."
+            },
+            {
+              "bold_lead": "Acesso à página",
+              "text": "Use uma requisição orientada a página quando o software precisar de um snapshot de página maior CMIS."
+            },
+            {
+              "bold_lead": "Mesmo limite de confiança",
+              "text": "O host ainda se comunica com o módulo local; O módulo local recupera dados remotos na banda."
+            }
+          ],
+          "figure": {
+            "path": "figures/remote_cmis_access.svg",
+            "alt": "Acesso remoto a bytes CMIS e comparação de acesso à página.",
+            "caption": "O acesso remoto a bytes e páginas diferem em tamanho e uso de casos, mas ambos preservam o modelo de controle local-host para módulo local.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Acesso remoto ao registro CMIS"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "65-73"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.txt",
+            "wav_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "cdb_turns_telemetry_into_an_operational_workflow",
+          "title": "CDB transforma a telemetria em um fluxo de trabalho operacional",
+          "items": [
+            "CDB utiliza uma sequência repetível de preparar, disparar, sondar e recuperar.",
+            "As áreas Page 9Fh e carga útil suportam troca de comando e resposta; Os byte maps permanecem na especificação.",
+            "A verificação de status protege os operadores de tratarem comandos incompletos ou falhados como dados válidos.",
+            "Os registros de eventos preservam evidências ordenadas e com carimbo de data após falhas transitórias.",
+            "O acesso remoto CMIS permite que o host inspecione o extremo distante através do módulo local compatível."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Implementação do Transceptor CDB por Acesso Remoto CMIS"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-73"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.txt",
+            "wav_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "check_your_model_cdb_and_events",
+          "title": "Verifique seu modelo: CDB e eventos",
+          "subtitle": "Responda uma vez para continuar. Não é necessário ter correção, e você pode tentar novamente após feedback.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "Qual sequência descreve melhor uma interação típica de CDB?",
+              "shuffle_choices": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Prepare o comando, acione-o, consulte o status, recupere a resposta.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Recupere a resposta, acione o comando, prepare o cabeçalho, ignore o status.",
+                  "correct": false,
+                  "feedback_incorrect": "A resposta é lida após a conclusão do comando, e a pesquisa de status faz parte do fluxo de trabalho."
+                },
+                {
+                  "id": "c",
+                  "text": "Consulta o status uma vez no boot, depois leia todos os telemetria sem comandos.",
+                  "correct": false,
+                  "feedback_incorrect": "O status é verificado para cada fluxo de trabalho de comando. telemetria a recuperação ainda usa comportamento de comando e resposta."
+                }
+              ],
+              "feedback_correct": "Correto. Essa sequência de quatro passos é o fluxo de trabalho central CDB.",
+              "feedback_incorrect": "Revise o padrão de comando: preparar, disparar, sondear, recuperar."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "Quais recursos ajudam a diagnosticar uma oscilação do link depois que o sintoma imediato passa?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Logs de eventos não voláteis com sequência e carimbos de tempo.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Acesso remoto CMIS para inspecionar o extremo distante.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Recuperação checada de status telemetria em vez de ler respostas obsoletas.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Removendo a histerese de eventos para que cada cruzamento duplicado de limiar seja sempre registrado.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correto. Registros duráveis, visibilidade remota e status disciplinado de comando ajudam a preservar as evidências.",
+              "feedback_incorrect": "Pense no caminho das evidências: preserve o histórico de eventos, alcance o extremo distante e verifique a conclusão do comando antes de confiar na resposta."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Implementação do Transceptor CDB e Gerenciamento de CDB log de eventos"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "16-64"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_12_check_your_model_cdb_and_events.txt",
+            "wav_file": "audio/module3/slide_12_check_your_model_cdb_and_events.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 13,
+          "type": "up_next",
+          "slug": "up_next_firmware_and_host_readiness",
+          "title": "A seguir: Firmware e prontidão host",
+          "next_module_number": 4,
+          "next_module_title": "Firmware, software do host e prontidão para implantação",
+          "thank_you_message": "Bom trabalho - você terminou o módulo de comandos e fluxo de eventos.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Recursos de Gerenciamento de Firmware e software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.txt",
+            "wav_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.wav",
+            "approved": true
+          }
+        }
+      ],
+      "next_module_title": "Firmware, software do host e prontidão para implantação"
+    },
+    {
+      "id": 4,
+      "slug": "firmware_host_software_and_deployment_readiness",
+      "title": "Firmware, software do host e prontidão para implantação",
+      "subtitle": "Operações ao longo do ciclo de vida e ferramentas host que transformam telemetria em confiabilidade de ambiente em larga escala.",
+      "module_badge_text": "Módulo 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "firmware_host_software_and_deployment_readiness",
+          "title": "Firmware, software do host e prontidão para implantação",
+          "subtitle": "Coma telemetria, acesso remoto, gerenciamento de firmware e APIs host se tornam operações em escala de ambiente em larga escala.",
+          "version_chip": "Especialização A telemetria avançada - 2026",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Recursos de Gerenciamento de Firmware e software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.txt",
+            "wav_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "operations_you_will_connect",
+          "title": "Operações que você relacionará",
+          "subtitle": "Ao final deste módulo, você será capaz de explicar como o ciclo de vida e as ferramentas host suportam confiabilidade.",
+          "objectives": [
+            "Descreva o gerenciamento de firmware local e remoto no nível da capacidade.",
+            "Explique por que software do host se comunica com o módulo local mesmo quando dados remotos são solicitados.",
+            "Identifique categorias de linha de comando API que suportem fluxos de trabalho de operadores.",
+            "Conecte a coleta de telemetria, histórico de eventos e agregação de servidores em um modelo de prontidão de implantação."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Recursos de Gerenciamento de Firmware e software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_operations_you_will_connect.txt",
+            "wav_file": "audio/module4/slide_02_operations_you_will_connect.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "firmware_management_supports_local_and_remote_optics",
+          "section_label": "Capacidade de Firmware",
+          "title": "O gerenciamento de firmware suporta óptica local e remota",
+          "subtitle": "A especificação inclui tanto o fluxo de firmware definido pelo CMIS quanto a capacidade de atualização remota definida pelo fornecedor.",
+          "bullets": [
+            {
+              "bold_lead": "Fluxo local padrão",
+              "text": "O gerenciamento de firmware definido pelo CMIS cobre o download de imagens controlado pelo host, ativação e monitoramento de status."
+            },
+            {
+              "bold_lead": "Caminho de atualização remoto",
+              "text": "Comandos definidos pelo fornecedor na especificação permitem atualizações remotas de firmware por meio de comunicação intra-banda."
+            },
+            {
+              "bold_lead": "Descoberta de capacidades",
+              "text": "O software deve determinar quais recursos de gerenciamento de firmware estão disponíveis antes de iniciar uma atualização."
+            }
+          ],
+          "figure": {
+            "path": "figures/source_docx_firmware_upgrade_flow.png",
+            "alt": "Diagrama de fluxo de atualização de firmware do documento de especificações.",
+            "caption": "A figura fonte mostra o fluxo de atualização de firmware CMIS; O curso trata isso como um padrão de ciclo de vida, e não como uma meta de memorização.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Recursos de Gerenciamento de Firmware"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.txt",
+            "wav_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "hitless_update_is_a_lifecycle_pattern",
+          "section_label": "Ciclo de Vida da Atualização",
+          "title": "A A atualização sem interrupção é um padrão de ciclo de vida",
+          "figure": {
+            "path": "figures/source_docx_block_download_flow.png",
+            "alt": "Diagrama de fluxo do bloco de firmware para download do documento de especificação.",
+            "caption": "O fluxo de download em blocos reforça a ideia de que atualização de firmware é um ciclo de vida com estado com verificações, tentativas, completação e comportamento de commit.",
+            "source": "reuse"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Recursos de Gerenciamento de Firmware"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-93"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.txt",
+            "wav_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "host_software_owns_the_local_conversation",
+          "section_label": "host Limite",
+          "title": "O software do host controla a comunicação local",
+          "subtitle": "O host comunica-se via I2C com o módulo local compatível; o módulo local recupera dados remotos.",
+          "bullets": [
+            {
+              "bold_lead": "Ponto de controle local",
+              "text": "Toda a comunicação do transceptor compatível com o host local é realizada sobre I2C na especificação."
+            },
+            {
+              "bold_lead": "Recuperação remota",
+              "text": "Quando dados remotos são solicitados, o transceptor local os recupera e os apresenta ao host."
+            },
+            {
+              "bold_lead": "Sem caminho remoto direto",
+              "text": "O host local não se comunica diretamente com módulos parceiros remotos."
+            }
+          ],
+          "figure": {
+            "path": "figures/host_local_conversation.svg",
+            "alt": "host comunica-se com o módulo local via I2C enquanto o módulo local recupera dados parceiros remotos na banda.",
+            "caption": "O host permanece local; o módulo compatível faz a ponte entre as extremidades remota.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Comunicações Transceptoras"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.txt",
+            "wav_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "command_line_apis_become_operator_tools",
+          "section_label": "APIs de operadores",
+          "title": "APIs de linha de comando se tornam ferramentas de operador",
+          "subtitle": "As APIs host SDK e de linha de comando expõem as capacidades comuns dos módulos como fluxos de trabalho repetíveis.",
+          "columns": [
+            "API categoria",
+            "Uso por operadores"
+          ],
+          "rows": [
+            [
+              "Acesso padrão CMIS",
+              "Leia registradores locais e o estado do módulo padrão."
+            ],
+            [
+              "Acesso remoto CMIS",
+              "Extraia dados padrão CMIS de um parceiro de link remoto."
+            ],
+            [
+              "telemetria baixar",
+              "Exibir parâmetros locais ou remotos do módula telemetria."
+            ],
+            [
+              "Registros de eventos",
+              "Leia, baixe, limpe e ajuste o histórico de eventos locais ou remotos."
+            ],
+            [
+              "atualização de firmware",
+              "Execute fluxos de trabalho locais ou remotos sem hits atualização de firmware."
+            ],
+            [
+              "Horário e classificação",
+              "Defina o tempo de época, ajuste a histerese e exiba a classificação do link do módulo."
+            ]
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "APIs de linha de comando"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.txt",
+            "wav_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_harvesting_builds_a_link_timeline",
+          "section_label": "Coleta",
+          "title": "A coleta de telemetria constrói uma linha do tempo do link",
+          "figure": {
+            "path": "figures/telemetry_timeline.svg",
+            "alt": "Linha do tempo mostrando polling host, limiar de eventos, consulta de parceiro remoto e mapa de saúde de rede.",
+            "caption": "A coleta contínua pode transformar a telemetria atual, logs de eventos e consultas remotas em uma linha do tempo de saúde em todo a rede.",
+            "source": "svg_inline"
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.txt",
+            "wav_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "deployment_readiness_checks",
+          "section_label": "Verificações de Prontidão",
+          "title": "Verificações de prontidão para implantação",
+          "subtitle": "Uma implantação deve verificar o comportamento, não apenas se campos existem.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Parceiros locais e remotos",
+              "body": "Confirme que o host pode recuperar dados de módulos locais e dos endpoints remotos corretos."
+            },
+            {
+              "title": "Gabinetes de separação",
+              "body": "Verifique a identidade do parceiro e cada endpoint telemetria quando uma porta mapear para múltiplos lados remotos."
+            },
+            {
+              "title": "Óptica de terceiros",
+              "body": "Verifique o comportamento quando aparecem ópticas compatíveis e não conformes em ambientes realistas."
+            },
+            {
+              "title": "Época",
+              "body": "Garanta que os carimbos de data possam ser correlacionados entre host, módulos, logs de eventos e ferramentas de monitoramento."
+            },
+            {
+              "title": "Ciclo de vida do firmware",
+              "body": "Exercícios de descoberta, transferência, ativação, comprometimento, aborto e recuperação."
+            },
+            {
+              "title": "Repositório e SDK",
+              "body": "Confirme a implementação, ferramentas e disponibilidade de código de fontes esperadas pela política de implantação."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Outros Requisitos do MCU, software do host, Requisitos e Repositório"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "15-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_deployment_readiness_checks.txt",
+            "wav_file": "audio/module4/slide_08_deployment_readiness_checks.wav",
+            "approved": true
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 9,
+          "type": "content_diagram",
+          "slug": "from_link_flap_to_root_cause",
+          "section_label": "Solução de problemas",
+          "title": "Da oscilação do link à causa raiz",
+          "figure": {
+            "path": "figures/link_flap_root_cause.mp4",
+            "media_type": "video",
+            "alt": "Animação silenciosa mostrando solução de problemas a partir de um alerta oscilação do link através de score de vida, métricas, log de eventos, consulta remota e ação baseada em evidências.",
+            "caption": "Um fluxo de trabalho prático combina pontuação, métricas, histórico de eventos, dados de extremidade remota e linha do tempo do host antes de escolher uma ação.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Visão geral e software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "11, 94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_09_from_link_flap_to_root_cause.txt",
+            "wav_file": "audio/module4/slide_09_from_link_flap_to_root_cause.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "reliability_depends_on_common_interfaces",
+          "title": "A confiabilidade depende de interfaces comuns",
+          "items": [
+            "Gerenciamento de firmware é um ciclo de vida com descoberta de capacidades, checagens de status, ativação, commit e comportamento de recuperação.",
+            "software do host fala localmente por I2C enquanto módulos compatíveis recuperam dados de parceiros remotos na banda.",
+            "APIs de operador devem expor telemetria, registros de eventos, acesso remoto, atualização de firmware, tempo, histerese e classificação de link.",
+            "A coleta contínua transforma o estado atual e o histórico de eventos em uma linha do tempo de link.",
+            "Prontidão para implantação significa verificar o comportamento em casos locais, remotos, de separação e de compatibilidade mista."
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Recursos de Gerenciamento de Firmware e software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "74-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.txt",
+            "wav_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_deployment_workflow",
+          "title": "Verifique seu modelo: Fluxo de Trabalho de Implantação",
+          "subtitle": "Responda uma vez para continuar. Não é necessário ter correção, e você pode tentar novamente após feedback.",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "Por que o host local não se comunica diretamente com módulos parceiros remotos no modelo de especificação?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "O host comunica-se com o módulo local compatível; O módulo local recupera dados remotos na banda.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Remote telemetria não é suportado.",
+                  "correct": false,
+                  "feedback_incorrect": "O telemetria remoto é suportado pelo módulo local e comunicação em banda."
+                },
+                {
+                  "id": "c",
+                  "text": "Somente o servidor telemetria pode solicitar dados ópticos remotos.",
+                  "correct": false,
+                  "feedback_incorrect": "software do host pode solicitar dados remotos através do módulo local compatível; O servidor agrega informações de saúde de nível superior."
+                }
+              ],
+              "feedback_correct": "Correto. O módulo local faz a ponte sobre a recuperação remota enquanto o host mantém um caminho de controle local.",
+              "feedback_incorrect": "Revise a fronteira host: local host para módulo local sobre I2C, depois módulo local para parceiro remoto na banda."
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "Quais recursos host/API suportam operações ópticas em escala de ambiente em larga escala?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Baixe local e remota telemetria.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Leitura do registro de eventos, limpeza, download de eventos recentes e controle de histerese.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Fluxos de trabalho locais e remotos atualização de firmware.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Ignorando dados pré-FEC BER do lado do host e dados de palavras-código não corrigíveis.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correto. As operações da ambiente em larga escala precisam de telemetria atual, histórico duradouro, acesso remoto, suporte ao ciclo de vida do firmware e contexto do lado do host.",
+              "feedback_incorrect": "Pense em toda a cadeia de operações: telemetria atual, histórico de eventos, acesso remoto, gerenciamento de firmware, correlação de tempo, avaliação e contexto do lado do host."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "APIs de Comunicações e Linha de Comando do Transceptor"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "94"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_11_check_your_model_deployment_workflow.txt",
+            "wav_file": "audio/module4/slide_11_check_your_model_deployment_workflow.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 12,
+          "type": "course_complete",
+          "slug": "course_complete_ocp_optics_reliability",
+          "title": "Curso concluído: telemetria óptica avançada",
+          "course_title": "Óptica A telemetria avançada",
+          "thank_you_message": "Obrigado por completar o módulo final: Firmware, software do host e Prontidão para Implantação.",
+          "cert_message": "Você completou o curso de confiabilidade óptica. Agora você pode explicar como a telemetria aprimorada conecta endpoints locais e remotos, métricas de integridade do link, histórico de eventos, fluxos de trabalho CDB, ciclo de vida do firmware e APIs host em um modelo de confiabilidade orientado por evidências.",
+          "source_refs": [
+            {
+              "source": "2026 OCP-Software Specification-Optics Telemetry_rev0.9.2_DRAFT2.docx",
+              "section": "Escopo, Visão Geral, Recursos de Gerenciamento de Firmware, software do host"
+            },
+            {
+              "source": "2025 public OCP optics telemetry PDF",
+              "page": "10-96"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.txt",
+            "wav_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.wav",
+            "approved": true
+          }
+        }
+      ]
+    }
+  ],
+  "metadata_language_name": "Portuguese (Brazil)",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "pt-BR",
+    "source_course_sha256": "b8664ca9182f6df3294fb9dc37901611a366e168f8860a8bbd303021764404b2"
+  },
+  "ui_labels": {
+    "not_started": "Não iniciado",
+    "completed": "Concluído",
+    "module": "Módulo",
+    "module_complete": "Módulo {module} concluído",
+    "course_complete": "Curso concluído",
+    "course_overview": "Visão geral do curso",
+    "learning_objectives": "Objetivos de aprendizagem",
+    "key_takeaways": "Principais pontos",
+    "knowledge_check": "Verificação de conhecimento",
+    "submit": "Enviar",
+    "retry": "Tentar novamente",
+    "quiz_gate_note": "Para continuar, envie cada pergunta uma vez. Você pode avançar independentemente da resposta e tentar novamente.",
+    "quiz_gate_warning": "Envie cada pergunta uma vez antes de avançar.",
+    "select_answer": "Selecione pelo menos uma resposta antes de enviar.",
+    "correct": "Correto.",
+    "review_feedback": "Revise o feedback antes de tentar novamente.",
+    "narration_hint": "A narração começa automaticamente. Use a seta para a direita ou a barra de espaço para avançar.",
+    "theme": "Tema",
+    "toggle_dark_mode": "Alternar modo escuro",
+    "previous_slide": "Slide anterior",
+    "next_slide": "Próximo slide",
+    "play_pause_narration": "Reproduzir ou pausar a narração",
+    "playback_speed": "Velocidade de reprodução",
+    "playback_speed_slider": "Ajustar a velocidade de reprodução",
+    "speed": "Velocidade",
+    "toggle_fullscreen": "Alternar tela cheia",
+    "fullscreen": "Tela cheia",
+    "video_controls": "Controles de vídeo",
+    "play_video": "Reproduzir vídeo",
+    "pause_video": "Pausar vídeo",
+    "zoom_video": "Ampliar vídeo",
+    "video_figure": "Figura em vídeo",
+    "zoom_figure": "Ampliar figura",
+    "enlarged_figure": "Figura ampliada",
+    "lightbox_close_hint": "Clique fora ou pressione Esc para fechar.",
+    "opens_new_tab": "Abre em uma nova guia",
+    "learner_resource": "Recurso de aprendizagem",
+    "open": "Abrir",
+    "learn_more": "Saiba mais",
+    "reference": "Referência",
+    "course_intro": "Introdução do curso OCP Academy",
+    "skip_intro": "Pular introdução",
+    "share_feedback": "Enviar feedback",
+    "survey_body": "Você pode dedicar alguns minutos para nos ajudar a melhorar? Seu feedback à equipe de desenvolvimento será usado para aperfeiçoar este curso e os próximos. Sortearemos brindes entre os participantes.",
+    "default_module_thanks": "Obrigado por concluir o módulo {module}: {title}",
+    "default_course_wrap": "Você concluiu todos os módulos de {course}. Esperamos que este conteúdo ajude no seu trabalho.",
+    "up_next": "Próximo curso",
+    "go_to_module": "Ir para o módulo {module}"
+  }
+}
