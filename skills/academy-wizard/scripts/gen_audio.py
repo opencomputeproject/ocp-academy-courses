@@ -4,7 +4,8 @@ gen_audio.py — turn approved narration .txt files into .wav files.
 
 Usage:
     python gen_audio.py <course.json> [--module N] [--engine elevenlabs|openai|say]
-                       [--voice <voice_id>] [--model <model_id>] [--force]
+                       [--voice <voice_id>] [--model <model_id>]
+                       [--model-policy stable|expressive|balanced] [--force]
                        [--allow-local-fallback-for-partial]
 
 Defaults: walk every module and every slide; use top-level `narration` engine and
@@ -39,6 +40,7 @@ from elevenlabs_model_support import (
     primary_language_code,
     should_send_language_code,
     validate_model_language,
+    validate_voice_model,
 )
 
 
@@ -81,6 +83,7 @@ def pick_model_id(
     course: dict,
     engine: str,
     requested: str | None = None,
+    requested_policy: str | None = None,
 ) -> str | None:
     if engine != "elevenlabs":
         return None
@@ -94,7 +97,12 @@ def pick_model_id(
     environment_model = str(os.getenv("ELEVENLABS_MODEL") or "").strip()
     if environment_model:
         return environment_model
-    return default_model_for_language(course.get("language"))
+    configured_policy = str(configured.get("model_policy") or "").strip().lower()
+    environment_policy = str(
+        os.getenv("ELEVENLABS_MODEL_POLICY") or ""
+    ).strip().lower()
+    policy = requested_policy or configured_policy or environment_policy or "stable"
+    return default_model_for_language(course.get("language"), policy)
 
 
 def need(cmd: str) -> str | None:
@@ -222,6 +230,14 @@ def main():
     p.add_argument("--engine", choices=list(SYNTHS.keys()))
     p.add_argument("--voice", help="engine-specific voice id")
     p.add_argument("--model", help="ElevenLabs model id")
+    p.add_argument(
+        "--model-policy",
+        choices=("stable", "expressive", "balanced"),
+        help=(
+            "select a use-case model when no explicit model is configured; "
+            "stable is the default for technical narration"
+        ),
+    )
     p.add_argument("--force", action="store_true", help="re-synth even if .wav exists")
     p.add_argument(
         "--allow-local-fallback-for-partial",
@@ -240,7 +256,12 @@ def main():
     out_dir = args.course_json.resolve().parent
     try:
         engine = pick_engine(args.engine, course)
-        model_id = pick_model_id(course, engine, args.model)
+        model_id = pick_model_id(
+            course,
+            engine,
+            args.model,
+            args.model_policy,
+        )
     except ValueError as error:
         sys.exit(str(error))
     voice_id = pick_voice_id(args.voice, course, engine)
@@ -328,12 +349,23 @@ def main():
                 course.get("language"),
                 api_key=api_key,
             )
+            voice_validation_source = validate_voice_model(
+                str(model_id),
+                voice_id,
+                api_key=api_key,
+            )
         except (RuntimeError, ValueError) as error:
             sys.exit(str(error))
         print(
             "model/language preflight: "
             f"{model_id} supports {language_code} ({validation_source})"
         )
+        if model_id == "eleven_v3":
+            print(
+                "voice/model preflight: "
+                f"{voice_id} supports {model_id} "
+                f"({voice_validation_source})"
+            )
 
     n_done = 0
     n_skip = 0

@@ -82,7 +82,8 @@ Before submitting any localized video script to ElevenLabs, run the shared
 model/language preflight:
 
 ```bash
-python scripts/elevenlabs_model_support.py <BCP-47-tag> <model-id>
+python scripts/elevenlabs_model_support.py <BCP-47-tag> <model-id> \
+  --voice-id <voice-id>
 ```
 
 The check uses ElevenLabs' live model catalog when credentials are available
@@ -90,6 +91,12 @@ and otherwise permits only combinations in its bundled official-documentation
 table. Do not generate a paid sample when the result is unsupported or
 unverifiable. When another dubbing language is added, record its model in the
 dubbing manifest and run this preflight before the first segment.
+
+Use the stable model policy for neutral technical narration. v3 is available
+for languages only it supports or when the user explicitly approves a more
+expressive delivery. Before using v3, require live voice metadata, reject
+Professional Voice Clones, and require `eleven_v3` in the voice's
+`high_quality_base_model_ids`.
 
 For Simplified Chinese (`zh-CN` or `zh-Hans`), use the approved ElevenLabs Lan
 Chen voice (`bZtjnyJAFD0Cp3lfNG5g`) unless the user selects another voice.

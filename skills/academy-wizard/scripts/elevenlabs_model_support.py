@@ -20,6 +20,7 @@ import urllib.request
 
 
 MODELS_URL = "https://api.elevenlabs.io/v1/models"
+VOICE_URL_TEMPLATE = "https://api.elevenlabs.io/v1/voices/{voice_id}"
 MODEL_DOCS_URL = "https://elevenlabs.io/docs/overview/models"
 
 MULTILINGUAL_V2_LANGUAGES = frozenset(
@@ -146,11 +147,35 @@ DOCUMENTED_MODEL_LANGUAGES = {
     "eleven_v3": V3_LANGUAGES,
 }
 
-# ElevenLabs documents language-code enforcement for the 2.5 Flash/Turbo
+# ElevenLabs supports language-code enforcement on v3 and the 2.5 Flash/Turbo
 # models. Multilingual v2 explicitly does not support the request parameter.
 LANGUAGE_CODE_MODELS = frozenset(
-    {"eleven_flash_v2_5", "eleven_turbo_v2_5"}
+    {"eleven_flash_v2_5", "eleven_turbo_v2_5", "eleven_v3"}
 )
+
+MODEL_POLICY_ORDERS = {
+    # ElevenLabs currently recommends Multilingual v2 for professional content
+    # and calls it the most stable long-form model. Fall through to Flash for
+    # its three extra languages, then v3 for broader language coverage.
+    "stable": (
+        "eleven_multilingual_v2",
+        "eleven_flash_v2_5",
+        "eleven_v3",
+    ),
+    # Prefer the newest expressive model, but require live voice compatibility
+    # before paid synthesis.
+    "expressive": (
+        "eleven_v3",
+        "eleven_multilingual_v2",
+        "eleven_flash_v2_5",
+    ),
+    # Prefer the lower-cost, lower-latency all-rounder where it has coverage.
+    "balanced": (
+        "eleven_flash_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_v3",
+    ),
+}
 
 ISO_639_3_TO_PRIMARY = {
     "afr": "af",
@@ -241,16 +266,27 @@ def documented_languages(model_id: str) -> frozenset[str] | None:
     return DOCUMENTED_MODEL_LANGUAGES.get(str(model_id or "").strip())
 
 
-def default_model_for_language(language_tag: str | None) -> str:
+def default_model_for_language(
+    language_tag: str | None,
+    policy: str = "stable",
+) -> str:
     language = primary_language_code(language_tag)
-    if language in MULTILINGUAL_V2_LANGUAGES:
-        return "eleven_multilingual_v2"
-    if language in FLASH_V2_5_LANGUAGES:
-        return "eleven_flash_v2_5"
+    normalized_policy = str(policy or "stable").strip().lower()
+    candidates = MODEL_POLICY_ORDERS.get(normalized_policy)
+    if candidates is None:
+        raise ValueError(
+            f"Unknown ElevenLabs model policy {policy!r}; choose "
+            f"{', '.join(sorted(MODEL_POLICY_ORDERS))}."
+        )
+    for model_id in candidates:
+        supported = documented_languages(model_id)
+        if supported and language in supported:
+            return model_id
     raise ValueError(
-        f"No verified default ElevenLabs model for language {language!r}. "
-        "Set narration.model_id to a model that explicitly supports it; "
-        "the live preflight will verify the combination before synthesis."
+        f"No verified ElevenLabs model under policy {normalized_policy!r} "
+        f"for language {language!r}. Set narration.model_id to a model that "
+        "explicitly supports it; the live preflight will verify the "
+        "combination before synthesis."
     )
 
 
@@ -267,6 +303,26 @@ def fetch_model_catalog(api_key: str, timeout: int = 30) -> list[dict]:
         payload = json.loads(response.read().decode("utf-8"))
     if not isinstance(payload, list):
         raise RuntimeError("ElevenLabs model catalog returned a non-list response.")
+    return payload
+
+
+def fetch_voice_metadata(
+    api_key: str,
+    voice_id: str,
+    timeout: int = 30,
+) -> dict:
+    req = urllib.request.Request(
+        VOICE_URL_TEMPLATE.format(voice_id=voice_id),
+        headers={
+            "xi-api-key": api_key,
+            "accept": "application/json",
+            "user-agent": "AcademyWizard/ElevenLabs-voice-preflight",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=timeout) as response:
+        payload = json.loads(response.read().decode("utf-8"))
+    if not isinstance(payload, dict):
+        raise RuntimeError("ElevenLabs voice endpoint returned a non-object response.")
     return payload
 
 
@@ -363,6 +419,63 @@ def validate_model_language(
     return source
 
 
+def validate_voice_model(
+    model_id: str,
+    voice_id: str | None,
+    *,
+    api_key: str | None = None,
+    voice_metadata: dict | None = None,
+) -> str:
+    """Require live voice compatibility before using Eleven v3."""
+
+    if model_id != "eleven_v3":
+        return "voice/model compatibility check not required for stable models"
+    voice_id = str(voice_id or "").strip()
+    if not voice_id:
+        raise RuntimeError(
+            "ElevenLabs v3 voice compatibility check blocked synthesis: "
+            "a voice_id is required."
+        )
+
+    metadata = voice_metadata
+    if metadata is None:
+        if not api_key:
+            raise RuntimeError(
+                "ElevenLabs v3 voice compatibility check blocked synthesis: "
+                "live voice metadata requires ELEVENLABS_API_KEY."
+            )
+        try:
+            metadata = fetch_voice_metadata(api_key, voice_id)
+        except Exception as error:
+            raise RuntimeError(
+                "ElevenLabs v3 voice compatibility check blocked synthesis: "
+                f"live metadata for voice {voice_id!r} was unavailable "
+                f"({type(error).__name__})."
+            ) from error
+
+    category = str(metadata.get("category") or "").strip().lower()
+    if category == "professional":
+        raise RuntimeError(
+            "ElevenLabs v3 voice compatibility check blocked synthesis: "
+            f"voice {voice_id!r} is a Professional Voice Clone, which "
+            "ElevenLabs does not currently support with v3."
+        )
+
+    compatible_models = {
+        str(value).strip()
+        for value in metadata.get("high_quality_base_model_ids") or []
+        if str(value).strip()
+    }
+    if model_id not in compatible_models:
+        raise RuntimeError(
+            "ElevenLabs v3 voice compatibility check blocked synthesis: "
+            f"voice {voice_id!r} does not list {model_id!r} in "
+            "high_quality_base_model_ids. Select a v3-compatible voice or "
+            "use the stable model policy."
+        )
+    return "ElevenLabs live voice metadata"
+
+
 def should_send_language_code(model_id: str) -> bool:
     return model_id in LANGUAGE_CODE_MODELS
 
@@ -374,7 +487,20 @@ def main() -> None:
         )
     )
     parser.add_argument("language_tag", help="BCP 47 tag, for example vi-VN")
-    parser.add_argument("model_id", help="ElevenLabs model ID")
+    parser.add_argument(
+        "model_id",
+        nargs="?",
+        help="ElevenLabs model ID; omit when using --policy",
+    )
+    parser.add_argument(
+        "--policy",
+        choices=sorted(MODEL_POLICY_ORDERS),
+        help="select the documented stable, expressive, or balanced model",
+    )
+    parser.add_argument(
+        "--voice-id",
+        help="also verify live voice compatibility when the selected model is v3",
+    )
     parser.add_argument(
         "--offline",
         action="store_true",
@@ -382,18 +508,34 @@ def main() -> None:
     )
     args = parser.parse_args()
     api_key = None if args.offline else os.getenv("ELEVENLABS_API_KEY")
+    if args.model_id and args.policy:
+        parser.error("provide model_id or --policy, not both")
+    try:
+        model_id = args.model_id or default_model_for_language(
+            args.language_tag,
+            args.policy or "stable",
+        )
+    except ValueError as error:
+        sys.exit(str(error))
     try:
         source = validate_model_language(
-            args.model_id,
+            model_id,
             args.language_tag,
+            api_key=api_key,
+        )
+        voice_source = validate_voice_model(
+            model_id,
+            args.voice_id,
             api_key=api_key,
         )
     except (RuntimeError, ValueError) as error:
         sys.exit(str(error))
     print(
-        f"compatible: {args.model_id} supports "
+        f"compatible: {model_id} supports "
         f"{primary_language_code(args.language_tag)} ({source})"
     )
+    if model_id == "eleven_v3":
+        print(f"voice compatible: {args.voice_id} ({voice_source})")
 
 
 if __name__ == "__main__":

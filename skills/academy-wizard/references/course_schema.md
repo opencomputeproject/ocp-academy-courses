@@ -16,7 +16,8 @@ The wizard maintains a single `course.json` in the working area. It's the source
     "engine": "elevenlabs",
     "voice_id": "Course-specific ElevenLabs voice ID",
     "voice_name": "Human-readable voice name",
-    "model_id": "eleven_multilingual_v2"
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable"
   },
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
@@ -77,6 +78,15 @@ catalog, with a bundled official-documentation table as a fail-safe for known
 models. Unsupported or unverifiable combinations are blocked before any text
 is submitted. Additions to the maintained locale table must include a model and
 pass `scripts/elevenlabs_model_support.py <language> <model>`.
+
+`model_id` is the reproducible pin and takes precedence. When it is omitted,
+`model_policy` chooses a use-case profile: `stable` (the default) prefers
+Multilingual v2 for the professional technical narration it supports, then
+Flash v2.5, then v3; `expressive` prefers v3; and `balanced` prefers Flash v2.5.
+The fallback to v3 lets newly added v3-only languages work without pretending
+that a larger version number is automatically a better technical narrator.
+Before v3 synthesis, require live voice metadata: reject Professional Voice
+Clones and require `eleven_v3` in `high_quality_base_model_ids`.
 
 ## Presentation style
 

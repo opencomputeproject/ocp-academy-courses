@@ -140,8 +140,20 @@ explicit `model_id` to `LOCALE_NARRATION_DEFAULTS`; the scaffold validates every
 entry at startup. Also run:
 
 ```bash
-python scripts/elevenlabs_model_support.py <BCP-47-tag> <model-id>
+python scripts/elevenlabs_model_support.py <BCP-47-tag> <model-id> \
+  --voice-id <voice-id>
 ```
+
+Do not upgrade a technical course merely because a model ID has a larger
+version number. ElevenLabs currently describes Multilingual v2 as its most
+stable long-form model and recommends it for professional content, audiobooks,
+and video narration. Use `narration.model_policy: "stable"` by default. Use
+`"expressive"` or `--model eleven_v3` only after the user approves a v3 sample;
+v3 is more expressive but more variable, has a lower per-request character
+limit, does not support SSML break tags, and does not currently support
+Professional Voice Clones. AcademyWizard automatically falls through to v3 for
+a language unsupported by Multilingual v2 and Flash v2.5, but blocks before
+generation unless the selected voice's live metadata explicitly lists v3.
 
 After editorial approval, synthesize the locale audio and run
 `audio_tail_report.py --fail-on-flags`. Regenerate only flagged clips. Do not
