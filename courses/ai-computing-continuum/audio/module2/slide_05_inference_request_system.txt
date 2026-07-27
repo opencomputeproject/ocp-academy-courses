@@ -1,0 +1,16 @@
+# pronunciation: AI -> "A I"; GPU -> "G P U"; GPUs -> "G P Yous"; KV -> "key-value"
+Now zoom inside one inference serving deployment, typically within a single site. Disaggregation separates functions and resource pools. It does not, by itself, make the request a cross-site workflow.
+
+The request first reaches an inference-aware gateway and placement controller. They identify the model, any loaded adapter, the service priority, and the response objective. The controller considers queue depth, eligible accelerators, memory pressure, local topology, data location, policy, and service health before selecting worker pools.
+
+Prompt processing, often called prefill, runs on a prefill pool and creates the initial key-value state. Prefill can demand substantial compute, especially as the input context grows. Model weights and retrieval data must also be available to the workers.
+
+If prefill and decode use separate pools, the key-value state must move across the serving fabric. It may reside in high-bandwidth accelerator memory, host memory, or another cache tier along the way. The state is not another inference phase. It is the working context produced by prefill and consumed by decode.
+
+Decode then generates the response iteratively. Each step reads the accumulated state, produces another token, and extends the cache. This phase can be constrained more by memory bandwidth and capacity than by raw arithmetic.
+
+Attestation and policy gate which resources are eligible. Telemetry reports queues, memory pressure, errors, power, and service health back to placement control, shaping later routing decisions.
+
+Separating the pools can reduce interference and let each phase use an appropriate resource plan. But moving key-value state has a cost. That transfer must remain inside time-to-first-token and token-latency objectives.
+
+Extending any of these functions across sites is possible only as a separate Scale-Across or Reach-Across design decision. That cross-site question belongs to the next module.

@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Disaggregated inference within one serving deployment</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .deployment-boundary {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      top: 154px;
+      height: 488px;
+      border: 3px dashed rgba(104, 107, 178, .42);
+      border-radius: 26px;
+      pointer-events: none;
+    }
+    .scope-label {
+      position: absolute;
+      left: 54px;
+      top: 143px;
+      z-index: 4;
+      padding: 7px 14px;
+      border-radius: 16px;
+      background: #f6f7f6;
+      color: #343895;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .node {
+      position: absolute;
+      top: 194px;
+      height: 156px;
+      padding: 18px;
+      text-align: center;
+    }
+    .node h2 {
+      margin: 0 0 10px;
+      color: #343895;
+      font-size: 23px;
+      line-height: 1.05;
+    }
+    .node p {
+      margin: 0;
+      color: #5f6062;
+      font-size: 15px;
+      line-height: 1.22;
+    }
+    #gateway { left: 42px; width: 190px; }
+    #policy { left: 258px; width: 190px; }
+    #prefill { left: 474px; width: 190px; }
+    #decode { left: 924px; width: 190px; }
+    #response { left: 1140px; width: 98px; }
+
+    .connector {
+      position: absolute;
+      top: 267px;
+      height: 8px;
+      border-radius: 5px;
+      background: #d7dad7;
+    }
+    #l1 { left: 232px; width: 26px; }
+    #l2 { left: 448px; width: 26px; }
+    #l3 { left: 664px; width: 26px; }
+    #l4 { left: 898px; width: 26px; }
+    #l5 { left: 1114px; width: 26px; }
+
+    #cache {
+      position: absolute;
+      left: 690px;
+      top: 207px;
+      width: 208px;
+      height: 130px;
+      padding: 16px 14px;
+      border: 2px dashed #8dc63f;
+      border-radius: 20px;
+      background: #f4faeb;
+      text-align: center;
+    }
+    #cache h2 {
+      margin: 0;
+      color: #4d761c;
+      font-size: 21px;
+    }
+    #cache p {
+      margin: 5px 0 0;
+      color: #5f6062;
+      font-size: 14px;
+      line-height: 1.15;
+    }
+    .cache-stack {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 6px;
+      height: 38px;
+      margin: 8px auto 3px;
+    }
+    .cache-stack i {
+      display: block;
+      width: 22px;
+      height: 8px;
+      border-radius: 4px 4px 2px 2px;
+      background: #8dc63f;
+    }
+    .spark {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      height: 48px;
+      margin-top: 8px;
+    }
+    .spark i {
+      width: 18px;
+      height: 10px;
+      border-radius: 5px 5px 0 0;
+      background: #8dc63f;
+    }
+    .token {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      margin: 4px 1px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #343895;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .moving-artifact {
+      position: absolute;
+      z-index: 5;
+      opacity: 0;
+    }
+    #requestDot,
+    #outputDot,
+    #feedbackDot {
+      width: 18px;
+      height: 18px;
+      margin: -9px 0 0 -9px;
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      background: #343895;
+      box-shadow: 0 0 0 6px rgba(52, 56, 149, .16);
+    }
+    #feedbackDot {
+      width: 16px;
+      height: 16px;
+      margin: -8px 0 0 -8px;
+      background: #8dc63f;
+      box-shadow: 0 0 0 6px rgba(141, 198, 63, .16);
+    }
+    #kvPacket {
+      display: flex;
+      gap: 3px;
+      width: 45px;
+      height: 24px;
+      margin: -12px 0 0 -22px;
+      padding: 4px;
+      border: 3px solid #ffffff;
+      border-radius: 7px;
+      background: #4d761c;
+      box-shadow: 0 0 0 6px rgba(141, 198, 63, .18);
+    }
+    #kvPacket i {
+      flex: 1;
+      border-radius: 2px;
+      background: #b8df82;
+    }
+    #feedbackLine {
+      position: absolute;
+      left: 402px;
+      top: 350px;
+      width: 6px;
+      height: 60px;
+      border-radius: 3px;
+      background: #8dc63f;
+      opacity: 0;
+    }
+
+    .lower {
+      position: absolute;
+      top: 410px;
+      height: 190px;
+      padding: 18px 20px;
+    }
+    #data { left: 42px; width: 294px; }
+    #telemetry { left: 356px; width: 294px; }
+    #resources { left: 670px; width: 568px; }
+    .resource-row {
+      display: flex;
+      gap: 13px;
+      margin-top: 18px;
+    }
+    .resource {
+      flex: 1;
+      min-height: 86px;
+      padding: 12px 8px;
+      border-radius: 15px;
+      background: #eef0fb;
+      color: #343895;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .resource span {
+      display: block;
+      margin-top: 7px;
+      color: #5f6062;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .readout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 18px;
+      margin-top: 14px;
+    }
+    .readout div {
+      padding: 9px 11px;
+      border-radius: 12px;
+      background: #f6f7f6;
+      color: #5f6062;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .readout strong {
+      float: right;
+      color: #343895;
+    }
+    .glow {
+      border-color: #8dc63f !important;
+      box-shadow: 0 0 0 6px rgba(141, 198, 63, .16), 0 12px 30px rgba(37, 42, 39, .08) !important;
+    }
+  </style>
+</head>
+<body>
+<div class="canvas">
+  <div class="top-explainer">
+    <div class="decision-main" id="message">A request enters one serving deployment—normally one site.</div>
+    <div class="stage" id="stage">Request enters</div>
+  </div>
+
+  <div class="deployment-boundary"></div>
+  <div class="scope-label">SCOPE SHOWN · ONE SERVING DEPLOYMENT · TYPICALLY ONE SITE</div>
+
+  <div class="panel node" id="gateway">
+    <h2>Gateway</h2>
+    <p>Model · adapter<br>priority · SLO</p>
+    <div class="pill blue" style="margin-top:14px">Route</div>
+  </div>
+  <div class="connector" id="l1"></div>
+  <div class="panel node" id="policy">
+    <h2>Placement control</h2>
+    <p>Identity · attestation<br>policy · topology</p>
+    <div class="pill amber" style="margin-top:12px" id="policyPill">Check</div>
+  </div>
+  <div class="connector" id="l2"></div>
+  <div class="panel node" id="prefill">
+    <h2>Prefill pool</h2>
+    <p>Process input context</p>
+    <div class="spark" id="prefillSpark"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="connector" id="l3"></div>
+  <div id="cache">
+    <h2>KV state transfer</h2>
+    <div class="cache-stack" id="cacheStack"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <p>State, not another inference phase</p>
+  </div>
+  <div class="connector" id="l4"></div>
+  <div class="panel node" id="decode">
+    <h2>Decode pool</h2>
+    <p>Read and extend state</p>
+    <div id="tokens" style="margin-top:7px"><span class="token">1</span><span class="token">2</span><span class="token">3</span></div>
+  </div>
+  <div class="connector" id="l5"></div>
+  <div class="panel node" id="response">
+    <h2 style="font-size:19px">Reply</h2>
+    <p style="font-size:14px">Stream<br>tokens</p>
+  </div>
+
+  <div class="moving-artifact" id="requestDot"></div>
+  <div class="moving-artifact" id="kvPacket"><i></i><i></i><i></i></div>
+  <div class="moving-artifact" id="outputDot"></div>
+  <div id="feedbackLine"></div>
+  <div class="moving-artifact" id="feedbackDot"></div>
+
+  <div class="panel lower" id="data">
+    <div class="panel-title">Model + retrieval data</div>
+    <div class="small" style="margin-top:8px">Weights and retrieved context must be available to the selected workers.</div>
+    <div class="metric"><span>Weight load</span><div class="meter"><span id="weightMeter" style="width:10%"></span></div></div>
+  </div>
+  <div class="panel lower" id="telemetry">
+    <div class="panel-title">Telemetry + service health</div>
+    <div class="readout">
+      <div>Queue <strong id="queue">2</strong></div>
+      <div>TTFT <strong id="ttft">—</strong></div>
+      <div>Memory <strong id="memory">18%</strong></div>
+      <div>Power <strong id="power">42%</strong></div>
+    </div>
+  </div>
+  <div class="panel lower" id="resources">
+    <div class="panel-title">Resource tiers inside the deployment</div>
+    <div class="resource-row">
+      <div class="resource" id="gpu">Accelerator<span>compute + HBM</span></div>
+      <div class="resource" id="host">Host memory<span>larger, slower tier</span></div>
+      <div class="resource" id="store">Storage<span>weights + retrieval</span></div>
+      <div class="resource" id="fabric">Serving fabric<span>KV + data movement</span></div>
+    </div>
+  </div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = value => Math.max(0, Math.min(1, value));
+
+  function setGlow(id, on) {
+    $(id).classList.toggle("glow", Boolean(on));
+  }
+
+  function moveArtifact(id, x1, y1, x2, y2, progress, visible = true) {
+    const q = clamp(progress);
+    const element = $(id);
+    element.style.left = `${x1 + (x2 - x1) * q}px`;
+    element.style.top = `${y1 + (y2 - y1) * q}px`;
+    element.style.opacity = visible ? 1 : 0;
+  }
+
+  window.setFrame = function(p) {
+    ["gateway", "policy", "prefill", "cache", "decode", "response", "data", "telemetry", "resources"].forEach(id => setGlow(id, false));
+    document.querySelectorAll(".connector").forEach(line => line.style.background = "#d7dad7");
+    document.querySelectorAll("#prefillSpark i").forEach((bar, i) => bar.style.height = `${10 + i * 2}px`);
+    document.querySelectorAll("#cacheStack i").forEach(block => block.style.height = "8px");
+    document.querySelectorAll("#tokens .token").forEach(token => token.style.opacity = .16);
+    ["requestDot", "kvPacket", "outputDot", "feedbackDot"].forEach(id => $(id).style.opacity = 0);
+    $("feedbackLine").style.opacity = 0;
+    $("gpu").style.background = "#eef0fb";
+    $("host").style.background = "#eef0fb";
+    $("store").style.background = "#eef0fb";
+    $("fabric").style.background = "#eef0fb";
+
+    if (p < .16) {
+      const q = p / .16;
+      $("stage").textContent = "Request enters";
+      $("message").textContent = "A request enters one serving deployment—normally one site.";
+      setGlow("gateway", true);
+      moveArtifact("requestDot", 28, 271, 137, 271, q);
+      $("queue").textContent = "3";
+    } else if (p < .31) {
+      const q = (p - .16) / .15;
+      $("stage").textContent = "Select eligible workers";
+      $("message").textContent = "Placement control selects eligible workers inside this deployment.";
+      setGlow("policy", true);
+      $("l1").style.background = "#8dc63f";
+      moveArtifact("requestDot", 232, 271, 353, 271, q);
+      $("policyPill").textContent = q > .6 ? "Approved" : "Checking";
+    } else if (p < .49) {
+      const q = (p - .31) / .18;
+      $("stage").textContent = "Prefill creates KV state";
+      $("message").textContent = "The prefill pool processes context and produces key-value state.";
+      setGlow("prefill", true);
+      setGlow("data", true);
+      setGlow("store", true);
+      $("l2").style.background = "#8dc63f";
+      moveArtifact("requestDot", 448, 271, 569, 271, q);
+      document.querySelectorAll("#prefillSpark i").forEach((bar, i) => {
+        bar.style.height = `${12 + Math.round((20 + 30 * Math.sin(q * 10 + i)) * q)}px`;
+      });
+      $("weightMeter").style.width = `${20 + 70 * q}%`;
+      $("power").textContent = `${Math.round(45 + 43 * q)}%`;
+      $("ttft").textContent = "running";
+    } else if (p < .66) {
+      const q = (p - .49) / .17;
+      $("stage").textContent = "Transfer KV state";
+      $("message").textContent = "KV state crosses the serving fabric to a separate decode pool.";
+      setGlow("cache", true);
+      setGlow("fabric", true);
+      setGlow("host", q > .62);
+      $("l3").style.background = "#8dc63f";
+      if (q > .54) $("l4").style.background = "#8dc63f";
+      moveArtifact("kvPacket", 664, 271, 1019, 271, q);
+      document.querySelectorAll("#cacheStack i").forEach((block, i) => {
+        block.style.height = `${10 + q * (18 + i * 5)}px`;
+      });
+      $("memory").textContent = `${Math.round(24 + 64 * q)}%`;
+      $("ttft").textContent = q > .85 ? "420 ms" : "running";
+    } else if (p < .84) {
+      const q = (p - .66) / .18;
+      $("stage").textContent = "Decode streams tokens";
+      $("message").textContent = "Decode reads and extends KV state while streaming output tokens.";
+      setGlow("decode", true);
+      setGlow("cache", true);
+      setGlow("gpu", true);
+      setGlow("response", true);
+      $("l4").style.background = "#8dc63f";
+      $("l5").style.background = "#8dc63f";
+      moveArtifact("outputDot", 1114, 271, 1188, 271, q);
+      document.querySelectorAll("#tokens .token").forEach((token, i) => {
+        token.style.opacity = q > i * .24 ? 1 : .16;
+      });
+      $("memory").textContent = "88%";
+      $("power").textContent = "71%";
+      $("queue").textContent = "4";
+    } else {
+      const q = (p - .84) / .16;
+      $("stage").textContent = "Telemetry closes the loop";
+      $("message").textContent = "Telemetry shapes the next placement; cross-site execution is not shown.";
+      setGlow("telemetry", true);
+      setGlow("policy", true);
+      setGlow("resources", true);
+      setGlow("fabric", true);
+      $("feedbackLine").style.opacity = 1;
+      moveArtifact("feedbackDot", 405, 410, 405, 350, q);
+      $("queue").textContent = "6";
+      $("ttft").textContent = "420 ms";
+      $("memory").textContent = "91%";
+      $("power").textContent = "74%";
+    }
+  };
+
+  window.setFrame(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Inference placement across the continuum</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .top-explainer {
+      position: absolute;
+      left: 42px;
+      right: 42px;
+      top: 28px;
+      height: 108px;
+      padding: 20px 300px 18px 28px;
+      border-radius: 24px;
+      background: #303235;
+      color: #ffffff;
+      box-shadow: 0 14px 30px rgba(37, 42, 39, .14);
+    }
+    .top-explainer .stage {
+      right: 22px;
+      top: 20px;
+      min-width: 246px;
+      max-width: 266px;
+      padding: 12px 16px;
+      font-size: 17px;
+    }
+    .decision-main {
+      max-width: 850px;
+      font-size: 25px;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+    .decision-detail {
+      max-width: 850px;
+      margin-top: 10px;
+      color: #e8eae8;
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+    .flow-space {
+      position: absolute;
+      left: 0;
+      top: 142px;
+      width: 1280px;
+      height: 324px;
+    }
+    .flow-space path {
+      fill: none;
+      stroke: #8dc63f;
+      stroke-width: 8;
+      stroke-linecap: round;
+      opacity: 0;
+      filter: drop-shadow(0 4px 6px rgba(77, 118, 28, .16));
+    }
+    .flow-space .endpoint {
+      fill: #ffffff;
+      stroke: #8dc63f;
+      stroke-width: 6;
+      opacity: 0;
+    }
+    .flow-space .moving-dot {
+      fill: #343895;
+      stroke: #ffffff;
+      stroke-width: 5;
+      opacity: 0;
+      filter: drop-shadow(0 4px 5px rgba(52, 56, 149, .28));
+    }
+    .flow-space .moving-dot.trailing {
+      fill: #8dc63f;
+      stroke-width: 4;
+    }
+    .site {
+      position: absolute;
+      top: 456px;
+      width: 186px;
+      height: 166px;
+      padding: 16px;
+      text-align: center;
+      transition: none;
+    }
+    .site .icon-building {
+      margin: -10px auto -6px;
+      transform: scale(.70);
+      transform-origin: center;
+    }
+    .site-name {
+      color: #343895;
+      font-size: 20px;
+      line-height: 1.05;
+      font-weight: 800;
+    }
+    .site-note {
+      margin-top: 7px;
+      color: #5f6062;
+      font-size: 15px;
+      line-height: 1.15;
+    }
+    #regional .site-name {
+      font-size: 19px;
+      line-height: 1;
+    }
+    #regional .site-note {
+      margin-top: 4px;
+      font-size: 14px;
+      line-height: 1.08;
+    }
+    #factory { left: 54px; }
+    #enterprise { left: 298px; }
+    #telecom { left: 542px; }
+    #regional { left: 786px; }
+    #hyperscale { left: 1030px; width: 196px; }
+    .condition {
+      position: absolute;
+      top: 636px;
+      height: 30px;
+      padding: 5px 12px;
+      transform: translateX(-50%);
+      border-radius: 15px;
+      background: #eef7df;
+      color: #4d761c;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: center;
+      white-space: nowrap;
+    }
+    #c1 { left: 147px; }
+    #c2 { left: 391px; }
+    #c3 { left: 635px; }
+    #c4 { left: 879px; }
+    #c5 { left: 1128px; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+  <div class="top-explainer">
+    <div class="decision-main" id="decisionMain">Factory vision stays near the process</div>
+    <div class="decision-detail" id="decisionDetail">A local small model protects a 20 millisecond response objective and preserves limited operation during a link interruption.</div>
+    <div class="stage" id="stage">Keep critical work local</div>
+  </div>
+
+  <svg class="flow-space" viewBox="0 0 1280 324" aria-hidden="true">
+    <path id="pathLocal" d="M147 314 C58 250 58 88 147 88 C236 88 236 250 147 314"/>
+    <path id="pathResearch" d="M391 314 C500 78 770 78 879 314"/>
+    <path id="pathInteractive" d="M635 314 C704 170 812 170 879 314"/>
+    <path id="pathBatch" d="M879 314 C938 142 1084 142 1128 314"/>
+
+    <circle class="endpoint" id="originDot" r="10"/>
+    <circle class="endpoint" id="destinationDot" r="10"/>
+    <circle class="moving-dot trailing" id="trailDot2" r="10"/>
+    <circle class="moving-dot trailing" id="trailDot1" r="12"/>
+    <circle class="moving-dot" id="leadDot" r="15"/>
+  </svg>
+
+  <div class="panel site" id="factory"><div class="icon-building"></div><div class="site-name">Industrial site</div><div class="site-note">Local small model<br>safe fallback</div></div>
+  <div class="panel site" id="enterprise"><div class="icon-building"></div><div class="site-name">Enterprise</div><div class="site-note">Governed data<br>local operations</div></div>
+  <div class="panel site" id="telecom"><div class="icon-building"></div><div class="site-name">Telecom PoP</div><div class="site-note">Network-proximate<br>capacity</div></div>
+  <div class="panel site" id="regional"><div class="icon-building"></div><div class="site-name">Regional facility</div><div class="site-note">Shared accelerators<br>interactive reach</div></div>
+  <div class="panel site" id="hyperscale"><div class="icon-building"></div><div class="site-name">Hyperscale</div><div class="site-note">Large pooled capacity<br>batch throughput</div></div>
+
+  <div class="condition" id="c1">Predictable latency</div>
+  <div class="condition" id="c2">Sovereignty</div>
+  <div class="condition" id="c3">Network proximity</div>
+  <div class="condition" id="c4">Shared capacity</div>
+  <div class="condition" id="c5">Throughput</div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = value => Math.max(0, Math.min(1, value));
+
+  function setActiveSites(siteIds) {
+    document.querySelectorAll(".site").forEach(site => {
+      site.style.borderColor = "#d7dad7";
+      site.style.boxShadow = "0 12px 30px rgba(37,42,39,.08)";
+    });
+    siteIds.forEach(id => {
+      $(id).style.borderColor = "#8dc63f";
+      $(id).style.boxShadow = "0 0 0 6px rgba(141,198,63,.14), 0 12px 30px rgba(37,42,39,.08)";
+    });
+  }
+
+  function pointOnPath(path, progress) {
+    const length = path.getTotalLength();
+    return path.getPointAtLength(length * clamp(progress));
+  }
+
+  function positionCircle(circle, point, visible = true) {
+    circle.setAttribute("cx", point.x);
+    circle.setAttribute("cy", point.y);
+    circle.style.opacity = visible ? 1 : 0;
+  }
+
+  function showFlow(pathId, progress, activeSites) {
+    document.querySelectorAll(".flow-space path").forEach(path => path.style.opacity = 0);
+    const path = $(pathId);
+    path.style.opacity = 1;
+    const q = clamp(progress);
+
+    positionCircle($("originDot"), pointOnPath(path, 0), true);
+    positionCircle($("destinationDot"), pointOnPath(path, 1), true);
+    positionCircle($("leadDot"), pointOnPath(path, q), true);
+    positionCircle($("trailDot1"), pointOnPath(path, q - .075), q > .075);
+    positionCircle($("trailDot2"), pointOnPath(path, q - .15), q > .15);
+
+    setActiveSites(activeSites);
+  }
+
+  window.setFrame = function(p) {
+    if (p < .25) {
+      const q = p / .25;
+      $("stage").textContent = "Keep critical work local";
+      $("decisionMain").textContent = "Factory vision stays near the process";
+      $("decisionDetail").textContent = "A local small model protects a 20 millisecond response objective and preserves limited operation during a link interruption.";
+      showFlow("pathLocal", q, ["factory"]);
+    } else if (p < .51) {
+      const q = (p - .25) / .26;
+      $("stage").textContent = "Reach specialized capacity";
+      $("decisionMain").textContent = "Research data remains governed while compute reaches outward";
+      $("decisionDetail").textContent = "An approved path connects enterprise data to temporary regional accelerator capacity.";
+      showFlow("pathResearch", q, ["enterprise", "regional"]);
+    } else if (p < .76) {
+      const q = (p - .51) / .25;
+      $("stage").textContent = "Serve interactive demand";
+      $("decisionMain").textContent = "Network-proximate capacity supports an interactive session";
+      $("decisionDetail").textContent = "The telecom point of presence and regional facility keep latency and tail behavior inside the service objective.";
+      showFlow("pathInteractive", q, ["telecom", "regional"]);
+    } else {
+      const q = (p - .76) / .24;
+      $("stage").textContent = "Shift flexible batch work";
+      $("decisionMain").textContent = "Batch analysis moves toward available, energy-favorable capacity";
+      $("decisionDetail").textContent = "The continuum supports different placement decisions rather than sending every request in the same direction.";
+      showFlow("pathBatch", q, ["regional", "hyperscale"]);
+    }
+  };
+
+  window.setFrame(0);
+</script>
+</body>
+</html>
