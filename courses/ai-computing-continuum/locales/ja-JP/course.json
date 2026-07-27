@@ -1,0 +1,1321 @@
+{
+  "style": "Slides",
+  "course_slug": "aicc_ja_jp",
+  "course_title": "AI Computing Continuum：ハイパースケールデータセンターの先へ広がるAI",
+  "course_subtitle": "分散化・特化・ディスアグリゲーションが進むAI推論を支えるオープンインフラストラクチャ",
+  "language": "ja-JP",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "target_duration_minutes": 45,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "aicc_project_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "AICC"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "/Users/jameskelly/Documents/Academy Course Work/AICC/AICC Intro.pptx",
+      "kind": "summit_slides"
+    },
+    {
+      "path": "/Users/jameskelly/Documents/Academy Course Work/AICC/AICC Intro.txt",
+      "kind": "summit_transcript"
+    },
+    {
+      "path": "/Users/jameskelly/Documents/Academy Course Work/AICC/AICC Core.pptx",
+      "kind": "summit_slides"
+    },
+    {
+      "path": "/Users/jameskelly/Documents/Academy Course Work/AICC/AICC Core.txt",
+      "kind": "summit_transcript"
+    },
+    {
+      "url": "https://www.opencompute.org/community/aicc",
+      "kind": "project_page"
+    },
+    {
+      "url": "https://www.opencompute.org/wiki/AICC",
+      "kind": "charter"
+    },
+    {
+      "url": "https://iowngf.org/ai-computing-continuum-why-it-matters-and-what-we-discussed-at-ocp-emea-2026/",
+      "kind": "article"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "aicc",
+      "term": "AI Computing Continuum (AICC)",
+      "tooltip": "ハイパースケール・アジェイセント環境に向けた、オープンでモジュラーなAIインフラストラクチャを扱うOCPプロジェクト。",
+      "reference_label": "OCP AICCプロジェクト",
+      "url": "https://www.opencompute.org/community/aicc"
+    },
+    {
+      "id": "hyperscale_adjacent",
+      "term": "ハイパースケール・アジェイセント",
+      "tooltip": "中央集約型ハイパースケールデータセンターの外側にあり、ハイパースケールのイノベーションを再利用できる多様なコンピュート環境。",
+      "reference_label": "OCP AICCプロジェクト",
+      "url": "https://www.opencompute.org/community/aicc"
+    },
+    {
+      "id": "point_of_presence",
+      "term": "PoP",
+      "tooltip": "Point of Presenceの略。ネットワークやコンピュートサービスを、ユーザーやほかのネットワークへ接続するサービスプロバイダー拠点。"
+    },
+    {
+      "id": "ai_fabric",
+      "term": "AIファブリック",
+      "tooltip": "AIワークロードやAIサービスのトラフィックを運ぶネットワーク／インターコネクト基盤。",
+      "reference_label": "OCP AICCプロジェクト",
+      "url": "https://www.opencompute.org/community/aicc"
+    },
+    {
+      "id": "kv_cache",
+      "term": "KVキャッシュ",
+      "tooltip": "推論サービスが後続の出力トークンを生成する際に再利用する、保存済みのKey-Valueステート。"
+    },
+    {
+      "id": "prefill",
+      "term": "プリフィル",
+      "tooltip": "入力コンテキストを処理し、モデルの初期ステートを生成する推論フェーズ。"
+    },
+    {
+      "id": "decode",
+      "term": "デコード",
+      "tooltip": "蓄積されたモデルステートを使い、出力トークンを反復的に生成する推論フェーズ。"
+    },
+    {
+      "id": "scale_across",
+      "term": "Scale-Across",
+      "tooltip": "地理的に離れたリージョン間で、コンピュートキャパシティを拡張または移動するモデル。",
+      "reference_label": "IOWN AICC記事",
+      "url": "https://iowngf.org/ai-computing-continuum-why-it-matters-and-what-we-discussed-at-ocp-emea-2026/"
+    },
+    {
+      "id": "sync_across",
+      "term": "Sync-Across",
+      "tooltip": "サイト間でデータやシステムステートの同期を保つ、IOWN提案のモデル。",
+      "reference_label": "IOWN AICC記事",
+      "url": "https://iowngf.org/ai-computing-continuum-why-it-matters-and-what-we-discussed-at-ocp-emea-2026/"
+    },
+    {
+      "id": "reach_across",
+      "term": "Reach-Across",
+      "tooltip": "ローカル環境からリモートのAIサービスやリソースへリアルタイムにアクセスする、IOWN提案のモデル。",
+      "reference_label": "IOWN AICC記事",
+      "url": "https://iowngf.org/ai-computing-continuum-why-it-matters-and-what-we-discussed-at-ocp-emea-2026/"
+    },
+    {
+      "id": "data_sovereignty",
+      "term": "データ主権",
+      "tooltip": "保存場所、ガバナンス、ライフサイクルなど、適用される要件に従ってデータを管理すること。"
+    },
+    {
+      "id": "attestation",
+      "term": "アテステーション",
+      "tooltip": "ワークロードを任せる前に、コンピュート環境のアイデンティティと状態を評価するための証拠。"
+    },
+    {
+      "id": "techno_economic",
+      "term": "テクノエコノミック分析",
+      "tooltip": "設計を持続可能な形でデプロイできるか、技術面と経済面をあわせて評価すること。"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why-the-continuum-exists",
+      "title": "コンティニュアムが必要な理由",
+      "subtitle": "推論が中央集約型ハイパースケールデータセンターの外へ広がる理由",
+      "module_badge_text": "モジュール 1",
+      "next_module_title": "コンティニュアムを支えるオープンインフラストラクチャ",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "why-the-continuum-exists",
+          "title": "コンティニュアムが必要な理由",
+          "subtitle": "推論、ハイパースケール・アジェイセント環境、コネクティビティの役割",
+          "module_number": 1,
+          "audio": {
+            "script_file": "audio/module1/slide_01_why_the_continuum_exists.txt",
+            "wav_file": "audio/module1/slide_01_why_the_continuum_exists.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "AICC Intro.txt",
+              "time": "00:27-01:30"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "four-questions",
+          "title": "このコースで答える4つの問い",
+          "subtitle": "AI Computing Continuumをシステム視点で捉える",
+          "modules_listed": [
+            "コンティニュアムが必要な理由",
+            "コンティニュアムを支えるオープンインフラストラクチャ",
+            "距離を越えてコンピュートする3つのモデル",
+            "アーキテクチャからエコシステムの実装へ"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "所要時間：約45分"
+            },
+            {
+              "icon": "🎓",
+              "text": "中級"
+            },
+            {
+              "icon": "⚙",
+              "text": "OCP AICCプロジェクト",
+              "url": "https://www.opencompute.org/community/aicc"
+            },
+            {
+              "icon": "🎤",
+              "text": "2026 OCP EMEA Summit資料",
+              "url": "https://www.opencompute.org/events/past-events/2026-ocp-emea-summit#the-ai-computing-continuum-extending-ai-from-data-center-to-the-user"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_four_questions.txt",
+            "wav_file": "audio/module1/slide_02_four_questions.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "inference-spreads",
+          "section_label": "変化",
+          "title": "AI推論は多様な環境へコンピュートを広げる",
+          "figure": {
+            "path": "figures/m1_inference_placement.mp4",
+            "media_type": "video",
+            "poster": "figures/m1_inference_placement_poster.png",
+            "alt": "変化する推論リクエストを、工場、エンタープライズ拠点、通信拠点、リージョナル施設、ハイパースケールデータセンターへ配置するアニメーション。",
+            "caption": "レイテンシ、データローカリティ、主権、電力、冷却、可用性によって最適な配置は変わります。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_03_inference_spreads.txt",
+            "wav_file": "audio/module1/slide_03_inference_spreads.wav",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "OCP AICCプロジェクト",
+              "url": "https://www.opencompute.org/community/aicc"
+            }
+          ],
+          "term_refs": [
+            "aicc",
+            "point_of_presence"
+          ],
+          "source_refs": [
+            {
+              "source": "AICC Intro.pptx",
+              "slides": "2-3"
+            },
+            {
+              "source": "AICC Intro.txt",
+              "time": "00:36-04:47"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_grid",
+          "slug": "different-inference-workloads",
+          "section_label": "多様なワークロード",
+          "title": "1つのコンティニュアムが多様な推論ワークロードを支える",
+          "subtitle": "適切なインフラストラクチャは、ロケーションとワークロード特性の組み合わせで決まります。",
+          "grid_cols": 3,
+          "mobile_scroll": true,
+          "cards": [
+            {
+              "title": "バッチ",
+              "body": "即時応答よりも、スループット、コスト、エネルギー効率を優先する場合があります。"
+            },
+            {
+              "title": "インタラクティブ",
+              "body": "Time to First Token、トークンレイテンシ、テール挙動がユーザー体験を左右します。"
+            },
+            {
+              "title": "エージェント型",
+              "body": "長く増え続けるコンテキストとツール呼び出しが、ステートフルでバースト性の高い需要を生みます。"
+            },
+            {
+              "title": "マルチモーダル",
+              "body": "テキスト、画像、音声、センサー入力では、システムに求めるものが異なります。"
+            },
+            {
+              "title": "フィジカルAI",
+              "body": "予測可能な応答と、安全なローカル運用が欠かせない場合があります。"
+            },
+            {
+              "title": "小規模ローカルモデル",
+              "body": "量子化モデルは、大規模なキャパシティよりも、低いローカルレイテンシ、プライバシー、効率を優先できます。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_different_inference_workloads.txt",
+            "wav_file": "audio/module1/slide_04_different_inference_workloads.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "hyperscale_adjacent"
+          ],
+          "source_refs": [
+            {
+              "source": "AICC Core.pptx",
+              "slide": 4
+            },
+            {
+              "source": "AICC Core.txt",
+              "time": "00:47-01:15, 08:18-09:07"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "connectivity-gap",
+          "section_label": "設計ドライバー",
+          "title": "コネクティビティだけでは足りない",
+          "bullets": [
+            {
+              "bold_lead": "電力とスペース",
+              "text": "リージョンによっては、大規模施設を追加できない場合があります。"
+            },
+            {
+              "bold_lead": "データガバナンス",
+              "text": "企業データを、承認済みの場所から動かせない場合があります。"
+            },
+            {
+              "bold_lead": "リアルタイム応答",
+              "text": "利用地点の近くにコンピュートが必要なアプリケーションもあります。"
+            },
+            {
+              "bold_lead": "ピーク時キャパシティ",
+              "text": "小規模サイトでも、一時的に特化型リソースが必要になることがあります。"
+            }
+          ],
+          "figure": {
+            "path": "figures/scale_and_connectivity.svg",
+            "alt": "横方向は利用可能なコンピュートキャパシティが限定的な状態から拡張された状態へ、縦方向は孤立した状態から接続された状態へ進みます。",
+            "caption": "横方向にキャパシティが増え、縦方向にコネクティビティが向上します。リモートコンピュートを実用化するには両方が必要です。",
+            "flat_background": true,
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_connectivity_gap.txt",
+            "wav_file": "audio/module1/slide_05_connectivity_gap.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "ai_fabric"
+          ],
+          "source_refs": [
+            {
+              "source": "AICC Core.pptx",
+              "slides": "7-8"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "takeaways",
+          "slug": "case-for-aicc",
+          "title": "AICCが必要な4つの理由",
+          "items": [
+            "推論需要は多様な環境で発生します。",
+            "ハイパースケール・アジェイセントは、単一のエッジ階層ではなく連続したスペクトラムです。",
+            "ワークロード特性によって必要なインフラストラクチャは変わります。",
+            "配置を決める中核要素として、スケールにコネクティビティが加わります。"
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_case_for_aicc.txt",
+            "wav_file": "audio/module1/slide_06_case_for_aicc.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "title": "理解度チェック：AICCが必要な理由",
+          "subtitle": "続行するには両方の設問を一度送信してください。正解でなくても先へ進め、再試行もできます。",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "AICCが必要になった最大のインフラストラクチャ変化は何ですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "推論が、物理条件や運用要件の異なる環境へ広がっていること。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "すべてのAI処理が、単一の標準ハイパースケール施設設計へ集約されていること。",
+                  "correct": false,
+                  "feedback_incorrect": "AICCが扱うのは、単一施設への集約ではなく、分散化と多様化です。"
+                },
+                {
+                  "id": "c",
+                  "text": "ネットワーキングがコンピュートインフラストラクチャを不要にしていること。",
+                  "correct": false,
+                  "feedback_incorrect": "コネクティビティはコンピュートキャパシティを補完しますが、コンピュート、メモリー、ストレージ、ファシリティを置き換えるものではありません。"
+                }
+              ],
+              "feedback_correct": "正解です。推論は、多様なサイトとワークロード特性へ広がっています。",
+              "feedback_incorrect": "推論の変化によって、コンピュートを稼働させる場所がどう変わるか確認しましょう。"
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "AICCの課題領域に当てはまる説明はどれですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "通信事業者のPoP、企業施設、工場、オフィスは、ハイパースケール・アジェイセントになり得る。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "レイテンシ、主権、電力、冷却、可用性が配置判断に影響する。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "すべての推論リクエストを、利用可能な最大のデータセンターへ送るべきである。",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "すべてのサイトで、同一のインフラストラクチャと運用前提を使用できる。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正解です。AICCは、多様な環境と配置制約を扱います。",
+              "feedback_incorrect": "AICCは、単一のサイト設計や万能な配置判断を前提にしていません。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_07_knowledge_check.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "up_next",
+          "slug": "open-infrastructure-next",
+          "next_module_number": 2,
+          "next_module_title": "コンティニュアムを支えるオープンインフラストラクチャ",
+          "thank_you_message": "モジュール1「コンティニュアムが必要な理由」は以上です。お疲れさまでした。",
+          "audio": {
+            "script_file": "audio/module1/slide_08_open_infrastructure_next.txt",
+            "wav_file": "audio/module1/slide_08_open_infrastructure_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "open-infrastructure",
+      "title": "コンティニュアムを支えるオープンインフラストラクチャ",
+      "subtitle": "プロジェクト領域、サイト制約、そして分散推論の構成",
+      "module_badge_text": "モジュール 2",
+      "next_module_title": "距離を越えてコンピュートする3つのモデル",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "open-infrastructure",
+          "title": "コンティニュアムを支えるオープンインフラストラクチャ",
+          "subtitle": "多様なデプロイメントに対応するモジュラーハードウェアのツールキット",
+          "module_number": 2,
+          "audio": {
+            "script_file": "audio/module2/slide_01_open_infrastructure.txt",
+            "wav_file": "audio/module2/slide_01_open_infrastructure.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "infrastructure-decisions",
+          "title": "インフラストラクチャの判断をつなげて考える",
+          "subtitle": "このモジュールを修了すると、次のことができるようになります。",
+          "objectives": [
+            "現在のOCP AICCスコープに含まれる5つの領域を特定する。",
+            "ハイパースケール・アジェイセントサイトごとの物理制約と運用制約を比較する。",
+            "オープンインターフェースが、適応可能なビルディングブロックをどう支えるか説明する。",
+            "1つのサービングデプロイメント内で、特化した推論リソースをどう連携させるか説明する。"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_infrastructure_decisions.txt",
+            "wav_file": "audio/module2/slide_02_infrastructure_decisions.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_grid",
+          "slug": "five-domains",
+          "section_label": "現在のプロジェクトスコープ",
+          "title": "5つの領域がビジョンを具体的なハードウェア活動へ変える",
+          "grid_cols": 3,
+          "mobile_scroll": true,
+          "cards": [
+            {
+              "title": "AI Open Server Architectures",
+              "body": "サーバー／スレッドのフォームファクター、異種アクセラレーター、ファブリック、機械・電気・熱インターフェース。"
+            },
+            {
+              "title": "AI Open Solution Architectures",
+              "body": "ラック／システム設計、冷却、電力供給、ファシリティ制約、レトロフィット、モジュラーデプロイメント。"
+            },
+            {
+              "title": "AI Building Block Architectures",
+              "body": "再利用可能なエンクロージャ、冷却モジュール、ネットワーキングモジュール、配電／電力変換。"
+            },
+            {
+              "title": "Autonomous AI Wireless Access",
+              "body": "自律型AIワイヤレス環境に向けた、オープンな無線コンポーネントとインターフェース。"
+            },
+            {
+              "title": "コネクティビティ",
+              "body": "デプロイメント内およびデプロイメント間のAIファブリックとScale-Across通信。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_five_domains.txt",
+            "wav_file": "audio/module2/slide_03_five_domains.wav",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "現在のAICCプロジェクトスコープ",
+              "url": "https://www.opencompute.org/community/aicc"
+            }
+          ],
+          "term_refs": [
+            "aicc"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "different-sites",
+          "section_label": "デプロイメントの現実",
+          "title": "共通ビルディングブロックを異なるサイト条件に適合させる",
+          "bullets": [
+            {
+              "bold_lead": "ファシリティ",
+              "text": "電力、冷却、床荷重、フットプリント、レトロフィットの制約。"
+            },
+            {
+              "bold_lead": "環境",
+              "text": "温度、粉塵、振動、騒音、エンクロージャ保護。"
+            },
+            {
+              "bold_lead": "オペレーション",
+              "text": "リモート管理、技術者のスキル、サービスアクセス、リカバリー。"
+            },
+            {
+              "bold_lead": "拡張",
+              "text": "ラックやモジュールを追加する、または決められた物理エンベロープ内で交換する。"
+            }
+          ],
+          "figure": {
+            "path": "figures/site_constraints.svg",
+            "alt": "電力、冷却、環境、サービス制約が異なる4つのハイパースケール・アジェイセントサイト。",
+            "caption": "オープンインターフェースは適応を可能にするもので、同一のデプロイメントを求めるものではありません。",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_different_sites.txt",
+            "wav_file": "audio/module2/slide_04_different_sites.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "hyperscale_adjacent"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "inference-request-system",
+          "section_label": "推論のディスアグリゲーション",
+          "title": "ディスアグリゲーテッド推論デプロイメントの内部",
+          "figure": {
+            "path": "figures/m2_inference_request.mp4",
+            "media_type": "video",
+            "poster": "figures/m2_inference_request_poster.png",
+            "alt": "1つのサービングデプロイメント内で、配置制御、分離されたプリフィル／デコードプール、KVステート転送、補助リソース階層、テレメトリ、トラストチェックを示す推論リクエストのアニメーション。",
+            "caption": "この例は1つのサービングデプロイメント内で完結します。サイトをまたがなくても、プリフィル、デコード、KVステート、補助リソース階層を分離できます。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_inference_request_system.txt",
+            "wav_file": "audio/module2/slide_05_inference_request_system.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "prefill",
+            "kv_cache",
+            "decode",
+            "attestation"
+          ],
+          "source_refs": [
+            {
+              "source": "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized LLM Serving",
+              "url": "https://www.usenix.org/conference/osdi24/presentation/zhong-yinmin"
+            },
+            {
+              "source": "Mooncake: A KVCache-centric Disaggregated Architecture for LLM Serving",
+              "url": "https://arxiv.org/abs/2407.00079"
+            },
+            {
+              "source": "vLLM disaggregated prefilling documentation",
+              "url": "https://docs.vllm.ai/en/v0.23.0/features/disagg_prefill/"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "takeaways",
+          "slug": "modular-toolkit",
+          "title": "多様なデプロイメントに対応するモジュラーツールキット",
+          "items": [
+            "現在のハードウェア活動は、相互につながる5つの領域に分かれます。",
+            "標準化された境界により、サイトごとに異なる実装を支えられます。",
+            "1つのサービングデプロイメント内で、コンピュート、メモリー、キャッシュ、ストレージ、ファブリック、テレメトリ、トラストを特化型リソースへ分離できます。",
+            "目指すのは、実用的なインターオペラビリティとソフトウェアの選択肢です。万能な単一プラットフォームではありません。"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_modular_toolkit.txt",
+            "wav_file": "audio/module2/slide_06_modular_toolkit.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "title": "理解度チェック：AICCのスコープ",
+          "subtitle": "続行するには両方の設問を一度送信してください。正解でなくても先へ進め、再試行もできます。",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "ラックレベルの冷却、電力供給、デプロイメント制約を最も直接扱うAICC領域はどれですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "AI Open Solution Architectures",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Autonomous AI Wireless Access",
+                  "correct": false,
+                  "feedback_incorrect": "Wireless Accessが扱うのは無線コンポーネントとインターフェースであり、ラックレベルの冷却や電力ではありません。"
+                },
+                {
+                  "id": "c",
+                  "text": "コネクティビティ",
+                  "correct": false,
+                  "feedback_incorrect": "Connectivityが扱うのはAIファブリックと通信であり、ラック／ファシリティ全体のソリューションではありません。"
+                }
+              ],
+              "feedback_correct": "正解です。AI Open Solution Architecturesは、ラック、冷却、電力、ファシリティ、デプロイメントを扱います。",
+              "feedback_incorrect": "サーバー、ソリューション、ビルディングブロック、ワイヤレス、コネクティビティの各活動の違いを確認しましょう。"
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "ハイパースケール・アジェイセントサイトごとに変わり得る条件はどれですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "冷却方式と利用可能な電力",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "環境への曝露条件とサービスモデル",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "物理フットプリントと拡張モデル",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "すべてのサイトで同一ラックを使用するという要件",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正解です。オープンインターフェースは、こうした制約への適応を支える必要があります。",
+              "feedback_incorrect": "オープン化が標準化するのは有用な境界です。サイト実装を同一にすることではありません。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_07_knowledge_check.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "up_next",
+          "slug": "three-ways-next",
+          "next_module_number": 3,
+          "next_module_title": "距離を越えてコンピュートする3つのモデル",
+          "thank_you_message": "モジュール2「コンティニュアムを支えるオープンインフラストラクチャ」は以上です。お疲れさまでした。",
+          "audio": {
+            "script_file": "audio/module2/slide_08_three_ways_next.txt",
+            "wav_file": "audio/module2/slide_08_three_ways_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "across-models",
+      "title": "距離を越えてコンピュートする3つのモデル",
+      "subtitle": "Scale-Across、Sync-Across、Reach-Across",
+      "module_badge_text": "モジュール 3",
+      "next_module_title": "アーキテクチャからエコシステムの実装へ",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "three-ways",
+          "title": "距離を越えてコンピュートする3つのモデル",
+          "subtitle": "ワークロード要件から分散設計を分類する",
+          "module_number": 3,
+          "audio": {
+            "script_file": "audio/module3/slide_01_three_ways.txt",
+            "wav_file": "audio/module3/slide_01_three_ways.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "across-patterns",
+          "title": "3つのAcrossパターンを見分ける",
+          "subtitle": "このモジュールを修了すると、次のことができるようになります。",
+          "objectives": [
+            "キャパシティ、同期、リーチのシナリオを見分ける。",
+            "各Acrossモデルの基本動作を説明する。",
+            "帯域幅、レイテンシ、可用性、セキュリティ、主権の要件を特定する。",
+            "設計を、測定可能なワークロードのサービス目標へ結び付ける。"
+          ],
+          "reference_links": [
+            {
+              "label": "IOWNの視点：3つのAcrossモデル",
+              "url": "https://iowngf.org/ai-computing-continuum-why-it-matters-and-what-we-discussed-at-ocp-emea-2026/",
+              "logo": "figures/iown_global_forum_icon.png"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_across_patterns.txt",
+            "wav_file": "audio/module3/slide_02_across_patterns.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "scale-across",
+          "section_label": "キャパシティ",
+          "title": "Scale-Across：リージョンをまたいでキャパシティを分散",
+          "bullets": [
+            {
+              "bold_lead": "目的",
+              "text": "地理的に離れたリージョン間で、実用的なコンピュートキャパシティを拡張、分割、または移動する。"
+            },
+            {
+              "bold_lead": "ドライバー",
+              "text": "電力、冷却、スペース、利用率、需要、リージョンごとの可用性。"
+            },
+            {
+              "bold_lead": "必要要素",
+              "text": "リソースディスカバリー、トポロジー、データ配置、セキュアアクセス、テレメトリ。"
+            },
+            {
+              "bold_lead": "判定基準",
+              "text": "分散しても、パフォーマンス、ガバナンス、信頼性、エネルギー、コストの目標を満たせること。"
+            }
+          ],
+          "figure": {
+            "path": "figures/scale_across.svg",
+            "alt": "電力条件と可用性が異なる3つのリージョンへ、ワークロードとキャパシティを分散する図。",
+            "caption": "利用できるデバイスがあっても、ワークロード全体が目標を満たせなければ有効なキャパシティにはなりません。",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_03_scale_across.txt",
+            "wav_file": "audio/module3/slide_03_scale_across.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "scale_across"
+          ],
+          "reference_links": [
+            {
+              "label": "NVIDIA：Scale-Acrossという用語の出典",
+              "url": "https://nvidianews.nvidia.com/news/nvidia-introduces-spectrum-xgs-ethernet-to-connect-distributed-data-centers-into-giga-scale-ai-super-factories"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "sync-across",
+          "section_label": "ステート",
+          "title": "Sync-Across：データとステートの一貫性を保つ",
+          "figure": {
+            "path": "figures/m3_sync_across.mp4",
+            "media_type": "video",
+            "poster": "figures/m3_sync_across_poster.png",
+            "alt": "ローカル処理、リモートのWrite-Ahead Logへのコミット、確認応答、プライマリーサイトの中断、同期済みステートからの復旧を示すトランザクションのアニメーション。",
+            "caption": "確認応答がリモートでの永続化に依存すると、ネットワークのラウンドトリップがアプリケーション応答時間の一部になります。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_04_sync_across.txt",
+            "wav_file": "audio/module3/slide_04_sync_across.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "sync_across"
+          ],
+          "source_refs": [
+            {
+              "source": "AICC Core.txt",
+              "time": "10:43-11:02, 18:37-19:24"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "reach-across",
+          "section_label": "アクセス",
+          "title": "Reach-Across：リモートAIリソースをユーザーにつなぐ",
+          "bullets": [
+            {
+              "bold_lead": "目的",
+              "text": "ローカルのユーザー、デバイス、アプリケーションから、リモートAIリソースへリアルタイムにアクセスする。"
+            },
+            {
+              "bold_lead": "例",
+              "text": "リサーチパーク、企業、産業拠点、モバイルサービス、キャリアニュートラルエッジ。"
+            },
+            {
+              "bold_lead": "必要要素",
+              "text": "ディスカバリー、アテステーション、コネクティビティ、主権、可用性、コスト管理。"
+            },
+            {
+              "bold_lead": "現状",
+              "text": "Find–Connect–Computeとゼロトラスト共有は、今後実現すべきターゲットケイパビリティです。"
+            }
+          ],
+          "figure": {
+            "path": "figures/reach_across.svg",
+            "alt": "保護対象データをローカルガバナンス下に置いたまま、リサーチパークからリモートのアクセラレーターキャパシティへアクセスする図。",
+            "caption": "Reach-Acrossはリアルタイムのサービスアクセスです。単にデータをリモートクラウドへ事前ロードすることではありません。",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_reach_across.txt",
+            "wav_file": "audio/module3/slide_05_reach_across.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "reach_across",
+            "data_sovereignty"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "takeaways",
+          "slug": "choose-by-need",
+          "title": "ワークロード要件からAcrossモデルを選ぶ",
+          "items": [
+            "Scale-Acrossは、地理的に分散したキャパシティを扱います。",
+            "Sync-Acrossは、ステートの一貫性を扱います。",
+            "Reach-Acrossは、リモートリソースへのリアルタイムアクセスを扱います。",
+            "分散が有効かどうかは、サービス目標で判断します。",
+            "完全な設計では、3つのパターンを組み合わせる場合があります。"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_choose_by_need.txt",
+            "wav_file": "audio/module3/slide_06_choose_by_need.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "title": "理解度チェック：Acrossモデル",
+          "subtitle": "続行するには両方の設問を一度送信してください。正解でなくても先へ進め、再試行もできます。",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "リサーチパークが、機密データのローカルガバナンスを維持しながら、短期間だけリモートアクセラレーターを利用したいとします。主なニーズを最もよく表すモデルはどれですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Reach-Across",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Sync-Across",
+                  "correct": false,
+                  "feedback_incorrect": "Sync-Acrossの主眼はステートの一貫性です。このシナリオの中心は、リモートリソースへのリアルタイムアクセスです。"
+                },
+                {
+                  "id": "c",
+                  "text": "Scale-Up",
+                  "correct": false,
+                  "feedback_incorrect": "Scale-Upは、密結合システムの内部でキャパシティを増やすもので、リモートサービスへアクセスするモデルではありません。"
+                }
+              ],
+              "feedback_correct": "正解です。Reach-Acrossの中心は、リモートケイパビリティへのリアルタイムアクセスです。",
+              "feedback_incorrect": "シナリオを、最も重要な目的から分類しましょう。"
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "Acrossモデルを正しく説明しているものはどれですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Scale-Acrossは、リージョンの電力やスペースに制約されたキャパシティを扱える。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Sync-Acrossでは、どのステートを、どの速さで一貫させる必要があるかを考える。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Reach-Acrossには、ディスカバリー、トラスト、コネクティビティ、サービス目標が必要である。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "各モデルでは、指定された1種類のネットワーク技術を必ず使用する。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正解です。各モデルが表すのはワークロードの目的と要件であり、単一の必須技術ではありません。",
+              "feedback_incorrect": "ワークロードの目的と、実装に使う技術を分けて考えましょう。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_07_knowledge_check.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "up_next",
+          "slug": "ecosystem-next",
+          "next_module_number": 4,
+          "next_module_title": "アーキテクチャからエコシステムの実装へ",
+          "thank_you_message": "モジュール3「距離を越えてコンピュートする3つのモデル」は以上です。お疲れさまでした。",
+          "audio": {
+            "script_file": "audio/module3/slide_08_ecosystem_next.txt",
+            "wav_file": "audio/module3/slide_08_ecosystem_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "ecosystem-action",
+      "title": "アーキテクチャからエコシステムの実装へ",
+      "subtitle": "補完し合う役割、実践的なユースケース、関連プロジェクト、参加方法",
+      "module_badge_text": "モジュール 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "ecosystem-action",
+          "title": "アーキテクチャからエコシステムの実装へ",
+          "subtitle": "要件をオープン仕様、検証、製品へつなげる",
+          "module_number": 4,
+          "audio": {
+            "script_file": "audio/module4/slide_01_ecosystem_action.txt",
+            "wav_file": "audio/module4/slide_01_ecosystem_action.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "ecosystem-roles",
+          "title": "エコシステムの役割をつなげて理解する",
+          "subtitle": "このモジュールを修了すると、次のことができるようになります。",
+          "objectives": [
+            "OCPとIOWN Global Forumが補完し合う役割を見分ける。",
+            "ターゲットを完成済みケイパビリティと誤解せず、ユースケースを読み解く。",
+            "AICCを、隣接するOCPインフラストラクチャ活動へつなげる。",
+            "公開されている参加方法とコントリビューション方法を特定する。"
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_ecosystem_roles.txt",
+            "wav_file": "audio/module4/slide_02_ecosystem_roles.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "ocp-iown-roles",
+          "section_label": "コラボレーション",
+          "title": "OCPとIOWNが仕様とユースケースをつなぐ",
+          "figure": {
+            "path": "figures/ocp_iown_roles.png",
+            "assets": [
+              "figures/ocp_iown_roles.svg",
+              "figures/ocp_foundation_logo.png",
+              "figures/iown_global_forum_logo.svg"
+            ],
+            "alt": "共有アーキテクチャ、リファレンスデザイン、検証、実装を通じてつながる、OCPとIOWNの補完的な役割。",
+            "caption": "オープン仕様と実効性のあるユースケースは、アーキテクチャと検証を通じてともに発展します。",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_03_ocp_iown_roles.txt",
+            "wav_file": "audio/module4/slide_03_ocp_iown_roles.wav",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "OCP–IOWNコラボレーション",
+              "url": "https://iowngf.org/iown-global-forum-and-open-compute-project-join-forces-to-deliver-on-the-next-wave-of-ai/"
+            }
+          ],
+          "term_refs": [
+            "techno_economic"
+          ],
+          "source_refs": [
+            {
+              "source": "AICC Core.pptx",
+              "slide": 13
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "use-case",
+          "section_label": "シナリオ",
+          "title": "ユースケースでコンティニュアムを具体化する",
+          "figure": {
+            "path": "figures/m4_aicc_research_park.mp4",
+            "media_type": "video",
+            "poster": "figures/m4_aicc_research_park_poster.png",
+            "alt": "リソースディスカバリー、アテステーション、リモートアクセラレーターの利用、テレメトリ、キャパシティ変化、リンク劣化、ローカルフォールバックを示すリサーチパークのアニメーション。",
+            "caption": "実践的なシナリオから、コンピュート、コネクティビティ、トラスト、テレメトリ、レジリエンスに必要なインターフェースが見えてきます。",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_04_use_case.txt",
+            "wav_file": "audio/module4/slide_04_use_case.wav",
+            "approved": true
+          },
+          "term_refs": [
+            "attestation",
+            "data_sovereignty"
+          ],
+          "source_refs": [
+            {
+              "source": "AICC Core.pptx",
+              "slide": 14
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "wider-ecosystem",
+          "section_label": "プロジェクト連携",
+          "title": "AICCがより広いオープンエコシステムをつなぐ",
+          "bullets": [
+            {
+              "bold_lead": "AICC内部",
+              "text": "AI Native Wireless AccessとAI Native Edge-MHS。"
+            },
+            {
+              "bold_lead": "システム",
+              "text": "Open Cluster Designs for AIとAI Hardware–Software Co-Design。"
+            },
+            {
+              "bold_lead": "オペレーション",
+              "text": "テレメトリ、サステナビリティ、アクセラレーターRAS、Silent Data Corruptionに関する活動。"
+            },
+            {
+              "bold_lead": "特化",
+              "text": "オープンチップレットシステムとコンポーザブルハードウェアインターフェース。"
+            }
+          ],
+          "figure": {
+            "path": "figures/aicc_ecosystem.svg",
+            "alt": "隣接するOCPプロジェクトとハイパースケール・アジェイセント環境をつなぐ活動としてAICCを示す図。",
+            "caption": "ここに示す6つのつながりは関連活動の例であり、プロジェクト全体を網羅するものではありません。",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module4/slide_05_wider_ecosystem.txt",
+            "wav_file": "audio/module4/slide_05_wider_ecosystem.wav",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "AICCプロジェクトページ",
+              "url": "https://www.opencompute.org/community/aicc"
+            },
+            {
+              "label": "AICCメーリングリストに参加",
+              "url": "https://ocp-all.groups.io/g/ocp-aicc"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "takeaways",
+          "slug": "open-evolving-ecosystem",
+          "title": "AICCは進化を続けるオープンなハードウェアエコシステム",
+          "items": [
+            "AICCは、多様な環境にまたがる分散推論を扱います。",
+            "現在のスコープは、相互につながる5つのハードウェア領域を対象とします。",
+            "Acrossモデルは、キャパシティ、ステート、リーチのニーズを区別します。",
+            "OCPとIOWNは、互いを補完するエコシステムの強みを持ち寄ります。",
+            "現在のコントリビューションが、プロジェクトの境界と優先順位を形づくります。"
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_06_open_evolving_ecosystem.txt",
+            "wav_file": "audio/module4/slide_06_open_evolving_ecosystem.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 7,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "title": "理解度チェック：エコシステムでの実装",
+          "subtitle": "続行するには両方の設問を一度送信してください。正解でなくても先へ進め、再試行もできます。",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "OCPとIOWN Global Forumが補完し合う役割を最もよく説明しているものはどれですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "OCPはオープンハードウェアのエコシステムコントリビューションを進め、IOWNは通信アーキテクチャ、ユースケース、検証、テクノエコノミック分析を持ち込む。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "両組織が、それぞれ同じ完全なソフトウェアプラットフォームを定義する。",
+                  "correct": false,
+                  "feedback_incorrect": "このコラボレーションは、単一ソフトウェアプラットフォームを重複して作るのではなく、ハードウェア、通信、ユースケース、検証の強みを組み合わせます。"
+                },
+                {
+                  "id": "c",
+                  "text": "IOWNが、業界ユースケースを使わずにOCPハードウェア製品を認証する。",
+                  "correct": false,
+                  "feedback_incorrect": "IOWNの役割では、通信アーキテクチャ、業界別ユースケース、リファレンスデザイン、PoC、経済性分析を重視します。"
+                }
+              ],
+              "feedback_correct": "正解です。この連携は、仕様とサプライヤー参画を、ユースケース、通信アーキテクチャ、検証へ結び付けます。",
+              "feedback_incorrect": "ユーザーニーズと実装の間で、2つのエコシステムがどう接続するか確認しましょう。"
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "AICCを適切に説明し、前進させる方法はどれですか。",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Find–Connect–Computeとゼロトラスト共有を、ターゲットケイパビリティとして扱う。",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "隣接するOCP活動を作り直すのではなく、連携する。",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "ユースケース、要件、設計、検証データをコミュニティへ持ち寄る。",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "AICCを、複数ベンダーへ導入済みの完成した共通製品として説明する。",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "正解です。AICCは発展途上のプロジェクトであり、ターゲットケイパビリティにはコミュニティによる仕様化と検証が必要です。",
+              "feedback_incorrect": "現在進行中のプロジェクト活動を、提案モデルや完成製品と混同しないようにしましょう。"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_07_knowledge_check.wav",
+            "approved": true
+          }
+        },
+        {
+          "id": 8,
+          "type": "course_complete",
+          "slug": "course-complete",
+          "course_title": "AI Computing Continuum：ハイパースケールデータセンターの先へ広がるAI",
+          "thank_you_message": "モジュール4「アーキテクチャからエコシステムの実装へ」の修了、お疲れさまでした。",
+          "cert_message": "これで、AICCが必要な理由、現在のスコープ、Acrossモデル、そしてコンティニュアムを実用化するためのオープンエコシステム活動を説明できます。",
+          "reference_links": [
+            {
+              "label": "OCP AICCプロジェクト",
+              "url": "https://www.opencompute.org/community/aicc"
+            },
+            {
+              "label": "AICC Wikiとチャーター",
+              "url": "https://www.opencompute.org/wiki/AICC"
+            },
+            {
+              "label": "2026 OCP EMEA Summit AICCトラック",
+              "url": "https://www.opencompute.org/events/past-events/2026-ocp-emea-summit#the-ai-computing-continuum-extending-ai-from-data-center-to-the-user"
+            },
+            {
+              "label": "AICC Coreセッション",
+              "url": "https://www.youtube.com/watch?v=82SWBzASQjo"
+            },
+            {
+              "label": "AICC Introセッション",
+              "url": "https://www.youtube.com/watch?v=b5WS5fg2Ylg"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_course_complete.txt",
+            "wav_file": "audio/module4/slide_08_course_complete.wav",
+            "approved": true
+          }
+        }
+      ]
+    }
+  ],
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "b34JylakFZPlGS0BnwyY",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable"
+  },
+  "metadata_language_name": "Japanese",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "ja-JP",
+    "source_course_sha256": "105d6032cd1460f4e09b235e63dd6382dcda167bddb9d051e9d2604df3e6b61b"
+  },
+  "ui_labels": {
+    "not_started": "未開始",
+    "completed": "完了",
+    "module": "モジュール",
+    "module_complete": "モジュール {module} 完了",
+    "course_complete": "コース完了",
+    "course_overview": "コース概要",
+    "learning_objectives": "学習目標",
+    "key_takeaways": "要点",
+    "knowledge_check": "理解度チェック",
+    "submit": "送信",
+    "retry": "再試行",
+    "quiz_gate_note": "続行するには、各設問を一度送信してください。正誤にかかわらず先へ進め、再試行もできます。",
+    "quiz_gate_warning": "次へ進む前に、各設問を一度送信してください。",
+    "select_answer": "1つ以上の回答を選択してから送信してください。",
+    "correct": "正解です。",
+    "review_feedback": "フィードバックを確認してから再試行してください。",
+    "narration_hint": "ナレーションは自動的に始まります。→キーまたはスペースキーで次へ進みます。",
+    "theme": "テーマ",
+    "toggle_dark_mode": "ダークモードを切り替える",
+    "previous_slide": "前のスライド",
+    "next_slide": "次のスライド",
+    "play_pause_narration": "ナレーションを再生または一時停止",
+    "playback_speed": "再生速度",
+    "playback_speed_slider": "再生速度を調整",
+    "speed": "速度",
+    "toggle_fullscreen": "全画面表示を切り替える",
+    "fullscreen": "全画面表示",
+    "video_controls": "動画コントロール",
+    "play_video": "動画を再生",
+    "pause_video": "動画を一時停止",
+    "zoom_video": "動画を拡大",
+    "video_figure": "動画図",
+    "zoom_figure": "図を拡大",
+    "enlarged_figure": "拡大図",
+    "lightbox_close_hint": "外側をクリックするかEscキーを押して閉じます。",
+    "opens_new_tab": "新しいタブで開きます",
+    "learner_resource": "学習リソース",
+    "open": "開く",
+    "learn_more": "詳しく見る",
+    "reference": "参考資料",
+    "course_intro": "OCP Academy コースイントロ",
+    "skip_intro": "イントロをスキップ",
+    "share_feedback": "フィードバックを送る",
+    "survey_body": "数分お時間をいただき、改善にご協力いただけますか。開発チームへのフィードバックは、このコースと今後のコースの改善に活用します。回答者の中から抽選で記念品をお送りします。",
+    "default_module_thanks": "モジュール {module}「{title}」を修了していただき、ありがとうございます。",
+    "default_course_wrap": "{course}の全モジュールを修了しました。このコースで学んだ内容が実務に役立つことを願っています。",
+    "up_next": "次のモジュール",
+    "go_to_module": "モジュール {module}へ進む"
+  }
+}

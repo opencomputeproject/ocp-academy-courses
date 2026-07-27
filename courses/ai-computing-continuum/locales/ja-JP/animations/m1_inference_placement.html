@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>コンティニュアム全体での推論配置</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .top-explainer {
+      position: absolute;
+      left: 42px;
+      right: 42px;
+      top: 28px;
+      height: 108px;
+      padding: 20px 300px 18px 28px;
+      border-radius: 24px;
+      background: #303235;
+      color: #ffffff;
+      box-shadow: 0 14px 30px rgba(37, 42, 39, .14);
+    }
+    .top-explainer .stage {
+      right: 22px;
+      top: 20px;
+      min-width: 246px;
+      max-width: 266px;
+      padding: 12px 16px;
+      font-size: 17px;
+    }
+    .decision-main {
+      max-width: 850px;
+      font-size: 25px;
+      line-height: 1.15;
+      font-weight: 800;
+    }
+    .decision-detail {
+      max-width: 850px;
+      margin-top: 10px;
+      color: #e8eae8;
+      font-size: 17px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+    .flow-space {
+      position: absolute;
+      left: 0;
+      top: 142px;
+      width: 1280px;
+      height: 324px;
+    }
+    .flow-space path {
+      fill: none;
+      stroke: #8dc63f;
+      stroke-width: 8;
+      stroke-linecap: round;
+      opacity: 0;
+      filter: drop-shadow(0 4px 6px rgba(77, 118, 28, .16));
+    }
+    .flow-space .endpoint {
+      fill: #ffffff;
+      stroke: #8dc63f;
+      stroke-width: 6;
+      opacity: 0;
+    }
+    .flow-space .moving-dot {
+      fill: #343895;
+      stroke: #ffffff;
+      stroke-width: 5;
+      opacity: 0;
+      filter: drop-shadow(0 4px 5px rgba(52, 56, 149, .28));
+    }
+    .flow-space .moving-dot.trailing {
+      fill: #8dc63f;
+      stroke-width: 4;
+    }
+    .site {
+      position: absolute;
+      top: 456px;
+      width: 186px;
+      height: 166px;
+      padding: 16px;
+      text-align: center;
+      transition: none;
+    }
+    .site .icon-building {
+      margin: -10px auto -6px;
+      transform: scale(.70);
+      transform-origin: center;
+    }
+    .site-name {
+      color: #343895;
+      font-size: 20px;
+      line-height: 1.05;
+      font-weight: 800;
+    }
+    .site-note {
+      margin-top: 7px;
+      color: #5f6062;
+      font-size: 15px;
+      line-height: 1.15;
+    }
+    #regional .site-name {
+      font-size: 17px;
+      line-height: 1;
+    }
+    #regional .site-note {
+      margin-top: 4px;
+      font-size: 14px;
+      line-height: 1.08;
+    }
+    #factory { left: 54px; }
+    #enterprise { left: 298px; }
+    #telecom { left: 542px; }
+    #regional { left: 786px; }
+    #hyperscale { left: 1030px; width: 196px; }
+    .condition {
+      position: absolute;
+      top: 632px;
+      height: 40px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(-50%);
+      border-radius: 15px;
+      background: #eef7df;
+      color: #4d761c;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: center;
+      white-space: nowrap;
+    }
+    #c1 { left: 147px; }
+    #c2 { left: 391px; }
+    #c3 { left: 635px; }
+    #c4 { left: 879px; }
+    #c5 { left: 1128px; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+  <div class="top-explainer">
+    <div class="decision-main" id="decisionMain">工場の画像処理は現場近くで実行</div>
+    <div class="decision-detail" id="decisionDetail">小規模なローカルモデルが20ミリ秒の応答目標を守り、リンク中断時も限定的な運用を維持します。</div>
+    <div class="stage" id="stage">重要処理はローカルに</div>
+  </div>
+
+  <svg class="flow-space" viewBox="0 0 1280 324" aria-hidden="true">
+    <path id="pathLocal" d="M147 314 C58 250 58 88 147 88 C236 88 236 250 147 314"/>
+    <path id="pathResearch" d="M391 314 C500 78 770 78 879 314"/>
+    <path id="pathInteractive" d="M635 314 C704 170 812 170 879 314"/>
+    <path id="pathBatch" d="M879 314 C938 142 1084 142 1128 314"/>
+
+    <circle class="endpoint" id="originDot" r="10"/>
+    <circle class="endpoint" id="destinationDot" r="10"/>
+    <circle class="moving-dot trailing" id="trailDot2" r="10"/>
+    <circle class="moving-dot trailing" id="trailDot1" r="12"/>
+    <circle class="moving-dot" id="leadDot" r="15"/>
+  </svg>
+
+  <div class="panel site" id="factory"><div class="icon-building"></div><div class="site-name">産業サイト</div><div class="site-note">小規模ローカルモデル<br>安全なフォールバック</div></div>
+  <div class="panel site" id="enterprise"><div class="icon-building"></div><div class="site-name">企業拠点</div><div class="site-note">ガバナンス対象データ<br>ローカル運用</div></div>
+  <div class="panel site" id="telecom"><div class="icon-building"></div><div class="site-name">通信PoP</div><div class="site-note">ネットワーク近接<br>キャパシティ</div></div>
+  <div class="panel site" id="regional"><div class="icon-building"></div><div class="site-name">リージョナル施設</div><div class="site-note">共有アクセラレーター<br>インタラクティブアクセス</div></div>
+  <div class="panel site" id="hyperscale"><div class="icon-building"></div><div class="site-name">ハイパースケール</div><div class="site-note">大規模共有キャパシティ<br>バッチスループット</div></div>
+
+  <div class="condition" id="c1">予測可能なレイテンシ</div>
+  <div class="condition" id="c2">データ主権</div>
+  <div class="condition" id="c3">ネットワーク近接</div>
+  <div class="condition" id="c4">共有キャパシティ</div>
+  <div class="condition" id="c5">スループット</div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = value => Math.max(0, Math.min(1, value));
+
+  function setActiveSites(siteIds) {
+    document.querySelectorAll(".site").forEach(site => {
+      site.style.borderColor = "#d7dad7";
+      site.style.boxShadow = "0 12px 30px rgba(37,42,39,.08)";
+    });
+    siteIds.forEach(id => {
+      $(id).style.borderColor = "#8dc63f";
+      $(id).style.boxShadow = "0 0 0 6px rgba(141,198,63,.14), 0 12px 30px rgba(37,42,39,.08)";
+    });
+  }
+
+  function pointOnPath(path, progress) {
+    const length = path.getTotalLength();
+    return path.getPointAtLength(length * clamp(progress));
+  }
+
+  function positionCircle(circle, point, visible = true) {
+    circle.setAttribute("cx", point.x);
+    circle.setAttribute("cy", point.y);
+    circle.style.opacity = visible ? 1 : 0;
+  }
+
+  function showFlow(pathId, progress, activeSites) {
+    document.querySelectorAll(".flow-space path").forEach(path => path.style.opacity = 0);
+    const path = $(pathId);
+    path.style.opacity = 1;
+    const q = clamp(progress);
+
+    positionCircle($("originDot"), pointOnPath(path, 0), true);
+    positionCircle($("destinationDot"), pointOnPath(path, 1), true);
+    positionCircle($("leadDot"), pointOnPath(path, q), true);
+    positionCircle($("trailDot1"), pointOnPath(path, q - .075), q > .075);
+    positionCircle($("trailDot2"), pointOnPath(path, q - .15), q > .15);
+
+    setActiveSites(activeSites);
+  }
+
+  window.setFrame = function(p) {
+    if (p < .25) {
+      const q = p / .25;
+      $("stage").textContent = "重要処理はローカルに";
+      $("decisionMain").textContent = "工場の画像処理は現場近くで実行";
+      $("decisionDetail").textContent = "小規模なローカルモデルが20ミリ秒の応答目標を守り、リンク中断時も限定的な運用を維持します。";
+      showFlow("pathLocal", q, ["factory"]);
+    } else if (p < .51) {
+      const q = (p - .25) / .26;
+      $("stage").textContent = "特化型キャパシティを利用";
+      $("decisionMain").textContent = "研究データを管理下に置いたまま外部コンピュートへ到達";
+      $("decisionDetail").textContent = "承認済みの経路で、企業データを一時的なリージョナルアクセラレーターへ接続します。";
+      showFlow("pathResearch", q, ["enterprise", "regional"]);
+    } else if (p < .76) {
+      const q = (p - .51) / .25;
+      $("stage").textContent = "インタラクティブ需要に対応";
+      $("decisionMain").textContent = "ネットワーク近接キャパシティがインタラクティブセッションを支援";
+      $("decisionDetail").textContent = "通信PoPとリージョナル施設が、レイテンシとテール挙動をサービス目標内に保ちます。";
+      showFlow("pathInteractive", q, ["telecom", "regional"]);
+    } else {
+      const q = (p - .76) / .24;
+      $("stage").textContent = "柔軟なバッチ処理を移動";
+      $("decisionMain").textContent = "バッチ分析を空きがありエネルギー条件の良い場所へ移動";
+      $("decisionDetail").textContent = "すべてのリクエストを同じ方向へ送るのではなく、条件に応じた配置判断を支えます。";
+      showFlow("pathBatch", q, ["regional", "hyperscale"]);
+    }
+  };
+
+  window.setFrame(0);
+</script>
+</body>
+</html>
