@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Sync-Acrossのトランザクションタイミングとリカバリー</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .dc { position:absolute; top:176px; width:350px; height:340px; padding:24px; }
+    #dcA { left:64px; }
+    #dcB { right:64px; }
+    .dc-head { display:flex; align-items:center; gap:16px; }
+    .dc-title { color:#343895; font-size:28px; font-weight:800; }
+    .dc-sub { color:#5f6062; font-size:16px; margin-top:4px; }
+    .server { margin-top:24px; padding:18px; border-radius:18px; background:#eef0fb; border:2px solid #686bb2; }
+    .server strong { display:block; color:#343895; font-size:19px; margin-bottom:10px; white-space:nowrap; }
+    .log { display:flex; gap:7px; margin-top:13px; }
+    .log i { display:block; width:34px; height:26px; border-radius:6px; background:#d7dad7; }
+    .log i.on { background:#8dc63f; }
+    .status { margin-top:18px; padding:12px 16px; border-radius:17px; background:#f6f7f6; color:#5f6062; font-size:17px; font-weight:800; text-align:center; }
+    .status.good { background:#eef7df; color:#4d761c; }
+    .status.bad { background:#fff0ef; color:#9e342c; }
+    #wan { position:absolute; left:414px; top:298px; width:452px; height:80px; }
+    #wanLine { position:absolute; left:0; right:0; top:35px; height:10px; border-radius:5px; background:#d7dad7; }
+    #wanLabel { position:absolute; left:20px; right:20px; top:-2px; text-align:center; color:#343895; font-size:16px; font-weight:800; }
+    .packet { position:absolute; top:40px; width:24px; height:24px; margin:-12px 0 0 -12px; border-radius:7px; background:#8dc63f; box-shadow:0 0 0 7px rgba(141,198,63,.2); }
+    #ack { background:#343895; box-shadow:0 0 0 7px rgba(52,56,149,.16); }
+    .timeline { position:absolute; left:128px; right:128px; top:560px; height:82px; padding:16px 24px; border-radius:20px; background:#fff; border:2px solid #d7dad7; }
+    .timeline-line { position:absolute; left:24px; right:24px; top:50px; height:6px; border-radius:3px; background:#e3e5e3; }
+    .timeline-progress { position:absolute; left:24px; top:50px; height:6px; border-radius:3px; background:#8dc63f; width:0; }
+    .tick { position:absolute; top:17px; transform:translateX(-50%); text-align:center; color:#5f6062; font-size:14px; font-weight:700; }
+    .tick::after { content:""; display:block; width:12px; height:12px; margin:10px auto 0; border-radius:50%; background:#d7dad7; border:3px solid #fff; box-shadow:0 0 0 2px #d7dad7; }
+    .tick.on::after { background:#8dc63f; box-shadow:0 0 0 2px #8dc63f; }
+    #failure { position:absolute; left:84px; top:194px; width:310px; height:300px; border-radius:24px; display:flex; align-items:center; justify-content:center; background:rgba(158,52,44,.90); color:#fff; font-size:34px; font-weight:900; letter-spacing:1px; opacity:0; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+  <div class="top-explainer">
+    <div class="decision-main" id="footer">サイトAがトランザクションを受信し、ローカルの変更を記録します。</div>
+    <div class="stage" id="stage">トランザクション開始</div>
+  </div>
+
+  <div class="panel dc" id="dcA">
+    <div class="dc-head"><div class="icon-building"></div><div><div class="dc-title">サイト A</div><div class="dc-sub" id="roleA">アクティブサービス</div></div></div>
+    <div class="server"><strong>トランザクションサービス</strong><span class="small" id="workA">リクエスト処理中</span><div class="log" id="logA"><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="status" id="statusA">トランザクション待機中</div>
+  </div>
+  <div class="panel dc" id="dcB">
+    <div class="dc-head"><div class="icon-building"></div><div><div class="dc-title">サイト B</div><div class="dc-sub" id="roleB">同期済みスタンバイ</div></div></div>
+    <div class="server"><strong>永続化ステート</strong><span class="small" id="workB">ログ更新を待機</span><div class="log" id="logB"><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="status" id="statusB">最新ステート</div>
+  </div>
+
+  <div id="wan">
+    <div id="wanLabel">サイト間レイテンシはアプリケーションレイテンシ</div>
+    <div id="wanLine"></div>
+    <div class="packet" id="record"></div>
+    <div class="packet" id="ack"></div>
+  </div>
+
+  <div id="failure">サイトA<br>中断</div>
+
+  <div class="timeline">
+    <div class="timeline-line"></div><div class="timeline-progress" id="timelineProgress"></div>
+    <div class="tick" id="t1" style="left:8%">受信</div>
+    <div class="tick" id="t2" style="left:28%">ローカルログ</div>
+    <div class="tick" id="t3" style="left:51%">リモート永続化</div>
+    <div class="tick" id="t4" style="left:72%">確認応答</div>
+    <div class="tick" id="t5" style="left:92%">リカバリー</div>
+  </div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = x => Math.max(0, Math.min(1, x));
+  function packet(el,x,t) { const q=clamp(t); el.style.left=`${x(q)}px`; el.style.opacity=(q>0&&q<1)?1:.12; }
+  function setLog(id,count) { document.querySelectorAll(`#${id} i`).forEach((x,i)=>x.classList.toggle("on",i<count)); }
+  function status(id,text,kind="") { $(id).textContent=text; $(id).className=`status ${kind}`; }
+  window.setFrame = function(p) {
+    $("timelineProgress").style.width=`${clamp(p)*calcWidth()}px`;
+    ["t1","t2","t3","t4","t5"].forEach((id,i)=>$(id).classList.toggle("on",p>[.04,.20,.44,.63,.84][i]));
+    $("failure").style.opacity=0;
+    $("dcA").style.borderColor="#d7dad7"; $("dcB").style.borderColor="#d7dad7";
+    $("roleA").textContent="アクティブサービス"; $("roleB").textContent="同期済みスタンバイ";
+    $("workA").textContent="リクエスト処理中"; $("workB").textContent="ログ更新を待機";
+    if (p < .20) {
+      $("stage").textContent="トランザクション開始";
+      setLog("logA",Math.ceil(p/.20*2)); setLog("logB",0);
+      status("statusA","ローカルログを作成"); status("statusB","最新ステート","good");
+      packet($("record"),q=>0,q=>0); $("record").style.opacity=.12; $("ack").style.opacity=.12;
+      $("footer").textContent="サイトAがトランザクションを受信し、ローカルの変更を記録します。";
+    } else if (p < .46) {
+      const q=(p-.20)/.26;
+      $("stage").textContent="ライトアヘッドログを転送";
+      setLog("logA",3); setLog("logB",Math.floor(q*3));
+      status("statusA","リモート永続化を待機",""); status("statusB",q>.78?"更新を永続化":"更新を受信中","");
+      packet($("record"),x=>x*452,q); $("ack").style.opacity=.12;
+      $("dcA").style.borderColor="#8dc63f"; $("dcB").style.borderColor="#8dc63f";
+      $("footer").textContent="リモートコピーが永続化されるまで、サービスは完了を返せません。";
+    } else if (p < .64) {
+      const q=(p-.46)/.18;
+      $("stage").textContent="リモートコピーを永続化";
+      setLog("logA",3); setLog("logB",3);
+      status("statusA","確認応答を待機"); status("statusB","ログレコード永続化済み","good");
+      $("record").style.opacity=.12; packet($("ack"),x=>452-x*452,q);
+      $("footer").textContent="サイトBが永続化を確認し、リンクを通じて確認応答を返します。";
+    } else if (p < .80) {
+      const q=(p-.64)/.16;
+      $("stage").textContent="アプリケーションが完了応答";
+      setLog("logA",4); setLog("logB",4);
+      status("statusA","トランザクション完了","good"); status("statusB","ステート同期済み","good");
+      $("record").style.opacity=.12; $("ack").style.opacity=.12;
+      $("wanLabel").textContent=`応答時間にラウンドトリップを含む · ${Math.round(22+q*8)} ms`;
+      $("footer").textContent="サイト間ラウンドトリップが、アプリケーション応答時間の一部になります。";
+    } else if (p < .90) {
+      const q=(p-.80)/.10;
+      $("stage").textContent="プライマリーサイト中断";
+      setLog("logA",4); setLog("logB",4);
+      $("failure").style.opacity=q;
+      status("statusA","利用不可","bad"); status("statusB","同期済みリカバリーポイント","good");
+      $("footer").textContent="障害検出と合意済みリカバリーポイントにより、サイトBが安全に実行できる範囲が決まります。";
+    } else {
+      const q=(p-.90)/.10;
+      $("stage").textContent="サービス再開";
+      $("failure").style.opacity=clamp(1-q*1.6);
+      $("roleA").textContent="中断"; $("roleB").textContent="アクティブサービス";
+      $("workA").textContent="修復待ち"; $("workB").textContent="永続化ステートからサービス提供";
+      status("statusA","利用不可","bad"); status("statusB","サービス復旧","good");
+      $("dcB").style.borderColor="#8dc63f";
+      setLog("logA",4); setLog("logB",5);
+      $("footer").textContent="同期済みステートによって復旧できますが、パーティション時の挙動は事前に定義する必要があります。";
+    }
+  };
+  function calcWidth(){ return document.querySelector(".timeline-line").getBoundingClientRect().width; }
+  window.setFrame(0);
+</script>
+</body>
+</html>

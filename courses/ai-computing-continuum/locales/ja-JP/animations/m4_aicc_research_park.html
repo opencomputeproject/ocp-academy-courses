@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>AICCリサーチパークシナリオ</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .zone { position:absolute; top:168px; height:344px; padding:22px; }
+    #park { left:46px; width:330px; }
+    #control { left:398px; width:484px; }
+    #remote { left:904px; width:330px; }
+    .zone-head { display:flex; align-items:center; gap:15px; }
+    .zone-title { color:#343895; font-size:23px; font-weight:800; }
+    .zone-sub { color:#5f6062; font-size:14px; margin-top:3px; }
+    .data-box { margin-top:22px; padding:16px; border-radius:16px; background:#fff5d6; color:#775c12; font-size:18px; font-weight:800; text-align:center; }
+    .fallback { margin-top:14px; padding:15px; border-radius:16px; background:#eef7df; color:#4d761c; font-size:17px; font-weight:800; text-align:center; }
+    .catalog { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    .candidate { min-height:90px; padding:12px; border:2px solid #d7dad7; border-radius:15px; background:#f8f9f8; }
+    .candidate strong { display:block; color:#343895; font-size:18px; margin-bottom:7px; }
+    .candidate span { color:#5f6062; font-size:14px; line-height:1.2; }
+    .candidate.selected { border-color:#8dc63f; background:#eef7df; }
+    .checks { display:flex; gap:10px; margin-top:14px; }
+    .check { flex:1; min-height:54px; padding:9px 6px; border-radius:13px; background:#eef0fb; color:#343895; text-align:center; font-size:12px; font-weight:800; }
+    .check.on { background:#eef7df; color:#4d761c; }
+    .gpu-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:26px; }
+    .gpu { height:56px; border-radius:10px; background:#eef0fb; border:2px solid #686bb2; display:flex; align-items:center; justify-content:center; color:#343895; font-size:16px; font-weight:800; }
+    .gpu.busy { background:#eef7df; border-color:#8dc63f; color:#4d761c; }
+    .remote-stat { margin-top:18px; display:flex; justify-content:space-between; color:#5f6062; font-size:15px; font-weight:700; }
+    #link { position:absolute; left:376px; top:526px; width:528px; height:74px; }
+    #linkLine { position:absolute; left:0; right:0; top:42px; height:10px; border-radius:5px; background:#d7dad7; }
+    #linkDot { top:47px; }
+    #linkLabel { position:absolute; left:40px; right:40px; top:5px; text-align:center; font-size:16px; font-weight:800; color:#343895; }
+    .telemetry { position:absolute; left:46px; right:46px; top:612px; height:60px; padding:13px 18px; border-radius:20px; background:#303235; display:flex; align-items:center; justify-content:space-between; gap:16px; color:#fff; }
+    .telemetry strong { color:#b8df82; }
+    .telemetry span { font-size:16px; font-weight:700; white-space:nowrap; }
+    .alert { position:absolute; left:398px; top:520px; width:484px; height:82px; padding:0 16px; border-radius:20px; background:#9e342c; color:#fff; display:flex; align-items:center; justify-content:center; font-size:19px; font-weight:900; white-space:nowrap; opacity:0; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+  <div class="top-explainer">
+    <div class="decision-main" id="message">機密データをローカルガバナンス下に置いたまま、リサーチパークの需要が増加します。</div>
+    <div class="stage" id="stage">需要増加</div>
+  </div>
+
+  <div class="panel zone" id="park">
+    <div class="zone-head"><div class="icon-building"></div><div><div class="zone-title">リサーチパーク</div><div class="zone-sub">共有ローカルAIサービス</div></div></div>
+    <div class="data-box">機密データは<br>ローカルでガバナンス</div>
+    <div class="metric"><span>ローカル需要</span><div class="meter"><span id="demandMeter" style="width:28%"></span></div></div>
+    <div class="fallback" id="fallback">ローカルサービス利用可能</div>
+  </div>
+
+  <div class="panel zone" id="control">
+    <div class="zone-title">ディスカバリー、ポリシー、配置</div>
+    <div class="catalog">
+      <div class="candidate" id="site1"><strong>サイト 1</strong><span>互換性あり<br>電力に制約</span></div>
+      <div class="candidate" id="site2"><strong>サイト 2</strong><span>互換性あり<br>キャパシティあり</span></div>
+      <div class="candidate" id="site3"><strong>サイト 3</strong><span>アクセラレーター不一致<br>低レイテンシ</span></div>
+      <div class="candidate" id="site4"><strong>サイト 4</strong><span>互換性あり<br>ポリシー未承認</span></div>
+    </div>
+    <div class="checks">
+      <div class="check" id="attest">アテステー<br>ション</div>
+      <div class="check" id="sovereignty">データ主権</div>
+      <div class="check" id="slo">サービス目標</div>
+      <div class="check" id="energy">エネルギー</div>
+    </div>
+  </div>
+
+  <div class="panel zone" id="remote">
+    <div class="zone-head"><div class="icon-building"></div><div><div class="zone-title">リモートサイト2</div><div class="zone-sub">アテステーション済みプール</div></div></div>
+    <div class="gpu-grid"><div class="gpu" id="g1">GPU 1</div><div class="gpu" id="g2">GPU 2</div><div class="gpu" id="g3">GPU 3</div><div class="gpu" id="g4">GPU 4</div><div class="gpu" id="g5">GPU 5</div><div class="gpu" id="g6">GPU 6</div></div>
+    <div class="remote-stat"><span>キャパシティ <strong id="capacity">67%</strong></span><span>電力 <strong id="remotePower">54%</strong></span></div>
+  </div>
+
+  <div id="link"><div id="linkLabel">コネクティビティ未確立</div><div id="linkLine"></div><div class="dot" id="linkDot"></div></div>
+  <div class="alert" id="alert">リンク劣化・リモート処理を一時停止</div>
+  <div class="telemetry">
+    <span>キュー <strong id="queue">2</strong></span>
+    <span>p99レイテンシ <strong id="latency">—</strong></span>
+    <span>メモリー <strong id="memory">22%</strong></span>
+    <span>エネルギー <strong id="energyState">ローカル</strong></span>
+    <span>サービス <strong id="service">正常</strong></span>
+  </div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const toggle = (id,on) => $(id).classList.toggle("on",!!on);
+  const select = (id,on) => $(id).classList.toggle("selected",!!on);
+  const busy = (id,on) => $(id).classList.toggle("busy",!!on);
+  window.setFrame = function(p) {
+    ["site1","site2","site3","site4"].forEach(id=>select(id,false));
+    ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,false));
+    ["g1","g2","g3","g4","g5","g6"].forEach(id=>busy(id,false));
+    $("alert").style.opacity=0; $("linkDot").style.opacity=.15; $("linkLine").style.background="#d7dad7";
+    $("linkLine").style.opacity=1; $("linkLabel").style.opacity=1;
+    if (p < .16) {
+      const q=p/.16;
+      $("stage").textContent="需要増加";
+      $("message").textContent="機密データをローカルガバナンス下に置いたまま、リサーチパークの需要が増加します。";
+      $("demandMeter").style.width=`${28+70*q}%`; $("queue").textContent=`${2+Math.round(12*q)}`;
+      $("latency").textContent="ローカル"; $("memory").textContent=`${22+Math.round(54*q)}%`;
+      $("energyState").textContent="ローカル"; $("service").textContent="正常";
+      $("linkLabel").textContent="コネクティビティ未確立";
+      $("fallback").textContent="ローカルサービスが上限に接近";
+    } else if (p < .33) {
+      const q=(p-.16)/.17;
+      $("stage").textContent="対応リソースを探索";
+      $("message").textContent="互換性のあるリモートサイト、空きキャパシティ、トポロジー、運用条件を比較します。";
+      $("demandMeter").style.width="98%"; $("queue").textContent="14"; $("memory").textContent="76%";
+      select("site2",q>.65);
+      $("linkLabel").textContent=q>.65?"候補：リモートサイト2":"キャパシティ、トポロジー、条件を比較";
+      $("fallback").textContent="ローカルサービスは継続";
+    } else if (p < .49) {
+      const q=(p-.33)/.16;
+      $("stage").textContent="トラスト／ポリシー確認";
+      $("message").textContent="アテステーション、データ主権、サービス目標、エネルギーポリシーで配置を判定します。";
+      select("site2",true);
+      toggle("attest",q>.18); toggle("sovereignty",q>.38); toggle("slo",q>.60); toggle("energy",q>.80);
+      $("linkLabel").textContent=q>.8?"配置を承認":"アテステーション／ポリシーチェック";
+      $("service").textContent="確認中";
+    } else if (p < .64) {
+      const q=(p-.49)/.15;
+      $("stage").textContent="サービス接続を確立";
+      $("message").textContent="承認済みの経路で、帯域幅と分離を制御したコネクティビティを確立します。";
+      select("site2",true); ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,true));
+      $("linkLine").style.background="#8dc63f";
+      $("linkDot").style.opacity=1; $("linkDot").style.left=`${20+488*q}px`;
+      $("linkLabel").textContent="承認済み経路 · 帯域幅 ＋ 分離";
+      $("latency").textContent=q>.7?"38 ms":"測定中"; $("service").textContent="接続中";
+    } else if (p < .80) {
+      const q=(p-.64)/.16;
+      $("stage").textContent="実行／監視";
+      $("message").textContent="リモートアクセラレーターが超過分のワークロードを実行し、テレメトリがサービスを監視します。";
+      select("site2",true); ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,true));
+      $("linkLine").style.background="#8dc63f"; $("linkDot").style.opacity=1; $("linkDot").style.left=`${508-488*((q*3)%1)}px`;
+      ["g1","g2","g3","g4"].forEach((id,i)=>busy(id,q>i*.16));
+      $("demandMeter").style.width=`${98-42*q}%`; $("queue").textContent=`${14-Math.round(9*q)}`;
+      $("latency").textContent="38 ms"; $("memory").textContent="64%"; $("energyState").textContent="リモート良好"; $("service").textContent="正常";
+      $("capacity").textContent=`${67-Math.round(30*q)}%`; $("remotePower").textContent=`${54+Math.round(22*q)}%`;
+      $("fallback").textContent="ローカルフォールバック待機";
+    } else if (p < .91) {
+      const q=(p-.80)/.11;
+      $("stage").textContent="条件変化";
+      $("message").textContent="レイテンシとパケットロスの変化により、サービスが運用目標を外れます。";
+      select("site2",true); ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,true));
+      ["g1","g2","g3","g4"].forEach(id=>busy(id,true));
+      const alertOn=q>.55;
+      $("linkLine").style.background=alertOn?"#9e342c":"#e1b540"; $("linkDot").style.opacity=alertOn?0:.25;
+      $("linkLabel").textContent=q>.55?"パケットロスが目標超過":"レイテンシ／キャパシティが変化";
+      $("latency").textContent=`${38+Math.round(92*q)} ms`; $("queue").textContent=`${5+Math.round(7*q)}`; $("service").textContent="劣化";
+      $("alert").style.opacity=alertOn?1:0;
+      $("linkLine").style.opacity=alertOn?0:1; $("linkLabel").style.opacity=alertOn?0:1;
+    } else {
+      const q=(p-.91)/.09;
+      $("stage").textContent="縮退運転へ移行";
+      $("message").textContent="リモート処理を一時停止し、ローカルフォールバックで限定サービスを維持します。";
+      const alertOpacity=clamp(1-q*1.6);
+      $("alert").style.opacity=alertOpacity;
+      $("linkLine").style.opacity=1-alertOpacity; $("linkLabel").style.opacity=1-alertOpacity;
+      $("linkLine").style.background="#9e342c"; $("linkLabel").textContent="リモート処理を一時停止 · リカバリー用ステートを保持";
+      $("fallback").textContent="限定ローカルサービス稼働";
+      $("fallback").style.background="#eef7df"; $("fallback").style.color="#4d761c";
+      $("demandMeter").style.width="82%"; $("queue").textContent="8"; $("latency").textContent="ローカル"; $("memory").textContent="72%";
+      $("energyState").textContent="ローカル制約"; $("service").textContent="フォールバック";
+      $("capacity").textContent="37%"; $("remotePower").textContent="76%";
+    }
+  };
+  window.setFrame(0);
+</script>
+</body>
+</html>
