@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>AICC research park scenario</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .zone { position:absolute; top:168px; height:344px; padding:22px; }
+    #park { left:46px; width:330px; }
+    #control { left:398px; width:484px; }
+    #remote { left:904px; width:330px; }
+    .zone-head { display:flex; align-items:center; gap:15px; }
+    .zone-title { color:#343895; font-size:25px; font-weight:800; }
+    .zone-sub { color:#5f6062; font-size:15px; margin-top:3px; }
+    .data-box { margin-top:22px; padding:16px; border-radius:16px; background:#fff5d6; color:#775c12; font-size:18px; font-weight:800; text-align:center; }
+    .fallback { margin-top:14px; padding:15px; border-radius:16px; background:#eef7df; color:#4d761c; font-size:17px; font-weight:800; text-align:center; }
+    .catalog { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:18px; }
+    .candidate { min-height:90px; padding:12px; border:2px solid #d7dad7; border-radius:15px; background:#f8f9f8; }
+    .candidate strong { display:block; color:#343895; font-size:18px; margin-bottom:7px; }
+    .candidate span { color:#5f6062; font-size:14px; line-height:1.2; }
+    .candidate.selected { border-color:#8dc63f; background:#eef7df; }
+    .checks { display:flex; gap:10px; margin-top:14px; }
+    .check { flex:1; min-height:54px; padding:9px 6px; border-radius:13px; background:#eef0fb; color:#343895; text-align:center; font-size:14px; font-weight:800; }
+    .check.on { background:#eef7df; color:#4d761c; }
+    .gpu-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:26px; }
+    .gpu { height:56px; border-radius:10px; background:#eef0fb; border:2px solid #686bb2; display:flex; align-items:center; justify-content:center; color:#343895; font-size:16px; font-weight:800; }
+    .gpu.busy { background:#eef7df; border-color:#8dc63f; color:#4d761c; }
+    .remote-stat { margin-top:18px; display:flex; justify-content:space-between; color:#5f6062; font-size:15px; font-weight:700; }
+    #link { position:absolute; left:376px; top:526px; width:528px; height:74px; }
+    #linkLine { position:absolute; left:0; right:0; top:42px; height:10px; border-radius:5px; background:#d7dad7; }
+    #linkDot { top:47px; }
+    #linkLabel { position:absolute; left:40px; right:40px; top:5px; text-align:center; font-size:16px; font-weight:800; color:#343895; }
+    .telemetry { position:absolute; left:46px; right:46px; top:612px; height:60px; padding:13px 18px; border-radius:20px; background:#303235; display:flex; align-items:center; justify-content:space-between; gap:16px; color:#fff; }
+    .telemetry strong { color:#b8df82; }
+    .telemetry span { font-size:16px; font-weight:700; white-space:nowrap; }
+    .alert { position:absolute; left:398px; top:520px; width:484px; height:82px; padding:0 16px; border-radius:20px; background:#9e342c; color:#fff; display:flex; align-items:center; justify-content:center; font-size:21px; font-weight:900; white-space:nowrap; opacity:0; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+  <div class="top-explainer">
+    <div class="decision-main" id="message">Local demand rises while the research park keeps sensitive data under local governance.</div>
+    <div class="stage" id="stage">Demand rises</div>
+  </div>
+
+  <div class="panel zone" id="park">
+    <div class="zone-head"><div class="icon-building"></div><div><div class="zone-title">Research park</div><div class="zone-sub">Shared local AI service</div></div></div>
+    <div class="data-box">Sensitive data<br>remains locally governed</div>
+    <div class="metric"><span>Local demand</span><div class="meter"><span id="demandMeter" style="width:28%"></span></div></div>
+    <div class="fallback" id="fallback">Local service available</div>
+  </div>
+
+  <div class="panel zone" id="control">
+    <div class="zone-title">Discovery, policy, and placement</div>
+    <div class="catalog">
+      <div class="candidate" id="site1"><strong>Site 1</strong><span>Compatible<br>power constrained</span></div>
+      <div class="candidate" id="site2"><strong>Site 2</strong><span>Compatible<br>capacity available</span></div>
+      <div class="candidate" id="site3"><strong>Site 3</strong><span>Wrong accelerator<br>low latency</span></div>
+      <div class="candidate" id="site4"><strong>Site 4</strong><span>Compatible<br>policy not approved</span></div>
+    </div>
+    <div class="checks">
+      <div class="check" id="attest">Attestation</div>
+      <div class="check" id="sovereignty">Sovereignty</div>
+      <div class="check" id="slo">Service objective</div>
+      <div class="check" id="energy">Energy</div>
+    </div>
+  </div>
+
+  <div class="panel zone" id="remote">
+    <div class="zone-head"><div class="icon-building"></div><div><div class="zone-title">Remote site 2</div><div class="zone-sub">Attested accelerator pool</div></div></div>
+    <div class="gpu-grid"><div class="gpu" id="g1">GPU 1</div><div class="gpu" id="g2">GPU 2</div><div class="gpu" id="g3">GPU 3</div><div class="gpu" id="g4">GPU 4</div><div class="gpu" id="g5">GPU 5</div><div class="gpu" id="g6">GPU 6</div></div>
+    <div class="remote-stat"><span>Capacity <strong id="capacity">67%</strong></span><span>Power <strong id="remotePower">54%</strong></span></div>
+  </div>
+
+  <div id="link"><div id="linkLabel">Connectivity not established</div><div id="linkLine"></div><div class="dot" id="linkDot"></div></div>
+  <div class="alert" id="alert">LINK DEGRADED · REMOTE WORK PAUSED</div>
+  <div class="telemetry">
+    <span>Queue <strong id="queue">2</strong></span>
+    <span>p99 latency <strong id="latency">—</strong></span>
+    <span>Memory <strong id="memory">22%</strong></span>
+    <span>Energy state <strong id="energyState">local</strong></span>
+    <span>Service <strong id="service">normal</strong></span>
+  </div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = x => Math.max(0, Math.min(1, x));
+  const toggle = (id,on) => $(id).classList.toggle("on",!!on);
+  const select = (id,on) => $(id).classList.toggle("selected",!!on);
+  const busy = (id,on) => $(id).classList.toggle("busy",!!on);
+  window.setFrame = function(p) {
+    ["site1","site2","site3","site4"].forEach(id=>select(id,false));
+    ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,false));
+    ["g1","g2","g3","g4","g5","g6"].forEach(id=>busy(id,false));
+    $("alert").style.opacity=0; $("linkDot").style.opacity=.15; $("linkLine").style.background="#d7dad7";
+    $("linkLine").style.opacity=1; $("linkLabel").style.opacity=1;
+    if (p < .16) {
+      const q=p/.16;
+      $("stage").textContent="Demand rises";
+      $("message").textContent="Local demand rises while the research park keeps sensitive data under local governance.";
+      $("demandMeter").style.width=`${28+70*q}%`; $("queue").textContent=`${2+Math.round(12*q)}`;
+      $("latency").textContent="local"; $("memory").textContent=`${22+Math.round(54*q)}%`;
+      $("energyState").textContent="local"; $("service").textContent="normal";
+      $("linkLabel").textContent="Connectivity not established";
+      $("fallback").textContent="Local service approaching capacity";
+    } else if (p < .33) {
+      const q=(p-.16)/.17;
+      $("stage").textContent="Discover compatible resources";
+      $("message").textContent="Discovery compares compatible remote sites, available capacity, topology, and operating conditions.";
+      $("demandMeter").style.width="98%"; $("queue").textContent="14"; $("memory").textContent="76%";
+      select("site2",q>.65);
+      $("linkLabel").textContent=q>.65?"Candidate: remote site 2":"Compare capacity, topology, and conditions";
+      $("fallback").textContent="Local service remains active";
+    } else if (p < .49) {
+      const q=(p-.33)/.16;
+      $("stage").textContent="Verify trust and policy";
+      $("message").textContent="Attestation, sovereignty, service objectives, and energy policy gate the placement.";
+      select("site2",true);
+      toggle("attest",q>.18); toggle("sovereignty",q>.38); toggle("slo",q>.60); toggle("energy",q>.80);
+      $("linkLabel").textContent=q>.8?"Placement approved":"Attestation and policy checks";
+      $("service").textContent="checking";
+    } else if (p < .64) {
+      const q=(p-.49)/.15;
+      $("stage").textContent="Establish service connectivity";
+      $("message").textContent="An approved path establishes connectivity with bandwidth and isolation controls.";
+      select("site2",true); ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,true));
+      $("linkLine").style.background="#8dc63f";
+      $("linkDot").style.opacity=1; $("linkDot").style.left=`${20+488*q}px`;
+      $("linkLabel").textContent="Approved path · bandwidth + isolation";
+      $("latency").textContent=q>.7?"38 ms":"measuring"; $("service").textContent="connecting";
+    } else if (p < .80) {
+      const q=(p-.64)/.16;
+      $("stage").textContent="Run and observe";
+      $("message").textContent="Remote accelerators run the overflow workload while telemetry watches the service.";
+      select("site2",true); ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,true));
+      $("linkLine").style.background="#8dc63f"; $("linkDot").style.opacity=1; $("linkDot").style.left=`${508-488*((q*3)%1)}px`;
+      ["g1","g2","g3","g4"].forEach((id,i)=>busy(id,q>i*.16));
+      $("demandMeter").style.width=`${98-42*q}%`; $("queue").textContent=`${14-Math.round(9*q)}`;
+      $("latency").textContent="38 ms"; $("memory").textContent="64%"; $("energyState").textContent="remote favorable"; $("service").textContent="healthy";
+      $("capacity").textContent=`${67-Math.round(30*q)}%`; $("remotePower").textContent=`${54+Math.round(22*q)}%`;
+      $("fallback").textContent="Local fallback remains ready";
+    } else if (p < .91) {
+      const q=(p-.80)/.11;
+      $("stage").textContent="Conditions change";
+      $("message").textContent="Changing latency and packet loss push the service outside its operating objective.";
+      select("site2",true); ["attest","sovereignty","slo","energy"].forEach(id=>toggle(id,true));
+      ["g1","g2","g3","g4"].forEach(id=>busy(id,true));
+      const alertOn=q>.55;
+      $("linkLine").style.background=alertOn?"#9e342c":"#e1b540"; $("linkDot").style.opacity=alertOn?0:.25;
+      $("linkLabel").textContent=q>.55?"Packet loss exceeds objective":"Latency and capacity are shifting";
+      $("latency").textContent=`${38+Math.round(92*q)} ms`; $("queue").textContent=`${5+Math.round(7*q)}`; $("service").textContent="degraded";
+      $("alert").style.opacity=alertOn?1:0;
+      $("linkLine").style.opacity=alertOn?0:1; $("linkLabel").style.opacity=alertOn?0:1;
+    } else {
+      const q=(p-.91)/.09;
+      $("stage").textContent="Degrade gracefully";
+      $("message").textContent="Remote work pauses and the local fallback preserves a limited service.";
+      const alertOpacity=clamp(1-q*1.6);
+      $("alert").style.opacity=alertOpacity;
+      $("linkLine").style.opacity=1-alertOpacity; $("linkLabel").style.opacity=1-alertOpacity;
+      $("linkLine").style.background="#9e342c"; $("linkLabel").textContent="Remote work paused · state preserved for recovery";
+      $("fallback").textContent="Limited local service active";
+      $("fallback").style.background="#eef7df"; $("fallback").style.color="#4d761c";
+      $("demandMeter").style.width="82%"; $("queue").textContent="8"; $("latency").textContent="local"; $("memory").textContent="72%";
+      $("energyState").textContent="local constrained"; $("service").textContent="fallback";
+      $("capacity").textContent="37%"; $("remotePower").textContent="76%";
+    }
+  };
+  window.setFrame(0);
+</script>
+</body>
+</html>

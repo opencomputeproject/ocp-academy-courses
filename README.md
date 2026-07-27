@@ -32,6 +32,7 @@ courses/
     locales/
       ko-KR/                    # self-contained translated source
       fr-FR/
+  ai-computing-continuum/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
   integrating-quantum-processing-units-into-data-center-infrastructure/
@@ -103,6 +104,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 
 | Folder | Course |
 |---|---|
+| `ai-computing-continuum` | AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center |
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
 | `integrating-quantum-processing-units-into-data-center-infrastructure` | Integrating Quantum Processing Units into Data Center Infrastructure |

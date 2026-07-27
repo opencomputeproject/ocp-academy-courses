@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Sync-Across transaction timing and recovery</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .dc { position:absolute; top:176px; width:350px; height:340px; padding:24px; }
+    #dcA { left:64px; }
+    #dcB { right:64px; }
+    .dc-head { display:flex; align-items:center; gap:16px; }
+    .dc-title { color:#343895; font-size:28px; font-weight:800; }
+    .dc-sub { color:#5f6062; font-size:16px; margin-top:4px; }
+    .server { margin-top:24px; padding:18px; border-radius:18px; background:#eef0fb; border:2px solid #686bb2; }
+    .server strong { display:block; color:#343895; font-size:22px; margin-bottom:10px; }
+    .log { display:flex; gap:7px; margin-top:13px; }
+    .log i { display:block; width:34px; height:26px; border-radius:6px; background:#d7dad7; }
+    .log i.on { background:#8dc63f; }
+    .status { margin-top:18px; padding:12px 16px; border-radius:17px; background:#f6f7f6; color:#5f6062; font-size:17px; font-weight:800; text-align:center; }
+    .status.good { background:#eef7df; color:#4d761c; }
+    .status.bad { background:#fff0ef; color:#9e342c; }
+    #wan { position:absolute; left:414px; top:298px; width:452px; height:80px; }
+    #wanLine { position:absolute; left:0; right:0; top:35px; height:10px; border-radius:5px; background:#d7dad7; }
+    #wanLabel { position:absolute; left:86px; right:86px; top:-2px; text-align:center; color:#343895; font-size:18px; font-weight:800; }
+    .packet { position:absolute; top:40px; width:24px; height:24px; margin:-12px 0 0 -12px; border-radius:7px; background:#8dc63f; box-shadow:0 0 0 7px rgba(141,198,63,.2); }
+    #ack { background:#343895; box-shadow:0 0 0 7px rgba(52,56,149,.16); }
+    .timeline { position:absolute; left:128px; right:128px; top:560px; height:82px; padding:16px 24px; border-radius:20px; background:#fff; border:2px solid #d7dad7; }
+    .timeline-line { position:absolute; left:24px; right:24px; top:50px; height:6px; border-radius:3px; background:#e3e5e3; }
+    .timeline-progress { position:absolute; left:24px; top:50px; height:6px; border-radius:3px; background:#8dc63f; width:0; }
+    .tick { position:absolute; top:17px; transform:translateX(-50%); text-align:center; color:#5f6062; font-size:14px; font-weight:700; }
+    .tick::after { content:""; display:block; width:12px; height:12px; margin:10px auto 0; border-radius:50%; background:#d7dad7; border:3px solid #fff; box-shadow:0 0 0 2px #d7dad7; }
+    .tick.on::after { background:#8dc63f; box-shadow:0 0 0 2px #8dc63f; }
+    #failure { position:absolute; left:84px; top:194px; width:310px; height:300px; border-radius:24px; display:flex; align-items:center; justify-content:center; background:rgba(158,52,44,.90); color:#fff; font-size:34px; font-weight:900; letter-spacing:1px; opacity:0; }
+  </style>
+</head>
+<body>
+<div class="canvas">
+  <div class="top-explainer">
+    <div class="decision-main" id="footer">Site A receives the transaction and records the local change.</div>
+    <div class="stage" id="stage">Transaction begins</div>
+  </div>
+
+  <div class="panel dc" id="dcA">
+    <div class="dc-head"><div class="icon-building"></div><div><div class="dc-title">Site A</div><div class="dc-sub" id="roleA">Active service</div></div></div>
+    <div class="server"><strong>Transaction service</strong><span class="small" id="workA">Processing request</span><div class="log" id="logA"><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="status" id="statusA">Waiting for transaction</div>
+  </div>
+  <div class="panel dc" id="dcB">
+    <div class="dc-head"><div class="icon-building"></div><div><div class="dc-title">Site B</div><div class="dc-sub" id="roleB">Synchronized standby</div></div></div>
+    <div class="server"><strong>Durable state</strong><span class="small" id="workB">Ready for log update</span><div class="log" id="logB"><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="status" id="statusB">State current</div>
+  </div>
+
+  <div id="wan">
+    <div id="wanLabel">Inter-site latency is application latency</div>
+    <div id="wanLine"></div>
+    <div class="packet" id="record"></div>
+    <div class="packet" id="ack"></div>
+  </div>
+
+  <div id="failure">SITE A<br>INTERRUPTED</div>
+
+  <div class="timeline">
+    <div class="timeline-line"></div><div class="timeline-progress" id="timelineProgress"></div>
+    <div class="tick" id="t1" style="left:8%">Receive</div>
+    <div class="tick" id="t2" style="left:28%">Local log</div>
+    <div class="tick" id="t3" style="left:51%">Remote durable</div>
+    <div class="tick" id="t4" style="left:72%">Acknowledge</div>
+    <div class="tick" id="t5" style="left:92%">Recover</div>
+  </div>
+</div>
+<script>
+  const $ = id => document.getElementById(id);
+  const clamp = x => Math.max(0, Math.min(1, x));
+  function packet(el,x,t) { const q=clamp(t); el.style.left=`${x(q)}px`; el.style.opacity=(q>0&&q<1)?1:.12; }
+  function setLog(id,count) { document.querySelectorAll(`#${id} i`).forEach((x,i)=>x.classList.toggle("on",i<count)); }
+  function status(id,text,kind="") { $(id).textContent=text; $(id).className=`status ${kind}`; }
+  window.setFrame = function(p) {
+    $("timelineProgress").style.width=`${clamp(p)*calcWidth()}px`;
+    ["t1","t2","t3","t4","t5"].forEach((id,i)=>$(id).classList.toggle("on",p>[.04,.20,.44,.63,.84][i]));
+    $("failure").style.opacity=0;
+    $("dcA").style.borderColor="#d7dad7"; $("dcB").style.borderColor="#d7dad7";
+    $("roleA").textContent="Active service"; $("roleB").textContent="Synchronized standby";
+    $("workA").textContent="Processing request"; $("workB").textContent="Ready for log update";
+    if (p < .20) {
+      $("stage").textContent="Transaction begins";
+      setLog("logA",Math.ceil(p/.20*2)); setLog("logB",0);
+      status("statusA","Creating local log record"); status("statusB","State current","good");
+      packet($("record"),q=>0,q=>0); $("record").style.opacity=.12; $("ack").style.opacity=.12;
+      $("footer").textContent="Site A receives the transaction and records the local change.";
+    } else if (p < .46) {
+      const q=(p-.20)/.26;
+      $("stage").textContent="Write-ahead log crosses the link";
+      setLog("logA",3); setLog("logB",Math.floor(q*3));
+      status("statusA","Waiting for remote durability",""); status("statusB",q>.78?"Persisting update":"Receiving update","");
+      packet($("record"),x=>x*452,q); $("ack").style.opacity=.12;
+      $("dcA").style.borderColor="#8dc63f"; $("dcB").style.borderColor="#8dc63f";
+      $("footer").textContent="The service cannot acknowledge yet; the remote copy must become durable.";
+    } else if (p < .64) {
+      const q=(p-.46)/.18;
+      $("stage").textContent="Remote copy is durable";
+      setLog("logA",3); setLog("logB",3);
+      status("statusA","Waiting for acknowledgment"); status("statusB","Log record durable","good");
+      $("record").style.opacity=.12; packet($("ack"),x=>452-x*452,q);
+      $("footer").textContent="Site B confirms durability and sends the acknowledgment back across the link.";
+    } else if (p < .80) {
+      const q=(p-.64)/.16;
+      $("stage").textContent="Application acknowledges";
+      setLog("logA",4); setLog("logB",4);
+      status("statusA","Transaction complete","good"); status("statusB","State synchronized","good");
+      $("record").style.opacity=.12; $("ack").style.opacity=.12;
+      $("wanLabel").textContent=`Round trip included in response · ${Math.round(22+q*8)} ms`;
+      $("footer").textContent="The inter-site round trip is now part of the application response time.";
+    } else if (p < .90) {
+      const q=(p-.80)/.10;
+      $("stage").textContent="Primary site is interrupted";
+      setLog("logA",4); setLog("logB",4);
+      $("failure").style.opacity=q;
+      status("statusA","Unavailable","bad"); status("statusB","Synchronized recovery point","good");
+      $("footer").textContent="Failure detection and the agreed recovery point determine what Site B can safely do.";
+    } else {
+      const q=(p-.90)/.10;
+      $("stage").textContent="Service resumes";
+      $("failure").style.opacity=clamp(1-q*1.6);
+      $("roleA").textContent="Interrupted"; $("roleB").textContent="Active service";
+      $("workA").textContent="Awaiting repair"; $("workB").textContent="Serving from durable state";
+      status("statusA","Unavailable","bad"); status("statusB","Service restored","good");
+      $("dcB").style.borderColor="#8dc63f";
+      setLog("logA",4); setLog("logB",5);
+      $("footer").textContent="Synchronized state enables recovery, but partition behavior must be defined in advance.";
+    }
+  };
+  function calcWidth(){ return document.querySelector(".timeline-line").getBoundingClientRect().width; }
+  window.setFrame(0);
+</script>
+</body>
+</html>

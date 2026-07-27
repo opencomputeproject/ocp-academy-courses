@@ -1,0 +1,12 @@
+# pronunciation: WAL -> "write-ahead log"; AI -> "A I"
+Sync-Across focuses on consistent data or system state.
+
+Consider a financial platform operating from two sites. A transaction reaches the active site and changes local state. Before the service acknowledges that transaction, it may need to send a write-ahead-log record to the second site and confirm that the remote copy is durable.
+
+The animation makes the timing visible. Local processing begins. The log record crosses the inter-site link. The second site records it and returns an acknowledgment. Only then does the service complete the transaction. The network round trip is part of the application response time, not background traffic.
+
+Now the active site is interrupted. Because the second site holds synchronized state, it can resume from an agreed recovery point. That resilience benefit depends on correctly defining consistency, failure detection, acknowledgment behavior, and what happens during a network partition.
+
+Similar reasoning can apply to distributed inference state, retrieval data, policy data, or service metadata. Not every item needs synchronous replication, and forcing it can add unnecessary latency. The architecture must identify which state is critical and which can be rebuilt, cached, or updated asynchronously.
+
+The defining Sync-Across question is: what state must be consistent, how quickly, and what service behavior is acceptable when the sites cannot communicate?
