@@ -133,7 +133,8 @@ Clones and require `eleven_v3` in `high_quality_base_model_ids`.
     "font_families": {
       "heading": "Be Vietnam",
       "body": "Be Vietnam",
-      "ui": "Lato"
+      "ui": "Lato",
+      "cover_lesson": "Lato"
     },
     "font_faces": [
       {
@@ -158,11 +159,23 @@ Clones and require `eleven_v3` in `high_quality_base_model_ids`.
 }
 ```
 
-Each lesson has sequential `id`, stable `slug`, learner-facing `title`, optional `description_html`, and ordered `blocks`. Supported block types are `text`, `impact`, `list`, `image`, `video`, `attachment`, `divider`, `continue`, `quote`, `buttons`, `accordion`, `tabs`, `process`, `labeled_graphic`, `flashcards`, and `knowledge_check`. A Scrolling `process` block is rendered as a numbered, one-step-at-a-time carousel; each item may include a title, `description_html`, and media. A `flashcards` block may set `style.flashcard_size` to `small` or `large`; the large classic variant uses one centered 460px logical square per row, displayed at 0.9 scale until flipped. Store course-owned binary media under `resources/images`, `resources/videos`, `resources/captions`, or `resources/documents` and reference those paths from block `media` objects. Blocks may set `style.entrance_animation`; false keeps that block static even when `theme.animate_block_entrance` is enabled.
+Each lesson has sequential `id`, stable `slug`, learner-facing `title`, optional `description_html`, optional `optional`, and ordered `blocks`. Set `optional: true` only when that lesson may be bypassed without blocking course completion or restricted navigation.
+
+Supported block types are `text`, `impact`, `list`, `image`, `gallery`, `video`, `embed`, `attachment`, `divider`, `continue`, `quote`, `buttons`, `accordion`, `tabs`, `process`, `timeline`, `labeled_graphic`, `flashcards`, and `knowledge_check`.
+
+- A Scrolling `process` block is rendered as a one-step-at-a-time carousel. Each item may include a title, `description_html`, media, and optional `media_frame: "project_icon"` for a centered project mark inside the maintained circular frame. The `storyline_selector` variant omits numbered Step badges.
+- A `timeline` stores ordered `items[]` with `description_html` and an optional compact `icon`. Use it for a responsive stepped process whose small markers and vertical connector must not be flattened into a screenshot.
+- A `gallery` stores ordered media items and renders as an accessible previous/next carousel with position controls.
+- An `embed` stores a trusted `embed.src` plus optional `original_url`, `title`, `provider`, and `description`.
+- A `flashcards` block may set `style.flashcard_size` to `small`, `large`, or `paired_large`. The large classic variant uses one centered 460px logical square per row; `paired_large` preserves a two-card desktop row and collapses to one responsive column on narrow screens.
+- A `buttons` block may set measured `style.button_width_px` and `style.button_row_gap_px`. A lesson button uses `type: "lesson"` and numeric `lesson_target`.
+- A `continue` block may set `style.continue_radius` to preserve a recovered rectangular or rounded control.
+
+Store course-owned binary media under `resources/images`, `resources/videos`, `resources/captions`, or `resources/documents` and reference those paths from block `media` objects. Blocks may set `style.entrance_animation`; false keeps that block static even when `theme.animate_block_entrance` is enabled.
 
 Classic medium-width text blocks are responsive on desktop rather than permanently fixed to the width measured in a narrow lesson pane. With the sidebar open, grow the inner text width using `min(calc(83.333333% - 105px), 761.667px)`; with the sidebar closed, cap it at 760px. This keeps wide-screen paragraphs aligned with medium list content while retaining the narrower source geometry at smaller desktop widths.
 
-Every ordinary `image` block may declare `image_role` as `content` or `decorative`; omitted values default to `content` for backward compatibility. A `text_aside` block may declare `style.image_position` as `left` or `right`, naming the image column. Honor that side without inversion. When the value is absent, use the classic Rise default of `left` and render the corresponding `block--image-left` layout class so DOM child order cannot silently put the image on the right. A content image may use `style.zoom_on_click`. A decorative image is edge-to-edge presentation artwork rather than learner content: the renderer must suppress zoom regardless of that style flag, emit empty alternative text, and remove the image from the accessibility reading order.
+Every ordinary `image` block may declare `image_role` as `content` or `decorative`; omitted values default to `content` for backward compatibility. A `text_aside` block may declare `style.image_position` as `left` or `right`, naming the image column. Honor that side without inversion. When the value is absent, use the classic Rise default of `left` and render the corresponding `block--image-left` layout class so DOM child order cannot silently put the image on the right. A content image may use `style.zoom_on_click`. A decorative image is edge-to-edge presentation artwork rather than learner content: the renderer must suppress zoom regardless of that style flag, emit empty alternative text, and remove the image from the accessibility reading order. A recovered `custom_canvas` image retains its authored intrinsic dimensions on desktop and scales down only when the lesson pane is narrower.
 
 Quote blocks may include structured `avatar` media. Classic quote variant `d` renders that image as an 80px circle beside transparent quote content on the block's own background; retain its responsive width and authored typography instead of substituting a generic callout card. Scrolling videos use the maintained custom player: transparent letterboxing, a centered 98px play circle, no browser-native controls before activation, and the configured control order after activation—play/pause, seek/loaded progress, remaining time, seven-choice speed menu, caption-language menu, picture-in-picture, fullscreen, and expandable volume. Use the canonical Video.js-compatible glyph outlines rather than substitute art. Scrolling accordions use right-aligned plus/minus controls rather than native disclosure triangles; light block surfaces render adjoining bordered white cards, dark surfaces retain the configured borderless card treatment, and every expanded item shows a continuous 4px accent rule along its header and content.
 
@@ -192,7 +205,7 @@ Every `continue` block has a `label` and optional `complete_hint`. It reveals fo
 
 When `theme.animate_block_entrance` is true, observe eligible blocks as they enter the viewport. Text-aside media fades and moves 50px from its outside edge over 1 second after a 0.12-second delay. List items use the same horizontal entrance staggered by 0.25 seconds. Full media, videos, and Continue controls fade without translation. Honor reduced motion. `show_search` provides submit-on-Enter full-course content search with lesson-grouped occurrence counts, not live title filtering.
 
-The `theme` object is authoritative learner-facing source. Preserve the configured cover (including dimensions and overlay), typography through local `font_faces`, navigation and lesson-header treatment, button scheme, block padding, and animation preference. The renderer must reproduce that presentation using readable AcademyWizard HTML/CSS rather than replacing the authored design with generic defaults. Omitted values use the maintained Scrolling defaults.
+The `theme` object is authoritative learner-facing source. Preserve the configured cover (including dimensions and overlay), typography through local `font_faces`, navigation and lesson-header treatment, button scheme, block padding, and animation preference. `theme.font_families.cover_lesson` optionally assigns a distinct family to the lesson list on the course cover; when omitted it inherits `theme.font_families.ui`. The renderer must reproduce that presentation using readable AcademyWizard HTML/CSS rather than replacing the authored design with generic defaults. Omitted values use the maintained Scrolling defaults.
 
 Render classic Scrolling heading and heading-paragraph blocks with a bold 32px/40px heading line box and 8px vertical padding. If `heading_html` contains an author-sized `font-size: 2rem` span, retain bold inheritance but give that span a 20px/25px line box; do not style it as regular body text.
 

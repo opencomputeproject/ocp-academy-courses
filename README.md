@@ -45,6 +45,12 @@ courses/
   ocp-esun-ethernet-for-scale-up-networks/
   ocp-mhs-modular-plug-and-play-m-pnp/
   ocp-nic-3-0-technical-overview/
+  ocp-orientation/
+    understanding-and-procuring-open-technologies-and-products/
+    introduction-to-the-ocp-solution-provider-program/
+    ocp-volunteer-leadership-guide/
+    ocp-ready-data-center-recognition-program/
+    ocp-contribution-process/
   ocp-ready-requirements-for-energy-storage-systems/
   open-rack-v3/
     module-1-ocp-orv3-history-and-impact/
@@ -116,6 +122,11 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
 | `ocp-nic-3-0-technical-overview` | OCP NIC 3.0 Technical Overview |
+| `ocp-orientation/understanding-and-procuring-open-technologies-and-products` | Understanding and Procuring Open Technologies and Products |
+| `ocp-orientation/introduction-to-the-ocp-solution-provider-program` | Introduction to the OCP Solution Provider Program |
+| `ocp-orientation/ocp-volunteer-leadership-guide` | OCP's Volunteer Leadership Guide |
+| `ocp-orientation/ocp-ready-data-center-recognition-program` | OCP Ready™ Data Center Recognition Program |
+| `ocp-orientation/ocp-contribution-process` | OCP Contribution Process |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
 | `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
 | `open-rack-v3/module-2-orv3-core-specifications` | Module 2: ORv3 Core Specifications |

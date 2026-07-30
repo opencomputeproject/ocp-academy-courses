@@ -6,12 +6,34 @@ from __future__ import annotations
 import html
 import json
 import copy
+import shutil
 from pathlib import Path
 import re
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
 TEMPLATE_DIR = SKILL_DIR / "templates"
+ASSETS_DIR = SKILL_DIR / "assets"
+
+# The OCP Academy Scrolling series standardizes the launched lesson table of
+# contents independently of any recovered source theme. These bundled faces
+# keep the choice self-contained for local and LMS playback.
+SCROLLING_SIDEBAR_FONT = "Lato"
+SCROLLING_SIDEBAR_STYLE = "compact"
+SCROLLING_SIDEBAR_FONT_FACES = (
+    {
+        "family": SCROLLING_SIDEBAR_FONT,
+        "path": "resources/fonts/lato2-regular.woff",
+        "weight": 400,
+        "style": "normal",
+    },
+    {
+        "family": SCROLLING_SIDEBAR_FONT,
+        "path": "resources/fonts/lato2-bold.woff",
+        "weight": 700,
+        "style": "normal",
+    },
+)
 
 # Canonical learner-facing control art for the maintained Scrolling style.
 # Keep these vector paths verbatim; do not replace them with CSS-drawn approximations.
@@ -263,6 +285,7 @@ def runtime_files(course: dict) -> list[str]:
             found.add(value)
 
     walk(course)
+    found.update(face["path"] for face in SCROLLING_SIDEBAR_FONT_FACES)
     for key in ("course_logo", "academy_logo"):
         path = (course.get("brand") or {}).get(key)
         if path:
@@ -272,7 +295,34 @@ def runtime_files(course: dict) -> list[str]:
 
 def font_face_css(theme: dict) -> str:
     rules = []
-    for face in theme.get("font_faces", []) if isinstance(theme.get("font_faces"), list) else []:
+    theme_faces = (
+        theme.get("font_faces", [])
+        if isinstance(theme.get("font_faces"), list)
+        else []
+    )
+    sidebar_descriptors = {
+        (
+            SCROLLING_SIDEBAR_FONT.casefold(),
+            int(face["weight"]),
+            str(face["style"]).casefold(),
+        )
+        for face in SCROLLING_SIDEBAR_FONT_FACES
+    }
+    faces = [
+        face
+        for face in theme_faces
+        if not (
+            isinstance(face, dict)
+            and (
+                str(face.get("family") or "").casefold(),
+                int(face.get("weight") or 400),
+                str(face.get("style") or "normal").casefold(),
+            )
+            in sidebar_descriptors
+        )
+    ]
+    faces.extend(SCROLLING_SIDEBAR_FONT_FACES)
+    for face in faces:
         if not isinstance(face, dict) or not face.get("family") or not face.get("path"):
             continue
         path = str(face["path"]).replace('"', "%22")
@@ -285,6 +335,24 @@ def font_face_css(theme: dict) -> str:
             f'font-weight:{weight};font-style:{style};font-display:swap;}}'
         )
     return "\n".join(rules)
+
+
+def ensure_scrolling_runtime_assets(resource_root: Path | None) -> None:
+    """Install maintained runtime assets that every Scrolling course uses."""
+    if resource_root is None:
+        return
+    for face in SCROLLING_SIDEBAR_FONT_FACES:
+        relative_path = Path(face["path"])
+        source = ASSETS_DIR / "fonts" / relative_path.name
+        if not source.exists():
+            raise FileNotFoundError(
+                f"missing maintained Scrolling font asset: {source}"
+            )
+        destination = resource_root / relative_path
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        if destination.exists() and destination.read_bytes() == source.read_bytes():
+            continue
+        shutil.copyfile(source, destination)
 
 
 def media_figure(
@@ -464,6 +532,7 @@ def render_interactive(block: dict, lesson_id: int, ui_labels: dict | None = Non
         controls = []
         zoomable = bool((block.get("style") or {}).get("zoom_on_click", False))
         process_style = block.get("style") if isinstance(block.get("style"), dict) else {}
+        show_step_badges = str(block.get("variant") or "").casefold() != "storyline_selector"
         control_tone = str(process_style.get("control_tone") or "").casefold()
         if control_tone not in {"light", "dark"}:
             background_color = str(process_style.get("background_color") or "")
@@ -478,9 +547,13 @@ def render_interactive(block: dict, lesson_id: int, ui_labels: dict | None = Non
             media = media_figure(
                 item.get("media"), item.get("caption_html") or "", zoomable=zoomable, ui_labels=ui_labels
             )
+            media_frame = str(item.get("media_frame") or "").strip().casefold().replace("_", "-")
+            media_class = "process-step__media"
+            if media_frame:
+                media_class += f" process-step__media--{esc(media_frame)}"
             number = (
                 f'<span class="process-step__number">{esc(ui(ui_labels, "step", "Step {number}", number=step_number))}</span>'
-                if item_type == "step" else ""
+                if item_type == "step" and show_step_badges else ""
             )
             action = ""
             if item_type == "intro":
@@ -514,7 +587,7 @@ def render_interactive(block: dict, lesson_id: int, ui_labels: dict | None = Non
                 f'<div class="process-step process-step--{esc(item_type)}">'
                 f'{number}'
                 f'<div class="process-step__title"><h2>{esc(item.get("title") or item.get("label") or "")}</h2></div>'
-                f'<div class="process-step__media">{media}</div>'
+                f'<div class="{media_class}">{media}</div>'
                 f'<div class="process-step__description">{item.get("description_html") or item.get("body_html") or ""}</div>'
                 f'{action}</div></article>'
             )
@@ -588,9 +661,15 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
     if block_type == "image":
         media = block.get("media") if isinstance(block.get("media"), dict) else {}
         dimensions = media.get("dimensions") if isinstance(media.get("dimensions"), dict) else {}
-        cropped = variant == "full"
         image_role = str(block.get("image_role") or "content").strip().casefold()
         decorative = image_role in {"decorative", "design"}
+        decorative_full = decorative and variant == "full"
+        # Rise fills every full-width image block with the image as a
+        # cover-sized background while retaining the real <img> in the DOM.
+        # Decorative transition strips depend on that background layer: their
+        # shallow intrinsic SVG is shorter than the block's 200px minimum, so
+        # an inline image alone exposes an unintended seam below the artwork.
+        cropped = variant == "full"
         position = str(style.get("image_position") or "left").strip().casefold()
         if position not in {"left", "right"}:
             position = "left"
@@ -601,7 +680,13 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
         figure = media_figure(
             media,
             block.get("caption_html") or "",
-            extra_class=f"scroll-animate {motion}" if animate else "",
+            extra_class=" ".join(
+                part for part in (
+                    f"scroll-animate {motion}" if animate else "",
+                    "media-card--decorative-full" if decorative_full else "",
+                )
+                if part
+            ),
             zoomable=not decorative and bool(style.get("zoom_on_click", False)),
             cropped=cropped,
             decorative=decorative,
@@ -611,6 +696,51 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
         if variant == "text_aside" and body:
             return f'<div class="media-aside"><div class="media-aside__text">{body}</div>{figure}</div>'
         return f'{body}{figure}'
+    if block_type == "gallery":
+        gallery_slides = []
+        gallery_dots = []
+        animate = style.get("entrance_animation", True)
+        for item_index, item in enumerate(block.get("items", []), start=1):
+            if not isinstance(item, dict):
+                continue
+            item_class = "gallery__item"
+            if animate:
+                item_class += " scroll-animate scroll-animate--fade"
+            figure = media_figure(
+                item.get("media") if isinstance(item.get("media"), dict) else {},
+                item.get("caption_html") or "",
+                extra_class=item_class,
+                zoomable=bool(style.get("zoom_on_click", False)),
+                ui_labels=ui_labels,
+            )
+            if figure:
+                hidden = "" if item_index == 1 else " hidden"
+                gallery_slides.append(
+                    f'<div class="gallery__slide" data-gallery-slide="{item_index - 1}" role="group" '
+                    f'aria-label="{esc(ui(ui_labels, "slide_position", "{current} of {total}", current=item_index, total=len(block.get("items", []))))}"{hidden}>'
+                    f"{figure}</div>"
+                )
+                gallery_dots.append(
+                    f'<button type="button" data-gallery-target="{item_index - 1}" '
+                    f'aria-label="{esc(ui(ui_labels, "go_to_slide", "Go to slide {number}", number=item_index))}" '
+                    f'aria-current="{"true" if item_index == 1 else "false"}"></button>'
+                )
+        gallery_variant = re.sub(
+            r"[^a-z0-9_-]+", "-", str(variant or "centered").casefold()
+        ).strip("-").replace("_", "-")
+        return (
+            f'<div class="gallery gallery--{esc(gallery_variant or "centered")}" data-gallery-carousel '
+            f'role="region" aria-label="{esc(ui(ui_labels, "image_carousel", "Image Carousel"))}">'
+            f'<div class="gallery__viewport">{"".join(gallery_slides)}'
+            f'<button class="gallery__arrow gallery__arrow--previous" type="button" data-gallery-action="previous" '
+            f'aria-label="{esc(ui(ui_labels, "previous_slide", "Go to previous slide"))}">'
+            '<svg viewBox="0 0 12 20" aria-hidden="true"><path d="M10.5 1.5 2 10l8.5 8.5"/></svg></button>'
+            f'<button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-action="next" '
+            f'aria-label="{esc(ui(ui_labels, "next_slide", "Go to next slide"))}">'
+            '<svg viewBox="0 0 12 20" aria-hidden="true"><path d="m1.5 1.5 8.5 8.5-8.5 8.5"/></svg></button>'
+            f'</div><div class="gallery__dots" role="group" aria-label="{esc(ui(ui_labels, "slide_controls", "Slide controls"))}">'
+            f'{"".join(gallery_dots)}</div></div>'
+        )
     if block_type == "video":
         return video_figure(
             block.get("media"),
@@ -618,6 +748,34 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
             animate=style.get("entrance_animation") is True,
             ui_labels=ui_labels,
         )
+    if block_type == "embed":
+        embed = block.get("embed") if isinstance(block.get("embed"), dict) else {}
+        src = str(embed.get("src") or "")
+        original_url = str(embed.get("original_url") or "")
+        title = str(embed.get("title") or embed.get("provider") or ui(ui_labels, "embedded_content", "Embedded content"))
+        description = str(embed.get("description") or "")
+        safe_src = src if re.match(r"^https?://", src, flags=re.I) else ""
+        safe_original = original_url if re.match(r"^https?://", original_url, flags=re.I) else ""
+        if safe_src:
+            fallback = (
+                f'<p class="embed-card__fallback"><a href="{esc(safe_original or safe_src)}" '
+                f'target="_blank" rel="noopener noreferrer">{esc(ui(ui_labels, "open_embedded_content", "Open embedded content"))}</a></p>'
+            )
+            description_attr = f' data-description="{esc(description)}"' if description else ""
+            return (
+                f'<figure class="embed-card"{description_attr}>'
+                '<div class="embed-card__frame">'
+                f'<iframe src="{esc(safe_src)}" title="{esc(title)}" loading="lazy" '
+                'allow="fullscreen; geolocation" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>'
+                f'</div><noscript>{fallback}</noscript></figure>'
+            )
+        if safe_original:
+            return (
+                '<div class="embed-card embed-card--fallback">'
+                f'<a href="{esc(safe_original)}" target="_blank" rel="noopener noreferrer">{esc(title)}</a>'
+                f'{"<p>" + esc(description) + "</p>" if description else ""}</div>'
+            )
+        return ""
     if block_type == "attachment":
         media = block.get("media") or {}
         if not media.get("path"):
@@ -650,7 +808,39 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
             f'<span class="attachment-card__rest">{download_icon}</span></a>'
         )
     if block_type == "impact":
+        if variant == "note":
+            info_icon = (
+                '<svg viewBox="0 0 512 512" focusable="false" aria-hidden="true">'
+                '<path fill="currentColor" d="M256 48a208 208 0 1 1 0 416 208 208 0 1 1 0-416zm0 '
+                '464A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336c-13.3 0-24 10.7-24 '
+                '24s10.7 24 24 24l80 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-8 0 0-88c0-13.3-10.7-24-24-24l-48 '
+                '0c-13.3 0-24 10.7-24 24s10.7 24 24 24l24 0 0 64-24 0zm40-144a32 32 0 1 0 0-64 '
+                '32 32 0 1 0 0 64z"/></svg>'
+            )
+            return (
+                '<aside class="impact-note" role="note">'
+                f'<span class="impact-note__icon">{info_icon}</span>'
+                f'<div class="impact-note__body">{block.get("body_html") or ""}</div>'
+                '</aside>'
+            )
         return f'<div class="impact-statement">{block.get("body_html") or ""}</div>'
+    if block_type == "timeline":
+        items = []
+        visible_items = [item for item in block.get("items", []) if not item.get("hidden")]
+        for index, item in enumerate(visible_items, start=1):
+            icon = str(item.get("icon") or index)
+            description = item.get("description_html") or item.get("body_html") or ""
+            items.append(
+                '<li class="vertical-timeline__step">'
+                f'<span class="vertical-timeline__marker" aria-hidden="true">{esc(icon)}</span>'
+                f'<div class="vertical-timeline__content">{description}</div>'
+                '</li>'
+            )
+        label = block.get("aria_label") or ui(ui_labels, "process", "Process")
+        return (
+            f'<ol class="vertical-timeline" aria-label="{esc(label)}">'
+            f'{"".join(items)}</ol>'
+        )
     if block_type == "divider":
         if variant == "numbered_divider":
             number = esc(block.get("number") or block.get("id") or "")
@@ -692,11 +882,22 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
         else:
             longest_label = max((len(str(item.get("label") or "")) for item in block.get("buttons", [])), default=0)
             button_width = max(170, min(360, 80 + longest_label * 7))
+        configured_row_gap = style.get("button_row_gap_px")
+        if isinstance(configured_row_gap, (int, float)):
+            button_row_gap = max(0, min(int(configured_row_gap), 240))
+        else:
+            button_row_gap = 30
         for item in block.get("buttons", []):
             label = esc(item.get("label") or ui(ui_labels, "open_resource", "Open resource"))
             is_exit = str(item.get("type") or "").casefold() == "exit-course"
+            lesson_target = item.get("lesson_target")
             if is_exit:
                 control = f'<button class="course-button" type="button" data-exit-course>{label}</button>'
+            elif str(item.get("type") or "").casefold() == "lesson" and isinstance(lesson_target, int):
+                control = (
+                    f'<button class="course-button" type="button" data-lesson-target="{lesson_target}">'
+                    f"{label}</button>"
+                )
             else:
                 control = (
                     f'<a class="course-button" href="{esc(item.get("url") or "#")}" '
@@ -711,12 +912,21 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
                 row_classes.append("resource-button-row--exit")
             row_content = action + description if action_left else description + action
             rows.append(f'<div class="{" ".join(row_classes)}">{row_content}</div>')
-        return f'<div class="resource-button-list" style="--resource-button-width:{button_width}px">{"".join(rows)}</div>'
+        return (
+            f'<div class="resource-button-list" style="--resource-button-width:{button_width}px;'
+            f'--resource-button-row-gap:{button_row_gap}px">{"".join(rows)}</div>'
+        )
     if block_type == "flashcards":
         cards = []
         flashcard_size = str(style.get("flashcard_size") or "small").strip().casefold()
         large_cards = flashcard_size == "large"
-        card_class = "flashcard flashcard--large" if large_cards else "flashcard"
+        paired_large_cards = flashcard_size in {"paired", "paired_large", "paired-large"}
+        if large_cards:
+            card_class = "flashcard flashcard--large"
+        elif paired_large_cards:
+            card_class = "flashcard flashcard--paired-large"
+        else:
+            card_class = "flashcard"
         flip_icon = (
             '<span class="flashcard__flip" aria-hidden="true">'
             '<svg viewBox="0 0 23 17" focusable="false"><path fill="currentColor" fill-rule="nonzero" '
@@ -735,7 +945,12 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
                 f'{back}</div></div>{flip_icon}</div></div>'
             )
         count_class = f' flashcard-grid--{len(cards)}' if cards else ""
-        size_class = " flashcard-grid--large" if large_cards else ""
+        if large_cards:
+            size_class = " flashcard-grid--large"
+        elif paired_large_cards:
+            size_class = " flashcard-grid--paired-large"
+        else:
+            size_class = ""
         return f'<div class="flashcard-grid{count_class}{size_class}">{"".join(cards)}</div>'
     if block_type in {"accordion", "tabs", "process", "interactive"}:
         return render_interactive(block, lesson_id, ui_labels)
@@ -758,7 +973,23 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
         for index, item in enumerate(visible_items, start=1):
             marker_id = f'{graphic_id}-marker-{index}'
             callout_id = f'{graphic_id}-callout-{index}'
-            title = str(item.get("title") or ui(ui_labels, "marker", "Marker {number}", number=index))
+            title = str(item.get("title") or "").strip()
+            accessible_title = title or ui(ui_labels, "marker", "Marker {number}", number=index)
+            callout_heading = (
+                f'<h2 class="labeled-graphic__title" id="{callout_id}-title" tabindex="-1">{esc(title)}</h2>'
+                if title
+                else ""
+            )
+            callout_name = (
+                f'aria-labelledby="{callout_id}-title"'
+                if title
+                else f'aria-label="{esc(accessible_title)}"'
+            )
+            callout_class = (
+                "labeled-graphic__callout"
+                if title
+                else "labeled-graphic__callout labeled-graphic__callout--untitled"
+            )
             try:
                 x = max(0.0, min(100.0, float(item.get("x") or 50)))
             except (TypeError, ValueError):
@@ -790,15 +1021,14 @@ def render_block(block: dict, lesson_id: int, ui_labels: dict | None = None) -> 
             items.append(
                 '<li class="labeled-graphic__item">'
                 f'<button class="labeled-graphic__marker" id="{marker_id}" type="button" style="{marker_style}" '
-                f'data-labeled-marker="{index - 1}" data-marker-index="{index - 1}" data-marker-title="{esc(title)}" '
+                f'data-labeled-marker="{index - 1}" data-marker-index="{index - 1}" data-marker-title="{esc(accessible_title)}" '
                 f'aria-controls="{callout_id}" aria-expanded="false" '
-                f'aria-label="{esc(ui(ui_labels, "marker_status", "Marker, {title}, Plus, Not viewed", title=title))}">'
+                f'aria-label="{esc(ui(ui_labels, "marker_status", "Marker, {title}, Plus, Not viewed", title=accessible_title))}">'
                 f'<span class="labeled-graphic__pin">{plus_icon}</span></button>'
                 f'<div class="labeled-graphic__bubble labeled-graphic__bubble--{horizontal} labeled-graphic__bubble--{vertical}" '
                 f'id="{callout_id}" data-labeled-callout="{index - 1}" data-marker-index="{index - 1}" style="{marker_style}" hidden>'
-                '<div class="labeled-graphic__callout" role="dialog" aria-modal="false" '
-                f'aria-labelledby="{callout_id}-title">'
-                f'<h2 class="labeled-graphic__title" id="{callout_id}-title" tabindex="-1">{esc(title)}</h2>'
+                f'<div class="{callout_class}" role="dialog" aria-modal="false" tabindex="-1" {callout_name}>'
+                f'{callout_heading}'
                 f'<button class="labeled-graphic__close" type="button" data-labeled-action="close" aria-label="{esc(ui(ui_labels, "close_modal", "Close modal"))}">{close_icon}</button>'
                 f'<div class="labeled-graphic__content"><div class="labeled-graphic__description">{item.get("description_html") or ""}</div></div>'
                 '<div class="labeled-graphic__controls">'
@@ -979,6 +1209,13 @@ def block_style_attr(block: dict) -> str:
             f"--block-button-color:{button_color}",
             f"--block-button-text-color:{contrasting_text(button_color)}",
         ])
+    continue_radius = style.get("continue_radius")
+    try:
+        continue_radius = max(0, min(float(continue_radius), 100))
+    except (TypeError, ValueError):
+        continue_radius = None
+    if continue_radius is not None:
+        rules.append(f"--continue-button-radius:{continue_radius:g}px")
     top = padding_pixels(style, "padding_top", "custom_padding_top")
     bottom = padding_pixels(style, "padding_bottom", "custom_padding_bottom")
     if top is not None:
@@ -1122,6 +1359,7 @@ def searchable_lesson_text(lesson: dict) -> str:
 
 
 def render_scrolling_course(course: dict, resource_root: Path | None = None) -> str:
+    ensure_scrolling_runtime_assets(resource_root)
     course = hydrate_caption_cues(course, resource_root)
     css = (TEMPLATE_DIR / "scrolling_styles.css").read_text(encoding="utf-8")
     brand = course.get("brand") or {}
@@ -1131,7 +1369,10 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     accent = safe_color(brand.get("primary_color") or theme.get("accent_color"), "#8cc53f")
     accent_dark = safe_color(brand.get("primary_color_dark"), "#6fa030")
     header_style = str(theme.get("lesson_header_style") or "ACCENT").upper()
-    if header_style == "CUSTOM":
+    lesson_header_image = str(theme.get("lesson_header_image") or "")
+    if header_style == "IMAGE" and lesson_header_image:
+        header_background = accent
+    elif header_style == "CUSTOM":
         header_background = safe_color(theme.get("lesson_header_color"), accent)
     elif header_style == "DARK":
         header_background = "#1c1c1c"
@@ -1139,13 +1380,15 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
         header_background = "#ffffff"
     else:
         header_background = accent
-    header_text = contrasting_text(header_background)
+    header_text = "#ffffff" if header_style == "IMAGE" and lesson_header_image else contrasting_text(header_background)
     families = theme.get("font_families") if isinstance(theme.get("font_families"), dict) else {}
     corner_style = str(theme.get("corner_style") or "Rounded").strip().casefold()
     process_step_badge_radius = "10px" if "round" in corner_style else "0px"
     heading_family = families.get("heading") or "Arial"
     body_family = families.get("body") or heading_family
     ui_family = families.get("ui") or body_family
+    cover_lesson_family = families.get("cover_lesson") or ui_family
+    sidebar_lesson_family = SCROLLING_SIDEBAR_FONT
     cover = theme.get("cover_image") or ""
     dimensions = theme.get("cover_image_dimensions") if isinstance(theme.get("cover_image_dimensions"), dict) else {}
     cover_width = dimensions.get("originalWidth") or dimensions.get("width") or 1680
@@ -1163,6 +1406,39 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     if overlay > 1:
         overlay /= 100
     overlay = min(max(overlay, 0), 1)
+
+    def image_layers(path: str, overlay_color: object, overlay_opacity: object) -> str:
+        if not path:
+            return "none"
+        try:
+            alpha = float(overlay_opacity)
+        except (TypeError, ValueError):
+            alpha = 0
+        if alpha > 1:
+            alpha /= 100
+        alpha = min(max(alpha, 0), 1)
+        color = safe_color(overlay_color, "#000000")
+        red = int(color[1:3], 16)
+        green = int(color[3:5], 16)
+        blue = int(color[5:7], 16)
+        escaped_path = path.replace('"', "%22")
+        return (
+            f'linear-gradient(rgba({red},{green},{blue},{alpha:g}),rgba({red},{green},{blue},{alpha:g})),'
+            f'url("{escaped_path}")'
+        )
+
+    lesson_header_layers = image_layers(
+        lesson_header_image if header_style == "IMAGE" else "",
+        theme.get("lesson_header_image_overlay_color"),
+        theme.get("lesson_header_image_overlay_opacity"),
+    )
+    sidebar_header_image = str(theme.get("sidebar_header_image") or "")
+    sidebar_header_layers = image_layers(
+        sidebar_header_image,
+        theme.get("sidebar_header_image_overlay_color"),
+        theme.get("sidebar_header_image_overlay_opacity"),
+    )
+    sidebar_header_text = "#ffffff" if sidebar_header_image else contrasting_text(accent)
     cover_style = (
         f' style="--cover-image:url(\'{esc(cover)}\');--cover-overlay:rgba(0,0,0,{overlay:g})"'
         if cover else ""
@@ -1234,8 +1510,21 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     )
     course_title_json = json.dumps(course.get("course_title") or "OCP Academy Course")
     ui_labels_json = json.dumps(ui_labels, ensure_ascii=False).replace("</", "<\\/")
+    required_lesson_ids = [
+        index
+        for index, lesson in enumerate(lessons, start=1)
+        if not bool(lesson.get("optional", False))
+    ]
+    required_lesson_ids_json = json.dumps(required_lesson_ids)
     initial_nav_class = "" if bool(scrolling.get("toc_initially_open", True)) else " nav-closed"
     theme_classes = ["is-cover"]
+    source_theme = re.sub(r"[^a-z0-9_-]+", "-", str(theme.get("source_theme") or "").strip().casefold()).strip("-")
+    if source_theme:
+        theme_classes.append(f"source-theme-{source_theme}")
+    theme_classes.append(f"sidebar-lessons-{SCROLLING_SIDEBAR_STYLE}")
+    button_scheme = re.sub(r"[^a-z0-9_-]+", "-", str(theme.get("button_scheme") or "").strip().casefold()).strip("-")
+    if button_scheme:
+        theme_classes.append(f"button-scheme-{button_scheme}")
     if theme.get("hide_lesson_headers"):
         theme_classes.append("hide-lesson-headers")
     if not theme.get("animate_block_entrance", True):
@@ -1246,6 +1535,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
 (function() {
   'use strict';
   var lessonCount = __LESSON_COUNT__;
+  var requiredLessonIds = __REQUIRED_LESSON_IDS__;
   var directionalTransitions = __DIRECTIONAL_TRANSITIONS__;
   var navigationRestricted = __NAVIGATION_RESTRICTED__;
   var uiLabels = __UI_LABELS__;
@@ -1285,14 +1575,15 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   function completed(id) { return state.completedLessons.indexOf(id) !== -1; }
   function lessonUnlocked(id) {
     id = Number(id || 0);
-    return !navigationRestricted || id <= 1 || completed(id - 1);
+    if (!navigationRestricted || id <= 1) return true;
+    return requiredLessonIds.filter(function(requiredId) { return requiredId < id; }).every(completed);
   }
   function markComplete(id) {
     if (!completed(id)) state.completedLessons.push(id);
     var lesson = document.getElementById('lesson-' + id);
     if (lesson) state.viewedBlocks[id] = Number(lesson.dataset.progressTotal || 0);
     if (id === activeLesson) syncLessonReadProgress();
-    if (state.completedLessons.length >= lessonCount) SCORM.setCompleted();
+    if (requiredLessonIds.every(completed)) SCORM.setCompleted();
   }
   function clearMatchingPiece(piece) {
     if (!piece) return;
@@ -1552,7 +1843,8 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       item.disabled = isLocked;
       item.setAttribute('aria-disabled', isLocked ? 'true' : 'false');
     });
-    var percent = lessonCount ? Math.round(state.completedLessons.length / lessonCount * 100) : 0;
+    var completedRequired = requiredLessonIds.filter(completed).length;
+    var percent = requiredLessonIds.length ? Math.round(completedRequired / requiredLessonIds.length * 100) : 100;
     document.getElementById('progress-fill').style.width = percent + '%';
     document.getElementById('progress-value').textContent = uiText('complete_progress', '{percent}% COMPLETE', { percent: percent });
   }
@@ -1719,6 +2011,12 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
         'process-slide--leave', 'process-slide--leave-next', 'process-slide--leave-previous', 'process-slide--leave-active'
       );
     });
+    // A learner can select another step before the prior transition timer
+    // finishes. Normalize the interrupted state first so an abandoned outgoing
+    // slide cannot remain visible underneath the new transition.
+    slides.forEach(function(slide, slideIndex) {
+      slide.hidden = slideIndex !== previousIndex;
+    });
     if (shouldAnimate) {
       var outgoing = slides[previousIndex];
       var incoming = slides[index];
@@ -1758,6 +2056,24 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     }
   }
 
+  function showGallerySlide(carousel, requestedIndex) {
+    if (!carousel) return;
+    var slides = Array.from(carousel.querySelectorAll('[data-gallery-slide]'));
+    if (!slides.length) return;
+    var requested = Number(requestedIndex) || 0;
+    var index = ((requested % slides.length) + slides.length) % slides.length;
+    slides.forEach(function(slide, slideIndex) {
+      slide.hidden = slideIndex !== index;
+    });
+    carousel.dataset.galleryIndex = index;
+    carousel.querySelectorAll('[data-gallery-target]').forEach(function(button) {
+      button.setAttribute(
+        'aria-current',
+        Number(button.dataset.galleryTarget) === index ? 'true' : 'false'
+      );
+    });
+  }
+
   function showLabeledGraphicItem(graphic, requestedIndex, focusTitle) {
     if (!graphic) return;
     var markers = Array.from(graphic.querySelectorAll('[data-labeled-marker]'));
@@ -1778,7 +2094,11 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     });
     graphic.dataset.markerIndex = String(index);
     if (focusTitle) {
-      var titleTarget = graphic.querySelector('[data-labeled-callout="' + index + '"] .labeled-graphic__title');
+      var activeCallout = graphic.querySelector('[data-labeled-callout="' + index + '"]');
+      var titleTarget = activeCallout && (
+        activeCallout.querySelector('.labeled-graphic__title')
+        || activeCallout.querySelector('.labeled-graphic__callout')
+      );
       if (titleTarget) titleTarget.focus({ preventScroll: true });
     }
   }
@@ -2231,6 +2551,24 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
       showProcessStep(carousel, current + (processAction.dataset.processAction === 'next' ? 1 : -1));
       return;
     }
+    var galleryTarget = event.target.closest('[data-gallery-target]');
+    if (galleryTarget) {
+      showGallerySlide(
+        galleryTarget.closest('[data-gallery-carousel]'),
+        galleryTarget.dataset.galleryTarget
+      );
+      return;
+    }
+    var galleryAction = event.target.closest('[data-gallery-action]');
+    if (galleryAction) {
+      var gallery = galleryAction.closest('[data-gallery-carousel]');
+      var galleryIndex = Number(gallery.dataset.galleryIndex || 0);
+      showGallerySlide(
+        gallery,
+        galleryIndex + (galleryAction.dataset.galleryAction === 'next' ? 1 : -1)
+      );
+      return;
+    }
     var labeledAction = event.target.closest('[data-labeled-action]');
     if (labeledAction) {
       var labeledGraphic = labeledAction.closest('[data-labeled-graphic]');
@@ -2425,6 +2763,7 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   window.addEventListener('beforeunload', function() { saveState(); SCORM.finish(); });
 
   document.querySelectorAll('.process-carousel').forEach(function(carousel) { showProcessStep(carousel, 0); });
+  document.querySelectorAll('[data-gallery-carousel]').forEach(function(carousel) { showGallerySlide(carousel, 0); });
   document.querySelectorAll('[data-labeled-graphic]').forEach(closeLabeledGraphic);
   document.querySelectorAll('[data-video-player]').forEach(initVideoPlayer);
 
@@ -2434,6 +2773,8 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
   document.title = __COURSE_TITLE__;
 })();
 '''.replace("__LESSON_COUNT__", str(len(lessons))).replace(
+        "__REQUIRED_LESSON_IDS__", required_lesson_ids_json
+    ).replace(
         "__DIRECTIONAL_TRANSITIONS__", "true" if directional_transitions else "false"
     ).replace(
         "__NAVIGATION_RESTRICTED__", "true" if navigation_restricted else "false"
@@ -2441,10 +2782,14 @@ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> 
     root_css = (
         f':root{{--accent:{accent};--accent-dark:{accent_dark};--accent-text:{contrasting_text(accent)};'
         f'--lesson-header-bg:{header_background};--lesson-header-text:{header_text};'
+        f'--lesson-header-image:{lesson_header_layers};'
+        f'--sidebar-header-image:{sidebar_header_layers};--sidebar-header-text:{sidebar_header_text};'
         f'--process-step-badge-radius:{process_step_badge_radius};'
         f'--heading:{css_string(heading_family)},"Noto Sans Myanmar",sans-serif;'
         f'--body:{css_string(body_family)},"Noto Sans Myanmar",sans-serif;'
-        f'--ui:{css_string(ui_family)},"Noto Sans Myanmar",sans-serif;}}'
+        f'--ui:{css_string(ui_family)},"Noto Sans Myanmar",sans-serif;'
+        f'--cover-lesson-font:{css_string(cover_lesson_family)},"Noto Sans Myanmar",sans-serif;'
+        f'--sidebar-lesson-font:{css_string(sidebar_lesson_family)},"Noto Sans Myanmar",sans-serif;}}'
     )
     return f'''<!doctype html>
 <html lang="{esc(course.get("language") or "en")}">
