@@ -52,6 +52,7 @@ courses/
     ocp-ready-data-center-recognition-program/
     ocp-contribution-process/
   ocp-ready-requirements-for-energy-storage-systems/
+  ocp-solid-state-transformers/
   open-rack-v3/
     module-1-ocp-orv3-history-and-impact/
     module-2-orv3-core-specifications/
@@ -128,6 +129,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ocp-orientation/ocp-ready-data-center-recognition-program` | OCP Ready™ Data Center Recognition Program |
 | `ocp-orientation/ocp-contribution-process` | OCP Contribution Process |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
+| `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
 | `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
 | `open-rack-v3/module-2-orv3-core-specifications` | Module 2: ORv3 Core Specifications |
 | `open-rack-v3/module-3-orv3-real-world-implementations` | Module 3: ORv3 Real World Implementations |

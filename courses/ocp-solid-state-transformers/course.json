@@ -1,0 +1,2494 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_sst_from_mv_to_800vdc",
+  "course_title": "OCP Solid State Transformers: From Medium Voltage to 800 VDC",
+  "course_subtitle": "A five-module Academy course on the OCP SST v0.3 design envelope, grid behavior, and LVDC system integration.",
+  "language": "en-US",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "OCP SST v0.3.0 · June 22, 2026",
+  "index_footer_line": "Built from OCP SST v0.3 with attributed market context and companion OCP Academy learning.",
+  "target_duration_minutes": 80,
+  "audience_level": "intermediate",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo v2",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable"
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "academy_logo": "ocp_academy_white.svg",
+    "course_logo": "sst_course_icon.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "SST"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_specification_pdf",
+      "title": "OCP SST Design Specification v0.3",
+      "url": "https://www.opencompute.org/documents/ocp-sst-design-specification-v0-3-final-pdf"
+    },
+    {
+      "kind": "secondary_analysis",
+      "title": "SemiAnalysis: Inside the 800VDC Revolution - Part 1",
+      "url": "https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part",
+      "usage_note": "Market context and four-phase transition lens only; forecasts are not OCP requirements. Two attributed learner figures are included, but the downloaded article is not."
+    },
+    {
+      "kind": "ocp_white_paper",
+      "title": "DCF Power Distribution LVDC White Paper Version 1.0",
+      "url": "https://www.opencompute.org/documents/dcf-power-distribution-lvdc-white-paper-version-1-0-final-pdf-1"
+    },
+    {
+      "kind": "companion_course",
+      "title": "OCP Diablo 400",
+      "url": "https://academy.opencompute.org/learn/courses/49/ocp-diablo-400/"
+    },
+    {
+      "kind": "companion_course",
+      "title": "OCP Ready Requirements for Energy Storage Systems",
+      "url": "https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "lvdc",
+      "term": "Low-voltage direct current (LVDC)",
+      "tooltip": "A DC distribution domain below medium-voltage class; in this course the SST output interface is unipolar 800 VDC."
+    },
+    {
+      "id": "i2r",
+      "term": "I²R loss",
+      "tooltip": "Resistive heating proportional to the square of current times resistance. Lower current can sharply reduce loss for the same conductor resistance."
+    },
+    {
+      "id": "diablo_sidecar",
+      "term": "Diablo 400 power sidecar",
+      "tooltip": "A rack-adjacent power architecture covered in the OCP Diablo 400 Academy course; it distributes high-voltage DC to high-density compute racks."
+    },
+    {
+      "id": "ess",
+      "term": "Energy storage system (ESS)",
+      "tooltip": "Equipment and controls that store energy and later supply electrical power for ride-through, backup, smoothing, or other defined services."
+    },
+    {
+      "id": "mvsst",
+      "term": "Medium-voltage solid state transformer (MVSST)",
+      "tooltip": "A megawatt-scale power-electronic converter that accepts MVAC and produces regulated LVDC through switched conversion and isolation."
+    },
+    {
+      "id": "black_box",
+      "term": "Black-box specification",
+      "tooltip": "A product framework that defines interfaces and observable behavior while allowing suppliers freedom in internal implementation."
+    },
+    {
+      "id": "high_frequency_isolation",
+      "term": "High-frequency isolation",
+      "tooltip": "Galvanic separation implemented through a transformer operating above line frequency, enabling smaller magnetics while adding switching and insulation challenges."
+    },
+    {
+      "id": "dc_link",
+      "term": "DC link",
+      "tooltip": "An intermediate DC energy node, often using capacitance, between converter stages."
+    },
+    {
+      "id": "galvanic_isolation",
+      "term": "Galvanic isolation",
+      "tooltip": "Separation that prevents a direct conductive path while allowing energy transfer through a transformer or other isolation mechanism."
+    },
+    {
+      "id": "wide_bandgap",
+      "term": "Wide-bandgap semiconductor",
+      "tooltip": "A semiconductor material class, including silicon carbide and gallium nitride, that can support high-voltage and high-frequency power switching."
+    },
+    {
+      "id": "mft_hft",
+      "term": "MFT / HFT",
+      "tooltip": "Medium-frequency transformer or high-frequency transformer used for voltage transformation and isolation in switched converters."
+    },
+    {
+      "id": "normative",
+      "term": "Normative",
+      "tooltip": "A requirement-bearing part of a specification. Non-normative material provides context or examples without mandating an implementation."
+    },
+    {
+      "id": "bil",
+      "term": "Basic impulse level (BIL)",
+      "tooltip": "An insulation-withstand rating for standardized high-voltage impulse conditions."
+    },
+    {
+      "id": "rocof",
+      "term": "Rate of change of frequency (ROCOF)",
+      "tooltip": "How quickly system frequency changes, expressed here in hertz per second."
+    },
+    {
+      "id": "high_resistance_ground",
+      "term": "High-resistance grounding",
+      "tooltip": "A grounding method that limits ground-fault current through intentional resistance while enabling fault detection and controlled response."
+    },
+    {
+      "id": "nema_3r",
+      "term": "NEMA 3R",
+      "tooltip": "An enclosure rating intended to provide a degree of protection for outdoor equipment against rain, sleet, and external ice formation."
+    },
+    {
+      "id": "ahj",
+      "term": "Authority having jurisdiction (AHJ)",
+      "tooltip": "The organization or official responsible for interpreting and enforcing applicable codes and approvals."
+    },
+    {
+      "id": "tbd",
+      "term": "TBD",
+      "tooltip": "To be determined. A draft entry that remains open and must not be treated as a finalized requirement."
+    },
+    {
+      "id": "lrg",
+      "term": "Low-resistance grounding (LRG)",
+      "tooltip": "A grounded-neutral method using resistance to limit fault current while retaining detectable ground-fault behavior."
+    },
+    {
+      "id": "per_unit",
+      "term": "Per-unit voltage",
+      "tooltip": "A normalized quantity expressed relative to nominal voltage; 1.0 per unit equals the nominal value."
+    },
+    {
+      "id": "lvrt",
+      "term": "Low-voltage ride-through (LVRT)",
+      "tooltip": "The required behavior during a temporary input-voltage reduction, including current limits and coordinated ESS support."
+    },
+    {
+      "id": "frt",
+      "term": "Frequency ride-through (FRT)",
+      "tooltip": "The duration and behavior required while input frequency is outside the normal continuous band."
+    },
+    {
+      "id": "precharge",
+      "term": "Precharge",
+      "tooltip": "Controlled charging of DC-link capacitance before the main power path is fully enabled, limiting inrush and verifying readiness."
+    },
+    {
+      "id": "n_plus_c",
+      "term": "N+C redundancy",
+      "tooltip": "An architecture with N capacity required for load plus C additional capacity or blocks available for redundancy."
+    },
+    {
+      "id": "insulation_monitoring",
+      "term": "Insulation monitoring",
+      "tooltip": "Continuous monitoring used to detect declining insulation resistance or a first ground fault in an unearthed or impedance-grounded DC system."
+    },
+    {
+      "id": "selectivity",
+      "term": "Protection selectivity",
+      "tooltip": "Coordination that isolates the smallest practical faulted section while allowing unaffected parts of the system to continue operating."
+    },
+    {
+      "id": "mv_ups",
+      "term": "Medium-voltage UPS (MV-UPS)",
+      "tooltip": "A coordinated medium-voltage power-conversion and energy-storage system capable of supplying critical output during upstream interruption."
+    },
+    {
+      "id": "dc_coupled",
+      "term": "DC-coupled ESS",
+      "tooltip": "An energy-storage architecture connected to a DC bus, sharing or coordinating DC conversion and protection interfaces."
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why-ssts-why-now",
+      "title": "Why SSTs, Why Now",
+      "subtitle": "AI power density, the 800 VDC transition, and the case for an open medium-voltage converter interface.",
+      "module_badge_text": "Module 1",
+      "target_duration_minutes": 16,
+      "next_module_title": "The Technology Inside the SST Black Box",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 1
+            }
+          ],
+          "title": "Why SSTs, Why Now",
+          "subtitle": "AI power density, the 800 VDC transition, and the case for an open medium-voltage converter interface.",
+          "version_chip": "OCP SST v0.3.0 · June 22, 2026"
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course-overview",
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "title": "Five Modules, One Power-System Story",
+          "subtitle": "Market context leads into the OCP v0.3 product contract and the surrounding LVDC system.",
+          "modules_listed": [
+            "Why SSTs, Why Now",
+            "The Technology Inside the SST Black Box",
+            "The OCP SST v0.3 Design Envelope",
+            "Grid Interaction, Ride-Through, and State Behavior",
+            "Integrating SSTs into LVDC Data Centers"
+          ],
+          "chips": [
+            {
+              "icon": "clock",
+              "text": "About 75–85 minutes"
+            },
+            {
+              "icon": "modules",
+              "text": "Five required modules"
+            },
+            {
+              "icon": "spec",
+              "text": "Based on SST v0.3",
+              "url": "https://www.opencompute.org/documents/ocp-sst-design-specification-v0-3-final-pdf"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "ai-rack-density",
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_rack_density.txt",
+            "wav_file": "audio/module1/slide_03_ai_rack_density.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Inside the 800VDC Revolution – Part 1.html",
+              "page": null
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            }
+          ],
+          "section_label": "Market Context",
+          "title": "AI Rack Density Is Rewriting the Power Chain",
+          "bullets": [
+            {
+              "bold_lead": "Density compounds loss",
+              "text": "Every avoidable conversion loss becomes heat and unavailable compute capacity."
+            },
+            {
+              "bold_lead": "Space becomes electrical",
+              "text": "Copper, switchgear, conversion cabinets, and cooling compete with white-space infrastructure."
+            },
+            {
+              "bold_lead": "Forecasts are context",
+              "text": "The adoption curve shown here is SemiAnalysis analysis, not an OCP requirement or schedule."
+            }
+          ],
+          "figure": {
+            "path": "figures/semianalysis_800vdc_adoption.jpg",
+            "alt": "SemiAnalysis chart projecting retrofit and facility-level 800 VDC adoption from 2025 through 2030.",
+            "caption": "Source: SemiAnalysis, “Inside the 800VDC Revolution – Part 1.” Forecasts are analyst estimates, not OCP requirements.",
+            "source": "reuse"
+          },
+          "reference_links": [
+            {
+              "label": "SemiAnalysis article",
+              "url": "https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "voltage-current-copper",
+          "audio": {
+            "script_file": "audio/module1/slide_04_voltage_current_copper.txt",
+            "wav_file": "audio/module1/slide_04_voltage_current_copper.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Inside the 800VDC Revolution – Part 1.html",
+              "page": null
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 24
+            }
+          ],
+          "section_label": "The Physics",
+          "title": "Voltage Changes the Current—and the Copper Problem",
+          "figure": {
+            "path": "figures/voltage_current_copper.mp4",
+            "alt": "Silent animation comparing current and relative resistive heating for an idealized one-megawatt load at 54 volts and 800 volts DC.",
+            "caption": "Idealized comparison using P = V × I and loss = I²R. Actual conductor design requires full system engineering.",
+            "source": "custom",
+            "media_type": "video",
+            "poster": "figures/voltage_current_copper_poster.png",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "lvdc",
+            "i2r"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "four-phase-transition",
+          "audio": {
+            "script_file": "audio/module1/slide_05_four_phase_transition.txt",
+            "wav_file": "audio/module1/slide_05_four_phase_transition.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Inside the 800VDC Revolution – Part 1.html",
+              "page": null
+            }
+          ],
+          "section_label": "Transition Lens",
+          "title": "Four Phases Move Conversion Upstream",
+          "figure": {
+            "path": "figures/semianalysis_four_phase_transition.jpg",
+            "alt": "SemiAnalysis four-phase diagram progressing from sidecar retrofit to a facility solid state transformer.",
+            "caption": "Source: SemiAnalysis, “Inside the 800VDC Revolution – Part 1.” Used as an attributed architecture lens, not an OCP roadmap.",
+            "source": "reuse"
+          },
+          "reference_links": [
+            {
+              "label": "SemiAnalysis article",
+              "url": "https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "academy-power-path",
+          "audio": {
+            "script_file": "audio/module1/slide_06_academy_power_path.txt",
+            "wav_file": "audio/module1/slide_06_academy_power_path.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP Diablo 400 Academy course",
+              "page": null
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            }
+          ],
+          "section_label": "OCP Academy",
+          "title": "Three Courses, Three Complementary Boundaries",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Diablo 400",
+              "body": "Rack-level power sidecar, ±400 VDC distribution, interfaces, safety, and adoption.",
+              "tone": "blue",
+              "url": "https://academy.opencompute.org/learn/courses/49/ocp-diablo-400/",
+              "link_text": "Open the Diablo 400 course"
+            },
+            {
+              "title": "Energy Storage Systems",
+              "body": "Placement, controls, technologies, hazards, standards, testing, and OCP Ready™ evidence.",
+              "tone": "amber",
+              "url": "https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems",
+              "link_text": "Open the ESS course"
+            },
+            {
+              "title": "Solid State Transformers",
+              "body": "Medium-voltage input, regulated 800 VDC output, grid behavior, and system integration.",
+              "tone": "green"
+            }
+          ],
+          "term_refs": [
+            "diablo_sidecar",
+            "ess"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "why-open-spec",
+          "audio": {
+            "script_file": "audio/module1/slide_07_why_open_spec.txt",
+            "wav_file": "audio/module1/slide_07_why_open_spec.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 1
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            }
+          ],
+          "section_label": "OCP Collaboration",
+          "title": "An Open Product Boundary for a New Power Class",
+          "bullets": [
+            {
+              "bold_lead": "Megawatt-scale converter",
+              "text": "Converts medium-voltage AC to regulated low-voltage DC through power electronics and high-frequency isolation."
+            },
+            {
+              "bold_lead": "Black-box specification",
+              "text": "Defines observable interfaces and behavior without mandating one internal vendor topology."
+            },
+            {
+              "bold_lead": "Community-authored v0.3",
+              "text": "Google, Microsoft, and NVIDIA establish a shared design envelope for continued collaboration."
+            }
+          ],
+          "figure": {
+            "path": "figures/open_spec_boundary.svg",
+            "alt": "Diagram showing Google, Microsoft, and NVIDIA contributing to an open SST product boundary aligned with OCP Power Distribution.",
+            "caption": "The v0.3 specification is an OCP Community collaboration and remains a draft framework on the path to v1.0.",
+            "source": "custom"
+          },
+          "reference_links": [
+            {
+              "label": "OCP Power Distribution Sub-Project",
+              "url": "https://www.opencompute.org/community/power-distribution"
+            }
+          ],
+          "term_refs": [
+            "mvsst",
+            "black_box"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module1/slide_08_takeaways.txt",
+            "wav_file": "audio/module1/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "Inside the 800VDC Revolution – Part 1.html",
+              "page": null
+            },
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "title": "The Architectural Case for SSTs",
+          "items": [
+            "AI density elevates electrical efficiency, copper, space, and heat into compute-scaling constraints.",
+            "Higher voltage reduces current for a given power, but protection and insulation remain system-level design work.",
+            "The four-phase transition is an attributed analyst lens—not an OCP deployment schedule.",
+            "Diablo 400, ESS, and SST courses cover complementary rack, storage, and medium-voltage boundaries.",
+            "OCP v0.3 creates an open black-box interface for community and supplier alignment."
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "audio": {
+            "script_file": "audio/module1/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "Inside the 800VDC Revolution – Part 1.html",
+              "page": null
+            },
+            {
+              "source": "OCP Diablo 400 Academy course",
+              "page": null
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            }
+          ],
+          "title": "Place Conversion and Storage in Context",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "Which product boundary is the focus of this course?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A medium-voltage-input SST producing regulated 800 VDC",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "A rack sidecar distributing ±400 VDC",
+                  "correct": false,
+                  "feedback_incorrect": "That boundary is taught in the Diablo 400 companion course."
+                },
+                {
+                  "id": "c",
+                  "text": "A facility or rack energy-storage installation",
+                  "correct": false,
+                  "feedback_incorrect": "Storage deployment is treated in the OCP Ready ESS companion course; this course focuses on SST conversion and coordination."
+                }
+              ],
+              "feedback_correct": "Correct. The SST product boundary begins at MVAC and produces regulated 800 VDC.",
+              "feedback_incorrect": "Review the three-course boundary map."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "Which statements correctly distinguish the sources and learning boundaries?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The SST v0.3 specification is the authority for product requirements.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "SemiAnalysis adoption dates are an OCP deployment commitment.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "The Diablo 400 course covers the rack-level power sidecar.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The ESS course provides deeper treatment of storage placement, hazards, and compliance.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Requirements, analyst context, rack-sidecar learning, and ESS depth come from different sources.",
+              "feedback_incorrect": "The analyst roadmap is context, not an OCP commitment. The companion courses retain their rack and ESS scopes."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up-next",
+          "audio": {
+            "script_file": "audio/module1/slide_10_up_next.txt",
+            "wav_file": "audio/module1/slide_10_up_next.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "next_module_number": 2,
+          "next_module_title": "The Technology Inside the SST Black Box",
+          "thank_you_message": "You have completed Module 1: Why SSTs, Why Now."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "technology-inside-the-black-box",
+      "title": "The Technology Inside the SST Black Box",
+      "subtitle": "Functional blocks, representative conversion stages, and the engineering trade space.",
+      "module_badge_text": "Module 2",
+      "target_duration_minutes": 16,
+      "next_module_title": "The OCP SST v0.3 Design Envelope",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            }
+          ],
+          "title": "The Technology Inside the SST Black Box",
+          "subtitle": "Functional blocks, representative conversion stages, and the engineering trade space.",
+          "version_chip": "OCP SST v0.3.0 · Technology mental model"
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            }
+          ],
+          "title": "Functions, Stages, and Tradeoffs",
+          "subtitle": "By the end of this module, you will be able to…",
+          "objectives": [
+            "Compare a conventional transformer-plus-rectifier chain with an SST.",
+            "Identify the five product components named in OCP SST v0.3.",
+            "Trace a representative isolated conversion path from MVAC to 800 VDC.",
+            "Explain how WBG switching and high-frequency magnetics change the design trade space.",
+            "Keep illustrative topology separate from normative black-box requirements."
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "conventional-versus-sst",
+          "audio": {
+            "script_file": "audio/module2/slide_03_conventional_versus_sst.txt",
+            "wav_file": "audio/module2/slide_03_conventional_versus_sst.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 108
+            }
+          ],
+          "section_label": "Architecture Shift",
+          "title": "From Line-Frequency Iron to Switched Conversion",
+          "figure": {
+            "path": "figures/conventional_vs_sst.svg",
+            "alt": "Side-by-side comparison of a conventional medium-voltage transformer and rectifier chain with an integrated solid state transformer path.",
+            "caption": "The SST integrates switched conversion and high-frequency isolation; the OCP specification remains topology-neutral.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "high_frequency_isolation"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_grid",
+          "slug": "five-components",
+          "audio": {
+            "script_file": "audio/module2/slide_04_five_components.txt",
+            "wav_file": "audio/module2/slide_04_five_components.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            }
+          ],
+          "section_label": "Product Model",
+          "title": "Five Components Define the OCP SST",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "1 · Power conversion",
+              "body": "Semiconductor stages, isolation, magnetics, DC link, and energy flow.",
+              "tone": "green"
+            },
+            {
+              "title": "2 · MVAC input",
+              "body": "Voltage class, grounding, harmonics, fault duty, and grid behavior.",
+              "tone": "blue"
+            },
+            {
+              "title": "3 · LVDC output",
+              "body": "Unipolar 800 VDC regulation, ripple, overload, and fault coordination.",
+              "tone": "green"
+            },
+            {
+              "title": "4 · Control & communications",
+              "body": "Firmware, telemetry, Modbus TCP/IP, states, and coordinated response.",
+              "tone": "slate"
+            },
+            {
+              "title": "5 · Auxiliary power",
+              "body": "External backed controls plus internally generated actuation and cooling power.",
+              "tone": "amber"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "representative-three-stage-path",
+          "audio": {
+            "script_file": "audio/module2/slide_05_representative_three_stage_path.txt",
+            "wav_file": "audio/module2/slide_05_representative_three_stage_path.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            }
+          ],
+          "section_label": "Representative Topology",
+          "title": "Three Stages Connect MVAC to Regulated 800 VDC",
+          "figure": {
+            "path": "figures/sst_conversion_path.mp4",
+            "alt": "Silent animation showing energy moving through an active input stage, isolated high-frequency stage, and regulated 800 VDC output.",
+            "caption": "Instructional topology only. OCP SST v0.3 specifies a black-box product boundary, not one mandatory circuit.",
+            "source": "custom",
+            "media_type": "video",
+            "poster": "figures/sst_conversion_path_poster.png",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "dc_link",
+            "galvanic_isolation"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "wbg-and-magnetics",
+          "audio": {
+            "script_file": "audio/module2/slide_06_wbg_and_magnetics.txt",
+            "wav_file": "audio/module2/slide_06_wbg_and_magnetics.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 109
+            }
+          ],
+          "section_label": "Enabling Technology",
+          "title": "WBG Devices and High-Frequency Magnetics",
+          "bullets": [
+            {
+              "bold_lead": "Silicon carbide",
+              "text": "Supports high-voltage, efficient switching and is central to current SST development."
+            },
+            {
+              "bold_lead": "Gallium nitride",
+              "text": "Has emerging potential, but application maturity and voltage class must match the product."
+            },
+            {
+              "bold_lead": "MFT or HFT",
+              "text": "Higher frequency can reduce transformer size while increasing loss, insulation, and thermal design demands."
+            }
+          ],
+          "figure": {
+            "path": "figures/wbg_magnetics.svg",
+            "alt": "Diagram connecting silicon carbide switching frequency to smaller magnetic components, power density, and engineering constraints.",
+            "caption": "Higher switching frequency enables smaller magnetics but raises EMI, insulation, loss, and manufacturing challenges.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "wide_bandgap",
+            "mft_hft"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "trade-space",
+          "audio": {
+            "script_file": "audio/module2/slide_07_trade_space.txt",
+            "wav_file": "audio/module2/slide_07_trade_space.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 18
+            }
+          ],
+          "section_label": "Engineering Judgment",
+          "title": "Programmability and Modularity Expand the Trade Space",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Active capabilities",
+              "body": "Output regulation, input-current shaping, telemetry, grid response, and coordinated ESS control.",
+              "tone": "green"
+            },
+            {
+              "title": "Modular opportunities",
+              "body": "Serviceable building blocks, configurable ratings, and possible graceful degradation.",
+              "tone": "blue"
+            },
+            {
+              "title": "Reliability obligations",
+              "body": "More semiconductors, controls, cooling paths, connectors, and failure modes to validate.",
+              "tone": "amber"
+            },
+            {
+              "title": "Deployment proof",
+              "body": "Efficiency, protection, maintainability, certification, and stable behavior must be demonstrated at scale.",
+              "tone": "red"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module2/slide_08_takeaways.txt",
+            "wav_file": "audio/module2/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            }
+          ],
+          "title": "What Makes an SST Different",
+          "items": [
+            "Switched conversion integrates isolation, regulation, sensing, and control into an active product.",
+            "OCP’s five-component model separates reviewable input, output, conversion, control, and auxiliary domains.",
+            "The three-stage diagram is instructional; the specification does not mandate a vendor circuit topology.",
+            "WBG devices and higher-frequency magnetics create power-density opportunity with new engineering risks.",
+            "Capabilities such as programmability and modularity must be proven through system-level validation."
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            }
+          ],
+          "title": "Match Functions to the SST Product Model",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "What does OCP SST v0.3 primarily specify?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A black-box product envelope and observable interfaces",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "One mandatory three-stage circuit topology",
+                  "correct": false,
+                  "feedback_incorrect": "The three-stage path is an instructional example; suppliers retain topology freedom."
+                },
+                {
+                  "id": "c",
+                  "text": "Only the semiconductor part number",
+                  "correct": false,
+                  "feedback_incorrect": "The specification spans input, output, control, auxiliary power, environment, and compliance—not one device."
+                }
+              ],
+              "feedback_correct": "Correct. The specification controls the product boundary and required behavior.",
+              "feedback_incorrect": "Separate the explanatory topology from the normative interface tables."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "Which items are named OCP SST product components?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "MVAC input",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "LVDC output",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Firmware, control, and communications",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The data hall cooling distribution unit",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Those three are among the five product components.",
+              "feedback_incorrect": "The five components stay within the SST product boundary; a facility cooling distribution unit does not."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up-next",
+          "audio": {
+            "script_file": "audio/module2/slide_10_up_next.txt",
+            "wav_file": "audio/module2/slide_10_up_next.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "next_module_number": 3,
+          "next_module_title": "The OCP SST v0.3 Design Envelope",
+          "thank_you_message": "You have completed Module 2: The Technology Inside the SST Black Box."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "ocp-sst-v03-design-envelope",
+      "title": "The OCP SST v0.3 Design Envelope",
+      "subtitle": "Exact ratings, interfaces, environment, compliance, and the boundary between requirements and open work.",
+      "module_badge_text": "Module 3",
+      "target_duration_minutes": 17,
+      "next_module_title": "Grid Interaction, Ride-Through, and State Behavior",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            }
+          ],
+          "title": "The OCP SST v0.3 Design Envelope",
+          "subtitle": "Exact ratings, interfaces, environment, compliance, and the boundary between requirements and open work.",
+          "version_chip": "OCP SST v0.3.0 · Product tables"
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 15
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 18
+            }
+          ],
+          "title": "Read the Product Tables with Confidence",
+          "subtitle": "By the end of this module, you will be able to…",
+          "objectives": [
+            "Identify SKU A and SKU B input voltage and power configurations.",
+            "Interpret the regulated unipolar 800 VDC output requirements.",
+            "Describe efficiency, physical, environmental, auxiliary-power, and communications expectations.",
+            "Separate fixed requirements from recommendations and TBD entries.",
+            "Organize the listed codes and standards into a deployment compliance map."
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "scope-and-boundary",
+          "audio": {
+            "script_file": "audio/module3/slide_03_scope_and_boundary.txt",
+            "wav_file": "audio/module3/slide_03_scope_and_boundary.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 21
+            }
+          ],
+          "section_label": "Scope",
+          "title": "A Product Specification, Not a Complete Facility Design",
+          "bullets": [
+            {
+              "bold_lead": "Defined product",
+              "text": "MVAC input, 800 VDC output, conversion, control, communications, auxiliary power, and environment."
+            },
+            {
+              "bold_lead": "Supplier freedom",
+              "text": "Internal topology is not prescribed when the external envelope and behavior are met."
+            },
+            {
+              "bold_lead": "Application responsibility",
+              "text": "Redundancy, ESS placement, downstream protection, and site integration remain system decisions."
+            }
+          ],
+          "figure": {
+            "path": "figures/product_application_boundary.svg",
+            "alt": "Diagram separating the normative SST product boundary from non-normative facility application architecture.",
+            "caption": "OCP SST v0.3 defines the product boundary; Appendix A provides non-normative application examples.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "normative"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_table",
+          "slug": "mvac-input",
+          "audio": {
+            "script_file": "audio/module3/slide_04_mvac_input.txt",
+            "wav_file": "audio/module3/slide_04_mvac_input.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 9
+            }
+          ],
+          "section_label": "MVAC Interface",
+          "title": "Two Input SKUs, One Shared Grid-Facing Envelope",
+          "columns": [
+            "Parameter",
+            "SKU A",
+            "SKU B"
+          ],
+          "rows": [
+            [
+              "Nominal input",
+              "13.8 kVac ±10%",
+              "34.5 kVac ±10%"
+            ],
+            [
+              "DC output rating",
+              "5 MW",
+              "5 MW or 10 MW"
+            ],
+            [
+              "Connection",
+              "3-phase, 3-wire + PE",
+              "3-phase, 3-wire + PE"
+            ],
+            [
+              "Power factor",
+              ">0.99 full load; >0.98 at ≥20%; >0.95 below 20%",
+              "Same"
+            ],
+            [
+              "Short circuit",
+              "18–40 kA symmetrical; ~104 kA asymmetrical; seconds TBD",
+              "25–50 kA symmetrical; ~130 kA asymmetrical; seconds TBD"
+            ],
+            [
+              "BIL",
+              "≥110 kV",
+              "≥150–200 kV"
+            ],
+            [
+              "Utility ramp reference",
+              "Approximately 20–50 MW/min",
+              "Approximately 20–50 MW/min"
+            ]
+          ],
+          "term_refs": [
+            "bil",
+            "rocof"
+          ],
+          "mobile_scroll": true
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "lvdc-output",
+          "audio": {
+            "script_file": "audio/module3/slide_05_lvdc_output.txt",
+            "wav_file": "audio/module3/slide_05_lvdc_output.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 10
+            }
+          ],
+          "section_label": "LVDC Interface",
+          "title": "The Regulated 800 VDC Product Boundary",
+          "bullets": [
+            {
+              "bold_lead": "Voltage quality",
+              "text": "±0.5% switching ripple, ±1% static tolerance, and ±3% dynamic regulation."
+            },
+            {
+              "bold_lead": "Fault support",
+              "text": "Recommended 150% constant current for 150 ms; the SST may trip afterward."
+            },
+            {
+              "bold_lead": "Overload and capacitance",
+              "text": "120% constant voltage for 5 s; recommended maximum 10 mF per 4 MW output."
+            }
+          ],
+          "figure": {
+            "path": "figures/lvdc_output_envelope.svg",
+            "alt": "Visual summary of 800 VDC output regulation, fault-current support, overload behavior, and DC-link capacitance.",
+            "caption": "Some output entries are recommended or TBD in v0.3; retain their qualifiers during design review.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "high_resistance_ground",
+            "dc_link"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "efficiency-envelope-environment",
+          "audio": {
+            "script_file": "audio/module3/slide_06_efficiency_envelope_environment.txt",
+            "wav_file": "audio/module3/slide_06_efficiency_envelope_environment.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 15
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 16
+            }
+          ],
+          "section_label": "Product Envelope",
+          "title": "Efficiency Is Only One Part of Deployability",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "≥98% efficiency",
+              "body": "Power-train target from 50–100% utilization.",
+              "tone": "green"
+            },
+            {
+              "title": "10–20 × 8 × 8.5 ft",
+              "body": "Approximate length × depth × height product envelope.",
+              "tone": "blue"
+            },
+            {
+              "title": "−30°C to 40°C",
+              "body": "Operating range before high-temperature derating; altitude derating above 1000 m.",
+              "tone": "amber"
+            },
+            {
+              "title": "Outdoor capable",
+              "body": "NEMA 3R, C5 corrosion, 95% non-condensing humidity, and structural design inputs.",
+              "tone": "slate"
+            },
+            {
+              "title": "Dual auxiliary concept",
+              "body": "External 480 Vac backed controls plus internal actuation and cooling power.",
+              "tone": "blue"
+            },
+            {
+              "title": "Modbus TCP/IP",
+              "body": "Specified communication protocol for monitoring and control integration.",
+              "tone": "green"
+            }
+          ],
+          "term_refs": [
+            "nema_3r"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "compliance-and-open-items",
+          "audio": {
+            "script_file": "audio/module3/slide_07_compliance_and_open_items.txt",
+            "wav_file": "audio/module3/slide_07_compliance_and_open_items.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 18
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 19
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 20
+            }
+          ],
+          "section_label": "Compliance",
+          "title": "Use the Standards List—and Track the Gaps",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "NFPA",
+              "body": "NFPA 70, 70E, and 72 frame installation, safe work practices, and signaling considerations.",
+              "tone": "blue"
+            },
+            {
+              "title": "UL",
+              "body": "Includes UL 347A, 508C, 840, 1741, 2877, 60730, and 1699 references.",
+              "tone": "green"
+            },
+            {
+              "title": "IEEE",
+              "body": "Includes IEEE 693, 1584, 1547, 2030.2, 519, 1662, 1676, 1100, 1653.6, and 3007.3.",
+              "tone": "slate"
+            },
+            {
+              "title": "Open work",
+              "body": "Grounding detail, load profiles, fault durations, ramp behavior, redundancy values, and verification remain partly TBD.",
+              "tone": "amber"
+            }
+          ],
+          "term_refs": [
+            "ahj",
+            "tbd"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module3/slide_08_takeaways.txt",
+            "wav_file": "audio/module3/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 15
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 18
+            }
+          ],
+          "title": "The Contract at the SST Boundary",
+          "items": [
+            "SKU A: 13.8 kVac ±10%, 5 MW; SKU B: 34.5 kVac ±10%, 5 MW or 10 MW.",
+            "The output is regulated unipolar 800 VDC with defined ripple and tolerance targets.",
+            "Fault-current, overload, and capacitance entries include recommendations and open detail.",
+            "Efficiency, environment, auxiliary power, communications, and compliance belong in product evaluation.",
+            "TBDs must be tracked as design and verification work—not silently converted into fixed requirements."
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 10
+            }
+          ],
+          "title": "Interpret the v0.3 Tables",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "Which configuration matches SKU B?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "34.5 kVac ±10%, with 5 MW or 10 MW DC output",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "13.8 kVac ±10%, only 10 MW DC output",
+                  "correct": false,
+                  "feedback_incorrect": "SKU A is 13.8 kVac and is listed at 5 MW."
+                },
+                {
+                  "id": "c",
+                  "text": "480 Vac input with 800 kW DC output",
+                  "correct": false,
+                  "feedback_incorrect": "Four-hundred-eighty volts is used in the auxiliary-power concept, not as the primary MV input SKU."
+                }
+              ],
+              "feedback_correct": "Correct. SKU B is the 34.5 kVac class with 5 MW or 10 MW output options.",
+              "feedback_incorrect": "Review the MVAC input table."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "Which v0.3 entries retain a recommendation or TBD qualifier?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "150% constant-current fault support for 150 ms",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Maximum 10 mF per 4 MW output DC-link capacitance",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "The detailed load-step definition for dynamic regulation",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The output is unipolar 800 VDC",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Those fault-support, capacitance, and load-step entries are not all unconditional fixed values.",
+              "feedback_incorrect": "The unipolar 800 VDC output is a defined interface; several coordination details remain recommended or TBD."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up-next",
+          "audio": {
+            "script_file": "audio/module3/slide_10_up_next.txt",
+            "wav_file": "audio/module3/slide_10_up_next.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "next_module_number": 4,
+          "next_module_title": "Grid Interaction, Ride-Through, and State Behavior",
+          "thank_you_message": "You have completed Module 3: The OCP SST v0.3 Design Envelope."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "grid-interaction-and-state-behavior",
+      "title": "Grid Interaction, Ride-Through, and State Behavior",
+      "subtitle": "Grounding, disturbance response, coordinated storage, and deterministic operating states.",
+      "module_badge_text": "Module 4",
+      "target_duration_minutes": 17,
+      "next_module_title": "Integrating SSTs into LVDC Data Centers",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module4/slide_01_title.txt",
+            "wav_file": "audio/module4/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 10
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 11
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 13
+            }
+          ],
+          "title": "Grid Interaction, Ride-Through, and State Behavior",
+          "subtitle": "Grounding, disturbance response, coordinated storage, and deterministic operating states.",
+          "version_chip": "OCP SST v0.3.0 · Dynamic behavior"
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "audio": {
+            "script_file": "audio/module4/slide_02_objectives.txt",
+            "wav_file": "audio/module4/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 10
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 11
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 17
+            }
+          ],
+          "title": "Predict the SST Response",
+          "subtitle": "By the end of this module, you will be able to…",
+          "objectives": [
+            "Explain typical Wye-secondary grounding at the MVAC interface.",
+            "Interpret overvoltage, acceptable, LVRT range 1, and LVRT range 2 behavior.",
+            "Read the frequency ride-through bands and recovery expectations.",
+            "Connect SST input limits to ESS discharge and controlled recharge.",
+            "Identify S0, Sb, Sp, S1, S2, and S3 and use them in event scenarios."
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "mvac-grounding",
+          "audio": {
+            "script_file": "audio/module4/slide_03_mvac_grounding.txt",
+            "wav_file": "audio/module4/slide_03_mvac_grounding.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 10
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 11
+            }
+          ],
+          "section_label": "MVAC Interface",
+          "title": "Grounding Begins Upstream of the SST",
+          "bullets": [
+            {
+              "bold_lead": "Typical source",
+              "text": "A Wye secondary establishes a neutral reference on the supplying system."
+            },
+            {
+              "bold_lead": "Permitted approaches",
+              "text": "The specification lists low-resistance grounding or solid grounding."
+            },
+            {
+              "bold_lead": "System consequence",
+              "text": "Fault current, protection sensitivity, transient voltage, and insulation coordination depend on the actual grounding design."
+            }
+          ],
+          "figure": {
+            "path": "figures/mvac_grounding.svg",
+            "alt": "Simplified Wye-secondary grounding diagram feeding the three-phase SST input with protective earth.",
+            "caption": "Grounding must be coordinated with the source transformer, site protection study, and product insulation design.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "lrg"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "voltage-ride-through",
+          "audio": {
+            "script_file": "audio/module4/slide_04_voltage_ride_through.txt",
+            "wav_file": "audio/module4/slide_04_voltage_ride_through.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 11
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 12
+            }
+          ],
+          "section_label": "Voltage Ride-Through",
+          "title": "The DC Load Sees a Coordinated SST–ESS Response",
+          "figure": {
+            "path": "figures/vrt_ess_response.mp4",
+            "alt": "Silent animation showing a grid-voltage sag, current-limited SST input, zero-input severe sag, and ESS power filling the DC output requirement.",
+            "caption": "The SST and ESS coordinate so the 800 VDC output remains supported across the specified voltage regions.",
+            "source": "custom",
+            "media_type": "video",
+            "poster": "figures/vrt_ess_response_poster.png",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "reference_links": [
+            {
+              "label": "OCP Ready ESS course",
+              "url": "https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems"
+            }
+          ],
+          "term_refs": [
+            "per_unit",
+            "lvrt"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "frequency-and-ramps",
+          "audio": {
+            "script_file": "audio/module4/slide_05_frequency_and_ramps.txt",
+            "wav_file": "audio/module4/slide_05_frequency_and_ramps.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 12
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            }
+          ],
+          "section_label": "Frequency and Recovery",
+          "title": "Ride Through First, Then Recover Without a Second Event",
+          "bullets": [
+            {
+              "bold_lead": "Continuous band",
+              "text": "58.8–61.2 Hz."
+            },
+            {
+              "bold_lead": "Timed adjacent bands",
+              "text": "57.0–<58.8 Hz and >61.2–61.8 Hz for 299 seconds."
+            },
+            {
+              "bold_lead": "Outer regions",
+              "text": "Below 57 Hz or above 61.8 Hz, the SST may ride through or trip."
+            },
+            {
+              "bold_lead": "Recovery planning",
+              "text": "ESS recharge adds load and must respect source and utility ramp limits."
+            }
+          ],
+          "figure": {
+            "path": "figures/frequency_bands.svg",
+            "alt": "Frequency ride-through bar showing continuous, 299-second, and may-trip operating regions.",
+            "caption": "OCP SST v0.3 frequency ride-through bands, centered on a 60 Hz system.",
+            "source": "custom"
+          },
+          "reference_links": [
+            {
+              "label": "OCP Ready ESS course",
+              "url": "https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems"
+            }
+          ],
+          "term_refs": [
+            "frt"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "six-states",
+          "audio": {
+            "script_file": "audio/module4/slide_06_six_states.txt",
+            "wav_file": "audio/module4/slide_06_six_states.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 14
+            }
+          ],
+          "section_label": "State Model",
+          "title": "Six States Make Behavior Observable",
+          "figure": {
+            "path": "figures/sst_state_model.svg",
+            "alt": "State model showing OFF, Standby, Precharged, ON, FAULT, and WARNING with normal and abnormal transition paths.",
+            "caption": "State labels from OCP SST v0.3: S0, Sb, Sp, S1, S2, and S3.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "precharge"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "startup-warning-recovery",
+          "audio": {
+            "script_file": "audio/module4/slide_07_startup_warning_recovery.txt",
+            "wav_file": "audio/module4/slide_07_startup_warning_recovery.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 14
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 17
+            }
+          ],
+          "section_label": "Event Sequences",
+          "title": "State, Energy Source, and Alarm Severity Are Different Axes",
+          "bullets": [
+            {
+              "bold_lead": "Startup",
+              "text": "Standby → precharge → ON after permissives and controlled DC-link energization."
+            },
+            {
+              "bold_lead": "Warning",
+              "text": "An abnormal condition is reported while continued operation may remain possible."
+            },
+            {
+              "bold_lead": "Fault",
+              "text": "Protection moves the unit to FAULT and invokes the defined recovery or service path."
+            },
+            {
+              "bold_lead": "Ride-through",
+              "text": "Grid and ESS contribution can change without a state transition when quality returns promptly."
+            }
+          ],
+          "figure": {
+            "path": "figures/startup_fault_paths.svg",
+            "alt": "Parallel sequence lanes for normal startup, warning escalation, fault shutdown, and ride-through recovery.",
+            "caption": "Use one coordinated control narrative for power source, state, alarm, and recovery behavior.",
+            "source": "custom"
+          }
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module4/slide_08_takeaways.txt",
+            "wav_file": "audio/module4/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 10
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 11
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 12
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 13
+            }
+          ],
+          "title": "An SST Is a Controlled Grid Participant",
+          "items": [
+            "Upstream grounding establishes the fault-current and insulation environment at the MVAC interface.",
+            "LVRT range 1 limits SST input current; range 2 uses zero SST input current while ESS supports output.",
+            "58.8–61.2 Hz is continuous; adjacent bands require 299 seconds; outer bands may trip.",
+            "ESS recharge is additive site load and belongs in the post-event control strategy.",
+            "Six operating states make normal, warning, fault, startup, and recovery behavior deterministic."
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "audio": {
+            "script_file": "audio/module4/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 11
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 12
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 13
+            }
+          ],
+          "title": "Choose the Correct Response and State",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "In LVRT range 2, what is the specified coordinated behavior?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The SST draws no input current and the ESS supplies 100% of output",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The SST doubles input current to maintain output",
+                  "correct": false,
+                  "feedback_incorrect": "Range 2 requires zero SST input current; storage carries the output."
+                },
+                {
+                  "id": "c",
+                  "text": "The system always transitions to S2 FAULT",
+                  "correct": false,
+                  "feedback_incorrect": "The specification calls for immediate recovery without a state transition when quality returns."
+                }
+              ],
+              "feedback_correct": "Correct. In range 2, input current is zero and the ESS supports the full output.",
+              "feedback_incorrect": "Review the two low-voltage ride-through ranges."
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "Which statements correctly describe the state and recovery model?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Sp is the precharged state.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "S3 is WARNING and may permit continued operation.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Every ride-through event must transition through S2 FAULT.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "ESS recharge should be controlled as additive site load.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. State, power source, and recovery load must be coordinated but are not the same variable.",
+              "feedback_incorrect": "Ride-through can recover without a state transition; precharge, warning, and controlled recharge remain distinct concepts."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up-next",
+          "audio": {
+            "script_file": "audio/module4/slide_10_up_next.txt",
+            "wav_file": "audio/module4/slide_10_up_next.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "next_module_number": 5,
+          "next_module_title": "Integrating SSTs into LVDC Data Centers",
+          "thank_you_message": "You have completed Module 4: Grid Interaction, Ride-Through, and State Behavior."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "slug": "integrating-ssts-into-lvdc-data-centers",
+      "title": "Integrating SSTs into LVDC Data Centers",
+      "subtitle": "Redundancy, DC protection, storage placement, verification, and the path toward v1.0.",
+      "module_badge_text": "Module 5",
+      "target_duration_minutes": 16,
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module5/slide_01_title.txt",
+            "wav_file": "audio/module5/slide_01_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 21
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 70
+            }
+          ],
+          "title": "Integrating SSTs into LVDC Data Centers",
+          "subtitle": "Redundancy, DC protection, storage placement, verification, and the path toward v1.0.",
+          "version_chip": "OCP SST v0.3.0 · System integration"
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "audio": {
+            "script_file": "audio/module5/slide_02_objectives.txt",
+            "wav_file": "audio/module5/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 21
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 24
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 70
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            }
+          ],
+          "title": "Connect Product, Architecture, Storage, and Community",
+          "subtitle": "By the end of this module, you will be able to…",
+          "objectives": [
+            "Compare the non-normative redundancy patterns in Appendix A.",
+            "Connect SST output grounding to insulation monitoring and selective DC protection.",
+            "Assign buffering, ride-through, backup, recovery, and grid-service functions across timescales.",
+            "Explain how ESS placement and controls change the system boundary.",
+            "Build a system verification plan and identify the path from v0.3 collaboration toward v1.0."
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "redundancy-patterns",
+          "audio": {
+            "script_file": "audio/module5/slide_03_redundancy_patterns.txt",
+            "wav_file": "audio/module5/slide_03_redundancy_patterns.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 21
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 22
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 23
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 24
+            }
+          ],
+          "section_label": "Appendix A",
+          "title": "Redundancy Patterns Move Spare Capacity—and Fault Boundaries",
+          "figure": {
+            "path": "figures/redundancy_fault_response.mp4",
+            "alt": "Silent animation showing parallel SST blocks, segmented DC distribution, a faulted path being isolated, and surviving capacity supporting the load.",
+            "caption": "Instructional synthesis of the non-normative Appendix A patterns; actual protection and transfer behavior requires validation.",
+            "source": "custom",
+            "media_type": "video",
+            "poster": "figures/redundancy_fault_response_poster.png",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "n_plus_c"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "grounding-and-protection",
+          "audio": {
+            "script_file": "audio/module5/slide_04_grounding_and_protection.txt",
+            "wav_file": "audio/module5/slide_04_grounding_and_protection.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 10
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 86
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 94
+            }
+          ],
+          "section_label": "DC Protection",
+          "title": "Grounding and Fault Current Must Be Designed Together",
+          "bullets": [
+            {
+              "bold_lead": "Output reference",
+              "text": "Floating or high-resistance-grounded operation changes first-fault behavior and conductor-to-ground voltage."
+            },
+            {
+              "bold_lead": "Detection",
+              "text": "Insulation monitoring and fault location support controlled operation and maintenance."
+            },
+            {
+              "bold_lead": "Converter-limited current",
+              "text": "Protection must operate within the SST’s available current and time window."
+            },
+            {
+              "bold_lead": "Selective clearing",
+              "text": "Coordinate source controls, capacitance, cables, disconnects, and downstream devices as one protection system."
+            }
+          ],
+          "figure": {
+            "path": "figures/grounding_protection_handoff.svg",
+            "alt": "System diagram linking SST grounding mode, insulation monitor, DC protection devices, busway, and rack loads.",
+            "caption": "The SST product interface hands off into a broader LVDC grounding and selective-protection design.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "insulation_monitoring",
+            "selectivity"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "sst-ess-timescales",
+          "audio": {
+            "script_file": "audio/module5/slide_05_sst_ess_timescales.txt",
+            "wav_file": "audio/module5/slide_05_sst_ess_timescales.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 11
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 110
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            }
+          ],
+          "section_label": "Coordinated Energy",
+          "title": "SST and ESS Functions Span Six Orders of Time",
+          "figure": {
+            "path": "figures/sst_ess_timescales.svg",
+            "alt": "Logarithmic timescale showing capacitance, converter control, ESS ride-through and backup, and post-event recharge functions.",
+            "caption": "Assign each service a response time, duration, power rating, energy capacity, control owner, and validation method.",
+            "source": "custom"
+          },
+          "reference_links": [
+            {
+              "label": "OCP Ready ESS course",
+              "url": "https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems"
+            }
+          ],
+          "term_refs": [
+            "mv_ups"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "ess-placement",
+          "audio": {
+            "script_file": "audio/module5/slide_06_ess_placement.txt",
+            "wav_file": "audio/module5/slide_06_ess_placement.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 24
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 110
+            }
+          ],
+          "section_label": "Storage Boundary",
+          "title": "Where Storage Lives Changes What the System Is",
+          "bullets": [
+            {
+              "bold_lead": "Placement",
+              "text": "Facility, row, rack, or sidecar storage changes fault domains and maintenance access."
+            },
+            {
+              "bold_lead": "Coupling",
+              "text": "DC- or AC-coupled placement changes conversion stages, protection, and control interfaces."
+            },
+            {
+              "bold_lead": "Control",
+              "text": "Autonomous or coordinated operation determines who owns ride-through, dispatch, and recharge."
+            },
+            {
+              "bold_lead": "Purpose",
+              "text": "Backup-only and grid-interactive systems face different operational and approval requirements."
+            }
+          ],
+          "figure": {
+            "path": "figures/ess_deployment_architecture.png",
+            "alt": "OCP Academy diagram showing energy storage placement at facility, row, rack, and sidecar levels.",
+            "caption": "Source: OCP Academy, OCP Ready Requirements for Energy Storage Systems course.",
+            "source": "reuse"
+          },
+          "reference_links": [
+            {
+              "label": "OCP Ready ESS course",
+              "url": "https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems"
+            },
+            {
+              "label": "OCP Ready ESS white paper",
+              "url": "https://www.opencompute.org/documents/white-paper-ocp-ready-requirements-for-energy-storage-systems-final-pdf"
+            }
+          ],
+          "term_refs": [
+            "dc_coupled"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "verification-and-v1",
+          "audio": {
+            "script_file": "audio/module5/slide_07_verification_and_v1.txt",
+            "wav_file": "audio/module5/slide_07_verification_and_v1.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 14
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 18
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 148
+            },
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "section_label": "Verification Roadmap",
+          "title": "Validate the System—and Feed Evidence Back to the Community",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "1 · Model",
+              "body": "Representative loads, steps, ramps, faults, grounding, and control interactions.",
+              "tone": "blue"
+            },
+            {
+              "title": "2 · Laboratory",
+              "body": "Voltage and frequency ride-through, protection timing, thermal limits, and communications.",
+              "tone": "green"
+            },
+            {
+              "title": "3 · Integrate",
+              "body": "ESS dispatch and recharge, auxiliary power, busway, rack interfaces, alarms, and maintenance.",
+              "tone": "amber"
+            },
+            {
+              "title": "4 · Pilot",
+              "body": "Operate through realistic transitions and collect reliability and service evidence.",
+              "tone": "slate"
+            },
+            {
+              "title": "5 · Align",
+              "body": "Resolve TBDs, standards applicability, supplier interfaces, and acceptance criteria.",
+              "tone": "blue"
+            },
+            {
+              "title": "6 · Contribute",
+              "body": "Return evidence to the SST workstream and public OCP Power Distribution community.",
+              "tone": "green"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "OCP Power Distribution Sub-Project",
+              "url": "https://www.opencompute.org/community/power-distribution"
+            },
+            {
+              "label": "OCP LVDC white paper",
+              "url": "https://www.opencompute.org/documents/dcf-power-distribution-lvdc-white-paper-version-1-0-final-pdf-1"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module5/slide_08_takeaways.txt",
+            "wav_file": "audio/module5/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 21
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 86
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            },
+            {
+              "source": "Approved SST Academy course outline",
+              "page": null
+            }
+          ],
+          "title": "Deploy the System, Not Just the Converter",
+          "items": [
+            "Appendix A redundancy patterns are useful design context but explicitly non-normative.",
+            "Grounding, insulation monitoring, converter limits, and protection timing form one coordination problem.",
+            "Capacitance, SST controls, ESS discharge, backup, grid services, and recharge occupy different timescales.",
+            "ESS placement changes fault, charging, maintenance, fire-protection, controls, and approval boundaries.",
+            "A v0.3 deployment plan must combine product tests, system validation, pilot evidence, and community feedback."
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge-check",
+          "audio": {
+            "script_file": "audio/module5/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module5/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 21
+            },
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 24
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": 86
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            }
+          ],
+          "title": "Audit an SST and ESS Deployment Concept",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m5_q1",
+              "prompt": "How should the Appendix A redundancy diagrams be used?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "As non-normative application examples that prompt system-level design questions",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "As mandatory one-line designs for every SST deployment",
+                  "correct": false,
+                  "feedback_incorrect": "Appendix A labels the figures non-normative."
+                },
+                {
+                  "id": "c",
+                  "text": "As a replacement for protection and capacity studies",
+                  "correct": false,
+                  "feedback_incorrect": "The examples do not establish site-specific ratings, timing, or selectivity."
+                }
+              ],
+              "feedback_correct": "Correct. The diagrams are application context, not mandatory designs.",
+              "feedback_incorrect": "Review the normative product boundary versus Appendix A context."
+            },
+            {
+              "id": "m5_q2",
+              "multiple": true,
+              "prompt": "Which items belong in system-level SST and ESS validation?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Grounding, insulation monitoring, and selective protection",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "ESS discharge response and controlled recharge",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Communications, states, alarms, and auxiliary-power behavior",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Only the SST nameplate voltage",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Deployment validation spans electrical, storage, controls, protection, and operational boundaries.",
+              "feedback_incorrect": "A nameplate is necessary but cannot prove coordinated system behavior."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course-complete",
+          "audio": {
+            "script_file": "audio/module5/slide_10_course_complete.txt",
+            "wav_file": "audio/module5/slide_10_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP SST Design Specification_v0.3 FINAL.pdf",
+              "page": 1
+            },
+            {
+              "source": "DCF Power Distribution LVDC white paper version 1.0_FINAL.pdf",
+              "page": null
+            },
+            {
+              "source": "OCP Diablo 400 Academy course",
+              "page": null
+            },
+            {
+              "source": "OCP Ready Requirements for Energy Storage Systems Academy course",
+              "page": null
+            }
+          ],
+          "course_title": "OCP Solid State Transformers: From Medium Voltage to 800 VDC",
+          "thank_you_message": "Thank you for completing Module 5: Integrating SSTs into LVDC Data Centers.",
+          "cert_message": "You have completed all five modules and can use OCP SST v0.3 as a product-interface framework within a coordinated LVDC data center design.",
+          "reference_links": [
+            {
+              "label": "OCP SST v0.3 specification",
+              "url": "https://www.opencompute.org/documents/ocp-sst-design-specification-v0-3-final-pdf"
+            },
+            {
+              "label": "OCP Power Distribution",
+              "url": "https://www.opencompute.org/community/power-distribution"
+            },
+            {
+              "label": "OCP LVDC white paper",
+              "url": "https://www.opencompute.org/documents/dcf-power-distribution-lvdc-white-paper-version-1-0-final-pdf-1"
+            },
+            {
+              "label": "OCP Diablo 400 course",
+              "url": "https://academy.opencompute.org/learn/courses/49/ocp-diablo-400/"
+            },
+            {
+              "label": "OCP Ready ESS course",
+              "url": "https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
