@@ -1,0 +1,68 @@
+# Korean dubbing script — introduction
+
+Status: **source ready; valid ElevenLabs credential required for synthesis**
+
+Voice: **Chris - Warm and clear** (`PDoCXqBQFGsvfO0hNkEs`)
+
+The original English audio stream must not be mapped into the localized video.
+Background track: `viacheslavstarostin-educational-learning-study-music-473828.mp3`.
+
+## seg-01 · 00:00:00.300–00:00:06.006
+
+**English:** The Open Compute Project is a vibrant community that spans the data center infrastructure worldwide.
+
+**Korean:** Open Compute Project는 전 세계 데이터센터 인프라 전반에 걸쳐 활동하는 활기찬 커뮤니티입니다.
+
+## seg-02 · 00:00:06.673–00:00:19.352
+
+**English:** Though not a standards body, the OCP Community forges new technology norms, fostering an ecosystem where industry players collaborate in a safe framework, shaping a versatile and diverse supply chain.
+
+**Korean:** OCP는 표준화 기구는 아니지만, OCP 커뮤니티는 새로운 기술 규범을 만들고 업계 참여자들이 안전한 틀 안에서 협업할 수 있는 생태계를 조성하여 유연하고 다양한 공급망을 만들어 갑니다.
+
+## seg-03 · 00:00:19.352–00:00:33.333
+
+**English:** From startups to hyperscalers, as well as research, academia, and investors, the OCP Community is able to reduce procurement time, research efforts, expenses, development time, and even legal complexity for your projects.
+
+**Korean:** 스타트업과 하이퍼스케일 기업은 물론 연구기관, 학계, 투자자까지 함께함으로써 OCP 커뮤니티는 프로젝트의 조달 기간, 연구 노력, 비용, 개발 기간, 심지어 법적 복잡성까지 줄일 수 있습니다.
+
+## seg-04 · 00:00:33.900–00:00:45.945
+
+**English:** Participating in the OCP Community gives you access to the latest technologies and talent, the chance to improve your skills, and to drive impact in critical areas like energy efficiency, cooling, and sustainability.
+
+**Korean:** OCP 커뮤니티에 참여하면 최신 기술과 인재를 접하고 역량을 높이며, 에너지 효율, 냉각, 지속 가능성과 같은 핵심 분야에서 실질적인 변화를 이끌 수 있습니다.
+
+## seg-05 · 00:00:46.513–00:00:57.257
+
+**English:** Join one of the many project workstreams to help solve challenges and pioneer solutions, or serve as a volunteer leader to help steer the community towards the industry's ever increasing challenges.
+
+**Korean:** 프로젝트 워크스트림에 참여해 과제를 해결하고 새 솔루션을 개척하거나, 자원봉사 리더로서 커뮤니티가 업계의 커지는 과제에 대응하도록 이끌어 보세요.
+
+## seg-06 · 00:00:57.657–00:01:11.604
+
+**English:** If you're seeking cutting edge solutions, explore our marketplace or the library of specifications and other contributions, and embrace OCP solutions in your next endeavor, or make OCP specifications part of your next RFP.
+
+**Korean:** 최첨단 솔루션을 찾고 있다면 OCP Marketplace나 사양 및 기타 기여 자료 라이브러리를 살펴보고, 다음 프로젝트에 OCP 솔루션을 도입하거나 다음 제안요청서에 OCP 사양을 포함해 보세요.
+
+## seg-07 · 00:01:12.005–00:01:21.281
+
+**English:** Check out the latest solutions at an OCP Experience Center, or partner with any of our OCP recognized facilities or OCP solution providers.
+
+**Korean:** OCP Experience Center에서 최신 솔루션을 확인하거나 OCP 인증 시설 및 OCP 솔루션 제공업체와 협력하세요.
+
+## seg-08 · 00:01:21.581–00:01:31.724
+
+**English:** Contribute specifications, design files, reference architectures, or software, to help solve the industry's greatest challenges, building trust in you and your brand.
+
+**Korean:** 사양, 설계 파일, 참조 아키텍처 또는 소프트웨어를 기여해 업계의 가장 큰 과제를 해결하고 여러분과 여러분의 브랜드에 대한 신뢰를 쌓으세요.
+
+## seg-09 · 00:01:32.192–00:01:38.765
+
+**English:** Connect at OCP events through attendance and sponsorship and embrace OCP’s inclusive open spirit.
+
+**Korean:** OCP 행사에 참석하거나 후원하여 교류하고, OCP의 포용적이고 개방적인 정신을 함께 실천하세요.
+
+## seg-10 · 00:01:38.998–00:01:42.936
+
+**English:** Because together we're stronger, faster, and better.
+
+**Korean:** 함께하면 우리는 더 강하고, 더 빠르며, 더 나아질 수 있습니다.
