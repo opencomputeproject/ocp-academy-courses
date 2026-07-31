@@ -91,6 +91,22 @@ def _badge_text_html(course: dict) -> str:
     return f'<span>{esc(text)}</span>'
 
 
+def _meta_chip_icon_html(icon: str) -> str:
+    """Render a small semantic icon for course-overview metadata chips.
+
+    Older course.json files used short text tokens such as ``80`` or ``OCP``
+    here. Keep those values readable as a fallback, but let new courses use
+    stable inline SVG icons so the chip is not just a repeated numeral or
+    acronym.
+    """
+    icons = {
+        "clock": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        "modules": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="4" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+        "spec": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.8h8l4 4V20.2H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.8v4h4M9 12h6M9 16h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    }
+    return icons.get(icon, esc(icon))
+
+
 def load_styles() -> str:
     css = (TEMPLATE_DIR / "module_styles.css").read_text()
     css += "\n\n" + load_motion_intro_css(TEMPLATE_DIR)
@@ -142,7 +158,7 @@ def render_course_overview(slide: dict, course: dict, module: dict) -> str:
         url = chip.get("url")
         icon = str(chip.get("icon", "")).strip()
         inner = f'''
-          {f'<div class="meta-chip-icon">{esc(icon)}</div>' if icon else ""}
+          {f'<div class="meta-chip-icon">{_meta_chip_icon_html(icon)}</div>' if icon else ""}
           <span>{esc(chip.get("text",""))}</span>'''
         if url:
             chips_html += f'''
@@ -270,9 +286,16 @@ def _learner_aids_html(slide: dict, course: dict, centered: bool = False) -> str
             continue
         link_label = esc(link.get("label") or ui(course, "learn_more", "Learn more"))
         opens_new_tab = esc(ui(course, "opens_new_tab", "opens in a new tab"))
+        logo_path = str(link.get("logo") or "").strip()
+        logo_html = (
+            f'<img class="reference-pill-logo" src="{esc(logo_path)}" alt="" aria-hidden="true">'
+            if logo_path
+            else ""
+        )
         ref_links.append(
             f'<a class="reference-pill" href="{esc(url)}" target="_blank" rel="noopener" '
-            f'aria-label="{link_label} ({opens_new_tab})">{link_label}{_external_page_icon_html()}</a>'
+            f'aria-label="{link_label} ({opens_new_tab})">'
+            f'{logo_html}{link_label}{_external_page_icon_html()}</a>'
         )
 
     callout_html = ""
@@ -333,9 +356,13 @@ def render_content_bullets(slide: dict, course: dict, module: dict) -> str:
 
 
 def _figure_html(fig: dict | None, course: dict | None = None) -> str:
-    """Wrap image, inline-SVG, or video media in a white panel so dark lines
-    and text stay legible in dark mode. Video figures get hover controls for
-    play/pause and zoom; image figures keep the click-to-enlarge behavior."""
+    """Wrap media in a compact, evenly padded white frame.
+
+    The frame sizes itself to the media instead of stretching across the slide,
+    so learners see the same 18px white edge on every side of an image, figure,
+    or video. The rounded clip also keeps anti-aliased artwork edges clean in
+    both themes.
+    """
     if not fig:
         return ""
     course = course or {}
@@ -376,7 +403,13 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
     elif inline_svg:
         body = inline_svg
     else:
-        body = f'<img src="{esc(path)}" alt="{esc(alt)}" style="max-width:100%;height:auto;display:block;margin:0 auto;cursor:zoom-in;">'
+        # Standalone SVGs in the package use a 1200x675 viewBox but often
+        # expose a tiny browser intrinsic size (267x150). Give them their
+        # design width explicitly and opt out of the generic height cap: the
+        # width constraint alone then scales the 16:9 artwork proportionally,
+        # avoiding letterboxed side gaps inside the white frame.
+        svg_style = "width:1200px;max-width:100%;height:auto;max-height:none;" if path.lower().endswith(".svg") else "max-width:100%;height:auto;"
+        body = f'<img src="{esc(path)}" alt="{esc(alt)}" style="{svg_style}display:block;margin:0 auto;cursor:zoom-in;">'
     panel_class = "figure-panel figure-panel--video" if media_type == "video" else "figure-panel"
     video_attr = ' data-video-figure="true"' if media_type == "video" else ""
     role = "group" if media_type == "video" else "button"
@@ -385,14 +418,22 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
         if media_type == "video"
         else ui(course, "zoom_figure", "Zoom figure")
     )
+    # Keep the media frame compact and give it a uniform 18px white inset on
+    # every side. `fit-content` removes the former full-width dark side bands;
+    # `max-width` keeps the frame responsive on narrow screens.
     panel_style = (
         "background:#ffffff;"
-        "border-radius:12px;"
-        "padding:14px;"
+        "border-radius:16px;"
+        "padding:18px;"
         "box-shadow:var(--card-shadow);"
         "display:flex;"
         "align-items:center;"
         "justify-content:center;"
+        "width:fit-content;"
+        "max-width:100%;"
+        "margin:0 auto;"
+        "box-sizing:border-box;"
+        "overflow:hidden;"
     )
     return f'''
       <div class="figure-wrap animate-in" style="margin-top:8px;">
