@@ -1,0 +1,1499 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_academy_high_bandwidth_flash_ko_kr",
+  "course_title": "고대역폭 플래시: SSD 용량과 HBM 성능의 연결",
+  "language": "ko-KR",
+  "course_subtitle": "OCP HBF 사양 v0.7.0 아키텍처 및 소프트웨어 가이드",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "HBF 사양 v0.7.0 · 2026년 8월",
+  "index_footer_line": "Open Compute Project 고대역폭 플래시 아키텍처 사양 v0.7.0을 기반으로 합니다.",
+  "target_duration_minutes": 37,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "hbf_course_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "HBF"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_specification_pdf",
+      "title": "OCP HBF 아키텍처 사양 v0.7.0",
+      "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"
+    },
+    {
+      "kind": "ocp_project_site",
+      "title": "OCP Storage 프로젝트",
+      "url": "https://www.opencompute.org/community/storage"
+    },
+    {
+      "kind": "industry_announcement",
+      "title": "SK hynix: FMS 2026의 HBF",
+      "url": "https://news.skhynix.com/en/hbf-at-fms-2026/"
+    },
+    {
+      "kind": "industry_context",
+      "title": "Sandisk: 메모리 장벽을 넘어, AI용 고대역폭 플래시의 내부",
+      "url": "https://www.sandisk.com/company/newsroom/blogs/2025/scaling-beyond-the-wall-inside-sandisks-high-bandwidth-flash-for-ai"
+    },
+    {
+      "kind": "industry_fact_sheet",
+      "title": "Sandisk HBF 팩트 시트",
+      "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/sandisk/collateral/company/Sandisk-HBF-Fact-Sheet.pdf",
+      "usage_note": "배경 설명에만 사용되며, 이 과정은 해당 팩트 시트를 직접 인용하지 않습니다."
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "hbf",
+      "term": "HBF",
+      "tooltip": "고대역폭 플래시: 가속기 가까이에 배치되는 NAND 기반의 비일관성 읽기 최적화 메모리 계층입니다."
+    },
+    {
+      "id": "hbm",
+      "term": "HBM",
+      "tooltip": "고대역폭 메모리: 가속기 가까이에서 고대역폭 작업 메모리로 사용되는 적층형 DRAM입니다."
+    },
+    {
+      "id": "xpu",
+      "term": "xPU",
+      "tooltip": "GPU, TPU, CPU 또는 특수 가속기와 같은 범용 처리 장치를 뜻합니다."
+    },
+    {
+      "id": "kv_cache",
+      "term": "KV 캐시",
+      "tooltip": "자동 회귀 디코딩을 가속하기 위해 이전 토큰과 계층에서 유지하는 키-값 텐서입니다."
+    },
+    {
+      "id": "base_die",
+      "term": "베이스 다이",
+      "tooltip": "호스트 트래픽, UCIe, NAND 스택, 테스트 및 디버그 경로를 관리하는 HBF 하단 다이입니다."
+    },
+    {
+      "id": "core_die",
+      "term": "코어 다이",
+      "tooltip": "HBF 베이스 다이 위에 쌓이는 NAND 다이 스택입니다."
+    },
+    {
+      "id": "tsv",
+      "term": "TSV",
+      "tooltip": "실리콘 관통 전극: 적층된 다이를 수직으로 연결하는 전기적 접속입니다."
+    },
+    {
+      "id": "ucie",
+      "term": "UCIe",
+      "tooltip": "Universal Chiplet Interconnect Express: 패키지 내 다이 간 연결을 위한 개방형 표준입니다."
+    },
+    {
+      "id": "axi",
+      "term": "AXI",
+      "tooltip": "Advanced eXtensible Interface: HBF UCIe 스트리밍 링크에서 전달되는 AMBA 트랜잭션 프로토콜입니다."
+    },
+    {
+      "id": "scratchpad",
+      "term": "스크래치패드 SRAM",
+      "tooltip": "L3 캐시 수준의 지연 시간으로 우선순위가 높은 임시 데이터를 저장하는 선택적 채널별 휘발성 메모리입니다."
+    },
+    {
+      "id": "moe",
+      "term": "MoE",
+      "tooltip": "전문가 혼합: 각 입력 또는 토큰마다 선택된 전문가 서브네트워크를 활성화하는 모델 아키텍처입니다."
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why-ai-needs-hbf",
+      "title": "AI에 새로운 메모리 계층이 필요한 이유",
+      "subtitle": "메모리 장벽, SSD-HBF-HBM 계층, 그리고 개방형 OCP 성능 범위",
+      "module_badge_text": "모듈 1",
+      "next_module_title": "HBF가 용량을 xPU에 연결하는 방식",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "course_title",
+          "title": "고대역폭 플래시",
+          "subtitle": "SSD 용량과 HBM 성능의 간극 연결",
+          "module_number": 1,
+          "version_chip": "OCP HBF v0.7.0 · 2026년 8월",
+          "audio": {
+            "script_file": "audio/module1/slide_01_course_title.txt",
+            "wav_file": "audio/module1/slide_01_course_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course_overview",
+          "title": "AI의 압박에서 HBF 배포까지",
+          "subtitle": "세 개 모듈을 통해 시스템 요구사항을 하드웨어-소프트웨어 계약과 연결합니다.",
+          "modules_listed": [
+            "AI에 새로운 메모리 계층이 필요한 이유",
+            "HBF가 용량을 xPU에 연결하는 방식",
+            "AI 서빙을 위한 HBF 프로그래밍"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "약 37분"
+            },
+            {
+              "icon": "🎓",
+              "text": "중급"
+            },
+            {
+              "icon": "📄",
+              "text": "OCP HBF 사양 v0.7.0",
+              "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 125
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "ai_memory_wall",
+          "section_label": "AI 인프라",
+          "title": "AI의 성장으로 데이터 이동이 병목이 되다",
+          "subtitle": "컴퓨팅 수요와 함께 모델 가중치와 KV 캐시도 증가합니다.",
+          "bullets": [
+            {
+              "bold_lead": "컴퓨팅이 데이터 공급을 앞지름",
+              "text": "메모리가 필요한 속도로 데이터를 공급하지 못하면 가속기가 대기하게 됩니다."
+            },
+            {
+              "bold_lead": "추론이 작업 세트를 확장",
+              "text": "더 큰 모델, 더 긴 컨텍스트, 더 많은 사용자는 가중치와 KV 캐시 트래픽을 증가시킵니다."
+            },
+            {
+              "bold_lead": "용량이 시스템 규모를 결정",
+              "text": "연결된 HBM을 늘리기 위해 GPU를 추가하면 컴퓨팅 자원과 전력이 낭비될 수 있습니다."
+            },
+            {
+              "bold_lead": "새로운 xPU 인접 경로",
+              "text": "HBF는 넓은 병렬 읽기 접근을 통해 고용량 NAND를 가속기 가까이에 배치합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/m1_memory_wall.mp4",
+            "media_type": "video",
+            "poster": "figures/m1_memory_wall_poster.png",
+            "alt": "컴퓨팅 수요, 모델 가중치, KV 캐시가 HBM과 SSD의 2계층 경로를 넘어서는 과정과 HBF가 xPU 가까이에 고용량 경로를 여는 모습을 보여 주는 애니메이션입니다.",
+            "caption": "모델 상태가 로컬 메모리 계층보다 빠르게 증가하면서 메모리 장벽은 데이터 이동 문제로 바뀝니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "hbf",
+            "hbm",
+            "xpu",
+            "kv_cache"
+          ],
+          "reference_links": [
+            {
+              "label": "Sandisk HBF 기술 배경",
+              "url": "https://www.sandisk.com/company/newsroom/blogs/2025/scaling-beyond-the-wall-inside-sandisks-high-bandwidth-flash-for-ai"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_memory_wall.txt",
+            "wav_file": "audio/module1/slide_03_ai_memory_wall.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 12
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 128
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "hbf_between_hbm_ssd",
+          "section_label": "계층형 메모리",
+          "title": "HBF는 HBM과 SSD 사이의 간극을 채웁니다",
+          "subtitle": "각 계층은 협력하며, HBF가 어느 한쪽을 완전히 대체하지는 않습니다.",
+          "bullets": [
+            {
+              "bold_lead": "HBM",
+              "text": "지연 시간에 가장 민감한 가속기 작업 세트를 위한 초고속 적층형 DRAM입니다."
+            },
+            {
+              "bold_lead": "HBF",
+              "text": "xPU 가까이에 위치한 NAND 기반의 비일관성 읽기 최적화 용량입니다."
+            },
+            {
+              "bold_lead": "SSD",
+              "text": "영구 데이터의 기준 사본을 유지하는 내구성 높은 고용량 스토리지입니다."
+            },
+            {
+              "bold_lead": "시스템 배치 패턴",
+              "text": "자주 사용하는 작업 데이터는 HBM에, 대규모 읽기 중심 AI 데이터는 HBF에, 영구 사본은 SSD에 배치합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/hbf_tier_map.svg",
+            "alt": "컴퓨팅에 가장 가까운 HBM, 고용량 온패키지 계층인 HBF, 영구 스토리지인 SSD로 구성된 3계층 AI 메모리 구조입니다.",
+            "caption": "HBF는 작업 메모리와 영구 스토리지 사이에 관리형 계층을 추가합니다.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_hbf_between_hbm_ssd.txt",
+            "wav_file": "audio/module1/slide_04_hbf_between_hbm_ssd.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 106
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 113
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "open_ocp_architecture",
+          "section_label": "개방형 생태계",
+          "title": "업계 제안에서 개방형 OCP 아키텍처로",
+          "subtitle": "공통 경계를 통해 프로세서, 메모리, 패키지, 소프트웨어 생태계가 함께 발전할 수 있습니다.",
+          "bullets": [
+            {
+              "bold_lead": "2025년 협업",
+              "text": "Sandisk와 SK hynix가 HBF 표준화 작업을 시작했습니다."
+            },
+            {
+              "bold_lead": "OCP 작업 흐름",
+              "text": "2026년 초 OCP Storage 프로젝트 아래에 전담 작업 그룹이 구성되었습니다."
+            },
+            {
+              "bold_lead": "개방형 사양",
+              "text": "버전 0.7.0은 인터페이스, 프로토콜, 전기, 패키징, 신뢰성, 소프트웨어, 보안 및 애플리케이션 경계를 정의합니다."
+            },
+            {
+              "bold_lead": "FMS 2026 이정표",
+              "text": "첫 번째 개방형 아키텍처 사양이 업계 행사와 함께 발표되었습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/ocp_hbf_timeline.svg",
+            "alt": "2025년 HBF 협업부터 OCP 작업 흐름, 2026년 8월 FMS에서의 버전 0.7.0 발표까지를 보여 주는 타임라인입니다.",
+            "caption": "개방형 작업 흐름은 장치 개념을 공통 통합 경계로 전환합니다.",
+            "source": "custom"
+          },
+          "reference_links": [
+            {
+              "label": "OCP HBF v0.7.0",
+              "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"
+            },
+            {
+              "label": "OCP Storage 프로젝트",
+              "url": "https://www.opencompute.org/community/storage"
+            },
+            {
+              "label": "FMS 2026 SK Hynix 발표",
+              "url": "https://news.skhynix.com/en/hbf-at-fms-2026/"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_open_ocp_architecture.txt",
+            "wav_file": "audio/module1/slide_05_open_ocp_architecture.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 2
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 12
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 13
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "performance_envelope",
+          "section_label": "사양 목표",
+          "title": "v0.7.0 성능 범위",
+          "subtitle": "세 가지 등급은 16채널 모델을 유지하면서 채널 속도와 스택 높이를 확장합니다.",
+          "columns": [
+            "등급",
+            "UCIe 속도",
+            "최대 사용자 대역폭",
+            "최대 스택 높이"
+          ],
+          "rows": [
+            [
+              "1",
+              "8 GT/s",
+              "0.384 TB/s",
+              "8단"
+            ],
+            [
+              "2",
+              "16 GT/s",
+              "1.536 TB/s",
+              "16단"
+            ],
+            [
+              "3",
+              "32 GT/s",
+              "3.072 TB/s",
+              "16단"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_performance_envelope.txt",
+            "wav_file": "audio/module1/slide_06_performance_envelope.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 15
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 16
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "module1_summary",
+          "title": "HBF가 채우도록 설계된 간극",
+          "items": [
+            "AI 추론에서는 데이터 이동이 핵심 시스템 제약이 됩니다.",
+            "HBF는 xPU 가까이에 새로운 NAND 기반 계층을 추가하여 HBM과 SSD를 보완합니다.",
+            "OCP 사양은 특정 공급업체의 완성품이 아니라 개방형 통합 경계를 정의합니다.",
+            "512 GiB 용량 계산과 세 가지 대역폭 등급이 버전 0.7.0의 범위를 제시합니다.",
+            "16채널 병렬성이 총 성능의 기반입니다."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_module1_summary.txt",
+            "wav_file": "audio/module1/slide_07_module1_summary.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 12
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 16
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "HBF 계층 배치 이해도 확인",
+          "subtitle": "계속하려면 두 질문에 한 번씩 답하십시오. 정답 여부와 관계없이 진행할 수 있으며 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "HBF의 의도된 시스템 역할을 가장 잘 설명한 것은 무엇입니까?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "HBM과 SSD 스토리지를 보완하는 xPU 인접 NAND 기반 고용량 계층",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "모든 워크로드에서 모든 HBM을 직접 대체하는 계층",
+                  "correct": false,
+                  "feedback_incorrect": "HBF는 더 큰 용량으로 HBM급 총 읽기 대역폭을 목표로 하지만, HBM은 여전히 초고속 작업 메모리 계층입니다."
+                },
+                {
+                  "id": "c",
+                  "text": "프로세서 패키지로 이동한 영구 SSD 인터페이스",
+                  "correct": false,
+                  "feedback_incorrect": "HBF는 NAND 기반이지만 SSD 블록 인터페이스가 아니라 별도의 비일관성 메모리 중심 UCIe/AXI 아키텍처를 사용합니다."
+                },
+                {
+                  "id": "d",
+                  "text": "모든 AI 데이터 구조를 자동으로 관리하는 일관성 캐시",
+                  "correct": false,
+                  "feedback_incorrect": "사양은 HBF를 비일관성 메모리로 정의하고 중요한 배치 및 수명 주기 책임을 호스트 소프트웨어에 부여합니다."
+                }
+              ],
+              "feedback_correct": "정답입니다. HBF는 HBM과 영구 SSD 스토리지 사이에 고용량 고대역폭 계층을 추가합니다.",
+              "feedback_incorrect": "3계층 모델을 다시 확인하십시오. HBM은 가장 자주 쓰는 작업 세트를 처리하고, HBF는 xPU 인접 대용량을 추가하며, SSD는 영구 데이터를 보존합니다."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "OCP HBF 아키텍처의 특성을 모두 선택하십시오.",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "16개의 독립 호스트 채널",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "읽기 최적화 NAND 기반 용량",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "xPU 인접 비일관성 동작",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "무제한 쓰기 내구성",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "SSD를 대체하는 영구 스토리지",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "정답입니다. HBF는 xPU 인접 비일관성 NAND 계층과 16개의 병렬 호스트 채널을 결합합니다.",
+              "feedback_incorrect": "HBF는 읽기에 최적화되어 있고 내구성에 한계가 있습니다. 사양은 영구 데이터를 위해 SSD와 같은 영구 스토리지를 계속 권장합니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 15
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 2,
+          "next_module_title": "HBF가 용량을 xPU에 연결하는 방식",
+          "thank_you_message": "잘했습니다. 모듈 1, AI에 새로운 메모리 계층이 필요한 이유를 마쳤습니다.",
+          "audio": {
+            "script_file": "audio/module1/slide_09_up_next.txt",
+            "wav_file": "audio/module1/slide_09_up_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "hbf-host-architecture",
+      "title": "HBF가 용량을 xPU에 연결하는 방식",
+      "subtitle": "스택 구성, UCIe 채널, AXI 트랜잭션 및 주소 인터리빙",
+      "module_badge_text": "모듈 2",
+      "next_module_title": "AI 서빙을 위한 HBF 프로그래밍",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "module_title",
+          "title": "HBF가 용량을 xPU에 연결하는 방식",
+          "subtitle": "스택 구성, UCIe 채널, AXI 및 데이터 스트라이핑",
+          "module_number": 2,
+          "version_chip": "OCP HBF v0.7.0 · 2026년 8월",
+          "audio": {
+            "script_file": "audio/module2/slide_01_module_title.txt",
+            "wav_file": "audio/module2/slide_01_module_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 15
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "추적할 아키텍처 결정 사항",
+          "subtitle": "이 모듈을 마치면 다음을 수행할 수 있습니다.",
+          "objectives": [
+            "HBF 스택의 베이스 다이, 코어 다이 및 TSV 경로를 식별합니다.",
+            "하나의 호스트 트랜잭션이 UCIe와 AXI를 통과하는 경로를 추적합니다.",
+            "읽기 및 쓰기 규칙을 4 KiB NAND 페이지 구조와 연결합니다.",
+            "주소 인터리빙이 총 대역폭을 활성화하는 방식을 설명합니다."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 15
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 112
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "base_die_stack",
+          "section_label": "스택 구성",
+          "title": "베이스 다이가 16개 다이 NAND 스택을 조정합니다",
+          "subtitle": "제어 로직과 고밀도 미디어를 각각 최적화한 뒤 수직으로 결합합니다.",
+          "bullets": [
+            {
+              "bold_lead": "베이스 다이",
+              "text": "호스트 트래픽, UCIe, NAND 통신, 테스트 및 디버그 경로를 관리합니다."
+            },
+            {
+              "bold_lead": "코어 다이",
+              "text": "16개의 NAND 다이가 스택 용량을 제공합니다."
+            },
+            {
+              "bold_lead": "TSV 채널",
+              "text": "수직 연결이 베이스 다이와 NAND 스택 사이의 신호를 전달합니다."
+            },
+            {
+              "bold_lead": "xPU 인접 패키지",
+              "text": "전체 스택은 짧은 전기 경로를 통해 호스트 컴퓨팅 다이 가까이에 배치됩니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/hbf_stack_architecture.svg",
+            "alt": "베이스 다이, 16개의 NAND 코어 다이, TSV 연결 및 인접 xPU를 보여 주는 HBF 스택 분해도입니다.",
+            "caption": "베이스 다이는 호스트 트랜잭션을 NAND 코어 다이 스택 전체의 관리형 동작으로 변환합니다.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "hbf",
+            "base_die",
+            "core_die",
+            "tsv"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_base_die_stack.txt",
+            "wav_file": "audio/module2/slide_03_base_die_stack.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 17
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 18
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "ucie_channels",
+          "section_label": "호스트 인터페이스",
+          "title": "16개의 독립 UCIe 채널이 대역폭을 구성합니다",
+          "subtitle": "각 채널은 독립적으로 완결된 x64 첨단 패키지 링크입니다.",
+          "bullets": [
+            {
+              "bold_lead": "채널당 256 GB/s",
+              "text": "x64 채널은 32 GT/s에서 이 원시 대역폭에 도달합니다."
+            },
+            {
+              "bold_lead": "메인밴드와 사이드밴드",
+              "text": "주요 데이터는 초기화, 트레이닝, 구성 및 관리 트래픽과 분리됩니다."
+            },
+            {
+              "bold_lead": "스트리밍 프로토콜",
+              "text": "포맷 6은 선택적 바이트를 포함할 수 있는 지연 시간 최적화 256바이트 플릿을 사용합니다."
+            },
+            {
+              "bold_lead": "독립 동작",
+              "text": "각 채널은 독립적으로 클록되며 서로 동기화될 필요가 없습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/ucie_channel_architecture.svg",
+            "alt": "하나의 UCIe x64 HBF 채널을 메인밴드, 사이드밴드, 프로토콜, 어댑터 및 물리 계층으로 확대한 구조가 16개 채널에 반복됩니다.",
+            "caption": "반복되는 단거리 링크가 하나의 거대한 버스 없이 총 대역폭을 만듭니다.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "ucie"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_ucie_channels.txt",
+            "wav_file": "audio/module2/slide_04_ucie_channels.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 25
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 26
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 27
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "axi_flash_geometry",
+          "section_label": "프로토콜 동작",
+          "title": "AXI 트랜잭션은 플래시 구조에 맞춰집니다",
+          "subtitle": "익숙한 트랜잭션 모델에 명시적 정렬 및 페이지 규칙이 적용됩니다.",
+          "bullets": [
+            {
+              "bold_lead": "읽기",
+              "text": "64 B부터 4 KiB까지 64 B 배수로 정렬하며 하나의 4 KiB 페이지 안에 포함해야 합니다."
+            },
+            {
+              "bold_lead": "쓰기",
+              "text": "완전한 4 KiB 버스트는 4 KiB 정렬 주소에서 시작합니다."
+            },
+            {
+              "bold_lead": "가상 AXI 경로",
+              "text": "UCIe 채널당 1개, 2개 또는 4개의 인터페이스가 워크로드 선택형 인터리빙을 지원합니다."
+            },
+            {
+              "bold_lead": "흐름 제어",
+              "text": "Ready/valid 및 크레딧으로 요청과 응답을 이동하면서 비순차 읽기를 허용합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/axi_flash_geometry.svg",
+            "alt": "64바이트 세그먼트와 4 KiB NAND 페이지에 정렬된 AXI 읽기 및 쓰기 예시와 금지된 페이지 경계 횡단 읽기를 보여 줍니다.",
+            "caption": "AXI는 NAND 페이지 제약을 숨기지 않으면서 프로토콜 오버헤드를 줄입니다.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "axi"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_axi_flash_geometry.txt",
+            "wav_file": "audio/module2/slide_05_axi_flash_geometry.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 15
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 38
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 39
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "address_interleaving",
+          "section_label": "데이터 배치",
+          "title": "주소 인터리빙이 채널을 처리량으로 전환합니다",
+          "figure": {
+            "path": "figures/m2_address_interleaving.mp4",
+            "media_type": "video",
+            "poster": "figures/m2_address_interleaving_poster.png",
+            "alt": "4 KiB 전역 영역을 64바이트 세그먼트로 나누고 채널 로컬 공간에 매핑한 뒤 16개 UCIe 채널로 패턴을 확장하는 애니메이션입니다.",
+            "caption": "배치 정책이 선형 전역 영역을 채널 로컬 공간 전체에 분산하고, 베이스 다이는 로컬 주소를 NAND 리소스로 변환합니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "caption": "전체 대역폭을 얻으려면 가상 AXI 경로와 호스트 채널을 함께 활성 상태로 유지할 만큼 작업을 올바르게 배치해야 합니다.",
+          "audio": {
+            "script_file": "audio/module2/slide_06_address_interleaving.txt",
+            "wav_file": "audio/module2/slide_06_address_interleaving.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 22
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 23
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 114
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "module2_summary",
+          "title": "모든 계층에 병렬성이 설계되어 있습니다",
+          "items": [
+            "베이스 다이는 호스트 트래픽과 16개의 NAND 코어 다이 스택을 조정합니다.",
+            "16개의 독립 UCIe 채널이 통합 호스트 경로를 구성합니다.",
+            "UCIe 상의 AXI는 플래시 구조를 유지하면서 프로토콜 오버헤드를 낮춥니다.",
+            "읽기는 4 KiB 페이지 경계 안에 머물고, 쓰기는 정렬된 4 KiB 단위로 구성됩니다.",
+            "전역-로컬 주소 인터리빙이 소프트웨어가 사용할 수 있는 병렬 대역폭을 결정합니다."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_module2_summary.txt",
+            "wav_file": "audio/module2/slide_07_module2_summary.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 17
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 112
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "병렬 대역폭 이해도 확인",
+          "subtitle": "계속하려면 두 질문에 한 번씩 답하십시오. 정답 여부와 관계없이 진행할 수 있으며 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "32 GT/s에서 하나의 x64 HBF UCIe 호스트 채널이 지원하는 원시 대역폭은 얼마입니까?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "256 GB/s",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "32 GB/s",
+                  "correct": false,
+                  "feedback_incorrect": "32 GT/s는 라인 속도입니다. x64 데이터 폭을 적용하면 한 채널에서 256 GB/s가 됩니다."
+                },
+                {
+                  "id": "c",
+                  "text": "3.072 TB/s",
+                  "correct": false,
+                  "feedback_incorrect": "3.072 TB/s는 한 채널이 아니라 전체 16채널 장치의 최대 사용자 대역폭 등급입니다."
+                },
+                {
+                  "id": "d",
+                  "text": "4,096 GB/s",
+                  "correct": false,
+                  "feedback_incorrect": "4,096 GB/s는 최고 등급에서 16개 채널 전체의 원시 합계입니다."
+                }
+              ],
+              "feedback_correct": "정답입니다. 전송당 8바이트에 32 GT/s를 곱하면 채널당 256 GB/s입니다.",
+              "feedback_incorrect": "채널당 계산과 16채널 합계를 구분하십시오."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "정확하고 처리량이 높은 HBF 접근을 지원하는 호스트 동작을 모두 선택하십시오.",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "읽기를 4 KiB NAND 페이지 경계 안에 유지",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "정렬된 4 KiB 쓰기 사용",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "적합한 데이터를 AXI 경로와 호스트 채널 전체에 인터리빙",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "한 채널이 다른 채널의 NAND 리소스에 접근할 수 있다고 가정",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "모든 핫 영역을 하나의 채널에 집중",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "정답입니다. 정렬, 완전한 논리 단위, 폭넓은 채널 사용이 아키텍처를 안전하게 활성화합니다.",
+              "feedback_incorrect": "요청은 채널 로컬에 머뭅니다. 하나의 채널에 집중된 핫 영역은 전체 장치 대역폭을 사용할 수 없습니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_08_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 15
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 16
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 23
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 3,
+          "next_module_title": "AI 서빙을 위한 HBF 프로그래밍",
+          "thank_you_message": "잘했습니다. 모듈 2, HBF가 용량을 xPU에 연결하는 방식을 마쳤습니다.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_up_next.txt",
+            "wav_file": "audio/module2/slide_09_up_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "programming-hbf",
+      "title": "AI 서빙을 위한 HBF 프로그래밍",
+      "subtitle": "메모리 매핑, 신뢰성, 가중치, KV 캐시 및 모델 서빙 배치",
+      "module_badge_text": "모듈 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "module_title",
+          "title": "AI 서빙을 위한 HBF 프로그래밍",
+          "subtitle": "메모리 매핑, 수명 주기 관리 및 워크로드 인식형 배치",
+          "module_number": 3,
+          "version_chip": "OCP HBF v0.7.0 · 2026년 8월",
+          "audio": {
+            "script_file": "audio/module3/slide_01_module_title.txt",
+            "wav_file": "audio/module3/slide_01_module_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 112
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "평가할 소프트웨어 선택 사항",
+          "subtitle": "이 모듈을 마치면 다음을 수행할 수 있습니다.",
+          "objectives": [
+            "HBM과 HBF의 독립적 메모리 관리를 설명합니다.",
+            "NAND 특성을 고려한 쓰기 규칙을 지키면서 병렬 읽기를 최적화합니다.",
+            "수명 주기 및 복구에 대한 호스트 책임을 파악합니다.",
+            "인터리빙 또는 전용 채널 서빙 패턴을 선택합니다.",
+            "워크로드 요구에 따라 모델 가중치와 KV 캐시를 분할합니다."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 112
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 125
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "independent_spaces",
+          "section_label": "메모리 모델",
+          "title": "소프트웨어에는 16개의 독립 선형 공간이 보입니다",
+          "subtitle": "HBF와 HBM은 별도로 관리되며, 채널 읽기는 하나의 전역 순서를 공유하지 않습니다.",
+          "bullets": [
+            {
+              "bold_lead": "분리된 계층",
+              "text": "HBM과 HBF는 용량과 접근 동작이 다르므로 서로 다른 영역을 사용합니다."
+            },
+            {
+              "bold_lead": "채널 로컬 공간",
+              "text": "각 UCIe 채널은 자체 연속 논리 주소 범위를 노출합니다."
+            },
+            {
+              "bold_lead": "병렬 읽기",
+              "text": "가능한 한 많은 채널에 작업을 발행할 때 최대 성능을 얻습니다."
+            },
+            {
+              "bold_lead": "선택적 스크래치패드",
+              "text": "채널별 SRAM은 우선순위가 높은 임시 데이터를 저장할 수 있지만 전원 주기 후에는 유지되지 않습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/hbf_memory_spaces.svg",
+            "alt": "분리된 HBM 및 HBF 주소 영역과 16개의 채널 로컬 선형 공간 및 선택적 스크래치패드 SRAM으로 나뉜 HBF 영역을 보여 줍니다.",
+            "caption": "전역 맵은 소프트웨어 정책이며, 각 HBF 채널은 독립적인 로컬 리소스로 유지됩니다.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "hbf",
+            "hbm",
+            "scratchpad"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_independent_spaces.txt",
+            "wav_file": "audio/module3/slide_03_independent_spaces.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 113
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 115
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 116
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "parallel_reads_structured_writes",
+          "section_label": "프로그래밍 모델",
+          "title": "병렬 읽기는 쉽지만 쓰기에는 구조가 필요합니다",
+          "subtitle": "넓게 읽고, 완전한 페이지를 쓰며, 마모를 명시적으로 관리합니다.",
+          "bullets": [
+            {
+              "bold_lead": "병렬로 읽기",
+              "text": "채널은 독립적으로 동작하며 비순차적으로 완료될 수 있습니다."
+            },
+            {
+              "bold_lead": "순차적으로 쓰기",
+              "text": "서로 다른 블록이 병렬로 동작하더라도 하나의 NAND 블록 안에서는 페이지가 순서대로 진행됩니다."
+            },
+            {
+              "bold_lead": "기존 방식의 GC 없음",
+              "text": "HBF는 활성 데이터를 물리적 위치 사이에서 자동으로 이동하지 않습니다."
+            },
+            {
+              "bold_lead": "영역 재매핑",
+              "text": "베이스 다이 또는 호스트가 제어하는 마모 평준화가 채널 로컬 주소를 새로운 물리 위치로 재지정합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/read_write_wear.svg",
+            "alt": "병렬 HBF 읽기, NAND 블록 내 순차 쓰기, 호스트 제어형 핫 영역-콜드 영역 재매핑을 비교합니다.",
+            "caption": "HBF는 플래시 수명 주기 동작을 SSD 컨트롤러 모델 뒤에 숨기지 않고 노출합니다.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_04_parallel_reads_structured_writes.txt",
+            "wav_file": "audio/module3/slide_04_parallel_reads_structured_writes.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 115
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 117
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 122
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "reliability_host_contract",
+          "section_label": "운영 및 수명 주기",
+          "title": "신뢰성은 호스트와 공유하는 계약입니다",
+          "subtitle": "베이스 다이가 상태를 보고하면 호스트 소프트웨어가 이를 정책과 복구 동작으로 전환합니다.",
+          "mobile_scroll": true,
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "내구성",
+              "body": "최대 및 평균 프로그램/소거 횟수를 모니터링합니다. 수명 주기는 워크로드와 제품에 따라 달라집니다.",
+              "icon": "◫",
+              "tone": "neutral"
+            },
+            {
+              "title": "리프레시",
+              "body": "일반적으로 24~48시간마다 제품이 정의한 리프레시를 예약하고 읽기 교란 위험에 대응합니다.",
+              "icon": "↻",
+              "tone": "warning"
+            },
+            {
+              "title": "열 관리",
+              "body": "0°C에서 105°C까지 정상, 경미한 스로틀링, 심각한 스로틀링 및 종료 상태로 동작합니다.",
+              "icon": "◒",
+              "tone": "warning"
+            },
+            {
+              "title": "오류",
+              "body": "보고된 상태에 따라 재시도, 리프레시, 재실행, 대기 또는 용량 폐기를 수행합니다.",
+              "icon": "!",
+              "tone": "risk"
+            },
+            {
+              "title": "보안",
+              "body": "전원 인가 시 삭제와 안전 삭제는 보편적 인라인 보호가 아니라 선택적인 제품별 제어 기능입니다.",
+              "icon": "◇",
+              "tone": "risk"
+            },
+            {
+              "title": "영구 사본",
+              "body": "영구 데이터와 복구 소스에는 SSD와 같은 영구 스토리지를 사용합니다.",
+              "icon": "▰",
+              "tone": "neutral"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_reliability_host_contract.txt",
+            "wav_file": "audio/module3/slide_05_reliability_host_contract.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 106
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 118
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 124
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "serving_patterns",
+          "section_label": "서빙 아키텍처",
+          "title": "인터리빙이 모델 서빙 패턴을 결정합니다",
+          "figure": {
+            "path": "figures/m3_serving_patterns.mp4",
+            "media_type": "video",
+            "poster": "figures/m3_serving_patterns_poster.png",
+            "alt": "16채널 HBF 그리드가 하나의 완전 인터리빙 모델, 두 개의 인터리빙 모델, 전용 채널 그룹 및 선택된 전문가 혼합 영역으로 전환되는 애니메이션입니다.",
+            "caption": "전체 인터리빙은 대역폭을 극대화하고, 전용 그룹은 총 대역폭을 격리 및 용량 제어와 맞바꿉니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "caption": "모델 배치는 하나의 대형 모델, 여러 상주 모델 또는 선택적으로 활성화되는 전문가 등 워크로드를 따릅니다.",
+          "term_refs": [
+            "moe"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_serving_patterns.txt",
+            "wav_file": "audio/module3/slide_06_serving_patterns.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 125
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 126
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 127
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "weights_kv_cache",
+          "section_label": "AI 데이터 배치",
+          "title": "모델 가중치와 KV 캐시를 목적에 맞게 배치합니다",
+          "subtitle": "서로 다른 읽기 및 쓰기 패턴에는 서로 다른 채널 및 영역 정책이 필요합니다.",
+          "bullets": [
+            {
+              "bold_lead": "모델 가중치",
+              "text": "읽기 중심 데이터는 반복적인 토큰 생성 접근을 위해 전체 채널 인터리빙에 적합합니다."
+            },
+            {
+              "bold_lead": "KV 캐시",
+              "text": "프리필이 KV 캐시를 만들고, 시퀀스가 길어질수록 디코드가 반복해서 읽고 확장합니다."
+            },
+            {
+              "bold_lead": "균등 분할",
+              "text": "동일한 채널 그룹은 가중치와 KV 캐시 간의 호스트 주도 마모 평준화를 단순화합니다."
+            },
+            {
+              "bold_lead": "비균등 분할",
+              "text": "알려진 모델 크기에 맞춰 채널 그룹을 구성하여 남는 용량을 극대화합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/weights_kv_partition.svg",
+            "alt": "균등 및 비균등 할당 전략을 사용하여 모델 가중치와 KV 캐시 영역으로 분할된 HBF 채널입니다.",
+            "caption": "호스트가 대역폭, 내구성 및 용량 활용률 사이의 균형을 선택합니다.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "kv_cache"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_weights_kv_cache.txt",
+            "wav_file": "audio/module3/slide_07_weights_kv_cache.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 128
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 129
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 130
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "module3_summary",
+          "title": "HBF 성능은 배치에 달려 있습니다",
+          "items": [
+            "HBF와 HBM은 16개의 HBF 로컬 공간을 갖는 별도 계층으로 관리됩니다.",
+            "읽기는 폭넓은 병렬성을 활용하고, 쓰기는 NAND 순서 및 페이지 규칙을 유지합니다.",
+            "호스트 소프트웨어가 마모, 리프레시, 복구, 열 관리 및 보안 정책에 참여합니다.",
+            "인터리빙은 대역폭을 극대화하고, 전용 채널은 격리 및 할당 제어를 향상합니다.",
+            "가중치와 KV 캐시는 쓰기 동작이 다르므로 서로 다른 배치 정책이 필요합니다."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_module3_summary.txt",
+            "wav_file": "audio/module3/slide_08_module3_summary.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 112
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 130
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "HBF 서빙 전략 이해도 확인",
+          "subtitle": "계속하려면 두 질문에 한 번씩 답하십시오. 정답 여부와 관계없이 진행할 수 있으며 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "하나의 대형 모델에서 HBF 대역폭을 가장 잘 극대화하는 배치 전략은 무엇입니까?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "모델을 적합한 모든 호스트 채널에 스트라이핑하고 병렬로 읽기",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "전체 모델을 하나의 채널에 배치",
+                  "correct": false,
+                  "feedback_incorrect": "하나의 채널에 배치하면 모델은 해당 채널의 대역폭으로 제한됩니다. 전체 인터리빙이 장치의 총 대역폭을 활성화합니다."
+                },
+                {
+                  "id": "c",
+                  "text": "토큰을 생성할 때마다 모든 가중치 페이지를 다시 쓰기",
+                  "correct": false,
+                  "feedback_incorrect": "가중치는 배치 후 읽기 중심입니다. 토큰마다 다시 쓰면 불필요한 NAND 마모와 트래픽이 발생합니다."
+                },
+                {
+                  "id": "d",
+                  "text": "HBF 가비지 컬렉션으로 핫 데이터를 재분배",
+                  "correct": false,
+                  "feedback_incorrect": "HBF는 기존 방식의 가비지 컬렉션이나 활성 데이터 자동 이동을 제공하지 않습니다."
+                }
+              ],
+              "feedback_correct": "정답입니다. 전체 채널 인터리빙을 통해 하나의 대형 모델이 통합 읽기 경로를 사용할 수 있습니다.",
+              "feedback_incorrect": "채널 로컬 배치와 총 대역폭의 관계를 다시 확인하십시오."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "HBF 시스템에서 호스트 소프트웨어가 담당하는 책임을 모두 선택하십시오.",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "리프레시를 예약하고 읽기 교란 위험에 대응",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "마모를 모니터링하고 선택한 영역 재매핑 정책 적용",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "재시도, 재실행, 대기 및 용량 폐기 동작 처리",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "가중치 및 KV 캐시의 채널 배치 선택",
+                  "correct": true
+                },
+                {
+                  "id": "e",
+                  "text": "모든 제품이 동일한 선택적 보안 및 스크래치패드 기능을 구현한다고 가정",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "정답입니다. HBF는 하드웨어-소프트웨어 계약이며, 중요한 수명 주기 및 배치 정책은 호스트가 담당합니다.",
+              "feedback_incorrect": "선택적 기능은 제품마다 다릅니다. 호스트는 기능을 검색하고 리프레시, 마모, 복구 및 배치를 계속 관리해야 합니다."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 117
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 125
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 129
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "고대역폭 플래시: SSD 용량과 HBM 성능의 연결",
+          "thank_you_message": "모듈 3, AI 서빙을 위한 HBF 프로그래밍을 완료해 주셔서 감사합니다.",
+          "cert_message": "OCP Academy HBF 아키텍처 과정을 완료했습니다. 이제 메모리 장벽 문제를 HBF 하드웨어, 소프트웨어 및 AI 서빙 설계 선택과 연결할 수 있습니다.",
+          "reference_links": [
+            {
+              "label": "OCP HBF v0.7.0",
+              "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"
+            },
+            {
+              "label": "OCP Storage 프로젝트",
+              "url": "https://www.opencompute.org/community/storage"
+            },
+            {
+              "label": "FMS 2026 발표",
+              "url": "https://news.skhynix.com/en/hbf-at-fms-2026/"
+            },
+            {
+              "label": "Sandisk HBF 배경 자료",
+              "url": "https://www.sandisk.com/company/newsroom/blogs/2025/scaling-beyond-the-wall-inside-sandisks-high-bandwidth-flash-for-ai"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_course_complete.txt",
+            "wav_file": "audio/module3/slide_10_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 13
+            },
+            {
+              "source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf",
+              "page": 130
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+    "voice_name": "Chris - Warm and clear",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable"
+  },
+  "metadata_language_name": "Korean",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "ko-KR",
+    "source_course_sha256": "b9c77ba724d7f7d85b33c6a27451f0e97f255a09bc11c649d0adf466436ba561"
+  },
+  "ui_labels": {
+    "not_started": "시작 전",
+    "completed": "완료",
+    "module": "모듈",
+    "module_complete": "모듈 {module} 완료",
+    "course_complete": "과정 완료",
+    "course_overview": "과정 개요",
+    "learning_objectives": "학습 목표",
+    "key_takeaways": "핵심 요약",
+    "knowledge_check": "지식 확인",
+    "submit": "제출",
+    "retry": "다시 시도",
+    "quiz_gate_note": "계속하려면 각 문항을 한 번씩 제출하세요. 정답 여부와 관계없이 진행할 수 있으며 다시 시도할 수 있습니다.",
+    "quiz_gate_warning": "다음으로 이동하기 전에 각 문항을 한 번씩 제출하세요.",
+    "select_answer": "답을 하나 이상 선택한 후 제출하세요.",
+    "correct": "정답입니다.",
+    "review_feedback": "피드백을 확인한 후 다시 시도하세요.",
+    "narration_hint": "내레이션은 자동으로 시작됩니다. → 키 또는 스페이스바를 눌러 다음으로 이동하세요.",
+    "theme": "테마",
+    "toggle_dark_mode": "다크 모드 전환",
+    "previous_slide": "이전 슬라이드",
+    "next_slide": "다음 슬라이드",
+    "play_pause_narration": "내레이션 재생 또는 일시 정지",
+    "playback_speed": "재생 속도",
+    "playback_speed_slider": "재생 속도 조절",
+    "speed": "속도",
+    "toggle_fullscreen": "전체 화면 전환",
+    "fullscreen": "전체 화면",
+    "video_controls": "동영상 컨트롤",
+    "play_video": "동영상 재생",
+    "pause_video": "동영상 일시 정지",
+    "zoom_video": "동영상 확대",
+    "video_figure": "동영상 그림",
+    "zoom_figure": "그림 확대",
+    "enlarged_figure": "확대된 그림",
+    "lightbox_close_hint": "바깥쪽을 클릭하거나 Esc 키를 눌러 닫으세요.",
+    "opens_new_tab": "새 탭에서 열림",
+    "learner_resource": "학습 자료",
+    "open": "열기",
+    "learn_more": "자세히 보기",
+    "reference": "참고 자료",
+    "course_intro": "OCP Academy 과정 인트로",
+    "skip_intro": "인트로 건너뛰기",
+    "share_feedback": "의견 보내기",
+    "survey_body": "몇 분만 시간을 내어 개선에 도움을 주시겠어요? 개발팀에 의견을 보내 주시면 이 과정과 향후 과정을 발전시키는 데 활용하겠습니다. 응답자 가운데 일부를 무작위로 선정해 기념품을 드립니다.",
+    "default_module_thanks": "모듈 {module}을 완료해 주셔서 감사합니다: {title}",
+    "default_course_wrap": "{course}의 모든 모듈을 완료했습니다. 이 과정에서 배운 내용을 현업에 적용하는 데 도움이 되기를 바랍니다.",
+    "up_next": "다음 과정",
+    "go_to_module": "모듈 {module}로 이동"
+  }
+}
