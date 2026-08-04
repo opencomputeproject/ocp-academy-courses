@@ -1,0 +1,11 @@
+The H B F stack divides responsibility between control logic and dense Nand capacity.
+
+At the bottom is the Base die. It receives host traffic, manages the U C I E protocol, and communicates with the Nand above it. The Base die contains the host-side physical interface and U C I E controller. It also contains the Core die controller that schedules and manages Nand operations.
+
+The Core die portion contains sixteen Nand dies. Through-silicon vias, or T S Vs, carry signals vertically between the Base die and that stack. This organization lets the design combine logic optimized for high-speed communication with Nand optimized for density.
+
+The Base die is organized around sixteen host channels. Each channel connects a host-side U C I E path to an independent set of Nand resources. Common functions, including test access and T S V repair, support the complete device, but mission-mode data stays channel-local. A request entering one host channel doesn't reach Nand attached to another channel.
+
+The complete H B F stack sits close to the X P U in the same advanced package. The specification even illustrates multiple H B F devices around one processor. That arrangement can scale local capacity while preserving a short electrical path.
+
+This separation is central to the architecture. The Base die turns host transactions into managed flash operations. The Core dies supply capacity. The repeated channels allow both sides to work in parallel. When you evaluate an H B F implementation, those three questions come first: where traffic is managed, where data is stored, and how many independent paths can operate at once.

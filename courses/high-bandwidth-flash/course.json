@@ -1,0 +1,925 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_academy_high_bandwidth_flash",
+  "course_title": "High Bandwidth Flash: Bridging SSD Capacity and HBM Performance",
+  "language": "en-US",
+  "course_subtitle": "An architecture and software guide to the OCP HBF Specification v0.7.0",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "HBF Specification v0.7.0 · August 2026",
+  "index_footer_line": "Based on the Open Compute Project High Bandwidth Flash Architecture Specification v0.7.0.",
+  "target_duration_minutes": 37,
+  "audience_level": "intermediate",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo v2",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable"
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "hbf_course_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "HBF"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_specification_pdf",
+      "title": "OCP HBF Architecture Specification v0.7.0",
+      "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"
+    },
+    {
+      "kind": "ocp_project_site",
+      "title": "OCP Storage Project",
+      "url": "https://www.opencompute.org/community/storage"
+    },
+    {
+      "kind": "industry_announcement",
+      "title": "SK hynix: HBF at FMS 2026",
+      "url": "https://news.skhynix.com/en/hbf-at-fms-2026/"
+    },
+    {
+      "kind": "industry_context",
+      "title": "Sandisk: Scaling Beyond the Wall: Inside High Bandwidth Flash for AI",
+      "url": "https://www.sandisk.com/company/newsroom/blogs/2025/scaling-beyond-the-wall-inside-sandisks-high-bandwidth-flash-for-ai"
+    },
+    {
+      "kind": "industry_fact_sheet",
+      "title": "Sandisk HBF Fact Sheet",
+      "url": "https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/sandisk/collateral/company/Sandisk-HBF-Fact-Sheet.pdf",
+      "usage_note": "Background context only; the course does not directly quote this fact sheet."
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "hbf",
+      "term": "HBF",
+      "tooltip": "High Bandwidth Flash: a NAND-based, non-coherent, read-optimized memory tier placed close to an accelerator."
+    },
+    {
+      "id": "hbm",
+      "term": "HBM",
+      "tooltip": "High Bandwidth Memory: stacked DRAM used as high-bandwidth working memory near accelerators."
+    },
+    {
+      "id": "xpu",
+      "term": "xPU",
+      "tooltip": "A generic processing unit such as a GPU, TPU, CPU, or specialized accelerator."
+    },
+    {
+      "id": "kv_cache",
+      "term": "KV cache",
+      "tooltip": "Key-value tensors retained from earlier tokens and layers to accelerate autoregressive decoding."
+    },
+    {
+      "id": "base_die",
+      "term": "Base die",
+      "tooltip": "The bottom HBF die that manages host traffic, UCIe, the NAND stack, and test/debug paths."
+    },
+    {
+      "id": "core_die",
+      "term": "Core die",
+      "tooltip": "The NAND die stack above the HBF Base die."
+    },
+    {
+      "id": "tsv",
+      "term": "TSV",
+      "tooltip": "Through-silicon via: a vertical electrical connection through stacked dies."
+    },
+    {
+      "id": "ucie",
+      "term": "UCIe",
+      "tooltip": "Universal Chiplet Interconnect Express: an open, on-package die-to-die interconnect standard."
+    },
+    {
+      "id": "axi",
+      "term": "AXI",
+      "tooltip": "Advanced eXtensible Interface: the AMBA transaction protocol carried over the HBF UCIe streaming link."
+    },
+    {
+      "id": "scratchpad",
+      "term": "Scratchpad SRAM",
+      "tooltip": "Optional, per-channel volatile memory for high-priority temporary data at latency on the order of an L3 cache."
+    },
+    {
+      "id": "moe",
+      "term": "MoE",
+      "tooltip": "Mixture of Experts: a model architecture that activates selected expert subnetworks for each input or token."
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why-ai-needs-hbf",
+      "title": "Why AI Needs a New Memory Layer",
+      "subtitle": "The memory wall, the SSD-HBF-HBM hierarchy, and the open OCP performance envelope.",
+      "module_badge_text": "Module 1",
+      "next_module_title": "How HBF Connects Capacity to the xPU",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "course_title",
+          "title": "High Bandwidth Flash",
+          "subtitle": "Bridging SSD Capacity and HBM Performance",
+          "module_number": 1,
+          "version_chip": "OCP HBF v0.7.0 · August 2026",
+          "audio": {
+            "script_file": "audio/module1/slide_01_course_title.txt",
+            "wav_file": "audio/module1/slide_01_course_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 1}
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course_overview",
+          "title": "From AI Pressure to HBF Deployment",
+          "subtitle": "Three modules connect the system need to the hardware-software contract.",
+          "modules_listed": [
+            "Why AI Needs a New Memory Layer",
+            "How HBF Connects Capacity to the xPU",
+            "Programming HBF for AI Serving"
+          ],
+          "chips": [
+            {"icon": "⏱", "text": "About 37 minutes"},
+            {"icon": "🎓", "text": "Intermediate"},
+            {"icon": "📄", "text": "OCP HBF Specification v0.7.0", "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"}
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 13},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 125}
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "ai_memory_wall",
+          "section_label": "AI Infrastructure",
+          "title": "AI Growth Turns Data Movement into the Bottleneck",
+          "subtitle": "Model weights and KV cache grow alongside compute demand.",
+          "bullets": [
+            {"bold_lead": "Compute outpaces delivery", "text": "Accelerators can wait when memory cannot supply data at the required rate."},
+            {"bold_lead": "Inference expands the working set", "text": "Larger models, longer contexts, and more users increase weight and KV-cache traffic."},
+            {"bold_lead": "Capacity drives system scale", "text": "Adding GPUs partly to obtain more attached HBM can waste compute and power."},
+            {"bold_lead": "A new near-xPU path", "text": "HBF adds high-capacity NAND close to the accelerator with wide, parallel read access."}
+          ],
+          "figure": {
+            "path": "figures/m1_memory_wall.mp4",
+            "media_type": "video",
+            "poster": "figures/m1_memory_wall_poster.png",
+            "alt": "Animation showing compute demand, model weights, and KV cache outgrowing a two-tier HBM and SSD path before HBF opens a high-capacity path near the xPU.",
+            "caption": "The memory wall becomes a data-movement problem as model state grows faster than the local memory tier.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": ["hbf", "hbm", "xpu", "kv_cache"],
+          "reference_links": [
+            {"label": "Sandisk HBF technical context", "url": "https://www.sandisk.com/company/newsroom/blogs/2025/scaling-beyond-the-wall-inside-sandisks-high-bandwidth-flash-for-ai"}
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_ai_memory_wall.txt",
+            "wav_file": "audio/module1/slide_03_ai_memory_wall.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 12},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 13},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 128}
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "hbf_between_hbm_ssd",
+          "section_label": "Tiered Memory",
+          "title": "HBF Fills the Space Between HBM and SSDs",
+          "subtitle": "The tiers cooperate; HBF does not universally replace either neighbor.",
+          "bullets": [
+            {"bold_lead": "HBM", "text": "Ultra-fast stacked DRAM for the most latency-sensitive accelerator working set."},
+            {"bold_lead": "HBF", "text": "NAND-based, non-coherent, read-optimized capacity close to the xPU."},
+            {"bold_lead": "SSD", "text": "Durable, high-capacity storage that remains the source of truth for permanent data."},
+            {"bold_lead": "System pattern", "text": "Place hot working data in HBM, large read-dominant AI data in HBF, and durable copies on SSDs."}
+          ],
+          "figure": {
+            "path": "figures/hbf_tier_map.svg",
+            "alt": "Three-tier AI memory hierarchy with HBM nearest compute, HBF as a high-capacity on-package tier, and SSD as persistent storage.",
+            "caption": "HBF introduces a managed tier between working memory and persistent storage.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_hbf_between_hbm_ssd.txt",
+            "wav_file": "audio/module1/slide_04_hbf_between_hbm_ssd.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 13},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 106},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 113}
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "open_ocp_architecture",
+          "section_label": "Open Ecosystem",
+          "title": "From Industry Proposal to Open OCP Architecture",
+          "subtitle": "Shared boundaries let processor, memory, package, and software ecosystems develop together.",
+          "bullets": [
+            {"bold_lead": "2025 collaboration", "text": "Sandisk and SK hynix began HBF standardization work."},
+            {"bold_lead": "OCP workstream", "text": "A dedicated effort formed under the OCP Storage Project in early 2026."},
+            {"bold_lead": "Open specification", "text": "Version 0.7.0 defines interface, protocol, electrical, packaging, reliability, software, security, and application boundaries."},
+            {"bold_lead": "FMS 2026 milestone", "text": "The first open architecture specification launched alongside the industry event."}
+          ],
+          "figure": {
+            "path": "figures/ocp_hbf_timeline.svg",
+            "alt": "Timeline from the 2025 HBF collaboration through the OCP workstream and the August 2026 version 0.7.0 release at FMS.",
+            "caption": "An open workstream turns a device concept into shared integration boundaries.",
+            "source": "custom"
+          },
+          "reference_links": [
+            {"label": "OCP HBF v0.7.0", "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"},
+            {"label": "OCP Storage Project", "url": "https://www.opencompute.org/community/storage"},
+            {"label": "SK Hynix Announcement at FMS2026", "url": "https://news.skhynix.com/en/hbf-at-fms-2026/"}
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_open_ocp_architecture.txt",
+            "wav_file": "audio/module1/slide_05_open_ocp_architecture.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 2},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 12},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 13}
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "performance_envelope",
+          "section_label": "Specification Targets",
+          "title": "The v0.7.0 Performance Envelope",
+          "subtitle": "Three grades scale channel speed and stack height while preserving the sixteen-channel model.",
+          "columns": ["Grade", "UCIe speed", "Maximum user bandwidth", "Maximum stack height"],
+          "rows": [
+            ["1", "8 GT/s", "0.384 TB/s", "8-high"],
+            ["2", "16 GT/s", "1.536 TB/s", "16-high"],
+            ["3", "32 GT/s", "3.072 TB/s", "16-high"]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_performance_envelope.txt",
+            "wav_file": "audio/module1/slide_06_performance_envelope.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 15},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 16}
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "module1_summary",
+          "title": "The Gap HBF Is Designed to Fill",
+          "items": [
+            "AI inference makes data movement a primary system constraint.",
+            "HBF augments HBM and SSDs with a new NAND-based tier near the xPU.",
+            "The OCP specification defines open integration boundaries rather than one complete vendor product.",
+            "A 512 GiB density calculation and three bandwidth grades frame version 0.7.0.",
+            "Sixteen-channel parallelism is the foundation for aggregate performance."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_module1_summary.txt",
+            "wav_file": "audio/module1/slide_07_module1_summary.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 12},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 16}
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your HBF Positioning Model",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "Which description best matches HBF's intended system role?",
+              "choices": [
+                {"id": "a", "text": "A NAND-based, high-capacity tier near the xPU that augments HBM and SSD storage", "correct": true},
+                {"id": "b", "text": "A direct replacement for all HBM in every workload", "correct": false, "feedback_incorrect": "HBF targets HBM-class aggregate read bandwidth with more capacity, but HBM remains the ultra-fast working-memory tier."},
+                {"id": "c", "text": "A persistent SSD interface moved onto the processor package", "correct": false, "feedback_incorrect": "HBF is NAND-based, but it uses a distinct non-coherent memory-centric UCIe/AXI architecture rather than an SSD block interface."},
+                {"id": "d", "text": "A coherent cache that automatically manages every AI data structure", "correct": false, "feedback_incorrect": "The specification describes HBF as non-coherent and assigns important placement and lifecycle responsibilities to host software."}
+              ],
+              "feedback_correct": "Correct. HBF adds a high-capacity, high-bandwidth tier between HBM and persistent SSD storage.",
+              "feedback_incorrect": "Review the three-tier model: HBM handles the hottest working set, HBF adds large near-xPU capacity, and SSDs preserve durable data."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "Which characteristics belong to the OCP HBF architecture? Select all that apply.",
+              "choices": [
+                {"id": "a", "text": "Sixteen independent host channels", "correct": true},
+                {"id": "b", "text": "Read-optimized NAND-based capacity", "correct": true},
+                {"id": "c", "text": "Non-coherent operation near the xPU", "correct": true},
+                {"id": "d", "text": "Unlimited write endurance", "correct": false},
+                {"id": "e", "text": "Permanent-storage replacement for SSDs", "correct": false}
+              ],
+              "feedback_correct": "Correct. HBF combines a near-xPU, non-coherent NAND tier with sixteen parallel host channels.",
+              "feedback_incorrect": "HBF is read-optimized and endurance-limited. The specification still recommends persistent storage such as SSDs for permanent data."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 13},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 15}
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 2,
+          "next_module_title": "How HBF Connects Capacity to the xPU",
+          "thank_you_message": "Nice work — you've finished Module 1: Why AI Needs a New Memory Layer.",
+          "audio": {
+            "script_file": "audio/module1/slide_09_up_next.txt",
+            "wav_file": "audio/module1/slide_09_up_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "hbf-host-architecture",
+      "title": "How HBF Connects Capacity to the xPU",
+      "subtitle": "Stack organization, UCIe channels, AXI transactions, and address interleaving.",
+      "module_badge_text": "Module 2",
+      "next_module_title": "Programming HBF for AI Serving",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "module_title",
+          "title": "How HBF Connects Capacity to the xPU",
+          "subtitle": "Stack organization, UCIe channels, AXI, and data striping",
+          "module_number": 2,
+          "version_chip": "OCP HBF v0.7.0 · August 2026",
+          "audio": {
+            "script_file": "audio/module2/slide_01_module_title.txt",
+            "wav_file": "audio/module2/slide_01_module_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 15}
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Architecture Decisions You Will Trace",
+          "subtitle": "By the end of this module, you will be able to:",
+          "objectives": [
+            "Identify the Base die, Core dies, and TSV paths in an HBF stack.",
+            "Trace one host transaction through UCIe and AXI.",
+            "Connect read and write rules to 4 KiB NAND-page geometry.",
+            "Explain how address interleaving activates aggregate bandwidth."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 15},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 112}
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "base_die_stack",
+          "section_label": "Stack Organization",
+          "title": "A Base Die Coordinates a 16-Die NAND Stack",
+          "subtitle": "Control logic and dense media are optimized separately, then joined vertically.",
+          "bullets": [
+            {"bold_lead": "Base die", "text": "Manages host traffic, UCIe, NAND communication, and test/debug paths."},
+            {"bold_lead": "Core dies", "text": "Sixteen NAND dies provide the stack's capacity."},
+            {"bold_lead": "TSV channels", "text": "Vertical connections route signals between the Base die and NAND stack."},
+            {"bold_lead": "Near-xPU package", "text": "The complete stack sits close to the host compute die over a short electrical path."}
+          ],
+          "figure": {
+            "path": "figures/hbf_stack_architecture.svg",
+            "alt": "Exploded HBF stack showing the Base die, sixteen NAND Core dies, TSV connections, and the nearby xPU.",
+            "caption": "The Base die translates host transactions into managed operations across the NAND Core die stack.",
+            "source": "custom"
+          },
+          "term_refs": ["hbf", "base_die", "core_die", "tsv"],
+          "audio": {
+            "script_file": "audio/module2/slide_03_base_die_stack.txt",
+            "wav_file": "audio/module2/slide_03_base_die_stack.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 17},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 18}
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "ucie_channels",
+          "section_label": "Host Interface",
+          "title": "Sixteen Independent UCIe Channels Build Bandwidth",
+          "subtitle": "Each channel is a self-contained x64 advanced-package link.",
+          "bullets": [
+            {"bold_lead": "256 GB/s per channel", "text": "An x64 channel reaches this raw bandwidth at 32 GT/s."},
+            {"bold_lead": "Mainband plus sideband", "text": "Mission data stays separate from bring-up, training, configuration, and management."},
+            {"bold_lead": "Streaming protocol", "text": "Format 6 uses a latency-optimized 256-byte flit with optional bytes."},
+            {"bold_lead": "Independent operation", "text": "Channels are independently clocked and need not be synchronous with one another."}
+          ],
+          "figure": {
+            "path": "figures/ucie_channel_architecture.svg",
+            "alt": "One UCIe x64 HBF channel expanded into mainband, sideband, protocol, adapter, and physical layers, repeated across sixteen channels.",
+            "caption": "A repeated short-reach link creates aggregate bandwidth without one monolithic bus.",
+            "source": "custom"
+          },
+          "term_refs": ["ucie"],
+          "audio": {
+            "script_file": "audio/module2/slide_04_ucie_channels.txt",
+            "wav_file": "audio/module2/slide_04_ucie_channels.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 25},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 26},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 27}
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "axi_flash_geometry",
+          "section_label": "Protocol Behavior",
+          "title": "AXI Transactions Are Shaped Around Flash Geometry",
+          "subtitle": "A familiar transaction model carries explicit alignment and page rules.",
+          "bullets": [
+            {"bold_lead": "Reads", "text": "64 B through 4 KiB, in 64 B multiples, aligned and contained within one 4 KiB page."},
+            {"bold_lead": "Writes", "text": "A complete 4 KiB burst begins on a 4 KiB-aligned address."},
+            {"bold_lead": "Virtual AXI paths", "text": "One, two, or four interfaces per UCIe channel support workload-selected interleaving."},
+            {"bold_lead": "Flow control", "text": "Ready/valid and credits move requests and responses while permitting out-of-order reads."}
+          ],
+          "figure": {
+            "path": "figures/axi_flash_geometry.svg",
+            "alt": "AXI read and write examples aligned to 64-byte segments and a 4 KiB NAND page, including a prohibited cross-page read.",
+            "caption": "AXI lowers protocol overhead without hiding NAND-page constraints.",
+            "source": "custom"
+          },
+          "term_refs": ["axi"],
+          "audio": {
+            "script_file": "audio/module2/slide_05_axi_flash_geometry.txt",
+            "wav_file": "audio/module2/slide_05_axi_flash_geometry.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 15},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 38},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 39}
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "address_interleaving",
+          "section_label": "Data Placement",
+          "title": "Address Interleaving Converts Channels into Throughput",
+          "figure": {
+            "path": "figures/m2_address_interleaving.mp4",
+            "media_type": "video",
+            "poster": "figures/m2_address_interleaving_poster.png",
+            "alt": "Animation splitting a 4 KiB global region into sixty-four-byte segments, mapping them into channel-local spaces, and expanding the pattern across sixteen UCIe channels.",
+            "caption": "A placement policy fans a linear global region across channel-local spaces; the Base die resolves local addresses to NAND resources.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "caption": "Full bandwidth requires enough correctly placed work to keep virtual AXI paths and host channels active together.",
+          "audio": {
+            "script_file": "audio/module2/slide_06_address_interleaving.txt",
+            "wav_file": "audio/module2/slide_06_address_interleaving.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 22},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 23},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 114}
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "module2_summary",
+          "title": "Parallelism Is Designed into Every Layer",
+          "items": [
+            "The Base die coordinates host traffic and a stack of sixteen NAND Core dies.",
+            "Sixteen independent UCIe channels create the aggregate host path.",
+            "AXI over UCIe keeps protocol overhead low while preserving flash geometry.",
+            "Reads remain inside 4 KiB page boundaries; writes assemble aligned 4 KiB units.",
+            "Global-to-local address interleaving determines how much parallel bandwidth software can use."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_module2_summary.txt",
+            "wav_file": "audio/module2/slide_07_module2_summary.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 17},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 112}
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Parallel-Bandwidth Model",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "At 32 GT/s, what raw bandwidth does one x64 HBF UCIe host channel support?",
+              "choices": [
+                {"id": "a", "text": "256 GB/s", "correct": true},
+                {"id": "b", "text": "32 GB/s", "correct": false, "feedback_incorrect": "32 GT/s is the line rate. The x64 data width produces 256 GB/s for one channel."},
+                {"id": "c", "text": "3.072 TB/s", "correct": false, "feedback_incorrect": "3.072 TB/s is the maximum user-bandwidth grade for the complete sixteen-channel device, not one channel."},
+                {"id": "d", "text": "4,096 GB/s", "correct": false, "feedback_incorrect": "4,096 GB/s is the raw total across all sixteen channels at the maximum grade."}
+              ],
+              "feedback_correct": "Correct. Eight bytes per transfer times 32 GT/s gives 256 GB/s per channel.",
+              "feedback_incorrect": "Separate the per-channel calculation from the sixteen-channel aggregate."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "Which host behaviors support correct, high-throughput HBF access? Select all that apply.",
+              "choices": [
+                {"id": "a", "text": "Keep reads within a 4 KiB NAND-page boundary", "correct": true},
+                {"id": "b", "text": "Use aligned 4 KiB writes", "correct": true},
+                {"id": "c", "text": "Interleave suitable data across AXI paths and host channels", "correct": true},
+                {"id": "d", "text": "Assume one channel can access another channel's NAND resources", "correct": false},
+                {"id": "e", "text": "Concentrate every hot region in one channel", "correct": false}
+              ],
+              "feedback_correct": "Correct. Alignment, complete logical units, and broad channel use activate the architecture safely.",
+              "feedback_incorrect": "Requests remain channel-local. A hot region concentrated in one channel cannot use the full device bandwidth."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_08_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 15},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 16},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 23}
+          ]
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 3,
+          "next_module_title": "Programming HBF for AI Serving",
+          "thank_you_message": "Nice work — you've finished Module 2: How HBF Connects Capacity to the xPU.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_up_next.txt",
+            "wav_file": "audio/module2/slide_09_up_next.wav",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "programming-hbf",
+      "title": "Programming HBF for AI Serving",
+      "subtitle": "Memory mapping, reliability, weights, KV cache, and model-serving placement.",
+      "module_badge_text": "Module 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "module_title",
+          "title": "Programming HBF for AI Serving",
+          "subtitle": "Memory mapping, lifecycle management, and workload-aware placement",
+          "module_number": 3,
+          "version_chip": "OCP HBF v0.7.0 · August 2026",
+          "audio": {
+            "script_file": "audio/module3/slide_01_module_title.txt",
+            "wav_file": "audio/module3/slide_01_module_title.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 112}
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Software Choices You Will Evaluate",
+          "subtitle": "By the end of this module, you will be able to:",
+          "objectives": [
+            "Explain separate HBM and HBF memory management.",
+            "Optimize parallel reads while respecting NAND-aware write rules.",
+            "Recognize host responsibilities for lifecycle and recovery.",
+            "Choose interleaved or dedicated-channel serving patterns.",
+            "Partition model weights and KV cache by workload needs."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 112},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 125}
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "independent_spaces",
+          "section_label": "Memory Model",
+          "title": "Software Sees Sixteen Independent Linear Spaces",
+          "subtitle": "HBF and HBM are managed separately, and channel reads do not share one global order.",
+          "bullets": [
+            {"bold_lead": "Separate tiers", "text": "HBM and HBF use distinct regions because capacity and access behavior differ."},
+            {"bold_lead": "Channel-local spaces", "text": "Each UCIe channel exposes its own continuous logical address range."},
+            {"bold_lead": "Parallel reads", "text": "Maximum performance comes from issuing work to as many channels as possible."},
+            {"bold_lead": "Optional scratchpad", "text": "Per-channel SRAM can hold high-priority temporary data but does not survive a power cycle."}
+          ],
+          "figure": {
+            "path": "figures/hbf_memory_spaces.svg",
+            "alt": "Separate HBM and HBF address regions, with the HBF region divided into sixteen channel-local linear spaces and optional scratchpad SRAM.",
+            "caption": "The global map is a software policy; each HBF channel remains an independent local resource.",
+            "source": "custom"
+          },
+          "term_refs": ["hbf", "hbm", "scratchpad"],
+          "audio": {
+            "script_file": "audio/module3/slide_03_independent_spaces.txt",
+            "wav_file": "audio/module3/slide_03_independent_spaces.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 113},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 115},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 116}
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "parallel_reads_structured_writes",
+          "section_label": "Programming Model",
+          "title": "Parallel Reads Are Easy; Writes Need Structure",
+          "subtitle": "Read broadly, write complete pages, and manage wear explicitly.",
+          "bullets": [
+            {"bold_lead": "Read in parallel", "text": "Channels operate independently and may complete out of order."},
+            {"bold_lead": "Write sequentially", "text": "Pages inside one NAND block progress in order even while different blocks run in parallel."},
+            {"bold_lead": "No conventional GC", "text": "HBF does not automatically move active data between physical locations."},
+            {"bold_lead": "Zone remapping", "text": "Base-die or host-controlled wear leveling redirects channel-local addresses to new physical locations."}
+          ],
+          "figure": {
+            "path": "figures/read_write_wear.svg",
+            "alt": "Comparison of parallel HBF reads, sequential writes within NAND blocks, and host-controlled hot-zone to cold-zone remapping.",
+            "caption": "HBF exposes flash lifecycle behavior instead of hiding it behind an SSD controller model.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_04_parallel_reads_structured_writes.txt",
+            "wav_file": "audio/module3/slide_04_parallel_reads_structured_writes.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 115},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 117},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 122}
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "reliability_host_contract",
+          "section_label": "Operations and Lifecycle",
+          "title": "Reliability Is a Shared Contract with the Host",
+          "subtitle": "The Base die reports state; host software turns that state into policy and recovery.",
+          "mobile_scroll": true,
+          "grid_cols": 3,
+          "cards": [
+            {"title": "Endurance", "body": "Monitor maximum and average program/erase counts; lifecycle is workload- and product-dependent.", "icon": "◫", "tone": "neutral"},
+            {"title": "Refresh", "body": "Schedule product-defined refresh, typically every 24–48 hours, and respond to read-disturb risk.", "icon": "↻", "tone": "warning"},
+            {"title": "Thermals", "body": "Operate across normal, light-throttling, severe-throttling, and shutdown states from 0°C to 105°C.", "icon": "◒", "tone": "warning"},
+            {"title": "Errors", "body": "Retry, refresh, replay, wait, or retire capacity according to the reported condition.", "icon": "!", "tone": "risk"},
+            {"title": "Security", "body": "Power-on erase and sanitize are optional, product-specific controls rather than universal inline protection.", "icon": "◇", "tone": "risk"},
+            {"title": "Durable copy", "body": "Use persistent storage such as SSDs for permanent data and recovery sources.", "icon": "▰", "tone": "neutral"}
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_reliability_host_contract.txt",
+            "wav_file": "audio/module3/slide_05_reliability_host_contract.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 106},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 118},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 124}
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "serving_patterns",
+          "section_label": "Serving Architectures",
+          "title": "Interleaving Determines the Model-Serving Pattern",
+          "figure": {
+            "path": "figures/m3_serving_patterns.mp4",
+            "media_type": "video",
+            "poster": "figures/m3_serving_patterns_poster.png",
+            "alt": "Animation transforming a sixteen-channel HBF grid between one fully interleaved model, two interleaved models, dedicated channel groups, and selected Mixture-of-Experts regions.",
+            "caption": "Full interleaving maximizes bandwidth; dedicated groups trade aggregate bandwidth for isolation and capacity control.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "caption": "Model layout follows the workload: one large model, multiple resident models, or selectively activated experts.",
+          "term_refs": ["moe"],
+          "audio": {
+            "script_file": "audio/module3/slide_06_serving_patterns.txt",
+            "wav_file": "audio/module3/slide_06_serving_patterns.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 125},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 126},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 127}
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "weights_kv_cache",
+          "section_label": "AI Data Placement",
+          "title": "Place Model Weights and KV Cache Deliberately",
+          "subtitle": "Different read/write patterns deserve different channel and zone policies.",
+          "bullets": [
+            {"bold_lead": "Model weights", "text": "Read-dominant data favors full-channel interleaving for repeated token-generation access."},
+            {"bold_lead": "KV cache", "text": "Prefill creates it; decode repeatedly reads and extends it as sequences grow."},
+            {"bold_lead": "Uniform partition", "text": "Equal channel groups simplify host-driven wear leveling between weights and KV cache."},
+            {"bold_lead": "Non-uniform partition", "text": "Size channel groups to a known model to maximize remaining capacity."}
+          ],
+          "figure": {
+            "path": "figures/weights_kv_partition.svg",
+            "alt": "HBF channels partitioned into model-weight and KV-cache regions using uniform and non-uniform allocation strategies.",
+            "caption": "The host chooses a balance among bandwidth, endurance, and capacity utilization.",
+            "source": "custom"
+          },
+          "term_refs": ["kv_cache"],
+          "audio": {
+            "script_file": "audio/module3/slide_07_weights_kv_cache.txt",
+            "wav_file": "audio/module3/slide_07_weights_kv_cache.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 128},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 129},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 130}
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "module3_summary",
+          "title": "HBF Performance Depends on Placement",
+          "items": [
+            "HBF and HBM are managed as separate tiers with sixteen HBF local spaces.",
+            "Reads favor broad parallelism; writes retain NAND sequencing and page rules.",
+            "Host software participates in wear, refresh, recovery, thermals, and security policy.",
+            "Interleaving maximizes bandwidth; dedicated channels improve isolation and allocation control.",
+            "Weights and KV cache need distinct placement policies because their write behavior differs."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_module3_summary.txt",
+            "wav_file": "audio/module3/slide_08_module3_summary.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 112},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 130}
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your HBF Serving Strategy",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "Which placement strategy best maximizes HBF bandwidth for one large model?",
+              "choices": [
+                {"id": "a", "text": "Stripe the model across all suitable host channels and read them in parallel", "correct": true},
+                {"id": "b", "text": "Place the complete model in one channel", "correct": false, "feedback_incorrect": "One channel limits the model to that channel's bandwidth. Full interleaving activates the aggregate device."},
+                {"id": "c", "text": "Rewrite every weight page during each generated token", "correct": false, "feedback_incorrect": "Weights are read-dominant after placement. Rewriting them per token would add unnecessary NAND wear and traffic."},
+                {"id": "d", "text": "Rely on HBF garbage collection to redistribute hot data", "correct": false, "feedback_incorrect": "HBF does not provide conventional garbage collection or automatic active-data movement."}
+              ],
+              "feedback_correct": "Correct. Full-channel interleaving gives one large model access to the aggregate read path.",
+              "feedback_incorrect": "Review the relationship between channel-local placement and aggregate bandwidth."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "Which responsibilities remain with host software in an HBF system? Select all that apply.",
+              "choices": [
+                {"id": "a", "text": "Schedule refresh and respond to read-disturb risk", "correct": true},
+                {"id": "b", "text": "Monitor wear and apply the selected zone-remapping policy", "correct": true},
+                {"id": "c", "text": "Handle retry, replay, wait, and capacity-retirement actions", "correct": true},
+                {"id": "d", "text": "Choose channel placement for weights and KV cache", "correct": true},
+                {"id": "e", "text": "Assume every product implements the same optional security and scratchpad features", "correct": false}
+              ],
+              "feedback_correct": "Correct. HBF is a hardware-software contract, and the host owns important lifecycle and placement policy.",
+              "feedback_incorrect": "Optional features vary by product. The host must discover capabilities and still manage refresh, wear, recovery, and placement."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 117},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 125},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 129}
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "High Bandwidth Flash: Bridging SSD Capacity and HBM Performance",
+          "thank_you_message": "Thank you for completing Module 3: Programming HBF for AI Serving.",
+          "cert_message": "You've completed the OCP Academy HBF architecture course. You are ready to connect the memory-wall problem to HBF hardware, software, and AI-serving design choices.",
+          "reference_links": [
+            {"label": "OCP HBF v0.7.0", "url": "https://www.opencompute.org/documents/ocp-hbf-architecture-specification-v0-7-0-final-pdf"},
+            {"label": "OCP Storage Project", "url": "https://www.opencompute.org/community/storage"},
+            {"label": "FMS 2026 announcement", "url": "https://news.skhynix.com/en/hbf-at-fms-2026/"},
+            {"label": "Sandisk HBF context", "url": "https://www.sandisk.com/company/newsroom/blogs/2025/scaling-beyond-the-wall-inside-sandisks-high-bandwidth-flash-for-ai"}
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_course_complete.txt",
+            "wav_file": "audio/module3/slide_10_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 13},
+            {"source": "OCP HBF Architecture Specification v0.7.0 FINAL.pdf", "page": 130}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+Model weights and K V cache are both large A I data structures, but they behave differently enough to deserve separate placement policies.
+
+Weights are loaded for the model's layers and read repeatedly during token generation. Their access pattern is mostly read-dominant after placement. To maximize throughput, the host writes weight regions in a channel-interleaved layout and reads them back through the same parallel pattern.
+
+The K V cache changes during serving. Prefill creates keys and values for each layer. Decode reads prior cache entries and appends new ones as tokens are generated. Sequence length, batch size, and model structure all influence the read-and-write pattern.
+
+Mixing these data types in one zone can complicate endurance and capacity use. A write-active K V region may raise program-and-erase counts next to relatively static weights. The specification therefore allows channel-level partitioning.
+
+One option divides the channels into equal groups. Weights and K V cache occupy separate groups, and software can move weight data toward the group with lower wear. Equal partitions simplify a host-driven wear-leveling policy.
+
+Another option uses non-uniform groups. Software assigns only the number of channels needed for the selected model's weights and gives the remaining capacity to K V cache or other data. That improves capacity utilization, but the host must understand model size and expected traffic.
+
+Optional scratchpad S RAM adds a third tool for temporary activations or intermediate buffers. It doesn't replace the persistent H B F regions, and software cannot assume every product provides it.
+
+The key principle is workload awareness. H B F supplies channels, zones, counters, and mapping hooks. The host decides how weights, K V cache, and temporary data use them.

@@ -1,0 +1,13 @@
+One H B F host channel uses an advanced-package U C I E connection. U C I E, or Universal Chiplet Interconnect Express, is an open die-to-die standard for connecting components inside a package.
+
+The H B F profile uses a sixty-four-bit, full-duplex mainband path. At 32 gigatransfers per second, one x-sixty-four module supports 256 gigabytes per second. The physical interface has sixty-four single-ended data lanes in each direction, along with clock and data-valid signals.
+
+A separate sideband path handles bring-up, link training, configuration access, and management communication. That separation keeps bulk mission data on the mainband while lower-rate control traffic uses its own path.
+
+The on-package reach is short, no more than two millimeters between connected bumps. The U C I E region uses a forty-five-micrometer bump pitch. Those physical choices support high bandwidth and power efficiency over a tightly coupled link.
+
+Above the physical layer, H B F chooses the U C I E Streaming Protocol. It uses Format Six and a latency-optimized 256-byte flit with optional bytes. The die-to-die adapter adds framing, cyclic-redundancy information, link state, and flow management.
+
+Each of the sixteen channels brings up and operates independently. They are independently clocked and don't need to be synchronous with one another. The aggregate device therefore isn't one enormous bus. It is a collection of self-contained links that software and the Base die use together.
+
+That distinction explains both the scale and the programming challenge: full throughput requires useful work on many independent channels at the same time.

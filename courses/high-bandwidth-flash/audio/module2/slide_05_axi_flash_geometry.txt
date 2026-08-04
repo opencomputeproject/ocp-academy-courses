@@ -1,0 +1,13 @@
+U C I E provides the die-to-die transport. AXI provides the transaction model between the X P U and H B F.
+
+AXI separates a transaction into read address, read data, write address, write data, and write response channels. Ready and valid signals provide flow control. The H B F link layer packs that information into U C I E flits, sends it across the package, and unpacks it for the remote AXI side.
+
+The specification uses a focused subset of AXI to keep overhead low. It also shapes transfers around Nand geometry.
+
+A flash read can range from sixty-four bytes to four kibibytes, in sixty-four-byte multiples. The starting address must be aligned to sixty-four bytes, and the request cannot cross a four-kibibyte Nand-page boundary. That allows the host to fetch smaller cache-line-sized regions without hiding the underlying page structure.
+
+A flash write uses a four-kibibyte burst at a four-kibibyte-aligned address. Smaller AXI beats may contribute to that device logical unit, but the Base die needs the complete four kibibytes before the operation is ready for Nand. A missing portion can eventually trigger an accumulation-timeout error.
+
+One U C I E channel may expose one, two, or four virtual AXI interfaces. The total capacity doesn't change. Instead, the host can interleave addresses across those virtual paths at granularities that are multiples of sixty-four bytes.
+
+The practical lesson is simple. H B F speaks a familiar on-package transaction protocol, but it doesn't erase flash behavior. Correct alignment, complete pages, and enough concurrent requests are part of the performance contract.

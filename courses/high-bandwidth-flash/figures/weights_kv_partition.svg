@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Weights and KV cache channel partitioning</title>
+  <desc id="desc">Two channel maps compare uniform and non-uniform HBF partitioning between model weights and KV cache, with endurance and capacity tradeoffs.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9fbff"/><stop offset="1" stop-color="#edf3fb"/></linearGradient><filter id="s" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#263252" flood-opacity=".14"/></filter></defs>
+  <rect width="960" height="540" rx="28" fill="url(#bg)"/>
+  <text x="480" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="800" fill="#20263b">Partition by behavior, not only by capacity</text>
+  <g transform="translate(55 92)" font-family="Arial, sans-serif" filter="url(#s)">
+    <rect width="405" height="330" rx="24" fill="#fff"/><text x="202" y="38" text-anchor="middle" font-size="20" font-weight="800" fill="#343895">UNIFORM CHANNEL GROUPS</text><text x="202" y="64" text-anchor="middle" font-size="14" fill="#4e596d">Simpler host-driven wear leveling</text>
+    <g transform="translate(34 84)">
+      <g fill="#4f56b6"><rect x="0" y="0" width="34" height="125" rx="8"/><rect x="42" y="0" width="34" height="125" rx="8"/><rect x="84" y="0" width="34" height="125" rx="8"/><rect x="126" y="0" width="34" height="125" rx="8"/><rect x="168" y="0" width="34" height="125" rx="8"/><rect x="210" y="0" width="34" height="125" rx="8"/><rect x="252" y="0" width="34" height="125" rx="8"/><rect x="294" y="0" width="34" height="125" rx="8"/></g>
+      <g fill="#8dc63f"><rect x="0" y="132" width="34" height="42" rx="8"/><rect x="42" y="132" width="34" height="42" rx="8"/><rect x="84" y="132" width="34" height="42" rx="8"/><rect x="126" y="132" width="34" height="42" rx="8"/><rect x="168" y="132" width="34" height="42" rx="8"/><rect x="210" y="132" width="34" height="42" rx="8"/><rect x="252" y="132" width="34" height="42" rx="8"/><rect x="294" y="132" width="34" height="42" rx="8"/></g>
+    </g>
+    <text x="202" y="282" text-anchor="middle" font-size="15" font-weight="800" fill="#343895">8 channels · MODEL WEIGHTS</text><text x="202" y="307" text-anchor="middle" font-size="15" font-weight="800" fill="#5d8924">8 channels · KV CACHE</text>
+  </g>
+  <g transform="translate(500 92)" font-family="Arial, sans-serif" filter="url(#s)">
+    <rect width="405" height="330" rx="24" fill="#fff"/><text x="202" y="38" text-anchor="middle" font-size="20" font-weight="800" fill="#343895">NON-UNIFORM GROUPS</text><text x="202" y="64" text-anchor="middle" font-size="14" fill="#4e596d">Capacity tuned to a known model</text>
+    <g transform="translate(34 84)">
+      <g fill="#4f56b6"><rect x="0" y="0" width="34" height="125" rx="8"/><rect x="42" y="0" width="34" height="125" rx="8"/><rect x="84" y="0" width="34" height="125" rx="8"/><rect x="126" y="0" width="34" height="125" rx="8"/><rect x="168" y="0" width="34" height="125" rx="8"/></g>
+      <g fill="#8dc63f"><rect x="210" y="0" width="34" height="174" rx="8"/><rect x="252" y="0" width="34" height="174" rx="8"/><rect x="294" y="0" width="34" height="174" rx="8"/></g>
+      <g fill="#8dc63f"><rect x="0" y="132" width="34" height="42" rx="8"/><rect x="42" y="132" width="34" height="42" rx="8"/><rect x="84" y="132" width="34" height="42" rx="8"/><rect x="126" y="132" width="34" height="42" rx="8"/><rect x="168" y="132" width="34" height="42" rx="8"/></g>
+    </g>
+    <text x="138" y="282" text-anchor="middle" font-size="15" font-weight="800" fill="#343895">10 channels · WEIGHTS</text><text x="306" y="282" text-anchor="middle" font-size="15" font-weight="800" fill="#5d8924">6 · KV CACHE</text><text x="202" y="307" text-anchor="middle" font-size="14" fill="#4e596d">Capacity follows the active data shape</text>
+  </g>
+  <g transform="translate(90 455)" font-family="Arial, sans-serif"><rect width="780" height="50" rx="18" fill="#fff" stroke="#d8deeb" stroke-width="2"/><circle cx="35" cy="25" r="10" fill="#4f56b6"/><text x="55" y="31" font-size="15" font-weight="700" fill="#343895">Weights: read-dominant</text><circle cx="285" cy="25" r="10" fill="#8dc63f"/><text x="305" y="31" font-size="15" font-weight="700" fill="#5d8924">KV cache: read + append</text><text x="755" y="31" text-anchor="end" font-size="14" fill="#4e596d">Balance bandwidth · endurance · capacity</text></g>
+</svg>

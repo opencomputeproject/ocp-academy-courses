@@ -35,6 +35,7 @@ courses/
   ai-computing-continuum/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
   intro-to-ocp/
     module-1-the-ocp-origins/
@@ -114,6 +115,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ai-computing-continuum` | AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center |
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
 | `integrating-quantum-processing-units-into-data-center-infrastructure` | Integrating Quantum Processing Units into Data Center Infrastructure |
 | `intro-to-ocp/module-1-the-ocp-origins` | Module 1: The OCP Origins |
 | `intro-to-ocp/module-2-the-ocp-ecosystem-governance` | Module 2: The OCP Ecosystem & Governance |

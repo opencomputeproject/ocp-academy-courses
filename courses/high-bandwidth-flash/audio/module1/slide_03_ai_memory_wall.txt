@@ -1,0 +1,11 @@
+A modern accelerator can perform enormous amounts of computation, but useful work only happens when data reaches the compute engines at the right rate. That mismatch between compute capability and memory delivery is the memory wall.
+
+The problem becomes more visible in A I inference. Large language models carry billions, and sometimes hundreds of billions, of parameters. Those weights must be available during token generation. Longer prompts and conversations also expand the key-value cache, usually called the K V cache. More users add more active sequences, so capacity and bandwidth pressure grow together.
+
+H B M gives a G P U or another X P U very high local bandwidth. Its capacity, however, is expensive and physically limited. When a complete model or its active data doesn't fit, the system must partition the model, move data from a slower tier, or add accelerators partly to obtain more attached memory. Each response can increase communication, energy use, latency, and cost.
+
+The important shift is from a compute-only view to a data-movement view. Inference performance can be limited by how quickly the system supplies weights and cache data, even when arithmetic units are available.
+
+High Bandwidth Flash addresses that gap with a wide-interface, Nand-based device placed close to the X P U. It doesn't remove the need for H B M or durable storage. It adds another tool: much greater local capacity with enough aggregate read bandwidth to support data-intensive inference.
+
+The progression is straightforward. Compute demand, model weights, and K V cache grow at different rates until the existing two-tier path becomes constrained. H B F then opens a new high-capacity path near the accelerator.

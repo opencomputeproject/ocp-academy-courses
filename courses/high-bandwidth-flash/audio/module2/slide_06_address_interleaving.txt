@@ -1,0 +1,13 @@
+Follow one four-kibibyte region from a host-global address into the parallel H B F structure.
+
+Host software begins with a global address range. It splits that range across channel-local address spaces according to the selected interleaving policy. Each H B F U C I E channel presents a continuous logical space, so software doesn't need to schedule individual Nand banks and dies for every request.
+
+Inside H B F, the Base die maps each local address to the appropriate bank, die, block, and page. The device logical unit is four kibibytes. For reads, the host can interleave in sixty-four-byte multiples. When sixty-four segments make up a four-kibibyte set, their global addresses must be linear when collected. No address can be missing or duplicated.
+
+Interleaving can also occur across one, two, or four virtual AXI interfaces within a host channel. At the finest useful pattern, multiple AXI paths remain busy while the Base die drives parallel Nand resources.
+
+Then the pattern expands across all sixteen host channels. A large host buffer can distribute four-kibibyte pages across the complete channel set. When the host issues reads to those channels together, independent links and Nand resources operate in parallel.
+
+There is an important boundary. A request sent to one U C I E channel cannot access data attached to another channel. Performance therefore depends on where software placed the data earlier. A hot region concentrated in one channel can use only that channel's bandwidth. The same region striped appropriately can use the full device.
+
+Address interleaving is not a cosmetic layout choice. It is the mechanism that converts sixteen independent local paths into aggregate H B F throughput.
