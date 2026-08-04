@@ -1,0 +1,11 @@
+H B F doesn't simply enlarge the H B M address range. The host manages the two tiers separately because their capacities and access behaviors are different.
+
+The specification illustrates systems with H B M and H B F mapped into distinct regions. Within one H B F device, each of the sixteen U C I E channels has its own continuous local address space. The host's global map determines which channel holds each region.
+
+Read requests across channels don't preserve a single global order. That independence is useful because the host can issue work to many channels simultaneously. It also means software must associate completions with the correct requests and avoid assuming that channel zero finishes before channel one.
+
+Maximum read performance comes from keeping as many channels active as the access pattern permits. A layout that spreads a large sequential region across the full channel set can expose aggregate bandwidth. A small or poorly placed region may use only a fraction of the device.
+
+H B F may also provide optional scratchpad S RAM in each channel. The host discovers its address and size through configuration registers. Scratchpad requests receive high priority and can operate at the full bandwidth of that U C I E channel, with latency on the order of an L three cache. The region is temporary and doesn't survive a power cycle.
+
+That optional space can hold intermediate activations or layer-to-layer buffers. It shouldn't be assumed in portable software, but it illustrates the larger principle: H B F exposes multiple memory behaviors, and the host must discover and use them deliberately.

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=1920,height=1080"><title>AI Memory Wall</title>
+<style>
+  :root{--blue:#525ac0;--deep:#171b42;--ink:#f7f9ff;--green:#8dc63f;--amber:#f1a33c;--red:#dc5360;--muted:#aeb8d4}
+  *{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#11152f;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+  body{background:radial-gradient(circle at 32% 42%,#30377d 0,#1b2051 30%,#11152f 68%,#0b0f25 100%)}
+  .grid{position:absolute;inset:0;opacity:.16;background-image:linear-gradient(#7782b522 1px,transparent 1px),linear-gradient(90deg,#7782b522 1px,transparent 1px);background-size:54px 54px}
+  .eyebrow{position:absolute;left:100px;top:74px;font-size:25px;letter-spacing:.22em;font-weight:800;color:var(--green)}
+  h1{position:absolute;left:100px;top:100px;margin:0;font-size:66px;line-height:1.04;letter-spacing:-.035em}.sub{position:absolute;left:104px;top:184px;font-size:26px;color:#cbd3ed}
+  .xpu{position:absolute;left:170px;top:350px;width:330px;height:330px;border:2px solid #8993df;border-radius:52px;background:linear-gradient(145deg,#5b63cf,#343895);box-shadow:0 30px 80px #05081888,0 0 50px #525ac055;display:grid;place-items:center;z-index:4}
+  .xpu:before{content:"";position:absolute;inset:28px;border:1px solid #c6ccff77;border-radius:34px}.xpu .core{font-size:78px;font-weight:900}.xpu .label{position:absolute;bottom:61px;font-size:21px;letter-spacing:.12em;color:#e4e7ff}.xpu .pulse{position:absolute;width:150px;height:150px;border:3px solid #b9e86d;border-radius:50%;animation:pulse 2s ease-out infinite}
+  @keyframes pulse{0%{transform:scale(.55);opacity:.9}100%{transform:scale(1.55);opacity:0}}
+  .tier{position:absolute;border-radius:30px;border:2px solid #ffffff24;box-shadow:0 20px 55px #05081855;overflow:hidden}
+  .tier h2{margin:0;font-size:33px}.tier p{margin:10px 0 0;font-size:19px;color:#d5daed}.hbm{left:590px;top:350px;width:300px;height:150px;padding:32px 36px;background:linear-gradient(135deg,#4f56b6,#343895)}
+  .ssd{right:110px;top:350px;width:310px;height:150px;padding:32px 36px;background:linear-gradient(135deg,#616d84,#3d4658)}
+  .hbf{left:1005px;top:558px;width:360px;height:188px;padding:36px 42px;background:linear-gradient(135deg,#89c13d,#5f8e25);opacity:0;transform:translateY(50px) scale(.92);animation:hbfIn 12s cubic-bezier(.2,.75,.2,1) infinite;z-index:5}
+  .hbf h2{font-size:40px}.hbf p{width:220px;line-height:1.25}.hbf .chip{position:absolute;right:24px;top:34px;width:74px;height:74px;border-radius:18px;background:#ecf7dd33;border:2px solid #fff5;display:grid;place-items:center;font-size:31px;font-weight:900}
+  @keyframes hbfIn{0%,40%{opacity:0;transform:translateY(50px) scale(.92)}50%,94%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-18px)}}
+  .wall{position:absolute;left:936px;top:300px;width:20px;height:450px;border-radius:10px;background:linear-gradient(#f06b76,#b93747);box-shadow:0 0 40px #dc536088;animation:wall 12s ease-in-out infinite;z-index:3}.wallLabel{position:absolute;left:864px;top:507px;width:164px;text-align:center;transform:rotate(-90deg);font-size:20px;font-weight:900;letter-spacing:.14em;color:#ffe8eb;animation:wallLabel 12s ease-in-out infinite;z-index:4}
+  @keyframes wall{0%,18%{opacity:.15;transform:scaleY(.3)}34%,45%{opacity:1;transform:scaleY(1)}55%,94%{opacity:.2;transform:scaleY(.22)}100%{opacity:.1;transform:scaleY(.1)}}@keyframes wallLabel{0%,18%{opacity:.08}34%,45%{opacity:1}55%,100%{opacity:.08}}
+  .flow{position:absolute;height:8px;border-radius:4px;overflow:hidden;background:#ffffff16}.flow:before{content:"";position:absolute;width:90px;height:100%;background:linear-gradient(90deg,transparent,var(--green),transparent);animation:packet 1.3s linear infinite}
+  .f1{left:500px;top:420px;width:90px}.f2{left:890px;top:420px;width:156px}.f3{left:500px;top:590px;width:505px;transform:rotate(-2deg);opacity:0;animation:newFlow 12s linear infinite}
+  @keyframes packet{from{left:-90px}to{left:100%}}@keyframes newFlow{0%,47%{opacity:0}55%,94%{opacity:1}100%{opacity:0}}
+  .metrics{position:absolute;left:104px;bottom:90px;width:760px;height:190px}.metric{display:grid;grid-template-columns:190px 1fr 80px;gap:18px;align-items:center;margin:18px 0}.metric label{font-size:20px;font-weight:700;color:#d7dcf0}.track{height:18px;background:#ffffff18;border-radius:9px;overflow:hidden}.bar{height:100%;border-radius:9px;transform-origin:left;animation:grow 12s ease-in-out infinite}.bar.compute{background:var(--blue);--end:1}.bar.weights{background:var(--amber);--end:.86;animation-name:growFast}.bar.kv{background:var(--green);--end:.72;animation-name:growLater}.metric strong{font-size:18px;color:#d7dcf0}
+  @keyframes grow{0%{transform:scaleX(.18)}42%,94%{transform:scaleX(1)}100%{transform:scaleX(.18)}}@keyframes growFast{0%{transform:scaleX(.08)}42%,94%{transform:scaleX(.86)}100%{transform:scaleX(.08)}}@keyframes growLater{0%,14%{transform:scaleX(.05)}46%,94%{transform:scaleX(.72)}100%{transform:scaleX(.05)}}
+  .pressure{position:absolute;right:110px;bottom:100px;width:720px;display:flex;gap:16px;opacity:0;animation:labels 12s ease infinite}.pill{flex:1;padding:20px 22px;border:1px solid #ffffff30;border-radius:18px;background:#ffffff0d}.pill b{display:block;font-size:20px;margin-bottom:7px}.pill span{font-size:16px;color:#bec6df}.pill.h{border-color:#666ee0}.pill.f{border-color:#8dc63f}.pill.s{border-color:#8894ab}
+  @keyframes labels{0%,58%{opacity:0;transform:translateY(20px)}67%,94%{opacity:1;transform:none}100%{opacity:0}}
+</style></head><body>
+<div class="grid"></div><div class="eyebrow">OCP ACADEMY · HIGH BANDWIDTH FLASH</div><h1>The AI memory wall</h1><div class="sub">When data movement becomes the limiter</div>
+<div class="xpu"><div class="pulse"></div><div class="core">xPU</div><div class="label">COMPUTE ENGINE</div></div>
+<div class="tier hbm"><h2>HBM</h2><p>Ultra-fast working set</p></div><div class="tier ssd"><h2>SSD</h2><p>Durable capacity</p></div><div class="tier hbf"><div class="chip">16×</div><h2>HBF</h2><p>Large read-dominant state near compute</p></div>
+<div class="wall"></div><div class="wallLabel">MEMORY WALL</div><div class="flow f1"></div><div class="flow f2"></div><div class="flow f3"></div>
+<div class="metrics"><div class="metric"><label>Compute demand</label><div class="track"><div class="bar compute"></div></div><strong>FAST</strong></div><div class="metric"><label>Model weights</label><div class="track"><div class="bar weights"></div></div><strong>LARGE</strong></div><div class="metric"><label>KV cache</label><div class="track"><div class="bar kv"></div></div><strong>GROWING</strong></div></div>
+<div class="pressure"><div class="pill h"><b>HBM</b><span>Hottest working data</span></div><div class="pill f"><b>HBF</b><span>High-capacity local reads</span></div><div class="pill s"><b>SSD</b><span>Persistent source of truth</span></div></div>
+</body></html>

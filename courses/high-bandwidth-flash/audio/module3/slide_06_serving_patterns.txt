@@ -1,0 +1,11 @@
+One channel grid can support several model-serving patterns.
+
+For a single large model, software stripes each major weight region across all sixteen channels. The H B F specification describes page groups based on four kibibytes, the available parallel banks or planes, and the full channel count. During inference, the host reads those channel-local pages together. That pattern prioritizes maximum aggregate bandwidth.
+
+Multiple models can use the same fully interleaved layout. Each model occupies regions spread across all channels. When the active model changes, its weights are already resident in H B F, so the system avoids the same S S D-to-local-memory reload path used by a conventional two-tier design. The tradeoff is that models share the channel set and must be scheduled accordingly.
+
+A different pattern assigns models to dedicated channel groups. Independent G P U cores or serving contexts can access separate models without colliding in the same channels. The host knows each channel's address range and places the model explicitly. Each model receives less than the full device bandwidth, but the layout can improve isolation and make simultaneous access more predictable.
+
+Mixture-of-Experts, multimodal, and agentic systems use the same choice. Frequently activated experts may be striped for throughput. Less active experts or specialized models may occupy selected channels to conserve capacity or isolate access.
+
+There is no universal best layout. Full interleaving optimizes bandwidth. Dedicated channels optimize control, isolation, or capacity allocation. Software chooses the tradeoff.

@@ -1,0 +1,13 @@
+The H B F programming model is deliberately asymmetric. Reads favor broad parallelism. Writes must respect Nand structure.
+
+For reads, the host can issue requests to all possible U C I E channels at the same time. Completions may return out of order across channels. A good layout gives each channel useful work and lets the request identifiers preserve correctness.
+
+For writes, the best performance comes from using all banks across all host channels. Banks within the same Nand die use the same page number for maximum parallelism, while different dies and channels can progress independently.
+
+Inside a Nand block, however, writes remain sequential. The host can't rewrite an arbitrary page that already contains data. Rewriting begins from the start of the block, and page N must be supplied before page N plus one. The Base die reports overlap, order, timeout, and program-failure conditions when those rules are violated.
+
+H B F also doesn't provide conventional garbage collection. It doesn't copy active data from one physical location to another as an S S D controller might. It can remap a channel-local address to a new physical location as part of wear management, but the host must ensure that old data is no longer in use before a zone swap.
+
+Wear leveling can be product-specific and Base-die-managed, or it can be controlled by the host. In the host-controlled model, each channel is divided into equal-sized zones. Software compares program-and-erase counts, then swaps hot and cold zones when appropriate.
+
+The result is a clear contract: parallelize reads aggressively, plan writes in complete Nand-aware sequences, and treat data movement for wear management as a software-visible operation.

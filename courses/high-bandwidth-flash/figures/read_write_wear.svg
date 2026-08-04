@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">Parallel reads, structured writes, and zone remapping</title>
+  <desc id="desc">Three panels compare parallel reads across channels, sequential pages within NAND blocks, and hot-to-cold zone remapping for wear management.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f9fbff"/><stop offset="1" stop-color="#edf3fb"/></linearGradient><filter id="s" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#263252" flood-opacity=".14"/></filter></defs>
+  <rect width="960" height="540" rx="28" fill="url(#bg)"/>
+  <text x="480" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="25" font-weight="800" fill="#20263b">Read broadly, write in order, remap with intent</text>
+  <g transform="translate(42 92)" font-family="Arial, sans-serif" filter="url(#s)">
+    <rect width="276" height="350" rx="22" fill="#fff"/><rect x="0" y="0" width="276" height="58" rx="22" fill="#343895"/><rect x="0" y="38" width="276" height="20" fill="#343895"/>
+    <text x="138" y="36" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">PARALLEL READS</text>
+    <g transform="translate(34 88)" fill="#eff8e2" stroke="#8dc63f" stroke-width="2"><rect x="0" y="0" width="43" height="156" rx="10"/><rect x="54" y="0" width="43" height="156" rx="10"/><rect x="108" y="0" width="43" height="156" rx="10"/><rect x="162" y="0" width="43" height="156" rx="10"/></g>
+    <g fill="#8dc63f"><circle cx="55" cy="126" r="12"/><circle cx="109" cy="158" r="12"/><circle cx="163" cy="112" r="12"/><circle cx="217" cy="185" r="12"/><circle cx="55" cy="211" r="12"/><circle cx="109" cy="126" r="12"/><circle cx="163" cy="199" r="12"/><circle cx="217" cy="139" r="12"/></g>
+    <text x="138" y="282" text-anchor="middle" font-size="15" font-weight="700" fill="#5d8924">Many channels active</text><text x="138" y="310" text-anchor="middle" font-size="14" fill="#4e596d">Independent completion</text><text x="138" y="333" text-anchor="middle" font-size="14" fill="#4e596d">Request IDs preserve order</text>
+  </g>
+  <g transform="translate(342 92)" font-family="Arial, sans-serif" filter="url(#s)">
+    <rect width="276" height="350" rx="22" fill="#fff"/><rect x="0" y="0" width="276" height="58" rx="22" fill="#8dc63f"/><rect x="0" y="38" width="276" height="20" fill="#8dc63f"/>
+    <text x="138" y="36" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">STRUCTURED WRITES</text>
+    <g transform="translate(45 88)"><rect width="186" height="156" rx="14" fill="#eff8e2" stroke="#8dc63f" stroke-width="2"/><g font-family="Arial, sans-serif" font-size="14" font-weight="800" text-anchor="middle"><rect x="18" y="16" width="150" height="26" rx="8" fill="#343895"/><text x="93" y="34" fill="#fff">1 · PAGE N</text><rect x="18" y="51" width="150" height="26" rx="8" fill="#525ac0"/><text x="93" y="69" fill="#fff">2 · PAGE N + 1</text><rect x="18" y="86" width="150" height="26" rx="8" fill="#6d74ca"/><text x="93" y="104" fill="#fff">3 · PAGE N + 2</text><rect x="18" y="121" width="150" height="20" rx="7" fill="#aeb2e9"/><text x="93" y="136" fill="#343895">CONTINUE</text></g></g>
+    <text x="138" y="282" text-anchor="middle" font-size="15" font-weight="700" fill="#5d8924">Sequential in one block</text><text x="138" y="310" text-anchor="middle" font-size="14" fill="#4e596d">Parallel across blocks</text><text x="138" y="333" text-anchor="middle" font-size="14" fill="#4e596d">Complete 4 KiB units</text>
+  </g>
+  <g transform="translate(642 92)" font-family="Arial, sans-serif" filter="url(#s)">
+    <rect width="276" height="350" rx="22" fill="#fff"/><rect x="0" y="0" width="276" height="58" rx="22" fill="#68758b"/><rect x="0" y="38" width="276" height="20" fill="#68758b"/>
+    <text x="138" y="36" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">ZONE REMAPPING</text>
+    <rect x="30" y="88" width="88" height="156" rx="14" fill="#fff1e3" stroke="#e5963f" stroke-width="2"/><rect x="158" y="88" width="88" height="156" rx="14" fill="#eff8e2" stroke="#8dc63f" stroke-width="2"/>
+    <text x="74" y="115" text-anchor="middle" font-size="14" font-weight="800" fill="#b96a17">HOT ZONE</text><text x="202" y="115" text-anchor="middle" font-size="14" font-weight="800" fill="#5d8924">COLD ZONE</text>
+    <g fill="#e5963f"><rect x="46" y="133" width="56" height="20" rx="6"/><rect x="46" y="160" width="56" height="20" rx="6"/><rect x="46" y="187" width="56" height="20" rx="6"/></g><g fill="#8dc63f"><rect x="174" y="133" width="56" height="20" rx="6"/><rect x="174" y="160" width="56" height="20" rx="6"/><rect x="174" y="187" width="56" height="20" rx="6"/></g>
+    <line x1="118" y1="166" x2="158" y2="166" stroke="#343895" stroke-width="5" stroke-linecap="round"/>
+    <text x="138" y="282" text-anchor="middle" font-size="15" font-weight="700" fill="#4e596d">Host or Base-die policy</text><text x="138" y="310" text-anchor="middle" font-size="14" fill="#4e596d">Invalidate before swap</text><text x="138" y="333" text-anchor="middle" font-size="14" fill="#4e596d">No conventional GC</text>
+  </g>
+  <text x="480" y="495" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#3c4558">HBF exposes NAND lifecycle behavior instead of hiding it behind an SSD controller model.</text>
+</svg>

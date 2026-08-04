@@ -1,0 +1,13 @@
+High bandwidth doesn't remove the lifecycle characteristics of Nand. Reliable H B F operation is a contract between the device and host software.
+
+The reliability table defines a ten-year life span or an endurance indicator of one hundred percent, whichever comes first. Actual endurance depends on the workload and product. The Base die exposes maximum and average program-and-erase counts so the host can estimate remaining life and adjust placement.
+
+Data health also requires refresh. The reliability table guarantees twenty-four hours of power-on retention at 85 degrees Celsius. The software guide recommends periodic refresh at product-defined intervals, typically every twenty-four to forty-eight hours. Read disturb may require earlier action. The host can inspect read counts and respond when the Base die reports increased risk.
+
+Error status turns those risks into actions. Depending on the code, software may retry a read, refresh a block, replay writes from a known copy, wait for temporary recovery, or retire unusable capacity. Durable copies therefore remain important.
+
+Temperature adds another state machine. H B F operates from zero through 105 degrees Celsius at the junction. It moves through normal, light-throttling, severe-throttling, and shutdown modes. Severe throttling stops normal input and output while maintenance access remains available.
+
+Security is optional and product-specific. The architecture defines power-on erase and sanitize mechanisms, but high-bandwidth inline protection isn't assumed. H B F is difficult to remove from the package, yet physical integration alone isn't a complete data-at-rest policy.
+
+For permanent storage, use persistent devices such as S S Ds. Treat H B F as a managed local tier with refresh, recovery, and a durable source of truth. That is the host-device contract.
