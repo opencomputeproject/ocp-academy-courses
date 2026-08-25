@@ -66,6 +66,7 @@ courses/
     enhanced-telemetry-optics/
     introduction-to-emerging-optical-technologies/
   project-deschutes-cdu-specification-v1-0/
+  short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
 scripts/
   build-course.sh
