@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280,height=720,initial-scale=1">
+  <link rel="stylesheet" href="animation.css">
+  <title>Retry tax animation</title>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">A retry stalls useful synchronous compute</title>
+  <desc id="desc">A protected transfer passes through FEC and CRC, first receiving an acknowledgement. A later residual error produces a negative acknowledgement and a retry loop while synchronized compute progress freezes, then resumes after a successful retransmission.</desc>
+  <defs>
+    <linearGradient id="computeFill" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#343895"/><stop offset="1" stop-color="#8DC63F"/></linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <rect x="34" y="28" width="1212" height="64" rx="20" fill="#F6F8FB"/>
+  <text x="62" y="67" class="eyebrow ink">PROTECTED TRANSFER • SYNCHRONOUS COMPUTE</text>
+  <g data-box="true">
+    <rect data-bound="true" id="eventPill" x="900" y="39" width="318" height="42" rx="21" fill="#EAF5DC" stroke="#8DC63F" stroke-width="2"/>
+    <circle id="eventDot" cx="928" cy="60" r="8" fill="#8DC63F"/>
+    <text id="eventText" x="1065" y="65" text-anchor="middle" class="small ink">DELIVERING TRANSFER</text>
+  </g>
+
+  <path id="successPath" d="M264 288 C286 288 304 288 326 288 L530 288 L742 214 L1028 214" fill="none" stroke="#D8DDE5" stroke-width="8" stroke-linecap="round"/>
+  <path id="errorPath" d="M264 288 C286 288 304 288 326 288 L530 288 L742 380 L1028 380" fill="none" stroke="#D8DDE5" stroke-width="8" stroke-linecap="round"/>
+  <path id="retryPath" d="M1028 418 C1000 564 674 578 310 542 C205 532 150 472 150 358" fill="none" stroke="#E8C4C0" stroke-width="7" stroke-dasharray="13 12" stroke-linecap="round"/>
+
+  <g data-box="true" class="soft-shadow">
+    <rect data-bound="true" x="50" y="220" width="170" height="136" rx="22" fill="#E9EDF7" stroke="#343895" stroke-width="3"/>
+    <text x="135" y="268" text-anchor="middle" class="label ink">TRANSFER</text>
+    <text x="135" y="302" text-anchor="middle" class="small muted">data + protection</text>
+    <text x="135" y="329" text-anchor="middle" class="tiny muted">transaction begins</text>
+  </g>
+  <g data-box="true" id="fecCard" class="soft-shadow">
+    <rect data-bound="true" x="326" y="204" width="204" height="168" rx="24" fill="#F4F9E9" stroke="#8DC63F" stroke-width="3"/>
+    <text x="428" y="254" text-anchor="middle" class="headline ink">FEC</text>
+    <text x="428" y="288" text-anchor="middle" class="body muted">correct bit errors</text>
+    <rect x="362" y="317" width="132" height="12" rx="6" fill="#DDE7CF"/>
+    <rect id="fecPulse" x="362" y="317" width="18" height="12" rx="6" fill="#8DC63F"/>
+  </g>
+  <g data-box="true" id="crcCard" class="soft-shadow">
+    <rect data-bound="true" x="566" y="204" width="204" height="168" rx="24" fill="#F6F8FB" stroke="#343895" stroke-width="3"/>
+    <text x="668" y="254" text-anchor="middle" class="headline ink">CRC</text>
+    <text x="668" y="288" text-anchor="middle" class="body muted">check residual error</text>
+    <g id="crcGood"><circle cx="630" cy="329" r="11" fill="#8DC63F"/><text x="654" y="335" class="small muted">clean</text></g>
+    <g id="crcBad" opacity="0"><circle cx="630" cy="329" r="11" fill="#B8473D"/><text x="654" y="335" class="small muted">error remains</text></g>
+  </g>
+
+  <g data-box="true" id="ackCard" class="soft-shadow">
+    <rect data-bound="true" x="1028" y="148" width="202" height="132" rx="22" fill="#F4F9E9" stroke="#8DC63F" stroke-width="3"/>
+    <circle cx="1064" cy="194" r="12" fill="#8DC63F"/>
+    <text x="1090" y="202" class="headline ink">ACK</text>
+    <text x="1054" y="240" class="body muted">commit the result</text>
+  </g>
+  <g data-box="true" id="nackCard" class="soft-shadow">
+    <rect data-bound="true" x="1028" y="314" width="202" height="132" rx="22" fill="#FBEAEA" stroke="#B8473D" stroke-width="3"/>
+    <circle cx="1064" cy="360" r="12" fill="#B8473D"/>
+    <text x="1090" y="368" class="headline ink">NACK</text>
+    <text x="1054" y="406" class="body muted">replay the transfer</text>
+  </g>
+
+  <g id="packet" class="soft-shadow" data-box="true">
+    <rect data-bound="true" x="-44" y="-25" width="88" height="50" rx="13" fill="#343895" stroke="#ffffff" stroke-width="3"/>
+    <text id="packetText" x="0" y="7" text-anchor="middle" class="small white">DATA</text>
+  </g>
+  <g id="retryMarkers" opacity="0">
+    <circle cx="930" cy="510" r="7" fill="#B8473D" class="glow-red"/>
+    <circle cx="850" cy="540" r="7" fill="#B8473D" class="glow-red"/>
+    <circle cx="770" cy="556" r="7" fill="#B8473D" class="glow-red"/>
+  </g>
+
+  <g data-box="true">
+    <rect data-bound="true" id="computeCard" x="50" y="614" width="1180" height="78" rx="22" fill="#F6F8FB" stroke="#D2D7DF" stroke-width="2"/>
+    <text x="76" y="647" class="small ink">USEFUL COMPUTE PROGRESS</text>
+    <text id="computeState" x="1204" y="647" text-anchor="end" class="small muted">advancing</text>
+    <rect x="76" y="663" width="1128" height="12" rx="6" fill="#E1E5EB"/>
+    <rect id="computeBar" x="76" y="663" width="80" height="12" rx="6" fill="url(#computeFill)"/>
+    <g id="stallBand" opacity="0"><rect x="550" y="656" width="300" height="26" rx="13" fill="#FFF4DD" stroke="#D88911" stroke-width="2"/><text x="700" y="675" text-anchor="middle" class="tiny ink">WAITING A FULL RETRY ROUND TRIP</text></g>
+  </g>
+  <g id="taxCallout" opacity="0" data-box="true">
+    <rect data-bound="true" x="304" y="456" width="606" height="66" rx="20" fill="#FFF4DD" stroke="#D88911" stroke-width="2"/>
+    <text x="607" y="484" text-anchor="middle" class="small ink">The retry occupies fabric time and delays every dependent XPU.</text>
+    <text x="607" y="507" text-anchor="middle" class="tiny muted">Error cost = retransmission + round-trip latency + synchronized stall</text>
+  </g>
+</svg>
+<script>
+(() => {
+  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+  const smooth=v=>{v=clamp(v);return v*v*(3-2*v);};
+  const range=(t,a,b)=>smooth((t-a)/(b-a));
+  const packet=document.getElementById('packet');
+  const success=document.getElementById('successPath');
+  const error=document.getElementById('errorPath');
+  const retry=document.getElementById('retryPath');
+  const place=(path,p)=>{const pt=path.getPointAtLength(clamp(p)*path.getTotalLength());packet.setAttribute('transform',`translate(${pt.x} ${pt.y})`);};
+  window.setAnimationTime=t=>{
+    t=clamp(t);
+    let mode='good1', p=0;
+    if(t<.30){p=range(t,.02,.28);place(success,p);mode='good1';}
+    else if(t<.42){place(success,1);mode='ack';}
+    else if(t<.66){p=range(t,.42,.65);place(error,p);mode='bad';}
+    else if(t<.82){p=range(t,.66,.81);place(retry,p);mode='retry';}
+    else {p=range(t,.82,.99);place(success,p);mode='recover';}
+    const bad=['bad','retry'].includes(mode);
+    const retrying=mode==='retry';
+    document.getElementById('packet').style.opacity=(mode==='ack'&&t>.37)?0:1;
+    document.querySelector('#packet rect').setAttribute('fill',bad?'#B8473D':'#343895');
+    document.getElementById('packetText').textContent=retrying?'RETRY':'DATA';
+    document.getElementById('crcGood').style.opacity=bad?0:1;
+    document.getElementById('crcBad').style.opacity=bad?1:0;
+    document.getElementById('retryMarkers').style.opacity=retrying?1:0;
+    document.getElementById('taxCallout').style.opacity=range(t,.61,.68)*(1-range(t,.89,.98));
+    document.getElementById('fecPulse').setAttribute('width',18+114*Math.abs(Math.sin(t*24)));
+    document.getElementById('fecCard').querySelector('rect').setAttribute('stroke',(p>.26&&p<.52)?'#6CA853':'#8DC63F');
+    document.getElementById('crcCard').querySelector('rect').setAttribute('stroke',bad?'#B8473D':'#343895');
+    document.getElementById('ackCard').style.opacity=(mode==='ack'||(mode==='recover'&&p>.72))?1:.35;
+    document.getElementById('nackCard').style.opacity=bad?1:.35;
+    const stalled=range(t,.61,.69)*(1-range(t,.82,.9));
+    let progress;
+    if(t<.61) progress=80+590*(t/.61);
+    else if(t<.84) progress=670;
+    else progress=670+430*range(t,.84,1);
+    document.getElementById('computeBar').setAttribute('width',progress);
+    document.getElementById('computeBar').setAttribute('fill',stalled>.5?'#D88911':'url(#computeFill)');
+    document.getElementById('stallBand').style.opacity=stalled;
+    document.getElementById('computeState').textContent=stalled>.5?'stalled by retry':(t>.88?'advancing again':'advancing');
+    const pill=document.getElementById('eventPill'),dot=document.getElementById('eventDot'),txt=document.getElementById('eventText');
+    if(mode==='bad'){pill.setAttribute('fill','#FBEAEA');pill.setAttribute('stroke','#B8473D');dot.setAttribute('fill','#B8473D');txt.textContent='RESIDUAL ERROR DETECTED';}
+    else if(mode==='retry'){pill.setAttribute('fill','#FFF4DD');pill.setAttribute('stroke','#D88911');dot.setAttribute('fill','#D88911');txt.textContent='NACK • RETRY IN FLIGHT';}
+    else if(mode==='recover'){pill.setAttribute('fill','#EAF5DC');pill.setAttribute('stroke','#8DC63F');dot.setAttribute('fill','#8DC63F');txt.textContent='RETRY SUCCEEDS';}
+    else if(mode==='ack'){pill.setAttribute('fill','#EAF5DC');pill.setAttribute('stroke','#8DC63F');dot.setAttribute('fill','#8DC63F');txt.textContent='ACK • RESULT COMMITTED';}
+    else {pill.setAttribute('fill','#EAF5DC');pill.setAttribute('stroke','#8DC63F');dot.setAttribute('fill','#8DC63F');txt.textContent='DELIVERING TRANSFER';}
+  };
+  window.setAnimationTime(0);
+})();
+</script>
+</body>
+</html>

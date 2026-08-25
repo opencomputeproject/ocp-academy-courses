@@ -142,6 +142,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `optics/enhanced-telemetry-optics` | Enhanced Telemetry Optics |
 | `optics/introduction-to-emerging-optical-technologies` | Introduction to Emerging Optical Technologies |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
+| `short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics` | Short-Reach Optical Interconnects for AI Scale-Up Fabrics |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
 
 ## Build a course

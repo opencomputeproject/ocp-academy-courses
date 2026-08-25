@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280,height=720,initial-scale=1">
+  <link rel="stylesheet" href="animation.css">
+  <title>Slow-and-wide WDM animation</title>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Fast-and-narrow compared with slow-and-wide wavelength aggregation</title>
+  <desc id="desc">One high-symbol-rate optical lane is contrasted with four slower NRZ lanes. The four lanes map to distinct wavelengths, combine in a WDM multiplexer, and travel together on one fiber to produce an equivalent aggregate data pipe.</desc>
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <rect x="34" y="28" width="1212" height="64" rx="20" fill="#F6F8FB"/>
+  <text x="62" y="67" class="eyebrow ink">TWO WAYS TO BUILD THE AGGREGATE PIPE</text>
+  <g data-box="true">
+    <rect data-bound="true" x="944" y="39" width="274" height="42" rx="21" fill="#EAF5DC" stroke="#8DC63F" stroke-width="2"/>
+    <text x="1081" y="65" text-anchor="middle" class="small ink">EQUAL AGGREGATE BANDWIDTH</text>
+  </g>
+
+  <rect x="34" y="116" width="1212" height="210" rx="26" fill="#F6F8FB" stroke="#D2D7DF" stroke-width="2"/>
+  <text x="62" y="154" class="eyebrow muted">FAST-AND-NARROW</text>
+  <g data-box="true" class="soft-shadow">
+    <rect data-bound="true" x="62" y="184" width="228" height="96" rx="20" fill="#343895"/>
+    <text x="176" y="224" text-anchor="middle" class="label white">ONE FAST LANE</text>
+    <text x="176" y="253" text-anchor="middle" class="small" fill="#DDE4F5">high symbol rate</text>
+  </g>
+  <line x1="290" y1="232" x2="1040" y2="232" stroke="#E8C4C0" stroke-width="24" stroke-linecap="round"/>
+  <line x1="290" y1="232" x2="1040" y2="232" stroke="#B8473D" stroke-width="8" stroke-linecap="round"/>
+  <g id="fastSymbols"></g>
+  <g data-box="true" class="soft-shadow">
+    <rect data-bound="true" x="1040" y="184" width="178" height="96" rx="20" fill="#ffffff" stroke="#343895" stroke-width="2"/>
+    <text x="1129" y="224" text-anchor="middle" class="label ink">ONE FIBER</text>
+    <text x="1129" y="253" text-anchor="middle" class="small muted">one wavelength</text>
+  </g>
+  <g data-box="true">
+    <rect data-bound="true" x="456" y="129" width="426" height="42" rx="18" fill="#FBEAEA" stroke="#B8473D" stroke-width="2"/>
+    <text x="669" y="156" text-anchor="middle" class="small" fill="#B8473D">HIGHER PER-LANE BANDWIDTH PRESSURE</text>
+  </g>
+  <rect x="326" y="292" width="678" height="9" rx="5" fill="#E1E5EB"/>
+  <rect id="fastProgress" x="326" y="292" width="20" height="9" rx="5" fill="#B8473D"/>
+
+  <rect x="34" y="350" width="1212" height="336" rx="26" fill="#F4F9E9" stroke="#8DC63F" stroke-width="3"/>
+  <text x="62" y="389" class="eyebrow ink">SLOW-AND-WIDE • PARALLEL NRZ + WDM</text>
+  <g id="laneCards">
+    <g data-box="true"><rect data-bound="true" x="62" y="416" width="202" height="50" rx="14" fill="#ffffff" stroke="#2F77C5" stroke-width="2"/><circle cx="86" cy="441" r="8" fill="#2F77C5"/><text x="106" y="448" class="small ink">NRZ LANE 1 • λ1</text></g>
+    <g data-box="true"><rect data-bound="true" x="62" y="476" width="202" height="50" rx="14" fill="#ffffff" stroke="#8DC63F" stroke-width="2"/><circle cx="86" cy="501" r="8" fill="#8DC63F"/><text x="106" y="508" class="small ink">NRZ LANE 2 • λ2</text></g>
+    <g data-box="true"><rect data-bound="true" x="62" y="536" width="202" height="50" rx="14" fill="#ffffff" stroke="#D88911" stroke-width="2"/><circle cx="86" cy="561" r="8" fill="#D88911"/><text x="106" y="568" class="small ink">NRZ LANE 3 • λ3</text></g>
+    <g data-box="true"><rect data-bound="true" x="62" y="596" width="202" height="50" rx="14" fill="#ffffff" stroke="#B8473D" stroke-width="2"/><circle cx="86" cy="621" r="8" fill="#B8473D"/><text x="106" y="628" class="small ink">NRZ LANE 4 • λ4</text></g>
+  </g>
+  <path id="lane0" d="M264 441 C395 441 480 455 586 505" fill="none" stroke="#2F77C5" stroke-width="6" stroke-linecap="round"/>
+  <path id="lane1" d="M264 501 C405 501 480 500 586 517" fill="none" stroke="#8DC63F" stroke-width="6" stroke-linecap="round"/>
+  <path id="lane2" d="M264 561 C405 561 480 548 586 529" fill="none" stroke="#D88911" stroke-width="6" stroke-linecap="round"/>
+  <path id="lane3" d="M264 621 C395 621 480 592 586 541" fill="none" stroke="#B8473D" stroke-width="6" stroke-linecap="round"/>
+  <g id="laneSymbols"></g>
+  <g data-box="true" class="soft-shadow">
+    <rect data-bound="true" x="586" y="468" width="160" height="110" rx="24" fill="#ffffff" stroke="#8DC63F" stroke-width="4"/>
+    <text x="666" y="512" text-anchor="middle" class="headline ink">WDM</text>
+    <text x="666" y="545" text-anchor="middle" class="small muted">combine λ1–λ4</text>
+  </g>
+  <g stroke-width="5" stroke-linecap="round">
+    <line x1="746" y1="510" x2="1040" y2="510" stroke="#2F77C5"/>
+    <line x1="746" y1="519" x2="1040" y2="519" stroke="#8DC63F"/>
+    <line x1="746" y1="528" x2="1040" y2="528" stroke="#D88911"/>
+    <line x1="746" y1="537" x2="1040" y2="537" stroke="#B8473D"/>
+  </g>
+  <g id="fiberPhotons"></g>
+  <g data-box="true" class="soft-shadow">
+    <rect data-bound="true" x="1040" y="475" width="178" height="96" rx="20" fill="#ffffff" stroke="#343895" stroke-width="2"/>
+    <text x="1129" y="515" text-anchor="middle" class="label ink">ONE FIBER</text>
+    <text x="1129" y="544" text-anchor="middle" class="small muted">four wavelengths</text>
+  </g>
+  <g data-box="true">
+    <rect data-bound="true" x="306" y="642" width="698" height="40" rx="18" fill="#ffffff" stroke="#8DC63F" stroke-width="2"/>
+    <rect id="wideProgress" x="309" y="645" width="20" height="34" rx="15" fill="#DDEFC5"/>
+    <text x="655" y="667" text-anchor="middle" class="tiny ink">AGGREGATE = PER-LANE RATE × PARALLEL LANES / WAVELENGTHS</text>
+  </g>
+</svg>
+<script>
+(() => {
+  const NS='http://www.w3.org/2000/svg';
+  const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+  const fast=document.getElementById('fastSymbols'), lanes=document.getElementById('laneSymbols'), fiber=document.getElementById('fiberPhotons');
+  const colors=['#2F77C5','#8DC63F','#D88911','#B8473D'];
+  const lanePaths=[0,1,2,3].map(i=>document.getElementById(`lane${i}`));
+  const fastDots=[],laneDots=[],fiberDots=[];
+  for(let i=0;i<18;i++){const r=document.createElementNS(NS,'rect');r.setAttribute('width','16');r.setAttribute('height','20');r.setAttribute('rx','4');r.setAttribute('fill',i%5===0?'#D88911':'#B8473D');fast.appendChild(r);fastDots.push(r);}
+  for(let lane=0;lane<4;lane++)for(let i=0;i<5;i++){const c=document.createElementNS(NS,'circle');c.setAttribute('r','7');c.setAttribute('fill',colors[lane]);lanes.appendChild(c);laneDots.push({c,lane,offset:i/5});}
+  for(let i=0;i<16;i++){const c=document.createElementNS(NS,'circle');c.setAttribute('r','6');c.setAttribute('fill',colors[i%4]);fiber.appendChild(c);fiberDots.push({c,lane:i%4,offset:i/16});}
+  const point=(path,p)=>path.getPointAtLength(clamp(p)*path.getTotalLength());
+  window.setAnimationTime=t=>{
+    t=clamp(t);
+    fastDots.forEach((r,i)=>{const p=(t*7+i/18)%1;r.setAttribute('x',290+(734*p)-8);r.setAttribute('y',222+Math.sin((p*16+t*30))*5);r.setAttribute('opacity',.55+.45*Math.abs(Math.sin(t*20+i)));});
+    laneDots.forEach(({c,lane,offset})=>{const p=(t*2.2+offset+lane*.07)%1,pt=point(lanePaths[lane],p);c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y);});
+    fiberDots.forEach(({c,lane,offset})=>{const p=(t*2.6+offset)%1;c.setAttribute('cx',746+278*p);c.setAttribute('cy',510+lane*9);});
+    // These bars communicate cumulative aggregate work, so they must move in
+    // one direction for the full animation. The former modulo expression
+    // wrapped before the video ended and looked like an unexplained rewind.
+    document.getElementById('fastProgress').setAttribute('width',20+658*t);
+    document.getElementById('wideProgress').setAttribute('width',20+672*t);
+  };
+  window.setAnimationTime(0);
+})();
+</script>
+</body>
+</html>

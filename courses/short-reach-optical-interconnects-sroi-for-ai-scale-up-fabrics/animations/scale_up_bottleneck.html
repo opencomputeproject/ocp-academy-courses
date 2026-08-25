@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1280,height=720,initial-scale=1">
+  <link rel="stylesheet" href="animation.css">
+  <title>Synchronized scale-up bottleneck animation</title>
+</head>
+<body>
+<svg viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">A delayed scale-up path stalls a synchronized accelerator group</title>
+  <desc id="desc">Four parallel workloads flow through a scale-up fabric. One path slows, a queue forms, all accelerators wait at a synchronization barrier, and work resumes after recovery.</desc>
+  <defs>
+    <linearGradient id="fabricFill" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#343895"/><stop offset="1" stop-color="#5260A7"/>
+    </linearGradient>
+    <linearGradient id="progressFill" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6CA853"/><stop offset="1" stop-color="#8DC63F"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <rect x="34" y="28" width="1212" height="64" rx="20" fill="#F6F8FB"/>
+  <text x="62" y="67" class="eyebrow ink">SYNCHRONIZED TRAINING STEP</text>
+  <g data-box="true" class="soft-shadow">
+    <rect data-bound="true" id="stateBox" x="912" y="39" width="306" height="42" rx="21" fill="#EAF5DC" stroke="#8DC63F" stroke-width="2"/>
+    <circle id="stateDot" cx="940" cy="60" r="8" fill="#8DC63F"/>
+    <text id="stateText" x="1068" y="65" text-anchor="middle" class="small ink">ALL PATHS FLOWING</text>
+  </g>
+
+  <rect x="34" y="120" width="300" height="518" rx="26" fill="#F6F8FB" stroke="#D2D7DF" stroke-width="2"/>
+  <text x="62" y="160" class="headline ink">Parallel work</text>
+  <text x="62" y="187" class="body muted">One job, many communication streams</text>
+  <g id="workCards">
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" x="62" y="220" width="244" height="72" rx="16" fill="#ffffff" stroke="#343895" stroke-width="2"/><circle cx="88" cy="256" r="10" fill="#8DC63F"/><text x="112" y="263" class="label ink">Tensor parallel</text></g>
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" x="62" y="310" width="244" height="72" rx="16" fill="#ffffff" stroke="#343895" stroke-width="2"/><circle cx="88" cy="346" r="10" fill="#8DC63F"/><text x="112" y="353" class="label ink">Data parallel</text></g>
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" x="62" y="400" width="244" height="72" rx="16" fill="#ffffff" stroke="#343895" stroke-width="2"/><circle cx="88" cy="436" r="10" fill="#8DC63F"/><text x="112" y="443" class="label ink">Expert parallel</text></g>
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" id="slowCard" x="62" y="490" width="244" height="72" rx="16" fill="#ffffff" stroke="#343895" stroke-width="2"/><circle id="slowCardDot" cx="88" cy="526" r="10" fill="#8DC63F"/><text x="112" y="533" class="label ink">Pipeline parallel</text></g>
+  </g>
+
+  <g id="tracks" opacity="1">
+    <path id="path0" d="M306 256 C380 256 405 270 454 300 C515 338 609 330 710 273 C765 242 790 232 822 232" class="track-thin"/>
+    <path id="path1" d="M306 346 C390 346 418 350 468 356 C555 366 654 345 822 365" class="track-thin"/>
+    <path id="path2" d="M306 436 C390 436 420 420 472 401 C585 360 684 440 822 500" class="track-thin"/>
+    <path id="path3" d="M306 526 C388 526 420 494 472 448 C560 371 672 442 1028 500" class="track-thin"/>
+  </g>
+
+  <g class="soft-shadow">
+    <rect x="430" y="230" width="302" height="290" rx="34" fill="url(#fabricFill)"/>
+    <text x="581" y="285" text-anchor="middle" class="eyebrow white">CRITICAL PATH</text>
+    <text x="581" y="341" text-anchor="middle" font-size="35" font-weight="800" fill="#ffffff">SCALE-UP</text>
+    <text x="581" y="383" text-anchor="middle" font-size="35" font-weight="800" fill="#ffffff">FABRIC</text>
+    <g opacity="0.9">
+      <circle cx="498" cy="430" r="9" fill="#8DC63F"/><circle cx="538" cy="430" r="9" fill="#8DC63F"/><circle cx="578" cy="430" r="9" fill="#8DC63F"/><circle cx="618" cy="430" r="9" fill="#8DC63F"/><circle cx="658" cy="430" r="9" fill="#8DC63F"/>
+    </g>
+    <text x="581" y="475" text-anchor="middle" class="small" fill="#DDE4F5">bandwidth • latency • reliability</text>
+  </g>
+
+  <rect x="790" y="120" width="456" height="518" rx="26" fill="#F4F9E9" stroke="#8DC63F" stroke-width="3"/>
+  <text x="822" y="160" class="headline ink">Accelerator group</text>
+  <text x="822" y="187" class="body muted">Progress is committed together</text>
+  <g id="accelerators">
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" x="822" y="208" width="184" height="116" rx="18" fill="#ffffff" stroke="#5F6062" stroke-width="2"/><text x="846" y="246" class="label ink">XPU 1</text><text id="status0" x="846" y="275" class="small muted">computing</text><rect x="846" y="292" width="136" height="10" rx="5" fill="#E3E7ED"/><rect id="bar0" x="846" y="292" width="20" height="10" rx="5" fill="url(#progressFill)"/></g>
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" x="1030" y="208" width="184" height="116" rx="18" fill="#ffffff" stroke="#5F6062" stroke-width="2"/><text x="1054" y="246" class="label ink">XPU 2</text><text id="status1" x="1054" y="275" class="small muted">computing</text><rect x="1054" y="292" width="136" height="10" rx="5" fill="#E3E7ED"/><rect id="bar1" x="1054" y="292" width="20" height="10" rx="5" fill="url(#progressFill)"/></g>
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" x="822" y="341" width="184" height="116" rx="18" fill="#ffffff" stroke="#5F6062" stroke-width="2"/><text x="846" y="379" class="label ink">XPU 3</text><text id="status2" x="846" y="408" class="small muted">computing</text><rect x="846" y="425" width="136" height="10" rx="5" fill="#E3E7ED"/><rect id="bar2" x="846" y="425" width="20" height="10" rx="5" fill="url(#progressFill)"/></g>
+    <g data-box="true" class="soft-shadow"><rect data-bound="true" id="xpu4box" x="1030" y="341" width="184" height="116" rx="18" fill="#ffffff" stroke="#5F6062" stroke-width="2"/><text x="1054" y="379" class="label ink">XPU 4</text><text id="status3" x="1054" y="408" class="small muted">computing</text><rect x="1054" y="425" width="136" height="10" rx="5" fill="#E3E7ED"/><rect id="bar3" x="1054" y="425" width="20" height="10" rx="5" fill="url(#progressFill)"/></g>
+  </g>
+  <g data-box="true">
+    <rect data-bound="true" id="barrierBox" x="822" y="500" width="392" height="94" rx="18" fill="#ffffff" stroke="#8DC63F" stroke-width="2"/>
+    <text x="846" y="536" class="eyebrow ink">SYNC BARRIER</text>
+    <text id="barrierText" x="846" y="568" class="body muted">All four results arrive → next step begins</text>
+  </g>
+
+  <g id="queue" opacity="0">
+    <circle cx="345" cy="516" r="10" fill="#D88911" class="glow-amber"/>
+    <circle cx="372" cy="500" r="10" fill="#D88911" class="glow-amber"/>
+    <circle cx="399" cy="480" r="10" fill="#D88911" class="glow-amber"/>
+    <text x="352" y="574" class="small" fill="#D88911">queue building</text>
+  </g>
+  <g id="particles"></g>
+  <g id="lesson" opacity="0" data-box="true">
+    <rect data-bound="true" x="378" y="640" width="524" height="52" rx="18" fill="#FFF4DD" stroke="#D88911" stroke-width="2"/>
+    <text x="640" y="673" text-anchor="middle" class="label ink">The slowest path paces the synchronized group.</text>
+  </g>
+</svg>
+<script>
+(() => {
+  const NS = 'http://www.w3.org/2000/svg';
+  const particles = document.getElementById('particles');
+  const paths = [0,1,2,3].map(i => document.getElementById(`path${i}`));
+  const dots = [];
+  for (let lane = 0; lane < 4; lane++) {
+    for (let copy = 0; copy < 3; copy++) {
+      const c = document.createElementNS(NS, 'circle');
+      c.setAttribute('r', copy === 0 ? '8' : '6');
+      c.setAttribute('fill', '#8DC63F');
+      c.setAttribute('class', 'glow-green');
+      particles.appendChild(c);
+      dots.push({c, lane, offset: copy / 3});
+    }
+  }
+  const clamp = (v, a=0, b=1) => Math.max(a, Math.min(b, v));
+  const smooth = v => { v = clamp(v); return v*v*(3-2*v); };
+  const range = (t,a,b) => smooth((t-a)/(b-a));
+  const setPos = (el, path, p) => {
+    const pt = path.getPointAtLength(clamp(p) * path.getTotalLength());
+    el.setAttribute('cx', pt.x); el.setAttribute('cy', pt.y);
+  };
+  window.setAnimationTime = (t) => {
+    t = clamp(t);
+    const degrade = range(t, .25, .36) * (1 - range(t, .74, .86));
+    const stall = range(t, .43, .52) * (1 - range(t, .74, .86));
+    const recovery = range(t, .74, .92);
+    dots.forEach(({c,lane,offset}) => {
+      let p = (t * 7.2 + offset + lane * .09) % 1;
+      if (lane === 3 && degrade > .05) {
+        p = Math.min(p, .38 + .05 * Math.sin(t * 28));
+        c.setAttribute('fill', '#D88911'); c.setAttribute('class','glow-amber');
+      } else {
+        c.setAttribute('fill', '#8DC63F'); c.setAttribute('class','glow-green');
+      }
+      c.style.opacity = stall > .85 && lane !== 3 ? .25 : 1;
+      setPos(c, paths[lane], p);
+    });
+    document.getElementById('queue').style.opacity = degrade;
+    document.getElementById('slowCard').setAttribute('fill', degrade > .25 ? '#FFF4DD' : '#ffffff');
+    document.getElementById('slowCard').setAttribute('stroke', degrade > .25 ? '#D88911' : '#343895');
+    document.getElementById('slowCardDot').setAttribute('fill', degrade > .25 ? '#D88911' : '#8DC63F');
+    const normalProgress = (t * 2.15) % 1;
+    const frozen = .58;
+    for (let i=0;i<4;i++) {
+      let p = normalProgress;
+      if (stall > .05) p = frozen;
+      if (recovery > .05) p = frozen + recovery * .42;
+      const bar = document.getElementById(`bar${i}`);
+      bar.setAttribute('width', 18 + 118 * clamp(p));
+      const waiting = stall > .55;
+      document.getElementById(`status${i}`).textContent = waiting ? 'waiting at barrier' : (recovery > .65 ? 'computing again' : 'computing');
+      bar.setAttribute('fill', waiting ? '#D88911' : 'url(#progressFill)');
+    }
+    document.getElementById('xpu4box').setAttribute('fill', degrade > .25 ? '#FFF4DD' : '#ffffff');
+    const stateBox = document.getElementById('stateBox');
+    const stateDot = document.getElementById('stateDot');
+    const stateText = document.getElementById('stateText');
+    if (recovery > .55) {
+      stateBox.setAttribute('fill','#EAF5DC'); stateBox.setAttribute('stroke','#8DC63F'); stateDot.setAttribute('fill','#8DC63F'); stateText.textContent='RECOVERED • STEP ADVANCES';
+    } else if (stall > .6) {
+      stateBox.setAttribute('fill','#FFF4DD'); stateBox.setAttribute('stroke','#D88911'); stateDot.setAttribute('fill','#D88911'); stateText.textContent='GROUP WAITING';
+    } else if (degrade > .3) {
+      stateBox.setAttribute('fill','#FFF4DD'); stateBox.setAttribute('stroke','#D88911'); stateDot.setAttribute('fill','#D88911'); stateText.textContent='ONE PATH FALLING BEHIND';
+    } else {
+      stateBox.setAttribute('fill','#EAF5DC'); stateBox.setAttribute('stroke','#8DC63F'); stateDot.setAttribute('fill','#8DC63F'); stateText.textContent='ALL PATHS FLOWING';
+    }
+    document.getElementById('barrierBox').setAttribute('fill', stall > .55 ? '#FFF4DD' : '#ffffff');
+    document.getElementById('barrierBox').setAttribute('stroke', stall > .55 ? '#D88911' : '#8DC63F');
+    document.getElementById('barrierText').textContent = stall > .55 ? 'Waiting for the delayed result' : (recovery > .55 ? 'All results arrived → next step begins' : 'All four results arrive → next step begins');
+    document.getElementById('lesson').style.opacity = range(t,.43,.54) * (1 - range(t,.9,1));
+  };
+  window.setAnimationTime(0);
+})();
+</script>
+</body>
+</html>

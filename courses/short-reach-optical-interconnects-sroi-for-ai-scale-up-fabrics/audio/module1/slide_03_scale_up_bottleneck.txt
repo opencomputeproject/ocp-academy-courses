@@ -1,0 +1,10 @@
+# pronunciation: GPUs -> "G P Yous"; XPU -> "X P U"; XPUs -> "X P Yous"; RDMA -> "R D M A"
+The reason SROI matters begins with how large models are trained.
+
+No single accelerator has enough memory or compute to hold and process a frontier model by itself. Training frameworks fracture the work across many devices. Tensor parallelism divides operations inside a layer. Pipeline parallelism assigns groups of layers to different devices. Data, expert, and context parallelism split other dimensions of the model and workload.
+
+Those strategies create frequent synchronization. Accelerators exchange gradients, activations, parameters, and expert traffic through sustained, high-bandwidth transfers. Some collectives require all-reduce or all-gather behavior. Others create sparse all-to-all patterns. The fabric isn’t carrying occasional background traffic. It sits directly in the execution path.
+
+That changes the cost of a slow link. When one X P U waits for data, its compute engines sit idle. When synchronized work waits for one delayed participant, the effect can propagate across the whole Pod.
+
+The scale-up network therefore becomes a first-order performance component. Its bandwidth and latency determine how much useful work the accelerators complete, not simply how quickly two endpoints exchange a file.
