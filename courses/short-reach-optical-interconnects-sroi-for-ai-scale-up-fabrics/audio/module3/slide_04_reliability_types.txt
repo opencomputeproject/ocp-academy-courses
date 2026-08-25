@@ -1,0 +1,12 @@
+# pronunciation: FEC -> "F E C"; FIT -> "fit"
+The paper separates reliability into two classes because the system responds to them differently.
+
+Link reliability describes whether a transfer arrives correctly and on time. Random bit errors, burst errors, F E C-tail events, and link flaps may leave the hardware physically present but reduce useful bandwidth. An uncorrectable event forces recovery. A rapidly flapping link can repeatedly interrupt synchronized work.
+
+Hardware reliability describes a lane or endpoint that can no longer perform its job. It may be dead, or it may remain marginal and deliver an unacceptable error rate. Recovery then requires failover, replacement, or repair.
+
+The first class is often measured through frame or flow-control-unit loss, retransmission rate, F E C behavior, and bandwidth reduction. The second uses fit and repair-time measures.
+
+Both reduce useful computation. A transient event adds latency and stalls work. A hardware failure can stop the Pod until the failed element is isolated and service is restored.
+
+Keeping the classes separate helps the architect choose the right control: margin and error monitoring for link behavior; qualification, redundancy, diagnostics, and repair strategy for hardware behavior.

@@ -1,0 +1,12 @@
+# pronunciation: FEC -> "F E C"; CRC -> "C R C"; NACK -> "knack"; FLIT -> "flit"
+A retry converts a physical error into a performance event.
+
+The receiver first applies forward error correction. If the error pattern is within the code’s capability, F E C repairs it. A C R C then checks the corrected transfer. When the result is valid, the receiver acknowledges the transaction and the sender proceeds.
+
+If the error remains uncorrectable, the receiver returns a negative acknowledgement, or knack. The sender transmits the data again and waits for another result.
+
+That round trip matters in a load-and-store fabric. Transaction ordering can prevent dependent work from moving ahead. The link spends bandwidth repeating data, and the accelerator waits. In synchronized computation, one delayed path can become a pacing item for the wider group.
+
+This is why average bit-error rate is not enough. A design also needs to understand the F E C tail, uncorrectable bursts, link flaps, and the distribution of recovery time. Tail latency can be more damaging than a small change in average latency.
+
+The paper notes that system implementers may express the result as a maximum allowed bandwidth reduction. The important point is that link reliability and compute utilization are coupled.
