@@ -10,6 +10,12 @@ A great technical course illustrates almost every content slide. The reference O
 
 **AI-generate only when neither works.** Examples: an icon banner for a module, a stylized illustration of a concept (e.g., "ecosystem of vendors collaborating"), a placeholder hero image. Never AI-generate a *technical* diagram — they will be wrong in subtle ways and embarrass the course.
 
+## Teaching-animation coverage
+
+For every newly authored narrated Slides course, include at least one silent teaching animation or short video in each module unless the user explicitly opts out. Put it on the slide whose explanation benefits most from motion: a changing boundary, sequence, state transition, topology reconfiguration, cause-and-effect chain, or tradeoff. It may replace that slide's static figure, but do not force it onto an unsuitable slide. Add more than one in a module only when each animation teaches a distinct relationship.
+
+Animations must earn their motion. Do not animate decorative progress bars, counters, arrows, or state changes that imply an event the narration never explains. Quantities that represent accumulation, reach, completion, or capacity must move monotonically unless a visible and narrated reset, failure, rollback, or comparison boundary causes the reversal. A seamless loop may reset only at the loop boundary, where the restart is visually unmistakable.
+
 ## OCP visual style
 
 When AI-generating, anchor the prompt to this style.
@@ -67,8 +73,20 @@ Run this checklist before rendering a module final:
 - Make labels avoid paths. A label describing the entire top loop belongs above the line, centered to the overall figure; side callout labels should sit outside the diagram and align with their subtext.
 - Align grouped objects as groups, not one element at a time. Repeated bars, wicks, bubbles, cards, or nodes should visually center within their parent shape.
 - Use wrapped `<tspan>` lines or wider shapes when text risks escaping boxes, pills, or badges.
+- Keep semantically contained objects physically contained. Gauges, thermometers, icons, markers, and badges that belong inside a circle or card must remain within that boundary at every animation state.
+- Make every line and connector carry a relationship the learner can explain. Remove decorative or ambiguous connectors, especially lines between major boxes that do not show flow, dependency, containment, or comparison.
+- Use the broadest accurate system label. If a placement can apply to a switch, server, accelerator tray, or another host, label it `system` or `compute/network system` rather than narrowing it to a switch unless the source explicitly does so.
 - Run `scripts/check_svg_arrows.py course.json --fail-on-flags` before rendering modules that reference custom SVGs.
-- Render and inspect at desktop and mobile widths when a diagram has many labels. SVG source that looks reasonable in code can still overlap after font rendering.
+- Render every static figure and poster at its final slide size. Inspect at desktop and mobile widths, then inspect the original-resolution render. Check text-to-box clearance, text-to-axis and text-to-line collisions, diagram-to-caption collisions, icon containment, chart labels, and overlap between neighboring major elements. SVG source that looks reasonable in code can still overlap after font rendering.
+
+### Animation QA rules
+
+- Render and inspect at least five evenly spaced frames: first, 25%, 50%, 75%, and final. Add frames immediately before and after any transition that changes layout or state.
+- Watch or scrub one complete loop in real time. Five static frames do not reveal backward jumps, flicker, momentary overlap, or an unexplained reset between checkpoints.
+- Compare every animated text element and object with its containing shape at every distinct layout state. Require the same 0.75em text clearance used for static SVGs.
+- Keep labels, axes, trend lines, callouts, and chart panels disjoint unless the overlap intentionally encodes a data relationship. Move explanatory cards outside plotting areas rather than covering the chart.
+- Verify that the poster is a clean, representative frame and that the video is silent, muted, loopable, and free of a jarring end-to-start discontinuity.
+- Run visual QA with browser or system playback muted so testing does not compete with a learner or reviewer listening nearby.
 
 ## Caption rules
 

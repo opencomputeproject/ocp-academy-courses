@@ -22,6 +22,8 @@ Warm, authoritative, and curious. The narrator is the kind of senior engineer wh
 - **No filler intros.** Don't open with "So, welcome to slide 4." Get into the content.
 - **No marketing-speak.** "Industry-leading," "best-in-class," "cutting-edge" — strike them all. State facts.
 - **No internal source labels unless approved.** Do not say "the webinar," "the transcript," "the article," "the slide deck," "our source material," or vendor names in narration unless the user explicitly wants that source named. Prefer the underlying technical point. OCP guidelines, OCP contribution documents, and user-approved panel references may be named when they help credibility.
+- **No vague transition verbs.** Avoid constructions such as "the next module takes availability" or a setup that depends on stressing one abstract noun at the end. State the relationship as a complete thought: what the next module examines, why it matters, and what the learner will do with it.
+- **Read for the human ear.** Before approval, speak every transition and closing sentence silently or aloud at normal cadence. Rewrite sentences whose meaning depends on an unnatural pause, one-word reveal, or ambiguous verb.
 
 ## Slide-type templates
 
@@ -97,6 +99,10 @@ These are field-tested substitutions for ElevenLabs Turbo v2.5 and similar voice
 | uSID / uSIDs | `micro S I D` / `micro S I Ds` | The `u` prefix is the Greek µ |
 | NVIDIA | `Nvidia` | Brand pronounced as a word |
 | OpenAI | `Open A I` | "OpenAI" run together is mispronounced by most voices |
+| ASIC | `A sick` | Avoids a clipped letter-by-letter or malformed first syllable |
+| radix | `raid-icks` | Preserves the common networking pronunciation |
+| retries | `ree-tries` | Prevents "re-trees" |
+| SROI | `S R O eye` | Keeps the final two letters distinct in this technical acronym |
 | SONiC | `sonic` | Reads as the word |
 | Spectrum-X, ConnectX-8 | `Spectrum-X`, `ConnectX-Eight` | Brand names with hyphens read OK; spell out trailing digits |
 | GB200 | `G B two-hundred` | Brand model |
@@ -114,6 +120,8 @@ When body text mixes singular and plural forms (e.g., one GPU and many GPUs), ca
 ```
 # pronunciation: GPUs -> "G P Yous" (singular GPU -> "G P U"); NIC -> "Nick"
 ```
+
+The comment is documentation only; `gen_audio.py` strips comment lines before synthesis. Put the phonetic form in the actual narration body wherever the term is spoken. Before generating a module, inventory every acronym and unusual technical word in its visible text and narration. Add each required substitution to the comment and body, then spot-check at least one generated occurrence of every unique substitution. A successful pronunciation on one slide does not prove another TTS request will repeat it; regenerate an isolated bad clip before rewriting a substitution that works elsewhere.
 
 ### Adjacent acronyms run together
 
@@ -133,11 +141,13 @@ The OCP NIC 3.0 Academy package has narration .wav files at `audio/module1/` thr
 
 These rules came out of real ElevenLabs output on the OCP Project Deschutes course. Following them up-front saves a regeneration pass.
 
-### Keep paragraphs under ~80 words
+### Keep paragraphs under ~80 words and inspect the whole clip
 
 ElevenLabs (and most modern TTS engines) lose vocal energy mid-paragraph on long technical content with dense terminology. Symptom: volume drops ~70–80 seconds into a clip; final sentences fade. Fix: split long paragraphs into two or three shorter ones at natural break points. Each new paragraph gives the model a fresh breath cue and restores projection.
 
-After regenerating a clip that had fade or pronunciation issues, do a quick listen or waveform check of the tail. If the last 15–20 seconds visibly or audibly drop in level, tighten the script further and regenerate only that slide. Dense standards lists, slash-heavy names, long comma chains, and quoted phrases near the end are common fade triggers.
+After generation, run `audio_tail_report.py --fail-on-flags` across every clip, not only clips already suspected of a problem. The checker scans for sustained drops beginning in the latter half as well as a weak final 15 seconds. A fade can begin near 50 seconds and persist, so a tail-only spot check is not enough.
+
+If narration is important, preserve its meaning and coverage. First break dense sentences and paragraphs at natural boundaries and regenerate only that slide. If a same-request TTS fade persists, synthesize shorter paragraph groups with the same engine, model, voice, and settings, then concatenate them with natural pauses; do not delete required teaching merely to shorten the waveform. Loudness normalization alone is not a cure when the voice has also lost projection or articulation.
 
 Also check for post-speech artifacts: buzz, chirps, or a short non-silent burst after a quiet gap. If the artifact occurs after narration has clearly finished, trim only that post-speech tail and leave the spoken ending intact. If the artifact overlaps speech, rewrite the final sentence into shorter plain-language phrasing and regenerate.
 

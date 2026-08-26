@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-audio_tail_report.py - scan generated narration WAV files for likely tail issues.
+audio_tail_report.py - scan generated narration WAV files for likely level and tail issues.
 
 Usage:
     python audio_tail_report.py course.json [--module N] [--fail-on-flags]
 
-The report is intentionally conservative. It flags clips whose last 15 seconds
-are much quieter than the body, and clips that contain a short non-silent burst
+The report is intentionally conservative. It flags sustained volume drops that
+begin anywhere in the latter half of a clip, clips whose last 15 seconds are
+much quieter than the body, and clips that contain a short non-silent burst
 after a quiet gap near the end. Listen to flagged clips before editing.
 """
 
@@ -58,6 +59,41 @@ def window_levels(samples: list[float], rate: int, seconds: float) -> list[tuple
     return levels
 
 
+def sustained_drop(
+    levels: list[tuple[float, float, float]],
+    duration: float,
+    body_ref: float,
+) -> tuple[float, float] | None:
+    """Find a two-window level drop that begins before the conventional tail.
+
+    A long TTS clip can lose projection around 50 seconds and stay quiet without
+    making only its final 15 seconds look anomalous. Ignore partial end windows
+    and near-silence, then compare two consecutive full windows with the stable
+    body reference. The result is an onset time and average drop in dB.
+    """
+    if duration < 35:
+        return None
+
+    full_audible = [
+        (start, end, db)
+        for start, end, db in levels
+        if end - start >= 4.5 and db > -50
+    ]
+    scan_from = max(20.0, duration * 0.45)
+    for index in range(len(full_audible) - 1):
+        first = full_audible[index]
+        second = full_audible[index + 1]
+        if first[0] < scan_from:
+            continue
+        if second[0] - first[1] > 0.5:
+            continue
+        pair_levels = [first[2], second[2]]
+        average_drop = body_ref - statistics.mean(pair_levels)
+        if average_drop >= 5.0 and all(body_ref - db >= 4.5 for db in pair_levels):
+            return first[0], average_drop
+    return None
+
+
 def analyze(path: Path) -> dict:
     rate, samples = read_wav_mono(path)
     duration = len(samples) / rate
@@ -68,6 +104,7 @@ def analyze(path: Path) -> dict:
     audible_tail = [db for db in tail_levels if db > -55]
     tail_ref = statistics.mean(audible_tail) if audible_tail else (tail_levels[-1] if tail_levels else -120.0)
     fade_db = body_ref - tail_ref
+    volume_drop = sustained_drop(five_sec, duration, body_ref)
 
     burst_after_gap = False
     tail_start_seconds = max(0, duration - 2)
@@ -95,6 +132,9 @@ def analyze(path: Path) -> dict:
                 break
 
     flags = []
+    if volume_drop:
+        onset, drop_db = volume_drop
+        flags.append(f"sustained volume drop from ~{onset:.0f}s ({drop_db:.1f} dB lower than body)")
     if duration >= 35 and fade_db >= 5.0 and tail_ref < -30:
         flags.append(f"tail fade ({fade_db:.1f} dB lower than body)")
     if burst_after_gap:
@@ -105,6 +145,8 @@ def analyze(path: Path) -> dict:
         "body_db": body_ref,
         "tail_db": tail_ref,
         "fade_db": fade_db,
+        "drop_onset_seconds": volume_drop[0] if volume_drop else None,
+        "sustained_drop_db": volume_drop[1] if volume_drop else None,
         "flags": flags,
     }
 
