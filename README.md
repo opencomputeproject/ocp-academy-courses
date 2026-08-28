@@ -33,6 +33,7 @@ courses/
       ko-KR/                    # self-contained translated source
       fr-FR/
   ai-computing-continuum/
+  build-your-brand-in-the-ocp-community/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
   high-bandwidth-flash/
@@ -114,6 +115,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | Folder | Course |
 |---|---|
 | `ai-computing-continuum` | AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center |
+| `build-your-brand-in-the-ocp-community` | How to Build Your Brand in the OCP Community |
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
 | `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
