@@ -6,7 +6,7 @@ This course source is intended for PR-friendly editing. Change slides, quiz cont
 
 ## Media
 
-Course-owned SVG, PNG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the Module 3 commissioning animation are stored in `animations/m3_commissioning_sequence/`.
+Course-owned SVG, PNG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the Module 3 commissioning animation are stored in `animations/m3_commissioning_sequence/`. The LMS poster is available as editable `LMS_Cooling_Fluids_800x400.svg` and upload-ready `LMS_Cooling_Fluids_800x400.png`; `thumbnail.png` contains the same 800 x 400 artwork.
 
 ## Modules
 
@@ -63,5 +63,7 @@ The finished SCORM folder and LMS zip are created under `build/`.
 
 The original research files are not included in this repository. Public learner/source references used by the course include:
 
-- OCP contribution: Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks
-- OCP contribution: Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks
+- [Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3](https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf)
+- [OCP Base Specification - PG25 - V1.0.0](https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf)
+- [Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks](https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf)
+- [Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks](https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf)
