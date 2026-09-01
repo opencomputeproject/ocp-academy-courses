@@ -28,6 +28,7 @@ The finished SCORM folder and LMS zip are created under `build/`.
 
 The original research files are not included in this repository. Public learner/source references used by the course include:
 
-- OCP contribution: Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks
-- 2026 OCP EMEA Summit panel recording: Revolutionizing AI Heat Management - The Superior Efficiency of Two-Phase Liquid Cooling
-- OCP Educational Webinar Program past webinars index
+- [OCP Dielectric Coolant Fluid Base Specification V1.0](https://www.opencompute.org/documents/dielectric-coolant-fluid-base-specification-v1-0-final-pdf)
+- [OCP Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks](https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf)
+- [2026 OCP EMEA Summit panel recording: Revolutionizing AI Heat Management - The Superior Efficiency of Two-Phase Liquid Cooling](https://www.youtube.com/watch?v=0vxGneJ3yGo)
+- [OCP Educational Webinar Program past webinars index](https://www.opencompute.org/summit/ocp-educational-webinar-program/past-webinars)
