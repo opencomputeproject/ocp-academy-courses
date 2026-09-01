@@ -201,7 +201,7 @@ If validation fails, fix and re-run. **Don't deliver a package that won't valida
 
 Remove working files (`_outline.md`, `_source_figures.json`, `course.json`) **only after confirming with the user** that the package is final. Some users may want to keep `course.json` so they can re-render later. Do not create the LMS zip until the user has validated slides and audio and explicitly says the course is ready to ship.
 
-For every new course, prepare an exact 800×400 PNG LMS poster in the current OCP Academy brand treatment, plus a delivery title, a short description under 131 characters, and a long overview with each module summary and approximate duration. Decide explicitly whether the course is standalone or belongs to an existing meta-series; do not infer series placement from topical similarity alone.
+For every new course, prepare an exact 800×400 PNG LMS poster in the maintained OCP Academy catalog treatment. Read and follow `references/lms_poster_style.md` whenever creating or replacing a course poster; use the newest matching repository thumbnails as visual references when they are available. Save the source-repository asset as `thumbnail.png`, verify it at full size and reduced LMS-card size, and do not substitute a photorealistic hero or an improvised one-off composition. Also prepare a delivery title, a short description under 131 characters, and a long overview with each module summary and approximate duration. Decide explicitly whether the course is standalone or belongs to an existing meta-series; do not infer series placement from topical similarity alone.
 
 When committing a new course to the Academy source repository, keep generated narration, rendered HTML, and SCORM ZIPs out of source control. Add the editable course source, course-owned media, thumbnail, and course-local README. Update both root README locations: the `Repository layout` tree and the `Available Courses` table. Run `scripts/slides_course_qa.py <course.json> --repo-root <repository-root> --fail-on-flags` before opening the PR. Fetch current `main`, confirm the branch diff contains the intended files, and verify the README entries. If the original PR has already merged and its branch was deleted, create a fresh follow-up branch and PR rather than recreating the old branch and assuming the merged PR will update.
 
@@ -230,6 +230,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | Slide layout patterns and when to use each | `references/slide_design_patterns.md` |
 | Narration writing voice and pacing | `references/script_writing.md` |
 | Image-gen prompts and OCP visual style | `references/figure_prompts.md` |
+| LMS poster composition and QA | `references/lms_poster_style.md` |
 | SCORM 1.2 packaging requirements | `references/scorm_packaging.md` |
 | Why the existing brand colors and CSS variables | `references/brand_style.md` |
 | Slides translation workflow and folder convention | `references/slides_translation.md` |
