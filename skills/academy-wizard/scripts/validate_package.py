@@ -142,6 +142,13 @@ def main():
     if not api.exists():
         err("scorm_api.js is missing")
 
+    if course and not _is_scrolling(course):
+        modules = course.get("modules") or []
+        final_slides = modules[-1].get("slides") if modules and isinstance(modules[-1], dict) else []
+        final_slide = final_slides[-1] if final_slides and isinstance(final_slides[-1], dict) else {}
+        if final_slide.get("type") == "course_complete" and final_slide.get("term_refs"):
+            err("course.json: the final course_complete slide must not define term_refs")
+
     if manifest.exists():
         try:
             tree = ET.parse(manifest)
