@@ -255,7 +255,12 @@ def _terminology_icon_html() -> str:
     </svg>'''
 
 
-def _learner_aids_html(slide: dict, course: dict, centered: bool = False) -> str:
+def _learner_aids_html(
+    slide: dict,
+    course: dict,
+    centered: bool = False,
+    include_glossary: bool = True,
+) -> str:
     # Render optional learner aids in the slide content flow. The returned
     # block is appended inside `.slide-content`, after the slide's primary
     # text/table/image content. It is never fixed or floating.
@@ -265,7 +270,7 @@ def _learner_aids_html(slide: dict, course: dict, centered: bool = False) -> str
         if isinstance(item, dict) and item.get("id")
     }
     glossary_chips = []
-    for term_id in slide.get("term_refs", []):
+    for term_id in slide.get("term_refs", []) if include_glossary else []:
         item = glossary.get(term_id)
         if not item:
             continue
@@ -847,7 +852,7 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
       <span class="section-label animate-in">{esc(course_complete)}</span>
       <h2 class="slide-title animate-in" style="margin: 0 0 6px 0; text-align:center;">{esc(course_title)}</h2>
       <p class="slide-subtitle animate-in" style="margin: 0 auto 18px; text-align:center;">{esc(wrap_up)}</p>
-      {_learner_aids_html(slide, course, centered=True)}
+      {_learner_aids_html(slide, course, centered=True, include_glossary=False)}
       {_summary_items_html(slide)}{survey_html}
     </div>
   </div>
