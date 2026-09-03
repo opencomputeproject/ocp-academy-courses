@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; Caliptra -> "Caliptra"; 2.1 -> "two point one"; NVMe -> "N V M E"; TCG -> "T C G"; Opal -> "Opal"; S.A.F.E. -> "safe"; KMB -> "K M B"; MEK -> "meck"; DPK -> "D P K"; MPK -> "M P K"; EPK -> "E P K"
+Lock is a Caliptra feature set, but its deployment boundary is broader than one drive protocol.
+
+Version one point one targets Caliptra Subsystem two point one and later. Caliptra ROM, runtime firmware, protected hardware, and a vendor encryption engine form the key path. Host-facing drive firmware exposes the storage protocol outside that boundary.
+
+The design is not restricted to N V M E. It can support self-encrypting storage devices using T C G Opal, Enterprise, or Key Per I O. It can also support the T C G Media Encryption Key Multiparty Authorization feature. Lock therefore strengthens the implementation behind existing storage operations instead of inventing a new host protocol for every product.
+
+Drive firmware still owns important policy. It authorizes destructive lifecycle actions, obtains the Data Protection Key, chooses which M P Ks bind to a media key, and maps that key to the correct locking range or cache entry. The K M B protects and executes the key operation; it does not replace the product's authorization model.
+
+Some standards combinations need additional review. For example, one Common Criteria profile can conflict with Key Per I O when an injected key is conditioned for cryptographic erase.
+
+That is why integration review matters. An O C P S.A.F.E. review can examine the Caliptra boundary and verify that drive firmware invokes these protected services correctly.

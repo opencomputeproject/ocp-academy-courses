@@ -1,0 +1,10 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; Caliptra -> "Caliptra"; KMB -> "K M B"; MEK -> "meck"; HPKE -> "H P K E"
+Three guarantees shape the lock architecture.
+
+First, isolate Media Encryption Keys from ordinary drive firmware. With lock enabled, Caliptra acts as the Key Management Block. The K M B is the only component that can read a raw media key and program it into the encryption engine. Drive firmware still decides when a lifecycle operation should happen, but it invokes a protected service instead of manipulating the key itself.
+
+Second, bind each media key to externally supplied protection material. One Data Protection Key represents the nominal data owner. Zero or more Multi-party Protection Keys can require additional authorities to assent before the media key becomes usable. Those external access keys are injected with replay-resistant H P K E transport, so a remote key service can authorize the device without disclosing its access key to the host.
+
+Third, bind every active media key to an Epoch Protection Key. That composite key depends on both a Soft Epoch Key in rewritable storage and a Hard Epoch Key derived from fuse-held material. Zeroizing either component makes the existing media-key protection chain unrecoverable. The device can report whether the required epoch material is available, supporting an attestable erase state.
+
+These guarantees divide responsibilities. Hardware-rooted Caliptra protects and operates on key material. Drive firmware implements policy, host protocols, and authorization. The vendor encryption engine performs line-rate data encryption. Security comes from keeping those roles separate while defining narrow interfaces between them.

@@ -1,0 +1,14 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; KMB -> "K M B"; MEK -> "meck"; HEK -> "heck"; MDK -> "M D K"; VEK -> "veck"; HPKE -> "H P K E"; SFR -> "S F R"; MCU -> "M C U"; ROM -> "rom"; REPORT_HEK_METADATA -> "report H E K metadata"; KAT -> "K A T"; S.A.F.E. -> "safe"; NVMe -> "N V M E"
+Reset behavior determines which protected state remains valid.
+
+On cold reset, Caliptra rom derives the H E K and M D K. Runtime firmware determines whether an H E K is available and generates fresh H P K E keypairs for every supported algorithm. The V E K is not created until first use. A Caliptra cold reset occurs only with an N V M E subsystem reset caused by main power being applied.
+
+On warm or firmware-update reset, the H E K, M D K, and V E K remain. H P K E keypairs do not. Firmware must re-enumerate and advertise the regenerated handles when it supports a host-facing API. Other integration reset events may map to a Caliptra warm reset.
+
+Those state rules sit inside thirteen mandatory requirements. The device must integrate and enable lock. In production, only Caliptra may program Media Encryption Keys. Power loss or device zeroization must remove every key from the engine. A shipped device must be in production with a randomized H E K.
+
+M C U rom must populate the H E K seed register and call report H E K metadata after cold reset. H E K and S E K values must be cryptographically strong. Drive firmware must authorize destructive lifecycle events. The K M B must reach the defined S F Rs at the immutable configured address and length. Integrations must follow the reset directives.
+
+Finally, the optional fixed K A T media key must never encrypt user data.
+
+Use Table fifty-six in the specification as the definitive checklist, not this summary. Then use an O C P S.A.F.E. review to verify that the product's actual firmware, register protections, resets, and engine behavior preserve the intended trust boundary.

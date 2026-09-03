@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; CSP -> "C S P"; KMB -> "K M B"; MEK -> "meck"; MDK -> "M D K"; EPK -> "E P K"; VEK -> "veck"; HEK -> "heck"; SEK -> "seck"; HPKE -> "H P K E"; DRBG -> "D R B G"
+Durable, volatile, and ephemeral are not storage labels. They describe what an attacker can recover after a reset, power loss, or invasive analysis.
+
+Durable values survive because they are stored in flash or fuses, or because they can be derived entirely from durable inputs. Locked M P Ks and wrapped media keys are examples of ciphertext that drive firmware may retain. Hard Epoch Key seeds live in one-time-programmable fuses. The Soft Epoch Key may live in rewritable flash.
+
+Volatile values live in protected memory and disappear on a cold reset or power cycle. H P K E private keys are generated at startup. The Volatile Escrow Key is created lazily, then protects Enabled M P Ks held by drive firmware. Losing the V E K invalidates those enabled values without changing the durable Locked M P Ks.
+
+Ephemeral values exist only for the cryptographic operation that needs them. Plaintext access keys, Data Protection Keys, decrypted M P Ks, and intermediate secrets are zeroized after use.
+
+Caliptra's Key Vault gives the strongest hardware isolation. Slots sixteen through twenty-three are reserved for lock. They hold the M D K, E P K, V E K, Locked-M P K encryption keys, media-key secrets, the H E K, and the active Media Encryption Key in assigned slots.
+
+Some sensitive values must temporarily exist in protected K M B memory because current Caliptra data paths don't support every required operation directly inside the Key Vault. That is a documented hardware constraint, not permission for drive firmware to see them. The security boundary still encloses K M B firmware, hardware engines, and Key Vault while excluding ordinary drive firmware.

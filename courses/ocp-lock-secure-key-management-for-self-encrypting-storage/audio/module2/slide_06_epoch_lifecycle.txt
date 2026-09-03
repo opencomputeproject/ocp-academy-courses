@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; HEK -> "heck"; SEK -> "seck"; EPK -> "E P K"; MEK -> "meck"; MCU -> "M C U"; ROM -> "rom"; KMB -> "K M B"; REPORT_HEK_METADATA -> "report H E K metadata"; EMEA -> "E M E A"; 4-16 -> "four to sixteen"; 256-bit -> "256-bit"; 2026 -> "twenty twenty-six"
+The epoch keys turn erase into a state transition that the device can enforce.
+
+The Soft Epoch Key is managed by drive firmware in rewritable storage. The Hard Epoch Key is derived inside Caliptra from a 256-bit fuse-held seed and device-identity material. Both must be available to derive the Epoch Protection Key. If either one is zeroized, existing media-key protection chains can no longer be reconstructed.
+
+A device implements four to sixteen H E K fuse slots. The M C U moves each slot from blank to randomized to zeroized, and zeroizes it by blowing every bit. A shipped device must be in the production lifecycle with a randomized H E K seed.
+
+Ordering matters. Firmware may program the S E K only while the H E K is available. It may zeroize the H E K seed only after the S E K is zeroized. It may enable permanent-H E K mode only after all H E K slots are zeroized. Pre-production and permanent modes can derive an H E K from an all-zero seed, but only under the lifecycle conditions defined by the specification.
+
+After cold reset, M C U rom must call report H E K metadata exactly once before Caliptra runtime firmware loads. If it does not, the K M B disables H E K-dependent operations.
+
+The twenty twenty-six O C P E M E A Summit discussion gives the operational distinction. Rotate or zeroize the soft epoch key when data must be separated across tenant boundaries. Zeroize the hard epoch key when the physical device must be safe outside its former trust environment. If a failed controller can still complete and report that fuse transition, the drive can retain a meaningful erase claim. If it cannot, operators should not infer the same assurance.

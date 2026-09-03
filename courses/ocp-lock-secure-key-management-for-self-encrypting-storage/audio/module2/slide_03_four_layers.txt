@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; MEK -> "meck"; DPK -> "D P K"; MPK -> "M P K"; HEK -> "heck"; SEK -> "seck"; EPK -> "E P K"; MDK -> "M D K"; KDF -> "K D F"; EMEA -> "E M E A"; 2026 -> "twenty twenty-six"
+The hierarchy is easier to understand when it is built from ownership toward the encryption engine.
+
+Start with the Data Protection Key. The nominal owner of the data controls this value. In an Opal or Enterprise flow, drive firmware may recover it from a credential-protected structure. In Key Per I O, it may be the imported data-encryption key associated with a key tag. One D P K binds to a given Media Encryption Key.
+
+Next come zero or more Multi-party Protection Keys. Each M P K represents an additional authority that must assent before the media key can be loaded. The order matters because the K M B mixes the enabled M P Ks into the secret one at a time. Using zero M P Ks preserves compatibility with ordinary Opal, Enterprise, or Key Per I O flows.
+
+Then add the epoch layer. The Hard Epoch Key and Soft Epoch Key enter an S P eight hundred one-oh-eight K D F to produce the Epoch Protection Key. The E P K, D P K, and configured M P Ks produce the Media Encryption Key secret.
+
+Finally, the Media Encryption Key Deobfuscation Key protects the hardware path used to place a random or derived media key into the Key Vault and then the encryption engine. It prevents compromised runtime firmware from turning a permitted decrypt operation into a key-disclosure path.
+
+At the twenty twenty-six O C P E M E A Summit, Carl Lundin summarized the visual complexity with a memorable line: “it's just keys all the way down.” The engineering point is precise. Every layer has a different owner, lifetime, and failure consequence.

@@ -1,0 +1,14 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; MEK -> "meck"; MDK -> "M D K"; KMB -> "K M B"; AES -> "A E S"; GCM -> "G C M"; ECB -> "E C B"; CMAC -> "C M A C"; HMAC -> "H M A C"; KDF -> "K D F"; XTS -> "X T S"; DRBG -> "D R B G"; 512-bit -> "512-bit"; 128-bit -> "128-bit"
+Once the K M B has built the media-key secret, an integrator chooses one of two protected paths.
+
+The random path begins with the D R B G. The K M B generates a 512-bit Media Encryption Key, then protects it twice. An inner A E S E C B layer uses the M D K. An outer preconditioned A E S G C M layer uses the media-key secret and carries the integrity tag. Drive firmware stores the double-wrapped result.
+
+Later, the K M B removes the outer layer, routes the inner decryption through the M D K-controlled hardware path, and sends the plaintext key directly to the encryption engine.
+
+The inner layer solves a subtle hardware problem. Without it, compromised K M B runtime firmware could misuse the A E S engine's similar encrypt and decrypt paths to return a plaintext media key to firmware. Hardware forces an M D K-keyed E C B decryption result back into the Key Vault instead.
+
+The derived path is deterministic. A C M A C-based S P eight hundred one-oh-eight K D F produces a firmware-visible seed from the media-key secret because the available H M A C path would keep its result inside the Key Vault. The M D K path then converts that seed into the final media key.
+
+An optional 128-bit checksum lets firmware detect whether later derivation from the same intended inputs would produce a different key, perhaps because a volatile S E K suffered a bit flip. A mismatch blocks programming and helps prevent unrecoverable data writes.
+
+Both paths check the component-key inequality required for 256-bit and 512-bit A E S X T S use. Both finish with the same invariant: drive firmware never receives the plaintext Media Encryption Key.

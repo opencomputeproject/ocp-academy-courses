@@ -1,0 +1,14 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; KMB -> "K M B"; MEK -> "meck"; MPK -> "M P K"; DPK -> "D P K"; HEK -> "heck"; SEK -> "seck"; INITIALIZE_MEK_SECRET -> "initialize meck secret"; MIX_MPK -> "mix M P K"; GENERATE_MEK -> "generate meck"; LOAD_MEK -> "load meck"; DERIVE_MEK -> "derive meck"
+Establishing a media key is a short stateful choreography. The order protects both correctness and secrecy.
+
+Every path starts with initialize meck secret. Drive firmware supplies the Soft Epoch Key and Data Protection Key. Inside the K M B, the H E K and S E K produce the Epoch Protection Key, and the E P K combines with the D P K to create the initial media-key-secret seed.
+
+Firmware may then invoke mix M P K zero or more times. Each call supplies one Enabled M P K. The K M B decrypts it under the V E K and extends the secret seed through a key derivation function. The order must match the order associated with that Media Encryption Key. Calling mix before initialization is an error.
+
+The path then branches.
+
+For a new random key, firmware calls generate meck. The K M B creates a 512-bit key and returns only the protected Wrapped MEK. When the drive later needs that key, it repeats initialization and the same M P K sequence, then calls load meck with metadata, auxiliary data, the wrapped key, and a timeout. The K M B unwraps and sends the key to the engine.
+
+For a deterministic key, firmware repeats the same initialization and mixing, then calls derive meck. It may include the stored checksum from an earlier derivation. A mismatch blocks the load.
+
+Initialization is single-use state for an establishment attempt. Integrators should treat each command sequence as a transaction: build the secret from the intended inputs, establish exactly one key, handle errors, and never reuse a partially constructed chain for a different key.

@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; KMB -> "K M B"; MEK -> "meck"; SFR -> "S F R"; METD -> "metadata"; AUX -> "aux"; AES -> "A E S"; XTS -> "X T S"; LBA -> "L B A"; KAT -> "K A T"; 512-bit -> "512-bit"; 0x40 -> "hex forty"; 0x60 -> "hex sixty"; 0x80 -> "hex eighty"
+The encryption engine stores a tuple, not a bare key.
+
+Each key-cache entry contains non-secret metadata, optional auxiliary data, and a 512-bit Media Encryption Key. Metadata identifies the entry. A vendor might use a namespace plus an L B A range, or a namespace plus a Key Per I O tag. Auxiliary data can select a mode or carry an initialization-vector offset. Neither field may create a path for reading the media key.
+
+The S F R layout makes that tuple explicit. The 64-byte media-key register begins at the configured base address. The 20-byte metadata region begins at base plus hex forty. The 32-byte aux region begins at base plus hex sixty. The control register sits at base plus hex eighty. M C U rom configures and locks the base and length before runtime firmware can modify them.
+
+The control command selects four actions. Command one loads a media key. Command two unloads the entry identified by metadata. Command three zeroizes the entire key cache. Optional command four loads a fixed Known Answer Test key for FIPS validation.
+
+That test key requires a strict warning. It has a published pattern chosen to avoid endianness ambiguity and satisfy A E S X T S component-key inequality. It is not secret and must never encrypt user data. After the test, firmware must unload it or clear the entire cache.
+
+The control handshake uses ready, command, execute, done, and error fields. The K M B checks ready, writes the command and execute bit, waits for done, reads the error, acknowledges done, and waits for the engine to return to its idle state.

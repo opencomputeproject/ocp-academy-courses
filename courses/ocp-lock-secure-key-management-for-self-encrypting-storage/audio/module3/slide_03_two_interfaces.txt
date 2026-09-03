@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; MCU -> "M C U"; KMB -> "K M B"; MEK -> "meck"; SFR -> "S F R"; DPK -> "D P K"; MPK -> "M P K"; HPKE -> "H P K E"
+Lock defines two interfaces because control policy and plaintext key transfer belong to different trust domains.
+
+The mailbox interface connects drive firmware on the M C U to the Caliptra Key Management Block. Firmware uses it to discover H P K E capabilities, manage M P Ks, initialize and extend a media-key secret, establish or unload media keys, query status, and clear the key cache. Inputs may include the Soft Epoch Key, a Data Protection Key, sealed access keys, encrypted M P Ks, non-secret metadata, and timeouts.
+
+The encryption-engine interface connects the K M B to the vendor's line-rate encryption hardware. It uses special function registers, or S F Rs, to present a Media Encryption Key, its metadata, optional auxiliary data, and a control command. The raw media key crosses only this protected boundary. It is never returned through the mailbox.
+
+Drive firmware still arbitrates the operation. It decides which host request is authorized, which metadata identifies the target key-cache entry, and when a key should load, unload, or be erased. But the K M B derives or unwraps the key and performs the protected transfer.
+
+This division also creates an auditable failure boundary. A malformed mailbox request can fail before any engine operation. An engine that isn't ready produces an immediate not-ready result. A command that runs too long returns a timeout. An engine error is carried back with control-register context so firmware can surface it to the host without exposing the key.
+
+The result is one protected key path with two narrowly defined control surfaces.
