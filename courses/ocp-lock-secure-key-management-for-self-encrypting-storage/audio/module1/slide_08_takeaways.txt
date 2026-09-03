@@ -1,0 +1,10 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; MEK -> "meck"; Caliptra -> "Caliptra"; KMB -> "K M B"; DPK -> "D P K"; MPK -> "M P K"; HPKE -> "H P K E"; S.A.F.E. -> "safe"
+The lock security model starts with a practical requirement: prove that retired media cannot expose customer data without destroying every drive by default.
+
+It assumes a strong adversary. Stolen hardware, arbitrary firmware, invasive analysis, compromised shared secrets, hostile tenant code, and complete knowledge of the design are all inside the model.
+
+The response is a narrow trust boundary. Caliptra's Key Management Block alone reads Media Encryption Keys and programs the encryption engine. Drive firmware requests operations and supplies policy inputs, but it doesn't handle raw media keys.
+
+Protection comes in layers. A Data Protection Key represents the data owner. Optional Multi-party Protection Keys add other authorities through protected H P K E transport. Hard and Soft Epoch Keys make cryptographic erase an explicit state transition.
+
+Lock can support several self-encrypting storage protocols and isn't limited to N V M E. But integration still requires authorization, correct reset handling, and an O C P S.A.F.E. review. The next module opens the key hierarchy and follows each layer through its lifecycle.

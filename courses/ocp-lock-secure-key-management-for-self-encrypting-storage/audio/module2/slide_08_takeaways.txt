@@ -1,0 +1,10 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; MEK -> "meck"; DPK -> "D P K"; MPK -> "M P K"; HEK -> "heck"; SEK -> "seck"; EPK -> "E P K"; VEK -> "veck"; MDK -> "M D K"; HPKE -> "H P K E"
+The lock hierarchy separates ownership, authorization, erase, and hardware-path protection.
+
+One Data Protection Key represents the data owner. Zero or more ordered Multi-party Protection Keys add other authorities. Each M P K is durable in its Locked form and volatile in its Enabled form, where the V E K protects it. H P K E keeps the external access key confidential from the host.
+
+The Hard and Soft Epoch Keys combine into the E P K. A soft transition supports a rewritable operational boundary. A hard fuse transition supports a stronger physical-device boundary. Either one can make the existing media-key chain unrecoverable.
+
+The M D K constrains the final hardware path so compromised runtime firmware can't disclose a decrypted media key. Random Media Encryption Keys are double-wrapped. Derived keys follow a deterministic seed path and can use a checksum to detect input corruption.
+
+Persistence is part of the security design. Durable ciphertext, volatile enablement, ephemeral plaintext, and hardware-isolated Key Vault values behave differently across reset and power loss. The final module turns those relationships into commands, registers, reset rules, and an integration checklist.

@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; KMS -> "K M S"; MCU -> "M C U"; KMB -> "K M B"; MEK -> "meck"; MPK -> "M P K"; HPKE -> "H P K E"; DPK -> "D P K"
+The protected path becomes clear when we follow control and key material separately.
+
+The host or a remote Key Management Service starts with an administrative request. It may unlock data, enable a multi-party condition, load a key, or perform cryptographic erase. That request reaches the storage controller and its drive firmware. In Caliptra Subsystem, the firmware runs on the Manufacturer Control Unit, or M C U.
+
+Drive firmware translates the host operation into a mailbox request for the Key Management Block. It can supply a Soft Epoch Key, a Data Protection Key, sealed access keys, enabled M P Ks, and vendor-defined metadata. It can also retain encrypted keys. But it never receives a plaintext Media Encryption Key from the K M B.
+
+Inside Caliptra, the K M B unwraps H P K E payloads, derives the required protection chain, and generates, unwraps, or derives the media key. Hardware-protected Key Vault slots hold the most sensitive intermediate values. Other values exist only in protected volatile or ephemeral memory for the operation that needs them.
+
+The final media key moves directly from the K M B into the vendor encryption engine. The engine stores it in a volatile key cache, bound to non-secret metadata that selects the correct namespace, address range, or key tag. User data then passes through the engine for line-rate encryption and decryption.
+
+The critical boundary is simple: firmware controls the request and the metadata, while Caliptra and the encryption engine control the raw media key. That is the architectural answer to the threat model.

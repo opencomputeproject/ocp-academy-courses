@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; KMB -> "K M B"; MEK -> "meck"; SFR -> "S F R"; MPK -> "M P K"; HPKE -> "H P K E"; KAT -> "K A T"; S.A.F.E. -> "safe"
+A conformant lock integration preserves one plaintext key path while exposing two control interfaces.
+
+Drive firmware uses the mailbox to request protected services. The K M B uses S F Rs to load, unload, or zeroize encryption-engine entries. Metadata and auxiliary data remain vendor-defined, but neither may expose the raw Media Encryption Key.
+
+Media-key establishment always starts by initializing the secret. Zero or more ordered mix M P K calls extend it. The sequence then branches to random-key generation and loading, or deterministic derivation.
+
+Host protocols map onto grouped services for H P K E discovery, M P K lifecycle, and media-key lifecycle. Implementation feedback in version one point one reduced bespoke cryptography and aligned these services with Caliptra and T C G mechanisms.
+
+Reset rules decide which keys persist and which handles must be rediscovered. Authorization, timeouts, engine errors, immutable register configuration, cache clearing, and safe K A T handling are security requirements, not operational polish.
+
+Use the specification's thirteen mandatory controls as the checklist and O C P S.A.F.E. review as the integration verification step. That closes the path from threat model, through key hierarchy, to an auditable product implementation.

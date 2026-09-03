@@ -1,0 +1,12 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; MPK -> "M P K"; HEK -> "heck"; SEK -> "seck"; EPK -> "E P K"; VEK -> "veck"; HPKE -> "H P K E"; DICE -> "dice"; KEM -> "kem"; ML-KEM -> "M L kem"; P-384 -> "P three eighty-four"; SHA2-384 -> "S H A two, three eighty-four"
+Multi-party protection turns one unlock credential into a set of required assents.
+
+Each M P K begins with an external 256-bit access key. The user retrieves an H P K E public key and its certificate from the device, validates the certificate and dice chain, checks the advertised algorithms, seals the access key, and sends it back. The host can carry that ciphertext without learning the access key.
+
+During generation, the K M B unwraps the access key, creates a random M P K, and derives a wrapping key from the H E K, S E K, and access key. The returned Locked M P K can be stored durably by drive firmware.
+
+Before that M P K can help load a media key, it must be enabled. The K M B unwraps the access key again, decrypts the Locked M P K, and re-encrypts the same key under the volatile V E K. Drive firmware may cache this Enabled M P K in memory. Because the V E K disappears on cold reset, the enabled form also becomes unusable.
+
+Access-key rotation requires proof of both the old and new access keys. The K M B decrypts with the old binding, re-encrypts with the new one, and the drive zeroizes the old Locked M P K. Access-key testing uses a freshness nonce and returns an S H A two, three eighty-four digest over metadata, the decrypted access key, and that nonce.
+
+Version one point one advertises three K E M choices for this transport: P three eighty-four, M L kem ten twenty-four, and a hybrid that combines both. The hybrid option protects the same authorization flow with classical and post-quantum key establishment.

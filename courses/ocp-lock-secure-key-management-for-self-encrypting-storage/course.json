@@ -1,0 +1,1547 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_academy_lock_secure_key_management",
+  "course_title": "OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage",
+  "language": "en-US",
+  "course_subtitle": "A three-module implementation guide to the OCP L.O.C.K. Specification v1.1",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "OCP L.O.C.K. Specification v1.1 · June 2026",
+  "index_footer_line": "Three modules · Based on the OCP L.O.C.K. Specification v1.1.",
+  "target_duration_minutes": 51,
+  "audience_level": "intermediate",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo v2",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable"
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "lock_series_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "LOCK"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "ocp_specification_pdf",
+      "title": "OCP L.O.C.K. Specification v1.1",
+      "url": "https://www.opencompute.org/documents/ocp-lock-specification-v1-1-final-pdf"
+    },
+    {
+      "kind": "ocp_project_site",
+      "title": "OCP Storage Project",
+      "url": "https://www.opencompute.org/community/storage"
+    },
+    {
+      "kind": "ocp_summit_talk",
+      "title": "An update on OCP L.O.C.K. — 2026 OCP EMEA Summit",
+      "url": "https://www.youtube.com/watch?v=a0ews3cKuQI"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "lock",
+      "term": "L.O.C.K.",
+      "tooltip": "Layers of Cryptographic Keys: an OCP architecture for hardware-rooted storage key protection and lifecycle control."
+    },
+    {
+      "id": "sed",
+      "term": "SED",
+      "tooltip": "Self-encrypting drive: a storage device that encrypts media data internally."
+    },
+    {
+      "id": "kmb",
+      "term": "KMB",
+      "tooltip": "Key Management Block: the protected Caliptra component allowed to execute L.O.C.K. operations, read MEKs, and program the encryption engine."
+    },
+    {
+      "id": "mek",
+      "term": "MEK",
+      "tooltip": "Media Encryption Key: up to 512 bits of key material used by a storage encryption-engine slot to protect media data."
+    },
+    {
+      "id": "crypto_erase",
+      "term": "Cryptographic erase",
+      "tooltip": "Rendering encrypted data irrecoverable by securely eliminating the key material required to decrypt it."
+    },
+    {
+      "id": "dpk",
+      "term": "DPK",
+      "tooltip": "Device Protection Key: a device-unique root key derived from hardware secrets."
+    },
+    {
+      "id": "mpk",
+      "term": "MPK",
+      "tooltip": "Management Protection Key: an ordered, optional layer used to represent an administrative boundary."
+    },
+    {
+      "id": "epk",
+      "term": "EPK",
+      "tooltip": "Epoch Protection Key: the active epoch layer formed from a hardware epoch key and software epoch key."
+    },
+    {
+      "id": "hek",
+      "term": "HEK",
+      "tooltip": "Hardware Epoch Key: one of 4 to 16 256-bit values provisioned in fuse slots."
+    },
+    {
+      "id": "sek",
+      "term": "SEK",
+      "tooltip": "Software Epoch Key: durable software-controlled epoch material combined with the HEK."
+    },
+    {
+      "id": "vek",
+      "term": "VEK",
+      "tooltip": "Volatile Encryption Key: a lazily generated key that protects enabled MPKs held in volatile memory."
+    },
+    {
+      "id": "mdk",
+      "term": "MDK",
+      "tooltip": "MEK Derivation Key: a device-unique key used in random-key inner wrapping and derived-MEK generation."
+    },
+    {
+      "id": "hpke",
+      "term": "HPKE",
+      "tooltip": "Hybrid Public Key Encryption: the public-key envelope used to establish protected access material."
+    },
+    {
+      "id": "sfr",
+      "term": "SFR",
+      "tooltip": "Special Function Register: a memory-mapped register used for protected MEK transfer and control."
+    },
+    {
+      "id": "engine_id",
+      "term": "ENGINE_ID",
+      "tooltip": "A metadata field identifying the target storage encryption engine."
+    },
+    {
+      "id": "slot_id",
+      "term": "SLOT_ID",
+      "tooltip": "A metadata field identifying a key slot within the target encryption engine."
+    },
+    {
+      "id": "kat",
+      "term": "KAT",
+      "tooltip": "Known-answer test: an optional command used to verify MEK transfer behavior against a known result."
+    },
+    {
+      "id": "caliptra",
+      "term": "Caliptra Subsystem",
+      "tooltip": "The hardware root-of-trust environment hosting the KMB; L.O.C.K. v1.1 targets version 2.1 or newer."
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "lock-trust-boundaries",
+      "title": "L.O.C.K.: Layered Open-source Cryptographic Key Management",
+      "subtitle": "The operational problem, threat model, guarantees, and protected path.",
+      "module_badge_text": "Module 1 of 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "why_ocp_lock",
+          "title": "OCP L.O.C.K.: Layered Open-source Cryptographic Key Management",
+          "subtitle": "Trust Boundaries and Security Goals",
+          "module_number": 1,
+          "version_chip": "Specification v1.1 · June 2026",
+          "audio": {
+            "script_file": "audio/module1/slide_01_why_ocp_lock.txt",
+            "wav_file": "audio/module1/slide_01_why_ocp_lock.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 1
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "series_overview",
+          "title": "A Three-Module Path Through L.O.C.K.",
+          "subtitle": "Start with the trust model, then follow the keys and integration contract.",
+          "modules_listed": [
+            "L.O.C.K.: Layered Open-source Cryptographic Key Management",
+            "Key Hierarchy and Lifecycle",
+            "Controller Integration and Compliance"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "Course: about 51 minutes"
+            },
+            {
+              "icon": "🎓",
+              "text": "Intermediate"
+            },
+            {
+              "icon": "📄",
+              "text": "OCP L.O.C.K. v1.1",
+              "url": "https://www.opencompute.org/documents/ocp-lock-specification-v1-1-final-pdf"
+            },
+            {
+              "icon": "▶",
+              "text": "2026 Summit update",
+              "url": "https://www.youtube.com/watch?v=a0ews3cKuQI"
+            }
+          ],
+          "media_embed": "<div class=\"animate-in\" style=\"margin:18px auto 0;max-width:900px;text-align:center\"><div style=\"display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:center;gap:18px;padding:18px 22px;background:#fff;border:1px solid #d8e1e8;border-radius:14px\"><img src=\"figures/logos/google.svg\" alt=\"Google\" style=\"width:100%;height:52px;object-fit:contain\"><img src=\"figures/logos/microsoft.svg\" alt=\"Microsoft\" style=\"width:100%;height:48px;object-fit:contain\"><img src=\"figures/logos/samsung_electronics.svg\" alt=\"Samsung Electronics\" style=\"width:100%;height:50px;object-fit:contain\"><img src=\"figures/logos/kioxia.svg\" alt=\"KIOXIA\" style=\"width:100%;height:42px;object-fit:contain\"><img src=\"figures/logos/solidigm.png\" alt=\"Solidigm\" style=\"width:100%;height:42px;object-fit:contain\"></div><p style=\"margin:6px 0 0;font-size:.72rem;color:var(--text-muted)\">Logos acknowledge organizations represented in the OCP L.O.C.K. effort; their appearance does not imply endorsement of this course.</p></div>",
+          "figure": {
+            "path": "figures/contributors_strip.svg",
+            "alt": "Official Google, Microsoft, Samsung Electronics, KIOXIA, and Solidigm contributor logos.",
+            "source": "official_brand_assets",
+            "assets": [
+              "figures/logos/google.svg",
+              "figures/logos/microsoft.svg",
+              "figures/logos/samsung_electronics.svg",
+              "figures/logos/kioxia.svg",
+              "figures/logos/solidigm.png"
+            ]
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_02_series_overview.txt",
+            "wav_file": "audio/module1/slide_02_series_overview.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 3
+            },
+            {
+              "source": "An update on OCP L.O.C.K..txt",
+              "time": "00:00–03:00"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "drive_destruction",
+          "section_label": "Operational Problem",
+          "title": "Retiring Data Should Not Require Retiring the Drive",
+          "subtitle": "L.O.C.K. makes the key lifecycle an explicit hardware security boundary.",
+          "bullets": [
+            {
+              "bold_lead": "Today’s cost",
+              "text": "Organizations may physically destroy usable drives because proving data destruction is difficult."
+            },
+            {
+              "bold_lead": "A better boundary",
+              "text": "Cryptographic erase can retire protected data by eliminating the required key material."
+            },
+            {
+              "bold_lead": "Reuse with confidence",
+              "text": "A drive can move to another tenant or environment without carrying the prior epoch’s decrypt capability."
+            },
+            {
+              "bold_lead": "Open implementation target",
+              "text": "L.O.C.K. defines interoperable security behavior for self-encrypting storage controllers."
+            }
+          ],
+          "figure": {
+            "path": "figures/c1_drive_retirement.mp4",
+            "media_type": "video",
+            "poster": "figures/c1_drive_retirement_poster.png",
+            "alt": "Animation contrasting physical drive destruction with cryptographic retirement and safe drive reuse.",
+            "caption": "A key-lifecycle boundary can preserve the hardware while retiring the protected data.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "lock",
+            "sed",
+            "crypto_erase"
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_drive_destruction.txt",
+            "wav_file": "audio/module1/slide_03_drive_destruction.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 7
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 22
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "threat_model",
+          "section_label": "Threat Model",
+          "title": "Assume Powerful Attackers—But Separate Security from Availability",
+          "subtitle": "The guarantees remain meaningful even when ordinary controller software is compromised.",
+          "bullets": [
+            {
+              "bold_lead": "In scope",
+              "text": "Attackers may control firmware, observe or modify external traffic, or gain physical access to non-protected storage."
+            },
+            {
+              "bold_lead": "Protected root",
+              "text": "Device-unique secrets, the KMB, and the engine key path remain inside the hardware-rooted boundary."
+            },
+            {
+              "bold_lead": "Security goal",
+              "text": "Compromise outside that boundary must not reveal usable MEKs or revive erased key state."
+            },
+            {
+              "bold_lead": "Availability is different",
+              "text": "Denial of service, media damage, or refusal to process I/O are not confidentiality failures."
+            }
+          ],
+          "figure": {
+            "path": "figures/c1_threat_model.svg",
+            "alt": "Threat model matrix separating attacker capabilities, protected assets, and availability exclusions.",
+            "caption": "The model protects key confidentiality and erasure semantics, not uninterrupted service.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "kmb",
+            "mek"
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_threat_model.txt",
+            "wav_file": "audio/module1/slide_04_threat_model.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 10
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "security_guarantees",
+          "section_label": "Security Contract",
+          "title": "Three Guarantees Turn Key Handling into an Architecture",
+          "subtitle": "Each guarantee constrains both storage and controller implementation.",
+          "bullets": [
+            {
+              "bold_lead": "Keep keys secret",
+              "text": "MEK material must not become readable by ordinary firmware, host software, or external interfaces."
+            },
+            {
+              "bold_lead": "Keep data bound to keys",
+              "text": "Encrypted media remains unintelligible without the intended hierarchy and active epoch."
+            },
+            {
+              "bold_lead": "Make erasure final",
+              "text": "Destroyed epoch or parent-key state cannot be reconstructed from residual device information."
+            },
+            {
+              "bold_lead": "Control programming",
+              "text": "Only the KMB may read an MEK and program the storage encryption engine."
+            }
+          ],
+          "figure": {
+            "path": "figures/c1_security_guarantees.svg",
+            "alt": "Three-part diagram showing key secrecy, data protection, and irreversible key-state retirement.",
+            "caption": "The protected path connects confidentiality, correct use, and irreversible retirement.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_security_guarantees.txt",
+            "wav_file": "audio/module1/slide_05_security_guarantees.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 10
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 11
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "protected_path",
+          "section_label": "Trust Boundary",
+          "title": "Policy Can Cross Firmware; Plaintext MEKs Cannot",
+          "subtitle": "The KMB is the narrow bridge between lifecycle commands and the encryption engine.",
+          "bullets": [
+            {
+              "bold_lead": "Host intent",
+              "text": "A host or key service requests lifecycle actions through controller APIs."
+            },
+            {
+              "bold_lead": "Untrusted transport",
+              "text": "Ordinary firmware can carry commands and wrapped objects without seeing plaintext MEKs."
+            },
+            {
+              "bold_lead": "Protected execution",
+              "text": "Caliptra’s KMB unwraps, derives, loads, zeroizes, and reports key state inside the root of trust."
+            },
+            {
+              "bold_lead": "Direct engine path",
+              "text": "MEKs move through dedicated secure registers from the KMB to the encryption engine."
+            }
+          ],
+          "figure": {
+            "path": "figures/c1_protected_key_path.mp4",
+            "media_type": "video",
+            "poster": "figures/c1_protected_key_path_poster.png",
+            "alt": "Animation showing control messages passing through firmware while MEK material remains inside the KMB-to-encryption-engine protected path.",
+            "caption": "Commands are observable; plaintext MEK transfer remains inside the protected boundary.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_06_protected_path.txt",
+            "wav_file": "audio/module1/slide_06_protected_path.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 14
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 43
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "scope_and_fit",
+          "section_label": "Ecosystem Fit",
+          "title": "L.O.C.K. Complements Storage Protocols and Security Frameworks",
+          "subtitle": "It standardizes internal key protection without forcing a single host protocol.",
+          "bullets": [
+            {
+              "bold_lead": "Transport independent",
+              "text": "The architecture is not limited to NVMe and can be integrated into different storage-controller command sets."
+            },
+            {
+              "bold_lead": "SED compatible",
+              "text": "It can support TCG Opal, Enterprise, and Key Per I/O management models."
+            },
+            {
+              "bold_lead": "Caliptra foundation",
+              "text": "Version 1.1 targets the Caliptra Subsystem 2.1 or newer KMB security services."
+            },
+            {
+              "bold_lead": "OCP ecosystem",
+              "text": "The design can align with OCP S.A.F.E.™ while keeping each framework’s scope distinct."
+            }
+          ],
+          "figure": {
+            "path": "figures/c1_scope_fit.svg",
+            "alt": "Layer diagram showing L.O.C.K. between host security protocols, Caliptra, and OCP S.A.F.E.™ using their official logos.",
+            "caption": "L.O.C.K. defines the controller’s key boundary, not a replacement for every surrounding protocol.",
+            "source": "custom"
+          },
+          "reference_links": [
+            {
+              "label": "Caliptra",
+              "url": "https://chipsalliance.github.io/caliptra-web/"
+            },
+            {
+              "label": "OCP S.A.F.E.™",
+              "url": "https://www.opencompute.org/sp/about-ocp-safe"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_scope_and_fit.txt",
+            "wav_file": "audio/module1/slide_07_scope_and_fit.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 11
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 75
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Trust the Narrow Path, Not the Whole Controller",
+          "items": [
+            "Cryptographic retirement can separate data destruction from drive destruction.",
+            "The threat model allows compromised ordinary firmware without surrendering plaintext MEKs.",
+            "The KMB is the only component permitted to read MEKs and program the encryption engine.",
+            "Availability failures are distinct from confidentiality and irreversible-erasure guarantees.",
+            "L.O.C.K. complements existing storage protocols and OCP security frameworks."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_takeaways.txt",
+            "wav_file": "audio/module1/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 10
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 17
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check the L.O.C.K. Trust Model",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "c1_q1",
+              "prompt": "Which component is allowed to read a plaintext MEK and program the storage encryption engine?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The Caliptra Key Management Block",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Ordinary drive firmware",
+                  "correct": false,
+                  "feedback_incorrect": "Firmware may carry commands and wrapped objects, but plaintext MEKs remain inside the protected KMB path."
+                },
+                {
+                  "id": "c",
+                  "text": "The host operating system",
+                  "correct": false,
+                  "feedback_incorrect": "The host requests lifecycle actions; it does not receive plaintext MEKs from the device."
+                },
+                {
+                  "id": "d",
+                  "text": "The flash translation layer",
+                  "correct": false,
+                  "feedback_incorrect": "Media-management logic is outside the protected MEK-reading boundary."
+                }
+              ],
+              "feedback_correct": "Correct. The KMB is the only entity permitted to read MEKs and program the engine.",
+              "feedback_incorrect": "Follow the protected path: KMB to secure registers to encryption engine."
+            },
+            {
+              "id": "c1_q2",
+              "multiple": true,
+              "prompt": "Which conditions fit the L.O.C.K. threat model? Select all that apply.",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Ordinary controller firmware may be compromised",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "External traffic may be observed or modified",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Protected device-unique secrets remain inside their hardware boundary",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The architecture guarantees uninterrupted service",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "Physical media damage must always be recoverable",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. L.O.C.K. protects key confidentiality and lifecycle semantics under strong attacker capabilities; it does not guarantee availability.",
+              "feedback_incorrect": "Separate confidentiality and irreversible erasure from availability or physical media survival."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 10
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 2,
+          "next_module_title": "Key Hierarchy and Lifecycle",
+          "thank_you_message": "You have completed Module 1: Trust Boundaries and Security Goals.",
+          "audio": {
+            "script_file": "audio/module1/slide_10_course_complete.txt",
+            "wav_file": "audio/module1/slide_10_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ],
+      "next_module_title": "Key Hierarchy and Lifecycle"
+    },
+    {
+      "id": 2,
+      "slug": "lock-key-hierarchy",
+      "title": "Key Hierarchy and Lifecycle",
+      "subtitle": "Four layers, three persistence classes, and two MEK strategies.",
+      "module_badge_text": "Module 2 of 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "layered_keys",
+          "title": "OCP L.O.C.K.",
+          "subtitle": "Key Hierarchy and Lifecycle",
+          "module_number": 2,
+          "version_chip": "Specification v1.1 · June 2026",
+          "audio": {
+            "script_file": "audio/module2/slide_01_layered_keys.txt",
+            "wav_file": "audio/module2/slide_01_layered_keys.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 17
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Follow Every Layer Through Its Lifecycle",
+          "subtitle": "By the end of this course, you will be able to:",
+          "objectives": [
+            "Build the protection hierarchy from the device root to an engine-ready MEK.",
+            "Distinguish fuse, durable-flash, and volatile key state.",
+            "Explain MPK and epoch transitions, including their reset behavior.",
+            "Compare double-wrapped random MEKs with derived MEKs."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 17
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 35
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "four_layers",
+          "section_label": "Protection Hierarchy",
+          "title": "Each Layer Adds a Different Administrative Boundary",
+          "subtitle": "The final MEK secret is the ordered result of device, management, and epoch protection.",
+          "bullets": [
+            {
+              "bold_lead": "Device root",
+              "text": "A DPK binds the hierarchy to a specific storage controller."
+            },
+            {
+              "bold_lead": "Management layers",
+              "text": "Zero or more ordered MPKs represent customer, fleet, or organizational boundaries."
+            },
+            {
+              "bold_lead": "Active epoch",
+              "text": "An EPK combines hardware and software epoch material for the current environment."
+            },
+            {
+              "bold_lead": "Engine binding",
+              "text": "The resulting MEK secret protects random or derived MEKs; an MDK secures the final device-local path."
+            }
+          ],
+          "figure": {
+            "path": "figures/c2_key_hierarchy.mp4",
+            "media_type": "video",
+            "poster": "figures/c2_key_hierarchy_poster.png",
+            "alt": "Animation building the DPK, ordered MPKs, EPK, MEK secret, MDK, and engine key path layer by layer.",
+            "caption": "The hierarchy is ordered: changing any active parent changes access to the protected MEK state.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "dpk",
+            "mpk",
+            "epk",
+            "mdk",
+            "mek"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_four_layers.txt",
+            "wav_file": "audio/module2/slide_03_four_layers.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 17
+            },
+            {
+              "source": "An update on OCP L.O.C.K..txt",
+              "time": "08:00–12:00"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "persistence_classes",
+          "section_label": "State and Reset",
+          "title": "Persistence Determines What a Reset Can—and Cannot—Change",
+          "subtitle": "Fuses establish roots, flash retains policy state, and volatile memory holds enabled working state.",
+          "bullets": [
+            {
+              "bold_lead": "Fuse state",
+              "text": "Device secrets and 4 to 16 HEK slots survive resets and establish immutable hardware roots."
+            },
+            {
+              "bold_lead": "Durable state",
+              "text": "Locked MPKs, SEK state, counters, and wrapped objects persist in flash."
+            },
+            {
+              "bold_lead": "Volatile state",
+              "text": "Enabled MPKs, VEK-protected working material, HPKE private state, and loaded MEKs live in protected runtime memory."
+            },
+            {
+              "bold_lead": "Cold-reset boundary",
+              "text": "The KMB recreates device-local roots, establishes fresh HPKE state, and lazily creates a VEK when needed."
+            }
+          ],
+          "figure": {
+            "path": "figures/c2_persistence_classes.svg",
+            "alt": "Matrix mapping fuse, durable flash, and volatile state to cold-reset behavior.",
+            "caption": "A reset policy is meaningful only when each key’s persistence class is explicit.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "hek",
+            "sek",
+            "vek",
+            "hpke"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_persistence_classes.txt",
+            "wav_file": "audio/module2/slide_04_persistence_classes.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 18
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 32
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "mpk_lifecycle",
+          "section_label": "Management Keys",
+          "title": "An MPK Moves from Locked Storage to Enabled Runtime State",
+          "subtitle": "HPKE grants access; the VEK protects the working copy.",
+          "bullets": [
+            {
+              "bold_lead": "Locked",
+              "text": "An MPK can persist as a protected durable object without being usable for MEK operations."
+            },
+            {
+              "bold_lead": "Access established",
+              "text": "Authorized HPKE material lets the KMB validate and recover the management layer."
+            },
+            {
+              "bold_lead": "Enabled",
+              "text": "The KMB keeps the active MPK inside protected volatile memory under the VEK."
+            },
+            {
+              "bold_lead": "Reset behavior",
+              "text": "Cold reset removes enabled working state; durable locked state can be enabled again after fresh authorization."
+            }
+          ],
+          "figure": {
+            "path": "figures/c2_mpk_lifecycle.mp4",
+            "media_type": "video",
+            "poster": "figures/c2_mpk_lifecycle_poster.png",
+            "alt": "Animation showing a locked MPK being authorized through HPKE and protected by the VEK in enabled volatile state.",
+            "caption": "Locked is durable; Enabled is a protected runtime condition.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_mpk_lifecycle.txt",
+            "wav_file": "audio/module2/slide_05_mpk_lifecycle.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 29
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 35
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "epoch_lifecycle",
+          "section_label": "Epoch Boundaries",
+          "title": "Soft and Hard Epoch Changes Solve Different Operational Problems",
+          "subtitle": "Choose the transition according to whether the drive stays inside the trusted environment.",
+          "bullets": [
+            {
+              "bold_lead": "EPK composition",
+              "text": "The active epoch combines a selected HEK fuse slot with durable SEK state."
+            },
+            {
+              "bold_lead": "Soft transition",
+              "text": "Rotate the software-controlled epoch for an operational or tenant boundary while the hardware remains trusted."
+            },
+            {
+              "bold_lead": "Hard transition",
+              "text": "Move to a different hardware epoch root before a drive leaves the environment or crosses a stronger ownership boundary."
+            },
+            {
+              "bold_lead": "Erasure effect",
+              "text": "Retiring an epoch removes the parent material needed to recover MEKs protected under that epoch."
+            }
+          ],
+          "figure": {
+            "path": "figures/c2_epoch_lifecycle.mp4",
+            "media_type": "video",
+            "poster": "figures/c2_epoch_lifecycle_poster.png",
+            "alt": "Animation contrasting soft software-epoch rotation with a hard hardware-epoch transition.",
+            "caption": "A soft boundary rotates SEK state; a hard boundary moves to a different HEK root.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_06_epoch_lifecycle.txt",
+            "wav_file": "audio/module2/slide_06_epoch_lifecycle.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 20
+            },
+            {
+              "source": "An update on OCP L.O.C.K..txt",
+              "time": "20:00–25:00"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "random_and_derived_meks",
+          "section_label": "MEK Strategies",
+          "title": "Random and Derived MEKs Reach the Same Protected Engine Boundary",
+          "subtitle": "Their creation and recovery paths differ, but plaintext key material stays inside the KMB.",
+          "bullets": [
+            {
+              "bold_lead": "Random MEK",
+              "text": "A generated MEK is inner-wrapped with the MDK using AES-ECB, then outer-protected with the MEK secret using preconditioned AES-GCM."
+            },
+            {
+              "bold_lead": "Derived MEK",
+              "text": "A CMAC KDF combines an input seed with the MDK path to recreate key material when needed."
+            },
+            {
+              "bold_lead": "Integrity",
+              "text": "The random-key outer envelope authenticates its protected object; derived keys may include a 128-bit checksum."
+            },
+            {
+              "bold_lead": "Operational choice",
+              "text": "Random keys preserve wrapped objects; derived keys trade storage for deterministic regeneration."
+            }
+          ],
+          "figure": {
+            "path": "figures/c2_random_derived.svg",
+            "alt": "Split-path diagram comparing double-wrapped random MEKs with CMAC-KDF-derived MEKs.",
+            "caption": "Both paths terminate inside the KMB-to-engine protected transfer boundary.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_07_random_and_derived_meks.txt",
+            "wav_file": "audio/module2/slide_07_random_and_derived_meks.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 35
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 42
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Every Layer Has a Purpose, Location, and Retirement Rule",
+          "items": [
+            "The ordered hierarchy is DPK, zero or more MPKs, and an EPK before the MEK secret protects MEK state.",
+            "HEKs live in 4 to 16 fuse slots; SEK state supplies the software-controlled half of an epoch.",
+            "Locked MPKs persist, while Enabled MPKs are VEK-protected volatile working state.",
+            "Soft and hard epoch transitions represent different operational boundaries.",
+            "Random MEKs are double wrapped; derived MEKs are recreated through the device-local KDF path."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_takeaways.txt",
+            "wav_file": "audio/module2/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 17
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 42
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check the Key Hierarchy",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "c2_q1",
+              "prompt": "Which two components form the active Epoch Protection Key?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "HEK and SEK",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "DPK and VEK",
+                  "correct": false,
+                  "feedback_incorrect": "The DPK is the device root and the VEK protects volatile working state; neither pair defines the active epoch."
+                },
+                {
+                  "id": "c",
+                  "text": "MPK and MDK",
+                  "correct": false,
+                  "feedback_incorrect": "MPKs are optional management layers, while the MDK secures the device-local MEK path."
+                },
+                {
+                  "id": "d",
+                  "text": "HPKE public and private keys",
+                  "correct": false,
+                  "feedback_incorrect": "HPKE establishes protected access material but does not define the epoch."
+                }
+              ],
+              "feedback_correct": "Correct. A selected Hardware Epoch Key and Software Epoch Key form the EPK.",
+              "feedback_incorrect": "The epoch combines a hardware-rooted HEK with software-controlled SEK state."
+            },
+            {
+              "id": "c2_q2",
+              "multiple": true,
+              "prompt": "Which lifecycle statements are accurate? Select all that apply.",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A Locked MPK may persist in durable protected storage",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "An Enabled MPK is protected in volatile KMB state",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Cold reset clears enabled working state",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "A derived MEK must always be stored as a wrapped key object",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "A soft epoch transition always consumes a new HEK fuse slot",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Durable locked state and volatile enabled state serve different parts of the lifecycle.",
+              "feedback_incorrect": "Derived keys can be regenerated, and a soft transition changes software epoch state without necessarily moving to another HEK slot."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 20
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 35
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next",
+          "next_module_number": 3,
+          "next_module_title": "Controller Integration and Compliance",
+          "thank_you_message": "You have completed Module 2: Key Hierarchy and Lifecycle.",
+          "audio": {
+            "script_file": "audio/module2/slide_10_course_complete.txt",
+            "wav_file": "audio/module2/slide_10_course_complete.wav",
+            "approved": true
+          },
+          "source_refs": []
+        }
+      ],
+      "next_module_title": "Controller Integration and Compliance"
+    },
+    {
+      "id": 3,
+      "slug": "lock-controller-integration",
+      "title": "Controller Integration and Compliance",
+      "subtitle": "Translate the security model into interfaces, state machines, and mandatory behavior.",
+      "module_badge_text": "Module 3 of 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "integrating_lock",
+          "title": "OCP L.O.C.K.",
+          "subtitle": "Controller Integration and Compliance",
+          "module_number": 3,
+          "version_chip": "Specification v1.1 · June 2026",
+          "audio": {
+            "script_file": "audio/module3/slide_01_integrating_lock.txt",
+            "wav_file": "audio/module3/slide_01_integrating_lock.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 43
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Turn the Model into a Controller Contract",
+          "subtitle": "By the end of this course, you will be able to:",
+          "objectives": [
+            "Separate the control mailbox from the protected MEK-transfer interface.",
+            "Read the MEK SFR layout and cache identity fields.",
+            "Sequence initialization, mixing, generation, load, derivation, and zeroization.",
+            "Map resets and the 13 mandatory behaviors to an integration checklist."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 43
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 76
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "two_interfaces",
+          "section_label": "Protected Interfaces",
+          "title": "Commands and Key Transfer Use Different Interfaces",
+          "subtitle": "The separation keeps policy traffic flexible while constraining plaintext MEK movement.",
+          "bullets": [
+            {
+              "bold_lead": "Command path",
+              "text": "A mailbox carries L.O.C.K. requests, identifiers, wrapped objects, status, and reports."
+            },
+            {
+              "bold_lead": "MEK path",
+              "text": "Dedicated SFRs carry up to 512 bits of MEK material, metadata, auxiliary data, and control."
+            },
+            {
+              "bold_lead": "Protected endpoint",
+              "text": "Both paths terminate in the KMB, but ordinary firmware cannot read plaintext key transfer."
+            },
+            {
+              "bold_lead": "Engine isolation",
+              "text": "ENGINE_ID and SLOT_ID bind an operation to the intended encryption-engine location."
+            }
+          ],
+          "figure": {
+            "path": "figures/c3_two_interfaces.mp4",
+            "media_type": "video",
+            "poster": "figures/c3_two_interfaces_poster.png",
+            "alt": "Animation showing mailbox traffic terminating at the Caliptra KMB and a separate protected SFR transfer carrying plaintext MEK material from the KMB to an explicitly selected encryption-engine slot.",
+            "caption": "Control is message-oriented; plaintext MEK transfer is register-bound and protected.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "term_refs": [
+            "kmb",
+            "sfr",
+            "mek",
+            "engine_id",
+            "slot_id"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_two_interfaces.txt",
+            "wav_file": "audio/module3/slide_03_two_interfaces.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 43
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 46
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "key_cache_and_sfrs",
+          "section_label": "Register Contract",
+          "title": "The SFR Map Makes Key Transfer Explicit and Auditable",
+          "subtitle": "A compact register window couples key bytes, identity, optional data, and one command.",
+          "bullets": [
+            {
+              "bold_lead": "MEK region",
+              "text": "64 bytes at the base address carry up to 512 bits of key material."
+            },
+            {
+              "bold_lead": "Metadata",
+              "text": "20 bytes at base plus 0x40 identify engine, slot, key length, and cache context."
+            },
+            {
+              "bold_lead": "AUX region",
+              "text": "32 bytes at base plus 0x60 carry command-specific auxiliary data."
+            },
+            {
+              "bold_lead": "CTRL",
+              "text": "The register at base plus 0x80 selects Load, Unload, Zeroize, or optional KAT behavior."
+            }
+          ],
+          "figure": {
+            "path": "figures/c3_register_map.svg",
+            "alt": "Register map showing the 64-byte MEK, 20-byte metadata, 32-byte AUX, and CTRL regions plus engine and slot identity.",
+            "caption": "The SFR contract binds a key operation to explicit engine, slot, length, and control fields.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "kat"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_key_cache_and_sfrs.txt",
+            "wav_file": "audio/module3/slide_04_key_cache_and_sfrs.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 46
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 54
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "command_choreography",
+          "section_label": "MEK State Machine",
+          "title": "Every MEK Operation Begins with an Explicit Secret Context",
+          "subtitle": "Initialization and ordered mixing precede generation, load, or derivation.",
+          "bullets": [
+            {
+              "bold_lead": "Initialize",
+              "text": "INITIALIZE_MEK_SECRET starts a fresh operation context from the active hierarchy."
+            },
+            {
+              "bold_lead": "Mix",
+              "text": "Zero or more MIX_MEK_SECRET operations add ordered context before a final key action."
+            },
+            {
+              "bold_lead": "Choose the path",
+              "text": "Generate or load a random MEK object, or derive a MEK from supplied seed material."
+            },
+            {
+              "bold_lead": "Program and retire",
+              "text": "The KMB loads the selected engine slot; unload and zeroize commands remove usable runtime state."
+            }
+          ],
+          "figure": {
+            "path": "figures/c3_command_choreography.mp4",
+            "media_type": "video",
+            "poster": "figures/c3_command_choreography_poster.png",
+            "alt": "Animation showing initialization, optional ordered MPK mixing, and exactly one final action: generate a wrapped random key, load a random key into an engine slot, or derive and load a key into an engine slot.",
+            "caption": "The state machine prevents a final MEK action from occurring outside an initialized hierarchy context.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_05_command_choreography.txt",
+            "wav_file": "audio/module3/slide_05_command_choreography.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 58
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 65
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "host_api_mapping",
+          "section_label": "Host Integration",
+          "title": "Map Product APIs to Five L.O.C.K. Operation Families",
+          "subtitle": "The host-facing command set may vary, but the security semantics must remain visible.",
+          "bullets": [
+            {
+              "bold_lead": "Discover",
+              "text": "Report capabilities, supported algorithms, HEK metadata, limits, and current state."
+            },
+            {
+              "bold_lead": "Establish",
+              "text": "Provision or authorize management layers and construct the active MEK-secret context."
+            },
+            {
+              "bold_lead": "Operate",
+              "text": "Generate, import, derive, load, unload, and zeroize MEKs for explicit engine slots."
+            },
+            {
+              "bold_lead": "Transition and attest",
+              "text": "Rotate epochs, handle reset boundaries, report measurements, and expose compliance-relevant evidence."
+            }
+          ],
+          "figure": {
+            "path": "figures/c3_api_groups.svg",
+            "alt": "Five grouped host API families for discovery, management layers, MEK operations, epoch transitions, and evidence.",
+            "caption": "A product can choose its transport while preserving the L.O.C.K. operation semantics.",
+            "source": "custom"
+          },
+          "audio": {
+            "script_file": "audio/module3/slide_06_host_api_mapping.txt",
+            "wav_file": "audio/module3/slide_06_host_api_mapping.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 66
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 75
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "reset_and_compliance",
+          "section_label": "Reset and Conformance",
+          "title": "Reset Semantics Are Part of the Security Contract",
+          "subtitle": "Conformance requires both correct cryptography and correct state transitions.",
+          "bullets": [
+            {
+              "bold_lead": "Cold reset",
+              "text": "Derive HEK and MDK state, create fresh HPKE state, and generate a VEK lazily when volatile MPK protection is first needed."
+            },
+            {
+              "bold_lead": "Warm reset",
+              "text": "Preserve HEK, MDK, and VEK state while regenerating HPKE state."
+            },
+            {
+              "bold_lead": "Firmware update",
+              "text": "Preserve the same device-local and volatile protection roots while rotating HPKE access state."
+            },
+            {
+              "bold_lead": "Mandatory baseline",
+              "text": "Table 56 defines 13 required behaviors covering hardware roots, reporting order, protected transfer, algorithms, lifecycle, and zeroization."
+            }
+          ],
+          "figure": {
+            "path": "figures/c3_reset_compliance.svg",
+            "alt": "Matrix comparing cold reset, warm reset, firmware update, and the mandatory compliance baseline.",
+            "caption": "A compliant implementation must preserve or recreate each key class exactly as the reset model specifies.",
+            "source": "custom"
+          },
+          "term_refs": [
+            "caliptra"
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_reset_and_compliance.txt",
+            "wav_file": "audio/module3/slide_07_reset_and_compliance.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 75
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 79
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Integrate the Boundary, Not Just the Algorithms",
+          "items": [
+            "Mailbox commands and protected MEK-transfer SFRs are separate interfaces with different exposure rules.",
+            "The 64-byte MEK, 20-byte metadata, 32-byte AUX, and CTRL regions make engine programming explicit.",
+            "Initialize and optional ordered mixing occur before random-key or derived-key final actions.",
+            "Host transports may differ, but capability, lifecycle, key, epoch, and evidence semantics must remain intact.",
+            "Cold reset, warm reset, firmware update, and the 13 mandatory requirements are all part of conformance."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_takeaways.txt",
+            "wav_file": "audio/module3/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 46
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 79
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check the Integration Contract",
+          "subtitle": "Answer both questions once to continue. Correctness is not required, and you can retry.",
+          "questions": [
+            {
+              "id": "c3_q1",
+              "prompt": "What must begin a new MEK-secret operation context?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "INITIALIZE_MEK_SECRET",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "LOAD_MEK",
+                  "correct": false,
+                  "feedback_incorrect": "Loading is a final key action and requires an initialized context first."
+                },
+                {
+                  "id": "c",
+                  "text": "REPORT_HEK_METADATA",
+                  "correct": false,
+                  "feedback_incorrect": "HEK reporting is a boot-time disclosure requirement, not a MEK-secret initializer."
+                },
+                {
+                  "id": "d",
+                  "text": "KAT",
+                  "correct": false,
+                  "feedback_incorrect": "KAT is an optional register-path test, not the hierarchy-context initializer."
+                }
+              ],
+              "feedback_correct": "Correct. INITIALIZE_MEK_SECRET creates the context before optional MIX operations and a final MEK action.",
+              "feedback_incorrect": "The required order begins with initialization, may include ordered mixing, and ends with one final MEK operation."
+            },
+            {
+              "id": "c3_q2",
+              "multiple": true,
+              "prompt": "Which statements belong to a compliant integration? Select all that apply.",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Plaintext MEKs transfer through the protected SFR path",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "ENGINE_ID and SLOT_ID bind an operation to a target",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Warm reset and firmware update regenerate HPKE state",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Ordinary firmware may read the MEK region for diagnostics",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "The host transport must always be NVMe",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. The protected transfer, explicit target identity, and reset-time HPKE rotation are core integration behaviors.",
+              "feedback_incorrect": "L.O.C.K. is transport-independent, and ordinary firmware must not gain plaintext MEK access."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 58
+            },
+            {
+              "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
+              "page": 76
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "course_title": "OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage",
+          "thank_you_message": "Thank you for completing Module 3: Controller Integration and Compliance.",
+          "cert_message": "You have completed the OCP Academy L.O.C.K. course and can connect its trust model, key hierarchy, protected interfaces, command ordering, reset semantics, and compliance baseline.",
+          "reference_links": [
+            {
+              "label": "OCP L.O.C.K. Specification v1.1",
+              "url": "https://www.opencompute.org/documents/ocp-lock-specification-v1-1-final-pdf"
+            },
+            {
+              "label": "OCP Storage Project",
+              "url": "https://www.opencompute.org/community/storage"
+            },
+            {
+              "label": "2026 OCP EMEA Summit update",
+              "url": "https://www.youtube.com/watch?v=a0ews3cKuQI"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_course_complete.txt",
+            "wav_file": "audio/module3/slide_10_course_complete.wav",
+            "approved": true
+          }
+        }
+      ]
+    }
+  ]
+}

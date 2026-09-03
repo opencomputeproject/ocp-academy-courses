@@ -1,0 +1,10 @@
+# pronunciation: OCP -> "O C P"; L.O.C.K. -> "lock"; MEK -> "meck"; RTL -> "R T L"; UART -> "U A R T"
+O C P lock protects user data at rest against an unusually capable adversary. The point of the threat model is not to predict one attack. It is to decide which components may be trusted with a Media Encryption Key.
+
+The adversary may intercept a drive in the supply chain or steal it from a data center. They may open the package and inspect it destructively. They may run arbitrary firmware, even after compromising a vendor's signing keys. They may glitch general-purpose cores or recover key-related clues from debug dumps and U A R T logs.
+
+The model also assumes that class-wide, global, or shared symmetric secrets can be stolen. A hostile tenant may execute code in a virtual machine on a multi-tenant host that controls the attached device. And the adversary may know every published design document, source file, and R T L description. Openness is not treated as secrecy.
+
+Those capabilities expose five failure classes. Firmware bugs or side channels may leak media keys. Invasive analysis may recover keys that firmware claimed to erase. Credentials may be bound incorrectly. A vulnerable host may expose a valid credential. Or a buggy host may fail to carry out cryptographic erase completely.
+
+Physical denial of service remains out of scope. An attacker standing beside a drive may still destroy it or prevent it from operating. Lock is designed to preserve confidentiality and trustworthy key lifecycle behavior, not device availability under every physical attack.
