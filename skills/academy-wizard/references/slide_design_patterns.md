@@ -15,6 +15,8 @@ Every module in the reference course follows the same skeleton. Match it — lea
 
 ## Slide types and when to use each
 
+Glossary exclusion is absolute for the first and last slide of every module and every quiz/`knowledge_check` slide. Never add `term_refs` or glossary pills there, even if narration or visible text uses the term. Module boundaries are array positions, not slide IDs or layout names. Title, overview, objectives, next-module and completion slides are also ineligible wherever placed. Ignore those occurrences when finding first substantive use: attach a pill only to the first eligible teaching slide using that term. Keep resource links independent of this glossary-only exclusion. Source QA and rendering must reject prohibited placements.
+
 ### `title`
 The first slide of every module. Bold hero treatment, big module title, course logo, version chip.
 - Fields: `title`, `subtitle`, `module_number`, optional `version_chip`.
@@ -125,6 +127,6 @@ Before delivery, visually check every diagram:
 - **Don't mix figure + grid + table on one slide.** Pick one heavy element.
 - **Don't write headers on every slide that just say "More info" or "Continued."** Each title should be specific.
 - **Don't duplicate the label as the title.** If the small label says `Learning Objectives`, `Key Takeaways`, `Technology Landscape`, or similar, the large slide title must say something more descriptive.
-- **Don't add glossary chips for absent terms.** A tooltip belongs only where the term appears in the slide text or narration, preferably the first such slide in the module. Place glossary/reference pills inside the slide content flow, left-aligned below the last text/table/image content; never in a floating "Terms" area near the controls.
+- **Don't add glossary chips for absent terms.** Require actual same-slide usage in narration, rendered teaching text or legible figure/video text, and place the pill at the first substantive use in the module. The pill itself, related concepts, filenames, alt text and linked sources do not count. Follow the glossary evidence schema and review procedure in `course_schema.md`, and re-run the glossary checks after content changes. Place glossary/reference pills inside the slide content flow, left-aligned below the last text/table/image content; never in a floating "Terms" area near the controls.
 - **Don't bury key sources until the end.** If a slide clearly leans on a spec, white paper, video, or project page, add the resource link on that slide.
 - **Don't hand-size resource pills as squares.** Use the renderer's flexible pills for learner links so labels like `OCP`, `60`, and `Video` have enough width and never overflow.

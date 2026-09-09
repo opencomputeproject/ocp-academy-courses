@@ -61,6 +61,8 @@ This is the moment to acknowledge the learner finished a module and to set up th
 
 Final module's final slide. Thanks for the module AND wraps the course. Be warm — the learner just spent real time with you.
 
+End with a brief thank-you and practical encouragement to apply the learning. The fixed visual course tagline is not a spoken closing requirement: do not append it or another branding slogan unless the user explicitly requests that sign-off. Keep necessary review/safety qualifications intact before the warm closing.
+
 > That's a wrap on module six and on the course. Thank you for sticking with us through the full OCP NIC 3.0 Academy. You've worked through the form factors, the electrical interface, management and firmware, signal integrity and thermals, and now compliance and the roadmap. You're ready to read a NIC spec sheet and contribute meaningfully to the conversation. Visit opencompute.org to go deeper. Until next time.
 
 ## Pacing markers

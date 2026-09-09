@@ -105,6 +105,26 @@ def pick_model_id(
     return default_model_for_language(course.get("language"), policy)
 
 
+def pick_elevenlabs_speed(course: dict) -> tuple[float, str]:
+    configured = narration_config(course)
+    if "speed" in configured:
+        raw = configured["speed"]
+        source = "course narration.speed"
+    elif os.getenv("ELEVENLABS_SPEED") is not None:
+        raw = os.environ["ELEVENLABS_SPEED"]
+        source = "ELEVENLABS_SPEED environment override"
+    else:
+        raw = 1.18
+        source = "maintained default"
+    try:
+        value = float(raw)
+    except (TypeError, ValueError) as error:
+        raise ValueError(f"Invalid ElevenLabs speed from {source}: {raw!r}") from error
+    if not 0.7 <= value <= 1.2:
+        raise ValueError(f"ElevenLabs speed from {source} must be between 0.7 and 1.2; got {value}")
+    return value, source
+
+
 def need(cmd: str) -> str | None:
     return shutil.which(cmd)
 
@@ -145,6 +165,7 @@ def synth_elevenlabs(
     voice_id: str | None,
     model_id: str | None,
     language_code: str | None,
+    speed: float,
 ) -> None:
     import urllib.request
     api_key = os.environ["ELEVENLABS_API_KEY"]
@@ -153,8 +174,8 @@ def synth_elevenlabs(
     # ELEVENLABS_VOICE_ID. Rachel (21m00Tcm4TlvDq8ikWAM) is warmer/conversational.
     voice = voice_id or os.getenv("ELEVENLABS_VOICE_ID") or "bbGtsRRKUfYO634UxSjz"  # Leo v2, default
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_22050"
-    # speed (0.7–1.2) controls pacing. 1.0 reads slowly for dense technical
-    # material; 1.15–1.20 is a good range. Override with ELEVENLABS_SPEED.
+    # speed (0.7–1.2) controls pacing. The maintained default is 1.18; a
+    # course-specific, user-approved value is recorded as narration.speed.
     payload = {
         "text": text,
         "model_id": model_id
@@ -162,7 +183,7 @@ def synth_elevenlabs(
         "voice_settings": {
             "stability":        float(os.getenv("ELEVENLABS_STABILITY",  "0.55")),
             "similarity_boost": float(os.getenv("ELEVENLABS_SIMILARITY", "0.75")),
-            "speed":            float(os.getenv("ELEVENLABS_SPEED",      "1.18")),
+            "speed":            speed,
         },
     }
     if language_code and should_send_language_code(str(payload["model_id"])):
@@ -215,11 +236,17 @@ def slide_ref(mod: dict, slide: dict) -> str:
     return f"M{mod.get('id')}S{slide.get('id')} ({slide.get('type')}, {slide.get('slug', 'no-slug')})"
 
 
-def iter_module_slides(course: dict, module_filter: int | None):
+def iter_module_slides(
+    course: dict,
+    module_filter: int | None,
+    slide_filter: int | None,
+):
     for mod in course.get("modules", []):
         if module_filter and mod.get("id") != module_filter:
             continue
         for slide in mod.get("slides", []):
+            if slide_filter and slide.get("id") != slide_filter:
+                continue
             yield mod, slide
 
 
@@ -227,6 +254,11 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("course_json", type=Path)
     p.add_argument("--module", type=int)
+    p.add_argument(
+        "--slide",
+        type=int,
+        help="synthesize only this slide id (normally combined with --module)",
+    )
     p.add_argument("--engine", choices=list(SYNTHS.keys()))
     p.add_argument("--voice", help="engine-specific voice id")
     p.add_argument("--model", help="ElevenLabs model id")
@@ -262,6 +294,7 @@ def main():
             args.model,
             args.model_policy,
         )
+        speed, speed_source = pick_elevenlabs_speed(course) if engine == "elevenlabs" else (None, None)
     except ValueError as error:
         sys.exit(str(error))
     voice_id = pick_voice_id(args.voice, course, engine)
@@ -275,6 +308,8 @@ def main():
         print(f"voice: {voice_id}")
     if model_id:
         print(f"model: {model_id}")
+    if speed is not None:
+        print(f"speed: {speed:g} ({speed_source})")
 
     if engine == "elevenlabs":
         def synth(text: str, wav_path: Path) -> None:
@@ -284,6 +319,7 @@ def main():
                 voice_id,
                 model_id,
                 language_code,
+                speed,
             )
     elif engine == "openai":
         def synth(text: str, wav_path: Path) -> None:
@@ -295,7 +331,7 @@ def main():
     errors: list[str] = []
     existing_wavs = 0
     needs_synth_knowledge_check = False
-    for mod, slide in iter_module_slides(course, args.module):
+    for mod, slide in iter_module_slides(course, args.module, args.slide):
         audio = slide.get("audio") or {}
         script_rel = audio.get("script_file")
         wav_rel = audio.get("wav_file")
@@ -401,6 +437,7 @@ def main():
                     "      export ELEVENLABS_API_KEY=<your key>\n"
                     f"      python3 {Path(__file__).resolve()} {args.course_json.name}"
                     + (f" --module {args.module}" if args.module else "")
+                    + (f" --slide {args.slide}" if args.slide else "")
                     + "\n",
                     file=sys.stderr,
                 )

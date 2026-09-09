@@ -93,6 +93,12 @@ else
     fi
   fi
 
+  # Optional trusted course source generates offline learner resources directly
+  # into the staged package; rendered resource HTML is not kept in source control.
+  if [[ -f "$SOURCE_DIR/scripts/build_resources.py" ]]; then
+    "$PYTHON_BIN" "$SOURCE_DIR/scripts/build_resources.py" "$BUILD_DIR/course.json"
+  fi
+
   "$PYTHON_BIN" "$SKILL_DIR/scripts/render_module.py" "$BUILD_DIR/course.json" --all
   "$PYTHON_BIN" "$SKILL_DIR/scripts/render_index.py" "$BUILD_DIR/course.json"
 

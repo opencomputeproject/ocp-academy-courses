@@ -81,11 +81,14 @@ Run this checklist before rendering a module final:
 
 ### Animation QA rules
 
+- Declare one authoritative master duration and a representative poster time in the animation source. All subordinate animations must complete once within that master timeline and hold their final state; none may restart before the master timeline ends.
+- Encode exactly one complete master pass. A video must never contain a full animation followed by even a fraction of a second pass. Stop the encoder at the declared source duration rather than at an arbitrary recording timeout, and require the encoded duration to match the master duration within one video frame.
+- Capture browser animation frames losslessly at a minimum of 1920×1080, using PNG rather than JPEG as the encoder input. Start at clean 1080p H.264 or VP9 and increase to 1440p or 4K only when small type, dense linework, or the learner zoom view needs the additional pixels. Do not accept the Playwright-bundled low-bitrate VP8 path for technical diagrams. Decode a representative frame and compare it to the lossless source at native size and 200% detail. Target SSIM ≥ 0.995 and PSNR ≥ 45 dB after normalizing color range when measurable, but reject visible grain, ringing, or block breakup regardless of metric.
 - Render and inspect at least five evenly spaced frames: first, 25%, 50%, 75%, and final. Add frames immediately before and after any transition that changes layout or state.
-- Watch or scrub one complete loop in real time. Five static frames do not reveal backward jumps, flicker, momentary overlap, or an unexplained reset between checkpoints.
+- Watch or scrub one complete pass in real time. Five static frames do not reveal backward jumps, flicker, momentary overlap, or an unexplained reset between checkpoints. Inspect the final second specifically and verify that no start-state object or restarted subordinate animation reappears.
 - Compare every animated text element and object with its containing shape at every distinct layout state. Require the same 0.75em text clearance used for static SVGs.
 - Keep labels, axes, trend lines, callouts, and chart panels disjoint unless the overlap intentionally encodes a data relationship. Move explanatory cards outside plotting areas rather than covering the chart.
-- Verify that the poster is a clean, representative frame and that the video is silent, muted, loopable, and free of a jarring end-to-start discontinuity.
+- Verify that the poster is a clean, representative frame and that the video is silent and muted. The final encoded frame must show the true end of the teaching animation. If the player loops the asset, any visual reset belongs after that final frame at the media loop boundary, never inside the encoded asset.
 - Run visual QA with browser or system playback muted so testing does not compete with a learner or reviewer listening nearby.
 
 ## Caption rules
