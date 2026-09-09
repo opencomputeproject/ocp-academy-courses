@@ -17,7 +17,8 @@ The wizard maintains a single `course.json` in the working area. It's the source
     "voice_id": "Course-specific ElevenLabs voice ID",
     "voice_name": "Human-readable voice name",
     "model_id": "eleven_multilingual_v2",
-    "model_policy": "stable"
+    "model_policy": "stable",
+    "speed": 1.18
   },
   "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
@@ -78,6 +79,12 @@ catalog, with a bundled official-documentation table as a fail-safe for known
 models. Unsupported or unverifiable combinations are blocked before any text
 is submitted. Additions to the maintained locale table must include a model and
 pass `scripts/elevenlabs_model_support.py <language> <model>`.
+
+For ElevenLabs, record `narration.speed` explicitly. The maintained default is
+`1.18`. Use a different value only after the user explicitly approves that
+exact override; do not alter speed to compensate for course-duration estimates
+or other editorial judgments. `gen_audio.py` prints the resolved speed and its
+configuration source before synthesis so the paid run is auditable.
 
 `model_id` is the reproducible pin and takes precedence. When it is omitted,
 `model_policy` chooses a use-case profile: `stable` (the default) prefers
@@ -341,7 +348,36 @@ Use `reference_links` for small bottom-of-slide link pills. Every resource pill 
 }
 ```
 
-Attach a term to the first substantive slide in each module where it appears in visible text or narration. Do not add tooltips for terms that are absent from both. If a slide has bullets, a table, a figure, or a diagram, place the learner-aid block after that content so the pills read as part of the slide, not as a separate navigation/footer area.
+Attach a term only to its first substantive use in each module's spoken script, rendered slide text, or legible figure/video text. Never define `term_refs` or display glossary pills on a quiz/`knowledge_check` slide or on the first or last slide of any module, regardless of layout type or ID. Determine boundaries by position in `modules[].slides[]`, not by assuming IDs start at 1 or that the last slide is `up_next`/`course_complete`. Intro/title, roadmap/overview, objectives and next-module/completion slides are excluded even at interior positions. All these excluded slides also do not count toward first substantive use. Use the first eligible teaching occurrence, or omit the pill when none exists. Resource links are not glossary pills and remain independently permitted. Keep image-only `full_slide_image` layouts free of pills; do not change their layout without approval. Put learner aids after the last text/table/figure in the slide content flow.
+
+### Glossary usage evidence
+
+`term_glossary[].aliases` may list verified variants of the same term: spelling, plural, acronym expansion, pronunciation spelling, or equivalent unit notation. For example, `SLA` may use `["SLAs", "service-level agreement", "service-level agreements"]`. Do not use conceptual synonyms such as "compatibility" as an alias for "fungibility" just to obtain a match. Acronyms spoken as separated letters are supported. Case, whitespace and hyphen variations are normalized; word boundaries prevent substring matches.
+
+Count only the learner's actual teaching content. Ignore the glossary label/tooltip, term IDs, filenames/slugs, author notes, source metadata, reference links, alt text, script comments, non-rendered legacy fields and hidden markup. A visible caption can count; an unlabeled object does not establish that its name was used. Use the current script body when available, not an out-of-date transcript. Do not add or rewrite teaching content merely to retain an unsupported pill.
+
+Before auditing a module with glossary pills, inspect every attached figure and every video state for legible text. Record the reviewed text under `figure.text_inventory`, including media with no visible words (`entries: []`), so earlier media-only occurrences cannot be missed:
+
+```json
+{
+  "figure": {
+    "path": "figures/cooling.mp4",
+    "text_inventory": {
+      "sha256": "SHA-256 of the exact reviewed media file",
+      "entries": [
+        {"text": "CDU", "at_seconds": 12.0},
+        {"text": "Supply and return", "at_seconds": 18.5}
+      ]
+    }
+  }
+}
+```
+
+For static images omit `at_seconds`; for videos give a time where the text is legible. Review the final encoded asset, not just a prompt, alt description, poster, hidden SVG label or animation source. Source text extraction/OCR can help, but is not visual verification. Keep each distinct visible phrase; repeated identical labels need only one entry. Include later states and captions burned into the media. A changed asset invalidates its old inventory: re-review the text, then update the digest. Never auto-refresh the digest during a rebuild without reviewing the new asset.
+
+Run `scripts/slides_course_qa.py course.json --fail-on-flags` after scripts/media are finalized and again after any content revision. Its glossary checker uses the maintained renderer (excluding the pills themselves), script bodies, and current hash-bound media inventories. It rejects absent terms, placements after first substantive use, excluded baseline vocabulary, and missing/stale media inventories; structural checks also reject undefined/repeated refs and unused entries. The checker cannot prove that a manually transcribed media inventory is correct or that an alias is semantically equivalent; visually review those evidence sources. Remove unsupported pills or move them to their real first-use slide, then drop entries that have no remaining use. Preserve approved narration and media unless the user separately requested content edits.
+
+Both `slides_course_qa.py` and `render_module.py` reject glossary refs on quizzes, excluded slide types, and positional first/last slides. Rendering must fail with an actionable error rather than silently stripping authored refs or allowing a direct render to bypass the rule. Retain regression cases for ordinary content layouts at module boundaries, single-slide modules, arbitrary slide IDs, and quiz wording that must not claim first-use eligibility.
 
 ### `title`
 
@@ -484,6 +520,8 @@ Optional fields:
 ```
 
 ### `content_diagram`
+
+Optional `media_focus: true` enables the larger, scrollable teaching-media layout. Leave it unset to preserve the established diagram layout in existing courses. `transcript` may hold a conventional-spelling display version of the narration; the command-line renderer falls back to the current script body (excluding pronunciation comments) when that field is absent. Keep an explicitly authored transcript synchronized with its script.
 
 ```json
 {

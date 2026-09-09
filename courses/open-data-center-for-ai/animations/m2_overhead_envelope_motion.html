@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920,height=1080,initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 1920px; height: 1080px; margin: 0; overflow: hidden; }
+    body { font-family: "Open Sans", Arial, sans-serif; color: #5f6062; }
+    .stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 84% 13%, rgba(141,198,63,.09), transparent 23%),
+        linear-gradient(180deg, #ffffff 0%, #f6f7f5 71%, #eceeeb 100%);
+    }
+    .scene {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 55%;
+      animation: camera 11s cubic-bezier(.2,.7,.2,1) 1 both;
+    }
+    svg { display: block; width: 100%; height: 100%; }
+    .callout {
+      position: absolute;
+      background: rgba(255,255,255,.97);
+      border: 3px solid #d8d9d6;
+      border-left: 12px solid #8dc63f;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(61,66,62,.13);
+      padding: 19px 24px 18px;
+      color: #5f6062;
+    }
+    .callout strong {
+      display: block;
+      color: #5f6062;
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: .4px;
+    }
+    .callout span {
+      display: block;
+      margin-top: 7px;
+      color: #757577;
+      font-size: 22px;
+      font-weight: 750;
+      line-height: 1.24;
+    }
+    .busway-label {
+      left: 1358px;
+      top: 300px;
+      width: 405px;
+      animation: buswayLabel 11s ease 1 both;
+    }
+    .measure-label {
+      left: 68px;
+      top: 510px;
+      width: 404px;
+      animation: measureLabel 11s ease 1 both;
+    }
+    .measure-label strong { color: #6fa030; font-size: 45px; }
+    .additional-label {
+      left: 1272px;
+      top: 66px;
+      width: 520px;
+      animation: additionalLabel 11s ease 1 both;
+    }
+    .additional-label strong { font-size: 30px; }
+    .additional-label span { font-size: 24px; color: #6fa030; }
+
+    .beam { animation: beamRise 11s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .column-extension { animation: columnExtension 11s cubic-bezier(.2,.72,.2,1) 1 both; transform-origin: center bottom; }
+    .added-tier { animation: addedTier 11s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .baseline-measure { animation: baselineMeasure 11s cubic-bezier(.2,.72,.2,1) 1 both; transform-origin: 256px 918px; }
+    .baseline-cap { animation: baselineCap 11s ease 1 both; }
+    .extension { animation: extension 11s cubic-bezier(.2,.72,.2,1) 1 both; transform-origin: 256px 225px; }
+    .final-cap { animation: finalCap 11s ease 1 both; }
+    .baseline-reference { animation: baselineReference 11s ease 1 both; }
+    .busway-glow { animation: buswayGlow 11s ease 1 both; }
+    .flow-a { animation: flowA 11s linear 1 both; }
+    .flow-b { animation: flowB 11s linear 1 both; }
+
+    @keyframes camera {
+      0% { transform: scale(.982) translateY(8px); }
+      24%,100% { transform: scale(1) translateY(0); }
+    }
+    @keyframes buswayLabel {
+      0%,4% { opacity: 0; transform: translateX(26px); }
+      10%,28% { opacity: 1; transform: none; }
+      32%,100% { opacity: 0; transform: translateX(10px); }
+    }
+    @keyframes measureLabel {
+      0%,31% { opacity: 0; transform: translateY(22px); }
+      39%,100% { opacity: 1; transform: none; }
+    }
+    @keyframes additionalLabel {
+      0%,63% { opacity: 0; transform: translateY(-20px); }
+      72%,100% { opacity: 1; transform: none; }
+    }
+    @keyframes beamRise {
+      0%,60.99% { transform: translateY(0); }
+      61%,100% { transform: translateY(-100px); }
+    }
+    @keyframes columnExtension {
+      0%,60.99% { opacity: 0; transform: scaleY(0); }
+      61%,100% { opacity: 1; transform: scaleY(1); }
+    }
+    @keyframes addedTier {
+      0%,61% { opacity: 0; transform: translateX(760px); }
+      76%,100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes baselineMeasure {
+      0%,29% { opacity: 0; transform: scaleY(0); }
+      42%,100% { opacity: 1; transform: scaleY(1); }
+    }
+    @keyframes baselineCap {
+      0%,38% { opacity: 0; }
+      42%,100% { opacity: 1; }
+    }
+    @keyframes extension {
+      0%,63% { opacity: 0; transform: scaleY(0); }
+      76%,100% { opacity: 1; transform: scaleY(1); }
+    }
+    @keyframes finalCap {
+      0%,68% { opacity: 0; transform: translateY(100px); }
+      76%,100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes baselineReference {
+      0%,63% { opacity: 0; }
+      72%,100% { opacity: 1; }
+    }
+    @keyframes buswayGlow {
+      0%,4% { opacity: .22; }
+      11%,22% { opacity: 1; }
+      30%,100% { opacity: .42; }
+    }
+    @keyframes flowA {
+      0%,7% { transform: translateX(-260px); opacity: 0; }
+      11% { opacity: 1; }
+      26% { transform: translateX(630px); opacity: 1; }
+      31%,100% { transform: translateX(630px); opacity: 0; }
+    }
+    @keyframes flowB {
+      0%,11% { transform: translateX(-260px); opacity: 0; }
+      15% { opacity: 1; }
+      30% { transform: translateX(630px); opacity: 1; }
+      34%,100% { transform: translateX(630px); opacity: 0; }
+    }
+  .stage *{animation-duration:48533.33333333333ms!important}.scene{animation:none!important} .callout strong{font-size:42px}.callout span{font-size:34px}.measure-label{width:420px}.measure-label strong{font-size:48px}.additional-label{left:1245px;width:590px}.additional-label strong{font-size:42px}.additional-label span{font-size:34px}.baseline-reference{opacity:1!important}.extension,.final-cap{stroke:#5F6062;fill:#5F6062}.baseline-measure{transform:none!important;opacity:1!important}.baseline-cap{opacity:1!important}</style>
+</head>
+<body data-duration-ms="48533" data-poster-ms="42709">
+  <main class="stage" aria-label="A data-center overhead service envelope expands to accommodate additional infrastructure.">
+    <div class="scene">
+      <svg viewBox="0 0 1920 1080" role="img" aria-labelledby="sceneTitle sceneDesc">
+        <title id="sceneTitle">Two-busway data-center overhead envelope</title>
+        <desc id="sceneDesc">Two power busways above a physical row. The 18-foot datum remains fixed. A separate higher-clearance design appears at a scene cut, with an added service tier. This is not movement of an existing beam.</desc>
+        <defs>
+          <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#dfe2de"/>
+          </linearGradient>
+          <linearGradient id="rackFront" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#767779"/>
+            <stop offset=".55" stop-color="#535456"/>
+            <stop offset="1" stop-color="#3f4042"/>
+          </linearGradient>
+          <linearGradient id="rackSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#434446"/>
+            <stop offset="1" stop-color="#2f3032"/>
+          </linearGradient>
+          <linearGradient id="greenTop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#b4e873"/>
+            <stop offset="1" stop-color="#8dc63f"/>
+          </linearGradient>
+          <linearGradient id="greenSide" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#77aa2f"/>
+            <stop offset="1" stop-color="#5f8e22"/>
+          </linearGradient>
+          <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#8d8e90"/>
+            <stop offset=".5" stop-color="#5f6062"/>
+            <stop offset="1" stop-color="#454648"/>
+          </linearGradient>
+          <linearGradient id="pipe" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#a4a5a7"/>
+            <stop offset=".48" stop-color="#67686a"/>
+            <stop offset="1" stop-color="#4a4b4d"/>
+          </linearGradient>
+          <pattern id="perforation" width="24" height="16" patternUnits="userSpaceOnUse">
+            <rect width="24" height="16" fill="#77787a"/>
+            <rect x="5" y="5" width="14" height="5" rx="2.5" fill="#bfc1bd"/>
+          </pattern>
+          <filter id="softShadow" x="-25%" y="-25%" width="150%" height="170%">
+            <feDropShadow dx="0" dy="16" stdDeviation="16" flood-color="#3c403d" flood-opacity=".18"/>
+          </filter>
+          <filter id="smallShadow" x="-30%" y="-40%" width="160%" height="200%">
+            <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#303330" flood-opacity=".25"/>
+          </filter>
+        </defs>
+
+        <!-- Architectural context -->
+        <g opacity=".62" stroke="#d8d9d6" fill="none" stroke-width="3">
+          <path d="M90 160H1830M90 286H1830M90 412H1830"/>
+          <path d="M140 130V920M1770 130V920"/>
+          <path d="M510 120V920M1410 120V920" stroke-dasharray="8 14"/>
+        </g>
+        <path d="M152 902H1768L1536 1015H385Z" fill="url(#floor)" stroke="#c7cac6" stroke-width="4"/>
+        <g stroke="#cfd2ce" stroke-width="2" opacity=".78">
+          <path d="M330 919L521 1000M548 913L693 1000M768 907L866 1000M986 907L1039 1000M1203 913L1211 1000M1420 919L1384 1000M1634 925L1557 1000"/>
+          <path d="M194 932H1705M238 954H1659M288 978H1608"/>
+        </g>
+
+        <!-- Structural supports -->
+        <g fill="url(#steel)" filter="url(#smallShadow)">
+          <path d="M367 213h28v697h-28z"/>
+          <path d="M1518 213h28v697h-28z"/>
+          <path d="M349 896h65v24h-65zM1500 896h65v24h-65z"/>
+        </g>
+        <g class="column-extension" fill="url(#steel)">
+          <path d="M367 113h28v102h-28z"/>
+          <path d="M1518 113h28v102h-28z"/>
+        </g>
+
+        <!-- Air-plenum volume, deliberately one continuous zone -->
+        <g class="beam">
+          <path d="M401 226H1512V304H401Z" fill="#eef1ed" fill-opacity=".78" stroke="#cfd2ce" stroke-width="3" stroke-dasharray="12 10"/>
+          <text x="690" y="280" font-family="Arial,sans-serif" font-size="43" font-weight="700" fill="#5F6062">AIR PLENUM</text>
+          <g fill="url(#steel)" filter="url(#smallShadow)">
+            <path d="M300 156H1610V181H300Z"/>
+            <path d="M330 181H1580V204H330Z" fill="#4d4e50"/>
+            <path d="M300 204H1610V225H300Z"/>
+            <path d="M300 156l25-14h1310l-25 14z" fill="#a5a6a8"/>
+          </g>
+        </g>
+
+        <!-- Overhead gantry -->
+        <g fill="none" stroke="#77787a" stroke-width="10">
+          <path d="M452 303V554M702 303V554M952 303V554M1202 303V554M1452 303V554"/>
+          <path d="M421 304H1483" stroke-width="17"/>
+        </g>
+
+        <!-- Exactly two power busways -->
+        <g filter="url(#smallShadow)">
+          <g class="busway-glow">
+            <path d="M480 334H1372L1402 318H510Z" fill="url(#greenTop)"/>
+            <path d="M480 334H1372V374H480Z" fill="#8dc63f"/>
+            <path d="M1372 334L1402 318V358L1372 374Z" fill="url(#greenSide)"/>
+            <path d="M480 395H1372L1402 379H510Z" fill="url(#greenTop)"/>
+            <path d="M480 395H1372V435H480Z" fill="#8dc63f"/>
+            <path d="M1372 395L1402 379V419L1372 435Z" fill="url(#greenSide)"/>
+          </g>
+          <g fill="#f7fff0" opacity=".84">
+            <rect x="540" y="345" width="104" height="10" rx="5"/><rect x="731" y="345" width="104" height="10" rx="5"/><rect x="922" y="345" width="104" height="10" rx="5"/><rect x="1113" y="345" width="104" height="10" rx="5"/>
+            <rect x="540" y="406" width="104" height="10" rx="5"/><rect x="731" y="406" width="104" height="10" rx="5"/><rect x="922" y="406" width="104" height="10" rx="5"/><rect x="1113" y="406" width="104" height="10" rx="5"/>
+          </g>
+          <g class="flow-a" fill="#ffffff">
+            <rect x="542" y="340" width="84" height="20" rx="10"/>
+          </g>
+          <g class="flow-b" fill="#ffffff">
+            <rect x="542" y="401" width="84" height="20" rx="10"/>
+          </g>
+        </g>
+
+        <!-- Cable tray and liquid piping use unmistakably different forms -->
+        <g filter="url(#smallShadow)">
+          <path d="M468 465H1382L1410 450H496Z" fill="#a8aaa6"/>
+          <path d="M468 465H1382V505H468Z" fill="url(#perforation)" stroke="#5f6062" stroke-width="3"/>
+          <path d="M1382 465l28-15v40l-28 15z" fill="#5f6062"/>
+        </g>
+        <g fill="none" stroke="#757577" stroke-width="20" stroke-linecap="round" filter="url(#smallShadow)">
+          <path d="M500 535H1390" stroke="#2474C4"/>
+          <path d="M500 568H1390" stroke="#C8453D"/>
+        </g>
+        <g fill="#ffffff" opacity=".75">
+          <circle cx="558" cy="535" r="5"/><circle cx="808" cy="535" r="5"/><circle cx="1058" cy="535" r="5"/><circle cx="1308" cy="535" r="5"/>
+          <circle cx="558" cy="568" r="5"/><circle cx="808" cy="568" r="5"/><circle cx="1058" cy="568" r="5"/><circle cx="1308" cy="568" r="5"/>
+        </g>
+
+        <!-- Added ladder-tray tier physically enters the newly created space -->
+        <g class="added-tier" filter="url(#smallShadow)">
+          <path d="M470 258H1380L1410 242H500Z" fill="#9b9c9e"/>
+          <path d="M470 258H1380V297H470Z" fill="#696a6c" stroke="#4f5052" stroke-width="3"/>
+          <path d="M1380 258l30-16v39l-30 16z" fill="#505153"/>
+          <g stroke="#c9cbc7" stroke-width="7">
+            <path d="M512 260v35M580 260v35M648 260v35M716 260v35M784 260v35M852 260v35M920 260v35M988 260v35M1056 260v35M1124 260v35M1192 260v35M1260 260v35M1328 260v35"/>
+          </g>
+        </g>
+
+        <!-- Physical rack row -->
+        <g filter="url(#softShadow)">
+          <g transform="translate(478 608)">
+            <path d="M0 18L26 0H806L780 18Z" fill="#aeb0ac"/>
+            <path d="M780 18L806 0V274L780 292Z" fill="#343537"/>
+            <rect x="0" y="18" width="780" height="274" rx="5" fill="url(#rackFront)" stroke="#303133" stroke-width="4"/>
+            <g stroke="#aeb0ac" stroke-width="3">
+              <path d="M97 20v270M195 20v270M293 20v270M390 20v270M488 20v270M585 20v270M683 20v270"/>
+            </g>
+            <g fill="#2d2e30" stroke="#797a7c" stroke-width="2">
+              <rect x="15" y="42" width="68" height="25" rx="3"/><rect x="15" y="76" width="68" height="25" rx="3"/><rect x="15" y="110" width="68" height="25" rx="3"/><rect x="15" y="144" width="68" height="25" rx="3"/><rect x="15" y="178" width="68" height="25" rx="3"/><rect x="15" y="212" width="68" height="25" rx="3"/>
+              <rect x="112" y="42" width="68" height="25" rx="3"/><rect x="112" y="76" width="68" height="25" rx="3"/><rect x="112" y="110" width="68" height="25" rx="3"/><rect x="112" y="144" width="68" height="25" rx="3"/><rect x="112" y="178" width="68" height="25" rx="3"/><rect x="112" y="212" width="68" height="25" rx="3"/>
+              <rect x="210" y="42" width="68" height="25" rx="3"/><rect x="210" y="76" width="68" height="25" rx="3"/><rect x="210" y="110" width="68" height="25" rx="3"/><rect x="210" y="144" width="68" height="25" rx="3"/><rect x="210" y="178" width="68" height="25" rx="3"/><rect x="210" y="212" width="68" height="25" rx="3"/>
+              <rect x="307" y="42" width="68" height="25" rx="3"/><rect x="307" y="76" width="68" height="25" rx="3"/><rect x="307" y="110" width="68" height="25" rx="3"/><rect x="307" y="144" width="68" height="25" rx="3"/><rect x="307" y="178" width="68" height="25" rx="3"/><rect x="307" y="212" width="68" height="25" rx="3"/>
+              <rect x="405" y="42" width="68" height="25" rx="3"/><rect x="405" y="76" width="68" height="25" rx="3"/><rect x="405" y="110" width="68" height="25" rx="3"/><rect x="405" y="144" width="68" height="25" rx="3"/><rect x="405" y="178" width="68" height="25" rx="3"/><rect x="405" y="212" width="68" height="25" rx="3"/>
+              <rect x="502" y="42" width="68" height="25" rx="3"/><rect x="502" y="76" width="68" height="25" rx="3"/><rect x="502" y="110" width="68" height="25" rx="3"/><rect x="502" y="144" width="68" height="25" rx="3"/><rect x="502" y="178" width="68" height="25" rx="3"/><rect x="502" y="212" width="68" height="25" rx="3"/>
+              <rect x="600" y="42" width="68" height="25" rx="3"/><rect x="600" y="76" width="68" height="25" rx="3"/><rect x="600" y="110" width="68" height="25" rx="3"/><rect x="600" y="144" width="68" height="25" rx="3"/><rect x="600" y="178" width="68" height="25" rx="3"/><rect x="600" y="212" width="68" height="25" rx="3"/>
+              <rect x="697" y="42" width="68" height="25" rx="3"/><rect x="697" y="76" width="68" height="25" rx="3"/><rect x="697" y="110" width="68" height="25" rx="3"/><rect x="697" y="144" width="68" height="25" rx="3"/><rect x="697" y="178" width="68" height="25" rx="3"/><rect x="697" y="212" width="68" height="25" rx="3"/>
+            </g>
+            <g fill="#8dc63f">
+              <circle cx="72" cy="54" r="4"/><circle cx="169" cy="54" r="4"/><circle cx="267" cy="54" r="4"/><circle cx="364" cy="54" r="4"/><circle cx="462" cy="54" r="4"/><circle cx="559" cy="54" r="4"/><circle cx="657" cy="54" r="4"/><circle cx="754" cy="54" r="4"/>
+            </g>
+          </g>
+        </g>
+
+        <!-- Measurement is anchored to the actual finished floor and beam underside -->
+        <g stroke="#8dc63f" fill="#8dc63f">
+          <path class="baseline-measure" d="M256 918V225" stroke-width="14" stroke-linecap="round"/>
+          <path d="M225 918H287" stroke-width="14" stroke-linecap="round"/>
+          <path class="baseline-cap" d="M225 225H287" stroke-width="14" stroke-linecap="round"/>
+          <path class="extension" d="M256 225V125" stroke-width="14" stroke-linecap="round" stroke-dasharray="12 12"/>
+          <path class="final-cap" d="M225 125H287" stroke-width="14" stroke-linecap="round"/>
+          <path class="baseline-reference" d="M287 225H401" stroke-width="5" stroke-dasharray="10 10"/>
+        </g>
+
+        <!-- Precise label leaders -->
+        <g fill="none" stroke="#8dc63f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+          <path class="busway-glow" d="M1358 349H1317L1282 375"/>
+          <path class="added-tier" d="M1510 195H1442L1345 258"/>
+        </g>
+        <g fill="#8dc63f">
+          <circle class="busway-glow" cx="1282" cy="375" r="10"/>
+          <circle class="added-tier" cx="1345" cy="258" r="10"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="callout busway-label label">
+      <strong>2 BUSWAYS</strong>
+      <span>Power—not pipe or tray</span>
+    </div>
+    <div class="callout measure-label label">
+      <strong>18 FT MINIMUM</strong>
+      <span>Floor → beam underside<br>Plenum included</span>
+    </div>
+    <div class="callout additional-label label">
+      <strong>SEPARATE DESIGN</strong>
+      <span>More tiers: recheck height</span>
+    </div>
+  </main>
+</body>
+</html>

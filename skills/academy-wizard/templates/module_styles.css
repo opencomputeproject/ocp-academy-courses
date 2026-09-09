@@ -434,6 +434,14 @@ h1, h2, h3, h4, h5 {
   color: var(--text-primary);
 }
 
+/* Slide navigation focuses the title to orient assistive technology. These
+   reading destinations are not controls: keep focus, but omit the title ring.
+   Interactive elements retain their own visible keyboard-focus indicators. */
+.slide h1[tabindex="-1"]:focus,
+.slide h2[tabindex="-1"]:focus {
+  outline: none;
+}
+
 .slide-content {
   max-width: 1100px;
   width: 100%;
@@ -1106,7 +1114,7 @@ body.first-slide-audio-cue .btn-audio {
 /* ===== TENETS (SLIDE 4) ===== */
 .tenets-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(var(--grid-cols, 3), minmax(0, 1fr));
   gap: 16px;
   margin-top: 32px;
 }
@@ -1834,7 +1842,19 @@ body.first-slide-audio-cue .btn-audio {
   justify-content: center;
   padding: 0;
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  flex-shrink: 0;
 }
+
+/* Transcript, narration mode and speed share the same circular control system. */
+.btn-script-audio[aria-expanded="true"],
+.btn-script-audio[aria-pressed="true"] {
+  background: rgba(141,198,63,0.10);
+  border-color: var(--ocp-green);
+  color: var(--ocp-green-dark);
+}
+#narrationModeBtn[aria-pressed="true"] .narration-off-icon,
+#narrationModeBtn[aria-pressed="false"] .narration-on-icon { display:none; }
+.btn-script-audio:focus-visible { outline:2px solid var(--ocp-green-dark); outline-offset:3px; }
 
 .btn-audio-speed:hover,
 .btn-audio-speed:focus-visible {
@@ -2342,3 +2362,45 @@ body.first-slide-audio-cue .btn-audio {
 /* Survey CTA hover state — replaces inline onmouseover/onmouseout (which
    strict LMS content scanners reject as inline JS). */
 .slide .survey-btn:hover { background: var(--ocp-green-dark) !important; }
+
+/* Accessible review controls and media-first teaching layouts. */
+.hero-start-hint { color:#dce1e8; animation:none; opacity:1; }
+.learner-control { border:1px solid var(--border-color,#aaa); border-radius:7px; background:var(--bg-card,#fff); color:var(--text-primary,#5f6062); font:600 12px/1.25 var(--font-body,Arial); padding:8px 10px; cursor:pointer; white-space:nowrap; }
+.learner-control:focus-visible { outline:3px solid #6FA030; outline-offset:3px; }
+.transcript-panel { position:fixed; z-index:1005; top:88px; bottom:100px; right:24px; width:min(700px,calc(100vw - 48px)); overflow:auto; padding:28px; background:var(--bg-card,#fff); color:var(--text-primary,#5f6062); border:2px solid #8DC63F; border-radius:14px; box-shadow:0 12px 45px #0003; }
+.transcript-panel[hidden],.lms-navigation-note[hidden] { display:none; }
+.transcript-panel h2 { margin:22px 0 18px; font-size:24px; }
+.transcript-panel p { font-size:17px; line-height:1.7; margin:0 0 18px; }
+.lms-navigation-note { position:fixed; z-index:1200; bottom:100px; left:50%; transform:translateX(-50%); width:min(640px,90vw); padding:16px 22px; background:#fff; color:#5F6062; border:2px solid #8DC63F; border-radius:12px; font:600 15px/1.5 Arial,sans-serif; }
+.slide--media-focus { justify-content:flex-start; overflow-y:auto; padding-top:84px; padding-bottom:110px; }
+.slide--media-focus .slide-title { font-size:clamp(25px,2.5vw,36px); margin-bottom:10px; }
+.slide--media-focus .section-label { margin-bottom:6px; }
+.slide--media-focus .figure-wrap { max-width:980px; margin-inline:auto; }
+.slide--media-focus .figure-panel { width:100% !important; }
+.slide--media-focus .figure-panel video.figure-video { width:100%; max-height:none; height:auto; background:#fff; }
+.slide--media-focus .figure-panel img { width:100%; max-height:none; }
+.slide--media-focus .learner-aids { max-width:980px; margin-inline:auto; }
+.tenet-card { min-width:0; overflow-wrap:anywhere; }
+@media(min-width:1001px) {
+  .slide--media-focus { --teaching-media-width:clamp(780px,calc((100vh - 414px) * 1.777778),980px); }
+  .slide--media-focus .figure-wrap,.slide--media-focus .learner-aids { width:100%; max-width:var(--teaching-media-width); }
+}
+@media(max-width:1000px) { .controls-left .theme-label,.controls-left .key-hint {display:none;} .tenets-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
+@media(max-width:900px) { .controls-right .audio-progress-wrap {display:none;} }
+@media(max-width:700px) {
+  .controls { display:grid; grid-template-columns:1fr 1fr; row-gap:7px; height:112px; padding:9px 12px; }
+  .progress-bar { bottom:112px; }
+  .controls-left { grid-row:1; grid-column:1; justify-content:flex-start; }
+  .controls-center { position:static; transform:none; grid-row:2; grid-column:1 / -1; justify-content:center; }
+  .controls-right { grid-row:1; grid-column:2; justify-content:flex-end; }
+  .controls-right .audio-progress-wrap { display:none; }
+  .tenets-grid,.slide--mobile-scroll .tenets-grid { grid-template-columns:1fr !important; }
+  .slide--media-focus { padding:84px 18px 145px; }
+  .slide--media-focus .figure-wrap {width:100%;}
+  .slide--media-focus .figure-panel {padding:18px !important;}
+  .slide:not(.slide-hero) {padding-bottom:145px;}
+  .slide--media-focus .slide-title {font-size:27px;}
+  .transcript-panel {top:78px;bottom:126px;right:12px;width:calc(100vw - 24px);padding:20px;}
+  .transcript-panel p {font-size:16px;}
+  .lms-navigation-note {bottom:128px;}
+}

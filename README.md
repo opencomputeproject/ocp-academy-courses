@@ -56,6 +56,7 @@ courses/
     ocp-contribution-process/
   ocp-ready-requirements-for-energy-storage-systems/
   ocp-solid-state-transformers/
+  open-data-center-for-ai/
   open-rack-v3/
     module-1-ocp-orv3-history-and-impact/
     module-2-orv3-core-specifications/
@@ -137,6 +138,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ocp-orientation/ocp-contribution-process` | OCP Contribution Process |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
 | `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
+| `open-data-center-for-ai` | Open Data Center for AI |
 | `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
 | `open-rack-v3/module-2-orv3-core-specifications` | Module 2: ORv3 Core Specifications |
 | `open-rack-v3/module-3-orv3-real-world-implementations` | Module 3: ORv3 Real World Implementations |
@@ -262,3 +264,5 @@ Use pull requests for course improvements.
 - Run the build script before opening a PR when possible.
 
 The build renders the selected style, validates the package, and creates a strict LMS zip. Slides builds also regenerate audio from checked-in narration scripts unless existing audio or `SKIP_AUDIO=1` is supplied.
+
+A Slides course may provide `scripts/build_resources.py` for offline learner resources. The build runs this trusted, course-owned source after staging media/audio, passing the staged `course.json` path. The helper writes resources beneath that build directory; it must not modify the source checkout. Declare generated resource pages and their dependencies in `course.json` so the manifest and strict ZIP include them.
