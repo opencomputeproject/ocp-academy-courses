@@ -32,6 +32,7 @@ from motion_intro import (
     render_motion_intro,
 )
 from render_scrolling import is_scrolling, render_scrolling_course, runtime_files
+import single_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -190,8 +191,9 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 <script>
 (function() {{
   'use strict';
-  const inLMS = SCORM.init();
-  SCORM.setCompleted();
+  const reviewMode = new URLSearchParams(location.search).get('review') === '1';
+  const inLMS = !reviewMode && SCORM.init();
+  if (!reviewMode) SCORM.setCompleted();
   var data = SCORM.getSuspendData();
   if (data) {{
     try {{
@@ -213,12 +215,13 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
   document.querySelectorAll('.module-card').forEach(function(card) {{
     card.addEventListener('click', function(e) {{
       var mod = this.getAttribute('data-module');
-      if (inLMS) {{ e.preventDefault(); document.getElementById('lmsNavNote').hidden = false; return; }}
-      SCORM.setLocation('module' + mod);
+      if (inLMS && !SCORM.isSingleSCO) {{ e.preventDefault(); document.getElementById('lmsNavNote').hidden = false; return; }}
+      if (reviewMode) {{ e.preventDefault(); location.href = this.getAttribute('href') + '?review=1'; return; }}
+      if (!SCORM.isSingleSCO) SCORM.setLocation('module' + mod);
     }});
   }});
 
-  window.addEventListener('beforeunload', function() {{ SCORM.finish(); }});
+  window.addEventListener('beforeunload', function() {{ if (!reviewMode) SCORM.finish(); }});
 }})();
 </script>
 </body>
@@ -232,6 +235,9 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     truthful even if rendered before audio has been generated. Figures come
     from slides[*].figure.path. The manifest must list every file referenced
     by HTML pages — strict LMSes reject zips with unlisted files."""
+    if single_sco.enabled(course):
+        legacy_course = dict(course, scorm={"version": "1.2", "organization": "multi-sco"})
+        return single_sco.render_manifest(course, render_manifest(legacy_course, out_dir), scorm_metadata_title(course))
     if is_scrolling(course):
         course_slug = course.get("course_slug", "ocp_academy_scrolling_course")
         course_title = scorm_metadata_title(course)
@@ -383,6 +389,9 @@ def main():
     args = p.parse_args()
     course = json.loads(args.course_json.read_text())
     out_dir = args.course_json.resolve().parent
+
+    if single_sco.enabled(course):
+        single_sco.write_runtime(course, out_dir)
 
     (out_dir / "index.html").write_text(render_index_html(course, out_dir))
     print(f"wrote {out_dir / 'index.html'}")

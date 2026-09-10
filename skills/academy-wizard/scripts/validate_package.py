@@ -27,6 +27,7 @@ from xml.etree import ElementTree as ET
 
 from render_index import scorm_metadata_title
 from render_scrolling import parse_webvtt
+import single_sco
 
 
 def _is_scrolling(course: dict) -> bool:
@@ -152,6 +153,9 @@ def main():
     if manifest.exists():
         try:
             tree = ET.parse(manifest)
+            if course:
+                for issue in single_sco.validate(course, tree, root):
+                    err(issue)
             ns = {"ims": "http://www.imsproject.org/xsd/imscp_rootv1p1p2",
                   "adl": "http://www.adlnet.org/xsd/adlcp_rootv1p2"}
             if course:

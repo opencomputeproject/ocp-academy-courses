@@ -1,8 +1,9 @@
 # SCORM version selection and packaging
 
-AcademyWizard supports two package organizations:
+AcademyWizard supports these package organizations:
 
 - **Slides:** multi-SCO package with Course Home plus one SCO per narrated module.
+- **Slides, explicitly selected single-SCO:** one `launch.html` SCO hosts the same course home and module pages, retaining one SCORM 1.2 session throughout navigation. Module progress and quiz attempts are saved inside that course; the LMS records overall completion.
 - **Scrolling:** single-SCO package where `index.html` contains the course cover and every lesson. Lesson progress and Continue-gate state live in `cmi.suspend_data`; the SCO completes after all lessons complete.
 
 ## New courses versus existing deployments
@@ -28,6 +29,22 @@ Primary reference: [Docebo — Uploading and managing SCORM as training material
 ## Current SCORM 1.2 build contract
 
 The following describes the current 1.2 implementation, not a substitute for a verified 2004 implementation.
+
+### Opt-in single-SCO Slides
+
+Record the choice in `course.json`:
+
+```json
+"scorm": { "version": "1.2", "organization": "single-sco" }
+```
+
+Omission preserves the existing multi-SCO Slides default. This option does not convert Slides into Scrolling. `render_index.py` emits the persistent `launch.html` shell, shared session runtime and one-SCO manifest; the course's own index and module pages remain assets. The course mark becomes a Course home link. Only the shell initializes and finishes the LMS session; changing a module page commits progress without ending it. Every module keeps its bookmark and quiz attempts in course-level suspend data. Home never marks the course complete; all modules and their authored quiz gates are required. The state budget is checked before building and again when saving against SCORM 1.2's 4096-character limit. Never silently drop progress or switch SCORM versions to fit that limit.
+
+This mode uses ordinary in-course links, not SCORM 2004 navigation or private Docebo APIs. Keep the visible slide controls, media and narration unchanged. Preview the complete session through `launch.html` over HTTP(S); direct module `?review=1` links remain useful for file-based editorial review without tracking. An iframe must retain its accessible title and fullscreen/autoplay permissions. Validate at the actual LMS player size; Docebo recommends testing new-window playback for nested-frame content.
+
+Run `test_single_sco.py` and the muted `test_single_sco_browser.mjs <built-package> [qa-output-folder]` regression checks. The browser test requires Playwright and Chrome and exercises the Open DC four-module fixture. It verifies navigation, quiz gates, bookmarks, one session, delayed completion, save-error visibility, review isolation and mobile layout, but is not actual Docebo acceptance. Test an LMS upload before learner release.
+
+Changing an existing multi-SCO course to single-SCO **still changes its LMS structure even when the version stays 1.2**. Warn that separate syllabus entries become one activity and existing attempts/bookmarks may not transfer. Recommend a test copy and exporting needed reports before any replacement. This is not the cross-version overwrite restriction, but it must not be described as a guaranteed progress-preserving update. Never delete/reset LMS content as part of building the ZIP.
 
 ## Required files at the package root
 

@@ -76,7 +76,7 @@ A folder, sitting where the user asked for it, with this exact shape:
 └── figures/                    # reused source figures + AI fills
 ```
 
-For Slides, every `moduleN.html` is a standalone slide deck with narration, prev/next navigation, and independent SCO completion; `index.html` is the course home. For Scrolling, `index.html` is the sole SCO and contains the course cover, left lesson table of contents, all lesson blocks, Continue gates, and course-level completion. Both styles derive all learner content from readable `course.json`, retain binary media as resources, and register every runtime file in the manifest.
+For Slides, every `moduleN.html` is a standalone slide deck with narration and prev/next navigation; `index.html` is the course home. The default multi-SCO organization tracks modules separately. An explicitly selected SCORM 1.2 single-SCO organization adds `launch.html`, keeps one LMS session open across those pages, and completes the course only after all modules and their quiz gates are complete. Read `references/scorm_packaging.md` for configuration and migration tradeoffs. For Scrolling, `index.html` is the sole SCO and contains the course cover, left lesson table of contents, all lesson blocks, Continue gates, and course-level completion. Both styles derive all learner content from readable `course.json`, retain binary media as resources, and register every runtime file in the manifest.
 
 ## The five phases of the wizard
 
