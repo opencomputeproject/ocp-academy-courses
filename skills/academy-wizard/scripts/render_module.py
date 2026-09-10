@@ -32,6 +32,7 @@ from motion_intro import (
     render_motion_intro,
 )
 from render_scrolling import is_scrolling, render_scrolling_course
+import single_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -900,6 +901,9 @@ def validate_knowledge_check_audio(module: dict) -> None:
 def render_module(course: dict, module_index: int) -> str:
     """Return full HTML string for moduleN.html."""
     module = course["modules"][module_index]
+    badge_tag = "a" if single_sco.enabled(course) else "div"
+    home_label = esc(ui(course, "course_home", "Course home"))
+    badge_link = f' href="index.html" aria-label="{home_label}" title="{home_label}" style="text-decoration:none;color:inherit"' if badge_tag == "a" else ""
     from glossary_audit import glossary_exclusion_reason
     for index, slide in enumerate(module["slides"]):
         reason = glossary_exclusion_reason(slide, index, len(module["slides"]))
@@ -969,10 +973,10 @@ def render_module(course: dict, module_index: int) -> str:
 {render_motion_intro(course, "modules", module)}
 {motion_intro_noscript_style()}
 <div class="module-badge">
-  <div class="module-badge-logo">
+  <{badge_tag} class="module-badge-logo"{badge_link}>
     {f'<img src="{esc(badge_logo)}" alt="{esc(course_title)}">' if badge_logo else ""}
     {_badge_text_html(course)}
-  </div>
+  </{badge_tag}>
   <div class="module-badge-text">{esc(module_label)} {module_num}</div>
 </div>
 

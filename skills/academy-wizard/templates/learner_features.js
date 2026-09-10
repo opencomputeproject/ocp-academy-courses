@@ -70,7 +70,7 @@ slides.forEach(s => {
   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
 });
 storeBookmark(); updateNarrationMode();
-if (inLMS) document.addEventListener('click', e => {
+if (inLMS && !SCORM.isSingleSCO) document.addEventListener('click', e => {
   const link = e.target.closest('a[href]'); if (!link) return;
   const url = new URL(link.getAttribute('href'), location.href);
   if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {

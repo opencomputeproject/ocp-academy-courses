@@ -45,15 +45,24 @@ python3 skills/academy-wizard/scripts/slides_course_qa.py \
   courses/open-data-center-for-ai/course.json --repo-root . --fail-on-flags
 ```
 
-Output is a SCORM 1.2 package under `build/open-data-center-for-ai/`, plus its strict manifest-only ZIP. The learner-resource builder writes only beneath this output directory. `SKIP_AUDIO=1` permits an incomplete visual preview but not a validated upload package.
+Output is a **SCORM 1.2 single-SCO** package under `build/open-data-center-for-ai/`, plus its strict manifest-only ZIP. `launch.html` keeps one LMS session open while the learner uses the existing home page and four modules. The learner-resource builder writes only beneath this output directory. `SKIP_AUDIO=1` permits an incomplete visual preview but not a validated upload package.
 
-For quiet review, open a generated module using `?review=1&slide=N`; narration starts off and no LMS progress is written. Normal LMS launches retain authored narration defaults. Use the LMS syllabus to move between SCOs so each module receives its own tracking context.
+For quiet review, open a generated module using `?review=1&slide=N`; narration starts off and no LMS progress is written. To test the entire session outside an LMS, serve the package over HTTP and open `launch.html`; add `?review=1` for untracked review with narration off. Normal LMS launches retain authored narration defaults. Home cards and next-module buttons navigate inside the course, and the course mark links back to its home. Module bookmarks, quiz attempts and completion marks are retained internally. Docebo records overall completion only when all four modules and their quiz gates are complete.
 
-### Release blocker: Docebo course navigation
+### September 10 navigation repair and upload warning
 
-The September 9 package blocks all four Course Home module cards and the module-to-module button when an LMS API is present. This is a course regression, reproduced in a muted local LMS simulation; the package is not release-ready for the intended navigation experience. Removing the guard alone risks attributing later modules to the originally launched SCO.
+The September 9 multi-SCO package blocked home-card and next-module clicks in LMS mode. The repair keeps **SCORM 1.2** and explicitly selects `scorm.organization: single-sco`. It avoids both direct navigation between separately tracked SCOs and reliance on unsupported SCORM 2004 sequencing. Existing courses without this option remain multi-SCO; no global default or SCORM-version conversion is imposed.
 
-The user approved considering a 2004 conversion on September 10, but further verification found that [Docebo explicitly does not support sequencing](https://help.docebo.com/hc/en-us/articles/360020128479-Uploading-and-managing-SCORM-as-training-material). A version change alone is therefore not a verified fix. A single-SCO design would permit course-controlled navigation, but would replace five separately tracked syllabus entries with one tracked course activity; that architecture decision remains pending. No 2004 ZIP has been delivered and no live LMS material has been changed. A cross-version migration requires a new upload, not an overwrite, and deleting the old Docebo material deletes its tracking.
+**The syllabus changes from five separately tracked entries to one course activity, despite keeping version 1.2. Existing attempts/bookmarks may not transfer.** Test a separate Docebo upload and export any needed reports before replacing the old material. Do not treat this as a guaranteed progress-preserving overwrite. No live LMS deletion, reset or upload is part of this repository change. Deleting old Docebo material deletes its tracking.
+
+Run the local regression tests with:
+
+```bash
+python3 -m unittest discover -s skills/academy-wizard/scripts -p 'test_*.py'
+node skills/academy-wizard/scripts/test_single_sco_browser.mjs build/open-data-center-for-ai
+```
+
+The browser test uses a strict local SCORM 1.2 simulation and disables media playback. It covers every home card, all next-module links, course-home return, quiz gates and records, persistent bookmarks, one-session lifecycle, overall completion, failure warnings, untracked review and a 320px viewport. Actual Docebo acceptance remains required, including player sizing and close/reopen tracking. The package uses an internal iframe; test Docebo's new-window mode if inline playback has sizing or frame restrictions.
 
 ## Approved presentation choices
 
