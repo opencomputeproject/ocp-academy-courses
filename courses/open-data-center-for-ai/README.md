@@ -49,6 +49,12 @@ Output is a SCORM 1.2 package under `build/open-data-center-for-ai/`, plus its s
 
 For quiet review, open a generated module using `?review=1&slide=N`; narration starts off and no LMS progress is written. Normal LMS launches retain authored narration defaults. Use the LMS syllabus to move between SCOs so each module receives its own tracking context.
 
+### Release blocker: Docebo course navigation
+
+The September 9 package blocks all four Course Home module cards and the module-to-module button when an LMS API is present. This is a course regression, reproduced in a muted local LMS simulation; the package is not release-ready for the intended navigation experience. Removing the guard alone risks attributing later modules to the originally launched SCO.
+
+The user approved considering a 2004 conversion on September 10, but further verification found that [Docebo explicitly does not support sequencing](https://help.docebo.com/hc/en-us/articles/360020128479-Uploading-and-managing-SCORM-as-training-material). A version change alone is therefore not a verified fix. A single-SCO design would permit course-controlled navigation, but would replace five separately tracked syllabus entries with one tracked course activity; that architecture decision remains pending. No 2004 ZIP has been delivered and no live LMS material has been changed. A cross-version migration requires a new upload, not an overwrite, and deleting the old Docebo material deletes its tracking.
+
 ## Approved presentation choices
 
 OCP green/gray/white remain the main palette. Blue supply (`#2474C4`) and red return (`#C8453D`) are explicit, course-specific thermal overrides, not new global brand defaults. Source artwork retains its original colors. Narration and Transcript controls sit beside playback speed; fullscreen is at the left. Glossary pills occur only at actual first teaching use, never on quizzes or module opening/closing slides. M4S9 closes with thanks and encouragement, not a spoken branding slogan.
