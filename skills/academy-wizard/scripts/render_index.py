@@ -32,6 +32,7 @@ from motion_intro import (
     render_motion_intro,
 )
 from render_scrolling import is_scrolling, render_scrolling_course, runtime_files
+import single_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -177,6 +178,10 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 </div>
 
 <div class="footer">
+  <nav aria-label="Course resources" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
+    {''.join('<a href="'+esc(r['url'])+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">'+esc(r['label'])+'</a>' for r in course.get('resources',[]))}
+  </nav>
+  <p id="lmsNavNote" role="status" hidden>Use the LMS course navigation to open a module so its completion is recorded correctly.</p>
   {esc(footer_line)}
   {f'<br><span class="version">{esc(tagline)}</span>' if tagline else ""}
 </div>
@@ -186,8 +191,9 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 <script>
 (function() {{
   'use strict';
-  SCORM.init();
-  SCORM.setCompleted();
+  const reviewMode = new URLSearchParams(location.search).get('review') === '1';
+  const inLMS = !reviewMode && SCORM.init();
+  if (!reviewMode) SCORM.setCompleted();
   var data = SCORM.getSuspendData();
   if (data) {{
     try {{
@@ -209,11 +215,13 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
   document.querySelectorAll('.module-card').forEach(function(card) {{
     card.addEventListener('click', function(e) {{
       var mod = this.getAttribute('data-module');
-      SCORM.setLocation('module' + mod);
+      if (inLMS && !SCORM.isSingleSCO) {{ e.preventDefault(); document.getElementById('lmsNavNote').hidden = false; return; }}
+      if (reviewMode) {{ e.preventDefault(); location.href = this.getAttribute('href') + '?review=1'; return; }}
+      if (!SCORM.isSingleSCO) SCORM.setLocation('module' + mod);
     }});
   }});
 
-  window.addEventListener('beforeunload', function() {{ SCORM.finish(); }});
+  window.addEventListener('beforeunload', function() {{ if (!reviewMode) SCORM.finish(); }});
 }})();
 </script>
 </body>
@@ -227,6 +235,9 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     truthful even if rendered before audio has been generated. Figures come
     from slides[*].figure.path. The manifest must list every file referenced
     by HTML pages — strict LMSes reject zips with unlisted files."""
+    if single_sco.enabled(course):
+        legacy_course = dict(course, scorm={"version": "1.2", "organization": "multi-sco"})
+        return single_sco.render_manifest(course, render_manifest(legacy_course, out_dir), scorm_metadata_title(course))
     if is_scrolling(course):
         course_slug = course.get("course_slug", "ocp_academy_scrolling_course")
         course_title = scorm_metadata_title(course)
@@ -276,6 +287,9 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             files.append(value)
 
     launcher_files = ["index.html", "scorm_api.js"]
+    local_resources = [r['url'].split('#')[0] for r in course.get('resources',[]) if not r['url'].startswith(('https:','http:'))]
+    for filename in local_resources: add_file(launcher_files, filename)
+    for filename in course.get('resource_assets',[]): add_file(launcher_files,filename)
     add_file(launcher_files, course_logo)
     add_file(launcher_files, academy_logo)
     if motion_intro_enabled(course, "index"):
@@ -291,6 +305,8 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     for mod in course["modules"]:
         mid = mod["id"]
         files = [f"module{mid}.html", "scorm_api.js"]
+        for filename in local_resources: add_file(files, filename)
+        for filename in course.get('resource_assets',[]): add_file(files,filename)
         add_file(files, course_logo)
         add_file(files, academy_logo)
         if motion_intro_enabled(course, "modules"):
@@ -304,6 +320,11 @@ def render_manifest(course: dict, out_dir: Path) -> str:
         # files, so registering them would break the manifest. Video figures
         # may also declare a poster frame; include both runtime files.
         for slide in mod.get("slides", []):
+            for link in slide.get("reference_links", []):
+                if isinstance(link, dict):
+                    add_file(files, link.get("logo"))
+                    url=link.get('url','')
+                    if url and not url.startswith(('https:','http:','#')): add_file(files,url.split('#')[0])
             fig = slide.get("figure")
             if not fig or not fig.get("path"):
                 continue
@@ -316,6 +337,8 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             poster = fig.get("poster")
             if poster and poster not in files:
                 files.append(poster)
+            for asset in fig.get("assets", []):
+                add_file(files, asset)
         # Audio files declared in course.json (canonical) — derive even if
         # .wav doesn't exist yet, so the manifest stays correct across renders.
         for slide in mod.get("slides", []):
@@ -366,6 +389,9 @@ def main():
     args = p.parse_args()
     course = json.loads(args.course_json.read_text())
     out_dir = args.course_json.resolve().parent
+
+    if single_sco.enabled(course):
+        single_sco.write_runtime(course, out_dir)
 
     (out_dir / "index.html").write_text(render_index_html(course, out_dir))
     print(f"wrote {out_dir / 'index.html'}")

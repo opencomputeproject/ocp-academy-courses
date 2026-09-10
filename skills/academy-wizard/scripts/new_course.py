@@ -18,6 +18,7 @@ import sys
 from pathlib import Path
 from motion_intro import motion_intro_enabled, motion_intro_logo
 from render_scrolling import is_scrolling
+import single_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -31,6 +32,8 @@ def main():
     args = p.parse_args()
 
     course = json.loads(args.course_json.read_text())
+    if single_sco.enabled(course):  # Validate before output or later paid steps.
+        single_sco.configuration(course)
     out = args.output_dir
     out.mkdir(parents=True, exist_ok=True)
 

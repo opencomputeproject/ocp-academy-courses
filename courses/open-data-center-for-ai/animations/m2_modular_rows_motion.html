@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1920,height=1080,initial-scale=1">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { width: 1920px; height: 1080px; margin: 0; overflow: hidden; }
+    body { font-family: "Open Sans", Arial, sans-serif; color: #5f6062; }
+    .stage {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 17% 30.00000%, rgba(141,198,63,.09), transparent 23%),
+        linear-gradient(180deg, #ffffff 0.00000%, #f7f8f6 81.66667%, #eceeeb 100%);
+    }
+    svg { display: block; width: 100%; height: 100%; }
+    .scene { position: absolute; inset: 0; animation: camera 11.5s cubic-bezier(.2,.7,.2,1) 1 both; transform-origin: 50% 55%; }
+    .callout {
+      position: absolute;
+      background: rgba(255,255,255,.97);
+      border: 3px solid #d8d9d6;
+      border-left: 12px solid #8dc63f;
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(61,66,62,.13);
+      padding: 19px 24px 18px;
+      color: #5f6062;
+    }
+    .callout strong { display: block; font-size: 31px; font-weight: 900; line-height: 1.1; letter-spacing: .35px; }
+    .callout span { display: block; margin-top: 7px; color: #757577; font-size: 22px; font-weight: 750; line-height: 1.23; }
+    .fixed-label { left: 84px; top: 76px; width: 448px; animation: fixedLabel 11.5s ease 1 both; }
+    .modular-label { left: 84px; top: 76px; width: 444px; animation: modularLabel 11.5s ease 1 both; }
+    .modular-label strong { color: #6fa030; font-size: 38px; }
+    .outcome-label { right: 84px; top: 72px; width: 520px; animation: outcomeLabel 11.5s ease 1 both; }
+    .outcome-label span { color: #6fa030; }
+
+    .right-column { animation: rightColumn 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .fixed-bracket { animation: fixedBracket 11.5s ease 1 both; }
+    .main-row { animation: mainRow 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .removed-a { animation: removedA 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .removed-b { animation: removedB 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .rack-swap { animation: rackSwap 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .sidecar { animation: sidecarIn 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .service-span { animation: serviceSpan 11.5s cubic-bezier(.2,.72,.2,1) 1 both; transform-origin: 342px 0; }
+    .drop-main { animation: dropMain 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .drop-removed-a { animation: dropRemovedA 11.5s ease 1 both; }
+    .drop-removed-b { animation: dropRemovedB 11.5s ease 1 both; }
+    .capacity-band { animation: capacityBand 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+    .density-flow { animation: densityFlow 11.5s linear 1 both; }
+    .site-arrow { animation: siteArrow 11.5s ease 1 both; }
+    .power-drop-swap { animation: powerDropSwap 11.5s cubic-bezier(.2,.72,.2,1) 1 both; }
+
+    @keyframes camera {
+      0.00000% { transform: scale(.985) translateY(7px); }
+      48.00000%,100.00000% { transform: scale(1) translateY(0); }
+    }
+    @keyframes fixedLabel {
+      0.00000%,8.00000% { opacity: 0; transform: translateY(-18px); }
+      20.00000%,56.00000% { opacity: 1; transform: none; }
+      59.66667%,100.00000% { opacity: 0; transform: translateY(-8px); }
+    }
+    @keyframes modularLabel {
+      0.00000%,62.72222% { opacity: 0; transform: translateY(-18px); }
+      68.22222%,100.00000% { opacity: 1; transform: none; }
+    }
+    @keyframes outcomeLabel {
+      0.00000%,79.22222% { opacity: 0; transform: translateX(24px); }
+      84.72222%,100.00000% { opacity: 1; transform: none; }
+    }
+    @keyframes rightColumn {
+      0.00000%,55.98000% { transform: translateX(0); }
+      56.00000%,100.00000% { transform: translateX(-245px); }
+    }
+    @keyframes fixedBracket {
+      0.00000%,10.00000% { opacity: 0; }
+      20.00000%,56.61111% { opacity: 1; }
+      60.27778%,100.00000% { opacity: 0; }
+    }
+    @keyframes mainRow {
+      0.00000%,56.61111% { transform: translateX(0); }
+      65.16667%,100.00000% { transform: translateX(72px); }
+    }
+    @keyframes removedA {
+      0.00000%,55.98000% { opacity: 1; transform: translate(0,0); }
+      56.00000%,100.00000% { opacity: 0; transform: translate(0,0); }
+    }
+    @keyframes removedB {
+      0.00000%,55.98000% { opacity: 1; transform: translate(0,0); }
+      56.00000%,100.00000% { opacity: 0; transform: translate(0,0); }
+    }
+    .swap-disconnect { animation: disconnect 11.5s linear 1 both; }
+    @keyframes disconnect { 0.00000%,75.54944% {opacity:1} 75.55556%,100.00000% {opacity:0} }
+    @keyframes rackSwap {
+      0.00000%,76.16667% { opacity: 1; transform: translate(0,0); }
+      82.88889% { opacity: 1; transform: translate(185px,115px); }
+      85.94444%,100.00000% { opacity: 0; transform: translate(230px,145px); }
+    }
+    @keyframes sidecarIn {
+      0.00000%,77.38889% { opacity: 0; transform: translate(360px,190px); }
+      82.27778% { opacity: 1; }
+      87.77778%,100.00000% { opacity: 1; transform: translate(0,0); }
+    }
+    @keyframes serviceSpan {
+      0.00000%,56.00000% { transform: scaleX(1); }
+      65.16667%,100.00000% { transform: scaleX(.745); }
+    }
+    @keyframes dropMain {
+      0.00000%,56.61111% { transform: translateX(0); }
+      65.16667%,100.00000% { transform: translateX(72px); }
+    }
+    @keyframes dropRemovedA {
+      0.00000%,56.61111% { opacity: 1; }
+      62.72222%,100.00000% { opacity: 0; }
+    }
+    @keyframes dropRemovedB {
+      0.00000%,57.83333% { opacity: 1; }
+      63.94444%,100.00000% { opacity: 0; }
+    }
+    @keyframes capacityBand {
+      0.00000%,62.11111% { opacity: 0; transform: scaleX(.45); }
+      70.05556%,100.00000% { opacity: 1; transform: scaleX(1); }
+    }
+    @keyframes densityFlow {
+      0.00000%,68.22222% { opacity: 0; transform: translateX(-120px); }
+      71.27778% { opacity: 1; }
+      85.33333% { opacity: 1; transform: translateX(710px); }
+      87.77778%,100.00000% { opacity: 0; transform: translateX(710px); }
+    }
+    @keyframes siteArrow {
+      0.00000%,42.00000% { opacity: 0; }
+      54.00000%,64.55556% { opacity: 1; }
+      68.22222%,100.00000% { opacity: 0; }
+    }
+    @keyframes powerDropSwap {
+      0.00000%,87.77167% { opacity:0; transform:translateX(32px); }
+      87.77778%,100.00000% { opacity:1; transform:translateX(32px); }
+    }
+  .stage *{animation-duration:49833.333333333336ms!important}.scene{animation:none!important} .site-arrow,.fixed-bracket,.capacity-band{display:none!important}.callout strong{font-size:42px}.callout span{font-size:35px}.fixed-label,.modular-label{width:595px}.outcome-label{width:600px}.drop-removed-a,.drop-removed-b{animation-name:removedA!important}.service-span{transform-origin:342px 0}.fixed-label{animation-name:designA!important}.modular-label{animation-name:designB!important}@keyframes designA{0.00000%,55.98000%{opacity:1;transform:none}56.00000%,100.00000%{opacity:0}}@keyframes designB{0.00000%,55.98000%{opacity:0}56.00000%,100.00000%{opacity:1;transform:none}}</style>
+</head>
+<body data-duration-ms="49833" data-poster-ms="43853">
+  <main class="stage" aria-label="A fixed data-center rack row becomes a modular row sized by capacity per linear foot.">
+    <div class="scene">
+      <svg viewBox="0 0 1920 1080" role="img" aria-labelledby="sceneTitle sceneDesc">
+        <title id="sceneTitle">Modular data-center row density</title>
+        <desc id="sceneDesc">A fixed eight-bay rack row encounters a smaller structural bay. Two rack modules leave, the remaining row recenters, the power and cooling distribution contracts, and a sidecar replaces a rack while capacity remains explicit in kilowatts per linear foot.</desc>
+        <defs>
+          <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe2de"/>
+          </linearGradient>
+          <linearGradient id="rackFront" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#747577"/><stop offset=".55" stop-color="#515254"/><stop offset="1" stop-color="#393a3c"/>
+          </linearGradient>
+          <linearGradient id="rackSide" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3f4042"/><stop offset="1" stop-color="#28292b"/>
+          </linearGradient>
+          <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#98999b"/><stop offset=".55" stop-color="#626365"/><stop offset="1" stop-color="#454648"/>
+          </linearGradient>
+          <linearGradient id="greenTop" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#b6e978"/><stop offset="1" stop-color="#8dc63f"/>
+          </linearGradient>
+          <linearGradient id="pipe" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#a5a6a8"/><stop offset=".5" stop-color="#666769"/><stop offset="1" stop-color="#48494b"/>
+          </linearGradient>
+          <pattern id="serverPattern" width="105" height="42" patternUnits="userSpaceOnUse">
+            <rect x="7" y="5" width="91" height="31" rx="4" fill="#292a2c" stroke="#77787a" stroke-width="2"/>
+            <circle cx="86" cy="20" r="3.5" fill="#8dc63f"/>
+            <path d="M16 13h48M16 20h48M16 27h48" stroke="#5f6062" stroke-width="2"/>
+          </pattern>
+          <filter id="shadow" x="-30%" y="-30%" width="160%" height="190%">
+            <feDropShadow dx="0" dy="13" stdDeviation="13" flood-color="#353835" flood-opacity=".2"/>
+          </filter>
+          <filter id="smallShadow" x="-25%" y="-35%" width="150%" height="180%">
+            <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#353835" flood-opacity=".22"/>
+          </filter>
+          <symbol id="rack" viewBox="0 0 138 330">
+            <path d="M0 22L25 5H138L113 22Z" fill="#a8aaa6" stroke="#5f6062" stroke-width="3"/>
+            <path d="M113 22L138 5V304L113 326Z" fill="url(#rackSide)" stroke="#303133" stroke-width="3"/>
+            <rect x="0" y="22" width="113" height="304" rx="4" fill="url(#rackFront)" stroke="#303133" stroke-width="4"/>
+            <rect x="8" y="37" width="97" height="266" rx="3" fill="url(#serverPattern)"/>
+            <rect x="9" y="309" width="95" height="9" rx="4.5" fill="#8dc63f" opacity=".68"/>
+            <circle cx="20" cy="327" r="7" fill="#414244"/><circle cx="96" cy="327" r="7" fill="#414244"/>
+          </symbol>
+        </defs>
+
+        <!-- Building bay and floor -->
+        <path d="M130 914H1790L1534 1030H390Z" fill="url(#floor)" stroke="#c7cac6" stroke-width="4"/>
+        <g stroke="#cfd2ce" stroke-width="2" opacity=".72">
+          <path d="M325 929L508 1014M567 922L701 1014M810 916L896 1014M1052 916L1089 1014M1294 922L1282 1014M1536 929L1476 1014"/>
+          <path d="M176 939H1735M228 964H1682M286 990H1623"/>
+        </g>
+        <g fill="url(#steel)" filter="url(#smallShadow)">
+          <path d="M250 190h48v730h-48z"/>
+          <path d="M226 902h96v30h-96z"/>
+        </g>
+        <g class="right-column" fill="url(#steel)" filter="url(#smallShadow)">
+          <path d="M1628 190h48v730h-48z"/>
+          <path d="M1604 902h96v30h-96z"/>
+        </g>
+        <g class="site-arrow" fill="none" stroke="#8dc63f" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1585 245H1455"/>
+          <path d="M1485 215l-31 30 31 30"/>
+        </g>
+
+        <!-- Fixed row-length bracket -->
+        <g class="fixed-bracket" fill="none" stroke="#5f6062" stroke-width="8" stroke-linecap="round">
+          <path d="M340 306V275H1534V306"/>
+          <path d="M340 282H1534"/>
+        </g>
+
+        <!-- Power busway and cooling trunk physically resize with active row length -->
+        <g filter="url(#smallShadow)">
+          <g class="service-span">
+            <path d="M342 353H1532L1560 338H370Z" fill="url(#greenTop)"/>
+            <path d="M342 353H1532V394H342Z" fill="#8dc63f"/>
+            <path d="M1532 353l28-15v41l-28 15z" fill="#648f27"/>
+            <path d="M360 427H1575" fill="none" stroke="#2474C4" stroke-width="23" stroke-linecap="round"/>
+            <path d="M360 462H1575" fill="none" stroke="#C8453D" stroke-width="23" stroke-linecap="round"/>
+          </g>
+          <g class="density-flow" fill="#fff">
+            <rect x="370" y="363" width="92" height="19" rx="9.5"/>
+          </g>
+        </g>
+
+        <!-- Service drops stay attached to the six active linear modules -->
+        <g class="drop-main" stroke="#77787a" stroke-width="9" fill="none" stroke-linecap="round">
+          <path d="M392 394V555M542 394V555M692 394V555M842 394V555M1142 394V555"/>
+          <path class="swap-disconnect" d="M992 394V555"/>
+        </g>
+        <g class="drop-main" stroke="#2474C4" stroke-width="7" fill="none" stroke-linecap="round">
+          <path d="M410 427V548M560 427V548M710 427V548M860 427V548M1160 427V548"/>
+          <path class="swap-disconnect" d="M1010 427V548"/>
+        </g>
+        <g class="drop-main" stroke="#C8453D" stroke-width="7" fill="none" stroke-linecap="round">
+          <path d="M428 462V548M578 462V548M728 462V548M878 462V548M1178 462V548"/>
+          <path class="swap-disconnect" d="M1028 462V548"/>
+        </g>
+        <g class="drop-removed-a" fill="none" stroke-width="7" stroke-linecap="round">
+          <path d="M1292 394V555" stroke="#77787a" stroke-width="9"/>
+          <path d="M1310 427V548" stroke="#2474C4"/>
+          <path d="M1328 462V548" stroke="#C8453D"/>
+        </g>
+        <g class="drop-removed-b" fill="none" stroke-width="7" stroke-linecap="round">
+          <path d="M1442 394V555" stroke="#77787a" stroke-width="9"/>
+          <path d="M1460 427V548" stroke="#2474C4"/>
+          <path d="M1478 462V548" stroke="#C8453D"/>
+        </g>
+
+        <!-- Six retained rack positions -->
+        <g class="main-row" filter="url(#shadow)">
+          <use href="#rack" x="330" y="548" width="138" height="330"/>
+          <use href="#rack" x="480" y="548" width="138" height="330"/>
+          <use href="#rack" x="630" y="548" width="138" height="330"/>
+          <use href="#rack" x="780" y="548" width="138" height="330"/>
+          <g transform="translate(930 548)"><g class="rack-swap"><use href="#rack" width="138" height="330"/></g></g>
+          <use href="#rack" x="1080" y="548" width="138" height="330"/>
+        </g>
+        <g class="removed-a" filter="url(#shadow)"><use href="#rack" x="1230" y="548" width="138" height="330"/></g>
+        <g class="removed-b" filter="url(#shadow)"><use href="#rack" x="1380" y="548" width="138" height="330"/></g>
+
+        <!-- A different physical module enters without changing the modular capacity basis -->
+        <g transform="translate(1002 595)">
+          <g class="sidecar" filter="url(#shadow)">
+            <path d="M0 18L25 0H137L112 18Z" fill="#b9bbb7" stroke="#5f6062" stroke-width="3"/>
+            <path d="M112 18L137 0V267L112 286Z" fill="#3d3e40" stroke="#303133" stroke-width="3"/>
+            <rect x="0" y="18" width="112" height="268" rx="5" fill="#6a6b6d" stroke="#303133" stroke-width="4"/>
+            <rect x="12" y="38" width="88" height="55" rx="8" fill="#4a4b4d" stroke="#98999b" stroke-width="3"/>
+            <rect x="12" y="105" width="88" height="55" rx="8" fill="#4a4b4d" stroke="#98999b" stroke-width="3"/>
+            <rect x="12" y="172" width="88" height="55" rx="8" fill="#4a4b4d" stroke="#98999b" stroke-width="3"/>
+            <path d="M28 65h55M28 132h55M28 199h55" stroke="#8dc63f" stroke-width="7" stroke-linecap="round"/>
+            <circle cx="21" cy="287" r="7" fill="#414244"/><circle cx="93" cy="287" r="7" fill="#414244"/>
+          </g>
+        </g>
+        <g class="power-drop-swap" stroke="#8dc63f" stroke-width="8" fill="none" stroke-linecap="round">
+          <path d="M1030 394V613"/>
+        </g>
+
+        <!-- Capacity per linear foot becomes the explicit organizing basis -->
+        <g class="capacity-band" transform-origin="860px 920px">
+          <g fill="#8dc63f" stroke="#ffffff" stroke-width="7">
+            <path d="M404 890h144l-20 66H424z"/><path d="M554 890h144l-20 66H574z"/><path d="M704 890h144l-20 66H724z"/>
+            <path d="M854 890h144l-20 66H874z"/><path d="M1004 890h144l-20 66h-104z"/><path d="M1154 890h144l-20 66h-104z"/>
+          </g>
+          <g fill="#2f3a27" font-family="Arial,sans-serif" font-size="26" font-weight="900" text-anchor="middle">
+            <text x="476" y="932">kW/ft</text><text x="626" y="932">kW/ft</text><text x="776" y="932">kW/ft</text>
+            <text x="926" y="932">kW/ft</text><text x="1076" y="932">kW/ft</text><text x="1226" y="932">kW/ft</text>
+          </g>
+        </g>
+      <g class="fixed-label" stroke="#6FA030" stroke-width="5" fill="none"><path d="M330 978H1518M330 960v36M1518 960v36"/></g><g class="modular-label" stroke="#6FA030" stroke-width="5" fill="none"><path d="M405 978H1295M405 960v36M1295 960v36"/></g><text x="550" y="1042" font-size="40" font-family="Arial" font-weight="700" fill="#5F6062">Linear row length · schematic, not to scale</text></svg>
+    </div>
+
+    <div class="callout fixed-label label">
+      <strong>SITE A · 40 FT</strong>
+      <span>Illustrative 25 kW/ft<br>40 × 25 = 1,000 kW</span>
+    </div>
+    <div class="callout modular-label label">
+      <strong>SITE B · 32 FT</strong>
+      <span>Same assumed 25 kW/ft<br>32 × 25 = 800 kW</span>
+    </div>
+    <div class="callout outcome-label label">
+      <strong>DIFFERENT EQUIPMENT MIX</strong>
+      <span>Verify actual demand<br>and service connections</span>
+    </div>
+  </main>
+</body>
+</html>

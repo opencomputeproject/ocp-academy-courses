@@ -1,11 +1,50 @@
-# SCORM 1.2 packaging
+# SCORM version selection and packaging
 
-AcademyWizard supports two package organizations:
+AcademyWizard supports these package organizations:
 
 - **Slides:** multi-SCO package with Course Home plus one SCO per narrated module.
+- **Slides, explicitly selected single-SCO:** one `launch.html` SCO hosts the same course home and module pages, retaining one SCORM 1.2 session throughout navigation. Module progress and quiz attempts are saved inside that course; the LMS records overall completion.
 - **Scrolling:** single-SCO package where `index.html` contains the course cover and every lesson. Lesson progress and Continue-gate state live in `cmi.suspend_data`; the SCO completes after all lessons complete.
 
-The reference OCP NIC 3.0 package is SCORM 1.2. Stick with 1.2 unless the user specifically requests 2004 — most LMSes accept both, and 1.2 has fewer foot-guns.
+## New courses versus existing deployments
+
+SCORM 2004 3rd Edition is allowed for new courses without requiring an exception to a universal 1.2 default. Prefer it when the target LMS supports the features the course needs: it provides more saved-state capacity and defines content-to-LMS navigation requests. Do not call it universally better, select 4th Edition for a 3rd-Edition-only LMS, or equate accepting an uploaded version with implementing its sequencing. Announce and record the selected version. Keep 1.2 where compatibility, the selected single-SCO design or an existing deployment calls for it.
+
+The maintained `new_course.py`, `render_index.py` and `assets/scorm_api.js` currently build SCORM 1.2. Before delivering a 2004 course, implement and verify the corresponding runtime adapter, manifest namespaces/organization, interaction data and validator support. Merely changing `<schemaversion>` or adding course metadata does not convert a package. Existing source without explicit version metadata retains 1.2 behavior; a fresh build directory is not a new-course migration authorization.
+
+For an existing course, inspect its source and delivered manifest and preserve that version unless the user explicitly approves changing it after hearing the migration consequences. Warn **before** conversion, and repeat at delivery:
+
+> This changes the SCORM version. The LMS may require retiring/deleting the old material and uploading a new item rather than an overwrite. Existing bookmarks, attempts and completion history may not transfer. Export any needed reports and test a separate upload before retiring the old material.
+
+For Docebo, make the warning definite: **a 1.2 material cannot be overwritten with 2004**. A new upload is required; replacing the old material means retiring/removing that item separately. **Deleting a SCORM package deletes its tracking, which Docebo says is not recoverable.** Building or delivering a ZIP does not authorize deletion, reset or upload in the live LMS.
+
+## Docebo navigation limitations
+
+Docebo accepts SCORM 1.2 and 2004 3rd Edition, but its documentation explicitly says sequencing is not supported. It can convert simple sequencing/linear navigation to platform prerequisites at upload; that is not proof that arbitrary in-course choice requests work. Do not promise that changing to 2004 fixes home-page cards or next-module buttons. Require target-LMS verification of those actions and their tracking before calling a multi-SCO package release-ready.
+
+If the LMS cannot launch the correct next SCO from a course button, retain LMS syllabus navigation with honest UI, or propose a single-SCO course whose own home and module buttons control the pages. The latter keeps internal module organization but changes the LMS syllabus and completion reporting to one tracked activity. Obtain approval for that tradeoff; do not silently collapse modules or record later-module progress against the originally launched SCO.
+
+Primary reference: [Docebo — Uploading and managing SCORM as training material](https://help.docebo.com/hc/en-us/articles/360020128479-Uploading-and-managing-SCORM-as-training-material), especially Introduction, Updating SCORM content and Tracking the progress of SCORM content. Recheck the target LMS documentation when selecting a format; support can change.
+
+## Current SCORM 1.2 build contract
+
+The following describes the current 1.2 implementation, not a substitute for a verified 2004 implementation.
+
+### Opt-in single-SCO Slides
+
+Record the choice in `course.json`:
+
+```json
+"scorm": { "version": "1.2", "organization": "single-sco" }
+```
+
+Omission preserves the existing multi-SCO Slides default. This option does not convert Slides into Scrolling. `render_index.py` emits the persistent `launch.html` shell, shared session runtime and one-SCO manifest; the course's own index and module pages remain assets. The course mark becomes a Course home link. Only the shell initializes and finishes the LMS session; changing a module page commits progress without ending it. Every module keeps its bookmark and quiz attempts in course-level suspend data. Home never marks the course complete; all modules and their authored quiz gates are required. The state budget is checked before building and again when saving against SCORM 1.2's 4096-character limit. Never silently drop progress or switch SCORM versions to fit that limit.
+
+This mode uses ordinary in-course links, not SCORM 2004 navigation or private Docebo APIs. Keep the visible slide controls, media and narration unchanged. Preview the complete session through `launch.html` over HTTP(S); direct module `?review=1` links remain useful for file-based editorial review without tracking. An iframe must retain its accessible title and fullscreen/autoplay permissions. Validate at the actual LMS player size; Docebo recommends testing new-window playback for nested-frame content.
+
+Run `test_single_sco.py` and the muted `test_single_sco_browser.mjs <built-package> [qa-output-folder]` regression checks. The browser test requires Playwright and Chrome and exercises the Open DC four-module fixture. It verifies navigation, quiz gates, bookmarks, one session, delayed completion, save-error visibility, review isolation and mobile layout, but is not actual Docebo acceptance. Test an LMS upload before learner release.
+
+Changing an existing multi-SCO course to single-SCO **still changes its LMS structure even when the version stays 1.2**. Warn that separate syllabus entries become one activity and existing attempts/bookmarks may not transfer. Recommend a test copy and exporting needed reports before any replacement. This is not the cross-version overwrite restriction, but it must not be described as a guaranteed progress-preserving update. Never delete/reset LMS content as part of building the ZIP.
 
 ## Required files at the package root
 
@@ -36,7 +75,7 @@ The XML uses three namespaces (IMS content packaging, ADL SCORM, XSI). Copy them
 - Each module page calls `SCORM.init()`, preserves a prior `completed` or `passed` status on revisit, otherwise marks itself `incomplete`, and sets its `lesson_location`.
 - When the learner reaches that module's final slide, the module updates `suspend_data.modules` for visual state and immediately sets its own `cmi.core.lesson_status` to `completed`. Do not wait for all modules before completing the current SCO.
 
-Don't reinvent this wiring. The template handles it; just keep the slide count and `audioMap` accurate per module. SCORM 1.2 tracking is attached to the SCO the LMS launched; in-course links between module HTML files are learner conveniences, not a replacement for LMS-controlled sequencing when a customer needs per-syllabus-item tracking.
+Keep the slide count and `audioMap` accurate per module. SCORM 1.2 tracking is attached to the SCO the LMS launched. Direct hyperlinks between separately tracked module HTML files cannot replace LMS-controlled launches. Never claim separate module completion based only on a mock API or a shared local browser bookmark.
 
 ## Common pitfalls
 

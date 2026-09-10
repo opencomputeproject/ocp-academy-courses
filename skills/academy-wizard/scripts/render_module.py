@@ -32,6 +32,7 @@ from motion_intro import (
     render_motion_intro,
 )
 from render_scrolling import is_scrolling, render_scrolling_course
+import single_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -552,7 +553,7 @@ def render_content_grid(slide: dict, course: dict, module: dict) -> str:
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
       {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
-      <div class="tenets-grid" style="grid-template-columns: repeat({grid_cols}, 1fr);">{"".join(cards)}
+      <div class="tenets-grid" style="--grid-cols: {grid_cols};">{"".join(cards)}
       </div>
       {_learner_aids_html(slide, course)}
     </div>
@@ -591,8 +592,9 @@ def render_content_table(slide: dict, course: dict, module: dict) -> str:
 def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
     video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
+    media_class = ' slide--media-focus' if slide.get('media_focus') else ''
     return f'''
-  <div class="slide" data-slide="{slide["id"]}"{video_attr}>
+  <div class="slide{media_class}" data-slide="{slide["id"]}"{video_attr}>
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
@@ -899,6 +901,17 @@ def validate_knowledge_check_audio(module: dict) -> None:
 def render_module(course: dict, module_index: int) -> str:
     """Return full HTML string for moduleN.html."""
     module = course["modules"][module_index]
+    badge_tag = "a" if single_sco.enabled(course) else "div"
+    home_label = esc(ui(course, "course_home", "Course home"))
+    badge_link = f' href="index.html" aria-label="{home_label}" title="{home_label}" style="text-decoration:none;color:inherit"' if badge_tag == "a" else ""
+    from glossary_audit import glossary_exclusion_reason
+    for index, slide in enumerate(module["slides"]):
+        reason = glossary_exclusion_reason(slide, index, len(module["slides"]))
+        if reason and slide.get("term_refs"):
+            raise ValueError(
+                f'Glossary pills are prohibited on {reason}: '
+                f'M{module["id"]}S{slide["id"]}. Remove these term_refs before rendering.'
+            )
     validate_knowledge_check_audio(module)
     module_num = module["id"]
     slides_html = []
@@ -924,6 +937,9 @@ def render_module(course: dict, module_index: int) -> str:
     toggle_dark_mode = ui(course, "toggle_dark_mode", "Toggle dark mode")
     previous_slide = ui(course, "previous_slide", "Previous slide")
     next_slide = ui(course, "next_slide", "Next slide")
+    previous_slide_hint = ui(course, "previous_slide_hint", "Previous slide (← Left Arrow). Home: go to slide 1 of this module.")
+    next_slide_hint = ui(course, "next_slide_hint", "Next slide (→ Right Arrow). Home: go to slide 1 of this module.")
+    slide_counter_hint = ui(course, "slide_counter_hint", "Use ← / → arrow keys to move between slides. Home: go to slide 1 of this module.")
     play_pause_narration = ui(course, "play_pause_narration", "Play/Pause narration")
     playback_speed = ui(course, "playback_speed", "Playback speed")
     playback_speed_slider = ui(course, "playback_speed_slider", "Playback speed slider")
@@ -935,6 +951,9 @@ def render_module(course: dict, module_index: int) -> str:
     pause_video = ui(course, "pause_video", "Pause video")
     enlarged_figure = ui(course, "enlarged_figure", "Enlarged figure")
     lightbox_close_hint = ui(course, "lightbox_close_hint", "Click outside or press Esc to close")
+    transcript_map = json.dumps({str(s['id']): {'title': s.get('title') or s.get('next_module_title') or module_title, 'text': s.get('transcript','')} for s in module['slides']}, ensure_ascii=False).replace('</', '<\\/')
+    learner_runtime = (TEMPLATE_DIR / 'learner_features.js').read_text()
+    bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
 
     return f'''<!DOCTYPE html>
 <html lang="{esc(language)}">
@@ -954,10 +973,10 @@ def render_module(course: dict, module_index: int) -> str:
 {render_motion_intro(course, "modules", module)}
 {motion_intro_noscript_style()}
 <div class="module-badge">
-  <div class="module-badge-logo">
+  <{badge_tag} class="module-badge-logo"{badge_link}>
     {f'<img src="{esc(badge_logo)}" alt="{esc(course_title)}">' if badge_logo else ""}
     {_badge_text_html(course)}
-  </div>
+  </{badge_tag}>
   <div class="module-badge-text">{esc(module_label)} {module_num}</div>
 </div>
 
@@ -969,14 +988,18 @@ def render_module(course: dict, module_index: int) -> str:
 <div class="progress-bar" id="progressBar"></div>
 <div class="controls">
   <div class="controls-left">
+    <button class="btn" id="fullscreenBtn" aria-label="{esc(toggle_fullscreen)}" title="{esc(fullscreen_label)} (F)">
+      <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+    </button>
+    <span class="key-hint">F</span>
     <span class="theme-label">{esc(theme_label)}</span>
     <button class="theme-toggle" id="themeToggle" aria-label="{esc(toggle_dark_mode)}"></button>
     <span class="key-hint">D</span>
   </div>
   <div class="controls-center">
-    <button class="btn btn-nav" id="prevBtn" aria-label="{esc(previous_slide)}" disabled>&#8592;</button>
-    <span class="slide-counter" id="slideCounter">1 / {len(module["slides"])}</span>
-    <button class="btn btn-nav" id="nextBtn" aria-label="{esc(next_slide)}">&#8594;</button>
+    <button class="btn btn-nav" id="prevBtn" aria-label="{esc(previous_slide)}" title="{esc(previous_slide_hint)}" disabled>&#8592;</button>
+    <span class="slide-counter" id="slideCounter" title="{esc(slide_counter_hint)}">1 / {len(module["slides"])}</span>
+    <button class="btn btn-nav" id="nextBtn" aria-label="{esc(next_slide)}" title="{esc(next_slide_hint)}">&#8594;</button>
   </div>
   <div class="controls-right">
     <div class="audio-controls">
@@ -995,11 +1018,13 @@ def render_module(course: dict, module_index: int) -> str:
           <div class="audio-speed-popup-scale"><span>0.8&times;</span><span>1.2&times;</span><span>1.6&times;</span></div>
         </div>
       </div>
+      <button class="btn-audio-speed btn-script-audio" id="transcriptBtn" aria-label="Transcript" title="Transcript" aria-controls="transcriptPanel" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h8l4 4v14H5V3h2zM14 3v5h5M8 12h8M8 16h8"/></svg>
+      </button>
+      <button class="btn-audio-speed btn-script-audio" id="narrationModeBtn" aria-label="Automatic narration" aria-pressed="true" title="Narration on — click to turn off">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path class="narration-on-icon" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="narration-off-icon" d="m16 9 5 6m0-6-5 6"/></svg>
+      </button>
     </div>
-    <button class="btn" id="fullscreenBtn" aria-label="{esc(toggle_fullscreen)}" title="{esc(fullscreen_label)} (F)">
-      <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-    </button>
-    <span class="key-hint">F</span>
   </div>
 </div>
 
@@ -1009,6 +1034,9 @@ def render_module(course: dict, module_index: int) -> str:
   'use strict';
   const slides = document.querySelectorAll('.slide');
   const totalSlides = slides.length;
+  const reviewMode = new URLSearchParams(location.search).get('review') === '1';
+  const transcriptMap = {transcript_map};
+  const BOOKMARK_KEY = {bookmark_key};
   let currentSlide = 1;
   const counter = document.getElementById('slideCounter');
   const prevBtn = document.getElementById('prevBtn');
@@ -1033,20 +1061,31 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   function goToSlide(n, direction) {{
+    if (!reviewMode && n > currentSlide) {{
+      const gate = Array.from(slides).find(s => Number(s.dataset.slide) < n && s.dataset.quizSlide === 'true' && Array.from(s.querySelectorAll('.quiz-card')).some(c => c.dataset.attempted !== 'true'));
+      if (gate) n = Number(gate.dataset.slide);
+    }}
     if (n < 1 || n > totalSlides || n === currentSlide) return;
     const oldSlide = document.querySelector('.slide.active');
     const newSlide = document.querySelector(`.slide[data-slide="${{n}}"]`);
     if (oldSlide) {{
+      oldSlide.inert = true;
+      oldSlide.setAttribute('aria-hidden', 'true');
       oldSlide.classList.remove('active');
       if (direction === 'forward') oldSlide.classList.add('exit-left');
       setTimeout(() => oldSlide.classList.remove('exit-left'), 600);
     }}
     requestAnimationFrame(() => newSlide.classList.add('active'));
+    newSlide.inert = false;
+    newSlide.setAttribute('aria-hidden', 'false');
     currentSlide = n;
     syncSlideVideos(currentSlide, true);
     updateControls();
     if (typeof loadSlideAudio === 'function') loadSlideAudio(n);
     if (typeof checkCompletion === 'function') checkCompletion();
+    window.dispatchEvent(new CustomEvent('academy:slide', {{detail: n}}));
+    const heading = newSlide.querySelector('h1,h2');
+    if (heading) {{ heading.tabIndex = -1; heading.focus({{preventScroll: true}}); }}
   }}
 
   function updateFirstSlideAudioCue() {{
@@ -1092,7 +1131,7 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   document.addEventListener('keydown', (e) => {{
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.defaultPrevented || e.target.closest('input,textarea,select,button,a,[role="button"],.transcript-panel,.lightbox-overlay')) return;
     switch(e.key) {{
       case 'ArrowRight': case ' ': e.preventDefault(); nextSlide(); break;
       case 'ArrowLeft': e.preventDefault(); prevSlide(); break;
@@ -1128,6 +1167,8 @@ def render_module(course: dict, module_index: int) -> str:
   let audioPlayer = new Audio();
   let audioPlaying = false;
   let autoPlayAudio = true;
+  try {{ autoPlayAudio = localStorage.getItem('ocp-narration-enabled') !== 'false'; }} catch (_) {{}}
+  if (reviewMode) autoPlayAudio = false;
   let autoplayFallbackArmed = false;
   const autoplayRetryEvents = ['pointerdown', 'keydown', 'touchstart'];
   const audioPlayBtn = document.getElementById('audioPlayBtn');
@@ -1149,6 +1190,7 @@ def render_module(course: dict, module_index: int) -> str:
 
   function retryBlockedAutoplay(event) {{
     if (!autoplayFallbackArmed) return;
+    if (!autoPlayAudio || (event && event.target.closest('#narrationModeBtn,#transcriptBtn'))) return;
     if (event && audioPlayBtn.contains(event.target)) return;
     disarmAutoplayFallback();
     attemptAudioPlayback();
@@ -1300,7 +1342,7 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   function writeSuspendObject(obj) {{
-    SCORM.setSuspendData(JSON.stringify(obj));
+    if (!reviewMode) SCORM.setSuspendData(JSON.stringify(obj));
   }}
 
   function selectedInputs(card) {{
@@ -1340,7 +1382,7 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   function recordQuizInteraction(questionId, selected, correctIds, isCorrect) {{
-    if (!SCORM.setValue) return;
+    if (reviewMode || !SCORM.setValue) return;
     var count = parseInt(SCORM.getValue ? SCORM.getValue('cmi.interactions._count') : '', 10);
     if (isNaN(count)) count = quizInteractionIndex;
     var idx = Math.max(count, quizInteractionIndex);
@@ -1415,17 +1457,16 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   // SCORM integration
-  SCORM.init();
+  const inLMS = !reviewMode && SCORM.init();
   var existingStatus = SCORM.getStatus();
-  if (existingStatus !== 'completed' && existingStatus !== 'passed') {{
+  if (!reviewMode && existingStatus !== 'completed' && existingStatus !== 'passed') {{
     SCORM.setIncomplete();
   }}
-  SCORM.setLocation('module{module_num}');
   restoreQuizState();
   setupKnowledgeChecks();
 
   function checkCompletion() {{
-    if (currentSlide === totalSlides) {{
+    if (!reviewMode && currentSlide === totalSlides && Array.from(document.querySelectorAll('.quiz-card')).every(c => c.dataset.attempted === 'true')) {{
       var completed = getSuspendObject();
       if (!completed.modules) completed.modules = [];
       if (completed.modules.indexOf({module_num}) === -1) {{
@@ -1436,8 +1477,9 @@ def render_module(course: dict, module_index: int) -> str:
     }}
   }}
 
-  window.addEventListener('beforeunload', function() {{ SCORM.finish(); }});
+  window.addEventListener('beforeunload', function() {{ if (!reviewMode) SCORM.finish(); }});
 
+  {learner_runtime}
   syncSlideVideos(currentSlide, true);
   updateControls();
   loadSlideAudio(currentSlide);
@@ -1563,6 +1605,20 @@ def render_module(course: dict, module_index: int) -> str:
 '''
 
 
+def fill_missing_transcripts(course: dict, root: Path) -> None:
+    """Older sources retain scripts but have no display transcript metadata."""
+    for module in course.get('modules', []):
+        for slide in module.get('slides', []):
+            if slide.get('transcript'):
+                continue  # Preserve explicitly authored conventional spelling.
+            script = (slide.get('audio') or {}).get('script_file')
+            if script and (root / script).is_file():
+                slide['transcript'] = '\n'.join(
+                    line for line in (root / script).read_text(encoding='utf-8').splitlines()
+                    if not line.lstrip().startswith('#')
+                ).strip()
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("course_json", type=Path)
@@ -1581,11 +1637,13 @@ def main():
         return
 
     if args.all:
+        fill_missing_transcripts(course, out_dir)
         for i, mod in enumerate(course["modules"]):
             html_s = render_module(course, i)
             (out_dir / f'module{mod["id"]}.html').write_text(html_s)
             print(f'wrote module{mod["id"]}.html')
     else:
+        fill_missing_transcripts(course, out_dir)
         if args.module is None:
             sys.exit("Specify --module N or --all")
         idx = args.module - 1

@@ -1,0 +1,2879 @@
+{
+  "style": "Slides",
+  "scorm": {
+    "version": "1.2",
+    "organization": "single-sco"
+  },
+  "course_slug": "open_data_center_for_ai_v0_7",
+  "course_title": "Open Data Center for AI",
+  "course_subtitle": "Design for heavier racks, higher density, and future suppliers—without expensive facility redesign",
+  "language": "en-US",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Revision 0.7.0 · August 27, 2026",
+  "target_duration_minutes": 45,
+  "audience_level": "intermediate",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo v2",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable",
+    "speed": 1.18
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "open_dc_course_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "OPEN DC"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "kind": "spec",
+      "publication_status": "published",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+      "effective_date": "2026-08-27",
+      "verification": "Cover, authors and technical pages 7–9 visually checked in the published PDF. Full local comparison pending a saved copy.",
+      "supplied_draft_filename": "Open Data center Spec Revision 0.7.0 (1).pdf"
+    },
+    {
+      "source_filename": "Open Data center Spec Version 0.5.0.pdf",
+      "kind": "legacy_spec",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-version-0-5-0-pdf"
+    },
+    {
+      "source_filename": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+      "kind": "white_paper",
+      "url": "https://www.opencompute.org/documents/ocp-open-data-center-for-ai-whitepaper-final-pdf"
+    },
+    {
+      "source_filename": "2026 OCP EMEA panel discussion - Transcript.txt",
+      "kind": "summit_transcript",
+      "url": "https://www.youtube.com/watch?v=Riz5RgwzUzo"
+    },
+    {
+      "source_filename": "A Call for Collaboration on AI Data Center Infrastructure Standards » Open Compute Project.webloc",
+      "kind": "supporting_link",
+      "url": "https://www.opencompute.org/about/a-call-for-collaboration-on-ai-data-center-infrastructure-standards"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "fungibility",
+      "term": "Fungibility",
+      "tooltip": "The ability of a facility to accept different systems and generations with limited retrofit.",
+      "reference_label": "Open Data Center for AI whitepaper",
+      "url": "https://www.opencompute.org/documents/ocp-open-data-center-for-ai-whitepaper-final-pdf"
+    },
+    {
+      "id": "sla",
+      "term": "SLA",
+      "tooltip": "A service-level agreement that allocates service and operating obligations among facility, equipment, and workload parties.",
+      "reference_label": "Open Data Center for AI whitepaper",
+      "url": "https://www.opencompute.org/documents/ocp-open-data-center-for-ai-whitepaper-final-pdf",
+      "aliases": [
+        "SLAs",
+        "service-level agreement",
+        "service-level agreements"
+      ]
+    },
+    {
+      "id": "telemetry",
+      "term": "Telemetry",
+      "tooltip": "Automated collection and analysis of operating measurements across power, thermal, mechanical, and IT systems.",
+      "reference_label": "Open Data Center for AI whitepaper",
+      "url": "https://www.opencompute.org/documents/ocp-open-data-center-for-ai-whitepaper-final-pdf"
+    },
+    {
+      "id": "sidecar",
+      "term": "Sidecar",
+      "tooltip": "Adjacent rack-scale equipment used here for disaggregated power delivery to a high-density ML rack.",
+      "reference_label": "Diablo 400 specification",
+      "url": "https://www.opencompute.org/documents/ocp-specification-diablo-400-v0-7-0-final-pdf",
+      "aliases": [
+        "sidecars"
+      ]
+    },
+    {
+      "id": "busway",
+      "term": "Busway",
+      "tooltip": "An overhead conductor system that distributes electrical power along a data-hall row.",
+      "reference_label": "Open Data Center Revision 0.7.0",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+      "aliases": [
+        "busways"
+      ]
+    },
+    {
+      "id": "kw_per_ft",
+      "term": "kW/ft",
+      "tooltip": "Kilowatts per linear foot of row, used as a modular measure of power or cooling density.",
+      "reference_label": "Open Data Center Revision 0.7.0",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+      "aliases": [
+        "kilowatts per linear foot",
+        "kilowatts per foot",
+        "kilowatt per foot"
+      ]
+    },
+    {
+      "id": "blended_density",
+      "term": "Blended density",
+      "tooltip": "Average density across ML, network, general compute, and storage equipment.",
+      "reference_label": "Open Data Center Revision 0.7.0",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf"
+    },
+    {
+      "id": "peak_density",
+      "term": "Peak density",
+      "tooltip": "The highest powered ML-rack condition used to size high-density zones.",
+      "reference_label": "Open Data Center Revision 0.7.0",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+      "aliases": [
+        "peak IT density",
+        "peak I T density"
+      ]
+    },
+    {
+      "id": "power_block",
+      "term": "Power block",
+      "tooltip": "A data-hall power building block. Section 5.2 specifies at least four per hall, but does not define their ratings, independence, redundancy, or a required row mapping.",
+      "reference_label": "Open Data Center Revision 0.7.0",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+      "aliases": [
+        "power blocks"
+      ]
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "Coolant distribution unit, equipment that transfers heat between technology and facility cooling loops.",
+      "reference_label": "Project Deschutes specification",
+      "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf",
+      "aliases": [
+        "CDUs",
+        "coolant distribution unit",
+        "coolant distribution units"
+      ]
+    },
+    {
+      "id": "lpm_per_kw",
+      "term": "lpm/kW",
+      "tooltip": "Liters per minute per kilowatt, a liquid-flow sizing ratio.",
+      "reference_label": "Open Data Center Revision 0.7.0",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+      "aliases": [
+        "liters per minute per kilowatt",
+        "liter per minute per kilowatt"
+      ]
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "why_open_data_center_why_now",
+      "title": "Why Open Data Center for AI, Why Now",
+      "subtitle": "The shift from bespoke AI facilities to a shared, interface-led industry baseline.",
+      "module_badge_text": "Module 1",
+      "next_module_title": "The Facility Compatibility Envelope",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "title": "Why Open Data Center for AI, Why Now",
+          "subtitle": "See which facility decisions determine whether the next rack generation can arrive, connect, and operate without redesign.",
+          "version_chip": "Revision 0.7.0 · August 27, 2026",
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 1,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 3
+            }
+          ],
+          "transcript": "Welcome to Open Data Center for AI. The expensive question is no longer whether a facility can support today's rack. It is whether the next rack—heavier, denser, and possibly from a different supplier—can move from dock to row, land on the floor, connect to power and cooling, and operate without a redesign.\n\nRevision 0.7 turns those risks into measurable facility interfaces. By the end of this course, you will know which constraints to test first, which capacity figures belong at rack, row, or hall level, and where the specification deliberately protects implementation choice. The specification is our technical center of gravity, with context from the OCP strategic initiative and its EMEA Summit discussion, including perspectives from AMD, Google, Meta, and NVIDIA."
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course_overview",
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          },
+          "title": "Four Modules, One Facility-Level View",
+          "subtitle": "Learn to spot the constraints that drive redesign risk—and the interfaces that preserve choice.",
+          "modules_listed": [
+            "Why Open Data Center for AI, Why Now",
+            "The Facility Compatibility Envelope",
+            "Power and Cooling at AI Density",
+            "Apply 0.7 Without Freezing Innovation"
+          ],
+          "chips": [
+            {
+              "icon": "⏱",
+              "text": "Approximately 45 minutes"
+            },
+            {
+              "icon": "🎓",
+              "text": "Intermediate technical audience"
+            },
+            {
+              "icon": "📄",
+              "text": "Published Revision 0.7.0",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf"
+            },
+            {
+              "icon": "🎥",
+              "text": "2026 OCP EMEA panel",
+              "url": "https://www.youtube.com/watch?v=Riz5RgwzUzo"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 1,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 3
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Review worksheet",
+              "url": "resources/compatibility_review.html"
+            }
+          ],
+          "transcript": "The course follows the logic of a real facility decision. In four modules, you will gain a review lens you can use before committing capital. You will learn which physical constraints can stop a dense rack before it reaches the row; where power and cooling numbers actually apply; why a full-row manifold and a rack connector are different decisions; and how to compare implementation options without mistaking an example for a requirement.\n\nAllow about forty-five minutes for narration, study, and the scenario checks. This edition uses published Revision 0.7, effective August twenty-seventh, twenty twenty-six. The specification link and a reusable review worksheet are included. The worksheet helps you record evidence and open questions; it is not an engineering approval."
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "facility_part_of_computer",
+          "audio": {
+            "script_file": "audio/module1/slide_03_facility_part_of_computer.txt",
+            "wav_file": "audio/module1/slide_03_facility_part_of_computer.wav",
+            "approved": true
+          },
+          "section_label": "Why Change",
+          "title": "One Rack Change Reaches Beyond the Rack",
+          "figure": {
+            "path": "figures/m1_facility_system_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m1_facility_system_motion_poster.png",
+            "alt": "One rack is exchanged in a physical row; power, liquid circuits and service clearance are traced before a wider hall is revealed. Liquid pipes use blue for supply and red for return.",
+            "caption": "Teaching model: a rack change propagates through power, cooling, space and hall planning. Geometry is illustrative; source concepts are available in the specification Appendix. Pipe key: blue = cooler supply; red = warmer return.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "72b31b8444df1bb22e329019036d9292019c264d9aec36a0096e23961576ccc4",
+              "entries": [
+                {
+                  "text": "CANDIDATE RACK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "RACK CHANGE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Power · flow · weight · access",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "TRACE THE ROW INTERFACES",
+                  "at_seconds": 16.6
+                },
+                {
+                  "text": "Electrical + liquid + space",
+                  "at_seconds": 16.6
+                },
+                {
+                  "text": "SERVICE / MOVEMENT ENVELOPE",
+                  "at_seconds": 16.6
+                },
+                {
+                  "text": "HALL CONSEQUENCES",
+                  "at_seconds": 39.867
+                },
+                {
+                  "text": "Shared supply and heat rejection",
+                  "at_seconds": 39.867
+                },
+                {
+                  "text": "WIDER HALL",
+                  "at_seconds": 39.867
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Paper · pp. 6–7",
+              "url": "https://www.opencompute.org/documents/ocp-open-data-center-for-ai-whitepaper-final-pdf#page=6"
+            },
+            {
+              "label": "OCP EMEA panel recording",
+              "url": "https://www.youtube.com/watch?v=Riz5RgwzUzo"
+            },
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure9"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "00:50-03:34"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "media_focus": true,
+          "transcript": "Start with the rack in the foreground. A different accelerator system arrives. Its power demand, liquid flow, weight, or maintenance needs can differ even when the nominal rack width looks familiar.\n\nFollow the electrical path upward to the row busways. More distribution hardware still needs adequate upstream supply. Now follow the liquid supply and return. The row manifold and each branch must support the equipment's flow and operating conditions. Finally, look at the aisle and overhead space. A system that connects can still be impossible to move or maintain.\n\nAs the view opens to the hall, these are no longer isolated rack decisions. They affect shared electrical and thermal infrastructure and ultimately the utility connection. This is the whitepaper's system-level idea: the facility becomes part of the computer. Early interface planning reduces late surprises, but every candidate system still needs verification."
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "revision_evolution",
+          "audio": {
+            "script_file": "audio/module1/slide_04_revision_evolution.txt",
+            "wav_file": "audio/module1/slide_04_revision_evolution.wav",
+            "approved": true
+          },
+          "section_label": "Revision 0.7.0",
+          "title": "From a Google Reference to a Shared Industry Baseline",
+          "subtitle": "The technical center of gravity moved from one deployment model to common requirements for industry AI/ML systems.",
+          "bullets": [
+            {
+              "bold_lead": "Four contributors",
+              "text": "AMD, Google, Meta, and NVIDIA now author the unified guidance."
+            },
+            {
+              "bold_lead": "2027-2028 focus",
+              "text": "The scope centers on next-generation AI and machine-learning facility requirements."
+            },
+            {
+              "bold_lead": "First principles",
+              "text": "Structural, power, cooling, and interface targets replace many platform-specific prescriptions."
+            },
+            {
+              "bold_lead": "Modular density",
+              "text": "Rigid row lengths give way to kilowatts per linear foot."
+            },
+            {
+              "bold_lead": "Cleaner boundary",
+              "text": "Google-specific near-term tables, TPU scaling, campus layouts, and the 10%-38% humidity limit are removed."
+            }
+          ],
+          "figure": {
+            "path": "figures/revision_collaboration.svg",
+            "alt": "Timeline from the Google-authored 0.5 specification to the AMD, Google, Meta, and NVIDIA 0.7 collaboration.",
+            "caption": "Revision 0.5 is the earlier Google-authored baseline. Revision 0.7 lists AMD, Google, Meta and NVIDIA; it is not the specification’s first release.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "dda654d504b9542084e55af18bee2aea28c2449cf52fc13c6100e1fc7de2df22",
+              "entries": [
+                {
+                  "text": "REVISION 0.5.0"
+                },
+                {
+                  "text": "Google"
+                },
+                {
+                  "text": "Earlier Google baseline"
+                },
+                {
+                  "text": "REVISION 0.7.0"
+                },
+                {
+                  "text": "AMD · Google"
+                },
+                {
+                  "text": "Meta · NVIDIA"
+                },
+                {
+                  "text": "Unified 2027–2028 envelope"
+                },
+                {
+                  "text": "BROADER COLLABORATION"
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec · p. 2",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=2"
+            },
+            {
+              "label": "Revision 0.5.0 - revision context",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-version-0-5-0-pdf"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 2,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open Data center Spec Version 0.5.0.pdf",
+              "page": 2
+            }
+          ],
+          "transcript": "Revision zero point five was an important Google-authored reference. Revision 0.7 becomes a broader industry baseline, with AMD, Google, Meta, and NVIDIA listed as authors. That added collaboration matters because the target is no longer one operator's near-term layout. It is a common envelope for multiple AI and ML systems expected across twenty twenty-seven and twenty twenty-eight.\n\nThe revision history shows the shift. Platform-specific tables, fixed row-length prescriptions, campus layouts, and several older appendices were removed. In their place, the document emphasizes first-principles targets for structure, space, power, cooling, and interfaces. The new revision also expresses row capacity in modular kilowatts per linear foot. The result is more concise, but it asks the reader to preserve context carefully: a stable requirement is not the same thing as a mandated physical solution."
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "fungibility_interfaces",
+          "audio": {
+            "script_file": "audio/module1/slide_05_fungibility_interfaces.txt",
+            "wav_file": "audio/module1/slide_05_fungibility_interfaces.wav",
+            "approved": true
+          },
+          "section_label": "Design Philosophy",
+          "title": "Fungibility Depends on Standard Interfaces",
+          "subtitle": "Compatibility at the boundaries gives each implementation room to innovate.",
+          "figure": {
+            "path": "figures/interface_fungibility.svg",
+            "alt": "Two different rack implementations are tested against the same separately named physical, power and liquid requirements.",
+            "caption": "Shared review criteria do not make different connectors or equipment automatically interchangeable. Each proposed system still needs evidence at the boundary.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "5f6baca3e17bb1bb96b04de58d88a33036b200c0f7edadaf475ed55f054853dc",
+              "entries": [
+                {
+                  "text": "TWO IMPLEMENTATIONS · ONE EVIDENCE BOUNDARY"
+                },
+                {
+                  "text": "System A"
+                },
+                {
+                  "text": "System B"
+                },
+                {
+                  "text": "PHYSICAL"
+                },
+                {
+                  "text": "Load · route · clearance"
+                },
+                {
+                  "text": "POWER"
+                },
+                {
+                  "text": "Supply · rating · connection"
+                },
+                {
+                  "text": "LIQUID"
+                },
+                {
+                  "text": "Flow · conditions · hardware"
+                },
+                {
+                  "text": "Shared targets preserve choice; each system still needs evidence."
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "OCP call for collaboration",
+              "url": "https://www.opencompute.org/about/a-call-for-collaboration-on-ai-data-center-infrastructure-standards"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 7
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "04:30-06:54"
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "25:51-28:31"
+            }
+          ],
+          "term_refs": [
+            "fungibility",
+            "sla",
+            "telemetry"
+          ],
+          "transcript": "These two rack implementations are deliberately different. Fungibility does not require matching internals. It means the facility can accommodate different systems and generations with limited retrofit.\n\nHold the review boundary steady: structural and moving loads, physical clearances, power delivery, liquid operating conditions, and service access. Then require evidence from each proposed implementation. A matching nominal envelope is useful, but it does not prove that plugs, fluid connections, or operating agreements match.\n\nThis is what makes late binding practical. The site can advance before the final accelerator decision, while unresolved interfaces remain visible. The wider strategic initiative also addresses telemetry and service-level agreements. These are continuing coordination needs, not a promise that Revision 0.7 already defines a universal connection for everything.",
+          "media_focus": true
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "five_workstreams",
+          "audio": {
+            "script_file": "audio/module1/slide_06_five_workstreams.txt",
+            "wav_file": "audio/module1/slide_06_five_workstreams.wav",
+            "approved": true
+          },
+          "section_label": "Strategic Initiative",
+          "title": "Five Workstreams Connect Design to Operations",
+          "subtitle": "Revision 0.7.0 advances the reference-design workstream within a broader OCP agenda.",
+          "grid_cols": 5,
+          "cards": [
+            {
+              "title": "Reference Designs",
+              "body": "Facility-level compatibility for power, cooling, mechanical, and row infrastructure.",
+              "icon": "▦"
+            },
+            {
+              "title": "Energy + Grid",
+              "body": "Connection requirements, flexibility, on-site generation, and storage.",
+              "icon": "⚡"
+            },
+            {
+              "title": "Open SLAs",
+              "body": "Shared engineering practices for facility, equipment, and workload operators.",
+              "icon": "⇄"
+            },
+            {
+              "title": "Telemetry",
+              "body": "Secure, harmonized observations across IT and operational technology.",
+              "icon": "⌁"
+            },
+            {
+              "title": "Power Estimation",
+              "body": "Better planning under workload and silicon uncertainty to reduce stranded power.",
+              "icon": "∿"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Paper · pp. 3, 6, 8–10",
+              "url": "https://www.opencompute.org/documents/ocp-open-data-center-for-ai-whitepaper-final-pdf#page=3"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 3
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 8
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 9
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 10
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "The Open Data Center specification is one part of a wider OCP strategic initiative. The first workstream develops open facility reference designs for power, cooling, mechanical systems, and row infrastructure. That is where Revision 0.7 contributes most directly.\n\nFour other workstreams extend the system view. Energy and grid work addresses connection requirements, flexibility, on-site generation, and storage. Open service-level agreements create shared engineering practices among facilities, equipment, and workload operators. Telemetry work seeks secure, harmonized observations across IT and operational technology. Power estimation improves planning when workload behavior and silicon roadmaps are uncertain. Together, the five streams connect the building, the grid, the hardware, and operations. A good facility envelope is necessary, but it creates full value only when these adjacent agreements and measurements mature with it."
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module1/slide_07_takeaways.txt",
+            "wav_file": "audio/module1/slide_07_takeaways.wav",
+            "approved": true
+          },
+          "title": "Why the Specification Matters",
+          "items": [
+            "AI infrastructure couples IT, racks, rows, facilities, and the grid more tightly than traditional cloud systems.",
+            "Revision 0.7.0 is jointly authored by AMD, Google, Meta, and NVIDIA.",
+            "The specification defines a shared facility compatibility envelope, not a single vendor design.",
+            "Stable interfaces support fungibility, faster deployment, and stronger supply-chain alignment.",
+            "Reference designs are one workstream within a wider Open Data Center for AI initiative."
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 2,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 7
+            }
+          ],
+          "transcript": "Keep one distinction: a shared facility baseline preserves choice only when its boundaries are explicit and tested. Revision 0.7 brings AMD, Google, Meta, and NVIDIA into that common effort.\n\nA rack decision can affect movement, power, cooling, space, and operations. The next step is to identify which boundary could stop deployment first—not to assume that a common envelope guarantees interchangeability."
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Make the Review Decision",
+          "subtitle": "Submit both questions once to continue. Correctness is not required, and retry feedback is available.",
+          "questions": [
+            {
+              "id": "m1_review_q1",
+              "prompt": "A site must progress before the accelerator supplier is selected. Which approach best preserves later choice?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Freeze the floor and services around the first available vendor drawing, then request equivalent racks.",
+                  "correct": false,
+                  "feedback_incorrect": "Early work can use explicit facility boundaries, but each candidate still needs physical and interface verification. Neither a vendor drawing nor extra capacity substitutes for that work."
+                },
+                {
+                  "id": "b",
+                  "text": "Agree measurable load, access, power and cooling boundaries; validate candidate systems against them.",
+                  "correct": true,
+                  "feedback_incorrect": "Early work can use explicit facility boundaries, but each candidate still needs physical and interface verification. Neither a vendor drawing nor extra capacity substitutes for that work."
+                },
+                {
+                  "id": "c",
+                  "text": "Fix only the cluster MW target and defer rack movement and connection decisions until delivery.",
+                  "correct": false,
+                  "feedback_incorrect": "Early work can use explicit facility boundaries, but each candidate still needs physical and interface verification. Neither a vendor drawing nor extra capacity substitutes for that work."
+                },
+                {
+                  "id": "d",
+                  "text": "Reserve the highest peak everywhere so physical interface details no longer affect deployment.",
+                  "correct": false,
+                  "feedback_incorrect": "Early work can use explicit facility boundaries, but each candidate still needs physical and interface verification. Neither a vendor drawing nor extra capacity substitutes for that work."
+                }
+              ],
+              "feedback_correct": "Correct. Early work can use explicit facility boundaries, but each candidate still needs physical and interface verification. Neither a vendor drawing nor extra capacity substitutes for that work.",
+              "feedback_incorrect": "Early work can use explicit facility boundaries, but each candidate still needs physical and interface verification. Neither a vendor drawing nor extra capacity substitutes for that work."
+            },
+            {
+              "id": "m1_review_q2",
+              "prompt": "Two suppliers say their racks fit the same nominal row envelope. What still needs evidence? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The loaded movement route, including handling equipment and turns.",
+                  "correct": true,
+                  "feedback_incorrect": "A shared envelope preserves implementation choice, not automatic interoperability. Route, connection and operating evidence remain necessary; identical internals do not."
+                },
+                {
+                  "id": "b",
+                  "text": "Electrical and liquid connection details, capacities and operating conditions.",
+                  "correct": true,
+                  "feedback_incorrect": "A shared envelope preserves implementation choice, not automatic interoperability. Route, connection and operating evidence remain necessary; identical internals do not."
+                },
+                {
+                  "id": "c",
+                  "text": "An identical internal rack architecture, because fungibility requires matching internals.",
+                  "correct": false,
+                  "feedback_incorrect": "A shared envelope preserves implementation choice, not automatic interoperability. Route, connection and operating evidence remain necessary; identical internals do not."
+                },
+                {
+                  "id": "d",
+                  "text": "The ownership of service, telemetry and operational agreements not fully defined in 0.7.",
+                  "correct": true,
+                  "feedback_incorrect": "A shared envelope preserves implementation choice, not automatic interoperability. Route, connection and operating evidence remain necessary; identical internals do not."
+                }
+              ],
+              "feedback_correct": "Correct. A shared envelope preserves implementation choice, not automatic interoperability. Route, connection and operating evidence remain necessary; identical internals do not.",
+              "feedback_incorrect": "A shared envelope preserves implementation choice, not automatic interoperability. Route, connection and operating evidence remain necessary; identical internals do not."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 5,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 7
+            }
+          ],
+          "transcript": "Apply the design intent to two procurement situations. First, a facility must progress before the accelerator supplier is selected. Choose the approach that preserves choice without deferring critical interface work.\n\nThen consider two racks with the same nominal envelope. Select every item that still needs evidence. Submit both answers to continue; the feedback explains the boundary each decision protects."
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "audio": {
+            "script_file": "audio/module1/slide_09_up_next.txt",
+            "wav_file": "audio/module1/slide_09_up_next.wav",
+            "approved": true
+          },
+          "next_module_number": 2,
+          "next_module_title": "The Facility Compatibility Envelope",
+          "thank_you_message": "Nice work - you have finished Module 1: Why Open Data Center for AI, Why Now.",
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Next, follow the equipment from dock to row. Module two separates the stationary load basis, total moving load, row dimensions, and overhead clearance. A rack can fit its final space and still fail to arrive."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "facility_compatibility_envelope",
+      "title": "The Facility Compatibility Envelope",
+      "subtitle": "Structural loads, movement paths, row geometry, and overhead infrastructure.",
+      "module_badge_text": "Module 2",
+      "next_module_title": "Power and Cooling at AI Density",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "approved": true
+          },
+          "title": "The Facility Compatibility Envelope",
+          "subtitle": "Coordinate what the facility must carry, clear, connect, and adapt",
+          "version_chip": "Revision 0.7.0 - Facility and Infrastructure",
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Module two is the Facility Compatibility Envelope. The question is not merely whether a rack fits in its final position. The facility must carry it, move it, clear it, connect it, and remain adaptable as equipment generations change.\n\nWe will translate Revision 0.7 into an end-to-end physical review, from the structural load basis and moving load to row dimensions and the overhead coordination zone."
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "title": "Facility Constraints You Will Translate",
+          "subtitle": "By the end of this module, you will be able to:",
+          "objectives": [
+            "Interpret the rack and sidecar structural load bases.",
+            "Coordinate row dimensions with safe equipment movement.",
+            "Apply the ceiling and overhead-infrastructure requirements.",
+            "Explain why Revision 0.7.0 replaces fixed row lengths with modular density."
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "By the end of this module, you should be able to review the total moving load, interpret the row dimensions and their measurement points, and check overhead space for the chosen services.\n\nKeep the forty-eight-inch structural depth basis separate from Table one's seventy-one-inch row-envelope target. The table is headed minimum dimensions; we will not silently reinterpret that target as a maximum. We will also distinguish a source recommendation from a requirement."
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "moving_load",
+          "audio": {
+            "script_file": "audio/module2/slide_03_moving_load.txt",
+            "wav_file": "audio/module2/slide_03_moving_load.wav",
+            "approved": true
+          },
+          "section_label": "Structural Loads",
+          "title": "A Rack That Fits Can Still Fail to Arrive",
+          "figure": {
+            "path": "figures/m2_moving_load_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m2_moving_load_motion_poster.png",
+            "alt": "A rack and power sidecar on transport equipment stop at a dock leveler, doorway and turn, then a lift before reaching the row.",
+            "caption": "8,000 lb rack + 7,000 lb sidecar = 15,000 lb before handling equipment. Each route checkpoint needs its own load, clearance and swept-envelope review; this is not a structural approval.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "f65c227a5f6480b16cb32641c0215469266a6a9b8138fcff77fde9edcf10d65c",
+              "entries": [
+                {
+                  "text": "DOCK / LEVELER",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "DOOR / TURN",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "LIFT",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ROW",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "8,000 + 7,000 lb = 15,000 lb BEFORE handling equipment",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "LOAD",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Include",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "transporter",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Stop and verify at every route boundary",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "CLEAR",
+                  "at_seconds": 14.367
+                },
+                {
+                  "text": "Swept",
+                  "at_seconds": 14.367
+                },
+                {
+                  "text": "envelope",
+                  "at_seconds": 14.367
+                },
+                {
+                  "text": "Rating +",
+                  "at_seconds": 25.9
+                },
+                {
+                  "text": "platform",
+                  "at_seconds": 25.9
+                },
+                {
+                  "text": "PLACE",
+                  "at_seconds": 37.4
+                },
+                {
+                  "text": "Floor +",
+                  "at_seconds": 37.4
+                },
+                {
+                  "text": "access",
+                  "at_seconds": 37.4
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "sidecar"
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "28:38-31:22"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · p. 7",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=7"
+            }
+          ],
+          "media_focus": true,
+          "transcript": "The specification's heaviest-rack design target is eight thousand pounds over a twenty-eight by forty-eight inch structural basis. Its rack-and-sidecar example adds seven thousand pounds to eight thousand: fifteen thousand pounds before the handling equipment.\n\nWatch the transporter stop at the dock leveler. Review the actual moving load and concentrated wheel loads, not just the stationary rack footprint. At the doorway and turn, check the loaded swept envelope, not only the rack width. At the lift, the platform size and applicable load rating both matter. None of those checks is replaced by a suitable final-row floor.\n\nThe panel emphasized these ordinary deployment blockers. The animation shows where to ask the questions, not a certified transporter or route. The actual equipment, load distribution, handling method, and local structure still require qualified review."
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "row_dimensions",
+          "audio": {
+            "script_file": "audio/module2/slide_04_row_dimensions.txt",
+            "wav_file": "audio/module2/slide_04_row_dimensions.wav",
+            "approved": true
+          },
+          "section_label": "Physical Geometry",
+          "title": "Keep Each Dimension Attached to Its Datum",
+          "subtitle": "The structural footprint and the deployable row envelope answer different questions.",
+          "figure": {
+            "path": "figures/row_dimensions.svg",
+            "alt": "Dimensioned plan and elevation separating aisle clearances, rack-envelope targets and structural footprint.",
+            "caption": "Table 1 is headed “Minimum dimensions” and lists 71 in rack depth and 100 in height. These are row-envelope targets here—not an invented maximum. Section 4.2 calls 12 ft transport clearance a recommendation; Table 1 lists it among minimums.",
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "d589073b481cd481b5e1013888f9b79b8b991baade1b13ef906004d3a47f60e9",
+              "entries": [
+                {
+                  "text": "ROW PLAN"
+                },
+                {
+                  "text": "COLD AISLE · FACE TO FACE"
+                },
+                {
+                  "text": "82 in"
+                },
+                {
+                  "text": "71 in*"
+                },
+                {
+                  "text": "71 in* shown along rack depth"
+                },
+                {
+                  "text": "HOT AISLE: 54 in · TRANSPORT: 12 ft†"
+                },
+                {
+                  "text": "*Table 1 row-envelope targets. †See source-wording note."
+                },
+                {
+                  "text": "ELEVATION"
+                },
+                {
+                  "text": "100 in*"
+                },
+                {
+                  "text": "Structural depth"
+                },
+                {
+                  "text": "basis: 48 in"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 10,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · pp. 7–8",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=7"
+            },
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure1"
+            }
+          ],
+          "transcript": "Keep each dimension attached to its datum. Table one lists a fifty-four-inch hot aisle and an eighty-two-inch cold aisle, the latter measured from IT rack face to face. It also lists a one-hundred-inch rack-height target and a seventy-one-inch rack-depth target under its minimum-dimensions heading.\n\nThose row-envelope targets are separate from the forty-eight-inch depth used in the structural load example. Do not relabel seventy-one inches as a maximum without clarification from the authors.\n\nThere is another wording distinction. Section four point two calls twelve feet of transport clearance a design recommendation; Table one lists twelve feet among minimum dimensions. Preserve both statements and resolve their application in the project review. The recommended twenty-four-foot aisle pitch and the Appendix row plan provide further context; the drawing does not override the core text.",
+          "media_focus": true
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "overhead_capacity",
+          "audio": {
+            "script_file": "audio/module2/slide_05_overhead_capacity.txt",
+            "wav_file": "audio/module2/slide_05_overhead_capacity.wav",
+            "approved": true
+          },
+          "section_label": "Vertical Coordination",
+          "title": "Measure to the Beam—Not the Ceiling Finish",
+          "figure": {
+            "path": "figures/m2_overhead_envelope_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m2_overhead_envelope_motion_poster.png",
+            "alt": "A cutaway measures a fixed 18-foot floor-to-beam datum, exposes the air plenum, then compares a separate higher-clearance design. Liquid pipes use blue for supply and red for return.",
+            "caption": "Section 4.2: two-busway configuration, 18 ft minimum from floor to beam underside, including the plenum. Additional busways and tray tiers may need more height; the second view is a different design, not a moving building beam. Pipe key: blue = cooler supply; red = warmer return.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "1f72b9d151d2926c3d0588c22a10cbf4a6fd44ed0fc09c5193245ca88f0cd448",
+              "entries": [
+                {
+                  "text": "AIR PLENUM",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "2 BUSWAYS",
+                  "at_seconds": 3
+                },
+                {
+                  "text": "Power—not pipe or tray",
+                  "at_seconds": 3
+                },
+                {
+                  "text": "18 FT MINIMUM",
+                  "at_seconds": 18.167
+                },
+                {
+                  "text": "Floor → beam underside",
+                  "at_seconds": 18.167
+                },
+                {
+                  "text": "Plenum included",
+                  "at_seconds": 18.167
+                },
+                {
+                  "text": "SEPARATE DESIGN",
+                  "at_seconds": 33.333
+                },
+                {
+                  "text": "More tiers: recheck height",
+                  "at_seconds": 33.333
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "busway"
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 13,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 14,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · p. 7",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=7"
+            },
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure7"
+            }
+          ],
+          "media_focus": true,
+          "transcript": "The fixed vertical datum runs from the floor to the underside of the structural beam. For a two-busway configuration, Section four point two requires at least eighteen feet, including the air-plenum space. It is not a measurement to the ceiling finish.\n\nThe cutaway exposes why that distinction matters. Racks and containment sit below power distribution, liquid piping, cable routing, and the air-return volume. Fire protection, lighting, and maintenance also need coordination, even when a simplified view omits their detail.\n\nNow compare a separate design with additional busways and tray tiers. The eighteen-foot reference stays fixed; the second arrangement may need a higher beam. This is a design comparison, not a suggestion to lift an existing building beam. For constrained sites, the source calls for custom design variations, supported by the relevant engineering review."
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "modular_density",
+          "audio": {
+            "script_file": "audio/module2/slide_06_modular_density.txt",
+            "wav_file": "audio/module2/slide_06_modular_density.wav",
+            "approved": true
+          },
+          "section_label": "Adaptable Rows",
+          "title": "Changing Row Length Changes Capacity",
+          "figure": {
+            "path": "figures/m2_modular_rows_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m2_modular_rows_motion_poster.png",
+            "alt": "Two distinct fixed-building layouts show different available row lengths, with a continuous length datum and an illustrative linear-density calculation. Liquid pipes use blue for supply and red for return.",
+            "caption": "Illustrative arithmetic at an assumed uniform 25 kW/ft: 40 ft × 25 = 1,000 kW; 32 ft × 25 = 800 kW. This teaches units, not a required row length or a complete blended-facility capacity model. Pipe key: blue = cooler supply; red = warmer return.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "a99651c68d269b05115f1cce77f0cdc003215176ed86fa0b1dc39debe1b0068e",
+              "entries": [
+                {
+                  "text": "Linear row length · schematic, not to scale",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SITE A · 40 FT",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Illustrative 25 kW/ft",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "40 × 25 = 1,000 kW",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SITE B · 32 FT",
+                  "at_seconds": 28
+                },
+                {
+                  "text": "Same assumed 25 kW/ft",
+                  "at_seconds": 28
+                },
+                {
+                  "text": "32 × 25 = 800 kW",
+                  "at_seconds": 28
+                },
+                {
+                  "text": "DIFFERENT EQUIPMENT MIX",
+                  "at_seconds": 40.433
+                },
+                {
+                  "text": "Verify actual demand",
+                  "at_seconds": 40.433
+                },
+                {
+                  "text": "and service connections",
+                  "at_seconds": 40.433
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "kw_per_ft"
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 2,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 11,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open Data center Spec Version 0.5.0.pdf",
+              "page": 8
+            },
+            {
+              "source": "Open Data center Spec Version 0.5.0.pdf",
+              "page": 21
+            },
+            {
+              "source": "Open Data center Spec Version 0.5.0.pdf",
+              "page": 22
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · pp. 7–8",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=7"
+            },
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure3"
+            }
+          ],
+          "media_focus": true,
+          "transcript": "The building columns stay fixed. What changes is the proposed row arrangement. Revision 0.7 replaces rigid row-length prescriptions with modular density in kilowatts per linear foot.\n\nUse an illustrative calculation to see the units. At an assumed uniform twenty-five kilowatts per foot, forty usable feet correspond to one thousand kilowatts. If the available row is thirty-two feet, the same assumed density gives eight hundred kilowatts. Neither length is a specification requirement, and this simple arithmetic is not a complete blended-facility capacity model.\n\nThe second design accommodates a different equipment mix and site geometry. Shortening the row does not make the lost capacity disappear. Reconcile the actual length, equipment demand, power, cooling, access, and structural conditions before accepting the arrangement."
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module2/slide_07_takeaways.txt",
+            "wav_file": "audio/module2/slide_07_takeaways.wav",
+            "approved": true
+          },
+          "title": "The Facility Must Carry, Clear, and Adapt",
+          "items": [
+            "The heaviest-rack target is 8,000 lb, while the rack-plus-sidecar moving-load example reaches 15,000 lb before handling equipment.",
+            "Docks, doors, lifts, floor routes, and placement tools belong in the same movement analysis.",
+            "Minimum row dimensions coordinate hot aisle, cold aisle, rack depth and height, and transport access.",
+            "Two-busway configurations require an 18 ft minimum ceiling height; denser overhead systems may require more.",
+            "Modular kW/ft guidance replaces fixed row lengths so the design can evolve with power and fluid connections."
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Review the whole route, not just the final rack position. Fifteen thousand pounds excludes the handling equipment. Clearance includes doors, turns, lifts, aisles, and service access.\n\nFor the two-busway overhead reference, measure floor to beam underside and include the plenum. Preserve Table one's wording where its targets need clarification. Modular density changes how row length is planned, not the need to verify actual capacity."
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module2/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_08_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Make the Review Decision",
+          "subtitle": "Submit both questions once to continue. Correctness is not required, and retry feedback is available.",
+          "questions": [
+            {
+              "id": "m2_review_q1",
+              "prompt": "A dock lift is rated 15,000 lb. The 8,000 lb rack and 7,000 lb sidecar fit its platform, but transporter weight is missing. What is the supported decision?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Approve: the two equipment weights exactly equal the rating.",
+                  "correct": false,
+                  "feedback_incorrect": "15,000 lb is reached before handling equipment. The lift and route need the actual total moving load and relevant loading conditions; final-row fit does not settle this."
+                },
+                {
+                  "id": "b",
+                  "text": "Approve if the final row floor supports the stationary equipment.",
+                  "correct": false,
+                  "feedback_incorrect": "15,000 lb is reached before handling equipment. The lift and route need the actual total moving load and relevant loading conditions; final-row fit does not settle this."
+                },
+                {
+                  "id": "c",
+                  "text": "Hold the route decision until total moving load and the lift’s applicable conditions are verified.",
+                  "correct": true,
+                  "feedback_incorrect": "15,000 lb is reached before handling equipment. The lift and route need the actual total moving load and relevant loading conditions; final-row fit does not settle this."
+                },
+                {
+                  "id": "d",
+                  "text": "Reduce the equipment footprint used in the calculation to increase the apparent floor rating.",
+                  "correct": false,
+                  "feedback_incorrect": "15,000 lb is reached before handling equipment. The lift and route need the actual total moving load and relevant loading conditions; final-row fit does not settle this."
+                }
+              ],
+              "feedback_correct": "Correct. 15,000 lb is reached before handling equipment. The lift and route need the actual total moving load and relevant loading conditions; final-row fit does not settle this.",
+              "feedback_incorrect": "15,000 lb is reached before handling equipment. The lift and route need the actual total moving load and relevant loading conditions; final-row fit does not settle this."
+            },
+            {
+              "id": "m2_review_q2",
+              "prompt": "A proposed two-busway hall has an 18 ft ceiling-finish height. What should the reviewer verify before accepting the overhead arrangement? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The floor-to-beam-underside dimension, with air-plenum space included.",
+                  "correct": true,
+                  "feedback_incorrect": "The source’s 18 ft datum is floor to beam underside, including the plenum—not ceiling finish. Services and maintenance need coordinated volume, and additional tiers may need more height."
+                },
+                {
+                  "id": "b",
+                  "text": "Coordination of power, liquid, cable, fire-protection and maintenance space.",
+                  "correct": true,
+                  "feedback_incorrect": "The source’s 18 ft datum is floor to beam underside, including the plenum—not ceiling finish. Services and maintenance need coordinated volume, and additional tiers may need more height."
+                },
+                {
+                  "id": "c",
+                  "text": "A new height check if extra busways or tray tiers are introduced.",
+                  "correct": true,
+                  "feedback_incorrect": "The source’s 18 ft datum is floor to beam underside, including the plenum—not ceiling finish. Services and maintenance need coordinated volume, and additional tiers may need more height."
+                },
+                {
+                  "id": "d",
+                  "text": "Only that the highest rack is below the ceiling finish.",
+                  "correct": false,
+                  "feedback_incorrect": "The source’s 18 ft datum is floor to beam underside, including the plenum—not ceiling finish. Services and maintenance need coordinated volume, and additional tiers may need more height."
+                }
+              ],
+              "feedback_correct": "Correct. The source’s 18 ft datum is floor to beam underside, including the plenum—not ceiling finish. Services and maintenance need coordinated volume, and additional tiers may need more height.",
+              "feedback_incorrect": "The source’s 18 ft datum is floor to beam underside, including the plenum—not ceiling finish. Services and maintenance need coordinated volume, and additional tiers may need more height."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 2,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Review two possible deployment blockers. First, compare a fifteen-thousand-pound lift rating with the rack-and-sidecar load before the transporter has been counted. Choose the decision supported by the available evidence.\n\nThen review an eighteen-foot ceiling-finish claim. Select every check needed to evaluate the actual overhead arrangement. Submit both answers; a number is useful only when its load basis and measurement points are correct."
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "audio": {
+            "script_file": "audio/module2/slide_09_up_next.txt",
+            "wav_file": "audio/module2/slide_09_up_next.wav",
+            "approved": true
+          },
+          "next_module_number": 3,
+          "next_module_title": "Power and Cooling at AI Density",
+          "thank_you_message": "Nice work - you have finished Module 2: The Facility Compatibility Envelope.",
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Module three now connects the physical envelope to capacity. Keep cluster scale, hall power blocks, row distribution, and rack connections separate as you follow power and heat through the system."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "power_and_cooling_at_ai_density",
+      "title": "Power and Cooling at AI Density",
+      "subtitle": "Density vocabulary, cluster scale, power blocks, and liquid-distribution limits.",
+      "module_badge_text": "Module 3",
+      "next_module_title": "Apply 0.7 Without Freezing Innovation",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "approved": true
+          },
+          "title": "Power and Cooling at AI Density",
+          "subtitle": "Use the right density measure at the right level of the facility",
+          "version_chip": "Revision 0.7.0 - Power and Thermal Management",
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Module three examines Power and Cooling at AI Density. The central discipline is to use the right number at the right level.\n\nA blended value describes a mixed facility. A peak value protects the most demanding local zone. Cluster megawatts, hall power blocks, row busways, cooling splits, pipe diameters, and quick connects are related, but they are not interchangeable. We will keep each target attached to its scope and assumptions."
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "title": "Capacity Targets You Will Interpret",
+          "subtitle": "By the end of this module, you will be able to:",
+          "objectives": [
+            "Distinguish blended data-center density from peak IT density.",
+            "Recall the cluster and data-hall power targets in Revision 0.7.0.",
+            "Explain what the specification fixes and leaves flexible in power distribution.",
+            "Use cooling-density and manifold-flow values without dropping their qualifications."
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Use the right number at the right level. In this module, distinguish the mixed-facility baseline from a local peak, separate hall block count from row distribution, and interpret a liquid-capacity screen under its stated flow assumptions.\n\nThe review question is not which number is largest. It is which number governs the equipment and interface you are actually evaluating."
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "density_context",
+          "audio": {
+            "script_file": "audio/module3/slide_03_density_context.txt",
+            "wav_file": "audio/module3/slide_03_density_context.wav",
+            "approved": true
+          },
+          "section_label": "Density Vocabulary",
+          "title": "Peak and Blended Density Answer Different Questions",
+          "figure": {
+            "path": "figures/density_context.svg",
+            "alt": "A mixed equipment row is contrasted with one local high-density rack zone; the highlighted area is not a numerical proportion.",
+            "caption": "The mixed-facility baseline and local peak protect different planning boundaries. Schematic only: box area is not a peak-zone percentage, and the peak is not a uniform load on every row.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "df01c6c125624cc339eb0d1ca718fd433f3f3de389b55fd83d0a4e88a216c182",
+              "entries": [
+                {
+                  "text": "MIXED-FACILITY PLANNING"
+                },
+                {
+                  "text": "25 kW/ft blended baseline"
+                },
+                {
+                  "text": "ML · network · compute · storage"
+                },
+                {
+                  "text": "350 kW/ft local peak target"
+                },
+                {
+                  "text": "2027 expected rack peak: 125 kW/ft"
+                },
+                {
+                  "text": "Schematic area—not a peak-zone percentage"
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "blended_density",
+            "peak_density",
+            "kw_per_ft"
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "The mixed equipment view includes machine learning, network, general compute, and storage. Blended density describes that planning mix. Peak IT density protects the highest-powered machine-learning rack condition in a local high-density zone.\n\nRevision 0.7 gives a twenty-five-kilowatt-per-foot blended baseline and a three-hundred-fifty-kilowatt-per-foot peak IT target. The document separately identifies an expected twenty twenty-seven rack peak of one hundred twenty-five kilowatts per foot.\n\nThe highlighted area is schematic; it is not a specified percentage of the hall. Do not apply the largest peak uniformly to every row, and do not average it away where demanding racks will be installed. Map the actual equipment mix and local demand, then size the relevant supply and cooling paths.",
+          "media_focus": true
+        },
+        {
+          "id": 4,
+          "type": "content_table",
+          "slug": "power_targets",
+          "audio": {
+            "script_file": "audio/module3/slide_04_power_targets.txt",
+            "wav_file": "audio/module3/slide_04_power_targets.wav",
+            "approved": true
+          },
+          "section_label": "Power Targets",
+          "title": "The 0.7 Capacity Targets in One View",
+          "subtitle": "Preserve the level and context attached to each number.",
+          "columns": [
+            "Planning quantity",
+            "Revision 0.7.0 target",
+            "Design use"
+          ],
+          "rows": [
+            [
+              "Blended data-center capacity",
+              "25 kW/ft (82 kW/m) average",
+              "Whole-hall equipment mix"
+            ],
+            [
+              "Air-cooling capability",
+              "15 kW/ft (49 kW/m)",
+              "Air-cooled share within the blended design"
+            ],
+            [
+              "Liquid-cooling capability",
+              "25 kW/ft (82 kW/m)",
+              "Liquid capacity supporting the blended design"
+            ],
+            [
+              "Expected 2027 rack peak",
+              "125 kW/ft (410 kW/m)",
+              "Near-horizon high-density zone"
+            ],
+            [
+              "Peak IT density target",
+              "350 kW/ft (1,148 kW/m)",
+              "Highest-powered ML racks"
+            ],
+            [
+              "Cluster size baseline",
+              "12 MW minimum; 24 MW preferred",
+              "Repeatable cluster planning"
+            ]
+          ],
+          "mobile_scroll": true,
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · p. 8",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=8"
+            }
+          ],
+          "transcript": "Here is the capacity model in one view. The blended data-center baseline is twenty-five kilowatts per linear foot, or eighty-two kilowatts per meter. Within that design, the specified capabilities are fifteen kilowatts per linear foot of air cooling and twenty-five kilowatts per linear foot of liquid cooling. These are capabilities, not a statement that their full values are always additive at every location.\n\nFor the near horizon, the document identifies an expected twenty twenty-seven rack peak of one hundred twenty-five kilowatts per linear foot. The broader peak IT target is three hundred fifty kilowatts per linear foot. At the cluster level, plan for twelve megawatts minimum and twenty-four megawatts preferred. Preserve these labels when the numbers move into requirements, models, or presentations. A value without its level and context can create a confidently wrong design."
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "power_blocks",
+          "audio": {
+            "script_file": "audio/module3/slide_05_power_blocks.txt",
+            "wav_file": "audio/module3/slide_05_power_blocks.wav",
+            "approved": true
+          },
+          "section_label": "Power Architecture",
+          "title": "Four Power Blocks Is a Hall Minimum",
+          "figure": {
+            "path": "figures/m3_power_busway_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m3_power_busway_motion_poster.png",
+            "alt": "A hall contains four correctly proportioned power blocks; a separate row detail compares two and four overhead busways without assigning blocks to fixed zones.",
+            "caption": "Section 5.2 specifies at least four blocks per hall. Block ratings, independence, redundancy and row mapping are not defined there. More busways do not create more upstream power.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "6c31c228d36de56cf7752959064a44b02e6124b101ec2b7be8964bde0067cf76",
+              "entries": [
+                {
+                  "text": "BLOCK 1",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "BLOCK 2",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "BLOCK 3",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "BLOCK 4",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "≥ 4 per hall · ratings and topology require the design",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HALL MINIMUM",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SEPARATE ROW DESIGN",
+                  "at_seconds": 20.467
+                },
+                {
+                  "text": "2",
+                  "at_seconds": 20.467
+                },
+                {
+                  "text": "BUSWAYS",
+                  "at_seconds": 20.467
+                },
+                {
+                  "text": "Distribution hardware ≠ additional upstream supply",
+                  "at_seconds": 20.467
+                },
+                {
+                  "text": "4",
+                  "at_seconds": 32.167
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "power_block",
+            "busway"
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · p. 8",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=8"
+            },
+            {
+              "label": "Diablo 400 specification",
+              "url": "https://www.opencompute.org/documents/ocp-specification-diablo-400-v0-7-0-final-pdf"
+            },
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure14"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 5,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 17,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 18,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "media_focus": true,
+          "transcript": "Count the power blocks at hall level. Section five point two requires at least four. That sentence does not define a block's megawatt rating, independent feeds, redundancy, or a mandatory one-block-to-one-row mapping. Those details need the actual electrical design.\n\nNow move to the separate row detail. Two busways and four busways are different distribution arrangements. Their number depends on the design and desired row power density. Adding busways does not create upstream power or prove independent supplies.\n\nThe Appendix drawings help visualize routing and equipment, but they are examples. Keep three records distinct: the hall's minimum block count, the available supply and topology, and the row's distribution and connection design. Component specifications can support that review; they do not remove the need to connect these levels."
+        },
+        {
+          "id": 6,
+          "type": "content_diagram",
+          "slug": "cooling_density",
+          "audio": {
+            "script_file": "audio/module3/slide_06_cooling_density.txt",
+            "wav_file": "audio/module3/slide_06_cooling_density.wav",
+            "approved": true
+          },
+          "section_label": "Thermal Architecture",
+          "title": "Keep Blended Capability Separate From the Peak",
+          "figure": {
+            "path": "figures/m3_cooling_split_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m3_cooling_split_motion_poster.png",
+            "alt": "A connected liquid supply-and-return circuit serves physical racks while a distinct residual-air path remains visible; one local peak zone is highlighted. Liquid pipes use blue for supply and red for return.",
+            "caption": "Blended planning by 2028: 25 kW/ft liquid and 15 kW/ft air capabilities—not a universal 40 kW/ft operating load. At the local 350 kW/ft peak condition, the stated split is 335 liquid + 15 air. Pipe key: blue = cooler supply; red = warmer return.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "bd3295a76ddc56a7c99f7e9b46997011582be4f2306dbca1c8bd0f1982e75ab7",
+              "entries": [
+                {
+                  "text": "CDU",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SUPPLY",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "RETURN",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "RESIDUAL AIR RETURN",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "BLENDED CAPABILITIES BY 2028",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "25 liquid · 15 air kW/ft",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Supply → equipment → return",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Separate capabilities",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "—not a universal 40 kW/ft load",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "LOCAL PEAK CONDITION",
+                  "at_seconds": 32.5
+                },
+                {
+                  "text": "335 liquid + 15 air = 350 kW/ft",
+                  "at_seconds": 32.5
+                },
+                {
+                  "text": "LOCAL ZONE",
+                  "at_seconds": 32.5
+                },
+                {
+                  "text": "Local zone—not the whole row",
+                  "at_seconds": 32.5
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 16,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · p. 9",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=9"
+            },
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure12"
+            }
+          ],
+          "media_focus": true,
+          "term_refs": [
+            "cdu"
+          ],
+          "transcript": "Follow the liquid supply into the row, through the equipment branches, and back along the return. The connected circuit matters: floating drops do not explain a cooling system. The separate air path remains visible because liquid-cooled installations can still include air-cooled equipment.\n\nFor blended planning by twenty twenty-eight, the source calls for up to twenty-five kilowatts per foot of liquid capability and fifteen of air capability. These are separately named capabilities, not a universal forty-kilowatt-per-foot operating load.\n\nNow focus on the local high-density zone. At the three-hundred-fifty-kilowatt-per-foot peak condition, Section six point three states three hundred thirty-five liquid plus fifteen air. That split belongs to the peak case, not the entire row by default. The physical loop shown is illustrative; the actual flow, temperatures, pressure losses, and equipment interfaces need engineering verification."
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "manifold_capacity",
+          "audio": {
+            "script_file": "audio/module3/slide_07_manifold_capacity.txt",
+            "wav_file": "audio/module3/slide_07_manifold_capacity.wav",
+            "approved": true
+          },
+          "section_label": "Liquid Distribution",
+          "title": "The Same Pipe Can Pass One Screen and Fail Another",
+          "subtitle": "Table 3 calculates maximum cooling at a stated fluid speed of 3 m/s.",
+          "figure": {
+            "path": "figures/m3_manifold_capacity_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m3_manifold_capacity_motion_poster.png",
+            "alt": "At a fixed illustrative 300 kW liquid load, a two-inch path is compared at the two Table 3 flow ratios; the row backbone and separate rack branches are then distinguished. Liquid pipes use blue for supply and red for return.",
+            "caption": "Illustrative 300 kW capacity screen at Table 3’s 3 m/s assumption: a 2 in path gives 365 kW at 1 lpm/kW, but 243 kW at 1.5 lpm/kW. Neither result approves the actual hydraulic design or connector. Pipe key: blue = cooler supply; red = warmer return.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "bca530858d4198404fde675ba00ec76b9af34378c9dedf39682bb2990c1b5315",
+              "entries": [
+                {
+                  "text": "CDU",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ROW SUPPLY",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ROW RETURN",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "100 kW",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ILLUSTRATIVE LIQUID LOAD",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "300 kW total · fixed row",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "2 in path · 3 m/s",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "1 lpm/kW → 365 kW",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "300 kW demand",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SCREEN PASSES",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "1.5 lpm/kW → 243 kW",
+                  "at_seconds": 21.5
+                },
+                {
+                  "text": "SCREEN FAILS",
+                  "at_seconds": 21.5
+                },
+                {
+                  "text": "ROW ≠ RACK CONNECTION",
+                  "at_seconds": 39.4
+                },
+                {
+                  "text": "Size the branches separately",
+                  "at_seconds": 39.4
+                },
+                {
+                  "text": "Three branches—not one end connector",
+                  "at_seconds": 39.4
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "lpm_per_kw"
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · p. 9",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=9"
+            },
+            {
+              "label": "Project Deschutes specification",
+              "url": "https://www.opencompute.org/documents/ocp-specification-deschutes-v1-0-pdf"
+            },
+            {
+              "label": "Full Table 3 + assumptions",
+              "url": "resources/requirements_ledger.html#table3"
+            },
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure13"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 17,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "media_focus": true,
+          "transcript": "Consider an illustrative three-hundred-kilowatt liquid load. Keep the row and the two-inch flow path fixed. Table three assumes a fluid speed of three meters per second.\n\nAt one liter per minute per kilowatt, the table gives three hundred sixty-five kilowatts of capacity: above this illustrative load. If the equipment instead requires one point five liters per minute per kilowatt, the same diameter gives only two hundred forty-three kilowatts. That screen fails. The pipe has not become shorter; the required flow per kilowatt has increased.\n\nNext, distinguish the full-row backbone from the individual rack branches. A larger manifold does not mean its entire flow passes through one smaller rack connector. The published August twenty twenty-six specification notes a two-inch quick-connect availability limit; verify actual hardware for the project. Use the complete table and assumptions in the linked ledger. Even a passing capacity screen still needs pressure-loss, fluid, temperature, and connector validation."
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module3/slide_08_takeaways.txt",
+            "wav_file": "audio/module3/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "title": "Capacity Planning Must Join Power and Thermal Design",
+          "items": [
+            "Blended density describes the whole data-center mix; peak density protects the highest-powered local zone.",
+            "Revision 0.7.0 sets a 25 kW/ft blended baseline and a 350 kW/ft peak-IT target.",
+            "The cluster baseline is 12 MW minimum and 24 MW preferred.",
+            "Each data hall provides at least four power blocks, while busway count per row remains design-specific.",
+            "Cooling splits, row-manifold sizing, flow ratio, and quick-connect availability must be interpreted together."
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Keep four boundaries distinct: mixed-facility planning, local peak demand, hall power architecture, and the actual row-to-rack connection.\n\nFour power blocks is a minimum count, not a redundancy specification. Liquid capacity depends on the flow assumptions, and a larger row manifold does not approve an individual connector. Carry those distinctions into the next two review decisions."
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Make the Review Decision",
+          "subtitle": "Submit both questions once to continue. Correctness is not required, and retry feedback is available.",
+          "questions": [
+            {
+              "id": "m3_review_q1",
+              "prompt": "Illustrative screen: a 300 kW liquid load uses a 2 in path at Table 3’s 3 m/s. Capacity is 365 kW at 1 lpm/kW, but 243 kW at 1.5 lpm/kW. If the equipment needs 1.5 lpm/kW, what follows?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The capacity screen passes because 365 kW exceeds the load.",
+                  "correct": false,
+                  "feedback_incorrect": "Use the required flow ratio: 243 kW is below 300 kW. A screening failure needs design review; pipe length and a larger upstream manifold do not establish connector suitability."
+                },
+                {
+                  "id": "b",
+                  "text": "The capacity screen fails at the required ratio; revisit the design and validate actual hydraulics.",
+                  "correct": true,
+                  "feedback_incorrect": "Use the required flow ratio: 243 kW is below 300 kW. A screening failure needs design review; pipe length and a larger upstream manifold do not establish connector suitability."
+                },
+                {
+                  "id": "c",
+                  "text": "The path passes if the same pipe is made longer.",
+                  "correct": false,
+                  "feedback_incorrect": "Use the required flow ratio: 243 kW is below 300 kW. A screening failure needs design review; pipe length and a larger upstream manifold do not establish connector suitability."
+                },
+                {
+                  "id": "d",
+                  "text": "A 4 in row manifold proves a matching 4 in quick connect is suitable.",
+                  "correct": false,
+                  "feedback_incorrect": "Use the required flow ratio: 243 kW is below 300 kW. A screening failure needs design review; pipe length and a larger upstream manifold do not establish connector suitability."
+                }
+              ],
+              "feedback_correct": "Correct. Use the required flow ratio: 243 kW is below 300 kW. A screening failure needs design review; pipe length and a larger upstream manifold do not establish connector suitability.",
+              "feedback_incorrect": "Use the required flow ratio: 243 kW is below 300 kW. A screening failure needs design review; pipe length and a larger upstream manifold do not establish connector suitability."
+            },
+            {
+              "id": "m3_review_q2",
+              "prompt": "A proposal claims: “Four hall power blocks and four row busways prove four independent feeds and enough liquid capacity.” Which review responses are justified? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Ask for ratings, topology and redundancy evidence; §5.2’s minimum block count does not define these.",
+                  "correct": true,
+                  "feedback_incorrect": "Counts, upstream supply, distribution topology and liquid performance are separate evidence requirements. The minimum block count does not imply independent feeds or thermal adequacy."
+                },
+                {
+                  "id": "b",
+                  "text": "Evaluate the full-row manifold, branch demands and actual connection hardware separately.",
+                  "correct": true,
+                  "feedback_incorrect": "Counts, upstream supply, distribution topology and liquid performance are separate evidence requirements. The minimum block count does not imply independent feeds or thermal adequacy."
+                },
+                {
+                  "id": "c",
+                  "text": "Accept independence because the block and busway counts match.",
+                  "correct": false,
+                  "feedback_incorrect": "Counts, upstream supply, distribution topology and liquid performance are separate evidence requirements. The minimum block count does not imply independent feeds or thermal adequacy."
+                },
+                {
+                  "id": "d",
+                  "text": "Check local peak demand separately from the mixed-facility baseline.",
+                  "correct": true,
+                  "feedback_incorrect": "Counts, upstream supply, distribution topology and liquid performance are separate evidence requirements. The minimum block count does not imply independent feeds or thermal adequacy."
+                }
+              ],
+              "feedback_correct": "Correct. Counts, upstream supply, distribution topology and liquid performance are separate evidence requirements. The minimum block count does not imply independent feeds or thermal adequacy.",
+              "feedback_incorrect": "Counts, upstream supply, distribution topology and liquid performance are separate evidence requirements. The minimum block count does not imply independent feeds or thermal adequacy."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "First, evaluate the illustrative three-hundred-kilowatt load using the required flow ratio. The relevant values from Table three are in the question; decide which capacity screen applies.\n\nSecond, review a claim that matching power-block and busway counts prove independent feeds and enough cooling. Select every justified response. Submit both answers to continue. Separate the source's explicit statements from the engineering conclusions that still need evidence."
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next",
+          "audio": {
+            "script_file": "audio/module3/slide_10_up_next.txt",
+            "wav_file": "audio/module3/slide_10_up_next.wav",
+            "approved": true
+          },
+          "next_module_number": 4,
+          "next_module_title": "Apply 0.7 Without Freezing Innovation",
+          "thank_you_message": "Nice work - you have finished Module 3: Power and Cooling at AI Density.",
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 4,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 10,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "The final module turns those checks into a review record. We will compare physical design options, evaluate a constrained-site proposal, and make the remaining assumptions and approvals visible."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "apply_without_freezing_innovation",
+      "title": "Apply 0.7 Without Freezing Innovation",
+      "subtitle": "Use the normative core as a compatibility test while preserving implementation choice.",
+      "module_badge_text": "Module 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "audio": {
+            "script_file": "audio/module4/slide_01_title.txt",
+            "wav_file": "audio/module4/slide_01_title.wav",
+            "approved": true
+          },
+          "title": "Apply 0.7 Without Freezing Innovation",
+          "subtitle": "Turn the requirement set into a repeatable design and review practice",
+          "version_chip": "Revision 0.7.0 - Implementation",
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 4,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 10,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Module four is about applying Revision 0.7 without freezing innovation. A useful standard makes projects more compatible and predictable. It should not turn one contributor's reference concept into the only valid building design.\n\nWe will use the boundary between the normative core and the non-normative Appendix to create a disciplined, auditable workflow for site-specific decisions."
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "audio": {
+            "script_file": "audio/module4/slide_02_objectives.txt",
+            "wav_file": "audio/module4/slide_02_objectives.wav",
+            "approved": true
+          },
+          "title": "Decisions You Will Make With the Specification",
+          "subtitle": "By the end of this module, you will be able to:",
+          "objectives": [
+            "Separate normative requirements from non-normative Appendix concepts.",
+            "Use common interfaces without treating one example as the only valid design.",
+            "Adapt implementation choices to regional and site constraints.",
+            "Run a concise Revision 0.7.0 compatibility review and identify follow-on resources."
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 4,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 10,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "By the end of this module, you should be able to use Appendix concepts without treating them as requirements, distinguish shared targets from project-specific interfaces, and document an unresolved site variation.\n\nThe goal is a traceable review: source, site condition, proposed response, evidence, owner, and disposition. A plausible drawing is the start of that conversation, not its approval."
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "appendix_options",
+          "audio": {
+            "script_file": "audio/module4/slide_03_appendix_options.txt",
+            "wav_file": "audio/module4/slide_03_appendix_options.wav",
+            "approved": true
+          },
+          "section_label": "Normative Boundary",
+          "title": "Compare One Design Choice at a Time",
+          "figure": {
+            "path": "figures/m4_appendix_options_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m4_appendix_options_motion_poster.png",
+            "alt": "A physical rack line compares a rear fanwall with in-row coolers occupying real gaps, then separately compares busway count and overhead space.",
+            "caption": "Teaching comparison informed by Google and NVIDIA Appendix concepts (pp. 12–16). Cooling placement and busway count are separate choices. Service access and overhead clearances must be rechecked for each proposed arrangement.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "600570a88cbaab9a4486a15aa1783ceccdba36bbfad598aecdbd40e1440565c0",
+              "entries": [
+                {
+                  "text": "REAR FANWALL → IN-ROW COOLING",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "First: keep two busways unchanged",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "COOLERS TAKE REAL RACK-LINE POSITIONS",
+                  "at_seconds": 17.933
+                },
+                {
+                  "text": "Service aisle stays in front of the equipment",
+                  "at_seconds": 17.933
+                },
+                {
+                  "text": "NOW CHANGE DISTRIBUTION ONLY",
+                  "at_seconds": 32.9
+                },
+                {
+                  "text": "4 busways",
+                  "at_seconds": 32.9
+                },
+                {
+                  "text": "Check height",
+                  "at_seconds": 32.9
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "busway"
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 4,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 10,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 12,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 14,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 15,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 16,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "media_focus": true,
+          "reference_links": [
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure5"
+            }
+          ],
+          "transcript": "First compare cooling placement while the busway arrangement stays unchanged. A rear fanwall and in-row coolers use space differently. In-row units occupy real positions in the rack line; they cannot simply cover the rack fronts. Service access and air paths need to remain workable.\n\nThen compare busway count separately. Additional busways and tray tiers can change the overhead coordination problem. Recheck the height; do not assume that different arrangements fit the same volume.\n\nThe Google and NVIDIA Appendix concepts provide useful reference views for these questions. They are non-normative examples, not mandatory construction details. The course animation separates the design variables to make the tradeoffs visible; it does not certify a combined design. Return to the core text and the actual site evidence for each acceptance decision."
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "standardize_handshake",
+          "audio": {
+            "script_file": "audio/module4/slide_04_standardize_handshake.txt",
+            "wav_file": "audio/module4/slide_04_standardize_handshake.wav",
+            "approved": true
+          },
+          "section_label": "Implementation Principle",
+          "title": "Compatibility Must Be Demonstrated",
+          "figure": {
+            "path": "figures/m4_interface_flexibility_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/m4_interface_flexibility_motion_poster.png",
+            "alt": "Different rack systems are evaluated separately for physical fit, electrical connection, liquid connection and operational agreement; no universal docking connector is depicted. Liquid pipes use blue for supply and red for return.",
+            "caption": "Conceptual review model, not a universal connector standard. The 0.7 baseline sets selected facility targets; telemetry and operating agreements also depend on broader initiative work and project-specific engineering. Pipe key: blue = cooler supply; red = warmer return.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "timing": "narration-length",
+            "text_inventory": {
+              "sha256": "986eeeca2d8909d2734bf124d849cd110821889ba22f69e8540adad34c065d5d",
+              "entries": [
+                {
+                  "text": "System A",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "System B",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SHARED TARGETS ≠ IDENTICAL CONNECTIONS",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "PHYSICAL",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Load · route · fit",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ELECTRICAL",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Rating · topology",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "LIQUID",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Flow · conditions",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "FIT",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Verify each candidate’s envelope and movement route",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Different implementations need connection evidence",
+                  "at_seconds": 15.433
+                },
+                {
+                  "text": "The actual fluid interface must be validated",
+                  "at_seconds": 24.7
+                },
+                {
+                  "text": "OPERATING AGREEMENTS: define owners and evidence",
+                  "at_seconds": 37.033
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "telemetry",
+            "sla"
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 12,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 15,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "37:42-41:33"
+            }
+          ],
+          "media_focus": true,
+          "reference_links": [
+            {
+              "label": "Explore source figures",
+              "url": "resources/source_figures.html#figure10"
+            }
+          ],
+          "transcript": "Different rack systems can be evaluated against the same facility targets without sharing an identical connector. Start with the physical boundary: weight, movement, envelope, and access. Then examine the electrical connection, rating, and supply arrangement. Next check the liquid connection, required flow, pressure, and temperature conditions.\n\nThe second system may need a different implementation or a documented adaptation. That is not automatic failure, but it is also not plug-and-play proof. Each boundary requires evidence and a responsible reviewer.\n\nFinally, agree on service responsibilities and operating information. Telemetry and service-level agreements belong to the broader initiative and project coordination; Revision 0.7 does not fully specify universal interfaces for them. This is a conceptual review model, not a new standardized docking product."
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "site_adaptation",
+          "audio": {
+            "script_file": "audio/module4/slide_05_site_adaptation.txt",
+            "wav_file": "audio/module4/slide_05_site_adaptation.wav",
+            "approved": true
+          },
+          "section_label": "Regional Adaptation",
+          "title": "A Site Variation Needs an Evidence Record",
+          "figure": {
+            "path": "figures/site_adaptation.svg",
+            "alt": "A filled review record for an illustrative 17-foot-six-inch floor-to-beam site records the source requirement, proposed custom design, evidence, owner and unresolved disposition.",
+            "caption": "Illustrative case, not an approved exception: a 17 ft 6 in site needs a custom design under §4.2. The MEP lead coordinates clearance, thermal, structural, fire and maintenance evidence with accountable reviewers. Status remains OPEN until resolved.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "b58dd4a1c3d047c83ff3111cb9978c3ebd2af38a4e8e9b7473a76dabef4cf9b4",
+              "entries": [
+                {
+                  "text": "ILLUSTRATIVE SITE-VARIATION RECORD"
+                },
+                {
+                  "text": "SOURCE"
+                },
+                {
+                  "text": "§4.2 · 18 ft floor to beam · two busways"
+                },
+                {
+                  "text": "SITE"
+                },
+                {
+                  "text": "17 ft 6 in measured floor to beam"
+                },
+                {
+                  "text": "PROPOSAL"
+                },
+                {
+                  "text": "Custom overhead arrangement · unresolved"
+                },
+                {
+                  "text": "EVIDENCE"
+                },
+                {
+                  "text": "Clearance, plenum, thermal, structure, fire, access"
+                },
+                {
+                  "text": "OWNER"
+                },
+                {
+                  "text": "MEP lead + accountable specialists / operator"
+                },
+                {
+                  "text": "STATUS"
+                },
+                {
+                  "text": "OPEN · required reviews and acceptance pending"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "20:43-23:37"
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "37:42-41:33"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec · p. 7",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf#page=7"
+            },
+            {
+              "label": "Use the review worksheet",
+              "url": "resources/compatibility_review.html"
+            }
+          ],
+          "transcript": "Consider a site with seventeen feet six inches from floor to beam underside. The proposed two-busway arrangement is below the eighteen-foot reference in Section four point two. That section explicitly calls for custom design variations where facilities cannot meet the standard.\n\nThe review record therefore names the source and datum, records the measured site condition, and describes a proposed custom overhead arrangement. The evidence must address clearances, the air plenum, thermal performance, structural implications, fire protection, and maintenance access. The MEP lead coordinates those reviews with the accountable specialists and operator.\n\nThe status is open. An Appendix picture and a claim of equivalent intent do not complete the review. Use the linked worksheet to record assumptions, evidence, owners, and unresolved approvals. This is an illustrative case, not an approved exception or blanket permission to vary other requirements.",
+          "media_focus": true
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "living_baseline",
+          "audio": {
+            "script_file": "audio/module4/slide_06_living_baseline.txt",
+            "wav_file": "audio/module4/slide_06_living_baseline.wav",
+            "approved": true
+          },
+          "section_label": "Implementation Review",
+          "title": "Use 0.7 as a Living Design Baseline",
+          "subtitle": "A concise review keeps authority, interfaces, and assumptions visible.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "1. Confirm authority",
+              "body": "Use the published 0.7 core, dated August 27, 2026. Preserve the wording of requirements, recommendations and targets; keep Appendix examples separate."
+            },
+            {
+              "title": "2. Verify movement",
+              "body": "Check rack, sidecar, handling equipment, docks, doors, lifts, routes, and floor capacity."
+            },
+            {
+              "title": "3. Map the row",
+              "body": "Coordinate rack envelope, aisle clearances, pitch, overhead space, and service access."
+            },
+            {
+              "title": "4. Size capacity",
+              "body": "Apply blended and peak density at the correct levels; join power and thermal planning."
+            },
+            {
+              "title": "5. Document interfaces",
+              "body": "Record physical, electrical and fluid evidence. Identify project-specific telemetry and operational agreements separately from defined 0.7 targets."
+            },
+            {
+              "title": "6. Track evolution",
+              "body": "Revisit the baseline as the specification, regional rules, and equipment roadmaps change."
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Review worksheet",
+              "url": "resources/compatibility_review.html"
+            },
+            {
+              "label": "Requirements ledger",
+              "url": "resources/requirements_ledger.html"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 4,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 8,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 9,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 11
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "59:10-61:03"
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Use the worksheet to join six review areas: source authority, equipment movement, row geometry, capacity, interface evidence, and version control.\n\nRecord the published specification date alongside its requirements, recommendations, and targets. Keep project-specific telemetry and operating agreements distinct from what 0.7 actually defines. Give each open item an owner and required evidence. Revisit the record when the site, equipment, or source changes. The useful outcome is a visible decision trail—not a checklist of unexplained green ticks."
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "audio": {
+            "script_file": "audio/module4/slide_07_takeaways.txt",
+            "wav_file": "audio/module4/slide_07_takeaways.wav",
+            "approved": true
+          },
+          "title": "A Repeatable Path From Specification to Facility",
+          "items": [
+            "The normative core defines requirements; the Appendix provides non-normative design concepts.",
+            "Common interfaces protect compatibility while implementation details remain open.",
+            "Site and regional constraints require explicit, documented engineering choices.",
+            "A sound review joins structure, conveyance, row geometry, power, cooling, and operations.",
+            "Revision 0.7.0 is a living baseline supported by broader OCP work on energy, telemetry, SLAs, and power estimation."
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 4,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 6
+            },
+            {
+              "source": "2026 OCP EMEA panel discussion - Transcript.txt",
+              "timestamp": "59:10-61:03"
+            }
+          ],
+          "transcript": "The core and the Appendix have different roles. Preserve the source's wording and use examples to explore physical options, not to bypass review.\n\nA defensible implementation record connects a requirement or target to the site condition, proposed design, evidence, owner, and disposition. Unresolved does not mean failed; it means the missing decision remains visible."
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "audio": {
+            "script_file": "audio/module4/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module4/slide_08_knowledge_check.wav",
+            "approved": true
+          },
+          "title": "Make the Review Decision",
+          "subtitle": "Submit both questions once to continue. Correctness is not required, and retry feedback is available.",
+          "questions": [
+            {
+              "id": "m4_review_q1",
+              "prompt": "A site has 17 ft 6 in from floor to beam. The team cites an Appendix layout and calls its two-busway design compliant without a clearance or thermal review. How should the record read?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Approved, because Appendix drawings permit any lower ceiling.",
+                  "correct": false,
+                  "feedback_incorrect": "Section 4.2 explicitly recognizes constrained-site custom designs, but an Appendix example is not proof. Record the variation and unresolved engineering reviews; do not declare compliance yourself."
+                },
+                {
+                  "id": "b",
+                  "text": "Rejected permanently, because §4.2 never allows a custom ceiling design.",
+                  "correct": false,
+                  "feedback_incorrect": "Section 4.2 explicitly recognizes constrained-site custom designs, but an Appendix example is not proof. Record the variation and unresolved engineering reviews; do not declare compliance yourself."
+                },
+                {
+                  "id": "c",
+                  "text": "Open: §4.2 calls for custom design at constrained sites; the proposal needs documented evidence and accountable review.",
+                  "correct": true,
+                  "feedback_incorrect": "Section 4.2 explicitly recognizes constrained-site custom designs, but an Appendix example is not proof. Record the variation and unresolved engineering reviews; do not declare compliance yourself."
+                },
+                {
+                  "id": "d",
+                  "text": "Approved once the dimension is relabeled floor-to-ceiling.",
+                  "correct": false,
+                  "feedback_incorrect": "Section 4.2 explicitly recognizes constrained-site custom designs, but an Appendix example is not proof. Record the variation and unresolved engineering reviews; do not declare compliance yourself."
+                }
+              ],
+              "feedback_correct": "Correct. Section 4.2 explicitly recognizes constrained-site custom designs, but an Appendix example is not proof. Record the variation and unresolved engineering reviews; do not declare compliance yourself.",
+              "feedback_incorrect": "Section 4.2 explicitly recognizes constrained-site custom designs, but an Appendix example is not proof. Record the variation and unresolved engineering reviews; do not declare compliance yourself."
+            },
+            {
+              "id": "m4_review_q2",
+              "prompt": "What belongs in that site-variation record? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The 0.7 version, source section, exact datum, site measurement and proposed variation.",
+                  "correct": true,
+                  "feedback_incorrect": "A traceable record connects source authority to site conditions, evidence, ownership and disposition. Appendix examples can inform the design but cannot replace the governing text."
+                },
+                {
+                  "id": "b",
+                  "text": "The engineering evidence, assumptions, owners and unresolved approvals.",
+                  "correct": true,
+                  "feedback_incorrect": "A traceable record connects source authority to site conditions, evidence, ownership and disposition. Appendix examples can inform the design but cannot replace the governing text."
+                },
+                {
+                  "id": "c",
+                  "text": "The Appendix drawing treated as the governing requirement instead of §4.2.",
+                  "correct": false,
+                  "feedback_incorrect": "A traceable record connects source authority to site conditions, evidence, ownership and disposition. Appendix examples can inform the design but cannot replace the governing text."
+                },
+                {
+                  "id": "d",
+                  "text": "Physical, power, cooling, maintenance and operating impacts, including agreements beyond the 0.7 scope.",
+                  "correct": true,
+                  "feedback_incorrect": "A traceable record connects source authority to site conditions, evidence, ownership and disposition. Appendix examples can inform the design but cannot replace the governing text."
+                }
+              ],
+              "feedback_correct": "Correct. A traceable record connects source authority to site conditions, evidence, ownership and disposition. Appendix examples can inform the design but cannot replace the governing text.",
+              "feedback_incorrect": "A traceable record connects source authority to site conditions, evidence, ownership and disposition. Appendix examples can inform the design but cannot replace the governing text."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 4,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 7,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 10,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            }
+          ],
+          "transcript": "Review the constrained-site proposal. Decide whether a seventeen-foot-six-inch site and an Appendix drawing are enough to close the overhead review, or whether a documented custom design remains open.\n\nThen select the information that belongs in its evidence record. Submit both answers. The goal is to distinguish a supported decision from an assumption that still needs an accountable reviewer."
+        },
+        {
+          "id": 9,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "audio": {
+            "script_file": "audio/module4/slide_09_course_complete.txt",
+            "wav_file": "audio/module4/slide_09_course_complete.wav",
+            "approved": true
+          },
+          "course_title": "Open Data Center for AI",
+          "thank_you_message": "Thank you for completing Module 4: Apply 0.7 Without Freezing Innovation.",
+          "cert_message": "You have practiced tracing deployment constraints, reading capacity screens, and separating requirements from examples. Use the review worksheet with qualified project reviewers; this course does not approve a facility design.",
+          "reference_links": [
+            {
+              "label": "Published specification · Revision 0.7.0",
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf"
+            },
+            {
+              "label": "Compatibility review worksheet",
+              "url": "resources/compatibility_review.html"
+            },
+            {
+              "label": "Open Data Center whitepaper",
+              "url": "https://www.opencompute.org/documents/ocp-open-data-center-for-ai-whitepaper-final-pdf"
+            },
+            {
+              "label": "OCP EMEA panel recording",
+              "url": "https://www.youtube.com/watch?v=Riz5RgwzUzo"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Open_Data_Center_Spec_0.7_Published.pdf",
+              "page": 1,
+              "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf",
+              "effective_date": "2026-08-27"
+            },
+            {
+              "source": "OCP Open Data Center for AI Whitepaper FINAL.pdf",
+              "page": 11
+            }
+          ],
+          "transcript": "You have completed Open Data Center for AI. You have practiced spotting deployment blockers, keeping capacity values at the correct level, and separating requirements from examples.\n\nTake the compatibility worksheet into your next project discussion. Use the published specification for the technical baseline and the whitepaper and panel for wider context. Record open questions and involve the qualified reviewers who can resolve them. The course helps you frame that review; it does not approve a facility design.\n\nThank you for learning with us. Bring these questions to your next design review, and keep sharing what you learn with the community."
+        }
+      ]
+    }
+  ],
+  "revision": {
+    "date": "2026-09-09",
+    "status": "expert-review candidate",
+    "authority": "User approved COURSE_AUDIT_AND_IMPROVEMENT_PLAN.md recommendations",
+    "unchanged_defaults": [
+      "Leo v2",
+      "eleven_multilingual_v2",
+      "speed 1.18",
+      "autoplay true",
+      "loop true"
+    ],
+    "video_timing": "Finite narration-length timelines; autoplay and looping remain enabled.",
+    "module3_review_feedback": {
+      "authority": "User requested grouped circular audio/transcript controls, left fullscreen, selective source-type citations, stable gallery anchors and blue supply / red return.",
+      "cooling_color_override": {
+        "supply": "#2474C4",
+        "return": "#C8453D",
+        "scope": "Course-owned liquid pipe drawings only; power/emphasis stay OCP green. Original source figures are not recolored."
+      },
+      "narration": "Scripts, audio files, voice and 1.18 synthesis speed unchanged."
+    }
+  },
+  "resources": [
+    {
+      "label": "Published specification · Revision 0.7.0",
+      "url": "https://www.opencompute.org/documents/open-data-center-spec-revision-0-7-0-4-pdf"
+    },
+    {
+      "label": "Compatibility review worksheet",
+      "url": "resources/compatibility_review.html"
+    },
+    {
+      "label": "Requirements ledger and Table 3",
+      "url": "resources/requirements_ledger.html"
+    },
+    {
+      "label": "Complete course transcript",
+      "url": "resources/course_transcript.html"
+    },
+    {
+      "label": "Original source-figure gallery",
+      "url": "resources/source_figures.html"
+    }
+  ],
+  "resource_assets": [
+    "figures/source_fig01_row_envelope.png",
+    "figures/source_fig02_filler_panel.png",
+    "figures/source_fig03_google_row_2028.png",
+    "figures/source_fig04_google_row_2026.png",
+    "figures/source_fig05_google_fanwall.png",
+    "figures/source_fig06_google_inrow.png",
+    "figures/source_fig07_google_two_busway.png",
+    "figures/source_fig08_google_four_busway.png",
+    "figures/source_fig09_nvidia_hac.png",
+    "figures/source_fig10_nvidia_cross_section.png",
+    "figures/source_fig11_nvidia_inrow.png",
+    "figures/source_fig12_power_manifold.png",
+    "figures/source_fig13_row_manifold.png",
+    "figures/source_fig14_busway_connectors.png",
+    "figures/source_fig15_hall_views.png"
+  ]
+}

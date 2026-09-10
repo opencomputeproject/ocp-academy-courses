@@ -20,6 +20,7 @@ import struct
 import sys
 from collections import defaultdict
 from pathlib import Path
+from glossary_audit import audit_glossary
 
 
 VIDEO_SUFFIXES = {".mp4", ".webm", ".mov", ".m4v"}
@@ -116,6 +117,10 @@ def check_course(
     unused = sorted(str(term_id) for term_id in glossary_ids - used_glossary)
     if unused:
         errors.append("glossary entries never attached to a slide: " + ", ".join(unused))
+
+    glossary_errors, glossary_evidence = audit_glossary(course, root)
+    errors.extend(glossary_errors)
+    notes.append(f"{len(glossary_evidence)} glossary placements checked against rendered text, scripts and reviewed media inventories")
 
     if repo_root is not None:
         repo_root = repo_root.resolve()
