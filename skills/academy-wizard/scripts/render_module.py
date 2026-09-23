@@ -128,8 +128,10 @@ def render_title(slide: dict, course: dict, module: dict) -> str:
         "narration_hint",
         "Narration starts automatically. Advance with → or Space",
     )
+    learner_aids = _learner_aids_html(slide, course, centered=True, include_glossary=False)
+    resource_class = " slide-hero--with-resources" if learner_aids else ""
     return f'''
-  <div class="slide slide-hero active" data-slide="{slide["id"]}">
+  <div class="slide slide-hero{resource_class} active" data-slide="{slide["id"]}">
     <div class="hero-content">
       {f'<img src="{esc(course_logo)}" alt="{esc(course.get("course_title",""))}" class="hero-logo animate-in">' if course_logo else ""}
       <h1 class="hero-title animate-in">{esc(title)}</h1>
@@ -139,6 +141,7 @@ def render_title(slide: dict, course: dict, module: dict) -> str:
         <span>{esc(narration_hint)}</span>
       </div>
       {f'<p class="hero-tagline animate-in">{esc(tagline)}</p>' if tagline else ""}
+      {learner_aids}
     </div>
   </div>
 '''
@@ -1460,6 +1463,7 @@ def render_module(course: dict, module_index: int) -> str:
 
   // SCORM integration
   const inLMS = !reviewMode && SCORM.init();
+  const directModuleLinks = {json.dumps((course.get('scorm') or {}).get('navigation') == 'direct')};
   var existingStatus = SCORM.getStatus();
   if (!reviewMode && existingStatus !== 'completed' && existingStatus !== 'passed') {{
     SCORM.setIncomplete();
