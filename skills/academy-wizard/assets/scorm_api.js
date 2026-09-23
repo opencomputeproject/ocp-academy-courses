@@ -5,18 +5,26 @@
 var SCORM = (function() {
   'use strict';
 
+  // Opt-in Slides shell owns one LMS session across all course pages.
+  try {
+    if (window.parent !== window && window.parent.AcademySingleSCO) {
+      var pageSession = window.parent.AcademySingleSCO.forPage(window.location.href);
+      if (pageSession) return pageSession;
+    }
+  } catch (_) { /* A cross-origin LMS ancestor is not a course session. */ }
+
   var api = null;
   var initialized = false;
 
   // Find the SCORM API object from the LMS
   function findAPI(win) {
     var attempts = 0;
-    while ((!win.API) && (win.parent) && (win.parent !== win)) {
-      attempts++;
-      if (attempts > 10) return null;
-      win = win.parent;
+    while (win && attempts++ < 10) {
+      try { if (win.API) return win.API; } catch (_) {}
+      try { if (!win.parent || win.parent === win) break; win = win.parent; }
+      catch (_) { break; }
     }
-    return win.API || null;
+    return null;
   }
 
   function getAPI() {
@@ -29,7 +37,9 @@ var SCORM = (function() {
   }
 
   return {
+    isAvailable: function() { return !!getAPI(); },
     init: function() {
+      if (initialized) return true;
       var lmsAPI = getAPI();
       if (lmsAPI) {
         var result = lmsAPI.LMSInitialize('');
@@ -107,8 +117,8 @@ var SCORM = (function() {
       var lmsAPI = getAPI();
       if (lmsAPI && initialized) {
         var result = lmsAPI.LMSSetValue(String(element), String(value));
-        lmsAPI.LMSCommit('');
-        return result;
+        var committed = lmsAPI.LMSCommit('');
+        return (committed === 'true' || committed === true) ? result : 'false';
       }
       return '';
     },

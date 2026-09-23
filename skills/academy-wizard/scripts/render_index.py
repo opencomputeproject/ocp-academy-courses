@@ -32,6 +32,7 @@ from motion_intro import (
     render_motion_intro,
 )
 from render_scrolling import is_scrolling, render_scrolling_course, runtime_files
+import single_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -122,18 +123,75 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     language = course.get("language") or "en"
     not_started = ui(course, "not_started", "Not Started")
     completed = ui(course, "completed", "Completed")
+    single_sco_course = single_sco.enabled(course)
+    # Separate SCOs do not share a reliable course-wide completion record.
+    show_module_status = single_sco_course and course.get("index_show_module_status", True)
+    direct_module_links = (course.get("scorm") or {}).get("navigation") == "direct"
+    module_links = course.get("index_module_links", single_sco_course or direct_module_links)
+    navigation_instruction = course.get("index_navigation_instruction", "")
+    if not module_links and not navigation_instruction:
+        navigation_instruction = ui(course, "syllabus_instruction", "Use the LMS syllabus to advance through the course modules in any order.")
+    start_config = course.get("index_start") or {}
+    if not isinstance(start_config, dict):
+        raise ValueError("index_start must be an object")
+    start_html = ""
+    if start_config.get("enabled"):
+        if not course.get("modules"):
+            raise ValueError("index_start requires a first module")
+        if not single_sco_course and start_config.get("navigation") != "direct":
+            raise ValueError("Multi-SCO index_start requires an explicitly approved navigation: direct compatibility choice; SCORM 1.2 has no standard target-SCO request")
+        first_module = course["modules"][0]["id"]
+        start_label = start_config.get("label") or ui(course, "start_with_module", "Start with MODULE {module}").format(module=first_module)
+        start_title = ui(course, "go_to_module", "Go to Module {module}").format(module=first_module)
+        start_html = f'''
+<div class="index-start">
+  <span class="index-start-label">{esc(start_label)}</span>
+  <a class="next-module-link index-start-link" href="module{first_module}.html" aria-label="{esc(start_title)}" title="{esc(start_title)}">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 5l7 7-7 7"></path>
+      <path d="M12 5l7 7-7 7"></path>
+    </svg>
+  </a>
+</div>'''
 
     cards = []
     for i, mod in enumerate(course["modules"], start=1):
+        status_html = (
+            f'<div class="status status-incomplete" id="status-{mod["id"]}">{esc(not_started)}</div>'
+            if show_module_status else ""
+        )
+        tag = "a" if module_links else "article"
+        link_attributes = f' href="module{mod["id"]}.html"' if module_links else ''
         cards.append(f'''
-  <a class="module-card" href="module{mod["id"]}.html" data-module="{mod["id"]}">
+  <{tag} class="module-card"{link_attributes} data-module="{mod["id"]}">
     <div class="module-num">{mod["id"]}</div>
     <div class="module-info">
       <h3>{esc(mod.get("title",""))}</h3>
       <p>{esc(mod.get("subtitle",""))}</p>
-      <div class="status status-incomplete" id="status-{mod["id"]}">{esc(not_started)}</div>
+      {status_html}
     </div>
-  </a>''')
+  </{tag}>''')
+
+    progress_script = ""
+    if show_module_status:
+        progress_script = f'''
+  var data = SCORM.getSuspendData();
+  if (data) {{
+    try {{
+      var progress = JSON.parse(data);
+      if (progress && progress.modules) {{
+        progress.modules.forEach(function(m) {{
+          var card = document.querySelector('[data-module="' + m + '"]');
+          var status = document.getElementById('status-' + m);
+          if (card) card.classList.add('completed');
+          if (status) {{
+            status.textContent = {json.dumps(completed, ensure_ascii=False)};
+            status.className = 'status status-completed';
+          }}
+        }});
+      }}
+    }} catch(e) {{}}
+  }}'''
 
     # Split course_title at last space to allow a colored "span" piece, matching the reference.
     parts = course_title.rsplit(" ", 1)
@@ -175,8 +233,13 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 <div class="modules" id="modules">
 {"".join(cards)}
 </div>
+<p id="lmsNavNote" class="index-navigation-instruction"{'' if navigation_instruction else ' hidden'}>{esc(navigation_instruction or 'Use the LMS course navigation to open a module so its completion is recorded correctly.')}</p>
+{start_html}
 
 <div class="footer">
+  <nav aria-label="Course resources" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
+    {''.join('<a href="'+esc(r['url'])+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">'+esc(r['label'])+'</a>' for r in course.get('resources',[]))}
+  </nav>
   {esc(footer_line)}
   {f'<br><span class="version">{esc(tagline)}</span>' if tagline else ""}
 </div>
@@ -186,34 +249,30 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 <script>
 (function() {{
   'use strict';
-  SCORM.init();
-  SCORM.setCompleted();
-  var data = SCORM.getSuspendData();
-  if (data) {{
-    try {{
-      var completed = JSON.parse(data);
-      if (completed && completed.modules) {{
-        completed.modules.forEach(function(m) {{
-          var card = document.querySelector('[data-module="' + m + '"]');
-          var status = document.getElementById('status-' + m);
-          if (card) card.classList.add('completed');
-          if (status) {{
-            status.textContent = {json.dumps(completed, ensure_ascii=False)};
-            status.className = 'status status-completed';
-          }}
-        }});
-      }}
-    }} catch(e) {{}}
-  }}
+  const reviewMode = new URLSearchParams(location.search).get('review') === '1';
+  const inLMS = !reviewMode && SCORM.init();
+  const directModuleLinks = {json.dumps(direct_module_links)};
+  if (!reviewMode) SCORM.setCompleted();
+{progress_script}
 
-  document.querySelectorAll('.module-card').forEach(function(card) {{
+  document.querySelectorAll('a.module-card').forEach(function(card) {{
     card.addEventListener('click', function(e) {{
       var mod = this.getAttribute('data-module');
-      SCORM.setLocation('module' + mod);
+      if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) {{ e.preventDefault(); document.getElementById('lmsNavNote').hidden = false; return; }}
+      if (reviewMode) {{ e.preventDefault(); location.href = this.getAttribute('href') + '?review=1'; return; }}
+      if (!SCORM.isSingleSCO) SCORM.setLocation('module' + mod);
     }});
   }});
 
-  window.addEventListener('beforeunload', function() {{ SCORM.finish(); }});
+  // The optional start link is limited to the first module. It is not an
+  // arbitrary-SCO navigation API and never infers or writes module progress.
+  const startLink = document.querySelector('.index-start-link');
+  if (startLink && reviewMode) startLink.addEventListener('click', function(e) {{
+    e.preventDefault();
+    location.href = this.getAttribute('href') + '?review=1&slide=1';
+  }});
+
+  window.addEventListener('beforeunload', function() {{ if (!reviewMode) SCORM.finish(); }});
 }})();
 </script>
 </body>
@@ -227,6 +286,9 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     truthful even if rendered before audio has been generated. Figures come
     from slides[*].figure.path. The manifest must list every file referenced
     by HTML pages — strict LMSes reject zips with unlisted files."""
+    if single_sco.enabled(course):
+        legacy_course = dict(course, scorm={"version": "1.2", "organization": "multi-sco"})
+        return single_sco.render_manifest(course, render_manifest(legacy_course, out_dir), scorm_metadata_title(course))
     if is_scrolling(course):
         course_slug = course.get("course_slug", "ocp_academy_scrolling_course")
         course_title = scorm_metadata_title(course)
@@ -276,6 +338,9 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             files.append(value)
 
     launcher_files = ["index.html", "scorm_api.js"]
+    local_resources = [r['url'].split('#')[0] for r in course.get('resources',[]) if not r['url'].startswith(('https:','http:'))]
+    for filename in local_resources: add_file(launcher_files, filename)
+    for filename in course.get('resource_assets',[]): add_file(launcher_files,filename)
     add_file(launcher_files, course_logo)
     add_file(launcher_files, academy_logo)
     if motion_intro_enabled(course, "index"):
@@ -291,6 +356,8 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     for mod in course["modules"]:
         mid = mod["id"]
         files = [f"module{mid}.html", "scorm_api.js"]
+        for filename in local_resources: add_file(files, filename)
+        for filename in course.get('resource_assets',[]): add_file(files,filename)
         add_file(files, course_logo)
         add_file(files, academy_logo)
         if motion_intro_enabled(course, "modules"):
@@ -304,6 +371,11 @@ def render_manifest(course: dict, out_dir: Path) -> str:
         # files, so registering them would break the manifest. Video figures
         # may also declare a poster frame; include both runtime files.
         for slide in mod.get("slides", []):
+            for link in slide.get("reference_links", []):
+                if isinstance(link, dict):
+                    add_file(files, link.get("logo"))
+                    url=link.get('url','')
+                    if url and not url.startswith(('https:','http:','#')): add_file(files,url.split('#')[0])
             fig = slide.get("figure")
             if not fig or not fig.get("path"):
                 continue
@@ -316,6 +388,8 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             poster = fig.get("poster")
             if poster and poster not in files:
                 files.append(poster)
+            for asset in fig.get("assets", []):
+                add_file(files, asset)
         # Audio files declared in course.json (canonical) — derive even if
         # .wav doesn't exist yet, so the manifest stays correct across renders.
         for slide in mod.get("slides", []):
@@ -366,6 +440,9 @@ def main():
     args = p.parse_args()
     course = json.loads(args.course_json.read_text())
     out_dir = args.course_json.resolve().parent
+
+    if single_sco.enabled(course):
+        single_sco.write_runtime(course, out_dir)
 
     (out_dir / "index.html").write_text(render_index_html(course, out_dir))
     print(f"wrote {out_dir / 'index.html'}")
