@@ -4,6 +4,8 @@ A three-module OCP Academy course based on the OCP L.O.C.K. Specification v1.1. 
 
 This course source is intended for PR-friendly editing. Change slides, knowledge checks, glossary links, and figure assignments in `course.json`. Change narration in `audio/moduleN/slide_*.txt`. Generated narration and SCORM runtime files are not checked in.
 
+The SCORM 1.2 package keeps Course Home and the three modules as separate syllabus items. The home page presents informational module tiles and directs learners to launch modules from the LMS Syllabus. Its opt-in “Start with MODULE 1” control is a direct page link for review and compatibility; verify the Module 1 launch and completion in the target LMS before relying on it for tracked learner navigation.
+
 ## Modules
 
 | Module | Title | Estimated learner time | Narrated time | Summary |
