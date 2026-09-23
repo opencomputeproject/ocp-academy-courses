@@ -24,6 +24,9 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
   "spec_version_chip": "Specification v1.6.0 · March 2025",
   "index_footer_line": "Optional exact footer line for the course home page.",
+  "index_show_module_status": false,
+  "index_module_links": false,
+  "index_navigation_instruction": "Optional exact instruction below the module tiles.",
   "target_duration_minutes": 35,
   "audience_level": "intermediate",
   "brand": {
@@ -56,6 +59,59 @@ The wizard maintains a single `course.json` in the working area. It's the source
 ```
 
 `course_title` is learner-facing and appears inside the rendered course.
+For multi-SCO Slides, home tiles never display or infer module progress: no
+status labels, completion coloring or suspend-data reads. The LMS syllabus
+owns that information. `index_show_module_status` applies only to explicitly
+selected single-SCO Slides, where it defaults to true; false hides that UI.
+Scrolling is unaffected.
+
+`index_module_links: false` renders the maintained numbered tiles as
+informational articles, with no links, pointer cursor, hover lift or tab stop.
+This is the multi-SCO default unless an explicitly approved
+`scorm.navigation: "direct"` override is recorded. Single-SCO Slides defaults
+to linked tiles. The explicit `index_module_links` choice takes precedence.
+Copying another course's tile styling does not authorize copying its navigation
+override.
+
+`index_navigation_instruction` places the exact supplied text directly below
+the tiles. For the approved unrestricted Docebo layout use:
+`Navigate modules in any order using the Syllabus in the left sidebar.`
+Match the normal tile body-text size (0.85rem).
+For other LMSs confirm the location and permitted order; the informational-tile
+fallback says `Use the LMS syllabus to advance through the course modules in any order.`
+Supply an accurate course-specific instruction when order is restricted.
+
+An optional first-module action appears below that instruction:
+
+```json
+"index_start": {
+  "enabled": true,
+  "label": "Start with MODULE 1",
+  "navigation": "direct"
+}
+```
+
+The label uses OCP indigo (#343895) and sits left of the canonical 46px circular next-module double-chevron
+control, with the same SVG, colors and pulse. It links only to the first
+authored module. `label` defaults to the localized `start_with_module` UI label;
+the accessible name/title uses `go_to_module`. In multi-SCO courses,
+`navigation: "direct"` must be explicitly recorded after the user requests
+this compatibility behavior and understands that a page link cannot change
+LMS tracking context. It does not enable links on the other tiles. Validate
+the actual LMS launch and completion before packaging; local review alone
+does not prove that handoff. In review mode the destination keeps `review=1`
+and starts at slide 1 without narration or LMS writes. Omit `index_start` to
+leave this action out. These fields do not alter the SCORM version,
+organization, module completion, or bookmark policy.
+
+`scorm.navigation: "direct"` is an explicit course-level compatibility override
+for legacy SST-style page links, including in a multi-SCO LMS. Use it only when
+the user requests that behavior after the tracking limitation is explained:
+direct page links do not ask the LMS to launch a different SCO, so separate
+module tracking must not be claimed from link navigation. Keep the approved
+choice recorded in the course source. Omission retains the guarded default;
+this option does not change the manifest's version or organization.
+
 `language` is a BCP 47 tag. English packages use `course_title` unchanged in
 `imsmanifest.xml`; non-English packages append the English language name in
 parentheses, such as `OCP ESUN (Korean)`. Use `scorm_title` only for an exact

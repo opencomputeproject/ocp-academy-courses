@@ -33,6 +33,7 @@ from motion_intro import (
 )
 from render_scrolling import is_scrolling, render_scrolling_course
 import single_sco
+import legacy_multi_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -900,8 +901,9 @@ def validate_knowledge_check_audio(module: dict) -> None:
 
 def render_module(course: dict, module_index: int) -> str:
     """Return full HTML string for moduleN.html."""
+    legacy_profile = legacy_multi_sco.enabled(course)
     module = course["modules"][module_index]
-    badge_tag = "a" if single_sco.enabled(course) else "div"
+    badge_tag = "a" if single_sco.enabled(course) or legacy_profile else "div"
     home_label = esc(ui(course, "course_home", "Course home"))
     badge_link = f' href="index.html" aria-label="{home_label}" title="{home_label}" style="text-decoration:none;color:inherit"' if badge_tag == "a" else ""
     from glossary_audit import glossary_exclusion_reason
@@ -952,8 +954,9 @@ def render_module(course: dict, module_index: int) -> str:
     enlarged_figure = ui(course, "enlarged_figure", "Enlarged figure")
     lightbox_close_hint = ui(course, "lightbox_close_hint", "Click outside or press Esc to close")
     transcript_map = json.dumps({str(s['id']): {'title': s.get('title') or s.get('next_module_title') or module_title, 'text': s.get('transcript','')} for s in module['slides']}, ensure_ascii=False).replace('</', '<\\/')
-    learner_runtime = (TEMPLATE_DIR / 'learner_features.js').read_text()
+    learner_runtime = (TEMPLATE_DIR / ('learner_features_hbf.js' if legacy_profile else 'learner_features.js')).read_text()
     bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
+    bookmark_declaration = '' if legacy_profile else f'  const BOOKMARK_KEY = {bookmark_key};\n'
 
     return f'''<!DOCTYPE html>
 <html lang="{esc(language)}">
@@ -1036,8 +1039,7 @@ def render_module(course: dict, module_index: int) -> str:
   const totalSlides = slides.length;
   const reviewMode = new URLSearchParams(location.search).get('review') === '1';
   const transcriptMap = {transcript_map};
-  const BOOKMARK_KEY = {bookmark_key};
-  let currentSlide = 1;
+{bookmark_declaration}  let currentSlide = 1;
   const counter = document.getElementById('slideCounter');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');

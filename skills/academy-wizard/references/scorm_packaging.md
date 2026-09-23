@@ -20,6 +20,14 @@ For Docebo, make the warning definite: **a 1.2 material cannot be overwritten wi
 
 ## Docebo navigation limitations
 
+For current Docebo-targeted Slides courses, preserve SCORM 1.2 with Course Home
+and one syllabus SCO per module. The upload **Sequence** checkbox enforces
+linear prerequisites; it is distinct from honoring a targeted navigation
+request. Open DC's 2004 probe accepted `choice` requests but launched the wrong
+SCO in Docebo with Sequence unchecked, while the same probe worked in SCORM
+Cloud. Do not use forced ordering or an unverified version conversion as the
+fix for unrestricted home navigation.
+
 Docebo accepts SCORM 1.2 and 2004 3rd Edition, but its documentation explicitly says sequencing is not supported. It can convert simple sequencing/linear navigation to platform prerequisites at upload; that is not proof that arbitrary in-course choice requests work. Do not promise that changing to 2004 fixes home-page cards or next-module buttons. Require target-LMS verification of those actions and their tracking before calling a multi-SCO package release-ready.
 
 If the LMS cannot launch the correct next SCO from a course button, retain LMS syllabus navigation with honest UI, or propose a single-SCO course whose own home and module buttons control the pages. The latter keeps internal module organization but changes the LMS syllabus and completion reporting to one tracked activity. Obtain approval for that tradeoff; do not silently collapse modules or record later-module progress against the originally launched SCO.
@@ -31,6 +39,9 @@ Primary reference: [Docebo — Uploading and managing SCORM as training material
 The following describes the current 1.2 implementation, not a substitute for a verified 2004 implementation.
 
 ### Opt-in single-SCO Slides
+
+Open DC does **not** use this organization. Its approved five-entry build uses
+the opt-in `hbf-module-only` compatibility profile described below.
 
 Record the choice in `course.json`:
 
@@ -47,6 +58,44 @@ Run `test_single_sco.py` and the muted `test_single_sco_browser.mjs <built-packa
 Changing an existing multi-SCO course to single-SCO **still changes its LMS structure even when the version stays 1.2**. Warn that separate syllabus entries become one activity and existing attempts/bookmarks may not transfer. Recommend a test copy and exporting needed reports before any replacement. This is not the cross-version overwrite restriction, but it must not be described as a guaranteed progress-preserving update. Never delete/reset LMS content as part of building the ZIP.
 
 ## Required files at the package root
+
+### Approved legacy module-only compatibility profile
+
+To reproduce a specifically approved HBF-style Slides deployment, record:
+
+```json
+"scorm": {
+  "version": "1.2",
+  "organization": "multi-sco",
+  "navigation": "direct",
+  "compatibility_profile": "hbf-module-only"
+}
+```
+
+This preserves the original HBF API wrapper (`assets/scorm_api_hbf.js`) and
+the reviewed module runtime (`templates/learner_features_hbf.js`). The scaffold
+copies that wrapper to the ordinary `scorm_api.js` package path. Modules save
+only their module identifier, start at slide 1 on re-entry, retain the course
+home link and existing next-module links, and carry `review=1` through local
+review links. No deployment IDs, private LMS APIs or slide bookmark reads are
+introduced. Informational home tiles still use the shared index renderer.
+
+This is **preservation of approved compatibility behavior**, not a new default
+or a portable target-SCO API. Obtain explicit approval for the direct-link and
+no-slide-resume tradeoffs before selecting it. Separate tracking depends on
+LMS launches; use the Syllabus for arbitrary module selection and test direct
+Start/Next/Home actions in the target LMS. The profile rejects single-SCO,
+Scrolling, other versions, deployment mappings and diagnostic configuration.
+Other courses retain their existing runtime and bookmark behavior. Do not
+copy an installed skill wholesale into a contribution to reproduce this course;
+carry only the relevant changes and preserve unrelated project work.
+
+Run `test_legacy_multi_sco.py`, `test_index_home.py` and the quiet
+`test_syllabus_home_browser.mjs <built-package>` checks. An archive byte-parity
+check against the approved delivery distinguishes rebuild fidelity from LMS
+acceptance; local browser tests do not establish the latter.
+
+### File layout
 
 - `imsmanifest.xml` — the package descriptor.
 - `index.html` — the launcher (the SCO that runs first).
@@ -71,7 +120,7 @@ The XML uses three namespaces (IMS content packaging, ADL SCORM, XSI). Copy them
 ## What the LMS sees
 
 - The LMS can expose `index.html` and each `moduleN.html` as separate SCO syllabus items. Each SCO must manage its own completion status.
-- The Course Home launcher calls `SCORM.init()`, immediately sets `cmi.core.lesson_status` to `completed`, then reads `suspend_data` only to display completion state on module cards.
+- The Course Home launcher calls `SCORM.init()` and immediately sets its own `cmi.core.lesson_status` to `completed`. Multi-SCO home tiles neither read `suspend_data` nor show inferred module completion. Use informational tiles and the syllabus instruction unless an explicitly approved navigation override exists. The opt-in first-module start control is documented in `course_schema.md`; it does not provide a general SCORM 1.2 target-SCO API.
 - Each module page calls `SCORM.init()`, preserves a prior `completed` or `passed` status on revisit, otherwise marks itself `incomplete`, and sets its `lesson_location`.
 - When the learner reaches that module's final slide, the module updates `suspend_data.modules` for visual state and immediately sets its own `cmi.core.lesson_status` to `completed`. Do not wait for all modules before completing the current SCO.
 

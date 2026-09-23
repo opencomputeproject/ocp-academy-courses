@@ -1,4 +1,5 @@
 :root {
+  --ocp-blue: #343895;
   --ocp-green: #8DC63F;
   --ocp-green-dark: #6FA030;
   --ocp-green-light: #A8D86A;
@@ -107,14 +108,15 @@ body {
   background: var(--white);
   border: 1px solid #e5e7eb;
   border-radius: 16px;
-  cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 24px rgba(0,0,0,0.06);
   text-decoration: none;
   color: inherit;
 }
 
-.module-card:hover {
+a.module-card { cursor: pointer; }
+
+a.module-card:hover {
   border-color: var(--ocp-green);
   box-shadow: 0 8px 40px rgba(0,0,0,0.12);
   transform: translateY(-4px);
@@ -168,6 +170,80 @@ body {
 
 .status-incomplete { color: #8a8a8c; }
 .status-completed { color: var(--ocp-green); }
+
+.index-navigation-instruction {
+  margin: 24px auto 0;
+  max-width: 760px;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--ocp-gray, #5F6062);
+}
+
+.index-start {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.index-start-label {
+  color: var(--ocp-blue);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+/* Same canonical control as module_styles.css; tested for visual parity. */
+.next-module-link {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ocp-green);
+  color: var(--white);
+  text-decoration: none;
+  box-shadow: 0 0 0 0 rgba(141,198,63,0.38), 0 0 14px rgba(141,198,63,0.34);
+  animation: play-button-pulse 1.8s ease-in-out infinite;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.next-module-link:hover,
+.next-module-link:focus {
+  background: var(--ocp-green-light);
+  color: var(--white);
+  transform: translateX(2px) scale(1.04);
+  outline: none;
+}
+
+.next-module-link svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes play-button-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(141,198,63,0.38), 0 0 14px rgba(141,198,63,0.34); }
+  50% { box-shadow: 0 0 0 10px rgba(141,198,63,0), 0 0 24px rgba(141,198,63,0.48); }
+}
+
+.index-start-link:focus-visible {
+  outline: 3px solid var(--ocp-gray);
+  outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-module-link { animation: none; }
+}
 
 .footer {
   margin-top: 48px;

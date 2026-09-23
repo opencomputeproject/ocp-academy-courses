@@ -45,24 +45,28 @@ python3 skills/academy-wizard/scripts/slides_course_qa.py \
   courses/open-data-center-for-ai/course.json --repo-root . --fail-on-flags
 ```
 
-Output is a **SCORM 1.2 single-SCO** package under `build/open-data-center-for-ai/`, plus its strict manifest-only ZIP. `launch.html` keeps one LMS session open while the learner uses the existing home page and four modules. The learner-resource builder writes only beneath this output directory. `SKIP_AUDIO=1` permits an incomplete visual preview but not a validated upload package.
+Output is a **SCORM 1.2 multi-SCO** package under `build/open-data-center-for-ai/`, plus its strict manifest-only ZIP. It preserves five original syllabus entries and launch identifiers: Course Home plus four modules. There is no single-session `launch.html` shell. The learner-resource builder writes only beneath this output directory. `SKIP_AUDIO=1` permits an incomplete visual preview but not a validated upload package.
 
-For quiet review, open a generated module using `?review=1&slide=N`; narration starts off and no LMS progress is written. To test the entire session outside an LMS, serve the package over HTTP and open `launch.html`; add `?review=1` for untracked review with narration off. Normal LMS launches retain authored narration defaults. Home cards and next-module buttons navigate inside the course, and the course mark links back to its home. Module bookmarks, quiz attempts and completion marks are retained internally. Docebo records overall completion only when all four modules and their quiz gates are complete.
+For quiet home review, open `index.html?review=1`. The Start button opens Module 1 at slide 1 with narration off and no LMS writes. A module's `?review=1&slide=N` link permits direct editorial review; Home/Next links carry review mode forward. Normal LMS launches retain authored narration defaults. No browser or system audio settings are changed by the build or tests.
 
-### September 10 navigation repair and upload warning
+### Approved September 23 syllabus-led navigation
 
-The September 9 multi-SCO package blocked home-card and next-module clicks in LMS mode. The repair keeps **SCORM 1.2** and explicitly selects `scorm.organization: single-sco`. It avoids both direct navigation between separately tracked SCOs and reliance on unsupported SCORM 2004 sequencing. Existing courses without this option remain multi-SCO; no global default or SCORM-version conversion is imposed.
+Home uses informational numbered tiles without progress labels, inferred completion colors, links or misleading hover effects. Below them it says **Navigate modules in any order using the Syllabus in the left sidebar.** The instruction matches normal tile body text. **Start with MODULE 1**, in OCP indigo, sits left of the same green 46px circular double-chevron control used at non-final module endings.
 
-**The syllabus changes from five separately tracked entries to one course activity, despite keeping version 1.2. Existing attempts/bookmarks may not transfer.** Test a separate Docebo upload and export any needed reports before replacing the old material. Do not treat this as a guaranteed progress-preserving overwrite. No live LMS deletion, reset or upload is part of this repository change. Deleting old Docebo material deletes its tracking.
+The user rejected the earlier one-activity design because separate syllabus entries are required. This source now records `scorm.organization: multi-sco`, `navigation: direct`, and the explicit `compatibility_profile: hbf-module-only`. That profile preserves the reviewed HBF wrapper, module-only bookmarks and ordinary relative Home/Next links. Re-entering a module starts at slide 1; slide-by-slide resume is deliberately absent. There are no course-specific LMS IDs, private APIs, deployment mappings or SCORM 2004 conversion. Other courses do not inherit this compatibility profile.
+
+Use the **LMS Syllabus** to select arbitrary modules. Direct Start/Next/Home links preserve the approved compatibility behavior; they are not standard SCORM 1.2 target-SCO requests and cannot themselves change the LMS tracking context. Actual LMS handoff, module completion and close/reopen behavior still require deployment testing. The final home design was browser-approved; local tests are not new Docebo acceptance. Test a separate upload before changing live training material. No live LMS upload, deletion, reset or progress migration is performed by this contribution.
 
 Run the local regression tests with:
 
 ```bash
 python3 -m unittest discover -s skills/academy-wizard/scripts -p 'test_*.py'
-node skills/academy-wizard/scripts/test_single_sco_browser.mjs build/open-data-center-for-ai
+node skills/academy-wizard/scripts/test_syllabus_home_browser.mjs build/open-data-center-for-ai
 ```
 
-The browser test uses a strict local SCORM 1.2 simulation and disables media playback. It covers every home card, all next-module links, course-home return, quiz gates and records, persistent bookmarks, one-session lifecycle, overall completion, failure warnings, untracked review and a 320px viewport. Actual Docebo acceptance remains required, including player sizing and close/reopen tracking. The package uses an internal iframe; test Docebo's new-window mode if inline playback has sizing or frame restrictions.
+The disposable browser test blocks external network calls and audio playback. It checks informational tiles, exact wording and styling, canonical button parity, keyboard focus, mobile layout down to 320px, first-module review navigation, zero home progress reads, and module-only bookmarking for all four modules. The separate single-SCO regression tests remain for courses that explicitly select that organization; they do not describe this course.
+
+The repository rebuild was compared with the approved September 23 ZIP: 84 of 88 runtime files are byte-identical. The only difference in each of the four module HTML files is one non-executable comment renamed from “TEST ONLY” to “compatibility.” All learner content, behavior, media, the home page, wrapper, resources and manifest are unchanged. Generated WAVs and ZIPs remain outside source control.
 
 ## Approved presentation choices
 

@@ -19,6 +19,7 @@ from pathlib import Path
 from motion_intro import motion_intro_enabled, motion_intro_logo
 from render_scrolling import is_scrolling
 import single_sco
+import legacy_multi_sco
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -32,6 +33,7 @@ def main():
     args = p.parse_args()
 
     course = json.loads(args.course_json.read_text())
+    legacy_profile = legacy_multi_sco.enabled(course)
     if single_sco.enabled(course):  # Validate before output or later paid steps.
         single_sco.configuration(course)
     out = args.output_dir
@@ -41,7 +43,7 @@ def main():
     # output dir, where shutil.copy would raise SameFileError or hit a
     # read-only target.
     api_dst = out / "scorm_api.js"
-    api_src = ASSETS_DIR / "scorm_api.js"
+    api_src = ASSETS_DIR / ("scorm_api_hbf.js" if legacy_profile else "scorm_api.js")
     if api_dst.exists() and api_src.resolve() == api_dst.resolve():
         print(f"skip: scorm_api.js already in place")
     elif api_dst.exists():
