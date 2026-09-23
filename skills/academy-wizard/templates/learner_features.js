@@ -10,6 +10,8 @@ lmsNote.textContent = 'Use the LMS course navigation to open another module so i
 document.body.appendChild(lmsNote);
 const transcriptBtn = document.getElementById('transcriptBtn');
 const narrationModeBtn = document.getElementById('narrationModeBtn');
+const narrationHint = document.querySelector('.hero-start-hint span');
+const narrationEnabledHint = narrationHint ? narrationHint.textContent : '';
 function updateTranscript() {
   const entry = transcriptMap[String(currentSlide)] || {};
   document.getElementById('transcriptTitle').textContent = entry.title || 'Transcript';
@@ -33,8 +35,9 @@ document.addEventListener('keydown', e => {
 function updateNarrationMode() {
   narrationModeBtn.setAttribute('aria-pressed', String(autoPlayAudio));
   narrationModeBtn.title = autoPlayAudio ? 'Narration on — click to turn off' : 'Narration off — click to turn on';
-  const hint = document.querySelector('.hero-start-hint span');
-  if (hint && !autoPlayAudio) hint.textContent = 'Narration is off. Read the transcript or use Play for this slide.';
+  if (narrationHint) narrationHint.textContent = autoPlayAudio
+    ? narrationEnabledHint
+    : 'Narration is off. Read the transcript or use Play for this slide.';
 }
 narrationModeBtn.addEventListener('click', () => {
   autoPlayAudio = !autoPlayAudio;
@@ -70,7 +73,7 @@ slides.forEach(s => {
   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
 });
 storeBookmark(); updateNarrationMode();
-if (inLMS && !SCORM.isSingleSCO) document.addEventListener('click', e => {
+if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener('click', e => {
   const link = e.target.closest('a[href]'); if (!link) return;
   const url = new URL(link.getAttribute('href'), location.href);
   if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {

@@ -13,15 +13,15 @@ Use this reference whenever creating or replacing a course `thumbnail.png`. It d
 
 Use the following shared structure unless an existing series poster establishes a more specific maintained variant:
 
-1. A deep navy or indigo full-bleed background.
+1. A full-bleed background with a restrained deep-navy-to-indigo gradient, as in the SST and AICC references.
 2. The white OCP Academy logo in the upper-left corner with generous clear space.
 3. A compact OCP-green course badge below the logo. Use `OCP` plus a short, recognizable course acronym or topic label in dark navy uppercase text.
 4. A large, bold, uppercase white course title in the left text field. Break long titles into balanced lines; preserve clear separation from the emblem.
 5. An optional uppercase white subtitle for a meaningful title qualifier, set smaller than the main title.
 6. A short OCP-green divider followed by a concise white supporting line near the lower left.
-7. A large white circular emblem on the right, outlined in indigo, containing one simplified technical icon or concept illustration.
-8. A bright OCP-green angled rail or wedge at the far right, partially behind the circular emblem.
-9. Sparse thin circuit, connector, or signal-line accents around the emblem in muted indigo, gray, white, or green.
+7. A large white circular emblem on the right, outlined in indigo, containing one simplified technical icon or concept illustration. Give the emblem restrained depth through a softly shaded face or edge; an indigo-to-green gradient icon tile is appropriate when it strengthens the topic symbol, as in SST.
+8. A bright OCP-green angled rail or wedge at the far right, partially behind the circular emblem, with a gentle green tonal gradient and an adjacent translucent indigo band.
+9. Sparse thin arcs, circuit or signal-line segments, and small connector dots around the emblem in muted indigo, gray, white, or green. Keep these clear of the text field.
 
 Aim for roughly 56-60 percent of the canvas for the left text field and 40-44 percent for the emblem field. The title, emblem, and green rail are the dominant elements; accents stay quiet.
 
@@ -31,10 +31,10 @@ Aim for roughly 56-60 percent of the canvas for the left text field and 40-44 pe
 - Background family: deep navy and indigo, such as `#1D2258`, `#252A6B`, and `#343A86`.
 - Foreground: white, with cool neutral gray for secondary icon structure.
 - Typography: Lato Bold or a close geometric sans-serif. Use uppercase for the badge, title, and title qualifier. Letter spacing must remain natural and legible.
-- Emblem: flat vector-like geometry with bold, readable forms. Use green for the course's key active element and one restrained secondary accent only when it clarifies the concept.
-- Lighting and texture: mostly flat. Very subtle depth inside the emblem is acceptable, but the poster must still read as a branded technical graphic rather than a rendered scene.
+- Emblem: crisp vector-like geometry with bold, readable forms. Use green for the course's key active element or gradient tile; a white symbol can provide contrast within a shaded tile. Use one restrained secondary accent only when it clarifies the concept.
+- Depth and accents are part of the default catalog style: use visible but restrained tonal gradients in the background and green rail, translucent layering, and a few simple arcs or connector dots. Follow SST and AICC rather than flattening the composition into solid-color blocks. Keep the result a clean branded technical graphic.
 
-Avoid photography, server-room hero images, stock-photo treatment, glossy 3D rendering, complex diagrams, decorative gradients, tiny labels, multiple competing icons, text-heavy emblems, and palettes dominated by purple, orange, beige, or slate.
+Avoid photography, server-room hero images, stock-photo treatment, glossy 3D rendering, complex diagrams, competing multicolor gradients, heavy shadows, tiny labels, multiple competing icons, text-heavy emblems, and palettes dominated by purple, orange, beige, or slate.
 
 ## Choosing the emblem
 
@@ -48,13 +48,19 @@ Reduce the course to one inspectable visual idea. Good emblems show the central 
 
 ## Reference workflow
 
-When working in the Academy source repository, inspect two or three recent posters before drafting. The maintained family is exemplified by:
+Inspect the SST and AICC style references before drafting. Copies are bundled here so the visual standard remains available outside the source repository:
+
+- [SST poster](posters/sst.png)
+- [AICC poster](posters/aicc.png)
+
+When working in the Academy source repository, prefer its newest matching versions. The maintained family is exemplified by:
 
 - `courses/ocp-solid-state-transformers/thumbnail.png`
+- `courses/ai-computing-continuum/thumbnail.png`
 - `courses/high-bandwidth-flash/thumbnail.png`
 - `courses/short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/thumbnail.png`
 
-Use available examples as style and composition references only. Do not carry their topic icon, title, acronym, or supporting copy into another course. If these files are unavailable, follow the written composition above.
+Use these examples as style and composition references only. Do not carry their topic icon, title, acronym, or supporting copy into another course. For an existing editable SVG or HTML/CSS poster, update that source and re-render it so exact typography and brand assets stay reproducible. If the reference images are unavailable, follow the written composition above.
 
 For bitmap generation, use the image-generation skill with the available recent posters as referenced images. State each image's role as a style reference. Preserve exact text in the prompt, then inspect the output for spelling and logo accuracy. If generated branding or text is imperfect, retain only the useful visual concept and assemble the logo and typography from authoritative assets rather than accepting a near match.
 
@@ -62,13 +68,13 @@ For bitmap generation, use the image-generation skill with the available recent 
 
 ```text
 Asset type: 800 x 400 OCP Academy LMS course poster, 2:1 landscape.
-Style references: recent OCP Academy catalog posters; preserve their high-level composition and visual hierarchy.
+Style references: SST and AICC OCP Academy catalog posters; preserve their composition, tonal gradients, translucent layers, simple accents, and visual hierarchy.
 Course badge: "<OCP + short acronym>".
 Main title, exact text: "<TITLE>".
 Optional qualifier, exact text: "<QUALIFIER>".
 Supporting line, exact text: "<SHORT LEARNER VALUE>".
 Right emblem: <one simplified technical object or mechanism> inside a white indigo-outlined circle.
-Composition: white OCP Academy logo upper left; green badge; large white title in the left field; short green divider; supporting line; circular emblem on the right; angled OCP-green rail at the far right; sparse circuit-line accents.
+Composition: navy-to-indigo gradient background; white OCP Academy logo upper left; green badge; large white title in the left field; short green divider; supporting line; softly shaded circular emblem on the right; angled OCP-green gradient rail with a translucent indigo band at the far right; sparse arcs, connector lines and dots around the emblem.
 Palette: deep navy and indigo, OCP green #8DC63F, white, cool gray, and at most one restrained topic accent.
 Constraints: exact spelling; no clipped text; no overlap between title and emblem; readable at thumbnail size; no vendor logos; no photorealism; no watermark.
 ```
@@ -84,4 +90,5 @@ Before delivery and before committing:
 - Check that all text stays inside the canvas and does not collide with the emblem.
 - Check that the circular emblem and its contents stay clear of the canvas edges.
 - Confirm visual alignment with the recent catalog references at a glance.
+- Confirm the tonal gradients and simple accents are present and visible at reduced card size without distracting from the title or topic symbol.
 - Save the final source-repository file as `<course-folder>/thumbnail.png` and run repository course QA.

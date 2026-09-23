@@ -36,6 +36,7 @@ courses/
   build-your-brand-in-the-ocp-community/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  grid-disturbance-performance/
   high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
   intro-to-ocp/
@@ -120,6 +121,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `build-your-brand-in-the-ocp-community` | How to Build Your Brand in the OCP Community |
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `grid-disturbance-performance` | Grid Disturbance Performance for Hyperscale Data Centers |
 | `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
 | `integrating-quantum-processing-units-into-data-center-infrastructure` | Integrating Quantum Processing Units into Data Center Infrastructure |
 | `intro-to-ocp/module-1-the-ocp-origins` | Module 1: The OCP Origins |
