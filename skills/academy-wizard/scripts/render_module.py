@@ -1335,9 +1335,14 @@ def render_module(course: dict, module_index: int) -> str:
 
   // ===== KNOWLEDGE CHECKS =====
   let quizInteractionIndex = 0;
+  const QUIZ_STATE_KEY = {json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num) + ':quiz-state')};
 
   function getSuspendObject() {{
-    var data = SCORM.getSuspendData();
+    var data = '';
+    if (!reviewMode) {{
+      if (inLMS) data = SCORM.getSuspendData();
+      else {{ try {{ data = localStorage.getItem(QUIZ_STATE_KEY) || ''; }} catch (_) {{}} }}
+    }}
     var obj = {{ modules: [] }};
     try {{ if (data) obj = JSON.parse(data); }} catch(e) {{}}
     if (!obj || typeof obj !== 'object') obj = {{ modules: [] }};
@@ -1347,7 +1352,10 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   function writeSuspendObject(obj) {{
-    if (!reviewMode) SCORM.setSuspendData(JSON.stringify(obj));
+    if (reviewMode) return;
+    var data = JSON.stringify(obj);
+    if (inLMS) SCORM.setSuspendData(data);
+    else {{ try {{ localStorage.setItem(QUIZ_STATE_KEY, data); }} catch (_) {{}} }}
   }}
 
   function selectedInputs(card) {{
@@ -1383,6 +1391,12 @@ def render_module(course: dict, module_index: int) -> str:
       correct: !!isCorrect,
       attempted: true
     }};
+    writeSuspendObject(obj);
+  }}
+
+  function clearQuizState(questionId) {{
+    var obj = getSuspendObject();
+    if (obj.quizzes) delete obj.quizzes[questionId];
     writeSuspendObject(obj);
   }}
 
@@ -1452,6 +1466,7 @@ def render_module(course: dict, module_index: int) -> str:
       if (retry) retry.addEventListener('click', () => {{
         card.querySelectorAll('input').forEach(input => {{ input.checked = false; }});
         delete card.dataset.attempted;
+        clearQuizState(card.dataset.questionId);
         const box = card.querySelector('.quiz-feedback');
         if (box) {{
           box.textContent = '';
