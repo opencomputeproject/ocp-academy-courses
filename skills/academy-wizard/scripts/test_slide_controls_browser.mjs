@@ -40,6 +40,17 @@ try {
     });
     await fs.writeFile(path.join(tmp, direct ? 'direct.html' : 'guarded.html'), html);
   }
+  const videoCourse = {
+    style: 'Slides', course_slug: 'video-seek-test', course_title: 'Video seek test',
+    motion_intro: {enabled: false},
+    modules: [{id: 1, title: 'Video timing', slides: [
+      {id: 1, type: 'title'},
+      {id: 2, type: 'content_two_column', title: 'Looping visual',
+        figure: {path: 'loop.mp4', media_type: 'video', alt: 'Timing test', loop: true}}
+    ]}]
+  };
+  await fs.writeFile(path.join(tmp, 'video.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(videoCourse), encoding: 'utf8'}));
   browser = await chromium.launch({headless: true, args: ['--mute-audio']});
   const context = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
   await context.route(/^https?:/, route => route.abort());
@@ -98,7 +109,41 @@ try {
       check(await page.locator('.lms-navigation-note').isVisible(), true, 'Guard retains syllabus instruction');
     }
   }
-  check(errors, [], 'No JavaScript errors in either navigation mode');
+  await page.addInitScript(() => {
+    window.Audio = function() {
+      const audio = document.createElement('audio');
+      window.__testAudio = audio;
+      return audio;
+    };
+  });
+  await page.goto(url('video'));
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.locator('#nextBtn').click();
+  await page.locator('.slide.active video.figure-video').waitFor();
+  check(await page.locator('.slide.active video.figure-video').count(), 1,
+    'Video test reaches its looping visual slide');
+  check(await page.evaluate(() => Boolean(window.__testAudio)), true,
+    'Video test captures the narration player');
+  const videoTimes = await page.evaluate(() => {
+    const audio = window.__testAudio;
+    const video = document.querySelector('.slide.active video.figure-video');
+    Object.defineProperty(audio, 'currentTime', {configurable: true, get: () => 22.5});
+    Object.defineProperty(video, 'duration', {configurable: true, get: () => 8});
+    let currentTime = 0;
+    Object.defineProperty(video, 'currentTime', {
+      configurable: true, get: () => currentTime, set: value => { currentTime = value; }
+    });
+    audio.dispatchEvent(new Event('seeking'));
+    const looped = video.currentTime;
+    video.loop = false;
+    audio.dispatchEvent(new Event('seeking'));
+    return {looped, finite: video.currentTime};
+  });
+  check(videoTimes.looped, 6.5, 'Seeking a short looping video wraps to the corresponding visual frame');
+  check(Math.abs(videoTimes.finite - (8 - 1 / 60)) < 0.001, true,
+    'Seeking a finite video stops at its final frame');
+  check(errors, [], 'No JavaScript errors in navigation or video timing checks');
   console.log(`PASS: ${checks} slide-control browser assertions; no live LMS or audio playback.`);
 } finally {
   if (browser) await browser.close();

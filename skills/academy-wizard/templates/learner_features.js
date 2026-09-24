@@ -80,11 +80,17 @@ if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener
     e.preventDefault(); lmsNote.hidden = false;
   }
 });
-// Finite video timelines span the narration; honor learner speed and seeking.
+// Keep visuals in step with narration. Short looping figures use their own cycle;
+// seeking far into the narration must not pin them to their last frame.
 function alignVideo(seek) {
   const video = document.querySelector('.slide.active video.figure-video'); if (!video) return;
   video.playbackRate = audioPlayer.playbackRate;
-  if (seek && Number.isFinite(video.duration)) video.currentTime = Math.min(audioPlayer.currentTime, Math.max(0, video.duration - 1 / 30));
+  if (seek && Number.isFinite(video.duration) && video.duration > 0) {
+    const visualTime = video.loop
+      ? audioPlayer.currentTime % video.duration
+      : Math.min(audioPlayer.currentTime, video.duration);
+    video.currentTime = Math.max(0, Math.min(visualTime, video.duration - 1 / 60));
+  }
 }
 audioPlayer.addEventListener('play', () => { alignVideo(true); const v = document.querySelector('.slide.active video.figure-video'); if (v) v.play().catch(() => {}); });
 audioPlayer.addEventListener('seeking', () => alignVideo(true));
