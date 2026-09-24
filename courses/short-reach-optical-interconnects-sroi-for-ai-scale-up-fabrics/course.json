@@ -8,12 +8,24 @@
   "spec_version_chip": "Whitepaper v1.0.0 · August 2026",
   "target_duration_minutes": 53,
   "audience_level": "intermediate",
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco"
+  },
+  "index_module_links": false,
+  "index_navigation_instruction": "Navigate modules in any order using the Syllabus in the left sidebar.",
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
   "narration": {
     "engine": "elevenlabs",
     "voice_id": "bbGtsRRKUfYO634UxSjz",
     "voice_name": "Leo v2",
     "model_id": "eleven_multilingual_v2",
-    "model_policy": "stable"
+    "model_policy": "stable",
+    "speed": 1.18
   },
   "brand": {
     "primary_color": "#8DC63F",
@@ -283,8 +295,31 @@
             {"bold_lead": "Synchronized traffic", "text": "Collectives create sustained elephant flows carrying gradients, activations, and model state."},
             {"bold_lead": "Idle compute", "text": "Any link bandwidth or latency shortfall leaves expensive accelerators waiting for data."}
           ],
-          "figure": {"path": "figures/scale_up_bottleneck_motion.mp4", "media_type": "video", "poster": "figures/scale_up_bottleneck_motion_poster.png", "alt": "Silent animation of four parallel training streams crossing a scale-up fabric, one path falling behind, the synchronized accelerator group waiting, and computation recovering", "caption": "The scale-up fabric sits directly in the critical path between parallel work and useful accelerator cycles.", "source": "custom", "autoplay": true, "loop": true, "muted": true},
-          "term_refs": ["sroi", "xpu", "pod"],
+          "figure": {
+            "path": "figures/scale_up_bottleneck_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/scale_up_bottleneck_motion_poster.png",
+            "alt": "Silent animation of four parallel training streams crossing a scale-up fabric, one path falling behind, the synchronized accelerator group waiting, and computation recovering",
+            "caption": "The scale-up fabric sits directly in the critical path between parallel work and useful accelerator cycles.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "f6be2b534dfd6597ff8d547b8d8fcaf25372fc06ae9a9f6d515f76863dcd5c4e",
+              "entries": [
+                {"text": "SYNCHRONIZED TRAINING STEP · ALL PATHS FLOWING", "at_seconds": 1.0},
+                {"text": "Parallel work · One job, many communication streams · Tensor parallel · Data parallel · Expert parallel · Pipeline parallel", "at_seconds": 1.0},
+                {"text": "CRITICAL PATH · SCALE-UP FABRIC · bandwidth • latency • reliability", "at_seconds": 1.0},
+                {"text": "Accelerator group · Progress is committed together · XPU 1 · XPU 2 · XPU 3 · XPU 4 · computing", "at_seconds": 1.0},
+                {"text": "SYNC BARRIER · All four results arrive → next step begins · The slowest path paces the synchronized group.", "at_seconds": 1.0},
+                {"text": "ONE PATH FALLING BEHIND · queue building", "at_seconds": 8.0},
+                {"text": "GROUP WAITING · waiting at barrier · Waiting for the delayed result", "at_seconds": 12.0},
+                {"text": "RECOVERED • STEP ADVANCES · computing again · All results arrived → next step begins", "at_seconds": 19.0}
+              ]
+            }
+          },
+          "term_refs": ["sroi", "xpu", "pod", "scale_up"],
           "audio": {"script_file": "audio/module1/slide_03_scale_up_bottleneck.txt", "wav_file": "audio/module1/slide_03_scale_up_bottleneck.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "16-23, 33"}]
         },
@@ -303,7 +338,6 @@
             ["Indicative BW/XPU", "~1,000 GB/s", "~50 GB/s", "~12.5-25 GB/s"],
             ["Primary driver", "Latency + massive bandwidth", "Throughput + cost", "Scale + reliability"]
           ],
-          "term_refs": ["scale_up"],
           "audio": {"script_file": "audio/module1/slide_04_scale_up_not_scale_out.txt", "wav_file": "audio/module1/slide_04_scale_up_not_scale_out.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "28-33"}]
         },
@@ -313,7 +347,21 @@
           "slug": "radix_pod_size",
           "section_label": "Topology Constraint",
           "title": "Radix Converts Link Bandwidth into Pod Size",
-          "figure": {"path": "figures/radix_pod_size.svg", "alt": "Diagram showing switch I/O bandwidth divided among links to determine supported accelerator count", "caption": "For fixed switch I/O, wider links improve accelerator-to-accelerator bandwidth but reduce the number of accelerators the switch can connect.", "source": "custom"},
+          "figure": {
+            "path": "figures/radix_pod_size.svg",
+            "alt": "Diagram showing switch I/O bandwidth divided among links to determine supported accelerator count",
+            "caption": "For fixed switch I/O, wider links improve accelerator-to-accelerator bandwidth but reduce the number of accelerators the switch can connect.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "7ae9f0ad62424b4b81d3c438732a498ec75c8286579c278f21e5e8b17893f068",
+              "entries": [
+                {"text": "FIXED SWITCH I/O BANDWIDTH · B switch"},
+                {"text": "Supported accelerators = B switch / B link · Link width sets the population that one switch can reach."},
+                {"text": "Narrower link · Lower bandwidth per relationship · More connected endpoints"},
+                {"text": "Wider link · Higher bandwidth per relationship · Fewer connected endpoints"}
+              ]
+            }
+          },
           "term_refs": ["radix"],
           "audio": {"script_file": "audio/module1/slide_05_radix_pod_size.txt", "wav_file": "audio/module1/slide_05_radix_pod_size.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "11-12, 56-57"}]
@@ -330,7 +378,20 @@
             {"bold_lead": "Adjacent racks", "text": "Practical cable routes between nearby racks can require 3-7 m."},
             {"bold_lead": "Future Pods", "text": "Scale-up domains of roughly 500-1,000 or more accelerators require multi-rack connectivity."}
           ],
-          "figure": {"path": "figures/rack_reach_transition.svg", "alt": "Single-rack copper Pod expanding into multiple racks connected by optical links", "caption": "Optics becomes an architecture requirement when the compute domain grows beyond the reach of its copper backplane.", "source": "custom"},
+          "figure": {
+            "path": "figures/rack_reach_transition.svg",
+            "alt": "Single-rack copper Pod expanding into multiple racks connected by optical links",
+            "caption": "Optics becomes an architecture requirement when the compute domain grows beyond the reach of its copper backplane.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "a86a0cbb92008e10c099fc1d5f01f757e49df138dc95daab364b62e9a22417bf",
+              "entries": [
+                {"text": "Single rack · Copper fits the physical domain · ~1-1.5 m passive copper"},
+                {"text": "Adjacent racks · The service route exceeds the gap · ~3-7 m routed connection"},
+                {"text": "Multi-rack Pod · Optics preserves one compute domain · SROI up to 30 m · 500-1,000+ accelerators"}
+              ]
+            }
+          },
           "audio": {"script_file": "audio/module1/slide_06_copper_structural_constraint.txt", "wav_file": "audio/module1/slide_06_copper_structural_constraint.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "5, 23-26, 39-48, 66-67"}]
         },
@@ -340,7 +401,24 @@
           "slug": "sroi_reach_regime",
           "section_label": "Reach Taxonomy",
           "title": "SROI Defines a Distinct ≤30-Meter Optical Regime",
-          "figure": {"path": "figures/sroi_reach_regime.svg", "alt": "Reach spectrum from electrical XSR and VSR through SROI to optical DR and FR", "caption": "Within SROI, fiber loss and dispersion recede as design priorities; endpoint density, energy, cost, latency, and reliability take over.", "source": "custom"},
+          "figure": {
+            "path": "figures/sroi_reach_regime.svg",
+            "alt": "Reach spectrum from electrical XSR and VSR through SROI to optical DR and FR",
+            "caption": "Within SROI, fiber loss and dispersion recede as design priorities; endpoint density, energy, cost, latency, and reliability take over.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "d6384913355181491a9981de327ab5b76feb87ff3e4d7d6e7ca73e80d26a093d",
+              "entries": [
+                {"text": "Endpoint integration dominates · Channel impairments dominate"},
+                {"text": "XSR / VSR · mm to cm · Minimal equalization · package-scale paths"},
+                {"text": "Electrical SR · cm to meters · Loss and conditioning grow with reach"},
+                {"text": "SROI · up to 30 m · Density • pJ/b • cost · latency • reliability · SMF or MMF"},
+                {"text": "DR · 500 m · attenuation · OSNR"},
+                {"text": "FR · 2 km · dispersion · link margin"},
+                {"text": "Design for the dominant impairment in each reach class. · SROI is not a reduced-distance implementation of DR or FR."}
+              ]
+            }
+          },
           "term_refs": ["smf", "mmf", "xsr", "vsr", "sr", "dr", "fr"],
           "reference_links": [{"label": "OCP SROI workstream", "url": "https://www.opencompute.org/community/short-reach-optical-interconnect"}],
           "audio": {"script_file": "audio/module1/slide_07_sroi_reach_regime.txt", "wav_file": "audio/module1/slide_07_sroi_reach_regime.wav", "approved": true},
@@ -447,7 +525,22 @@
           "slug": "reach_ladder",
           "section_label": "Physical Topology",
           "title": "The Reach Ladder Runs from Package to Adjacent Rack",
-          "figure": {"path": "figures/reach_ladder.svg", "alt": "Reach ladder from co-packaged copper through backplane, active copper, and adjacent-rack optical links", "caption": "The boundary is not one fixed number: package escape, board loss, connector loss, cable route, and conditioning determine where copper stops being practical.", "source": "custom"},
+          "figure": {
+            "path": "figures/reach_ladder.svg",
+            "alt": "Reach ladder from co-packaged copper through backplane, active copper, and adjacent-rack optical links",
+            "caption": "The boundary is not one fixed number: package escape, board loss, connector loss, cable route, and conditioning determine where copper stops being practical.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "2879f47eaa39966778d82a452f4042c1a78a73d8e69d8cbbe080aeefee3acd4f",
+              "entries": [
+                {"text": "Practical reach is a system budget—not one universal cable number."},
+                {"text": "Package escape · centimeters · traces + connectors · package"},
+                {"text": "Passive copper · ~1–1.5 m · at 200G-class lanes · loss budget varies · ~1 m"},
+                {"text": "Active copper · ~2.5–3 m · conditioning extends reach; power + latency add failure points · ~1.5 m"},
+                {"text": "SROI optical · adjacent racks · ≤30 m class · fiber route is no longer the dominant constraint · density • energy • cost · latency • reliability · ~3 m · 3–7 m+"}
+              ]
+            }
+          },
           "audio": {"script_file": "audio/module2/slide_03_reach_ladder.txt", "wav_file": "audio/module2/slide_03_reach_ladder.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "40-48"}]
         },
@@ -489,8 +582,31 @@
           "slug": "optical_placement",
           "section_label": "O/E Boundary",
           "title": "Optical-Engine Placement Moves the Electrical Boundary",
-          "figure": {"path": "figures/optical_placement_motion.mp4", "media_type": "video", "poster": "figures/optical_placement_motion_poster.png", "alt": "Silent animation moving an optical engine inward within a server or switch tray, from front-panel through connector-adjacent, near-package, and co-packaged positions, while the electrical path to an XPU or switch ASIC shrinks", "caption": "Moving optics toward the ASIC shortens the lossy electrical path and improves efficiency, while making field repair more involved.", "source": "custom", "autoplay": true, "loop": true, "muted": true},
-          "term_refs": ["lpo", "npo", "cpo"],
+          "figure": {
+            "path": "figures/optical_placement_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/optical_placement_motion_poster.png",
+            "alt": "Silent animation moving an optical engine inward within a server or switch tray, from front-panel through connector-adjacent, near-package, and co-packaged positions, while the electrical path to an XPU or switch ASIC shrinks",
+            "caption": "Moving optics toward the ASIC shortens the lossy electrical path and improves efficiency, while making field repair more involved.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "c4586ed4050926313ee96eae4a774fd960448e9b48ae7b05d117c8dbd333a12b",
+              "entries": [
+                {"text": "MOVE THE OPTICAL BOUNDARY INWARD · FRONT-PANEL PLUGGABLE", "at_seconds": 1.0},
+                {"text": "SERVER OR SWITCH TRAY • SIDE VIEW · FRONT PANEL", "at_seconds": 1.0},
+                {"text": "XPU / SWITCH ASIC · high-speed electrical I/O · ELECTRICAL / OPTICAL BOUNDARY · OPTICAL ENGINE", "at_seconds": 1.0},
+                {"text": "PLUGGABLE · CONNECTOR-ADJACENT · NPO · CPO", "at_seconds": 1.0},
+                {"text": "Electrical-path loss + energy · Field-replacement accessibility · Package / thermal integration", "at_seconds": 1.0},
+                {"text": "CONNECTOR-ADJACENT", "at_seconds": 5.0},
+                {"text": "NEAR-PACKAGE OPTICS", "at_seconds": 12.0},
+                {"text": "CO-PACKAGED OPTICS", "at_seconds": 19.0}
+              ]
+            }
+          },
+          "term_refs": ["npo", "cpo"],
           "audio": {"script_file": "audio/module2/slide_06_optical_placement.txt", "wav_file": "audio/module2/slide_06_optical_placement.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "48-51"}]
         },
@@ -615,7 +731,23 @@
           "slug": "naive_substitution",
           "section_label": "Scale Multiplication",
           "title": "A Naive Optical Substitution Fails the Rack Budget",
-          "figure": {"path": "figures/naive_optical_substitution.svg", "alt": "72 accelerators multiplying into 1,296 optical modules, nearly 16 kilowatts, and about 100,000 FIT", "caption": "A component that looks acceptable alone can become unacceptable when a scale-up rack requires more than a thousand of them.", "source": "custom"},
+          "figure": {
+            "path": "figures/naive_optical_substitution.svg",
+            "alt": "72 accelerators multiplying into 1,296 optical modules, nearly 16 kilowatts, and about 100,000 FIT",
+            "caption": "A component that looks acceptable alone can become unacceptable when a scale-up rack requires more than a thousand of them.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "ee28b254385c26614e1cbe6331e3e0804e9ca4f1554a0c0d04cbd2aa3c16d686",
+              "entries": [
+                {"text": "72 accelerators · 18 links per accelerator × 18 800G modules per accelerator = 1,296 modules in one scale-up rack"},
+                {"text": "~16 kW optics power · at roughly 12 W/module"},
+                {"text": "~100k aggregate FIT · using module-class rates"},
+                {"text": "Pod-scale problem · not a module-level problem"},
+                {"text": "Illustrative whitepaper example: straightforward substitution fails the power and reliability multiplication test."}
+              ]
+            }
+          },
+          "term_refs": ["fit"],
           "audio": {"script_file": "audio/module3/slide_03_naive_substitution.txt", "wav_file": "audio/module3/slide_03_naive_substitution.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "page": 61}]
         },
@@ -646,7 +778,32 @@
             {"bold_lead": "Retry", "text": "An uncorrectable event triggers a negative acknowledgement and retransmission."},
             {"bold_lead": "Propagate", "text": "The transaction waits for a full round trip, reducing effective bandwidth across synchronized work."}
           ],
-          "figure": {"path": "figures/retry_tax_motion.mp4", "media_type": "video", "poster": "figures/retry_tax_motion_poster.png", "alt": "Silent animation of protected data passing through FEC and CRC, receiving an acknowledgement, then encountering a residual error, retrying, and stalling useful compute until recovery", "caption": "The cost of an error is not only the bad transfer; it is the time the tightly coupled computation waits for recovery.", "source": "custom", "autoplay": true, "loop": true, "muted": true},
+          "figure": {
+            "path": "figures/retry_tax_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/retry_tax_motion_poster.png",
+            "alt": "Silent animation of protected data passing through FEC and CRC, receiving an acknowledgement, then encountering a residual error, retrying, and stalling useful compute until recovery",
+            "caption": "The cost of an error is not only the bad transfer; it is the time the tightly coupled computation waits for recovery.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "1eae6a5915369f5703307d17ab6e158330c68a022a5ca8335db66135880dd6b9",
+              "entries": [
+                {"text": "PROTECTED TRANSFER • SYNCHRONOUS COMPUTE · DELIVERING TRANSFER", "at_seconds": 1.0},
+                {"text": "TRANSFER · data + protection · transaction begins · DATA", "at_seconds": 1.0},
+                {"text": "FEC · correct bit errors · CRC · check residual error · clean · error remains", "at_seconds": 1.0},
+                {"text": "ACK · commit the result · NACK · replay the transfer", "at_seconds": 1.0},
+                {"text": "USEFUL COMPUTE PROGRESS · advancing", "at_seconds": 1.0},
+                {"text": "The retry occupies fabric time and delays every dependent XPU. · Error cost = retransmission + round-trip latency + synchronized stall", "at_seconds": 1.0},
+                {"text": "ACK • RESULT COMMITTED", "at_seconds": 9.0},
+                {"text": "RESIDUAL ERROR DETECTED · error remains", "at_seconds": 14.0},
+                {"text": "NACK • RETRY IN FLIGHT · RETRY · stalled by retry · WAITING A FULL RETRY ROUND TRIP", "at_seconds": 18.0},
+                {"text": "RETRY SUCCEEDS · advancing again", "at_seconds": 22.0}
+              ]
+            }
+          },
           "term_refs": ["crc"],
           "audio": {"script_file": "audio/module3/slide_05_retry_tax.txt", "wav_file": "audio/module3/slide_05_retry_tax.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "55-56, 60-61"}]
@@ -657,8 +814,22 @@
           "slug": "silicon_reliability_target",
           "section_label": "Failure Regimes",
           "title": "The Reliability Target Approaches Silicon",
-          "figure": {"path": "figures/failure_regimes.svg", "alt": "Bathtub curve showing infant, random, and wear-out failure regimes with screening and qualification controls", "caption": "Process screening suppresses infant failures, qualification pushes wear-out beyond service life, and the remaining random rate must approach a silicon-class floor.", "source": "custom"},
-          "term_refs": ["fit"],
+          "figure": {
+            "path": "figures/failure_regimes.svg",
+            "alt": "Bathtub curve showing infant, random, and wear-out failure regimes with screening and qualification controls",
+            "caption": "Process screening suppresses infant failures, qualification pushes wear-out beyond service life, and the remaining random rate must approach a silicon-class floor.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "ffc9b9a85fac4312db279d03538ba4a570280590df2069396c7702996f8d64a8",
+              "entries": [
+                {"text": "operating time · failure rate"},
+                {"text": "Infant failures · screen + burn-in · Process control · prevents early escapes"},
+                {"text": "Random floor · design toward ~2 FIT · Silicon-class target · at Pod-scale population"},
+                {"text": "Wear-out · qualify past service life · Lifetime margin · temperature + aging"},
+                {"text": "Field replaceability does not substitute for a low intrinsic failure rate."}
+              ]
+            }
+          },
           "audio": {"script_file": "audio/module3/slide_06_silicon_reliability_target.txt", "wav_file": "audio/module3/slide_06_silicon_reliability_target.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "55-56, 61-63, 92, 95"}]
         },
@@ -673,7 +844,23 @@
             {"bold_lead": "Laser count", "text": "Multiple lasers compound the total random failure contribution of an optical endpoint."},
             {"bold_lead": "Mitigation", "text": "External laser sources improve replaceability; on-board redundancy can reduce failure impact."}
           ],
-          "figure": {"path": "figures/temperature_laser_reliability.svg", "alt": "Reliability comparison between 70 degree and 40 degree optical operation plus external and redundant laser strategies", "caption": "Cooling and laser architecture change the achievable reliability floor before any repair process begins.", "source": "custom"},
+          "figure": {
+            "path": "figures/temperature_laser_reliability.svg",
+            "alt": "Reliability comparison between 70 degree and 40 degree optical operation plus external and redundant laser strategies",
+            "caption": "Cooling and laser architecture change the achievable reliability floor before any repair process begins.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "efa810f57832a5114202373082370aec3e1ae01c55cf7f257f71827b863e709b",
+              "entries": [
+                {"text": "70°C · Near hot compute · Accelerated optical and laser aging"},
+                {"text": "40°C · Preferred optical goal · Improves lifetime margin"},
+                {"text": "Laser architecture can separate the light source from the hottest, least serviceable location."},
+                {"text": "External laser source · Keep heat and serviceable lasers outside the optical engine"},
+                {"text": "Redundant lasers · Switch to a healthy source without replacing the engine"},
+                {"text": "Thermal placement and laser redundancy are reliability controls—not afterthoughts."}
+              ]
+            }
+          },
           "audio": {"script_file": "audio/module3/slide_07_temperature_lasers.txt", "wav_file": "audio/module3/slide_07_temperature_lasers.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "56, 64-65, 93, 96"}]
         },
@@ -833,7 +1020,24 @@
           "slug": "two_tier_path",
           "section_label": "Deployment Sequence",
           "title": "Near-Term Deployment Follows a Two-Tier Path",
-          "figure": {"path": "figures/two_tier_deployment.svg", "alt": "Serviceability-first LPO and RTLR deployment transitioning toward NPO and CPO as reliability and standards mature", "caption": "The paper favors an accessible optical entry point now, followed by deeper integration when field evidence and open interfaces reduce deployment risk.", "source": "custom"},
+          "figure": {
+            "path": "figures/two_tier_deployment.svg",
+            "alt": "Serviceability-first LPO and RTLR deployment transitioning toward NPO and CPO as reliability and standards mature",
+            "caption": "The paper favors an accessible optical entry point now, followed by deeper integration when field evidence and open interfaces reduce deployment risk.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "69baa8ffb3e6b506446b5cffff671cc0254365d3cb585974514bc20400547d02",
+              "entries": [
+                {"text": "Tier 1 · deploy first · serviceability-first optical I/O"},
+                {"text": "LPO · linear transmit · RTLR · retimed receive"},
+                {"text": "Accessible optical engines · Open electrical interfaces · Field evidence and learning"},
+                {"text": "Tier 2 · integrate · after interfaces and reliability mature"},
+                {"text": "NPO · near package · CPO · co-packaged"},
+                {"text": "Lower electrical loss · Higher edge density · Qualified service model"},
+                {"text": "A staged path reduces deployment risk without treating deep integration as the starting assumption."}
+              ]
+            }
+          },
           "audio": {"script_file": "audio/module4/slide_05_two_tier_path.txt", "wav_file": "audio/module4/slide_05_two_tier_path.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "71-72"}]
         },
@@ -848,7 +1052,29 @@
             {"bold_lead": "Reconfiguration", "text": "Fiber-level paths can right-size hardware to a job or route around failures."},
             {"bold_lead": "New budget", "text": "The link must absorb switch insertion loss, crosstalk, speed, scale, and technology-specific constraints."}
           ],
-          "figure": {"path": "figures/optical_circuit_switching_motion.mp4", "media_type": "video", "poster": "figures/optical_circuit_switching_motion_poster.png", "alt": "Silent animation comparing optical-electrical-optical termination in an electrical switch with a continuous optical circuit that reconfigures from endpoint B to endpoint C", "caption": "OCS removes intermediate electrical I/O from the data path, but makes optical switch loss part of the end-to-end link budget.", "source": "custom", "autoplay": true, "loop": true, "muted": true},
+          "figure": {
+            "path": "figures/optical_circuit_switching_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/optical_circuit_switching_motion_poster.png",
+            "alt": "Silent animation comparing optical-electrical-optical termination in an electrical switch with a continuous optical circuit that reconfigures from endpoint B to endpoint C",
+            "caption": "OCS removes intermediate electrical I/O from the data path, but makes optical switch loss part of the end-to-end link budget.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "0c465c6ccfe9fce08a6583449894f592d66d03979955e005542696848180a495",
+              "entries": [
+                {"text": "TWO WAYS TO STEER CONNECTIVITY · OCS ROUTE: A → B", "at_seconds": 1.0},
+                {"text": "ELECTRICAL SWITCH PATH · ENDPOINT A · light launches · O / E · terminate light · BUFFER + SWITCH · electrical data path · E / O · regenerate light · ENDPOINT B · new optical link · 2 OPTICAL TERMINATIONS", "at_seconds": 1.0},
+                {"text": "OPTICAL CIRCUIT SWITCH PATH · ENDPOINT A · continuous light · OPTICAL CIRCUIT SWITCH · steers wavelengths without O / E / O", "at_seconds": 1.0},
+                {"text": "ENDPOINT B · active route · ENDPOINT C · standby route", "at_seconds": 1.0},
+                {"text": "ONE END-TO-END OPTICAL BUDGET · fiber loss + connectors + OCS insertion loss · 0 INTERMEDIATE O/E", "at_seconds": 1.0},
+                {"text": "OCS RECONFIGURING", "at_seconds": 11.0},
+                {"text": "OCS ROUTE: A → C · ENDPOINT B · standby route · ENDPOINT C · active route", "at_seconds": 15.0}
+              ]
+            }
+          },
           "term_refs": ["ocs"],
           "reference_links": [{"label": "OCP OCS subproject", "url": "https://www.opencompute.org/community/optical-circuit-switching"}],
           "audio": {"script_file": "audio/module4/slide_06_optical_circuit_switching.txt", "wav_file": "audio/module4/slide_06_optical_circuit_switching.wav", "approved": true},
@@ -865,7 +1091,23 @@
             {"bold_lead": "Power sensitivity", "text": "Higher modulation order requires more received optical power for a given BER or SNR."},
             {"bold_lead": "Optical noise", "text": "RIN, shot noise, interferometric noise, and return-loss sensitivity penalize PAM6 and PAM8."}
           ],
-          "figure": {"path": "figures/optical_modulation_tradeoff.svg", "alt": "Comparison showing PAM4 as more tractable for 400G optical signaling than PAM6 or PAM8", "caption": "Copper benefits from lower Nyquist frequency at higher modulation order; optics pays a steeper noise and margin penalty.", "source": "custom"},
+          "figure": {
+            "path": "figures/optical_modulation_tradeoff.svg",
+            "alt": "Comparison showing PAM4 as more tractable for 400G optical signaling than PAM6 or PAM8",
+            "caption": "Copper benefits from lower Nyquist frequency at higher modulation order; optics pays a steeper noise and margin penalty.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "c05090419761cfe3b3454fe0ea335cf94457b098b626bcfa31c073cfb67a35b0",
+              "entries": [
+                {"text": "Same 400G-class payload, different modulation bargain"},
+                {"text": "PAM4 · whitepaper baseline · 4 optical levels · workable level spacing with lower optical penalty"},
+                {"text": "PAM6 · more levels · 6 optical levels · smaller eye openings · harder optical SNR burden"},
+                {"text": "PAM8 · tightest margin · 8 optical levels · least level separation · highest noise sensitivity"},
+                {"text": "Copper values lower Nyquist frequency; direct-detect optics pays heavily for extra amplitude levels."},
+                {"text": "That asymmetry supports a PAM4 optical path even when the adjacent electrical interface uses a different encoding."}
+              ]
+            }
+          },
           "term_refs": ["pam4", "ber", "snr", "rin", "imdd"],
           "audio": {"script_file": "audio/module4/slide_07_pam4_at_400g.txt", "wav_file": "audio/module4/slide_07_pam4_at_400g.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "73-75, 93"}]
@@ -881,7 +1123,28 @@
             {"bold_lead": "Wavelength aggregation", "text": "Multiple wavelengths on a fiber recover aggregate bandwidth without one extremely fast optical lane."},
             {"bold_lead": "System tradeoff", "text": "More lanes or wavelengths shift pressure toward fiber management, connector density, and optical routing."}
           ],
-          "figure": {"path": "figures/slow_wide_wdm_motion.mp4", "media_type": "video", "poster": "figures/slow_wide_wdm_motion_poster.png", "alt": "Silent animation comparing one stressed high-rate optical lane with four slower NRZ lanes mapped to wavelengths and combined by WDM onto one fiber", "caption": "Slow-and-wide optics trades lane speed for parallelism, using more electrical lanes and wavelengths to reach the same aggregate pipe.", "source": "custom", "autoplay": true, "loop": true, "muted": true},
+          "figure": {
+            "path": "figures/slow_wide_wdm_motion.mp4",
+            "media_type": "video",
+            "poster": "figures/slow_wide_wdm_motion_poster.png",
+            "alt": "Silent animation comparing one stressed high-rate optical lane with four slower NRZ lanes mapped to wavelengths and combined by WDM onto one fiber",
+            "caption": "Slow-and-wide optics trades lane speed for parallelism, using more electrical lanes and wavelengths to reach the same aggregate pipe.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "bc5a8b6f91831cb20a6f5cd418ea32a9b399401c954f0671f619dc3699b7f1ad",
+              "entries": [
+                {"text": "TWO WAYS TO BUILD THE AGGREGATE PIPE · EQUAL AGGREGATE BANDWIDTH", "at_seconds": 1.0},
+                {"text": "FAST-AND-NARROW · ONE FAST LANE · high symbol rate · ONE FIBER · one wavelength · HIGHER PER-LANE BANDWIDTH PRESSURE", "at_seconds": 1.0},
+                {"text": "SLOW-AND-WIDE • PARALLEL NRZ + WDM", "at_seconds": 1.0},
+                {"text": "NRZ LANE 1 • λ1 · NRZ LANE 2 • λ2 · NRZ LANE 3 • λ3 · NRZ LANE 4 • λ4", "at_seconds": 1.0},
+                {"text": "WDM · combine λ1–λ4 · ONE FIBER · four wavelengths", "at_seconds": 1.0},
+                {"text": "AGGREGATE = PER-LANE RATE × PARALLEL LANES / WAVELENGTHS", "at_seconds": 1.0}
+              ]
+            }
+          },
           "term_refs": ["wdm"],
           "audio": {"script_file": "audio/module4/slide_08_slow_and_wide.txt", "wav_file": "audio/module4/slide_08_slow_and_wide.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "70-75, 80, 93-97"}]
@@ -897,7 +1160,22 @@
             {"bold_lead": "Optimistic result", "text": "A 448 Gb/s PAM4 analysis suggests about 1 m may be possible under strong technology assumptions."},
             {"bold_lead": "Practical caution", "text": "The paper treats 0.5 m as a more realistic speculative reach while package and SerDes improvements remain uncertain."}
           ],
-          "figure": {"path": "figures/copper_400g_boundary.svg", "alt": "Co-packaged copper path showing a shrinking practical reach from one meter toward half a meter at 448 gigabits per second", "caption": "Copper remains valuable at the shortest tier, but the reach envelope contracts as the lane rate advances.", "source": "custom"},
+          "figure": {
+            "path": "figures/copper_400g_boundary.svg",
+            "alt": "Co-packaged copper path showing a shrinking practical reach from one meter toward half a meter at 448 gigabits per second",
+            "caption": "Copper remains valuable at the shortest tier, but the reach envelope contracts as the lane rate advances.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "b14d54a459820b911a8180124f34bad1b1e12d6c8b1fb59eb7cd0107d37b3d0f",
+              "entries": [
+                {"text": "Co-packaged copper tier · Switch · ASIC · XPU · package · short, dense copper"},
+                {"text": "Value · lowest-reach tier · Constraint · loss rises with rate"},
+                {"text": "Illustrative practical reach envelope · reach · lane rate · lower · 448G"},
+                {"text": "Higher speed compresses copper reach · ~1 m · earlier regime · ~0.5 m · at 448G forecast"},
+                {"text": "Copper is retained where it is strongest; SROI begins where physical placement can no longer stay inside that shrinking envelope."}
+              ]
+            }
+          },
           "audio": {"script_file": "audio/module4/slide_09_copper_at_400g.txt", "wav_file": "audio/module4/slide_09_copper_at_400g.wav", "approved": true},
           "source_refs": [{"source": "SROI White Paper 1.0.0.pdf", "pages": "76-78"}]
         },
