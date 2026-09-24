@@ -108,6 +108,11 @@ try {
       check(page.url(), url(name), 'Default LMS navigation guard remains intact');
       check(await page.locator('.lms-navigation-note').isVisible(), true, 'Guard retains syllabus instruction');
     }
+    await page.goto(url(name) + '?review=1&slide=2');
+    await page.locator('.slide.active .next-module-link').click();
+    await page.waitForURL('**/module2.html?review=1&slide=1');
+    check(page.url(), url('module2') + '?review=1&slide=1',
+      'Next-module link retains quiet local review mode');
   }
   await page.addInitScript(() => {
     window.Audio = function() {

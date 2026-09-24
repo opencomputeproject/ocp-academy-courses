@@ -80,6 +80,15 @@ if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener
     e.preventDefault(); lmsNote.hidden = false;
   }
 });
+if (reviewMode) document.addEventListener('click', e => {
+  const link = e.target.closest('a.next-module-link[href]'); if (!link) return;
+  const url = new URL(link.href);
+  if (url.origin !== location.origin || !/\/module\d+\.html$/.test(url.pathname)) return;
+  e.preventDefault();
+  url.searchParams.set('review', '1');
+  url.searchParams.set('slide', '1');
+  location.href = url.href;
+});
 // Keep visuals in step with narration. Short looping figures use their own cycle;
 // seeking far into the narration must not pin them to their last frame.
 function alignVideo(seek) {
