@@ -56,6 +56,21 @@ Output is written beneath `build/grid-disturbance-performance/`, with the strict
 
 Preserve **SCORM 1.2 multi-SCO**, Course Home and four separate module syllabus entries, and the original launch identifiers. The September 23 home uses informational numbered tiles with no status labels, inferred progress, links or hover lift. Its instruction reads **Navigate modules in any order using the Syllabus in the left sidebar.** Below it, an indigo **Start with MODULE 1** label sits beside the canonical green circular double-chevron control.
 
-The course records the user's approved SST-style direct Start/Next links as `scorm.navigation: direct`. This is an explicit compatibility choice: ordinary page links do not ask an LMS to launch a different SCO. Use the LMS Syllabus for separate module tracking. This course retains the standard slide-resume behavior; it does not select the separate HBF module-only compatibility profile.
+The course records the user's approved SST-style direct Start/Next/Home links as `scorm.navigation: direct`. This is an explicit compatibility choice: ordinary page links do not ask an LMS to launch a different SCO. Use the LMS Syllabus for separate module tracking. This course retains the standard slide-resume behavior; it does not select the separate HBF module-only compatibility profile.
+
+## September 24 player refresh
+
+Rebuild with the current repository-bundled AcademyWizard player. Quiz answers, feedback and attempted state survive module revisits in the LMS and ordinary local playback. Retry clears the saved question. Unfinished modules resume at their own last-viewed slide; completed modules reopen at their final slide, including after browsing backward or retrying a quiz.
+
+The upper-left course mark links to Course Home. Editorial `?review=1` navigation retains review mode through Next and Home; Next starts the following module at slide 1 without reading or changing learner progress. Looping teaching videos seek to the corresponding point within their cycle when narration is resumed or scrubbed. The maintained mobile title layout prevents narrow-screen clipping.
+
+This refresh preserves the course content, forty narration clips, teaching media, poster, syllabus-led home and SCORM 1.2 manifest. Compared with the September 23 delivery, only the four module HTML files change; the other 65 runtime files are byte-identical. Generated pages, narration and the delivery ZIP remain outside source control.
+
+The refreshed build passes source QA, diagram checks, all forty acoustic checks, package validation, 55 Python tests, 103 maintained player browser assertions and 46 home/navigation browser assertions. Run the player and home checks from the repository root after a build:
+
+```bash
+node skills/academy-wizard/scripts/test_slide_resume_browser.mjs build/grid-disturbance-performance
+node skills/academy-wizard/scripts/test_syllabus_home_browser.mjs build/grid-disturbance-performance
+```
 
 All narration passed acoustic checks, every video and diagram was visually reviewed, and desktop/mobile layouts and player interactions passed local browser checks. Target-LMS navigation, resume and separate completion/reporting still require acceptance testing. Local simulation does not establish Docebo tracking compatibility; this contribution does not upload or replace live LMS material.
