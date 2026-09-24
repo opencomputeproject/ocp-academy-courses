@@ -11,6 +11,12 @@ This two-module OCP Academy course is based on Dirk Van Slyke's April 2025 prese
 
 The total narrated runtime is approximately 21.5 minutes. Allow 25–30 minutes for the complete learner experience, including reflection and knowledge checks.
 
+## LMS navigation
+
+This remains a SCORM 1.2 multi-SCO course with separate Course Home, Module 1, and Module 2 syllabus entries. The home uses informational module tiles, directs learners to the LMS Syllabus for either module, and includes a dedicated **Start with MODULE 1** control. It does not infer cross-module completion from the Course Home session.
+
+The Start, next-module, and course-home controls retain this course's approved direct-page compatibility behavior. A relative page link is not a standard SCORM request to launch another SCO, so actual module handoff, separate completion, and resume must be verified in the target LMS before replacing a live course. This refresh does not change the SCORM version or syllabus organization.
+
 ## Editable source
 
 - Change slides, interactions, references, and course metadata in `course.json`.
@@ -20,6 +26,7 @@ The total narrated runtime is approximately 21.5 minutes. Allow 25–30 minutes 
 - The course mark is `build_your_brand_mark.svg`; the LMS poster is `thumbnail.png` at 800 × 400 pixels.
 
 Generated narration WAVs, rendered HTML, SCORM packages, and original research files are intentionally not checked in.
+The source records the approved Leo v2 narration settings and playback pace, display transcripts, and reviewed text inventories for relevant media; rebuilding the player does not require new narration.
 
 ## Build
 

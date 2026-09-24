@@ -21,6 +21,7 @@ import html
 import json
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
 from xml.sax.saxutils import escape as xml_escape
 from motion_intro import (
     load_motion_intro_css,
@@ -48,6 +49,16 @@ def esc(s):
 def ui(course: dict, key: str, default: str) -> str:
     """Return an optional course-localized interface label."""
     return str((course.get("ui_labels") or {}).get(key, default))
+
+
+def local_resource_path(url: str | None) -> str | None:
+    """Return a package-relative link target, ignoring external URL schemes."""
+    if not url:
+        return None
+    parsed = urlsplit(url)
+    if parsed.scheme or parsed.netloc or not parsed.path or parsed.path.startswith("/"):
+        return None
+    return parsed.path
 
 
 LANGUAGE_NAMES = {
@@ -338,7 +349,8 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             files.append(value)
 
     launcher_files = ["index.html", "scorm_api.js"]
-    local_resources = [r['url'].split('#')[0] for r in course.get('resources',[]) if not r['url'].startswith(('https:','http:'))]
+    local_resources = [path for resource in course.get('resources', [])
+                       if (path := local_resource_path(resource.get('url')))]
     for filename in local_resources: add_file(launcher_files, filename)
     for filename in course.get('resource_assets',[]): add_file(launcher_files,filename)
     add_file(launcher_files, course_logo)
@@ -374,8 +386,7 @@ def render_manifest(course: dict, out_dir: Path) -> str:
             for link in slide.get("reference_links", []):
                 if isinstance(link, dict):
                     add_file(files, link.get("logo"))
-                    url=link.get('url','')
-                    if url and not url.startswith(('https:','http:','#')): add_file(files,url.split('#')[0])
+                    add_file(files, local_resource_path(link.get('url')))
             fig = slide.get("figure")
             if not fig or not fig.get("path"):
                 continue

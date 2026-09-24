@@ -114,6 +114,23 @@ class IndexHomeTests(unittest.TestCase):
         self.assertIn('<schemaversion>1.2</schemaversion>', expected)
         self.assertEqual(expected.count('adlcp:scormtype="sco"'), 5)
 
+    def test_manifest_registers_local_links_but_not_contact_or_web_links(self):
+        self.course['resources'] = [
+            {'label': 'Contact', 'url': 'mailto:dirkv@opencompute.org'},
+            {'label': 'Site', 'url': 'https://www.opencompute.org/'},
+        ]
+        self.course['modules'][0]['slides'] = [{
+            'id': 1,
+            'reference_links': [
+                {'label': 'Contact', 'url': 'mailto:dirkv@opencompute.org'},
+                {'label': 'Read locally', 'url': 'resources/guide.pdf#page=2'},
+            ],
+        }]
+        manifest = render_manifest(self.course, Path('.'))
+        self.assertIn('<file href="resources/guide.pdf"/>', manifest)
+        self.assertNotIn('<file href="mailto:', manifest)
+        self.assertNotIn('<file href="https:', manifest)
+
     def test_canonical_button_styles_match_module_control(self):
         templates = Path(__file__).resolve().parent.parent / 'templates'
         index_css = (templates / 'index_styles.css').read_text()

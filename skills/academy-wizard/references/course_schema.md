@@ -27,6 +27,7 @@ The wizard maintains a single `course.json` in the working area. It's the source
   "index_show_module_status": false,
   "index_module_links": false,
   "index_navigation_instruction": "Optional exact instruction below the module tiles.",
+  "index_start": {"enabled": true, "label": "Start with MODULE 1", "navigation": "direct"},
   "target_duration_minutes": 35,
   "audience_level": "intermediate",
   "brand": {
@@ -67,11 +68,12 @@ Scrolling is unaffected.
 
 `index_module_links: false` renders the maintained numbered tiles as
 informational articles, with no links, pointer cursor, hover lift or tab stop.
-This is the multi-SCO default unless an explicitly approved
-`scorm.navigation: "direct"` override is recorded. Single-SCO Slides defaults
-to linked tiles. The explicit `index_module_links` choice takes precedence.
-Copying another course's tile styling does not authorize copying its navigation
-override.
+Record it explicitly for every new or refreshed multi-SCO Slides home, even
+when an approved `scorm.navigation: "direct"` compatibility override exists
+for the start or module-end controls. Only a separately approved linked-tile
+deviation may set it true. Single-SCO Slides defaults to linked tiles. The
+explicit `index_module_links` choice takes precedence. Copying another
+course's tile styling does not authorize copying its navigation override.
 
 `index_navigation_instruction` places the exact supplied text directly below
 the tiles. For the approved unrestricted Docebo layout use:
@@ -81,7 +83,8 @@ For other LMSs confirm the location and permitted order; the informational-tile
 fallback says `Use the LMS syllabus to advance through the course modules in any order.`
 Supply an accurate course-specific instruction when order is restricted.
 
-An optional first-module action appears below that instruction:
+Every new or refreshed multi-SCO Slides home includes a first-module action
+below that instruction:
 
 ```json
 "index_start": {
@@ -100,9 +103,13 @@ this compatibility behavior and understands that a page link cannot change
 LMS tracking context. It does not enable links on the other tiles. Validate
 the actual LMS launch and completion before packaging; local review alone
 does not prove that handoff. In review mode the destination keeps `review=1`
-and starts at slide 1 without narration or LMS writes. Omit `index_start` to
-leave this action out. These fields do not alter the SCORM version,
-organization, module completion, or bookmark policy.
+and starts at slide 1 without narration or LMS writes. A direct link requires
+an explicit compatibility approval; if it is unavailable, use a tested
+LMS-mediated alternative or stop and ask for a navigation decision. The
+renderer still accepts omission for older courses that have not been refreshed,
+but authoring a new or refreshed multi-SCO home must not silently leave the
+start action out. These fields do not alter the SCORM version, organization,
+module completion, or bookmark policy.
 
 `scorm.navigation: "direct"` is an explicit course-level compatibility override
 for legacy SST-style page links, including in a multi-SCO LMS. Use it only when
