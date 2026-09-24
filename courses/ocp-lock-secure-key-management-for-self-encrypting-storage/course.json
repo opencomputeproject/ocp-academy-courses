@@ -85,7 +85,12 @@
     {
       "id": "mek",
       "term": "MEK",
-      "tooltip": "Media Encryption Key: up to 512 bits of key material used by a storage encryption-engine slot to protect media data."
+      "tooltip": "Media Encryption Key: up to 512 bits of key material used by a storage encryption-engine slot to protect media data.",
+      "aliases": [
+        "MEKs",
+        "Media Encryption Key",
+        "Media Encryption Keys"
+      ]
     },
     {
       "id": "crypto_erase",
@@ -135,7 +140,12 @@
     {
       "id": "sfr",
       "term": "SFR",
-      "tooltip": "Special Function Register: a memory-mapped register used for protected MEK transfer and control."
+      "tooltip": "Special Function Register: a memory-mapped register used for protected MEK transfer and control.",
+      "aliases": [
+        "SFRs",
+        "special function register",
+        "special function registers"
+      ]
     },
     {
       "id": "engine_id",
@@ -155,7 +165,11 @@
     {
       "id": "caliptra",
       "term": "Caliptra Subsystem",
-      "tooltip": "The hardware root-of-trust environment hosting the KMB; L.O.C.K. v1.1 targets version 2.1 or newer."
+      "tooltip": "The hardware root-of-trust environment hosting the KMB; L.O.C.K. v1.1 targets version 2.1 or newer.",
+      "aliases": [
+        "Caliptra",
+        "Caliptra KMB"
+      ]
     }
   ],
   "modules": [
@@ -184,7 +198,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 1
             }
-          ]
+          ],
+          "transcript": "Module one. OCP L.O.C.K. stands for Layered Open-source Cryptographic Key Management. This module focuses on trust boundaries and security goals for data-at-rest keys.\n\nSelf-encrypting drives already encrypt user data, but encryption alone doesn't prove that the keys were protected or erased correctly. OCP L.O.C.K. Version 1.1 moves Media Encryption Keys into a protected Caliptra Key Management Block. Drive firmware can request key-lifecycle operations, but it can't read the raw keys.\n\nThis module explains the operating problem, the adversary the design assumes, and the trust boundary that makes the design useful. Narration starts automatically. Use the arrow controls, or press Space, when you're ready to advance."
         },
         {
           "id": 2,
@@ -244,7 +259,8 @@
               "source": "An update on OCP L.O.C.K..txt",
               "time": "00:00–03:00"
             }
-          ]
+          ],
+          "transcript": "This is the first of three modules in the OCP L.O.C.K. Academy course.\n\nHere, you'll learn why operators need more assurance than an erase command issued to ordinary drive firmware. You'll classify the threat model, identify the security guarantees, and trace the protected path through Caliptra.\n\nModule two follows the key hierarchy. It explains how data, multi-party, and epoch protection keys combine around a Media Encryption Key. It also compares soft and hard cryptographic erase and the paths for random and derived media keys.\n\nModule three moves into integration. It covers the mailbox and SFR interfaces, command ordering, reset behavior, and the mandatory controls in version 1.1.\n\nThe specification was contributed through OCP by Google, Microsoft, Samsung Electronics, KIOXIA, and Solidigm. Their names and official logos appear here as contributor acknowledgments, not as product endorsements. Together, the three modules are designed for engineers who understand storage and basic cryptography but are new to the L.O.C.K. architecture."
         },
         {
           "id": 3,
@@ -280,11 +296,84 @@
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "710beb74bd3d148b7ed5d8485e72d890421cd38f4237ebcc605f24b0756bb5f4",
+              "entries": [
+                {
+                  "text": "OPERATIONAL LIFECYCLE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Provision",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "new key context",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Serve",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "encrypted media",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Decommission",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "retire prior data",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Next use",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "new trust context",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Conventional certainty",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Destroy a usable drive because proving the prior tenant's data is unrecoverable is difficult.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Hardware and data retire together",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "L.O.C.K. boundary",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Retire the epoch and the parent material needed to recover protected MEKs.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Data retires; hardware can be reused",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ZEROIZE KEY STATE",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "DRIVE RETURNS TO SERVICE",
+                  "at_seconds": 10
+                }
+              ]
+            }
           },
           "term_refs": [
             "lock",
-            "sed",
+            "mek",
             "crypto_erase"
           ],
           "audio": {
@@ -301,7 +390,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 22
             }
-          ]
+          ],
+          "transcript": "The security problem begins at the end of a drive's first service life.\n\nA storage device leaves its supplier, enters a data center, and accumulates customer data. When the device is retired, the operator must decide whether it can leave the controlled environment. Customer data cannot leave with it. The operator therefore needs high confidence that every usable copy of every Media Encryption Key is gone.\n\nSelf-encrypting drives support cryptographic erase. In principle, deleting a media key makes its ciphertext permanently unreadable. In practice, a cloud operator may not trust an erase performed entirely by complex drive firmware. A firmware bug, a compromised signing key, an incomplete key binding, or recoverable key material can turn a successful status code into false assurance.\n\nThe conservative answer has been physical destruction. That protects confidentiality, but it also prevents reuse, refurbishment, and component recovery. The result is avoidable electronic waste.\n\nOCP L.O.C.K. creates another branch in that lifecycle. It isolates keys inside a hardware-rooted management block and ties all active media keys to epoch material that can be zeroized and reported. At the 2026 OCP EMEA Summit, the presenters emphasized the operator's goal: reason about the drive in isolation, without proving that every customer, platform, or backup copy of an external key has disappeared.\n\nThat doesn't make every failed device recoverable. If a controller is too damaged to perform and report the required zeroization, the same assurance isn't available. But when the protected operation succeeds, cryptographic erase can support reuse instead of automatic destruction."
         },
         {
           "id": 4,
@@ -332,11 +422,60 @@
             "path": "figures/c1_threat_model.svg",
             "alt": "Threat model matrix separating attacker capabilities, protected assets, and availability exclusions.",
             "caption": "The model protects key confidentiality and erasure semantics, not uninterrupted service.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "9e4f3cf79e127d0ae9469282e6804c0a746c11811e1646eb9c5fa67a7224b414",
+              "entries": [
+                {
+                  "text": "ATTACKER MAY CONTROL"
+                },
+                {
+                  "text": "Drive firmware"
+                },
+                {
+                  "text": "commands + storage"
+                },
+                {
+                  "text": "External traffic"
+                },
+                {
+                  "text": "observe + modify"
+                },
+                {
+                  "text": "Unprotected media"
+                },
+                {
+                  "text": "physical access"
+                },
+                {
+                  "text": "PROTECTED BOUNDARY"
+                },
+                {
+                  "text": "Caliptra KMB"
+                },
+                {
+                  "text": "keys stay unreadable"
+                },
+                {
+                  "text": "Encryption"
+                },
+                {
+                  "text": "engine"
+                },
+                {
+                  "text": "slot-bound MEKs"
+                },
+                {
+                  "text": "NOT AN AVAILABILITY GUARANTEE"
+                },
+                {
+                  "text": "Denial of service, media damage, or refusal to process I/O can still occur."
+                }
+              ]
+            }
           },
           "term_refs": [
-            "kmb",
-            "mek"
+            "kmb"
           ],
           "audio": {
             "script_file": "audio/module1/slide_04_threat_model.txt",
@@ -352,7 +491,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 10
             }
-          ]
+          ],
+          "transcript": "OCP L.O.C.K. protects user data at rest against an unusually capable adversary. The point of the threat model is not to predict one attack. It is to decide which components may be trusted with a Media Encryption Key.\n\nThe adversary may intercept a drive in the supply chain or steal it from a data center. They may open the package and inspect it destructively. They may run arbitrary firmware, even after compromising a vendor's signing keys. They may glitch general-purpose cores or recover key-related clues from debug dumps and UART logs.\n\nThe model also assumes that class-wide, global, or shared symmetric secrets can be stolen. A hostile tenant may execute code in a virtual machine on a multi-tenant host that controls the attached device. And the adversary may know every published design document, source file, and RTL description. Openness is not treated as secrecy.\n\nThose capabilities expose five failure classes. Firmware bugs or side channels may leak media keys. Invasive analysis may recover keys that firmware claimed to erase. Credentials may be bound incorrectly. A vulnerable host may expose a valid credential. Or a buggy host may fail to carry out cryptographic erase completely.\n\nPhysical denial of service remains out of scope. An attacker standing beside a drive may still destroy it or prevent it from operating. L.O.C.K. is designed to preserve confidentiality and trustworthy key lifecycle behavior, not device availability under every physical attack."
         },
         {
           "id": 5,
@@ -383,7 +523,45 @@
             "path": "figures/c1_security_guarantees.svg",
             "alt": "Three-part diagram showing key secrecy, data protection, and irreversible key-state retirement.",
             "caption": "The protected path connects confidentiality, correct use, and irreversible retirement.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "11d981509d9aa5f3cd0aab7ba441876ced4f94c6fe55ae225c265013adf70dae",
+              "entries": [
+                {
+                  "text": "ONE PROTECTED PATH · THREE GUARANTEES"
+                },
+                {
+                  "text": "KEY SECRECY"
+                },
+                {
+                  "text": "MEKs never leave"
+                },
+                {
+                  "text": "the protected path"
+                },
+                {
+                  "text": "CORRECT USE"
+                },
+                {
+                  "text": "data remains bound"
+                },
+                {
+                  "text": "to key + epoch"
+                },
+                {
+                  "text": "FINAL ERASE"
+                },
+                {
+                  "text": "retired parent state"
+                },
+                {
+                  "text": "cannot be revived"
+                },
+                {
+                  "text": "Only the KMB can read MEKs and program the engine"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module1/slide_05_security_guarantees.txt",
@@ -399,7 +577,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 11
             }
-          ]
+          ],
+          "transcript": "Three guarantees shape the L.O.C.K. architecture.\n\nFirst, isolate Media Encryption Keys from ordinary drive firmware. With L.O.C.K. enabled, Caliptra acts as the Key Management Block. The KMB is the only component that can read a raw media key and program it into the encryption engine. Drive firmware still decides when a lifecycle operation should happen, but it invokes a protected service instead of manipulating the key itself.\n\nSecond, bind each media key to externally supplied protection material. One Data Protection Key represents the nominal data owner. Zero or more Multi-party Protection Keys can require additional authorities to assent before the media key becomes usable. Those external access keys are injected with replay-resistant HPKE transport, so a remote key service can authorize the device without disclosing its access key to the host.\n\nThird, bind every active media key to an Epoch Protection Key. That composite key depends on both a Soft Epoch Key in rewritable storage and a Hard Epoch Key derived from fuse-held material. Zeroizing either component makes the existing media-key protection chain unrecoverable. The device can report whether the required epoch material is available, supporting an attestable erase state.\n\nThese guarantees divide responsibilities. Hardware-rooted Caliptra protects and operates on key material. Drive firmware implements policy, host protocols, and authorization. The vendor encryption engine performs line-rate data encryption. Security comes from keeping those roles separate while defining narrow interfaces between them."
         },
         {
           "id": 6,
@@ -435,7 +614,76 @@
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "e9207d6d44aa4f873d8dfafb79285983a25a2c0637bae655fa8f342f4b0fcdeb",
+              "entries": [
+                {
+                  "text": "CONTROL PLANE · OBSERVABLE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HARDWARE-ROOTED PROTECTED BOUNDARY",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HOST / KMS",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "lifecycle intent",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "DRIVE FIRMWARE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "mailbox transport",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "CALIPTRA KMB",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "protected execution",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "PROTECTED REGISTERS",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ENCRYPTION ENGINE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "VISIBLE TO FIRMWARE",
+                  "at_seconds": 4
+                },
+                {
+                  "text": "commands + metadata",
+                  "at_seconds": 4
+                },
+                {
+                  "text": "UNWRAP · DERIVE",
+                  "at_seconds": 5
+                },
+                {
+                  "text": "AUTHORIZE · ZEROIZE",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "PLAINTEXT MEK STAYS INSIDE",
+                  "at_seconds": 9
+                },
+                {
+                  "text": "KMB → protected registers → encryption engine",
+                  "at_seconds": 9
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module1/slide_06_protected_path.txt",
@@ -451,7 +699,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 43
             }
-          ]
+          ],
+          "transcript": "The protected path becomes clear when we follow control and key material separately.\n\nThe host or a remote Key Management Service starts with an administrative request. It may unlock data, enable a multi-party condition, load a key, or perform cryptographic erase. That request reaches the storage controller and its drive firmware. In Caliptra Subsystem, the firmware runs on the Manufacturer Control Unit, or MCU.\n\nDrive firmware translates the host operation into a mailbox request for the Key Management Block. It can supply a Soft Epoch Key, a Data Protection Key, sealed access keys, enabled MPKs, and vendor-defined metadata. It can also retain encrypted keys. But it never receives a plaintext Media Encryption Key from the KMB.\n\nInside Caliptra, the KMB unwraps HPKE payloads, derives the required protection chain, and generates, unwraps, or derives the media key. Hardware-protected Key Vault slots hold the most sensitive intermediate values. Other values exist only in protected volatile or ephemeral memory for the operation that needs them.\n\nThe final media key moves directly from the KMB into the vendor encryption engine. The engine stores it in a volatile key cache, bound to non-secret metadata that selects the correct namespace, address range, or key tag. User data then passes through the engine for line-rate encryption and decryption.\n\nThe critical boundary is simple: firmware controls the request and the metadata, while Caliptra and the encryption engine control the raw media key. That is the architectural answer to the threat model."
         },
         {
           "id": 7,
@@ -482,7 +731,48 @@
             "path": "figures/c1_scope_fit.svg",
             "alt": "Layer diagram showing L.O.C.K. between host security protocols, Caliptra, and OCP S.A.F.E.™ using their official logos.",
             "caption": "L.O.C.K. defines the controller’s key boundary, not a replacement for every surrounding protocol.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "4bd1dc834bea6e812421240e4bb0afe2a91bc82f427da9df54b3df0a8c3af1f2",
+              "entries": [
+                {
+                  "text": "HOST-FACING SECURITY MODELS"
+                },
+                {
+                  "text": "TCG Opal"
+                },
+                {
+                  "text": "Enterprise"
+                },
+                {
+                  "text": "Key Per I/O"
+                },
+                {
+                  "text": "Other"
+                },
+                {
+                  "text": "OCP L.O.C.K. v1.1"
+                },
+                {
+                  "text": "internal key hierarchy · lifecycle · protected transfer"
+                },
+                {
+                  "text": "transport independent — not NVMe-only"
+                },
+                {
+                  "text": "Subsystem 2.1+ · KMB + hardware roots"
+                },
+                {
+                  "text": "assessment alignment · complementary scope"
+                },
+                {
+                  "text": "Caliptra"
+                },
+                {
+                  "text": "OCP S.A.F.E.™"
+                }
+              ]
+            }
           },
           "reference_links": [
             {
@@ -508,6 +798,10 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 75
             }
+          ],
+          "transcript": "L.O.C.K. is a Caliptra feature set, but its deployment boundary is broader than one drive protocol.\n\nVersion 1.1 targets Caliptra Subsystem 2.1 and later. Caliptra ROM, runtime firmware, protected hardware, and a vendor encryption engine form the key path. Host-facing drive firmware exposes the storage protocol outside that boundary.\n\nThe design is not restricted to NVMe. It can support self-encrypting storage devices using TCG Opal, Enterprise, or Key Per I/O. It can also support the TCG Media Encryption Key Multiparty Authorization feature. L.O.C.K. therefore strengthens the implementation behind existing storage operations instead of inventing a new host protocol for every product.\n\nDrive firmware still owns important policy. It authorizes destructive lifecycle actions, obtains the Data Protection Key, chooses which MPKs bind to a media key, and maps that key to the correct locking range or cache entry. The KMB protects and executes the key operation; it does not replace the product's authorization model.\n\nSome standards combinations need additional review. For example, one Common Criteria profile can conflict with Key Per I/O when an injected key is conditioned for cryptographic erase.\n\nThat is why integration review matters. An OCP S.A.F.E. review can examine the Caliptra boundary and verify that drive firmware invokes these protected services correctly.",
+          "term_refs": [
+            "sed"
           ]
         },
         {
@@ -536,7 +830,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 17
             }
-          ]
+          ],
+          "transcript": "The L.O.C.K. security model starts with a practical requirement: prove that retired media cannot expose customer data without destroying every drive by default.\n\nIt assumes a strong adversary. Stolen hardware, arbitrary firmware, invasive analysis, compromised shared secrets, hostile tenant code, and complete knowledge of the design are all inside the model.\n\nThe response is a narrow trust boundary. Caliptra's Key Management Block alone reads Media Encryption Keys and programs the encryption engine. Drive firmware requests operations and supplies policy inputs, but it doesn't handle raw media keys.\n\nProtection comes in layers. A Data Protection Key represents the data owner. Optional Multi-party Protection Keys add other authorities through protected HPKE transport. Hard and Soft Epoch Keys make cryptographic erase an explicit state transition.\n\nL.O.C.K. can support several self-encrypting storage protocols and isn't limited to NVMe. But integration still requires authorization, correct reset handling, and an OCP S.A.F.E. review. The next module opens the key hierarchy and follows each layer through its lifecycle."
         },
         {
           "id": 9,
@@ -625,7 +920,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 10
             }
-          ]
+          ],
+          "transcript": "Before you finish, check the trust-boundary mental model.\n\nThe first question asks which component is allowed to read a raw Media Encryption Key and program the encryption engine. The second asks you to identify attacker capabilities that the L.O.C.K. threat model explicitly assumes.\n\nSubmit both questions once to continue. Correct answers aren't required, and you can retry after reading the feedback. Use that feedback to separate the protected asset and trusted components from the policy responsibilities left to drive firmware."
         },
         {
           "id": 10,
@@ -639,7 +935,8 @@
             "wav_file": "audio/module1/slide_10_course_complete.wav",
             "approved": true
           },
-          "source_refs": []
+          "source_refs": [],
+          "transcript": "You've completed module one, Why OCP L.O.C.K.: Trust Boundaries for Data-at-Rest Keys.\n\nYou can now explain why cryptographic erase needs a protected trust boundary, what attacker capabilities the design assumes, and why drive firmware must never receive raw media keys.\n\nModule two follows the keys themselves. You'll connect the DPK, MPKs, hard and soft epoch keys, and the media-key protection paths. Continue when you're ready to see how those layers turn the trust model into enforceable key lifecycles."
         }
       ],
       "next_module_title": "Key Hierarchy and Lifecycle"
@@ -669,7 +966,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 17
             }
-          ]
+          ],
+          "transcript": "Module two. OCP L.O.C.K. key hierarchy and cryptographic erase.\n\nThe trust boundary from module one becomes useful only when every Media Encryption Key depends on the right protection layers. A Data Protection Key represents the owner. Optional Multi-party Protection Keys add other authorities. Hard and Soft Epoch Keys make erase a change in cryptographic state. An MDK constrains the final hardware path.\n\nThis module follows those keys through generation, storage, enablement, rotation, and zeroization. By the end, you'll be able to reconstruct the protection chain and explain why different erase operations serve different operational boundaries."
         },
         {
           "id": 2,
@@ -697,7 +995,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 35
             }
-          ]
+          ],
+          "transcript": "By the end of this module, you'll be able to trace the L.O.C.K. key hierarchy without treating it as one undifferentiated key ladder.\n\nYou'll identify who supplies or controls each protection key and explain whether that value is durable, volatile, or ephemeral. You'll distinguish a Locked MPK from an Enabled MPK and explain why HPKE protects its access key in transit.\n\nYou'll follow the Hard and Soft Epoch Key lifecycle, including the fuse states and ordering rules that make zeroization meaningful. You'll then compare a randomly generated, double-wrapped Media Encryption Key with a deterministic derived key and its optional checksum.\n\nFinally, you'll connect the hierarchy to operational choices. A soft epoch transition can support a tenant boundary. A hard epoch transition supports a device leaving its previous trust environment. Those choices make sense only after the relationships among the keys are clear."
         },
         {
           "id": 3,
@@ -733,12 +1032,83 @@
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "aff40bb43537c2e1d50f530264d3aeb556d46763b0eb3df484efc18c151f50b2",
+              "entries": [
+                {
+                  "text": "ORDERED PROTECTION LAYERS",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "DPK · device root",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "hardware-bound",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "MPK₁ · management layer",
+                  "at_seconds": 2
+                },
+                {
+                  "text": "optional · ordered",
+                  "at_seconds": 2
+                },
+                {
+                  "text": "MPK₂ · management layer",
+                  "at_seconds": 4
+                },
+                {
+                  "text": "zero or more",
+                  "at_seconds": 4
+                },
+                {
+                  "text": "EPK = HEK + SEK",
+                  "at_seconds": 4
+                },
+                {
+                  "text": "active epoch",
+                  "at_seconds": 4
+                },
+                {
+                  "text": "MEK SECRET",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "hierarchy result",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "MEK + MDK PATH",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "engine-ready key",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "“it’s just keys all the way down.”",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "2026 OCP EMEA Summit",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ordered context → protected MEK",
+                  "at_seconds": 10
+                }
+              ]
+            }
           },
           "term_refs": [
             "dpk",
             "mpk",
             "epk",
+            "hek",
+            "sek",
             "mdk",
             "mek"
           ],
@@ -756,7 +1126,8 @@
               "source": "An update on OCP L.O.C.K..txt",
               "time": "08:00–12:00"
             }
-          ]
+          ],
+          "transcript": "The hierarchy is easier to understand when it is built from ownership toward the encryption engine.\n\nStart with the Data Protection Key. The nominal owner of the data controls this value. In an Opal or Enterprise flow, drive firmware may recover it from a credential-protected structure. In Key Per I/O, it may be the imported data-encryption key associated with a key tag. One DPK binds to a given Media Encryption Key.\n\nNext come zero or more Multi-party Protection Keys. Each MPK represents an additional authority that must assent before the media key can be loaded. The order matters because the KMB mixes the enabled MPKs into the secret one at a time. Using zero MPKs preserves compatibility with ordinary Opal, Enterprise, or Key Per I/O flows.\n\nThen add the epoch layer. The Hard Epoch Key and Soft Epoch Key enter an SP 800-108 KDF to produce the Epoch Protection Key. The EPK, DPK, and configured MPKs produce the Media Encryption Key secret.\n\nFinally, the Media Encryption Key Deobfuscation Key protects the hardware path used to place a random or derived media key into the Key Vault and then the encryption engine. It prevents compromised runtime firmware from turning a permitted decrypt operation into a key-disclosure path.\n\nAt the 2026 OCP EMEA Summit, Carl Lundin summarized the visual complexity with a memorable line: “it's just keys all the way down.” The engineering point is precise. Every layer has a different owner, lifetime, and failure consequence."
         },
         {
           "id": 4,
@@ -787,11 +1158,50 @@
             "path": "figures/c2_persistence_classes.svg",
             "alt": "Matrix mapping fuse, durable flash, and volatile state to cold-reset behavior.",
             "caption": "A reset policy is meaningful only when each key’s persistence class is explicit.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "ab5157f73be6c1e34ae024dca84ebb5a64328bd4f769e987ba57e7e064924fec",
+              "entries": [
+                {
+                  "text": "WHERE KEY STATE LIVES"
+                },
+                {
+                  "text": "EXAMPLES"
+                },
+                {
+                  "text": "AFTER COLD RESET"
+                },
+                {
+                  "text": "FUSES"
+                },
+                {
+                  "text": "device secrets · 4–16 HEKs"
+                },
+                {
+                  "text": "PERSISTS"
+                },
+                {
+                  "text": "DURABLE FLASH"
+                },
+                {
+                  "text": "Locked MPKs · SEK · counters"
+                },
+                {
+                  "text": "PROTECTED VOLATILE"
+                },
+                {
+                  "text": "Enabled MPKs · VEK · HPKE · MEKs"
+                },
+                {
+                  "text": "CLEARED"
+                },
+                {
+                  "text": "Cold boot rebuilds device-local roots, creates fresh HPKE state, and generates the VEK lazily."
+                }
+              ]
+            }
           },
           "term_refs": [
-            "hek",
-            "sek",
             "vek",
             "hpke"
           ],
@@ -809,7 +1219,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 32
             }
-          ]
+          ],
+          "transcript": "Durable, volatile, and ephemeral are not storage labels. They describe what an attacker can recover after a reset, power loss, or invasive analysis.\n\nDurable values survive because they are stored in flash or fuses, or because they can be derived entirely from durable inputs. Locked MPKs and wrapped media keys are examples of ciphertext that drive firmware may retain. Hard Epoch Key seeds live in one-time-programmable fuses. The Soft Epoch Key may live in rewritable flash.\n\nVolatile values live in protected memory and disappear on a cold reset or power cycle. HPKE private keys are generated at startup. The Volatile Escrow Key is created lazily, then protects Enabled MPKs held by drive firmware. Losing the VEK invalidates those enabled values without changing the durable Locked MPKs.\n\nEphemeral values exist only for the cryptographic operation that needs them. Plaintext access keys, Data Protection Keys, decrypted MPKs, and intermediate secrets are zeroized after use.\n\nCaliptra's Key Vault gives the strongest hardware isolation. Slots sixteen through twenty-three are reserved for L.O.C.K.. They hold the MDK, EPK, VEK, Locked-MPK encryption keys, media-key secrets, the HEK, and the active Media Encryption Key in assigned slots.\n\nSome sensitive values must temporarily exist in protected KMB memory because current Caliptra data paths don't support every required operation directly inside the Key Vault. That is a documented hardware constraint, not permission for drive firmware to see them. The security boundary still encloses KMB firmware, hardware engines, and Key Vault while excluding ordinary drive firmware."
         },
         {
           "id": 5,
@@ -845,7 +1256,56 @@
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "23283675ba3bcf5b059ffbb8e34e7149f298cbb229daf913e311cb0a7b7df7b4",
+              "entries": [
+                {
+                  "text": "MANAGEMENT-KEY LIFECYCLE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Locked MPK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "durable protected object",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HPKE authorization",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "KMB validates access",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Enabled MPK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "volatile · VEK protected",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "PERSISTS",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "UNLOCK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "USABLE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "COLD RESET → ENABLED STATE CLEARS",
+                  "at_seconds": 9
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_05_mpk_lifecycle.txt",
@@ -861,7 +1321,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 35
             }
-          ]
+          ],
+          "transcript": "Multi-party protection turns one unlock credential into a set of required assents.\n\nEach MPK begins with an external 256-bit access key. The user retrieves an HPKE public key and its certificate from the device, validates the certificate and DICE chain, checks the advertised algorithms, seals the access key, and sends it back. The host can carry that ciphertext without learning the access key.\n\nDuring generation, the KMB unwraps the access key, creates a random MPK, and derives a wrapping key from the HEK, SEK, and access key. The returned Locked MPK can be stored durably by drive firmware.\n\nBefore that MPK can help load a media key, it must be enabled. The KMB unwraps the access key again, decrypts the Locked MPK, and re-encrypts the same key under the volatile VEK. Drive firmware may cache this Enabled MPK in memory. Because the VEK disappears on cold reset, the enabled form also becomes unusable.\n\nAccess-key rotation requires proof of both the old and new access keys. The KMB decrypts with the old binding, re-encrypts with the new one, and the drive zeroizes the old Locked MPK. Access-key testing uses a freshness nonce and returns an SHA-384 digest over metadata, the decrypted access key, and that nonce.\n\nVersion 1.1 advertises three KEM choices for this transport: P-384, ML-KEM-1024, and a hybrid that combines both. The hybrid option protects the same authorization flow with classical and post-quantum key establishment."
         },
         {
           "id": 6,
@@ -897,7 +1358,64 @@
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "827c4ae715baaf20eeb86929ab792c0e7c4f419abc4203fcfbc7b6dbe5487dc7",
+              "entries": [
+                {
+                  "text": "EPOCH BOUNDARIES",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "EPK = HEK + SEK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "one hardware root · one software-controlled epoch",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SOFT EPOCH TRANSITION",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "The drive stays in the trusted environment. Rotate software epoch state for an operational or tenant boundary.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HEK 3",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "SEK A → SEK B",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "TENANT / OPERATIONAL BOUNDARY",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HARD EPOCH TRANSITION",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "The drive leaves an environment or crosses a stronger ownership boundary. Move to a different fuse-rooted epoch.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HEK 3 → HEK 4",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "new SEK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ENVIRONMENT / OWNERSHIP BOUNDARY",
+                  "at_seconds": 0
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_06_epoch_lifecycle.txt",
@@ -913,7 +1431,8 @@
               "source": "An update on OCP L.O.C.K..txt",
               "time": "20:00–25:00"
             }
-          ]
+          ],
+          "transcript": "The epoch keys turn erase into a state transition that the device can enforce.\n\nThe Soft Epoch Key is managed by drive firmware in rewritable storage. The Hard Epoch Key is derived inside Caliptra from a 256-bit fuse-held seed and device-identity material. Both must be available to derive the Epoch Protection Key. If either one is zeroized, existing media-key protection chains can no longer be reconstructed.\n\nA device implements four to sixteen HEK fuse slots. The MCU moves each slot from blank to randomized to zeroized, and zeroizes it by blowing every bit. A shipped device must be in the production lifecycle with a randomized HEK seed.\n\nOrdering matters. Firmware may program the SEK only while the HEK is available. It may zeroize the HEK seed only after the SEK is zeroized. It may enable permanent-HEK mode only after all HEK slots are zeroized. Pre-production and permanent modes can derive an HEK from an all-zero seed, but only under the lifecycle conditions defined by the specification.\n\nAfter cold reset, MCU ROM must call report HEK metadata exactly once before Caliptra runtime firmware loads. If it does not, the KMB disables HEK-dependent operations.\n\nThe 2026 OCP EMEA Summit discussion gives the operational distinction. Rotate or zeroize the soft epoch key when data must be separated across tenant boundaries. Zeroize the hard epoch key when the physical device must be safe outside its former trust environment. If a failed controller can still complete and report that fuse transition, the drive can retain a meaningful erase claim. If it cannot, operators should not infer the same assurance."
         },
         {
           "id": 7,
@@ -944,7 +1463,45 @@
             "path": "figures/c2_random_derived.svg",
             "alt": "Split-path diagram comparing double-wrapped random MEKs with CMAC-KDF-derived MEKs.",
             "caption": "Both paths terminate inside the KMB-to-engine protected transfer boundary.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "b9c81d479a1f70ac2c0c78ff62e2a577e4d06fdbfe75d6af114c76c17ef971d4",
+              "entries": [
+                {
+                  "text": "TWO PATHS · ONE PROTECTED DESTINATION"
+                },
+                {
+                  "text": "RANDOM MEK"
+                },
+                {
+                  "text": "DERIVED MEK"
+                },
+                {
+                  "text": "KMB generates random MEK"
+                },
+                {
+                  "text": "inner wrap · MDK · AES-ECB"
+                },
+                {
+                  "text": "outer envelope · MEK secret"
+                },
+                {
+                  "text": "seed + hierarchy context"
+                },
+                {
+                  "text": "CMAC KDF + MDK path"
+                },
+                {
+                  "text": "regenerate MEK"
+                },
+                {
+                  "text": "optional 128-bit checksum"
+                },
+                {
+                  "text": "KMB → protected SFRs → engine"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_07_random_and_derived_meks.txt",
@@ -960,7 +1517,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 42
             }
-          ]
+          ],
+          "transcript": "Once the KMB has built the media-key secret, an integrator chooses one of two protected paths.\n\nThe random path begins with the DRBG. The KMB generates a 512-bit Media Encryption Key, then protects it twice. An inner AES-ECB layer uses the MDK. An outer preconditioned AES-GCM layer uses the media-key secret and carries the integrity tag. Drive firmware stores the double-wrapped result.\n\nLater, the KMB removes the outer layer, routes the inner decryption through the MDK-controlled hardware path, and sends the plaintext key directly to the encryption engine.\n\nThe inner layer solves a subtle hardware problem. Without it, compromised KMB runtime firmware could misuse the AES engine's similar encrypt and decrypt paths to return a plaintext media key to firmware. Hardware forces an MDK-keyed ECB decryption result back into the Key Vault instead.\n\nThe derived path is deterministic. A CMAC-based SP 800-108 KDF produces a firmware-visible seed from the media-key secret because the available HMAC path would keep its result inside the Key Vault. The MDK path then converts that seed into the final media key.\n\nAn optional 128-bit checksum lets firmware detect whether later derivation from the same intended inputs would produce a different key, perhaps because a volatile SEK suffered a bit flip. A mismatch blocks programming and helps prevent unrecoverable data writes.\n\nBoth paths check the component-key inequality required for 256-bit and 512-bit AES-XTS use. Both finish with the same invariant: drive firmware never receives the plaintext Media Encryption Key."
         },
         {
           "id": 8,
@@ -988,7 +1546,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 42
             }
-          ]
+          ],
+          "transcript": "The L.O.C.K. hierarchy separates ownership, authorization, erase, and hardware-path protection.\n\nOne Data Protection Key represents the data owner. Zero or more ordered Multi-party Protection Keys add other authorities. Each MPK is durable in its Locked form and volatile in its Enabled form, where the VEK protects it. HPKE keeps the external access key confidential from the host.\n\nThe Hard and Soft Epoch Keys combine into the EPK. A soft transition supports a rewritable operational boundary. A hard fuse transition supports a stronger physical-device boundary. Either one can make the existing media-key chain unrecoverable.\n\nThe MDK constrains the final hardware path so compromised runtime firmware can't disclose a decrypted media key. Random Media Encryption Keys are double-wrapped. Derived keys follow a deterministic seed path and can use a checksum to detect input corruption.\n\nPersistence is part of the security design. Durable ciphertext, volatile enablement, ephemeral plaintext, and hardware-isolated Key Vault values behave differently across reset and power loss. The final module turns those relationships into commands, registers, reset rules, and an integration checklist."
         },
         {
           "id": 9,
@@ -1077,7 +1636,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 35
             }
-          ]
+          ],
+          "transcript": "Take a moment to reconstruct the protection chain.\n\nThe first question checks which two keys combine to produce the Epoch Protection Key. The second asks you to distinguish the durable Locked MPK, the volatile Enabled MPK, and the Media Encryption Key itself.\n\nSubmit both questions once to continue. Correct answers aren't required, and you can retry after feedback. Use the explanations to connect each key's owner and purpose with the place it lives and the event that makes it unavailable."
         },
         {
           "id": 10,
@@ -1091,7 +1651,8 @@
             "wav_file": "audio/module2/slide_10_course_complete.wav",
             "approved": true
           },
-          "source_refs": []
+          "source_refs": [],
+          "transcript": "You've completed module two, OCP L.O.C.K. Key Hierarchy and Cryptographic Erase.\n\nYou can now trace the protection layers around a Media Encryption Key, explain Locked and Enabled MPK lifecycles, choose the correct hard or soft epoch boundary, and compare random with derived media-key paths.\n\nModule three puts those keys into motion through the implementation interfaces. You'll follow mailbox commands, the SFR handshake, host API mappings, reset behavior, and the mandatory controls that turn the specification into a conformant storage-device integration."
         }
       ],
       "next_module_title": "Controller Integration and Compliance"
@@ -1121,7 +1682,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 43
             }
-          ]
+          ],
+          "transcript": "Module three. Integrating OCP L.O.C.K.: interfaces and compliance.\n\nThe key hierarchy protects data only when every request, reset, and error follows the intended path. Drive firmware talks to the Key Management Block through a mailbox. The KMB talks to the encryption engine through special function registers. A defined command sequence builds the media-key secret before a key can be generated, loaded, or derived.\n\nThis module maps those interfaces, then closes with the thirteen mandatory controls in version 1.1. By the end, you'll be able to review an integration flow for both functional order and security boundaries."
         },
         {
           "id": 2,
@@ -1149,7 +1711,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 76
             }
-          ]
+          ],
+          "transcript": "By the end of this module, you'll be able to separate the two implementation interfaces and explain why both are required.\n\nYou'll identify which data drive firmware can control, which values only the KMB can handle, and how the encryption engine stores each media key with metadata and auxiliary information.\n\nYou'll sequence the commands that initialize the media-key secret, mix zero or more MPKs, and then generate, load, or derive the final key. You'll also group the mailbox vocabulary by HPKE discovery, multi-party lifecycle, and media-key lifecycle instead of memorizing one long command list.\n\nFinally, you'll connect TCG host operations to those services and evaluate reset, timeout, authorization, key-cache clearing, and KAT behavior against the mandatory compliance requirements. The goal is not to memorize every byte field. It is to know which ordering and ownership mistakes could expose a key, leave stale key material active, or cause permanent data loss."
         },
         {
           "id": 3,
@@ -1185,14 +1748,100 @@
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "afc34096850e713ca1e7452ef81ae880a816a00a19a54732c1d974a72df10200",
+              "entries": [
+                {
+                  "text": "HARDWARE-PROTECTED KEY PATH",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "DRIVE FIRMWARE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "host intent + policy",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "MAILBOX ENDPOINT",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "MAILBOX",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "commands · status",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "wrapped inputs",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "CALIPTRA KMB",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "UNWRAP · DERIVE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "AUTHORIZE TRANSFER",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "mailbox terminates here",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "PROTECTED SFRs",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "plaintext MEK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "metadata · command",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ENCRYPTION ENGINE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ENGINE_ID + SLOT_ID",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "line-rate key slot",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "REQ",
+                  "at_seconds": 2
+                },
+                {
+                  "text": "MEK",
+                  "at_seconds": 4
+                },
+                {
+                  "text": "PLAINTEXT MEK STAYS INSIDE THIS BOUNDARY",
+                  "at_seconds": 7
+                }
+              ]
+            }
           },
           "term_refs": [
             "kmb",
             "sfr",
             "mek",
             "engine_id",
-            "slot_id"
+            "slot_id",
+            "caliptra"
           ],
           "audio": {
             "script_file": "audio/module3/slide_03_two_interfaces.txt",
@@ -1208,7 +1857,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 46
             }
-          ]
+          ],
+          "transcript": "L.O.C.K. defines two interfaces because control policy and plaintext key transfer belong to different trust domains.\n\nThe mailbox interface connects drive firmware on the MCU to the Caliptra Key Management Block. Firmware uses it to discover HPKE capabilities, manage MPKs, initialize and extend a media-key secret, establish or unload media keys, query status, and clear the key cache. Inputs may include the Soft Epoch Key, a Data Protection Key, sealed access keys, encrypted MPKs, non-secret metadata, and timeouts.\n\nThe encryption-engine interface connects the KMB to the vendor's line-rate encryption hardware. It uses special function registers, or SFRs, to present a Media Encryption Key, its metadata, optional auxiliary data, and a control command. The raw media key crosses only this protected boundary. It is never returned through the mailbox.\n\nDrive firmware still arbitrates the operation. It decides which host request is authorized, which metadata identifies the target key-cache entry, and when a key should load, unload, or be erased. But the KMB derives or unwraps the key and performs the protected transfer.\n\nThis division also creates an auditable failure boundary. A malformed mailbox request can fail before any engine operation. An engine that isn't ready produces an immediate not-ready result. A command that runs too long returns a timeout. An engine error is carried back with control-register context so firmware can surface it to the host without exposing the key.\n\nThe result is one protected key path with two narrowly defined control surfaces."
         },
         {
           "id": 4,
@@ -1239,7 +1889,66 @@
             "path": "figures/c3_register_map.svg",
             "alt": "Register map showing the 64-byte MEK, 20-byte metadata, 32-byte AUX, and CTRL regions plus engine and slot identity.",
             "caption": "The SFR contract binds a key operation to explicit engine, slot, length, and control fields.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "5849477e89fbedb1f9550309c435e43d8197d217504c45b2fd9921c19520c573",
+              "entries": [
+                {
+                  "text": "PROTECTED MEK SFR WINDOW"
+                },
+                {
+                  "text": "relative to BASE"
+                },
+                {
+                  "text": "+0x00"
+                },
+                {
+                  "text": "MEK DATA · 64 BYTES"
+                },
+                {
+                  "text": "+0x40"
+                },
+                {
+                  "text": "METADATA · 20 BYTES"
+                },
+                {
+                  "text": "ENGINE_ID"
+                },
+                {
+                  "text": "SLOT_ID"
+                },
+                {
+                  "text": "length + context"
+                },
+                {
+                  "text": "+0x60"
+                },
+                {
+                  "text": "AUX · 32 BYTES"
+                },
+                {
+                  "text": "command-specific data"
+                },
+                {
+                  "text": "+0x80"
+                },
+                {
+                  "text": "CTRL"
+                },
+                {
+                  "text": "1 · LOAD"
+                },
+                {
+                  "text": "2 · UNLOAD"
+                },
+                {
+                  "text": "3 · ZEROIZE"
+                },
+                {
+                  "text": "4 · KAT (optional)"
+                }
+              ]
+            }
           },
           "term_refs": [
             "kat"
@@ -1258,7 +1967,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 54
             }
-          ]
+          ],
+          "transcript": "The encryption engine stores a tuple, not a bare key.\n\nEach key-cache entry contains non-secret metadata, optional auxiliary data, and a 512-bit Media Encryption Key. Metadata identifies the entry. A vendor might use a namespace plus an LBA range, or a namespace plus a Key Per I/O tag. Auxiliary data can select a mode or carry an initialization-vector offset. Neither field may create a path for reading the media key.\n\nThe SFR layout makes that tuple explicit. The 64-byte media-key register begins at the configured base address. The 20-byte metadata region begins at base + 0x40. The 32-byte aux region begins at base + 0x60. The control register sits at base + 0x80. MCU ROM configures and locks the base and length before runtime firmware can modify them.\n\nThe control command selects four actions. Command one loads a media key. Command two unloads the entry identified by metadata. Command three zeroizes the entire key cache. Optional command four loads a fixed Known Answer Test key for FIPS validation.\n\nThat test key requires a strict warning. It has a published pattern chosen to avoid endianness ambiguity and satisfy AES-XTS component-key inequality. It is not secret and must never encrypt user data. After the test, firmware must unload it or clear the entire cache.\n\nThe control handshake uses ready, command, execute, done, and error fields. The KMB checks ready, writes the command and execute bit, waits for done, reads the error, acknowledges done, and waits for the engine to return to its idle state."
         },
         {
           "id": 5,
@@ -1294,7 +2004,96 @@
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "882897c94cbe39e13c88cbb9a9714b1eddd1579e41809aab50d11ffb9e3f0995",
+              "entries": [
+                {
+                  "text": "INITIALIZE",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "HEK + SEK + DPK",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "start one secret context",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "REQUIRED",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "MIX × 0…N",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "enabled MPKs",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "in the required order",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "ZERO OR MORE MPKs",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "FINAL ACTION",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "choose exactly one",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "generate · load · derive",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "GENERATE RANDOM",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "create 512-bit MEK",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "return wrapped object",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "LOAD RANDOM",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "authenticate + unwrap",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "program engine slot",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "DERIVE",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "seed + CMAC KDF",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "ONE INITIALIZED CONTEXT → ONE FINAL ACTION",
+                  "at_seconds": 9
+                },
+                {
+                  "text": "discard the partial context after success or error",
+                  "at_seconds": 9
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module3/slide_05_command_choreography.txt",
@@ -1310,7 +2109,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 65
             }
-          ]
+          ],
+          "transcript": "Establishing a media key is a short stateful choreography. The order protects both correctness and secrecy.\n\nEvery path starts with initialize MEK secret. Drive firmware supplies the Soft Epoch Key and Data Protection Key. Inside the KMB, the HEK and SEK produce the Epoch Protection Key, and the EPK combines with the DPK to create the initial media-key-secret seed.\n\nFirmware may then invoke mix MPK zero or more times. Each call supplies one Enabled MPK. The KMB decrypts it under the VEK and extends the secret seed through a key derivation function. The order must match the order associated with that Media Encryption Key. Calling mix before initialization is an error.\n\nThe path then branches.\n\nFor a new random key, firmware calls generate MEK. The KMB creates a 512-bit key and returns only the protected Wrapped MEK. When the drive later needs that key, it repeats initialization and the same MPK sequence, then calls load MEK with metadata, auxiliary data, the wrapped key, and a timeout. The KMB unwraps and sends the key to the engine.\n\nFor a deterministic key, firmware repeats the same initialization and mixing, then calls derive MEK. It may include the stored checksum from an earlier derivation. A mismatch blocks the load.\n\nInitialization is single-use state for an establishment attempt. Integrators should treat each command sequence as a transaction: build the secret from the intended inputs, establish exactly one key, handle errors, and never reuse a partially constructed chain for a different key."
         },
         {
           "id": 6,
@@ -1341,7 +2141,81 @@
             "path": "figures/c3_api_groups.svg",
             "alt": "Five grouped host API families for discovery, management layers, MEK operations, epoch transitions, and evidence.",
             "caption": "A product can choose its transport while preserving the L.O.C.K. operation semantics.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "2aaf2881d5fc5bb5eb1fec532aa8b6e4eda0b2b963ddf922aed6f7fc36239c3b",
+              "entries": [
+                {
+                  "text": "PRODUCT"
+                },
+                {
+                  "text": "HOST API"
+                },
+                {
+                  "text": "transport-specific"
+                },
+                {
+                  "text": "1"
+                },
+                {
+                  "text": "DISCOVER"
+                },
+                {
+                  "text": "capabilities · limits"
+                },
+                {
+                  "text": "state · reports"
+                },
+                {
+                  "text": "2"
+                },
+                {
+                  "text": "ESTABLISH"
+                },
+                {
+                  "text": "MPKs · authorization"
+                },
+                {
+                  "text": "active key context"
+                },
+                {
+                  "text": "3"
+                },
+                {
+                  "text": "OPERATE"
+                },
+                {
+                  "text": "generate · load · derive"
+                },
+                {
+                  "text": "unload · zeroize"
+                },
+                {
+                  "text": "4"
+                },
+                {
+                  "text": "TRANSITION"
+                },
+                {
+                  "text": "epoch · reset"
+                },
+                {
+                  "text": "ownership boundaries"
+                },
+                {
+                  "text": "5"
+                },
+                {
+                  "text": "EVIDENCE"
+                },
+                {
+                  "text": "measurements · errors"
+                },
+                {
+                  "text": "compliance evidence"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module3/slide_06_host_api_mapping.txt",
@@ -1357,7 +2231,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 75
             }
-          ]
+          ],
+          "transcript": "Host protocols expose user intent. The mailbox translates that intent into a smaller protected vocabulary.\n\nStart with HPKE discovery. Firmware asks the KMB for supported algorithms and active handles, retrieves each public key, and uses its MCU DPE context to endorse that key. A host can then validate the certificate chain before sealing an access key. Rotating a certificate-table entry maps to rotating the underlying HPKE keypair.\n\nThe MPK lifecycle maps to the TCG Media Encryption Key Multiparty Authorization feature. Initializing an access condition generates a Locked MPK. Changing its access key rewraps it. Enabling the access condition produces an Enabled MPK. Testing the key returns the nonce-bound digest. Binding an encryption-key entry to that access condition becomes a mix MPK operation during media-key establishment.\n\nOrdinary TCG Opal and Enterprise flows may generate, load, or derive media keys with zero MPKs. Key Per I/O uses derive MEK when an imported data-encryption key and key tag become the DPK and metadata inputs.\n\nThe 2026 OCP EMEA Summit update explained why standards work and implementation work had to advance together. The group contributed across Caliptra, TCG, and NIST-facing requirements. Implementation feedback also simplified the version 1.1 key ladder by replacing an earlier bespoke key-combination construct with the standard SP 800-108 KDF.\n\nThat is the integration lesson: stable host semantics, narrow protected commands, and standard cryptographic building blocks reduce the amount of security-sensitive custom behavior each vendor must invent."
         },
         {
           "id": 7,
@@ -1388,11 +2263,74 @@
             "path": "figures/c3_reset_compliance.svg",
             "alt": "Matrix comparing cold reset, warm reset, firmware update, and the mandatory compliance baseline.",
             "caption": "A compliant implementation must preserve or recreate each key class exactly as the reset model specifies.",
-            "source": "custom"
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "a670f130de38f456144bc8cf406f04cad6fdc2ee36ab9e10316e0996e32adc44",
+              "entries": [
+                {
+                  "text": "RESET SEMANTICS ARE SECURITY SEMANTICS"
+                },
+                {
+                  "text": "HEK / MDK"
+                },
+                {
+                  "text": "VEK"
+                },
+                {
+                  "text": "HPKE"
+                },
+                {
+                  "text": "COLD RESET"
+                },
+                {
+                  "text": "new boot boundary"
+                },
+                {
+                  "text": "DERIVE"
+                },
+                {
+                  "text": "LAZY NEW"
+                },
+                {
+                  "text": "FRESH"
+                },
+                {
+                  "text": "WARM RESET"
+                },
+                {
+                  "text": "runtime recovery"
+                },
+                {
+                  "text": "PRESERVE"
+                },
+                {
+                  "text": "REGENERATE"
+                },
+                {
+                  "text": "FIRMWARE UPDATE"
+                },
+                {
+                  "text": "measured code transition"
+                },
+                {
+                  "text": "13"
+                },
+                {
+                  "text": "MANDATORY"
+                },
+                {
+                  "text": "BEHAVIORS"
+                },
+                {
+                  "text": "Table 56"
+                },
+                {
+                  "text": "Roots · reporting order · algorithms · protected transfer · lifecycle · zeroization"
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "caliptra"
-          ],
+          "term_refs": [],
           "audio": {
             "script_file": "audio/module3/slide_07_reset_and_compliance.txt",
             "wav_file": "audio/module3/slide_07_reset_and_compliance.wav",
@@ -1407,7 +2345,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 79
             }
-          ]
+          ],
+          "transcript": "Reset behavior determines which protected state remains valid.\n\nOn cold reset, Caliptra ROM derives the HEK and MDK. Runtime firmware determines whether an HEK is available and generates fresh HPKE keypairs for every supported algorithm. The VEK is not created until first use. A Caliptra cold reset occurs only with an NVMe subsystem reset caused by main power being applied.\n\nOn warm or firmware-update reset, the HEK, MDK, and VEK remain. HPKE keypairs do not. Firmware must re-enumerate and advertise the regenerated handles when it supports a host-facing API. Other integration reset events may map to a Caliptra warm reset.\n\nThose state rules sit inside thirteen mandatory requirements. The device must integrate and enable L.O.C.K.. In production, only Caliptra may program Media Encryption Keys. Power loss or device zeroization must remove every key from the engine. A shipped device must be in production with a randomized HEK.\n\nMCU ROM must populate the HEK seed register and call report HEK metadata after cold reset. HEK and SEK values must be cryptographically strong. Drive firmware must authorize destructive lifecycle events. The KMB must reach the defined SFRs at the immutable configured address and length. Integrations must follow the reset directives.\n\nFinally, the optional fixed KAT media key must never encrypt user data.\n\nUse Table fifty-six in the specification as the definitive checklist, not this summary. Then use an OCP S.A.F.E. review to verify that the product's actual firmware, register protections, resets, and engine behavior preserve the intended trust boundary."
         },
         {
           "id": 8,
@@ -1435,7 +2374,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 79
             }
-          ]
+          ],
+          "transcript": "A conformant L.O.C.K. integration preserves one plaintext key path while exposing two control interfaces.\n\nDrive firmware uses the mailbox to request protected services. The KMB uses SFRs to load, unload, or zeroize encryption-engine entries. Metadata and auxiliary data remain vendor-defined, but neither may expose the raw Media Encryption Key.\n\nMedia-key establishment always starts by initializing the secret. Zero or more ordered mix MPK calls extend it. The sequence then branches to random-key generation and loading, or deterministic derivation.\n\nHost protocols map onto grouped services for HPKE discovery, MPK lifecycle, and media-key lifecycle. Implementation feedback in version 1.1 reduced bespoke cryptography and aligned these services with Caliptra and TCG mechanisms.\n\nReset rules decide which keys persist and which handles must be rediscovered. Authorization, timeouts, engine errors, immutable register configuration, cache clearing, and safe KAT handling are security requirements, not operational polish.\n\nUse the specification's thirteen mandatory controls as the checklist and OCP S.A.F.E. review as the integration verification step. That closes the path from threat model, through key hierarchy, to an auditable product implementation."
         },
         {
           "id": 9,
@@ -1524,7 +2464,8 @@
               "source": "OCP_LOCK_Specification_v1.1_Final.pdf",
               "page": 76
             }
-          ]
+          ],
+          "transcript": "This final check focuses on integration order and mandatory behavior.\n\nThe first question asks which command must initialize the media-key secret before any MPK can be mixed or any key established. The second asks you to select required behaviors across power loss, reset, authorization, register setup, and KAT handling.\n\nSubmit both questions once to continue. Correct answers aren't required, and retry feedback is available. Use the feedback to distinguish flexible vendor metadata from security controls that every conformant integration must preserve."
         },
         {
           "id": 10,
@@ -1551,7 +2492,8 @@
             "script_file": "audio/module3/slide_10_course_complete.txt",
             "wav_file": "audio/module3/slide_10_course_complete.wav",
             "approved": true
-          }
+          },
+          "transcript": "You've completed Integrating OCP L.O.C.K.: Interfaces and Compliance, and the full three-module course.\n\nYou can now connect the operational need for trustworthy erase to the Caliptra trust boundary, reconstruct the layered key hierarchy, and follow a Media Encryption Key from authorized host intent to the protected encryption-engine cache.\n\nKeep version 1.1 open as the authoritative implementation reference, especially its command structures and compliance table. The OCP Storage Project, the Caliptra repository, and the 2026 OCP EMEA Summit session provide the broader community context. Thank you for completing the OCP L.O.C.K. Academy course."
         }
       ]
     }
