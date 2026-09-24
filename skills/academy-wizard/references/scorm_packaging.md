@@ -40,8 +40,9 @@ The following describes the current 1.2 implementation, not a substitute for a v
 
 ### Opt-in single-SCO Slides
 
-Open DC does **not** use this organization. Its approved five-entry build uses
-the opt-in `hbf-module-only` compatibility profile described below.
+Open DC does **not** use this organization. It uses the standard multi-SCO
+Slides player with per-slide resume and five syllabus entries. Its former
+module-only profile was explicitly retired by the user on September 24, 2026.
 
 Record the choice in `course.json`:
 
@@ -60,6 +61,10 @@ Changing an existing multi-SCO course to single-SCO **still changes its LMS stru
 ## Required files at the package root
 
 ### Approved legacy module-only compatibility profile
+
+This is not the current Open DC configuration or the standard Slides behavior.
+Use it only to reproduce a deployment that still explicitly requires it; do not
+retain it when a user has requested the maintained Slides player and per-slide resume.
 
 To reproduce a specifically approved HBF-style Slides deployment, record:
 

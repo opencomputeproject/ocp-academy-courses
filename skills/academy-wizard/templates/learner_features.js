@@ -54,16 +54,27 @@ function storeBookmark() {
 }
 window.addEventListener('academy:slide', storeBookmark);
 let requested = 1;
+let moduleCompleted = false;
 if (reviewMode) requested = Number(new URLSearchParams(location.search).get('slide') || 1);
 else {
   let saved = inLMS ? SCORM.getLocation() : '';
   if (!inLMS) { try { saved = localStorage.getItem(BOOKMARK_KEY) || ''; } catch (_) {} }
   const ownModule = document.querySelector('.module-badge-text').textContent.trim().replace(/\D/g, '');
   const match = saved.match(/^module(\d+):slide(\d+)$/);
-  if (match && match[1] === ownModule) requested = Number(match[2]);
+  const completed = getSuspendObject().modules;
+  const hasOwnCompletion = Array.isArray(completed) && completed.includes(Number(ownModule));
+  // Completion survives a later visit to earlier slides or a quiz retry.
+  // In direct-link deployments, another SCO's completed flag alone is not
+  // evidence that the target module is complete.
+  const ownsLocation = saved === 'module' + ownModule || (match && match[1] === ownModule);
+  moduleCompleted = inLMS
+    ? (existingStatus === 'completed' || existingStatus === 'passed') && (ownsLocation || hasOwnCompletion)
+    : hasOwnCompletion;
+  if (moduleCompleted) requested = totalSlides;
+  else if (match && match[1] === ownModule) requested = Number(match[2]);
 }
 requested = Math.min(totalSlides, Math.max(1, Number.isFinite(requested) ? requested : 1));
-if (!reviewMode) {
+if (!reviewMode && !moduleCompleted) {
   const gate = Array.from(slides).find(s => Number(s.dataset.slide) < requested && s.dataset.quizSlide === 'true' && Array.from(s.querySelectorAll('.quiz-card')).some(c => c.dataset.attempted !== 'true'));
   if (gate) requested = Number(gate.dataset.slide);
 }
@@ -81,12 +92,14 @@ if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener
   }
 });
 if (reviewMode) document.addEventListener('click', e => {
-  const link = e.target.closest('a.next-module-link[href]'); if (!link) return;
+  const link = e.target.closest('a[href]'); if (!link) return;
   const url = new URL(link.href);
-  if (url.origin !== location.origin || !/\/module\d+\.html$/.test(url.pathname)) return;
+  const nextModule = link.matches('.next-module-link') && /\/module\d+\.html$/.test(url.pathname);
+  const home = /\/index\.html$/.test(url.pathname);
+  if (url.origin !== location.origin || (!nextModule && !home)) return;
   e.preventDefault();
   url.searchParams.set('review', '1');
-  url.searchParams.set('slide', '1');
+  if (nextModule) url.searchParams.set('slide', '1');
   location.href = url.href;
 });
 // Keep visuals in step with narration. Short looping figures use their own cycle;

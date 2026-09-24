@@ -51,6 +51,11 @@ try {
   };
   await fs.writeFile(path.join(tmp, 'video.html'), execFileSync(process.env.PYTHON || 'python3',
     ['-c', render, scripts], {input: JSON.stringify(videoCourse), encoding: 'utf8'}));
+  const mobileTitle = structuredClone(videoCourse);
+  mobileTitle.modules[0].title = 'The Facility Compatibility Envelope';
+  mobileTitle.modules[0].slides[0].subtitle = 'Coordinate what the facility must carry, clear, connect, and adapt.';
+  await fs.writeFile(path.join(tmp, 'mobile-title.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(mobileTitle), encoding: 'utf8'}));
   browser = await chromium.launch({headless: true, args: ['--mute-audio']});
   const context = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
   await context.route(/^https?:/, route => route.abort());
@@ -114,6 +119,21 @@ try {
     check(page.url(), url('module2') + '?review=1&slide=1',
       'Next-module link retains quiet local review mode');
   }
+  await page.setViewportSize({width:320,height:640});
+  await page.goto(url('mobile-title') + '?review=1');
+  const titleLayout = await page.evaluate(() => {
+    const hero = document.querySelector('.hero-content');
+    const box = hero.getBoundingClientRect();
+    const badge = document.querySelector('.module-badge').getBoundingClientRect();
+    const slide = document.querySelector('.slide.active');
+    slide.scrollTop = slide.scrollHeight;
+    return {inside: box.left >= 24 && box.right <= innerWidth - 24,
+      belowBadge: box.top >= badge.bottom,
+      scrollableEnd: hero.getBoundingClientRect().bottom <= document.querySelector('.controls').getBoundingClientRect().top};
+  });
+  check(titleLayout, {inside:true,belowBadge:true,scrollableEnd:true},
+    'Long mobile title without resources fits, clears badge and scrolls above controls');
+  await page.setViewportSize({width:1440,height:960});
   await page.addInitScript(() => {
     window.Audio = function() {
       const audio = document.createElement('audio');

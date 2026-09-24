@@ -53,7 +53,7 @@ For quiet home review, open `index.html?review=1`. The Start button opens Module
 
 Home uses informational numbered tiles without progress labels, inferred completion colors, links or misleading hover effects. Below them it says **Navigate modules in any order using the Syllabus in the left sidebar.** The instruction matches normal tile body text. **Start with MODULE 1**, in OCP indigo, sits left of the same green 46px circular double-chevron control used at non-final module endings.
 
-The user rejected the earlier one-activity design because separate syllabus entries are required. This source now records `scorm.organization: multi-sco`, `navigation: direct`, and the explicit `compatibility_profile: hbf-module-only`. That profile preserves the reviewed HBF wrapper, module-only bookmarks and ordinary relative Home/Next links. Re-entering a module starts at slide 1; slide-by-slide resume is deliberately absent. There are no course-specific LMS IDs, private APIs, deployment mappings or SCORM 2004 conversion. Other courses do not inherit this compatibility profile.
+The source records `scorm.organization: multi-sco` and the approved `navigation: direct`. On September 24 the user explicitly retired the earlier module-only exception and requested the maintained AcademyWizard behavior. The course now uses the shared `learner_features.js` player and `scorm_api.js` wrapper, without a compatibility-profile selection. Unfinished modules resume at their saved slide. Completed modules return to their final slide, retaining quiz answers and feedback even after a backward visit. The existing five syllabus entries, module identifiers and ordinary Start/Next/Home links remain. There are no course-specific LMS IDs, private APIs, deployment mappings or SCORM 2004 conversion.
 
 Use the **LMS Syllabus** to select arbitrary modules. Direct Start/Next/Home links preserve the approved compatibility behavior; they are not standard SCORM 1.2 target-SCO requests and cannot themselves change the LMS tracking context. Actual LMS handoff, module completion and close/reopen behavior still require deployment testing. The final home design was browser-approved; local tests are not new Docebo acceptance. Test a separate upload before changing live training material. No live LMS upload, deletion, reset or progress migration is performed by this contribution.
 
@@ -62,11 +62,19 @@ Run the local regression tests with:
 ```bash
 python3 -m unittest discover -s skills/academy-wizard/scripts -p 'test_*.py'
 node skills/academy-wizard/scripts/test_syllabus_home_browser.mjs build/open-data-center-for-ai
+node skills/academy-wizard/scripts/test_slide_resume_browser.mjs build/open-data-center-for-ai
+node skills/academy-wizard/scripts/test_quiz_resume_browser.mjs build/open-data-center-for-ai
 ```
 
-The disposable browser test blocks external network calls and audio playback. It checks informational tiles, exact wording and styling, canonical button parity, keyboard focus, mobile layout down to 320px, first-module review navigation, zero home progress reads, and module-only bookmarking for all four modules. The separate single-SCO regression tests remain for courses that explicitly select that organization; they do not describe this course.
+The disposable browser tests block external network calls and audio playback. They check informational tiles, exact wording and styling, canonical button parity, keyboard focus, mobile layout down to 320px, first-module review navigation, zero home progress reads, and per-slide bookmarking for all four modules. Resume tests cover abandoning/reopening unfinished modules, independent module bookmarks, completed-module revisits, answers/feedback/Retry, and review-state isolation. The separate single-SCO regression tests remain for courses that explicitly select that organization; they do not describe this course.
 
-The repository rebuild was compared with the approved September 23 ZIP: 84 of 88 runtime files are byte-identical. The only difference in each of the four module HTML files is one non-executable comment renamed from “TEST ONLY” to “compatibility.” All learner content, behavior, media, the home page, wrapper, resources and manifest are unchanged. Generated WAVs and ZIPs remain outside source control.
+The refreshed rebuild was compared with the approved September 23 delivery: 83 of 88 runtime files are byte-identical. The four module pages use the maintained player, and the wrapper is now the maintained shared wrapper. All learner content, audio, media, the home page, resources and manifest are unchanged. A second source render reproduces all 88 refreshed runtime files exactly. Generated WAVs and ZIPs remain outside source control.
+
+### September 24 player refresh — approved
+
+The refresh builds on current shared code rather than replacing it with an older installed copy. The maintained player restores the narration-on hint, seeks looping videos within their cycle while holding finite videos on their last frame, resumes unfinished modules at the saved slide and completed modules at the ending, and carries editorial Next links to `?review=1&slide=1`. Shared quiz state restores answers and feedback before navigation; Retry persistently clears only the selected question. Editorial review does not read or write slide, quiz or completion state. Mobile titles now scale within narrow screens and scroll clear of the badge and controls; desktop styling is unchanged. The five-entry SCORM 1.2 organization, home styling, content, voice, synthesis speed, and approved media remain unchanged.
+
+The user approved the local review on September 24 and authorized packaging that exact build and opening a signed source-only follow-up PR. For future refreshes, use the scaffold, resource builder and renderers with approved audio for the unzipped review copy, then wait for explicit local approval before ZIP or PR delivery. No LMS access or deployment testing is part of this refresh.
 
 ## Approved presentation choices
 
