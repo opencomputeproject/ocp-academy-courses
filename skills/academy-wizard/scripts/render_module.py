@@ -906,7 +906,8 @@ def render_module(course: dict, module_index: int) -> str:
     """Return full HTML string for moduleN.html."""
     legacy_profile = legacy_multi_sco.enabled(course)
     module = course["modules"][module_index]
-    badge_tag = "a" if single_sco.enabled(course) or legacy_profile else "div"
+    direct_navigation = (course.get('scorm') or {}).get('navigation') == 'direct'
+    badge_tag = "a" if single_sco.enabled(course) or legacy_profile or direct_navigation else "div"
     home_label = esc(ui(course, "course_home", "Course home"))
     badge_link = f' href="index.html" aria-label="{home_label}" title="{home_label}" style="text-decoration:none;color:inherit"' if badge_tag == "a" else ""
     from glossary_audit import glossary_exclusion_reason

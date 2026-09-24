@@ -28,7 +28,7 @@ try {
       LMSGetValue(k) {
         testCalls.push(['get', k]);
         if (k === 'cmi.core.lesson_status') return 'incomplete';
-        if (k === 'cmi.core.lesson_location') return 'module3:slide7';
+        if (k === 'cmi.core.lesson_location') return (location.pathname.match(/module\d+(?=\.html)/)?.[0] || 'module1') + ':slide3';
         return '{"modules":[1,2,3,4]}';
       },
       LMSCommit() { testCalls.push(['commit']); return 'true'; },
@@ -68,6 +68,8 @@ try {
   await page.locator('.index-start-link').focus();
   check('Keyboard focus is visible', (await styles('.index-start-link', ['outlineStyle'])).outlineStyle, 'solid');
   await page.locator('.index-start-link').blur();
+  // Capture the resting color, not an intermediate focus-transition frame.
+  await page.waitForFunction(() => document.querySelector('.index-start-link').getAnimations().length === 0);
   const startStyle = await styles('.index-start-link', buttonProps);
   const startPaths = await page.locator('.index-start-link path').evaluateAll(nodes => nodes.map(n => n.getAttribute('d')));
   for (const [width, height] of [[1440,1000],[1024,900],[640,960],[390,844],[320,900]]) {
@@ -91,11 +93,11 @@ try {
   check('Completed LMS data cannot color tiles', await page.locator('.module-card.completed,.module-card .status').count(), 0);
   for (let m = 1; m <= 4; m++) {
     await ready(pathToFileURL(path.join(pkg, `module${m}.html`)).href);
-    check(`M${m} starts at slide 1`, await page.locator('.slide.active').getAttribute('data-slide'), '1');
-    check(`M${m} never reads old slide bookmarks`, await page.evaluate(() => testCalls.filter(c => c[0] === 'get' && c[1] === 'cmi.core.lesson_location')), []);
+    check(`M${m} resumes at saved slide 3`, await page.locator('.slide.active').getAttribute('data-slide'), '3');
+    check(`M${m} reads its slide bookmark once`, await page.evaluate(() => testCalls.filter(c => c[0] === 'get' && c[1] === 'cmi.core.lesson_location')), [['get', 'cmi.core.lesson_location']]);
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
-    check(`M${m} retains only a module bookmark`, await page.evaluate(() => testCalls.filter(c => c[0] === 'set' && c[1] === 'cmi.core.lesson_location')), [['set', 'cmi.core.lesson_location', `module${m}`]]);
+    check(`M${m} saves each visited slide`, await page.evaluate(() => testCalls.filter(c => c[0] === 'set' && c[1] === 'cmi.core.lesson_location')), [3,4,5].map(s => ['set', 'cmi.core.lesson_location', `module${m}:slide${s}`]));
     check(`M${m} keeps course-home link`, await page.getByRole('link', {name:'Course home', exact:true}).getAttribute('href'), 'index.html');
   }
   check('No JavaScript errors', errors, []);

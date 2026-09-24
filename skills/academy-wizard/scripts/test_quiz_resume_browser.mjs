@@ -9,12 +9,14 @@ import {chromium} from 'playwright';
 if (!process.argv[2]) throw new Error('Usage: node test_quiz_resume_browser.mjs <built-package-folder>');
 const root = path.resolve(process.argv[2]);
 const course = JSON.parse(await fs.readFile(path.join(root, 'course.json'), 'utf8'));
+assert.equal(course.scorm?.compatibility_profile, undefined, 'This check exercises the maintained Slides player');
 const url = moduleId => pathToFileURL(path.join(root, `module${moduleId}.html`)).href;
 const browser = await chromium.launch({headless: true, args: ['--mute-audio']});
 let checks = 0;
 const errors = [];
 try {
   const context = await browser.newContext({reducedMotion: 'reduce'});
+  await context.route(/^https?:\/\//, route => route.abort());
   await context.addInitScript(() => {
     HTMLMediaElement.prototype.play = function() { return Promise.resolve(); };
   });
@@ -52,6 +54,8 @@ try {
       `Module ${module.id} restores every attempt`); checks++;
     assert.ok(await page.locator('.quiz-card input:checked').count() > 0,
       `Module ${module.id} restores selected answers`); checks++;
+    assert.equal(await page.locator('.quiz-card .quiz-feedback.correct').count(), questionCount,
+      `Module ${module.id} restores correct feedback`); checks++;
     await page.locator('#prevBtn').click();
     await page.locator(`.slide.active[data-slide="${quiz.id}"]`).waitFor();
     const firstQuestion = await page.locator('.slide.active .quiz-card').first().getAttribute('data-question-id');
@@ -61,6 +65,11 @@ try {
       `Module ${module.id} clears the retried question`); checks++;
     assert.equal(Object.keys(retried.quizzes).length, questionCount - 1,
       `Module ${module.id} retains other questions`); checks++;
+    await page.reload();
+    assert.equal(await page.locator('.slide.active').getAttribute('data-slide'), String(last.id),
+      `Completed module ${module.id} returns to its final slide after retry`); checks++;
+    assert.equal(await page.locator(`[data-question-id="${firstQuestion}"] input:checked`).count(), 0,
+      `Module ${module.id} does not resurrect retried answers`); checks++;
   }
 
   if (course.modules.length > 1) {
