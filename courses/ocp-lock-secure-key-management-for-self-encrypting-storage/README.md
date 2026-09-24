@@ -39,6 +39,12 @@ For local QA with previously generated audio, set `EXISTING_AUDIO_DIR` to a fold
 EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh ocp-lock-secure-key-management-for-self-encrypting-storage
 ```
 
+The shared Slides player saves attempted quiz answers and feedback per module. Once a learner reaches the last slide after completing the quiz, a revisit resumes there; review-mode next-module links stay in review mode. These behaviors are generated from AcademyWizard and are not checked-in HTML. After rebuilding, verify this course with:
+
+```bash
+node skills/academy-wizard/scripts/test_quiz_resume_browser.mjs build/ocp-lock-secure-key-management-for-self-encrypting-storage
+```
+
 ## Public references
 
 - OCP L.O.C.K. Specification v1.1 — https://www.opencompute.org/documents/ocp-lock-specification-v1-1-final-pdf
