@@ -145,6 +145,9 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     start_config = course.get("index_start") or {}
     if not isinstance(start_config, dict):
         raise ValueError("index_start must be an object")
+    start_position = start_config.get("position", "below_modules")
+    if start_position not in {"above_modules", "below_modules"}:
+        raise ValueError("index_start.position must be above_modules or below_modules")
     start_html = ""
     if start_config.get("enabled"):
         if not course.get("modules"):
@@ -155,7 +158,7 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
         start_label = start_config.get("label") or ui(course, "start_with_module", "Start with MODULE {module}").format(module=first_module)
         start_title = ui(course, "go_to_module", "Go to Module {module}").format(module=first_module)
         start_html = f'''
-<div class="index-start">
+<div class="index-start{' index-start--above-modules' if start_position == 'above_modules' else ''}">
   <span class="index-start-label">{esc(start_label)}</span>
   <a class="next-module-link index-start-link" href="module{first_module}.html" aria-label="{esc(start_title)}" title="{esc(start_title)}">
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -211,15 +214,16 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     else:
         title_html = esc(course_title)
 
+    font_links = (f'<link rel="stylesheet" href="{esc(course["local_font_stylesheet"])}">'
+                  if course.get("local_font_stylesheet") else '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">')
+
     return f'''<!DOCTYPE html>
 <html lang="{esc(language)}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{esc(course_title)}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+{font_links}
 <script src="scorm_api.js"></script>
 <style>
 {css}
@@ -241,11 +245,12 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
   {f'<!-- tagline moved to footer pill -->' if tagline else ""}
 </div>
 
+{start_html if start_position == "above_modules" else ""}
 <div class="modules" id="modules">
 {"".join(cards)}
 </div>
 <p id="lmsNavNote" class="index-navigation-instruction"{'' if navigation_instruction else ' hidden'}>{esc(navigation_instruction or 'Use the LMS course navigation to open a module so its completion is recorded correctly.')}</p>
-{start_html}
+{start_html if start_position == "below_modules" else ""}
 
 <div class="footer">
   <nav aria-label="Course resources" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">

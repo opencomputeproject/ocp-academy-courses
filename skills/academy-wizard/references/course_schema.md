@@ -745,7 +745,27 @@ MP4, WebM, MOV, or M4V file:
 }
 ```
 
+A figure may explicitly opt into a narration-master sequence with
+`"sync_to_narration": true`, `"autoplay": false`, `"loop": false`, and
+`"muted": true`. It requires paired slide narration. This is a boolean; strings
+such as `"false"` must not activate it. Omission or `false` retains the historical
+player, including modulo seeking for loops and its existing pause/end behavior.
+Approval, production and regression requirements are in
+[narration_synced_video.md](narration_synced_video.md).
+
 `extract_figures.py` reads `extract_from`. The image-gen step reads `generate_prompt`.
 The renderer embeds image figures as zoomable images and embeds video figures with hover/focus
 Play/Pause and Zoom controls. `render_index.py` lists both the video and `poster` in the SCORM
 manifest.
+
+## Local font delivery for Slides
+
+`local_font_stylesheet` optionally names a package-relative CSS file, such as
+`assets/fonts/open-sans.css`. The home and module renderers use that file instead
+of their Google Fonts links. Register the CSS, font binaries and licenses in
+`resource_assets`; a resource builder can stage them. Omission retains the
+existing font delivery.
+
+`index_start.position` optionally accepts `above_modules` or `below_modules`.
+The default is `below_modules`; placement does not change the approved start
+link, informational tile behavior or SCORM organization.

@@ -89,9 +89,16 @@ def check_course(
                         errors.append(f"M{module_id}S{slide.get('id')}: video has no poster")
                     elif not (root / poster).is_file():
                         errors.append(f"M{module_id}S{slide.get('id')}: missing poster {poster}")
-                    for field in ("autoplay", "loop", "muted"):
-                        if figure.get(field) is not True:
-                            errors.append(f"M{module_id}S{slide.get('id')}: teaching video must set {field}=true")
+                    if "sync_to_narration" in figure and type(figure["sync_to_narration"]) is not bool:
+                        errors.append(f"M{module_id}S{slide.get('id')}: sync_to_narration must be a boolean")
+                    if figure.get("sync_to_narration") is True and not (slide.get("audio") or {}).get("wav_file"):
+                        errors.append(f"M{module_id}S{slide.get('id')}: synchronized video needs paired narration")
+                    expected = ({"autoplay": False, "loop": False, "muted": True}
+                                if figure.get("sync_to_narration") is True
+                                else {"autoplay": True, "loop": True, "muted": True})
+                    for field, value in expected.items():
+                        if figure.get(field) is not value:
+                            errors.append(f"M{module_id}S{slide.get('id')}: teaching video must set {field}={str(value).lower()}")
                     if not str(figure.get("alt") or "").strip():
                         errors.append(f"M{module_id}S{slide.get('id')}: video has no alt text")
                     if not str(figure.get("caption") or "").strip():

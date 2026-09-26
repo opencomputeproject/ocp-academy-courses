@@ -73,6 +73,19 @@ class IndexHomeTests(unittest.TestCase):
         self.assertIn('M6 5l7 7-7 7', markup)
         self.assertIn('M12 5l7 7-7 7', markup)
 
+    def test_start_position_is_opt_in(self):
+        self.course['index_start'] = {'enabled': True, 'navigation': 'direct'}
+        markup, _ = self.render()
+        self.assertGreater(markup.index('<div class="index-start"'), markup.index('<div class="modules"'))
+        self.course['index_start']['position'] = 'above_modules'
+        markup, _ = self.render()
+        self.assertLess(markup.index('<div class="index-start index-start--above-modules"'), markup.index('<div class="modules"'))
+
+    def test_start_position_rejects_misspellings(self):
+        self.course['index_start'] = {'enabled': True, 'navigation': 'direct', 'position': 'above'}
+        with self.assertRaisesRegex(ValueError, 'index_start.position'):
+            self.render()
+
     def test_start_does_not_enable_other_tile_links(self):
         self.course['index_start'] = {'enabled': True, 'navigation': 'direct'}
         _, dom = self.render()

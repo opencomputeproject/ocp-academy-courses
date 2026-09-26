@@ -102,10 +102,22 @@ if (reviewMode) document.addEventListener('click', e => {
   if (nextModule) url.searchParams.set('slide', '1');
   location.href = url.href;
 });
-// Keep visuals in step with narration. Short looping figures use their own cycle;
-// seeking far into the narration must not pin them to their last frame.
+// The historical player remains the default. Only explicitly marked videos
+// use the narration-master timeline and synchronized enlarged view.
+let motionOptIn = false;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+function isSyncedVideo(video) { return video?.dataset.narrationSync === 'true'; }
+function legacyTeachingVideo() {
+  const video = document.querySelector('.slide.active video.figure-video');
+  return video && !isSyncedVideo(video) ? video : null;
+}
+function activeSyncedVideos() {
+  return Array.from(document.querySelectorAll('.slide.active video.figure-video, .lightbox-overlay video.figure-video')).filter(isSyncedVideo);
+}
+function motionEnabled() { return !reducedMotion.matches || motionOptIn; }
 function alignVideo(seek) {
-  const video = document.querySelector('.slide.active video.figure-video'); if (!video) return;
+  // Preserve the old loop/finite seek and rate policy exactly for unmarked media.
+  const video = legacyTeachingVideo(); if (!video) return;
   video.playbackRate = audioPlayer.playbackRate;
   if (seek && Number.isFinite(video.duration) && video.duration > 0) {
     const visualTime = video.loop
@@ -114,7 +126,77 @@ function alignVideo(seek) {
     video.currentTime = Math.max(0, Math.min(visualTime, video.duration - 1 / 60));
   }
 }
-audioPlayer.addEventListener('play', () => { alignVideo(true); const v = document.querySelector('.slide.active video.figure-video'); if (v) v.play().catch(() => {}); });
-audioPlayer.addEventListener('seeking', () => alignVideo(true));
-audioPlayer.addEventListener('ratechange', () => alignVideo(false));
-audioPlayer.addEventListener('pause', () => { if (autoPlayAudio && !audioPlayer.ended) { const v = document.querySelector('.slide.active video.figure-video'); if (v) v.pause(); } });
+function alignSyncedVideos(seek) {
+  activeSyncedVideos().forEach(video => {
+    video.playbackRate = audioPlayer.playbackRate;
+    if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+    const visualTime = !motionEnabled() ? video.duration - 1 / 24
+      : Math.min(audioPlayer.currentTime, video.duration);
+    if (seek || Math.abs(video.currentTime - visualTime) > .25) {
+      video.currentTime = Math.max(0, Math.min(visualTime, video.duration - 1 / 60));
+    }
+  });
+}
+function updateTeachingVideoControls() {
+  activeSyncedVideos().forEach(video => {
+    const button = video.closest('.figure-panel')?.querySelector('[data-video-toggle]');
+    if (!button) return;
+    const paused = audioPlayer.paused || !motionEnabled();
+    button.innerHTML = paused ? '<span class="video-icon video-icon-play" aria-hidden="true"></span>' : '<span class="video-icon video-icon-pause" aria-hidden="true"></span>';
+    button.setAttribute('aria-label', paused ? 'Play narrated video' : 'Pause narrated video');
+    button.title = paused ? 'Play narrated video' : 'Pause narrated video';
+  });
+}
+function playSyncedVideos() {
+  const videos = activeSyncedVideos(); if (!videos.length) return;
+  setAudioPlaying(true);
+  alignSyncedVideos(true);
+  videos.forEach(video => {
+    if (motionEnabled() && !audioPlayer.ended) video.play().catch(() => {});
+    else video.pause();
+  });
+  updateTeachingVideoControls();
+}
+function pauseSyncedVideos() {
+  const videos = activeSyncedVideos(); if (!videos.length) return;
+  if (audioPlayer.paused) setAudioPlaying(false);
+  videos.forEach(video => video.pause());
+  updateTeachingVideoControls();
+}
+// The four legacy listeners retain their original triggers and side effects.
+audioPlayer.addEventListener('play', () => {
+  alignVideo(true); const video = legacyTeachingVideo();
+  if (video) video.play().catch(() => {});
+  playSyncedVideos();
+});
+audioPlayer.addEventListener('seeking', () => { alignVideo(true); alignSyncedVideos(true); });
+audioPlayer.addEventListener('ratechange', () => { alignVideo(false); alignSyncedVideos(false); });
+audioPlayer.addEventListener('pause', () => {
+  if (autoPlayAudio && !audioPlayer.ended) { const video = legacyTeachingVideo(); if (video) video.pause(); }
+  pauseSyncedVideos();
+});
+// These additional triggers must never act on legacy videos or audio-only slides.
+audioPlayer.addEventListener('playing', playSyncedVideos);
+audioPlayer.addEventListener('waiting', pauseSyncedVideos);
+audioPlayer.addEventListener('timeupdate', () => alignSyncedVideos(false));
+audioPlayer.addEventListener('ended', () => { alignSyncedVideos(true); pauseSyncedVideos(); });
+document.querySelectorAll('video.figure-video').forEach(video => {
+  if (!isSyncedVideo(video)) return;
+  video.addEventListener('loadedmetadata', () => {
+    if (!video.closest('.slide.active')) return;
+    alignSyncedVideos(true);
+    if (audioPlayer.paused || !motionEnabled()) video.pause();
+    else video.play().catch(() => {});
+    updateTeachingVideoControls();
+  });
+});
+document.addEventListener('click', e => {
+  const button = e.target.closest('[data-video-toggle]');
+  const video = button?.closest('.figure-panel')?.querySelector('video.figure-video');
+  if (!video || !isSyncedVideo(video)) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  if (!motionEnabled()) { motionOptIn = true; if (audioPlayer.paused) attemptAudioPlayback(); else playSyncedVideos(); }
+  else if (audioPlayer.paused) { if (audioPlayer.ended) audioPlayer.currentTime = 0; attemptAudioPlayback(); }
+  else audioPlayer.pause();
+}, true);
+window.addEventListener('academy:slide', () => { alignSyncedVideos(true); updateTeachingVideoControls(); });

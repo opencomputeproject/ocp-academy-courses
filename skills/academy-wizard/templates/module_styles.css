@@ -2415,11 +2415,16 @@ body.first-slide-audio-cue .btn-audio {
 .slide--media-focus .figure-panel { width:100% !important; }
 .slide--media-focus .figure-panel video.figure-video { width:100%; max-height:none; height:auto; background:#fff; }
 .slide--media-focus .figure-panel img { width:100%; max-height:none; }
-.slide--media-focus .learner-aids { max-width:980px; margin-inline:auto; }
 .tenet-card { min-width:0; overflow-wrap:anywhere; }
 @media(min-width:1001px) {
-  .slide--media-focus { --teaching-media-width:clamp(780px,calc((100vh - 414px) * 1.777778),980px); }
-  .slide--media-focus .figure-wrap,.slide--media-focus .learner-aids { width:100%; max-width:var(--teaching-media-width); }
+  /* Intrinsic artwork height keeps compact diagrams from reserving a 16:9 frame.
+     Leave 20px above the 56px desktop controls, without an extra scroll tail. */
+  .slide--media-focus { --teaching-media-width:clamp(780px,calc((100vh - 414px) * 1.777778),980px); padding-top:76px; padding-bottom:76px; }
+  .slide--media-focus .figure-wrap + .slide-main-text { margin-top:12px; }
+  .slide--media-focus[data-video-slide="true"] .figure-wrap + .slide-main-text { margin-top:6px; }
+  .slide--media-focus .learner-aids { margin-top:12px; }
+  .slide--media-focus[data-video-slide="true"] .learner-aids { margin-top:0; }
+  .slide--media-focus .figure-wrap { width:100%; max-width:var(--teaching-media-width); }
 }
 @media(max-width:1000px) { .controls-left .theme-label,.controls-left .key-hint {display:none;} .tenets-grid{grid-template-columns:repeat(2,minmax(0,1fr));} }
 @media(max-width:900px) { .controls-right .audio-progress-wrap {display:none;} }

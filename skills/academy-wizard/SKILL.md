@@ -131,6 +131,9 @@ For `content_grid` slides, use card tones only when the slide is intentionally c
 
 For a newly authored narrated Slides course, identify at least one slide in every module whose teaching materially benefits from motion. Add a silent animation or short video there in place of, or alongside, the planned static figure. More than one video per module is appropriate when each teaches a distinct relationship. Record these choices in the figure plan; a module with no teaching animation requires an explicit user opt-out.
 
+For technical explanations that benefit from timed cause and effect, **prefer proposing a narration-synchronized, single-pass video**. Keep the existing short-loop player as the default until the user approves this choice for the course or named slides. Do not convert existing media during a rebuild. Read [Narration-synchronized video](references/narration_synced_video.md) before proposing, producing or changing this mode; record the approval and opt in per figure.
+
+
 ### Phase 4 — Narration scripts (GATE 2)
 
 This phase applies to Slides. For Scrolling, record `scrolling.narration: false` and skip narration unless the user explicitly requests an accessible audio enhancement; do not invent slide-style autoplay narration for a scrolling course.

@@ -132,6 +132,14 @@ try {
       check(await page.locator('.slide.active').getAttribute('data-slide'), '1', 'Next review module starts at slide 1');
     }
   }
+  // Some authored courses omit a Home control; still exercise the delegated
+  // review-link handler without requiring a course-content change.
+  if (!await page.getByRole('link', {name: 'Course home', exact: true}).count()) {
+    await page.evaluate(() => {
+      const link = document.createElement('a'); link.href = 'index.html'; link.textContent = 'Course home';
+      link.style.cssText = 'position:fixed;top:0;left:0;z-index:999999'; document.body.appendChild(link);
+    });
+  }
   await page.getByRole('link', {name: 'Course home', exact: true}).click();
   await page.waitForURL('**/index.html?review=1');
   check(await page.evaluate(() => testCalls), [], 'Review Home remains untracked');
@@ -202,6 +210,9 @@ try {
   const times = await local.page.evaluate(() => {
     const video = document.querySelector('.slide.active video.figure-video');
     const audio = testAudio;
+    // This fixture deliberately exercises the legacy loop/finite policy.
+    // Explicit synchronized video is covered by test_video_modes_browser.mjs.
+    delete video.dataset.narrationSync;
     Object.defineProperty(audio, 'currentTime', {configurable: true, get: () => 22.5});
     Object.defineProperty(video, 'duration', {configurable: true, get: () => 8});
     let position = 0;

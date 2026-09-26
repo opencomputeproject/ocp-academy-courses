@@ -11,8 +11,7 @@ assert.ok(functionSource, 'Slides player must define alignVideo');
 
 const video = {duration: 8, loop: true, currentTime: 0, playbackRate: 1};
 const audioPlayer = {currentTime: 22.5, playbackRate: 1.25};
-const document = {querySelector: () => video};
-const alignVideo = new Function('document', 'audioPlayer', `${functionSource}\nreturn alignVideo;`)(document, audioPlayer);
+const alignVideo = new Function('legacyTeachingVideo', 'audioPlayer', `${functionSource}\nreturn alignVideo;`)(() => video, audioPlayer);
 
 alignVideo(true);
 assert.equal(video.currentTime, 6.5, 'A seek into narration maps into the matching loop cycle');

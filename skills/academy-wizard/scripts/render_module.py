@@ -390,6 +390,7 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
         preload = fig.get("preload", "metadata")
         attr_bits = [
             f'class="figure-video"',
+            'data-narration-sync="true"' if fig.get("sync_to_narration") is True else "",
             f'src="{esc(path)}"',
             f'aria-label="{esc(alt)}"',
             f'preload="{esc(preload)}"',
@@ -962,6 +963,9 @@ def render_module(course: dict, module_index: int) -> str:
     bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
     bookmark_declaration = '' if legacy_profile else f'  const BOOKMARK_KEY = {bookmark_key};\n'
 
+    font_links = (f'<link rel="stylesheet" href="{esc(course["local_font_stylesheet"])}">'
+                  if course.get("local_font_stylesheet") else '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">')
+
     return f'''<!DOCTYPE html>
 <html lang="{esc(language)}">
 <head>
@@ -969,9 +973,7 @@ def render_module(course: dict, module_index: int) -> str:
 <script src="scorm_api.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{esc(course_title)} - {esc(module_label)} {module_num}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+{font_links}
 <style>
 {css}
 </style>
@@ -1062,7 +1064,8 @@ def render_module(course: dict, module_index: int) -> str:
         return;
       }}
       if (restartActive) video.currentTime = 0;
-      if (video.hasAttribute('autoplay')) video.play().catch(function() {{}});
+      if (video.dataset.narrationSync === 'true') video.pause();
+      else if (video.hasAttribute('autoplay')) video.play().catch(function() {{}});
     }});
   }}
 
@@ -1546,6 +1549,13 @@ def render_module(course: dict, module_index: int) -> str:
     var lightboxPanel = frame;
     var lightboxVideo = frame.querySelector('video.figure-video');
     if (sourceVideo && lightboxVideo) {{
+      if (sourceVideo.dataset.narrationSync === 'true') {{
+        lightboxVideo.playbackRate = sourceVideo.playbackRate;
+        lightboxVideo.addEventListener('loadedmetadata', function() {{
+          lightboxVideo.currentTime = sourceVideo.currentTime || 0;
+          lightboxVideo.playbackRate = sourceVideo.playbackRate;
+        }}, {{once: true}});
+      }}
       lightboxVideo.currentTime = sourceVideo.currentTime || 0;
       if (sourceVideo.paused) {{
         lightboxVideo.pause();
