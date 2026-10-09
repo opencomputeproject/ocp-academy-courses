@@ -162,8 +162,9 @@ def render_course_overview(slide: dict, course: dict, module: dict) -> str:
         # Optional url makes a chip clickable.
         url = chip.get("url")
         icon = str(chip.get("icon", "")).strip()
+        icon_class = "" if icon in {"clock", "modules", "spec"} else " meta-chip-icon--text"
         inner = f'''
-          {f'<div class="meta-chip-icon">{_meta_chip_icon_html(icon)}</div>' if icon else ""}
+          {f'<div class="meta-chip-icon{icon_class}">{_meta_chip_icon_html(icon)}</div>' if icon else ""}
           <span>{esc(chip.get("text",""))}</span>'''
         if url:
             chips_html += f'''

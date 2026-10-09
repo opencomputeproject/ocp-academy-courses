@@ -5,11 +5,26 @@ from pathlib import Path
 from unittest.mock import patch
 
 from gen_audio import iter_module_slides, pick_elevenlabs_speed
-from render_module import fill_missing_transcripts, render_content_diagram, render_module
+from render_module import fill_missing_transcripts, render_content_diagram, render_course_overview, render_module
 from render_scrolling import render_scrolling_course
 
 
 class SlidesPortabilityTests(unittest.TestCase):
+    def test_metadata_text_badges_are_flexible_without_changing_semantic_icons(self):
+        slide={'id':2,'type':'course_overview','title':'Course path','chips':[
+            {'icon':'60','text':'Duration'}, {'icon':'OCP','text':'Source'},
+            {'icon':'Video','text':'Panel'}, {'icon':'clock','text':'Duration'}]}
+        result=render_course_overview(slide,{}, {})
+        self.assertEqual(3,result.count('class="meta-chip-icon meta-chip-icon--text"'))
+        self.assertIn('class="meta-chip-icon"><svg',result)
+        css=(Path(__file__).resolve().parent.parent/'templates/module_styles.css').read_text()
+        self.assertIn('.meta-chip-icon--text {\n  width: auto;',css)
+
+    def test_mobile_teaching_scroller_excludes_fixed_badge_region(self):
+        css=(Path(__file__).resolve().parent.parent/'templates/module_styles.css').read_text()
+        self.assertIn('top: 80px;\n    height: calc(100vh - 80px);\n    padding-top: 16px;',css)
+        self.assertIn('.glossary-chip::after {bottom:128px;}',css)
+
     def test_default_and_recorded_speed_precedence(self):
         with patch.dict('os.environ', {}, clear=True):
             self.assertEqual((1.18, 'maintained default'), pick_elevenlabs_speed({}))
