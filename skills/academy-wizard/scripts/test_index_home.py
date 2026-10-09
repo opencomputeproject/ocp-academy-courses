@@ -1,4 +1,4 @@
-"""Regression checks for syllabus-led multi-SCO home and opt-in start control."""
+"""Regression checks for syllabus-led multi-SCO home and default start control."""
 import re
 import unittest
 from html.parser import HTMLParser
@@ -41,7 +41,8 @@ class IndexHomeTests(unittest.TestCase):
         self.assertNotIn('SCORM.getSuspendData()', markup)
         self.assertFalse(any('href' in attrs or 'tabindex' in attrs for _, attrs in dom.by_class('module-card')))
         self.assertIn('Use the LMS syllabus', markup)
-        self.assertFalse(dom.by_class('index-start-link'))
+        self.assertEqual(dom.by_class('index-start-link')[0][1]['href'], 'module1.html')
+        self.assertIn('Start with MODULE 1', markup)
 
     def test_multi_sco_ignores_stale_status_setting(self):
         self.course['index_show_module_status'] = True
@@ -92,25 +93,44 @@ class IndexHomeTests(unittest.TestCase):
         self.assertEqual(len(dom.by_class('index-start-link')), 1)
         self.assertTrue(all(tag == 'article' for tag, _ in dom.by_class('module-card')))
 
-    def test_multi_sco_start_requires_explicit_compatibility_choice(self):
+    def test_start_enabled_without_navigation_uses_default_first_module_link(self):
         self.course['index_start'] = {'enabled': True}
-        with self.assertRaisesRegex(ValueError, 'explicitly approved'):
+        _, dom = self.render()
+        self.assertEqual(dom.by_class('index-start-link')[0][1]['href'], 'module1.html')
+
+    def test_explicit_start_opt_out_is_preserved(self):
+        self.course['index_start'] = {'enabled': False}
+        _, dom = self.render()
+        self.assertFalse(dom.by_class('index-start-link'))
+
+    def test_default_start_keeps_localized_labels_and_review_behavior(self):
+        self.course['ui_labels'] = {
+            'start_with_module': 'Begin module {module}',
+            'go_to_module': 'Open module {module}',
+        }
+        markup, dom = self.render()
+        self.assertIn('Begin module 1', markup)
+        self.assertEqual(dom.by_class('index-start-link')[0][1]['aria-label'], 'Open module 1')
+        self.assertIn("'?review=1&slide=1'", markup)
+
+    def test_invalid_multi_sco_start_navigation_is_rejected(self):
+        self.course['index_start'] = {'navigation': 'choice'}
+        with self.assertRaisesRegex(ValueError, 'must be direct'):
             self.render()
 
     def test_start_targets_first_authored_module_not_hardcoded_one(self):
         self.course['modules'][0]['id'] = 8
-        self.course['index_start'] = {'enabled': True, 'navigation': 'direct'}
         markup, dom = self.render()
         self.assertEqual(dom.by_class('index-start-link')[0][1]['href'], 'module8.html')
         self.assertIn('Start with MODULE 8', markup)
 
     def test_single_sco_retains_trustworthy_progress_and_links(self):
         self.course['scorm']['organization'] = 'single-sco'
-        self.course['index_start'] = {'enabled': True}
         markup, dom = self.render()
         self.assertEqual(len(dom.by_class('status')), 4)
         self.assertIn('SCORM.getSuspendData()', markup)
         self.assertTrue(all(tag == 'a' for tag, _ in dom.by_class('module-card')))
+        self.assertEqual(dom.by_class('index-start-link')[0][1]['href'], 'module1.html')
 
     def test_single_sco_can_hide_progress(self):
         self.course['scorm']['organization'] = 'single-sco'

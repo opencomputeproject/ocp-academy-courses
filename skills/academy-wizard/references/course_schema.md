@@ -83,7 +83,7 @@ For other LMSs confirm the location and permitted order; the informational-tile
 fallback says `Use the LMS syllabus to advance through the course modules in any order.`
 Supply an accurate course-specific instruction when order is restricted.
 
-Every new or refreshed multi-SCO Slides home includes a first-module action
+Every new or refreshed Slides home includes a first-module action by default
 below that instruction:
 
 ```json
@@ -97,19 +97,18 @@ below that instruction:
 The label uses OCP indigo (#343895) and sits left of the canonical 46px circular next-module double-chevron
 control, with the same SVG, colors and pulse. It links only to the first
 authored module. `label` defaults to the localized `start_with_module` UI label;
-the accessible name/title uses `go_to_module`. In multi-SCO courses,
-`navigation: "direct"` must be explicitly recorded after the user requests
-this compatibility behavior and understands that a page link cannot change
-LMS tracking context. It does not enable links on the other tiles. Validate
-the actual LMS launch and completion before packaging; local review alone
-does not prove that handoff. In review mode the destination keeps `review=1`
-and starts at slide 1 without narration or LMS writes. A direct link requires
-an explicit compatibility approval; if it is unavailable, use a tested
-LMS-mediated alternative or stop and ask for a navigation decision. The
-renderer still accepts omission for older courses that have not been refreshed,
-but authoring a new or refreshed multi-SCO home must not silently leave the
-start action out. These fields do not alter the SCORM version, organization,
-module completion, or bookmark policy.
+the accessible name/title uses `go_to_module`. Omission of `index_start`,
+`enabled`, or `navigation` defaults to the enabled direct first-module action;
+no separate user request or compatibility approval is needed for this maintained
+home default. Record the above fields in new/refreshed sources for reproducibility.
+An explicit user opt-out may set `enabled: false`. This action targets the
+first authored module, not a hardcoded filename, and does not enable links on
+the other tiles. In multi-SCO courses it remains a page link, not a target-SCO
+request, and cannot change LMS tracking context. Retain the syllabus instruction
+and verify actual LMS launch/completion; local review alone does not prove that
+handoff. In review mode the destination keeps `review=1` and starts at slide 1
+without narration or LMS writes. These fields do not alter the SCORM version,
+organization, module completion, next-module policy, or bookmark policy.
 
 `scorm.navigation: "direct"` is an explicit course-level compatibility override
 for legacy SST-style page links, including in a multi-SCO LMS. Use it only when
@@ -380,9 +379,33 @@ Plus type-specific fields. See `slide_design_patterns.md` for what each type nee
 
 Optional learner-aid fields accepted on slides:
 
+PDF links on teaching slides are page-specific by default, including
+`resource_callout` buttons. Use a short document name, optional section/table,
+and `p.` or `pp.` plus the supporting page/range in the visible label:
+`Spec · Table 1 · pp. 15–17`. Append `#page=15` to open the first cited page.
+Multiple ranges may be shown, for example `pp. 13–14, 52–58, 60`, opening page 13.
+Localize document and section names while retaining the `p.`/`pp.` notation and numeric page ranges.
+Use one-based PDF viewer pages including the cover, not printed footers when
+they differ. Verify both source support and range bounds in the actual PDF;
+never attach an unverified page number just to satisfy the style check.
+
+The closing resource/`course_complete` slide links to the entire canonical
+document instead: a recognizable document label without `p.`/`pp.`, and a URL
+without a page or contents-page fragment. For example,
+`{"label": "PG25 base specification", "url": "https://example.org/pg25.pdf"}`.
+Canonical `sources`, hidden `source_refs`, and glossary audit URLs may retain
+whole-document links. Identify an opaque PDF endpoint with `kind: "pdf"` in
+the link or corresponding source metadata so source QA can check it too.
+These are maintained defaults for new builds and refreshed courses, not
+optional upgrades that require a separate user request. The PDF-reference
+audit in `slides_course_qa.py` checks visible notation, positive page anchors,
+matching first pages, and whole-document closing links; it cannot establish
+source accuracy or PDF-viewer behavior inside the target LMS.
+
 ```json
 {
   "reference_links": [
+    {"label": "Spec · Table 1 · pp. 15–17", "url": "https://example.org/spec.pdf#page=15"},
     {"label": "OCP Rack & Power project", "url": "https://www.opencompute.org/community/rack-and-power"}
   ],
   "resource_callout": {
@@ -698,6 +721,10 @@ The end-of-module slide on every module *except* the final one. Carries the "Mod
 ### `course_complete`
 
 The end-of-final-module slide. Two beats: thanks the learner for finishing the final module AND wraps up the whole course. Both messages have sensible auto-defaults if omitted. Add useful `reference_links` as the learner's continuing resources; the renderer centers that resource strip with the rest of the completion content. Do not add a redundant "All Modules Complete" badge below the course-complete message.
+
+PDF continuing resources here always open the whole document: omit page
+fragments, contents-page anchors, and page/range labels. This is the explicit
+exception to the page-specific teaching-slide PDF default.
 
 Optionally add a `survey` object to attach a feedback CTA card below the centered resources. The card has a body paragraph and a button that opens the survey URL in a new tab. Omit `survey` entirely to render the slide without any CTA. `button_text` defaults to "Share Feedback".
 

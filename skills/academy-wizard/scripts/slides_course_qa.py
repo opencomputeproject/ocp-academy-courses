@@ -8,22 +8,88 @@ Usage:
 
 This complements, rather than replaces, rendered visual inspection. It verifies
 per-module teaching-video coverage, local media/poster files, glossary-reference
-integrity, and (when requested) the course README, 800x400 thumbnail, and both
-root README catalog locations.
+integrity, page-specific PDF references, and (when requested) the course README,
+800x400 thumbnail, and both root README catalog locations.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import struct
 import sys
 from collections import defaultdict
 from pathlib import Path
+from urllib.parse import parse_qs, unquote, urlsplit, urlunsplit
 from glossary_audit import audit_glossary
 
 
 VIDEO_SUFFIXES = {".mp4", ".webm", ".mov", ".m4v"}
+PDF_PAGE_LABEL = re.compile(
+    r"\bpp?\.\s*(\d+(?:\s*[-\u2013]\s*\d+)?(?:\s*,\s*\d+(?:\s*[-\u2013]\s*\d+)?)*)",
+    re.IGNORECASE,
+)
+
+
+def pdf_url(url: str) -> bool:
+    return unquote(urlsplit(url).path).casefold().endswith((".pdf", "-pdf"))
+
+
+def document_url(url: str) -> str:
+    return urlunsplit(urlsplit(url)._replace(fragment=""))
+
+
+def audit_pdf_references(course: dict) -> tuple[list[str], int]:
+    """Check link syntax; the author still verifies each page against the PDF."""
+    errors: list[str] = []
+    count = 0
+    known_pdf_urls = {
+        document_url(str(source["url"]))
+        for source in course.get("sources") or []
+        if source.get("url") and (
+            pdf_url(str(source["url"]))
+            or pdf_url(str(source.get("path") or ""))
+            or str(source.get("kind") or "").casefold() == "pdf"
+        )
+    }
+    for module in course.get("modules") or []:
+        for slide in module.get("slides") or []:
+            refs = list(slide.get("reference_links") or [])
+            callout = slide.get("resource_callout") or {}
+            if callout.get("url"):
+                refs.append(dict(callout, label=callout.get("button_text") or callout.get("title") or ""))
+            for ref in refs:
+                url = str(ref.get("url") or "")
+                if not (pdf_url(url) or document_url(url) in known_pdf_urls
+                        or str(ref.get("kind") or "").casefold() == "pdf"):
+                    continue
+                count += 1
+                label = str(ref.get("label") or "")
+                location = f"M{module.get('id')}S{slide.get('id')}: PDF resource {label!r}"
+                label_pages = PDF_PAGE_LABEL.search(label)
+                fragment = urlsplit(url).fragment
+                if slide.get("type") == "course_complete":
+                    if fragment or label_pages:
+                        errors.append(f"{location} must link to the whole document without a page fragment or page/range label")
+                    continue
+                page = parse_qs(fragment).get("page", [])
+                if len(page) != 1 or not page[0].isascii() or not page[0].isdigit() or int(page[0]) < 1:
+                    errors.append(f"{location} needs a one-based #page= anchor")
+                    continue
+                if not label_pages:
+                    errors.append(f"{location} must display p. or pp. and the supporting page/range")
+                    continue
+                ranges = label_pages[1].split(",")
+                starts = []
+                for item in ranges:
+                    bounds = [int(value) for value in re.split(r"\s*[-\u2013]\s*", item.strip())]
+                    starts.append(bounds[0])
+                    if bounds[0] < 1 or bounds[-1] < bounds[0]:
+                        errors.append(f"{location} has an invalid page range")
+                if starts[0] != int(page[0]):
+                    errors.append(f"{location} label and #page= anchor must start at the same PDF viewer page")
+    return errors, count
 
 
 def is_video(figure: dict) -> bool:
@@ -69,6 +135,10 @@ def check_course(
     modules = course.get("modules") or []
     if not modules:
         errors.append("course has no modules")
+
+    reference_errors, reference_count = audit_pdf_references(course)
+    errors.extend(reference_errors)
+    notes.append(f"{reference_count} PDF resource links checked for teaching-page labels and whole-document closing links")
 
     for module in modules:
         module_id = module.get("id")

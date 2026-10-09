@@ -149,11 +149,11 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     if start_position not in {"above_modules", "below_modules"}:
         raise ValueError("index_start.position must be above_modules or below_modules")
     start_html = ""
-    if start_config.get("enabled"):
+    if start_config.get("enabled", True):
         if not course.get("modules"):
             raise ValueError("index_start requires a first module")
-        if not single_sco_course and start_config.get("navigation") != "direct":
-            raise ValueError("Multi-SCO index_start requires an explicitly approved navigation: direct compatibility choice; SCORM 1.2 has no standard target-SCO request")
+        if not single_sco_course and start_config.get("navigation", "direct") != "direct":
+            raise ValueError("Multi-SCO index_start.navigation must be direct; SCORM 1.2 has no standard target-SCO request")
         first_module = course["modules"][0]["id"]
         start_label = start_config.get("label") or ui(course, "start_with_module", "Start with MODULE {module}").format(module=first_module)
         start_title = ui(course, "go_to_module", "Go to Module {module}").format(module=first_module)
@@ -280,7 +280,7 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     }});
   }});
 
-  // The optional start link is limited to the first module. It is not an
+  // The default start link is limited to the first module. It is not an
   // arbitrary-SCO navigation API and never infers or writes module progress.
   const startLink = document.querySelector('.index-start-link');
   if (startLink && reviewMode) startLink.addEventListener('click', function(e) {{

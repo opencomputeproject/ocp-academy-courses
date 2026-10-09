@@ -125,7 +125,7 @@ The XML uses three namespaces (IMS content packaging, ADL SCORM, XSI). Copy them
 ## What the LMS sees
 
 - The LMS can expose `index.html` and each `moduleN.html` as separate SCO syllabus items. Each SCO must manage its own completion status.
-- The Course Home launcher calls `SCORM.init()` and immediately sets its own `cmi.core.lesson_status` to `completed`. Multi-SCO home tiles neither read `suspend_data` nor show inferred module completion. Use informational tiles and the syllabus instruction unless an explicitly approved navigation override exists. The opt-in first-module start control is documented in `course_schema.md`; it does not provide a general SCORM 1.2 target-SCO API.
+- The Course Home launcher calls `SCORM.init()` and immediately sets its own `cmi.core.lesson_status` to `completed`. Multi-SCO home tiles neither read `suspend_data` nor show inferred module completion. Use informational tiles and the syllabus instruction unless an explicitly approved navigation override exists. The first-module start control is enabled by default even when `index_start` is omitted; an explicit user opt-out may disable it. It is documented in `course_schema.md` and does not provide a general SCORM 1.2 target-SCO API or change tracking context.
 - Each module page calls `SCORM.init()`, preserves a prior `completed` or `passed` status on revisit, otherwise marks itself `incomplete`, and sets its `lesson_location`.
 - When the learner reaches that module's final slide, the module updates `suspend_data.modules` for visual state and immediately sets its own `cmi.core.lesson_status` to `completed`. Do not wait for all modules before completing the current SCO.
 
