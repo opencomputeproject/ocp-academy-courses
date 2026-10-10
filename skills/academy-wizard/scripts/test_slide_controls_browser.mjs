@@ -56,6 +56,20 @@ try {
   mobileTitle.modules[0].slides[0].subtitle = 'Coordinate what the facility must carry, clear, connect, and adapt.';
   await fs.writeFile(path.join(tmp, 'mobile-title.html'), execFileSync(process.env.PYTHON || 'python3',
     ['-c', render, scripts], {input: JSON.stringify(mobileTitle), encoding: 'utf8'}));
+  const mobileTeaching = {
+    style: 'Slides', course_slug: 'mobile-teaching-test', course_title: 'Teaching layout',
+    motion_intro: {enabled: false},
+    term_glossary: [{id: 'fungibility', term: 'Fungibility', tooltip: 'Equivalent components can be substituted without changing the required function.'}],
+    modules: [{id: 1, title: 'Teaching layout', slides: [
+      {id: 1, type: 'title'},
+      {id: 2, type: 'content_bullets', title: 'Choose interchangeable components', mobile_scroll: true,
+        bullets: [{bold_lead: 'Fungibility', text: 'Check the required function before making a substitution.'}],
+        term_refs: ['fungibility']},
+      {id: 3, type: 'course_complete'}
+    ]}]
+  };
+  await fs.writeFile(path.join(tmp, 'mobile-teaching.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(mobileTeaching), encoding: 'utf8'}));
   browser = await chromium.launch({headless: true, args: ['--mute-audio']});
   const context = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
   await context.route(/^https?:/, route => route.abort());
@@ -133,6 +147,24 @@ try {
   });
   check(titleLayout, {inside:true,belowBadge:true,scrollableEnd:true},
     'Long mobile title without resources fits, clears badge and scrolls above controls');
+  for (const width of [320, 390, 768]) {
+    await page.setViewportSize({width, height: 800});
+    await page.goto(url('mobile-teaching') + '?review=1&slide=2');
+    const teachingLayout = await page.evaluate(() => {
+      const slide = document.querySelector('.slide.active');
+      const badge = document.querySelector('.module-badge').getBoundingClientRect();
+      const title = slide.querySelector('.slide-title').getBoundingClientRect();
+      return {slideTop: slide.getBoundingClientRect().top, titleClearsBadge: title.top >= badge.bottom};
+    });
+    check(teachingLayout, {slideTop:80, titleClearsBadge:true},
+      `Teaching content clears the fixed badge at ${width}px`);
+    if (width <= 700) {
+      const chip = page.locator('.slide.active .glossary-chip');
+      await chip.focus();
+      check(await chip.evaluate(el => getComputedStyle(el, '::after').bottom), '128px',
+        'Mobile glossary definition sits above the 112px control bar');
+    }
+  }
   await page.setViewportSize({width:1440,height:960});
   await page.addInitScript(() => {
     window.Audio = function() {

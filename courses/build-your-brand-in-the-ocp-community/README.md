@@ -17,6 +17,14 @@ This remains a SCORM 1.2 multi-SCO course with separate Course Home, Module 1, a
 
 The Start, next-module, and course-home controls retain this course's approved direct-page compatibility behavior. A relative page link is not a standard SCORM request to launch another SCO, so actual module handoff, separate completion, and resume must be verified in the target LMS before replacing a live course. This refresh does not change the SCORM version or syllabus organization.
 
+Unfinished modules resume their own saved slide. Completed modules reopen their final slide even after visiting earlier content or retrying a quiz. Submitted quiz choices and feedback are remembered; Retry clears only that question's attempt. Editorial `?review=1` navigation stays untracked through Start, Next Module, and Home links.
+
+## October 2026 player refresh
+
+Rebuild with the repository's maintained AcademyWizard templates, retaining the approved course source, Leo v2 narration at speed 1.18, and all existing media. The current shared runtime supplies quiz memory, completion-aware slide resume, transcript/narration controls, and legacy loop-video timing. Mobile teaching content now clears the fixed module badge; glossary definitions clear the taller mobile control bar. This course keeps its silent short-loop animations and does not opt into narration-synchronized single-pass video.
+
+The current PDF-reference rule does not require changes here: the original presentation PDF is authoring evidence, not a learner-facing PDF link. Existing live resource links and the approved informational home tiles/first-module action are retained.
+
 ## Editable source
 
 - Change slides, interactions, references, and course metadata in `course.json`.
