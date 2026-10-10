@@ -2,7 +2,7 @@
 
 Efficient phase-change cooling, dielectric fluids, and operational practices for high-density infrastructure.
 
-This course source is intended for PR-friendly editing. Change slides, quiz content, glossary links, and figure SVGs in `course.json`. Change narration in `audio/moduleN/slide_*.txt`. Generated audio and SCORM runtime files are not checked in.
+This course source is intended for PR-friendly editing. Change slides, quiz content, glossary links, and media references in `course.json`. Static diagrams are in `figures/`; editable video storyboards are in `animations/`. Change narration in `audio/moduleN/slide_*.txt`. Generated narration audio and SCORM runtime files are not checked in.
 
 ## Modules
 
@@ -46,27 +46,31 @@ text and update the inventory before running the learner-aid check:
 ```bash
 python3 skills/academy-wizard/scripts/slides_course_qa.py \
   courses/two-phase-direct-liquid-cooling-efficiencies-and-fluids/course.json \
-  --allow-missing-module-video 1 --allow-missing-module-video 3 \
-  --allow-missing-module-video 4 --fail-on-flags
+  --allow-missing-module-video 3 --fail-on-flags
 ```
 
-The opt-outs preserve this course's approved one-video scope; they are not a
-general waiver for newly authored courses.
+Module 3 retains its approved static qualification comparison; the opt-out is
+not a general waiver for newly authored courses.
 
-## Video Opportunities
+## Narration-Synchronized Videos
 
-The existing silent M2S5 loop is retained. These are editorial recommendations,
-not changes to the approved media:
+The three video recommendations were approved on 2026-10-11 and implemented
+against the existing narration. Each silent single-pass sequence follows the
+slide's audio clock, including pause, seek, replay, speed, and enlarged playback.
+Review mode starts paused. Reduced-motion mode holds the final summary until
+explicit playback. The narration and transcripts are unchanged.
 
-| Priority | Slide | Opportunity |
+| Priority | Slide | Sequence |
 |---|---|---|
-| 1 | M4S4, Filling and Purging Non-Condensable Gases | Use the existing narration to show priming, air introduced during server service, accumulation, a non-critical purge alarm, and gas removal while cooling continues. Distinguish working-fluid vapor from non-condensable gas, and keep this a conceptual sequence rather than equipment-specific operating instructions. |
-| 2 | M2S5, Inside a Controlled Two-Phase Loop | Replace the repeating 15-second loop with a narration-synced single pass through liquid feed, boiling, vapor return, condensation, inventory management, and pressure control. Pause, seek, replay, speed, and enlarged playback should follow the narration. |
-| 3 | M1S4, Heat Moves Through Nested Loops | Trace heat across the TCS/CDU/FWS boundary in narration order while keeping the two fluid circuits visibly separate. Preserve the existing boundary labels and arrow geometry. |
+| 1 | M4S4, Filling and Purging Non-Condensable Gases | Systematic fill and priming, service-related air admission, accumulation, a non-critical alarm, and dedicated-system purging while cooling continues. Hollow orange gas markers are distinct from solid working-fluid vapor markers. This is a conceptual sequence, not an equipment-specific procedure. |
+| 2 | M2S5, Inside a Controlled Two-Phase Loop | Liquid feed, boiling, vapor-rich return, condensation, inventory management, pumped/passive circulation distinctions, and pressure/saturation control. Replaces the repeating 15-second loop. |
+| 3 | M1S4, Heat Moves Through Nested Loops | Heat moves from silicon through the TCS/CDU/FWS boundary to rejection or reuse. The two fluids remain separate. Boundary labels, the straddling FWS box, and straight arrow approaches are preserved. |
 
-Keep M3S6's qualification paths as a static side-by-side reference: learners
-need to compare evidence and tests, not watch a repeating process. Additional
-videos and narration synchronization remain subject to editorial approval.
+M3S6's qualification paths remain a static side-by-side reference. Editable
+storyboards, timing provenance, and re-encoding instructions are in
+[`animations/`](animations/README.md). Recheck timing after regenerating or
+editing narration; a new TTS rendering can change pacing even when its text
+is unchanged. The regular build includes the committed MP4s and PNG posters.
 
 ## Public references
 
