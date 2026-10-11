@@ -535,7 +535,7 @@ def render_content_grid(slide: dict, course: dict, module: dict) -> str:
         inner = f'''
           {f'<div class="tenet-icon">{esc(c.get("icon",""))}</div>' if c.get("icon") else ""}
           <h3>{esc(c.get("title",""))}</h3>
-          <p>{esc(c.get("body",""))}</p>
+          <p>{esc(c.get("body","")).replace('OCP Ready™', 'OCP Ready<sup>TM</sup>')}</p>
           {link_html}'''
         if url:
             cards.append(f'''
