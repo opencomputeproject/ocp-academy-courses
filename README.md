@@ -48,7 +48,7 @@ courses/
   multipath-reliable-connection-mrc/
   ocp-esun-ethernet-for-scale-up-networks/
   ocp-lock-secure-key-management-for-self-encrypting-storage/
-  ocp-mhs-modular-plug-and-play-m-pnp/
+  ocp-mhs-modular-plug-and-play-m-pnp/  # v0.7 source preview; teaching media pending
   ocp-nic-3-0-technical-overview/
   ocp-orientation/
     understanding-and-procuring-open-technologies-and-products/
@@ -134,7 +134,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `multipath-reliable-connection-mrc` | OCP Academy - MRC Technical Overview |
 | `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
 | `ocp-lock-secure-key-management-for-self-encrypting-storage` | OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage |
-| `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) |
+| `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) — [v0.7 source preview](courses/ocp-mhs-modular-plug-and-play-m-pnp/README.md) |
 | `ocp-nic-3-0-technical-overview` | OCP NIC 3.0 Technical Overview |
 | `ocp-orientation/understanding-and-procuring-open-technologies-and-products` | Understanding and Procuring Open Technologies and Products |
 | `ocp-orientation/introduction-to-the-ocp-solution-provider-program` | Introduction to the OCP Solution Provider Program |

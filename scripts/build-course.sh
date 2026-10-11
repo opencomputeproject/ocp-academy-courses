@@ -82,6 +82,9 @@ else
   if [[ -d "$SOURCE_DIR/figures" ]]; then
     rsync -a "$SOURCE_DIR/figures/" "$BUILD_DIR/figures/"
   fi
+  if [[ -d "$SOURCE_DIR/resources" ]]; then
+    rsync -a "$SOURCE_DIR/resources/" "$BUILD_DIR/resources/"
+  fi
 
   if [[ -n "${EXISTING_AUDIO_DIR:-}" ]]; then
     rsync -a "$EXISTING_AUDIO_DIR/" "$BUILD_DIR/audio/"

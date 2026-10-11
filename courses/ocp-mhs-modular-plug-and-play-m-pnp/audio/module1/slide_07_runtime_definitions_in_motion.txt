@@ -1,5 +1,8 @@
-Hardware compatibility doesn't automatically create firmware portability. In a plug-and-code model, each H P M model adds another branch to the B M C firmware tree. That branch carries assumptions about registers, buses, devices, and platform behavior. A new vendor or board generation means another integration cycle, another image to validate, and another long-lived maintenance path.
+# pronunciation: FRU -> Fru; BIOS -> Bios; HPM -> H P M; BMC -> B M C; PD -> P D; PCIe -> P C I E; all version numbers spelled out
+# status: synthesis authorized; user will review final audio only
 
-M-PNP changes where that platform knowledge lives. The hardware supplier publishes self-describing definition files with the component. At boot, one B M C image discovers the HPM, retrieves its definitions, and learns the interfaces it should use. The firmware keeps a stable parser and operating model while the data describes what changed.
+Self-description changes where platform knowledge lives. Instead of making every hardware variation another hard-coded firmware branch, a component supplies structured information about itself and its connections. A programmable device supplies a corresponding description of its registers, blocks, signals and interfaces.
 
-That separation is the bridge from Plug-and-Play Lite toward full plug-and-play. The goal isn't to remove platform-specific information. It's to make that information portable, inspectable, and available at runtime instead of hard-coding it into a growing family of firmware branches.
+The B M C firmware still needs to understand the schemas and implement the management contract. A preferred discovery path can use the H P M description to establish programmable-device connectivity; legacy paths may depend on prior knowledge.
+
+The useful outcome is less model-specific knowledge embedded in firmware. It isn't automatic support for any arbitrary board. Conformance, supported features, and validation of the assembled platform determine whether the system works.

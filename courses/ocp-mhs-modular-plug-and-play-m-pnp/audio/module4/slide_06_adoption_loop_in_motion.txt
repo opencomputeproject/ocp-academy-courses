@@ -1,5 +1,8 @@
-M-PNP adoption works as a loop, not as a one-way handoff from specification writers to implementers. Schemas define the shape of the self-describing data. Worked examples turn that shape into concrete H P M, FPGA, riser, backplane, and power-board descriptions that engineers can inspect.
+# pronunciation: FRU -> Fru; BIOS -> Bios; HPM -> H P M; BMC -> B M C; PD -> P D; PCIe -> P C I E; all version numbers spelled out
+# status: synthesis authorized; user will review final audio only
 
-Tooling then turns those descriptions into usable artifacts. frupack dot pie packages JSON into binary Fru data today. FPGA-to-JSON generation is the planned next step, alongside validators and ingestion libraries the community still needs.
+A reproducible adoption path begins by pinning the exact inputs. Use the version zero point seven package, then record the specific hardware-component and programmable-device schema versions. Describe the implemented hardware and programmable functions, and implement the supporting firmware interfaces.
 
-Implementations are where the specifications meet real hardware. Prototype B M C, Bios, FPGA, and peripheral combinations reveal missing fields, ambiguous requirements, and conformance questions. Those findings return to the workstream as issues, proposed text, examples, and code. The next schema or specification revision carries those lessons forward. That feedback cycle is how the bundle moves from version zero point five toward a stable version one point zero ecosystem.
+Packaging, schema checks and system behaviour are different checks. A Fru packaging result doesn't establish that the JSON semantics are correct. A JSON validation result doesn't establish that discovery, power sequencing and Bios exchange work on the assembled platform. Tool compatibility is itself something to verify.
+
+Close the loop by contributing evidence: the input files, repository revisions, observed outcome and a focused issue or improvement. That record gives the community something concrete to reproduce and review.
