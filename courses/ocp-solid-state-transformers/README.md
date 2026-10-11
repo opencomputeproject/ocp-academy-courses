@@ -18,12 +18,21 @@ The total narrated runtime is 59.9 minutes. Allow additional time for the two-qu
 
 ## Media
 
-Course-owned vector figures, four silent teaching animations, animation posters, and the LMS thumbnail are included. Regenerate the four animations with:
+Course-owned vector figures, five silent teaching animations, animation posters, and the LMS thumbnail are included. Regenerate the original four animations with:
 
 ```bash
 python -m pip install Pillow imageio-ffmpeg
 python courses/ocp-solid-state-transformers/animations/build_teaching_animations.py
 ```
+
+Module 3 also animates the recommended fault-support and overload windows, using the corrected `lvdc_output_envelope.svg` as its source. The two time scales are schematic, not a prescribed waveform. Regenerate this 1920×1080 animation with Node.js, Sharp, and ffmpeg:
+
+```bash
+npm install --no-save --package-lock=false sharp
+node courses/ocp-solid-state-transformers/animations/build_output_windows.mjs
+```
+
+For a managed toolchain, the script also accepts `SST_SHARP_MODULE` (module name or absolute module path), `SST_FFMPEG_BIN` (ffmpeg executable), and `SST_OUTPUT_DIR` (optional output directory). Temporary lossless frames are retained in the directory printed by the script.
 
 Two credited SemiAnalysis figures are included as learner media for market context and the four-phase transition lens. The article HTML and other downloaded research material are not stored in this repository. The ESS deployment architecture is reused from the OCP Ready Requirements for Energy Storage Systems course.
 
@@ -42,6 +51,20 @@ For local QA with previously generated audio, set `EXISTING_AUDIO_DIR` to a fold
 
 ```bash
 EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh ocp-solid-state-transformers
+```
+
+## Player refresh
+
+The course retains SCORM 1.2, Course Home plus five independently tracked module SCOs, and the existing syllabus identifiers. The refreshed source enables informational home tiles, the default first-module start action, slide bookmarks, saved quiz attempts and retry clearing, transcripts, and remembered narration controls. Editorial review mode stays isolated from learner progress. Teaching resources now use verified PDF viewer pages; glossary pills use reviewed media text and each module's first substantive terminology use.
+
+In a multi-SCO LMS, use its Syllabus to change modules. Module endings show that instruction instead of a button whose click would be refused. Local playback and review links remain available. The default Course Home Start action is a direct page link, not a target-SCO request, and cannot switch the LMS's tracking context. Verify navigation, resume, and separate module completion in the target LMS before replacing the published package; automated checks are not proof of live LMS compatibility.
+
+Source checks:
+
+```bash
+python skills/academy-wizard/scripts/slides_course_qa.py courses/ocp-solid-state-transformers/course.json --repo-root . --fail-on-flags
+python -m unittest discover -s skills/academy-wizard/scripts -p 'test_*.py'
+node courses/ocp-solid-state-transformers/tests/test_runtime.mjs build/ocp-solid-state-transformers
 ```
 
 ## Public references
