@@ -127,7 +127,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
 | `grid-disturbance-performance` | Grid Disturbance Performance for Hyperscale Data Centers |
 | `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
-| `integrating-quantum-processing-units-into-data-center-infrastructure` | Integrating Quantum Processing Units into Data Center Infrastructure |
+| `integrating-quantum-processing-units-into-data-center-infrastructure` | [Integrating Quantum Processing Units into Data Center Infrastructure](courses/integrating-quantum-processing-units-into-data-center-infrastructure/README.md): four narrated modules with teaching animations and two-question knowledge checks |
 | `intro-to-ocp/module-1-the-ocp-origins` | Module 1: The OCP Origins |
 | `intro-to-ocp/module-2-the-ocp-ecosystem-governance` | Module 2: The OCP Ecosystem & Governance |
 | `intro-to-ocp/module-3-ocp-technologies-open-rack-cooling` | Module 3: OCP Technologies (Open Rack & Cooling) |
