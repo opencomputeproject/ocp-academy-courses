@@ -4,6 +4,10 @@ Readable source for the seven-course **Open Rack v3** learning series. Each chil
 
 The seven courses are grouped here for source management, but they are not modules inside one SCORM package. Build and upload each course separately, then order them in the LMS learning plan.
 
+![Open Rack — 7-module learning series](thumbnail.png)
+
+The series catalog poster is [thumbnail.png](thumbnail.png), an 800 × 400 PNG for the LMS learning plan.
+
 ## Course sources
 
 | Order | Folder | Course | Status |
