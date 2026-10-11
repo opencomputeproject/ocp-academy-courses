@@ -5,10 +5,12 @@ audio_tail_report.py - scan generated narration WAV files for likely level and t
 Usage:
     python audio_tail_report.py course.json [--module N] [--fail-on-flags]
 
-The report is intentionally conservative. It flags sustained volume drops that
+The report flags sustained volume drops that
 begin anywhere in the latter half of a clip, clips whose last 15 seconds are
 much quieter than the body, and clips that contain a short non-silent burst
-after a quiet gap near the end. Listen to flagged clips before editing.
+after a quiet gap near the end. Speech-active frames are also compared with the
+opening so pauses, gradual drift, and absolute-level thresholds cannot hide a
+quieter ending. Flags are review prompts, not proof of a synthesis defect.
 """
 
 from __future__ import annotations
@@ -94,17 +96,76 @@ def sustained_drop(
     return None
 
 
+def energy_db(levels: list[float]) -> float | None:
+    """Mean frame energy in dBFS, rather than the mean of logarithmic levels."""
+    if not levels:
+        return None
+    return 10 * math.log10(statistics.fmean(10 ** (db / 10) for db in levels))
+
+
+def spoken_level_report(samples: list[float], rate: int) -> dict:
+    """Compare likely speech frames with the opening, independently of pauses.
+
+    This is an energy gate, not a linguistic speech recognizer. Use one fixed
+    gate for the whole clip so quieter words are not selectively discarded.
+    Exclude silence after the last active frame from the final-section bounds.
+    Require enough active audio before drawing a level comparison.
+    """
+    frames = [x for x in window_levels(samples, rate, 0.05) if x[1] - x[0] >= 0.025]
+    ordered = sorted(db for _, _, db in frames)
+    gate = max(-50.0, ordered[min(len(ordered) - 1, int(len(ordered) * 0.95))] - 25.0) if ordered else -50.0
+    active = [(start, end, db) for start, end, db in frames if db > gate]
+    result = {
+        "speech_gate_db": gate, "spoken_head_db": None, "spoken_tail_db": None,
+        "spoken_fade_db": None, "spoken_drop_onset_seconds": None,
+        "spoken_sustained_drop_db": None, "spoken_head_active_seconds": 0.0,
+        "spoken_tail_active_seconds": 0.0,
+    }
+    if not active:
+        return result
+    start, finish = active[0][0], active[-1][1]
+    head = [x for x in active if x[0] < start + 15.0]
+    tail = [x for x in active if x[1] > finish - 15.0]
+    for name, group in (("head", head), ("tail", tail)):
+        result[f"spoken_{name}_active_seconds"] = sum(end - begin for begin, end, _ in group)
+        if result[f"spoken_{name}_active_seconds"] >= 2.0:
+            result[f"spoken_{name}_db"] = energy_db([db for _, _, db in group])
+    head_db, tail_db = result["spoken_head_db"], result["spoken_tail_db"]
+    if finish - start < 35.0 or head_db is None or tail_db is None:
+        return result
+    result["spoken_fade_db"] = head_db - tail_db
+    buckets: dict[int, list[tuple[float, float, float]]] = {}
+    for frame in active:
+        buckets.setdefault(int(frame[0] // 5.0), []).append(frame)
+    levels = {}
+    for index, group in buckets.items():
+        if sum(end - begin for begin, end, _ in group) >= 2.0 and (index + 1) * 5 <= finish + 0.05:
+            levels[index] = energy_db([db for _, _, db in group])
+    for index, db in sorted(levels.items()):
+        following = levels.get(index + 1)
+        if index * 5 < max(start + 20.0, finish * 0.45) or following is None:
+            continue
+        drops = [head_db - db, head_db - following]
+        if statistics.fmean(drops) >= 3.5 and min(drops) >= 3.0:
+            result["spoken_drop_onset_seconds"] = index * 5.0
+            result["spoken_sustained_drop_db"] = statistics.fmean(drops)
+            break
+    return result
+
+
 def analyze(path: Path) -> dict:
     rate, samples = read_wav_mono(path)
     duration = len(samples) / rate
     five_sec = window_levels(samples, rate, 5.0)
     body_levels = [db for start, end, db in five_sec if end <= max(duration - 15, duration * 0.75)]
-    tail_levels = [db for start, end, db in five_sec if start >= max(0, duration - 15)]
+    # Window centers avoid excluding an entire tail window for a few extra samples.
+    tail_levels = [db for start, end, db in five_sec if (start + end) / 2 >= max(0, duration - 15)]
     body_ref = statistics.median(body_levels) if body_levels else statistics.median(db for _, _, db in five_sec)
     audible_tail = [db for db in tail_levels if db > -55]
     tail_ref = statistics.mean(audible_tail) if audible_tail else (tail_levels[-1] if tail_levels else -120.0)
     fade_db = body_ref - tail_ref
     volume_drop = sustained_drop(five_sec, duration, body_ref)
+    spoken = spoken_level_report(samples, rate)
 
     burst_after_gap = False
     tail_start_seconds = max(0, duration - 2)
@@ -135,18 +196,29 @@ def analyze(path: Path) -> dict:
     if volume_drop:
         onset, drop_db = volume_drop
         flags.append(f"sustained volume drop from ~{onset:.0f}s ({drop_db:.1f} dB lower than body)")
-    if duration >= 35 and fade_db >= 5.0 and tail_ref < -30:
+    if audible_tail and duration >= 35 and fade_db >= 5.0 and tail_ref < -30:
         flags.append(f"tail fade ({fade_db:.1f} dB lower than body)")
+    spoken_fade = spoken["spoken_fade_db"]
+    if spoken_fade is not None and spoken_fade >= 2.5:
+        severity = "spoken-level decline" if spoken_fade >= 3.0 else "borderline spoken-level decline; review"
+        flags.append(f"{severity} ({spoken_fade:.1f} dB lower than opening speech)")
+    if spoken["spoken_drop_onset_seconds"] is not None:
+        flags.append(
+            f"sustained spoken-level drop from ~{spoken['spoken_drop_onset_seconds']:.0f}s "
+            f"({spoken['spoken_sustained_drop_db']:.1f} dB lower than opening speech)"
+        )
     if burst_after_gap:
         flags.append("non-silent burst after quiet gap")
 
     return {
+        "qa_revision": "speech-level-v2",
         "duration": duration,
         "body_db": body_ref,
         "tail_db": tail_ref,
         "fade_db": fade_db,
         "drop_onset_seconds": volume_drop[0] if volume_drop else None,
         "sustained_drop_db": volume_drop[1] if volume_drop else None,
+        **spoken,
         "flags": flags,
     }
 

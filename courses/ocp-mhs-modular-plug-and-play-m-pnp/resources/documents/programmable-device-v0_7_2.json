@@ -1,0 +1,1483 @@
+{
+    "$ref": "#/definitions/ProgrammableDevice",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "copyright": "Copyright 2025-2026 OCP",
+    "owningEntity": "OCP",
+    "schemaVersion": "0.7.2",
+    "definitions": {
+        "ProgrammableDevice": {
+            "description": "The Programmable Device FRU schema defines the hardware and firmware properties of a field programmable gate array or equivalent programmable device used to enable a management interface for an HPM.",
+            "specification": "This resource shall represent the hardware and firmware properties of a field programmable gate array or equivalent programmable device used to enable a management interface for an HPM.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "_comment": {
+                    "description": "A general comment about a data file",
+                    "specification": "This property shall contain a general comment about a data file",
+                    "type": "string"
+                },
+                "Copyright": {
+                    "description": "A copyright statement for the FRU data.",
+                    "specification": "This property shall contain a copyright statement for the FRU data. The omission of this property shall not imply that this FRU data is not copyrighted.",
+                    "type": "string"
+                },
+                "Version": {
+                    "description": "The current file version for this FRU data.",
+                    "specification": "This property shall contain the current file version for this FRU data.",
+                    "type": "string",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "SchemaVersion": {
+                    "description": "The revision of the Programmable Device schema that this FRU data was built against.",
+                    "specification": "This property shall contain the revision of the Programmable Device schema that this FRU data was built against.",
+                    "isRequired": true,
+                    "isLocal": true,
+                    "type": "string"
+                },
+                "GitHubChecksum": {
+                    "description": "The GitHub checksum for this FRU data.",
+                    "specification": "This property shall contain the GitHub checksum for this FRU data.",
+                    "type": "string",
+                    "pattern": "^([a-fA-F0-9]){8}$"
+                },
+                "Author": {
+                    "description": "The author of this FRU data.",
+                    "specification": "This property shall contain the author of this FRU data.",
+                    "type": "string"
+                },
+                "General": {
+                    "$ref": "#/definitions/General",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "IPBlocks": {
+                    "$ref": "#/definitions/IPBlocks",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "MemoryMap": {
+                    "$ref": "#/definitions/MemoryMap",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "Registers": {
+                    "$ref": "#/definitions/Registers"
+                },
+                "PhysicalSignals": {
+                    "$ref": "#/definitions/PhysicalSignals",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "VirtualWires": {
+                    "$ref": "#/definitions/VirtualWires",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "Buses": {
+                    "$ref": "#/definitions/Buses",
+                    "isRequired": true,
+                    "isLocal": true
+                }
+            }
+        },
+        "General": {
+            "description": "The General section contains general information about the Programmable Device plus overall build information.",
+            "specification": "This property shall contain general information about the Programmable Device plus overall build information.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "VendorID": {
+                    "description": "The vendor ID for this Programmable Device.",
+                    "specification": "This property shall contain the PCIe vendor ID for this Programmable Device.",
+                    "type": "string",
+                    "pattern": "^([a-fA-F0-9]){4}$",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "UniqueID": {
+                    "description": "The unique ID specific to this Programmable Device.",
+                    "specification": "This property shall contain the unique ID specific to this Programmable Device.",
+                    "type": "string",
+                    "pattern": "^([a-fA-F0-9]){4}$",
+                    "isRequired": true,
+                    "isLocal": true
+                },
+                "Model": {
+                    "description": "The model for this Programmable Device.",
+                    "specification": "This property shall contain the model for this Programmable Device, as reported by the manufacturer.",
+                    "type": "string"
+                },
+                "Manufacturer": {
+                    "description": "The manufacturer for this Programmable Device.",
+                    "specification": "This property shall contain the manufacturer for this Programmable Device.",
+                    "type": "string"
+                },
+                "Build": {
+                    "description": "Information about the firmware build for this Programmable Device.",
+                    "specification": "This property shall contain information about the firmware build for this Programmable Device.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Version": {
+                            "description": "The version number for the Programmable Device build.",
+                            "specification": "This property shall contain the version number for the Programmable Device build.",
+                            "type": "string",
+                            "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$"
+                        },
+                        "BuildTimestamp": {
+                            "description": "The timestamp when the Programmable Device build completed.",
+                            "specification": "This property shall contain the timestamp when the Programmable Device build completed.",
+                            "type": "string"
+                        },
+                        "Builder": {
+                            "description": "The name of individual who performed the build.",
+                            "specification": "This property shall contain the name of individual who performed the build.",
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "IPBlocks": {
+            "description": "Information about the IP blocks compiled into this Programmable Device.",
+            "specification": "This property shall contain information about the IP blocks compiled into this Programmable Device.",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "Identifier": {
+                        "$ref": "#/definitions/NamedComponent",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "Alias": {                    
+                        "$ref": "#/definitions/ComponentAlias"
+                    },
+                    "Type": {
+                        "description": "The type of this IP block.",
+                        "specification": "This property shall contain the type of this IP block.",
+                        "type": "string",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "Spec": {
+                        "$ref": "#/definitions/SpecReference"
+                    },
+                    "GUID": {
+                        "description": "A globally unique identifier for this IP block.",
+                        "specification": "This property shall contain a globally unique identifier for this IP block.",
+                        "pattern": "^([a-fA-F0-9]){8}\\-([a-fA-F0-9]){4}\\-([a-fA-F0-9]){4}\\-([a-fA-F0-9]){4}\\-([a-fA-F0-9]){12}$",
+                        "type": "string",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "HWID": {
+                        "description": "A hardware identifier for this IP block.",
+                        "specification": "This property shall contain a hardware identifier for this IP block.",
+                        "pattern": "^0x([a-fA-F0-9]){4}$",
+                        "type": "string",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "SupportedSOCSockets": {
+                        "description": "The maximum number of CPU SOC sockets supported by this IP block.",
+                        "specification": "This property shall contain the maximum number of CPU SOC sockets supported by this IP block.",
+                        "type": "integer"
+                    },
+                    "ExtendedVersion": {
+                        "description": "Extended version information for this IP block.",
+                        "specification": "This property shall contain extended version information for this IP block.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "Originator": {
+                                "description": "The originating entity for this IP block.",
+                                "specification": "This property shall contain the originating entity for this IP block.",
+                                "type": "string"
+                            },
+                            "OriginalIPVersion": {
+                                "description": "The source version for this IP block, prior to modifications.",
+                                "specification": "This property shall contain the source version for this IP block, prior to modifications.",
+                                "type": "string"
+                            },
+                            "ModifiedBy": {
+                                "description": "The name of the entity that has modified this IP block.",
+                                "specification": "This property shall contain the name of the entity that has modified this IP block.",
+                                "type": "string"
+                            },
+                            "ModificationVersion": {
+                                "description": "The modification version for this IP block.",
+                                "specification": "This property shall contain the modification version for this IP block.",
+                                "type": "string"
+                            },
+                            "ModificationTimestamp": {
+                                "description": "The timestamp for when modifications to this IP block were completed.",
+                                "specification": "This property shall contain the timestamp for when modifications to this IP block were completed.",
+                                "type": "string"
+                            },
+                            "ModificationContact": {
+                                "description": "Contact information for the author of modifications to this IP block, such as an email address.",
+                                "specification": "This property shall contain contact information for the author of modifications to this IP block, such as an email address.",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "ConnectedBuses": {
+                        "$ref": "#/definitions/ReferencedBusList"
+                    },
+                    "OEM": {
+                        "description": "OEM-specific information for this IP Block.",
+                        "specification": "This property shall contain OEM-specific information for this IP Block.",
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "MemoryMap": {
+            "description": "Information about the memory map for this Programmable Device.",
+            "specification": "This property shall contain information about the memory map for this Programmable Device.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Version": {
+                    "description": "The current version for this MemoryMap data.",
+                    "specification": "This property shall contain the current version for this MemoryMap data.",
+                    "type": "string"
+                },
+                "Regions": {
+                    "description": "Information about different regions of memory in the map.",
+                    "specification": "This property shall contain information about about different regions of memory in the map.",
+                    "type": "array",
+                    "isRequired": true,
+                    "isLocal": true,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "Identifier": {
+                                "$ref": "#/definitions/NamedComponent",
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "Alias": {                    
+                                "$ref": "#/definitions/ComponentAlias"
+                            },
+                            "MappedIPBlock": {
+                                "description": "The IP Block to which this memory region maps.",
+                                "specification": "This property shall contain the named identifier for the IP Block in the `IPBlocks` section of this document to which this memory region maps.",
+                                "type": "string",
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "Version": {
+                                "description": "The version of this IP block for CSRs.",
+                                "specification": "This property shall contain the version of this IP block for CSRs.",
+                                "type": "string"
+                            },
+                            "RegionOffsetBytesHex": {
+                                "description": "The offset in memory for the beginning of this region, in hexadecimal format.",
+                                "specification": "This property shall contain the offset in memory for the beginning of this region, in hexadecimal format.",
+                                "pattern": "^0x([a-fA-F0-9])+$",
+                                "type": "string",
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "RegionSizeBytes": {
+                                "description": "The size in bytes for this memory region.",
+                                "specification": "This property shall contain the size in bytes for this memory region.",
+                                "type": "integer",
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "RegisterMap": {
+                                "description": "Information about registers in the map.",
+                                "specification": "This property shall contain information about about registers in the map.",
+                                "type": "array",
+                                "isRequired": true,
+                                "isLocal": true,
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "Identifier": {
+                                            "$ref": "#/definitions/NamedComponent",
+                                            "isRequired": true,
+                                            "isLocal": true
+                                        },
+                                        "Alias": {                    
+                                            "$ref": "#/definitions/ComponentAlias"
+                                        },
+                                        "Spec": {
+                                            "$ref": "#/definitions/SpecReference",
+                                            "isRequired": true,
+                                            "isLocal": true
+                                        },
+                                        "XIOs": {
+                                            "description": "The number of XIOs that the register set represents.",
+                                            "specification": "This property shall contain the number of XIOs that the register set represents.",
+                                            "type": "integer"
+                                        },
+                                        "PICPWRs": {
+                                            "description": "The number of PICPWRs that the register set represents.",
+                                            "specification": "This property shall contain the number of PICPWRs that the register set represents.",
+                                            "type": "integer"
+                                        },
+                                        "OffsetBytes": {
+                                            "description": "The offset from the beginning of this region for this set of registers.",
+                                            "specification": "This property shall contain the offset from the beginning of this region for this set of registers. The initial position for this set of registers may thus be calculated as ``RegionOffsetBytes`` + ``OffsetBytes``.",
+                                            "type": "integer",
+                                            "isRequired": true,
+                                            "isLocal": true
+                                        },
+                                        "SizeBytes": {
+                                            "description": "The size in bytes for this set of registers.",
+                                            "specification": "This property shall contain the size in bytes for this set of registers. If this property is omitted, the set of registers shall be presumed to be one byte in size.",
+                                            "type": "integer",
+                                            "isRequired": true,
+                                            "isLocal": true
+                                        },
+                                        "MappedRegister": {
+                                            "description": "The named register to which this register maps.",
+                                            "specification": "This property shall contain the named identifier for the register in the `Registers` section of this document to which this register maps. This property shall be omitted if the registers map in standard fashion per a specification as indicated by the presence of the ``Spec`` property.",
+                                            "type": "string"
+                                        },
+                                        "InactiveRanges": {
+                                            "description": "Ranges of registers from the spec not active.",
+                                            "specification": "This property shall detail ranges of registers from the spec not active. This property shall be omitted if ``Spec`` is not present.",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "A range of registers from the spec that is not active.",
+                                                "specification": "This property shall detail a range of registers from the spec that is not active.",
+                                                "type": "object",
+                                                "additionalProperties": false,
+                                                "properties": {
+                                                    "Start": {
+                                                        "Description": "The first in a range of registers that was not implemented.",
+                                                        "specification": "This property shall contain the first in a range of registers that was not implemented.",
+                                                        "type": "integer"
+                                                    },
+                                                    "Width": {
+                                                        "Description": "The number of registers in a range that was not implemented.",
+                                                        "specification": "This property shall contain the number of registers in a range that was not implemented.",
+                                                        "type": "integer"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "AccessDomain": {
+                                            "description": "Which agent(s) may access this register/register-set.",
+                                            "specification": "This property shall contain the access domain for this register/register-set.",
+                                            "type": "string",
+                                            "enum": [
+                                                "BMCOnly",
+                                                "HostOnly",
+                                                "Shared"
+                                            ]
+                                        },
+                                        "HostAccessDescription": {
+                                            "description": "Description of host-visible behavior, required when AccessDomain is HostOnly or Shared.",
+                                            "specification": "This property shall contain a description of host-visible behavior, required when AccessDomain is HostOnly or Shared.",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "BAR": {
+                                "description": "Information about the Base Address Registers (BARs) of this device.",
+                                "specification": "This property shall contain information about the Base Address Registers (BARs) of this device.",
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "Index": {
+                                            "description": "Base Address Register index.",
+                                            "specification": "This property shall contain the Base Address Register index.",
+                                            "type": "integer"
+                                        },
+                                        "BaseAddressHex": {
+                                            "description": "Base address value advertised to the host, in hexadecimal.",
+                                            "specification": "This property shall contain the base address value advertised to the host, in hexadecimal.",
+                                            "type": "string"
+                                        },
+                                        "SizeBytes": {
+                                            "description": "Size of the BAR window.",
+                                            "specification": "This property shall contain the size of the BAR window.",
+                                            "type": "integer"
+                                        },
+                                        "Prefetchable": {
+                                            "description": "Whether the BAR is marked prefetchable.",
+                                            "specification": "This property shall indicate whether the BAR is marked prefetchable.",
+                                            "type": "boolean"
+                                        },
+                                        "AddressWidth": {
+                                            "description": "32-bit or 64-bit BAR.",
+                                            "specification": "This property shall indicate whether the BAR is 32-bit or 64-bit.",
+                                            "type": "string",
+                                            "enum": [
+                                                "32",
+                                                "64"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Registers": {
+            "description": "Information defining the registers exported by this Programmable Device.",
+            "specification": "This property shall contain information defining the registers exported by this Programmable Device.",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "Identifier": {
+                        "$ref": "#/definitions/NamedComponent"
+                    },
+                    "Alias": {                    
+                        "$ref": "#/definitions/ComponentAlias"
+                    },
+                    "SizeBytes": {
+                        "description": "The size in bytes of this register.",
+                        "specification": "This property shall contain the size in bytes of this register. If this property is omitted, the register shall be presumed to be one byte in size.",
+                        "type": "integer"
+                    },
+                    "Bitfields": {
+                        "description": "The bitfields defined within this register.",
+                        "specification": "This property shall contain the bitfields defined within this register.",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "Identifier": {
+                                    "$ref": "#/definitions/NamedComponent"
+                                },
+                                "Alias": {                    
+                                    "$ref": "#/definitions/ComponentAlias"
+                                },
+                                "Type": {
+                                    "description": "The type of this bitfield element.",
+                                    "specification": "This property shall contain the type of this bitfield element.",
+                                    "type": "string"
+                                },
+                                "LeastSignificantBit": {
+                                    "description": "The least significant bit for this bitfield element.",
+                                    "specification": "This property shall contain the least significant bit for this bitfield element.",
+                                    "type": "integer"
+                                },
+                                "SizeBits": {
+                                    "description": "The size in bits of this bitfield element.",
+                                    "specification": "This property shall contain the size in bits of this bitfield element.",
+                                    "type": "integer"
+                                },
+                                "Reset": {
+                                    "description": "The value of this bitfield element after a reset.",
+                                    "specification": "This property shall contain the value of this bitfield element after a reset.",
+                                    "type": "integer"
+                                },
+                                "Access": {
+                                    "description": "The type of access intended for this bitfield element.",
+                                    "specification": "This property shall contain the type of access intended for this bitfield element.",
+                                    "type": "string",
+                                    "enum": [
+                                        "ro",
+                                        "rw",
+                                        "wo",
+                                        "w1c"
+                                    ],
+                                    "enumDescriptions": {
+                                        "ro": "read-only access: the bitfield element may be read but should not be written to",
+                                        "rw": "read/write access: the bitfield element may be read or written to",
+                                        "wo": "write-only: the bitfield element may be written to but should not be read",
+                                        "w1c": "write one to clear: writing a 1 to a bit in the bitfield element clears that bit."
+                                    }
+                                },
+                                "EnumeratedValues": {
+                                    "description": "The enumerated values for this bitfield element, if applicable.",
+                                    "specification": "This property shall contain the enumerated values for this bitfield element, if applicable.",
+                                    "type": "array",
+                                    "items": {
+                                        "description": "An enumerated value for this bitfield element.",
+                                        "specification": "This property shall contain an enumerated value for this bitfield element.",
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "Value": {
+                                                "description": "The numeric value of the enumerated option.",
+                                                "specification": "This property shall contain the numeric value of the enumerated option.",
+                                                "type": "integer"
+                                            },
+                                            "Name": {
+                                                "description": "The symbolic name of the enumerated option.",
+                                                "specification": "This property shall contain the symbolic name of the enumerated option.",
+                                                "type": "string"
+                                            },
+                                            "Description": {
+                                                "description": "A vendor-defined description of the state/code.",
+                                                "specification": "This property shall contain a vendor-defined description of the state/code.",
+                                                "type": "string"
+                                            },
+                                            "VendorDefined": {
+                                                "description": "Indicates if this value falls within an OEM/vendor-reserved range.",
+                                                "specification": "This property shall indicate if this value falls within an OEM/vendor-reserved range.",
+                                                "type": "boolean"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "PhysicalSignals": {
+            "description": "Information about the physical signals supported by this Programmable Device.",
+            "specification": "This property shall contain information about the physical signals supported by this Programmable Device.",
+            "type": "array",
+            "items": {
+                "description": "Information about a physical signal or about a set of related physical signals.",
+                "specification": "This property shall contain information about a physical signal or about a set of related physical signals.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "Identifier": {
+                        "$ref": "#/definitions/NamedComponent"
+                    },
+                    "Alias": {                    
+                        "$ref": "#/definitions/ComponentAlias"
+                    },
+                    "IdentifierPrefix": {
+                        "description": "The identifier prefix for a set of physical signals.",
+                        "specification": "This property shall contain the portion of the identifier that is common across a set of physical signals. This prefix should include everything up to the netlist name for the associated signals. When the `PhysicalPinPrefix` and pin numbers are appended to this property, the resulting identifier shall form the complete `Identifier` for a physical signal in the set.  Each physical signal identifier in the set shall be unique across all named components within this document (excluding references to components). This property is mutually exclusive with the `Identifier` property and shall not be present if `Identifier` is present, or vice versa.",
+                        "type": "string"
+                    },
+                    "FirstIdentifier": {
+                        "description": "The first number the identifier will iterate from for the set of physical signals.",
+                        "specification": "This property shall contain the starting value for the identifier that is a set of physical signals.",
+                        "type": "integer"
+                    },
+                    "PhysicalPin": {
+                        "description": "The package pin for this signal.",
+                        "specification": "This property shall contain the name of the package pin for this signal.",
+                        "type": "string"
+                    },
+                    "PhysicalPinPrefix": {
+                        "description": "The physical pin prefix for a set of physical signal pins.",
+                        "specification": "This property shall contain the portion of the physical pin name that is common across a set of physical signals. When pin numbers are appended to this property, the resulting names shall form the physical pin names for physical signals in the set. This property is mutually exclusive with the `PhysicalPin` property and shall not be present if `PhysicalPin` is present, or vice versa.",
+                        "type": "string"
+                    },
+                    "FirstPhysicalPin": {
+                        "description": "The first physical pin number for a set of physical signal pins.",
+                        "specification": "This property shall contain the first physical pin number for a set of physical signal pins. This property is mutually exclusive with the `PhysicalPin` property and shall not be present if `PhysicalPin` is present, or vice versa. This property shall only be present if `PhysicalPinPrefix` is also present. If this property is not present, but `PhysicalPinPrefix` is present, then the default value of 0 shall be used for `FirstPhysicalPin.",
+                        "type": "integer"
+                    },
+                    "PhysicalPinCount": {
+                        "description": "The number of physical pins in a set of physical signal pins.",
+                        "specification": "This property shall contain the number of consecutive physical pin numbers in a set of physical signal pins. This property is mutually exclusive with the `PhysicalPin` property and shall not be present if `PhysicalPin` is present, or vice versa. This property shall only be present if `PhysicalPinPrefix` is also present",
+                        "type": "integer"
+                    },
+                    "Direction": {
+                        "$ref": "#/definitions/Direction"
+                    },
+                    "DriveCapabilities": {
+                        "description": "Output drive capabilities for this signal when configured as an output.",
+                        "specification": "This property shall contain the output drive capabilities for this signal when configured as an output.",
+                        "type": "array",
+                        "items": {
+                            "description": "Information about a physical signal for this Programmable Device.",
+                            "specification": "This property shall contain information about a physical signal for this Programmable Device.",
+                            "type": "string",
+                            "enum": [
+                                "OpenDrain",
+                                "OpenCollector",
+                                "PushPull"
+                            ],
+                            "enumDescriptions": {
+                                "OpenDrain": "Field effect transistor (FET) drive",
+                                "OpenCollector": "Bipolar junction transistor (BJT) drive",
+                                "PushPull": "Dual transistor push-pull output drive"
+                            }
+                        }
+                    },
+                    "PowerWell": {
+                        "description": "The power domain of the voltage rail needed for this signal.",
+                        "specification": "This property shall contain the power domain of the voltage rail needed for this signal.",
+                        "$ref": "#/definitions/RequiredPowerState"
+                    },
+                    "PullUp": {
+                        "description": "Indicates that this signal has a pull-up resistor.",
+                        "specification": "This property shall indicate that this signal has a pull-up resistor. If this property is not present, a default value of ``false`` shall be assumed.",
+                        "type": "boolean"
+                    },
+                    "PullDown": {
+                        "description": "Indicates that this signal has a pull-down resistor.",
+                        "specification": "This property shall indicate that this signal has a pull-down resistor. If this property is not present, a default value of ``false`` shall be assumed.",
+                        "type": "boolean"
+                    },
+                    "IOType": {
+                        "description": "The I/O standard for this signal.",
+                        "specification": "This property shall contain the I/O standard for this signal.",
+                        "type": "string",
+                        "enum": [
+                            "LVCMOS12",
+                            "LVCMOS15",
+                            "LVCMOS18",
+                            "LVCMOS25",
+                            "LVCMOS33"
+                        ]
+                    }
+                }
+            }
+        },
+        "VirtualWires": {
+            "description": "Information about the virtual wires supported by this Programmable Device.",
+            "specification": "This property shall contain information about the virtual wires supported by this Programmable Device.",
+            "type": "array",
+            "isRequired": true,
+            "isLocal": true,
+            "items": {
+                "description": "Information about a set of virtual wires.",
+                "specification": "This property shall contain information about a set of virtual wires.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "Identifier": {
+                        "$ref": "#/definitions/NamedComponent",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "Alias": {                    
+                        "$ref": "#/definitions/ComponentAlias"
+                    },
+                    "Start": {
+                        "description": "The first virtual wire in the set.",
+                        "specification": "This property shall specify the first wire in a set of contiguous virtual wires.",
+                        "type": "integer",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "TotalWidth": {
+                        "description": "The total number of virtual wires in the set.",
+                        "specification": "This property shall specify the total number of virtual wires in a set of contiguous virtual wires.",
+                        "type": "integer",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "Behavior": {
+                        "description": "Definition for a set of virtual wires.",
+                        "specification": "This property shall contain a definition for a set of virtual wires.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "DefaultState": {
+                                "description": "The default state for virtual wires in the set.",
+                                "specification": "This property shall specify the default state for the set of virtual wires.",
+                                "type": "integer",
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "ActiveState": {
+                                "description": "The active state for virtual wires in the set.",
+                                "specification": "This property shall specify the active state for the set of virtual wires.",
+                                "type": "integer",
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "Direction": {
+                                "$ref": "#/definitions/Direction",
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "StartupPolarity": {
+                                "description": "The initial polarity for virtual wires in the set.",
+                                "specification": "This property shall specify the initial polarity for the set of virtual wires.",
+                                "type": "string",
+                                "enum": [
+                                    "High",
+                                    "Low",
+                                    "HighImpedance"
+                                ],
+                                "enumDescriptions": {
+                                    "High": "A logical high means the signal is in an active state",
+                                    "Low": "A logical low means the signal is in an active state",
+                                    "HighImpedance": "The signal is in a logically disabled state"
+                                },
+                                "isRequired": true,
+                                "isLocal": true
+                            },
+                            "RequiredPowerState":  {
+                                "$ref": "#/definitions/RequiredPowerState"
+                            }
+                        }
+                    },
+                    "InternalNetlistMappingNames": {
+                        "description": "Internal netlist names used to map a set of virtual wires.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/NameSet"
+                        }
+                    },
+                    "BusMappings": {
+                        "description": "Information about buses mapped to virtual wires.",
+                        "specification": "This property shall contain information about buses mapped to virtual wires.",
+                        "type": "array",
+                        "items": {
+                            "description": "Information about a set of buses mapped to virtual wires.",
+                            "specification": "This property shall contain information about a set of buses mapped to virtual wires.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "Alias": {                    
+                                    "$ref": "#/definitions/ComponentAlias"
+                                },
+                                "Interfaces": {
+                                    "description": "The specific buses that virtual wires are being mapped to.",
+                                    "specification": "This property shall contain the specific buses that virtual wires are being mapped to. The cardinality of this array shall match the ``Width``. Each entry in this array shoall be either an ``Identifier`` or an ``Alias`` in the ``Buses`` section of this document.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "Start": {
+                                    "description": "The index of the first virtual wire being mapped to a bus.",
+                                    "specification": "This property shall specify the index of the first virtual wire being mapped to a bus. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the start index shall be assumed to be zero.",
+                                    "type": "integer"
+                                },
+                                "Width": {
+                                    "description": "The number of virtual wires being mapped to buses.",
+                                    "specification": "This property shall specify the number of virtual wires being mapped to buses. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the width shall be assumed to be the cardinality of the ``InternalNetlistMappingNames`` set.",
+                                    "type": "integer"
+                                },
+                                "NameSet": {
+                                    "description": "The names of buses that the virtual wires are being mapped to.",
+                                    "specification": "This property shall reference the names of buses that the virtual wires are being mapped to. Each referenced bus name shall be either an ``Identifier`` or an ``Alias`` for an element in corresponding ``Interfaces`` bus in the ``Buses`` section of this document.",
+                                    "$ref": "#/definitions/NameSet"
+                                },
+                                "Signals": {
+                                    "description": "The set of signals that virtual wires are being mapped to virtual wires.",
+                                    "specification": "This property shall contain the set of signals that virtual wires are being mapped to virtual wires. The cardinality of this array shall match the ``Width`.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "Description": {
+                                    "description": "A description of the mapping.",
+                                    "specification": "This property shall contain a description of the mapping.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "RegisterMappings": {
+                        "description": "Information about registers mapped to virtual wires.",
+                        "specification": "This property shall contain information about registers mapped to virtual wires.",
+                        "type": "array",
+                        "items": {
+                            "description": "Information about a set of registers mapped to virtual wires.",
+                            "specification": "This property shall contain information about a set of registers mapped to virtual wires.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "Alias": {                    
+                                    "$ref": "#/definitions/ComponentAlias"
+                                },
+                                "Start": {
+                                    "description": "The index of the first virtual wire being mapped to a register.",
+                                    "specification": "This property shall specify the index of the first virtual wire being mapped to a register. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the start index shall be assumed to be zero.",
+                                    "type": "integer"
+                                },
+                                "Width": {
+                                    "description": "The number of virtual wires being mapped to registers.",
+                                    "specification": "This property shall specify the number of virtual wires being mapped to registers. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the width shall be assumed to be the cardinality of the ``InternalNetlistMappingNames`` set.",
+                                    "type": "integer"
+                                },
+                                "NameSet": {
+                                    "description": "The names of registers that the virtual wires are being mapped to.",
+                                    "specification": "This property shall reference the names of registers that the virtual wires are being mapped to. Each referenced register name shall be either an ``Identifier`` or an ``Alias`` in the ``Registers`` section of this document.",
+                                    "$ref": "#/definitions/NameSet"
+                                },
+                                "RegionNames": {
+                                    "description": "The regions containing the registers that virtual wires are being mapped to.",
+                                    "specification": "This property shall reference the regions containing the registers that virtual wires are being mapped to. The referenced region names shall each be either an ``Identifier`` or an ``Alias`` for a ``Regions`` entry in the ``MemoryMap`` section of this document.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "ManyToOne": {
+                                    "description": "Indicates that a mapping applies to all virtual wires in the ``InternalNetlistMappingNames`` set.",
+                                    "specification": "This property shall indicate that a mapping applies to all virtual wires in the ``InternalNetlistMappingNames`` set. This property shall not contain ``true`` unless ``Width`` contains 1. If this property is not present, a default value of ``false`` shall be assumed.",
+                                    "type": "boolean"
+                                },
+                                "Bitfields": {
+                                    "description": "A list of named bitfields in the register that the virtual wires are mapped to.",
+                                    "specification": "This property shall reference a list of named bitfields in the register that the virtual wires are mapped to. Each referenced bitfield shall be either an ``Identifier`` or an ``Alias`` in the ``Registers`` section of this document.",
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "Description": {
+                                    "description": "A description of the mapping.",
+                                    "specification": "This property shall contain a description of the mapping.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "PhysicalSignalMappings": {
+                        "description": "Information about physical signals mapped to virtual wires.",
+                        "specification": "This property shall contain information about physical signals mapped to virtual wires.",
+                        "type": "array",
+                        "items": {
+                            "description": "Information about a set of physical signals mapped to virtual wires.",
+                            "specification": "This property shall contain information about a set of physical signals mapped to virtual wires.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "Alias": {                    
+                                    "$ref": "#/definitions/ComponentAlias"
+                                },
+                                "Start": {
+                                    "description": "The index of the first virtual wire being mapped to a physical signal.",
+                                    "specification": "This property shall specify the index of the first virtual wire being mapped to a physical signal. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the start index shall be assumed to be zero.",
+                                    "type": "integer"
+                                },
+                                "Width": {
+                                    "description": "The number of virtual wires being mapped to physical signals.",
+                                    "specification": "This property shall specify the number of virtual wires being mapped to physical signals. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the width shall be assumed to be the cardinality of the ``InternalNetlistMappingNames`` set.",
+                                    "type": "integer"
+                                },
+                                "NameSet": {
+                                    "description": "The names of physical signals that the virtual wires are being mapped to.",
+                                    "specification": "This property shall reference the names of physical signals that the virtual wires are being mapped to. Each referenced physical signal name shall be either an ``Identifier`` or an ``Alias`` in the ``PhysicalSignals`` section of this document.",
+                                    "$ref": "#/definitions/NameSet"
+                                },
+                                "Description": {
+                                    "description": "A description of the mapping.",
+                                    "specification": "This property shall contain a description of the mapping.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "IPBlockMappings": {
+                        "description": "Information about IP blocks mapped to virtual wires.",
+                        "specification": "This property shall contain information about IP blocks mapped to virtual wires.",
+                        "type": "array",
+                        "items": {
+                            "description": "Information about a set of IP blocks mapped to virtual wires.",
+                            "specification": "This property shall contain information about a set of IP blocks mapped to virtual wires.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "Alias": {                    
+                                    "$ref": "#/definitions/ComponentAlias"
+                                },
+                                "Start": {
+                                    "description": "The index of the first virtual wire being mapped to an IP block.",
+                                    "specification": "This property shall specify the index of the first virtual wire being mapped to an IP block. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the start index shall be assumed to be zero.",
+                                    "type": "integer"
+                                },
+                                "Width": {
+                                    "description": "The number of virtual wires being mapped to IP blocks.",
+                                    "specification": "This property shall specify the number of virtual wires being mapped to IP blocks. Indices are zero-based and refer to the ``InternalNetlistMappingNames`` defined for this set of virtual wires. If this property is not present, the width shall be assumed to be the cardinality of the ``InternalNetlistMappingNames`` set.",
+                                    "type": "integer"
+                                },
+                                "ManyToOne": {
+                                    "description": "Indicates that a mapping applies to all virtual wires in the ``InternalNetlistMappingNames`` set.",
+                                    "specification": "This property shall indicate that a mapping applies to all virtual wires in the ``InternalNetlistMappingNames`` set. This property shall not contain ``true`` unless ``Width`` contains 1. If this property is not present, a default value of ``false`` shall be assumed.",
+                                    "type": "boolean"
+                                },
+                                "NameSet": {
+                                    "description": "The names of IP blocks that the virtual wires are being mapped to.",
+                                    "specification": "This property shall specify the number of virtual wires in a set that are being mapped to IP blocks. Each referenced IP block shall be either an ``Identifier`` or an ``Alias`` in the ``IP blocks`` section of this document.",
+                                    "$ref": "#/definitions/NameSet"
+                                },
+                                "Description": {
+                                    "description": "A description of the mapping.",
+                                    "specification": "This property shall contain a description of the mapping.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "Capabilities": {
+                        "description": "Capabilities that control the behavior of virtual wires.",
+                        "specification": "This property shall contain capabilities that control the behavior of virtual wires.",
+                        "type": "array",
+                        "items": {
+                            "description": "Capabilities that control the behavior a virtual wire.",
+                            "specification": "This property shall contain capabilities that control the behavior of a virtual wire.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "NameSet": {
+                                    "description": "The virtual wires to which the capability flags apply.",
+                                    "specification": "This property shall specify the virtual wires to which the capability flags apply. Each named virtual wire shall be described by the ``InternalNetlistMappingNames`` for this mapping.",
+                                    "$ref": "#/definitions/NameSet"
+                                },
+                                "Bitmask": {
+                                    "description": "The capabilities bitmask for a virtual wire.",
+                                    "specification": "This property shall contain the capabilities bitmask for a virtual wire.",
+                                    "minimum": 0,
+                                    "maximum": 255,
+                                    "type": "integer"
+                                },
+                                "MaskType": {
+                                    "description": "The type of bitmask that applies to this virtual wire.",
+                                    "specification": "This property shall contain the type of bitmask that applies to this virtual wire as defined in the relevant specification.",
+                                    "type": "string",
+                                    "enum": [
+                                        "FlexIO",
+                                        "Sideband",
+                                        "OEM"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Buses": {
+            "description": "Information about the logical and physical buses connected to this Programmable Device.",
+            "specification": "This property shall contain information about the logical and physical buses connected to this Programmable Device.",
+            "type": "array",
+            "isRequired": true,
+            "isLocal": true,
+            "items": {
+                "description": "Information about a set of virtual wires.",
+                "specification": "This property shall contain information about a set of virtual wires.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "BusType": {
+                        "description": "The type for this bus.",
+                        "specification": "This property shall contain the type for this bus.",
+                        "type": "string",
+                        "enum": [
+                            "DisplayPort",
+                            "ESPI",
+                            "I2C",
+                            "I3C",
+                            "JTAG",
+                            "LTPI",
+                            "MPESTI",
+                            "NCSI_RBT",
+                            "PCIe",
+                            "PECI",
+                            "QSPI",
+                            "SGMII",
+                            "SPI",
+                            "SGPIO",
+                            "UART",
+                            "USB",
+                            "OEM"
+                        ],
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "Identifier": {
+                        "$ref": "#/definitions/NamedComponent",
+                        "isRequired": true,
+                        "isLocal": true
+                    },
+                    "Alias": {                    
+                        "$ref": "#/definitions/ComponentAlias"
+                    },
+                    "RequiredPowerState": {
+                        "$ref": "#/definitions/RequiredPowerState"
+                    },
+                    "SPDM": {
+                        "description": "Indicates whether an SPDM connection can be established over this bus.",
+                        "specification": "This property shall indicate whether an SPDM connection can be established over this bus. If this property is omitted, it shall be assumed that an SPDM connection cannot be established over this bus.",
+                        "type": "boolean"
+                    },
+                    "RandomAccessCapable": {
+                        "description": "Indicates whether this bus supports random access into the memory space of the Programmable Device.",
+                        "specification": "This property shall indicate whether this bus supports random access into the memory space of the Programmable Device.",
+                        "type": "boolean"
+                    },
+                    "HostAccessible": {
+                        "description": "Indicates whether this bus is accessible to the host.",
+                        "specification": "This property shall indicate whether this bus is accessible to the host.",
+                        "type": "boolean"
+                    },
+                    "MaxClockSpeedMHz": {
+                        "description": "Indicates the maximum clock speed this bus supports.",
+                        "specification": "This property shall indicate the maximum clock speed this bus supports, in MHz.",
+                        "type": "number"
+                    },
+                    "DataRateMultiplier": {
+                        "description": "Indicates a multiplication factor for the data rate for a bus, such as 2 for a double data rate (DDR) bus.",
+                        "specification": "This property shall indicate a multiplication factor for the data rate for a bus. If this property is omitted, a default value of 1 shall be assumed.",
+                        "type": "integer"
+                    },
+                    "AlertSignal": {
+                        "description": "Indicates the alert signal associated with this bus.",
+                        "specification": "This property shall indicate the alias or netname for the alert signal associated with this bus.",
+                        "type": "string"
+                    },
+                    "Tunneled":  {
+                        "description": "Information about how a bus is tunneled.",
+                        "specification": "This property shall contain information about how a bus is tunneled. This property shall be omitted if the bus is not tunneled.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "Type": {
+                                "description": "The type of bus over which this bus is tunneled.",
+                                "specification": "This property shall indicate the type of bus over which this bus is tunneled.",
+                                "type": "string",
+                                "enum": [
+                                    "LTPI",
+                                    "OEM"
+                                ]
+                            },
+                            "Interface": {
+                                "description": "The specific interface over which this bus is tunneled.",
+                                "specification": "This property shall indicate the specific interface over which this bus is tunneled. The referenced interface shall be either an ``Identifier`` or an ``Alias`` in the ``Buses`` section of this document.",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "IPBlockMappings": {
+                        "description": "Indicates the IP block that implements support for this bus.",
+                        "specification": "This property shall indicate the IP block that implements support for this bus. The referenced IP block shall be either an ``Identifier`` or an ``Alias`` in the ``IPBlocks`` section of this document.",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "Signals": {
+                        "description": "Information about the signals associated with a bus.",
+                        "specification": "This property shall contain information about the signals associated with a bus.",
+                        "type": "array",
+                        "items": {
+                            "description": "Information about a signal associated with a bus.",
+                            "specification": "This property shall contain information about a signal associated with a bus.",
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "PhysicalPin": {
+                                    "description": "Indicates the physical pin associated with this signal.",
+                                    "specification": "This property shall indicate the physical pin associated with this signal.",
+                                    "type": "string"
+                                },
+                                "Alias": {
+                                    "description": "An alias for this signal.",
+                                    "specification": "This property shall contain an alias for this signal.",
+                                    "type": "string"
+                                },
+                                "NetName": {
+                                    "description": "The net name for this signal.",
+                                    "specification": "This property shall contain the net name for this signal.",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "Tunneling": {
+                        "description": "Provides tunneling information for the bus.",
+                        "specification": "This property shall provide tunneling information for the bustunneling.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "GPIOs": {
+                                "$ref": "#/definitions/GPIOs"
+                            },
+                            "TunneledBuses": {
+                                "description": "Enumeration of buses tunneled through this LTPI bus.",
+                                "specification": "This property shall contain an enumeration of buses tunneled through this LTPI bus.",
+                                "type": "array",
+                                "items": {
+                                    "description": "A bus tunneled through this LTPI bus.",
+                                    "specification": "This property shall identify a bus tunneled through this LTPI bus.",
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "BusType": {
+                                            "description": "The type of the tunneled bus.",
+                                            "specification": "This property shall contain the type of the tunneled bus, as indicated in the ``BusType`` property in the ``Buses`` section of this document.",
+                                            "type": "string"
+                                        },
+                                        "BusId": {
+                                            "description": "Identifies a tunneled bus.",
+                                            "specification": "This property shall identify a tunneled bus. The referenced bus shall be either an ``Identifier`` or an ``Alias`` in the ``Buses`` section of this document.",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "DataChannelMappedRegions": {
+                                "description": "Regions of memory mapped in the data channel.",
+                                "specification": "This property shall contain the regions of memory mapped in the data channel.",
+                                "type": "array",
+                                "items": {
+                                    "description": "A region of memory mapped in the data channel.",
+                                    "specification": "This property shall contain a region of memory mapped in the data channel.",
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "Identifier": {
+                                            "$ref": "#/definitions/NamedComponent"
+                                        },
+                                        "Alias": {                    
+                                            "$ref": "#/definitions/ComponentAlias"
+                                        },
+                                        "OffsetBytes": {
+                                            "description": "The offset in memory to the beginning of this mapped memory region.",
+                                            "specification": "This property shall contain the offset in memory to the beginning of this mapped memory region. This property may be omitted if ``OffsetBytesHex`` is present.",
+                                            "type": "integer"
+                                        },
+                                        "OffsetBytesHex": {
+                                            "description": "The offset in memory to the beginning of this mapped memory region, in hexadecimal.",
+                                            "specification": "This property shall contain the offset in memory to the beginning of this mapped memory region, in hexadecimal. This property may be omitted if ``OffsetBytes`` is present.",
+                                            "type": "string"
+                                        },
+                                        "SizeBytes": {
+                                            "description": "The size in bytes for this mapped memory region.",
+                                            "specification": "This property shall contain the size in bytes for this mapped memory region. This property may be omitted if ``SizeBytesHex`` is present.",
+                                            "type": "integer"
+                                        },
+                                        "SizeBytesHex": {
+                                            "description": "The size in bytes for this mapped memory region, in hexadecimal.",
+                                            "specification": "This property shall contain the size in bytes for this mapped memory region, in hexadecimal. This property may be omitted if ``SizeBytes`` is present.",
+                                            "type": "string"
+                                        },
+                                        "MappedMemoryRangeStartHex": {
+                                            "description": "The offset in the Programmable Device memory map for the beginning of the data channel mapped memory region, in hexadecimal.",
+                                            "specification": "This property shall contain offset in the Programmable Device memory map for the beginning of the data channel mapped memory region, in hexadecimal. This property shall be omitted if ``MappedMemoryRegion`` is present.",
+                                            "type": "string"
+                                        },
+                                        "MappedMemoryRegion": {
+                                            "description": "Indicates a memory region that is mapped to the data channel.",
+                                            "specification": "This property shall indicate a memory region that is mapped to the data channel. The referenced region shall be either an ``Identifier`` or an ``Alias`` for a ``Region`` in the ``MemoryMap`` section of this document. This property shall be omitted if ``MappedMemoryRangeStartHex`` is present.",
+                                            "type": "string"
+                                        },
+                                        "Description": {
+                                            "description": "Describes a memory region that is mapped to the data channel.",
+                                            "specification": "This property shall describe a memory region that is mapped to the data channel.",
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "MPESTI": {
+                        "description": "Provides MPESTI-specific information for the bus.",
+                        "specification": "This property shall provide MPESTI-specific information for the bus. This property shall be omitted if ``BusType`` is not ``MPESTI``.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "ExternalMUXSupported": {
+                                "description": "Indicates whether this MPESTI bus supports an external mux.",
+                                "specification": "This property shall indicate whether this MPESTI bus supports an external mux.",
+                                "type": "boolean"
+                            },
+                            "MaximumTargetsSupported": {
+                                "description": "Indicates the maximum number of targets supported by this MPESTI bus.",
+                                "specification": "This property shall indicate the maximum number of targets supported by this MPESTI bus.",
+                                "type": "integer"
+                            },
+                            "ConnectedToTarget": {
+                                "description": "Indicates whether this bus is connected to an MPESTI target.",
+                                "specification": "This property shall indicate whether this bus is connected to an MPESTI target.",
+                                "type": "boolean"
+                            },
+                            "PayloadBufferDestructive": {
+                                "description": "Indicates whether the discovery payload mailbox is a single destructive flat buffer holding only the most recently discovered target.",
+                                "specification": "This property shall be true if the discovery payload mailbox is a single destructive flat buffer holding only the most recently discovered target; false/omitted if it is a non-destructive per-target mailbox window.",
+                                "type": "boolean"
+                            },
+                            "InitiatorsPerIPBlock": {
+                                "description": "Number of MPESTI initiators (PESTI wires) instances implemented within this IP block.",
+                                "specification": "This property shall contain the number of MPESTI initiators (PESTI wires) instances implemented within this IP block.",
+                                "type": "integer"
+                            },
+                            "InitiatorBlockSetIdentifier": {
+                                "description": "Identifier grouping this IP block into an Initiator IP Block Set.",
+                                "specification": "This property shall contain the identifier grouping this IP block into an Initiator IP Block Set.",
+                                "type": "string"
+                            },
+                            "InitiatorBlockSetCount": {
+                                "description": "Total number of Initiator IP Block Sets (Initiator Super Set size) supported by the Programmable Device.",
+                                "specification": "This property shall contain the total number of Initiator IP Block Sets (Initiator Super Set size) supported by the Programmable Device.",
+                                "type": "integer"
+                            },
+                            "OperationalMode": {
+                                "description": "The operational mode of the M-PESTI MUX/Switch.",
+                                "specification": "This property shall contain the operational mode of the M-PESTI MUX/Switch.",
+                                "type": "string",
+                                "enum": ["Target", "Snoop"]
+                            },
+                            "FanoutMethod": {
+                                "description": "The method used to select/switch among M-PESTI channels.",
+                                "specification": "This property shall contain the method used to select/switch among M-PESTI channels.",
+                                "type": "string",
+                                "enum": ["MUX", "Switch"]
+                            }
+                        }
+                    },
+                    "SGPIO": {
+                        "description": "Provides SGPIO-specific information for the bus.",
+                        "specification": "This property shall provide SGPIO-specific information for the bus. This property shall be omitted if ``BusType`` is not ``SGPIO``.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "GPIOs": {
+                                "$ref": "#/definitions/GPIOs",
+                                "isRequired": true,
+                                "isLocal": true
+                            }
+                        }
+                    },
+                    "ESPI": {
+                        "description": "Provides ESPI-specific information for the bus.",
+                        "specification": "This property shall provide ESPI-specific information for the bus. This property shall be omitted if ``BusType`` is not ``ESPI``.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "DummyBytes": {
+                                "description": "Specifies the number of dummy padding bytes needed for the ESPI interface.",
+                                "specification": "This property shall define the number of dummy padding bytes for the ESPI interface.",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "SPI": {
+                        "description": "Provides SPI-specific information for the bus.",
+                        "specification": "This property shall provide SPI-specific information for the bus. This property shall be omitted if ``BusType`` is not ``SPI``.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "DummyBytes": {
+                                "description": "Specifies the number of dummy padding bytes needed for the SPI interface.",
+                                "specification": "This property shall define the number of dummy padding bytes for the SPI interface.",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "QSPI": {
+                        "description": "Provides QSPI-specific information for the bus.",
+                        "specification": "This property shall provide QSPI-specific information for the bus. This property shall be omitted if ``BusType`` is not ``QSPI``.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "DummyBytes": {
+                                "description": "Specifies the number of dummy padding bytes needed for the QSPI interface.",
+                                "specification": "This property shall define the number of dummy padding bytes for the QSPI interface.",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "OEM": {
+                        "description": "Provides OEM-specific information for the bus.",
+                        "specification": "This property shall provide OEM-specific information for the bus. This property shall be omitted if ``BusType`` is not ``OEM``.",
+                        "type": "object",
+                        "additionalProperties": true,
+                        "properties": {
+                        }
+                    }
+                }
+            }
+        },
+        "NameSet": {
+            "description": "An ordered set of names",
+            "specification": "This property shall contain an ordered set of names.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Count": {
+                    "description": "The number of names in the set",
+                    "specification": "This property shall define the number of names in the set.",
+                    "type": "integer"
+                },
+                "List": {
+                    "description": "An explicit list of names",
+                    "specification": "This property shall contain an explicit list of names. The cardinality of the list shall match ``Count``.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Block": {
+                    "description": "A block definition of a set of names",
+                    "specification": "This property shall provide a block definition of a set of names.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "NamePrefix": {
+                            "description": "The name prefix for a set of names.",
+                            "specification": "This property shall contain a name prefix for a subset of names.",
+                            "type": "string"
+                        },
+                        "NameOffset": {
+                            "description": "An offset within a numerical suffix for a set of names.",
+                            "specification": "This property shall contain an offset within a numerical suffix for a set of names. The mapping for the Nth name (zero-based) in the set of names shall be constructed by appending (``NameOffset`` + N) to ``NamePrefix``.",
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        },
+        "GPIOs": {
+            "description": "Information about a set of GPIOs.",
+            "specification": "This property shall contain information about a set of GPIOs.",
+            "type": "array",
+            "items": {
+                "description": "Information about a GPIO.",
+                "specification": "This property shall contain information about a GPIO.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "Identifier": {
+                        "$ref": "#/definitions/NamedComponent"
+                    },
+                    "Alias": {                    
+                        "$ref": "#/definitions/ComponentAlias"
+                    },
+                    "Latency": {
+                        "description": "The latency for this GPIO.",
+                        "specification": "This property shall contain the latency for this GPIO.",
+                        "type": "string",
+                        "enum": [
+                            "Low",
+                            "Normal"
+                        ]
+                    },
+                    "StartBit": {
+                        "description": "The start bit for this GPIO.",
+                        "specification": "This property shall contain the start bit for this GPIO.",
+                        "type": "integer"
+                    },
+                    "WidthBits": {
+                        "description": "The width in bits for this GPIO.",
+                        "specification": "This property shall contain the width in bits for this GPIO.",
+                        "type": "integer"
+                    },
+                    "VirtualWireEndpoint": {
+                        "description": "Indicates the virtual wire attached to this GPIO.",
+                        "specification": "This property shall indicate the virtual wire attached to this GPIO. The referenced virtual wire shall be either an ``Identifier`` or an ``Alias`` in the ``VirtualWires`` section of this document.",
+                        "type": "string"
+                    },
+                    "Description":  {
+                        "description": "Describes the intended use for this GPIO.",
+                        "specification": "This property shall describe the intended use for this GPIO.",
+                        "type": "string"
+                    },
+                    "Direction": {
+                        "$ref": "#/definitions/Direction"
+                    },
+                    "ByteOffset": {
+                        "description": "The byte offset for this GPIO.",
+                        "specification": "This property shall contain the byte offset for this GPIO.",
+                        "type": "integer"
+                    }
+                }
+            }
+        },
+        "Direction": {
+            "description": "The direction of a signal, virtual wire, or GPIO.",
+            "specification": "This property shall contain the direction of a signal, virtual wire, or GPIO.",
+            "type": "string",
+            "enum": [
+                "input",
+                "output",
+                "bidir"
+            ]
+        },
+        "NamedComponent": {
+            "description": "A component that is named so as to be referenceable.",
+            "specification": "This property shall contain an Identifier for this instance of a named component. This Identifier shall be unique across all named components within this document (excluding references to components).",
+            "type": "string"
+        },
+        "ComponentAlias": {
+            "description": "A secondary reference name for a component.",
+            "specification": "This property shall contain a secondary Identifier for this instance of a named component. This Identifier shall be unique across all named components within this document (excluding references to components).",
+            "type": "string"
+        },
+        "SpecReference": {
+            "description": "A reference to an OCP specification.",
+            "specification": "This property shall contain a reference to an OCP specification.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Name": {
+                    "description": "The name of the OCP specification being referenced.",
+                    "specification": "This property shall contain the name of the OCP specification being referenced.",
+                    "type": "string",
+                    "findme": "Should this be an enum?"
+                },
+                "Version": {
+                    "description": "The version of the OCP specification being referenced.",
+                    "specification": "This property shall contain the version of the OCP specification being referenced.",
+                    "type": "string"
+                },
+                "Revision": {
+                    "description": "The revision of the OCP specification being referenced.",
+                    "specification": "This property shall contain the revision of the OCP specification being referenced.",
+                    "type": "string"
+                }
+            }
+        },
+        "RequiredPowerState": {
+            "description": "The minimum power state to utilize a bus.",
+            "specification": "This property shall contain the minimum power state to utilize a bus.",
+            "type": "string",
+            "enum": [
+                "G3",
+                "Pre-STBY",
+                "STBY",
+                "S5",
+                "S0",
+                "Other"
+            ],
+            "enumDescriptions": {
+                "G3": "Coin cell only power state as defined in the Datacenter Secure Control Module Specification (DC-SCM)",
+                "Pre-STBY": "Low-power transitional state, as defined in the Datacenter Secure Control Module Specification (DC-SCM).",
+                "STBY": "Standby (auxilliary) power state as defined in the Datacenter Secure Control Module Specification (DC-SCM)",
+                "S5": "Full power transitional state, as defined in the Datacenter Secure Control Module Specification (DC-SCM).",
+                "S0": "Full power state as defined in the Datacenter Secure Control Module Specification (DC-SCM)"
+            }
+        },
+        "ReferencedBusList": {
+            "description": "A collection of references to hardware or logical buses.",
+            "specification": "This object shall contain a collection of references to hardware or logical buses.",
+            "type": "array",
+            "items": {
+                "description": "A reference to a hardware or logical bus as defined.",
+                "specification": "This object shall contain a reference to a hardware or logical bus.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "Type": {
+                        "description": "The type of bus for this reference.",
+                        "specification": "This property shall contain the type of the bus being referenced.",
+                        "type": "string"
+                    },
+                    "Identifier": {
+                        "description": "The instance of the bus type for this reference.",
+                        "specification": "This property shall contain the name of the instance of the bus type being referenced.",
+                        "type": "string"
+                    },
+                    "SpecBusName": {
+                        "description": "The name used in the spec to reference this bus.",
+                        "specification": "This property shall contain the name used in the spec to reference this bus.",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

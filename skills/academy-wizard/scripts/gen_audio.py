@@ -33,6 +33,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import wave
 from pathlib import Path
 
 from elevenlabs_model_support import (
@@ -232,6 +233,45 @@ def synth_openai(text: str, out_wav: Path, voice_id: str | None) -> None:
 SYNTHS = {"say": synth_say, "elevenlabs": synth_elevenlabs, "openai": synth_openai}
 
 
+def approved_chunks(text: str, audio: dict) -> list[str] | None:
+    """Accept explicit same-text chunk plans; never invent chunk boundaries."""
+    chunks = audio.get("synthesis_chunks")
+    if chunks is None:
+        return None
+    if not isinstance(chunks, list) or len(chunks) < 2 or any(not isinstance(x, str) or not x.strip() for x in chunks):
+        raise ValueError("audio.synthesis_chunks must contain at least two nonempty strings")
+    if " ".join(" ".join(chunks).split()) != " ".join(text.split()):
+        raise ValueError("audio.synthesis_chunks must preserve the complete script's spoken text and order")
+    return chunks
+
+
+def synth_chunks(chunks: list[str], out_wav: Path, synth) -> None:
+    """Join native PCM with no trimming, gain changes, fades or time stretching.
+
+    Keep the previous output until all requests have succeeded and all parts
+    use the course's standard format. The same synthesis closure is used for
+    every part, preserving provider, model, voice and pacing.
+    """
+    with tempfile.TemporaryDirectory(prefix="academy-narration-", dir=out_wav.parent) as directory:
+        temporary = Path(directory)
+        parts = []
+        for index, text in enumerate(chunks):
+            part = temporary / f"part_{index:02}.wav"
+            synth(text, part)
+            with wave.open(str(part), "rb") as reader:
+                if (reader.getnchannels(), reader.getsampwidth(), reader.getframerate(), reader.getcomptype()) != (1, 2, 22050, "NONE"):
+                    raise ValueError("Chunked narration requires 22050 Hz mono 16-bit PCM WAV parts")
+                pcm = reader.readframes(reader.getnframes())
+                if not pcm:
+                    raise ValueError("Chunked narration returned an empty part")
+                parts.append(pcm)
+        assembled = temporary / "assembled.wav"
+        with wave.open(str(assembled), "wb") as writer:
+            writer.setparams((1, 2, 22050, 0, "NONE", "not compressed"))
+            writer.writeframes(b"".join(parts))
+        assembled.replace(out_wav)
+
+
 def slide_ref(mod: dict, slide: dict) -> str:
     return f"M{mod.get('id')}S{slide.get('id')} ({slide.get('type')}, {slide.get('slug', 'no-slug')})"
 
@@ -371,6 +411,19 @@ def main():
             print(f"  - {err}", file=sys.stderr)
         sys.exit(1)
 
+    # Validate opt-in plans before any billable text is sent, including jobs
+    # late in a module. Unconfigured slides retain single-request synthesis.
+    for mod, slide, script_path, wav_path in jobs:
+        if not script_path.exists() or (wav_path.exists() and not args.force):
+            continue
+        text = "\n".join(line for line in script_path.read_text().strip().splitlines() if not line.startswith("#")).strip()
+        try:
+            chunks = approved_chunks(text, slide.get("audio") or {})
+            if chunks and engine == "say":
+                raise ValueError("Chunked narration requires the approved cloud provider, not a local fallback")
+        except ValueError as error:
+            sys.exit(f"{slide_ref(mod, slide)}: {error}")
+
     needs_synthesis = any(args.force or not job[3].exists() for job in jobs)
     if engine == "elevenlabs" and needs_synthesis:
         api_key = os.getenv("ELEVENLABS_API_KEY")
@@ -420,7 +473,11 @@ def main():
             continue
         wav_path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            synth(text, wav_path)
+            chunks = approved_chunks(text, slide.get("audio") or {})
+            if chunks:
+                synth_chunks(chunks, wav_path, synth)
+            else:
+                synth(text, wav_path)
             n_done += 1
             print(f"  OK {wav_path.relative_to(out_dir)}")
         except Exception as e:
