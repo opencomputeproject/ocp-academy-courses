@@ -50,6 +50,8 @@ courses/
   ocp-lock-secure-key-management-for-self-encrypting-storage/
   ocp-mhs-modular-plug-and-play-m-pnp/  # v0.7 source preview; teaching media pending
   ocp-nic-3-0-technical-overview/
+    animations/                 # six narration-synchronized teaching sequences
+    thumbnail.png              # Academy catalog/LMS poster
   ocp-orientation/
     understanding-and-procuring-open-technologies-and-products/
     introduction-to-the-ocp-solution-provider-program/
@@ -135,7 +137,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
 | `ocp-lock-secure-key-management-for-self-encrypting-storage` | OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage |
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) — [v0.7 source preview](courses/ocp-mhs-modular-plug-and-play-m-pnp/README.md) |
-| `ocp-nic-3-0-technical-overview` | OCP NIC 3.0 Technical Overview |
+| `ocp-nic-3-0-technical-overview` | [OCP NIC 3.0 Technical Overview](courses/ocp-nic-3-0-technical-overview/README.md): six narrated modules with synchronized teaching animations |
 | `ocp-orientation/understanding-and-procuring-open-technologies-and-products` | Understanding and Procuring Open Technologies and Products |
 | `ocp-orientation/introduction-to-the-ocp-solution-provider-program` | Introduction to the OCP Solution Provider Program |
 | `ocp-orientation/ocp-volunteer-leadership-guide` | OCP's Volunteer Leadership Guide |

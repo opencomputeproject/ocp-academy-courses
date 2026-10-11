@@ -1,5 +1,10 @@
-# pronunciation: NC-SI -> N C S I; RBT -> R B T; RBT_ISOLATE -> R B T isolate
+# review_status: approved; Explicit user approval in chat
+# pronunciation: NIC -> Nick; BMC -> B M C; NC-SI -> N C S I; RBT -> R B T; RBT_ISOLATE -> R B T isolate; PCIe -> P C I E
 
-N C S I, the Network Controller Sideband Interface, is how the B M C can control the Nick and use its network port without depending on the host CPU. Control traffic configures network parameters, queries link state, and manages channels. Pass-through traffic lets the B M C send and receive packets through the Nick Ethernet port for functions such as I P M I over LAN and Redfish.
+For a card that supports N C S I over R B T, the B M C has a management path that does not depend on the host CPU. Two traffic types use this path. Control traffic configures the network controller and queries its state. Pass-through traffic carries the B M C's network packets through the Nick's Ethernet port. A management controller may use control traffic without enabling pass-through.
 
-In multi-slot systems, token-based arbitration prevents multiple slots from driving the bus at the same time. R B T isolate is equally important: it prevents a powered-down or isolated slot from pulling the shared bus low. Do not describe R B T hot swap as a fully specified feature; the spec gives the interface behavior and isolation rules, while complete platform hot-swap design stays outside this scope.
+Now consider two populated slots sharing one R B T interface. Hardware arbitration passes a token around a closed ring so that the cards do not transmit on the shared interface at the same time. The active transmitter changes, but the shared connection remains.
+
+An empty slot, a powered-off slot, or a slot in ID Mode must be bypassed in the arbitration ring. The R B T isolation mechanism also keeps an inactive slot from disturbing the shared bus. Bypassing the arbitration path and isolating the data path are different responsibilities, and the baseboard must handle both.
+
+These examples explain management traffic, arbitration, and isolation. They do not define a complete platform hot-swap procedure; the system-level hardware and software design still has to provide that behavior.
