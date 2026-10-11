@@ -119,13 +119,17 @@ try {
     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No horizontal overflow');
     await page.setViewportSize({width: 1440, height: 960});
     await page.locator('#nextBtn').click();
-    await page.locator('.slide.active .next-module-link').click();
     if (name === 'direct') {
+      await page.locator('.slide.active .next-module-link').click();
       await page.waitForURL('**/module2.html');
       check(page.url(), url('module2'), 'Explicit direct compatibility choice permits next-module navigation');
     } else {
+      check(await page.locator('.slide.active .next-module-link').count(), 0,
+        'Default multi-SCO LMS replaces the local module link');
       check(page.url(), url(name), 'Default LMS navigation guard remains intact');
-      check(await page.locator('.lms-navigation-note').isVisible(), true, 'Guard retains syllabus instruction');
+      check(await page.locator('.slide.active .lms-module-handoff').innerText(),
+        'Continue with Module 2 using the Syllabus in the left sidebar.',
+        'Default LMS handoff displays the syllabus instruction');
     }
     await page.goto(url(name) + '?review=1&slide=2');
     await page.locator('.slide.active .next-module-link').click();

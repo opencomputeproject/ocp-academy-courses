@@ -76,8 +76,8 @@
             },
             {
               "icon": "📄",
-              "text": "Based on OCP MRC 1.0 (March 2026)",
-              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+              "text": "MRC 1.0 overview · pp. 16-20",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=16"
             }
           ],
           "audio": {
@@ -120,9 +120,18 @@
             "wav_file": "audio/module1/slide_03_tail_latency.wav",
             "approved": true
           },
+          "reference_links": [
+            {
+              "label": "Companion paper · p. 1",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=1",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
             "tail_latency",
-            "incast"
+            "incast",
+            "rc",
+            "mrc"
           ]
         },
         {
@@ -150,13 +159,60 @@
             "alt": "Three jobs of an AI back-end network: load balance, absorb incast, ride out failures",
             "caption": "All three constraints must hold simultaneously, in hardware, at sustained line rate.",
             "source": "svg_inline",
-            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='15' width='400' height='95' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><circle cx='50' cy='62' r='22' fill='#8DC63F'/><text x='50' y='71' text-anchor='middle' font-size='22' font-weight='700' fill='#ffffff'>⚖</text><text x='90' y='52' font-size='17' font-weight='700' fill='#5F6062'>Load‑balance</text><text x='90' y='75' font-size='12.5' fill='#5F6062'>Spread flows across many paths</text><text x='90' y='93' font-size='12.5' fill='#5F6062'>so no link becomes a bottleneck.</text><rect x='10' y='130' width='400' height='95' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><circle cx='50' cy='177' r='22' fill='#8DC63F'/><text x='50' y='186' text-anchor='middle' font-size='22' font-weight='700' fill='#ffffff'>⇉</text><text x='90' y='167' font-size='17' font-weight='700' fill='#5F6062'>Absorb in‑cast</text><text x='90' y='190' font-size='12.5' fill='#5F6062'>Drain many‑to‑one bursts without</text><text x='90' y='208' font-size='12.5' fill='#5F6062'>pushing pressure backward.</text><rect x='10' y='245' width='400' height='95' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><circle cx='50' cy='292' r='22' fill='#8DC63F'/><text x='50' y='301' text-anchor='middle' font-size='22' font-weight='700' fill='#ffffff'>↺</text><text x='90' y='282' font-size='17' font-weight='700' fill='#5F6062'>Ride out failures</text><text x='90' y='305' font-size='12.5' fill='#5F6062'>Detect and bypass broken paths</text><text x='90' y='323' font-size='12.5' fill='#5F6062'>without crashing the training job.</text></g></svg>"
+            "text_inventory": {
+              "sha256": "dd9e683c2fe26bacb8cacc3089ecd05bba785e4365236740e2353e673c300289",
+              "entries": [
+                {
+                  "text": "⚖"
+                },
+                {
+                  "text": "Load‑balance"
+                },
+                {
+                  "text": "Spread flows across many paths"
+                },
+                {
+                  "text": "so no link becomes a bottleneck."
+                },
+                {
+                  "text": "⇉"
+                },
+                {
+                  "text": "Absorb in‑cast"
+                },
+                {
+                  "text": "Drain many‑to‑one bursts without"
+                },
+                {
+                  "text": "pushing pressure backward."
+                },
+                {
+                  "text": "↺"
+                },
+                {
+                  "text": "Ride out failures"
+                },
+                {
+                  "text": "Detect and bypass broken paths"
+                },
+                {
+                  "text": "without crashing the training job."
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module1/slide_04_three_things.txt",
             "wav_file": "audio/module1/slide_04_three_things.wav",
             "approved": true
           },
+          "reference_links": [
+            {
+              "label": "Companion paper · p. 1",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=1",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
             "ecmp"
           ]
@@ -189,16 +245,42 @@
             "path": "figures/roce_singlepath_congestion.svg",
             "alt": "With single-path flows like in classic RoCE, individual links frequently become congested.",
             "caption": "Single-path RoCE: many flows collapse onto the same hashed link. Diagram: OpenAI.",
-            "source": "reuse"
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "1a6085b9b2bf1e7505402d2185cdc4110499155e2fd3cd8989fde338f2b5d96b",
+              "entries": [
+                {
+                  "text": "Congestion due to poor load balancing"
+                },
+                {
+                  "text": "TIER 1"
+                },
+                {
+                  "text": "TIER 0"
+                },
+                {
+                  "text": "GPU"
+                },
+                {
+                  "text": "flows collide on link"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module1/slide_05_roce_limits.txt",
             "wav_file": "audio/module1/slide_05_roce_limits.wav",
             "approved": true
           },
+          "reference_links": [
+            {
+              "label": "Companion paper · pp. 1-3",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=1",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
             "roce",
-            "rc",
             "pfc",
             "qp"
           ]
@@ -237,8 +319,14 @@
             "wav_file": "audio/module1/slide_06_what_mrc_is.wav",
             "approved": true
           },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 18-22",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=18",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
-            "mrc",
             "writeimm",
             "r_key"
           ]
@@ -261,8 +349,8 @@
               "title": "Open OCP specification",
               "body": "76 pages, RFC 2119 normative language, Open Web Foundation Final Specification Agreement.",
               "icon": "📄",
-              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
-              "link_text": "opencompute.org/documents/ocp-mrc-1-0-pdf"
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=1",
+              "link_text": "MRC specification · pp. 1, 11-13"
             },
             {
               "title": "MRC API on GitHub",
@@ -292,8 +380,8 @@
               "title": "Companion paper",
               "body": "\"Resilient AI Supercomputer Networking using MRC and SRv6\" — production measurements at 50K–75K GPU scale.",
               "icon": "📊",
-              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf",
-              "link_text": "cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf"
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=1",
+              "link_text": "Companion paper · pp. 1-2, 7-13"
             }
           ],
           "audio": {
@@ -488,13 +576,66 @@
             "alt": "MRC stack: NCCL / verbs API on top, MRC + RC parallel transports, RoCEv2 framing, UDP/IPv6/Ethernet base.",
             "caption": "MRC sits as a new QP type alongside RC, sharing the RoCEv2 framing and the verbs API.",
             "source": "svg_inline",
-            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 380' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif' text-anchor='middle'><rect x='10' y='10' width='440' height='52' rx='8' fill='#8DC63F' opacity='0.15' stroke='#8DC63F'/><text x='230' y='34' font-size='13' font-weight='700' fill='#5F6062'>Application / NCCL · libibverbs API</text><text x='230' y='52' font-size='11' fill='#5F6062'>Unchanged verbs surface — post Write &amp; WriteIMM</text><rect x='10' y='75' width='215' height='80' rx='8' fill='#8DC63F' opacity='0.22' stroke='#6FA030' stroke-width='2'/><text x='117' y='98' font-size='13' font-weight='700' fill='#5F6062'>MRC QP</text><text x='117' y='118' font-size='10.5' fill='#5F6062'>Multipath spraying · SACK/NACK</text><text x='117' y='133' font-size='10.5' fill='#5F6062'>EV-based path mgmt · fast bypass</text><text x='117' y='148' font-size='10' fill='#6FA030' font-weight='600'>Write · WriteIMM only</text><rect x='235' y='75' width='215' height='80' rx='8' fill='#5F6062' opacity='0.10' stroke='#5F6062'/><text x='342' y='98' font-size='13' font-weight='700' fill='#5F6062'>RC QP (still supported)</text><text x='342' y='118' font-size='10.5' fill='#5F6062'>Single-path · in-order</text><text x='342' y='133' font-size='10.5' fill='#5F6062'>Local ACK timeout · PFC</text><text x='342' y='148' font-size='10' fill='#5F6062' font-weight='600'>Write · Read · Send · Atomic</text><rect x='10' y='170' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='194' font-size='12' font-weight='600' fill='#5F6062'>RoCEv2 framing · BTH · iCRC (IBTA)</text><rect x='10' y='220' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='244' font-size='12' fill='#5F6062'>UDP destination port 4971</text><rect x='10' y='270' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='294' font-size='12' fill='#5F6062'>IPv6 (flow label · SRv6 / uSID)</text><rect x='10' y='320' width='440' height='40' rx='8' fill='#5F6062' opacity='0.08' stroke='#5F6062'/><text x='230' y='344' font-size='12' fill='#5F6062'>Best-effort Ethernet · no PFC required</text></g></svg>"
+            "text_inventory": {
+              "sha256": "45774a5b1b352aadbf7ddceffcdb6e575a9846b3eb83ae23228622cfaed571c6",
+              "entries": [
+                {
+                  "text": "Application / NCCL · libibverbs API"
+                },
+                {
+                  "text": "Unchanged verbs surface — post Write & WriteIMM"
+                },
+                {
+                  "text": "MRC QP"
+                },
+                {
+                  "text": "Multipath spraying · SACK/NACK"
+                },
+                {
+                  "text": "EV-based path mgmt · fast bypass"
+                },
+                {
+                  "text": "Write · WriteIMM only"
+                },
+                {
+                  "text": "RC QP (still supported)"
+                },
+                {
+                  "text": "Single-path · in-order"
+                },
+                {
+                  "text": "Local ACK timeout · PFC"
+                },
+                {
+                  "text": "Write · Read · Send · Atomic"
+                },
+                {
+                  "text": "RoCEv2 framing · BTH · iCRC (IBTA)"
+                },
+                {
+                  "text": "UDP destination port 4971"
+                },
+                {
+                  "text": "IPv6 (flow label · SRv6 / uSID)"
+                },
+                {
+                  "text": "Best-effort Ethernet · no PFC required"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_03_mrc_stack.txt",
             "wav_file": "audio/module2/slide_03_mrc_stack.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 21-27",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=21",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
             "mrc",
             "roce",
@@ -502,7 +643,12 @@
             "qp",
             "writeimm",
             "reth",
-            "r_key"
+            "r_key",
+            "ev",
+            "srv6",
+            "usid",
+            "sack",
+            "nack"
           ]
         },
         {
@@ -533,15 +679,43 @@
             "path": "figures/mrc_packet_spraying.svg",
             "alt": "MRC spreads packets across many paths at once, reducing congestion that can slow synchronous AI training.",
             "caption": "MRC sprays the packets of a single connection across many paths in parallel. Diagram: OpenAI.",
-            "source": "reuse"
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "7e1146ec5d1ef52b7c550ac2541f832691b50dc94060ef779ae4f33351fb0460",
+              "entries": [
+                {
+                  "text": "Spraying across many paths equalizes the load"
+                },
+                {
+                  "text": "TIER 1"
+                },
+                {
+                  "text": "TIER 0"
+                },
+                {
+                  "text": "GPU"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_04_multipath_spraying.txt",
             "wav_file": "audio/module2/slide_04_multipath_spraying.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 60-67, 73",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=60",
+              "kind": "pdf"
+            },
+            {
+              "label": "Companion paper · p. 3",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=3",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
-            "ev",
             "ecmp"
           ]
         },
@@ -573,16 +747,59 @@
             "path": "figures/srv6_source_routing.svg",
             "alt": "SRv6 allows the sender to encode the full path each packet should take to the network.",
             "caption": "SRv6 with uN uSIDs: the sender writes the path into every packet. Diagram: OpenAI.",
-            "source": "reuse"
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "b819e406bf5632a7d4ab3a40e62124683246553e02f7045a5cf503c09ccd91e2",
+              "entries": [
+                {
+                  "text": "How a switch modifies the SRv6 destination address when forwarding"
+                },
+                {
+                  "text": "Step 1: Match prefix + switch’s own identifier"
+                },
+                {
+                  "text": "ADDRESS PREFIX"
+                },
+                {
+                  "text": "SWITCH 1"
+                },
+                {
+                  "text": "SWITCH 2"
+                },
+                {
+                  "text": "SWITCH 3"
+                },
+                {
+                  "text": "DEST"
+                },
+                {
+                  "text": "0"
+                },
+                {
+                  "text": "Step 2: Left-shift identifiers"
+                },
+                {
+                  "text": "Step 3: lookup /48 prefix in static route table and forward"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_05_srv6_usid.txt",
             "wav_file": "audio/module2/slide_05_srv6_usid.wav",
             "approved": false
           },
-          "term_refs": [
-            "srv6",
-            "usid"
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 65-67, 74",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=65",
+              "kind": "pdf"
+            },
+            {
+              "label": "Companion paper · p. 4",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=4",
+              "kind": "pdf"
+            }
           ]
         },
         {
@@ -624,6 +841,13 @@
             "wav_file": "audio/module2/slide_06_ooo_receive.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 25-27, 36-37",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=25",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
             "psn"
           ]
@@ -657,16 +881,107 @@
             "alt": "SACK and NACK control flow alongside RDMA transport ACKs",
             "caption": "The SACK/NACK layer is logically independent of the transport ACK.",
             "source": "svg_inline",
-            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='10' width='205' height='340' rx='10' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='112' y='34' text-anchor='middle' font-size='14' font-weight='700' fill='#5F6062'>SACK · SETH + CC_STATE</text><text x='25' y='60' font-size='11' fill='#5F6062'>Carries</text><text x='25' y='80' font-size='11.5' font-weight='600' fill='#6FA030'>cack_psn</text><text x='25' y='98' font-size='10.5' fill='#5F6062'>cumulative ACK position</text><text x='25' y='122' font-size='11.5' font-weight='600' fill='#6FA030'>ack_psn_offset</text><text x='25' y='140' font-size='10.5' fill='#5F6062'>PSN that triggered the SACK</text><text x='25' y='164' font-size='11.5' font-weight='600' fill='#6FA030'>64-bit bitmap</text><text x='25' y='182' font-size='10.5' fill='#5F6062'>nearby PSNs received</text><text x='25' y='206' font-size='11.5' font-weight='600' fill='#6FA030'>ECN echo</text><text x='25' y='224' font-size='10.5' fill='#5F6062'>per-path congestion signal</text><text x='25' y='248' font-size='11.5' font-weight='600' fill='#6FA030'>tx_timestamp</text><text x='25' y='266' font-size='10.5' fill='#5F6062'>round-trip time</text><text x='25' y='298' font-size='11' fill='#5F6062'>Triggered on:</text><text x='25' y='316' font-size='10.5' fill='#5F6062'>byte threshold · ECN ·</text><text x='25' y='332' font-size='10.5' fill='#5F6062'>retransmit · AR flag · probe</text><rect x='245' y='10' width='205' height='340' rx='10' fill='#5F6062' opacity='0.10' stroke='#5F6062' stroke-width='2'/><text x='347' y='34' text-anchor='middle' font-size='14' font-weight='700' fill='#5F6062'>NACK · NETH</text><text x='260' y='60' font-size='11' fill='#5F6062'>Codes (mandatory):</text><text x='260' y='80' font-size='11' font-weight='600' fill='#5F6062'>NO_BITMAP</text><text x='260' y='100' font-size='11' font-weight='600' fill='#5F6062'>NO_PKT_BUFFER</text><text x='260' y='120' font-size='11' font-weight='600' fill='#5F6062'>NO_RESOURCE</text><text x='260' y='140' font-size='11' font-weight='600' fill='#5F6062'>PSN_OOR_WINDOW</text><text x='260' y='160' font-size='11' font-weight='600' fill='#5F6062'>UNEXP_EVENT</text><text x='260' y='190' font-size='11' fill='#5F6062'>Codes (optional):</text><text x='260' y='210' font-size='11' font-weight='600' fill='#5F6062'>TRIMMED</text><text x='260' y='230' font-size='11' font-weight='600' fill='#5F6062'>TRIMMED_LASTHOP</text><text x='260' y='262' font-size='11' fill='#5F6062'>Drives:</text><text x='260' y='280' font-size='10.5' fill='#5F6062'>retry logic · CC response ·</text><text x='260' y='296' font-size='10.5' fill='#5F6062'>QP error transitions</text></g></svg>"
+            "text_inventory": {
+              "sha256": "bf8d46b9e43b3a3ef12ed1c51abbe2578e6c161affc2794b82a53be504ab5a13",
+              "entries": [
+                {
+                  "text": "SACK · SETH + CC_STATE"
+                },
+                {
+                  "text": "Carries"
+                },
+                {
+                  "text": "cack_psn"
+                },
+                {
+                  "text": "cumulative ACK position"
+                },
+                {
+                  "text": "ack_psn_offset"
+                },
+                {
+                  "text": "PSN that triggered the SACK"
+                },
+                {
+                  "text": "64-bit bitmap"
+                },
+                {
+                  "text": "nearby PSNs received"
+                },
+                {
+                  "text": "ECN echo"
+                },
+                {
+                  "text": "per-path congestion signal"
+                },
+                {
+                  "text": "tx_timestamp"
+                },
+                {
+                  "text": "round-trip time"
+                },
+                {
+                  "text": "Triggered on:"
+                },
+                {
+                  "text": "byte threshold · ECN ·"
+                },
+                {
+                  "text": "retransmit · AR flag · probe"
+                },
+                {
+                  "text": "NACK · NETH"
+                },
+                {
+                  "text": "Codes (mandatory):"
+                },
+                {
+                  "text": "NO_BITMAP"
+                },
+                {
+                  "text": "NO_PKT_BUFFER"
+                },
+                {
+                  "text": "NO_RESOURCE"
+                },
+                {
+                  "text": "PSN_OOR_WINDOW"
+                },
+                {
+                  "text": "UNEXP_EVENT"
+                },
+                {
+                  "text": "Codes (optional):"
+                },
+                {
+                  "text": "TRIMMED"
+                },
+                {
+                  "text": "TRIMMED_LASTHOP"
+                },
+                {
+                  "text": "Drives:"
+                },
+                {
+                  "text": "retry logic · CC response ·"
+                },
+                {
+                  "text": "QP error transitions"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_07_sack_nack.txt",
             "wav_file": "audio/module2/slide_07_sack_nack.wav",
             "approved": false
           },
-          "term_refs": [
-            "sack",
-            "nack"
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 30-31, 38-50",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=30",
+              "kind": "pdf"
+            }
           ]
         },
         {
@@ -698,13 +1013,60 @@
             "alt": "Congestion control signals in MRC: NSCC, trimming, ECN",
             "caption": "Three composable signals — none of them PFC.",
             "source": "svg_inline",
-            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='15' width='400' height='100' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='42' font-size='15' font-weight='700' fill='#6FA030'>1. NSCC</text><text x='30' y='62' font-size='12' fill='#5F6062'>Sender-based congestion window —</text><text x='30' y='80' font-size='12' fill='#5F6062'>from UltraEthernet Consortium</text><text x='30' y='98' font-size='12' fill='#5F6062'>(UEC transport spec 1.01).</text><rect x='10' y='130' width='400' height='100' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='157' font-size='15' font-weight='700' fill='#6FA030'>2. Packet Trimming</text><text x='30' y='177' font-size='12' fill='#5F6062'>Switch strips payload, forwards header</text><text x='30' y='195' font-size='12' fill='#5F6062'>at high priority → receiver NACKs →</text><text x='30' y='213' font-size='12' fill='#5F6062'>surgical retransmit. No timeout.</text><rect x='10' y='245' width='400' height='100' rx='14' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='272' font-size='15' font-weight='700' fill='#6FA030'>3. ECN as per-EV signal</text><text x='30' y='292' font-size='12' fill='#5F6062'>SACK echoes ECN → sender rotates</text><text x='30' y='310' font-size='12' fill='#5F6062'>the affected EV out for ≥ 1 RTT.</text><text x='30' y='328' font-size='12' font-weight='600' fill='#5F6062'>Load-balance, not just throttle.</text></g></svg>"
+            "text_inventory": {
+              "sha256": "12fd07056cf07f2a887661361e949e23cf4115f8f9d45aff669c9f4fb65064d1",
+              "entries": [
+                {
+                  "text": "1. NSCC"
+                },
+                {
+                  "text": "Sender-based congestion window —"
+                },
+                {
+                  "text": "from UltraEthernet Consortium"
+                },
+                {
+                  "text": "(UEC transport spec 1.01)."
+                },
+                {
+                  "text": "2. Packet Trimming"
+                },
+                {
+                  "text": "Switch strips payload, forwards header"
+                },
+                {
+                  "text": "at high priority → receiver NACKs →"
+                },
+                {
+                  "text": "surgical retransmit. No timeout."
+                },
+                {
+                  "text": "3. ECN as per-EV signal"
+                },
+                {
+                  "text": "SACK echoes ECN → sender rotates"
+                },
+                {
+                  "text": "the affected EV out for ≥ 1 RTT."
+                },
+                {
+                  "text": "Load-balance, not just throttle."
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_08_congestion_control.txt",
             "wav_file": "audio/module2/slide_08_congestion_control.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 41-43, 54-63",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=41",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
             "nscc",
             "packet_trimming"
@@ -740,13 +1102,138 @@
             "autoplay": true,
             "loop": true,
             "muted": true,
-            "preload": "metadata"
+            "preload": "metadata",
+            "text_inventory": {
+              "sha256": "183bec44f9048cd4be1fb16220f6e81f2c576d60766604c4dea0e65d87ff2801",
+              "entries": [
+                {
+                  "text": "FAILURE BYPASS",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "MRC keeps the connection moving",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "One entropy value can be parked while the remaining paths continue to carry traffic.",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "SPRAY",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "MRC",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "SENDER",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "RECEIVER",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "QP ACTIVE",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "EV 1",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "EV 2",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "EV 3",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "EV 4",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "T1 · 1",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "T1 · 2",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "T1 · 3",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "T1 · 4",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "Traffic uses all active entropy values.",
+                  "at_seconds": 0.01
+                },
+                {
+                  "text": "DETECT",
+                  "at_seconds": 2.48625
+                },
+                {
+                  "text": "Untrimmed loss identifies EV 3 as a failed path.",
+                  "at_seconds": 2.48625
+                },
+                {
+                  "text": "BYPASS",
+                  "at_seconds": 4.9725
+                },
+                {
+                  "text": "EV 3 · ALWAYS_SKIP",
+                  "at_seconds": 4.9725
+                },
+                {
+                  "text": "EV 3 is parked in tens of microseconds. Other paths continue.",
+                  "at_seconds": 4.9725
+                },
+                {
+                  "text": "PROBE",
+                  "at_seconds": 7.45875
+                },
+                {
+                  "text": "PROBING EV 3",
+                  "at_seconds": 7.45875
+                },
+                {
+                  "text": "A background probe tests the parked path.",
+                  "at_seconds": 7.45875
+                },
+                {
+                  "text": "RESTORE",
+                  "at_seconds": 9.865
+                },
+                {
+                  "text": "A successful probe returns EV 3 to the active set.",
+                  "at_seconds": 9.865
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module2/slide_09_failure_bypass.txt",
             "wav_file": "audio/module2/slide_09_failure_bypass.wav",
             "approved": false
-          }
+          },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 35-36, 61-63",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=35",
+              "kind": "pdf"
+            },
+            {
+              "label": "Companion paper · pp. 3-4",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=3",
+              "kind": "pdf"
+            }
+          ]
         },
         {
           "id": 10,
@@ -931,13 +1418,62 @@
             "path": "figures/multi_plane_topology.svg",
             "alt": "MRC's support for multi-plane networks means we can connect over a hundred thousand GPUs with only two tiers of switches.",
             "caption": "2-tier multi-plane topology: 8 × 100 Gb/s planes connect ~131K GPUs. Diagram: OpenAI.",
-            "source": "reuse"
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "0e53e40fd395d8b20e98f51c6f8536cd4ce21e8a6167b90b60c9e664e427e6f0",
+              "entries": [
+                {
+                  "text": "Using multiple planes allows us to build very large networks with two tiers"
+                },
+                {
+                  "text": "TIER 1"
+                },
+                {
+                  "text": "256 T1s x 8 planes"
+                },
+                {
+                  "text": "512 ports"
+                },
+                {
+                  "text": "TIER 0"
+                },
+                {
+                  "text": "512 Tier 0s x 8 planes"
+                },
+                {
+                  "text": "256 ports"
+                },
+                {
+                  "text": "8 ports"
+                },
+                {
+                  "text": "GPU"
+                },
+                {
+                  "text": "256 GPUs"
+                },
+                {
+                  "text": "512 Tier 0s x 256 GPUs = 131,072 GPUs (8 planes)"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module3/slide_03_multiplane.txt",
             "wav_file": "audio/module3/slide_03_multiplane.wav",
             "approved": false
-          }
+          },
+          "reference_links": [
+            {
+              "label": "Companion paper · pp. 2-3",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=2",
+              "kind": "pdf"
+            }
+          ],
+          "term_refs": [
+            "mrc",
+            "rc"
+          ]
         },
         {
           "id": 4,
@@ -974,8 +1510,16 @@
             "wav_file": "audio/module3/slide_04_production_evidence.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "Companion paper · pp. 7-8",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=7",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
-            "qp"
+            "qp",
+            "srv6"
           ]
         },
         {
@@ -1013,8 +1557,14 @@
             "wav_file": "audio/module3/slide_05_performance.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "Companion paper · pp. 8-12",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf#page=8",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
-            "mrc",
             "roce",
             "nccl"
           ]
@@ -1048,17 +1598,73 @@
             "alt": "Two APIs: application (libibverbs-mirror) and controller (multipath policy and path management)",
             "caption": "Application code uses the verbs API. Operator tooling uses the controller API.",
             "source": "svg_inline",
-            "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 360' style='max-width:100%;height:auto;'><g font-family='Open Sans, sans-serif'><rect x='10' y='15' width='400' height='155' rx='12' fill='#8DC63F' opacity='0.10' stroke='#8DC63F' stroke-width='2'/><text x='30' y='42' font-size='14' font-weight='700' fill='#6FA030'>Application API</text><text x='30' y='60' font-size='11.5' fill='#5F6062'>Mirrors libibverbs.</text><text x='30' y='82' font-size='11.5' fill='#5F6062'>• Allocate MRC QP type</text><text x='30' y='102' font-size='11.5' fill='#5F6062'>• ibv_modify_qp transitions</text><text x='30' y='122' font-size='11.5' fill='#5F6062'>• Post Write / WriteIMM</text><text x='30' y='142' font-size='11.5' fill='#5F6062'>• Poll completions</text><text x='30' y='162' font-size='10.5' fill='#6FA030' font-weight='600'>Audience: app and library developers</text><rect x='10' y='185' width='400' height='160' rx='12' fill='#5F6062' opacity='0.10' stroke='#5F6062' stroke-width='2'/><text x='30' y='212' font-size='14' font-weight='700' fill='#5F6062'>Controller API · spec §10.2</text><text x='30' y='232' font-size='11.5' fill='#5F6062'>• Per-QP multipath policy</text><text x='30' y='252' font-size='11.5' fill='#5F6062'>• EV count &amp; plane allocation</text><text x='30' y='272' font-size='11.5' fill='#5F6062'>• Failure-bypass aggressiveness</text><text x='30' y='292' font-size='11.5' fill='#5F6062'>• EV probe scheduling</text><text x='30' y='312' font-size='11.5' fill='#5F6062'>• SRv6 path-template distribution</text><text x='30' y='335' font-size='10.5' fill='#5F6062' font-weight='600'>Audience: fleet operators &amp; tooling</text></g></svg>"
+            "text_inventory": {
+              "sha256": "75c6cce3554c94266235c4903e0377dba12475ed1b7c9d66b8d1091384ef4c76",
+              "entries": [
+                {
+                  "text": "Application API"
+                },
+                {
+                  "text": "Mirrors libibverbs."
+                },
+                {
+                  "text": "• Allocate MRC QP type"
+                },
+                {
+                  "text": "• ibv_modify_qp transitions"
+                },
+                {
+                  "text": "• Post Write / WriteIMM"
+                },
+                {
+                  "text": "• Poll completions"
+                },
+                {
+                  "text": "Audience: app and library developers"
+                },
+                {
+                  "text": "Controller API · spec §10.2"
+                },
+                {
+                  "text": "• Per-QP multipath policy"
+                },
+                {
+                  "text": "• EV count & plane allocation"
+                },
+                {
+                  "text": "• Failure-bypass aggressiveness"
+                },
+                {
+                  "text": "• EV probe scheduling"
+                },
+                {
+                  "text": "• SRv6 path-template distribution"
+                },
+                {
+                  "text": "Audience: fleet operators & tooling"
+                }
+              ]
+            }
           },
           "audio": {
             "script_file": "audio/module3/slide_06_two_apis.txt",
             "wav_file": "audio/module3/slide_06_two_apis.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 69-72",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=69",
+              "kind": "pdf"
+            },
+            {
+              "label": "MRC reference API",
+              "url": "https://github.com/opencomputeproject/OCP-Multipath-Reliable-Connection"
+            }
+          ],
           "term_refs": [
             "ev",
-            "writeimm",
-            "srv6"
+            "writeimm"
           ]
         },
         {
@@ -1095,8 +1701,14 @@
             "wav_file": "audio/module3/slide_07_tradeoffs.wav",
             "approved": false
           },
+          "reference_links": [
+            {
+              "label": "MRC spec · pp. 21, 27-29, 73",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf#page=21",
+              "kind": "pdf"
+            }
+          ],
           "term_refs": [
-            "rc",
             "rnr_nak",
             "pfc"
           ]
@@ -1216,7 +1828,23 @@
             "script_file": "audio/module3/slide_10_course_complete.txt",
             "wav_file": "audio/module3/slide_10_course_complete.wav",
             "approved": true
-          }
+          },
+          "reference_links": [
+            {
+              "label": "OCP MRC 1.0 specification",
+              "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+              "kind": "pdf"
+            },
+            {
+              "label": "MRC and SRv6 companion paper",
+              "url": "https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf",
+              "kind": "pdf"
+            },
+            {
+              "label": "MRC reference API",
+              "url": "https://github.com/opencomputeproject/OCP-Multipath-Reliable-Connection"
+            }
+          ]
         }
       ]
     }
@@ -1260,14 +1888,23 @@
       "term": "RoCE",
       "tooltip": "RDMA over Converged Ethernet; RDMA semantics carried over Ethernet/IP networks.",
       "reference_label": "MRC specification transport context",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "RoCEv2",
+        "rocky",
+        "rocky v two",
+        "RDMA over Converged Ethernet"
+      ]
     },
     {
       "id": "rc",
       "term": "RC",
       "tooltip": "Reliable Connection, the classic ordered and reliable RDMA transport that MRC extends.",
       "reference_label": "MRC specification transport extensions",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "Reliable Connection"
+      ]
     },
     {
       "id": "pfc",
@@ -1281,7 +1918,12 @@
       "term": "QP",
       "tooltip": "Queue Pair; the RDMA connection object holding send/receive queues and transport state.",
       "reference_label": "MRC specification QP properties",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "Queue Pair",
+        "Queue Pairs",
+        "QPs"
+      ]
     },
     {
       "id": "mrc",
@@ -1295,7 +1937,11 @@
       "term": "WriteIMM",
       "tooltip": "RDMA Write with Immediate; writes data and delivers an immediate value that can trigger responder completion.",
       "reference_label": "MRC specification supported operations",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "Write with Immediate",
+        "write-with-immediate"
+      ]
     },
     {
       "id": "r_key",
@@ -1309,21 +1955,38 @@
       "term": "Entropy Value (EV)",
       "tooltip": "Per-packet path selector used by MRC to spread packets across many network paths.",
       "reference_label": "MRC specification entropy generation",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "EV",
+        "EVs",
+        "Entropy Value",
+        "Entropy Values"
+      ]
     },
     {
       "id": "srv6",
       "term": "SRv6",
       "tooltip": "Segment Routing over IPv6; the sender encodes path information into the packet.",
       "reference_label": "RFC 8986",
-      "url": "https://www.rfc-editor.org/rfc/rfc8986"
+      "url": "https://www.rfc-editor.org/rfc/rfc8986",
+      "aliases": [
+        "S R V six",
+        "Segment Routing over IPv6"
+      ]
     },
     {
       "id": "usid",
       "term": "uSID",
       "tooltip": "SRv6 micro-segment identifier; compact per-hop routing value used in an SRv6 path stack.",
       "reference_label": "MRC specification SRv6 model",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "uSIDs",
+        "micro S I D",
+        "micro S I Ds",
+        "micro SID",
+        "micro SIDs"
+      ]
     },
     {
       "id": "psn",
@@ -1344,7 +2007,11 @@
       "term": "NACK",
       "tooltip": "Negative acknowledgment; tells the sender a packet needs retransmission or hit a reliability error.",
       "reference_label": "MRC specification reliability NACKs",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "knack",
+        "knacks"
+      ]
     },
     {
       "id": "reth",
@@ -1379,7 +2046,28 @@
       "term": "RNR-NAK",
       "tooltip": "Receiver Not Ready negative acknowledgment; supported by RC semantics but not by MRC.",
       "reference_label": "MRC specification WriteIMM resource management",
-      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf"
+      "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+      "aliases": [
+        "RNR NAK"
+      ]
     }
-  ]
+  ],
+  "style": "Slides",
+  "language": "en-US",
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco"
+  },
+  "index_show_module_status": false,
+  "index_module_links": false,
+  "index_navigation_instruction": "Navigate modules in any order using the Syllabus in the left sidebar.",
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
+  "narration": {
+    "engine": "elevenlabs",
+    "speed": 1.18
+  }
 }
