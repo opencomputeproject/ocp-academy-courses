@@ -1,7 +1,12 @@
-# pronunciation: PRSNTB -> presence B; FRU EEPROM -> Fru E E Prom; PERST -> P E reset; NIC_PWR_GOOD -> Nick power good; WAKE# -> Wake
+# review_status: approved; Explicit user approval in chat
+# pronunciation: NIC -> Nick; FRU EEPROM -> Fru E E Prom; AUX_PWR_EN -> auxiliary power enable; MAIN_PWR_EN -> main power enable; NIC_PWR_GOOD -> Nick power good; PERST# -> P E reset
 
-The OCP Nick three point zero power model has four mandatory normal states: Nick Power Off, ID Mode, Aux Power Mode, and Main Power Mode. Programming Mode is optional and exists for field update behavior. It should not be treated as the next normal operating step after Main Power.
+The normal power-up path has four mandatory states: Nick Power Off, ID Mode, Aux Power Mode, and Main Power Mode. State changes depend on more than a voltage appearing at the connector. Separate the edge rails, the enable signals, and the card's readiness indication.
 
-In ID Mode, the card is present, presence B is asserted, and the baseboard can read the Fru E E Prom. The 3.3 volt edge rail is active in ID, Aux, and Main Power modes. The 12 volt edge rail is on in Main Power, and may be optionally available in ID or Programming Mode depending on platform behavior.
+In Nick Power Off, the edge rails are off. Applying the three point three volt edge rail allows ID Mode. With auxiliary power enable and main power enable both low, the baseboard can read the Fru E E Prom. Twelve volts may be present or absent, but the card must not rely on it in this state.
 
-During Aux Power, P E reset is asserted low, and Nick power good first asserts when the auxiliary-domain rails are up and within tolerance. Version one dot six point zero also clarifies the optional Wake and N C S I over R B T behavior in this part of the sequence.
+For Aux Power, both edge rails are available. Auxiliary power enable goes high while main power enable stays low. The auxiliary rails must settle within tolerance, and Nick power good must indicate readiness. P E reset remains asserted low.
+
+For Main Power, both enables are high. The main rails must stabilize and the specified readiness and reset timing must be satisfied before the P C I E link operates. Main power enable alone is not permission for immediate link operation.
+
+Separately, a supported card can enter optional Programming Mode from ID Mode and return to ID afterward. Here auxiliary power enable is low and main power enable is high, but the Aux and Main regulators stay disabled and Nick power good stays low. The baseboard can update the Fru E E Prom. This is not a fifth step after Main Power.

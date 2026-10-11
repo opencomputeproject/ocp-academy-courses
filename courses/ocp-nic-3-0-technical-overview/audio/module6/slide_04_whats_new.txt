@@ -1,9 +1,10 @@
-# pronunciation: PCIe -> P C I E; DSFF -> D S F F; PRSNTB -> presence B; FRU EEPROM -> Fru E E Prom; NC-SI -> N C S I; RBT -> R B T; LFF -> L F F; MHS M-PNP -> M H S M P N P
+# review_status: approved; Explicit user approval in chat
+# pronunciation: NIC -> Nick; PCIe -> P C I E; DSFF -> D S F F; SFF -> S F F; PRSNTB -> presence B; FRU EEPROM -> Fru E E Prom; OEM -> O E M; BIF -> bifurcation; LFF -> L F F; MHS -> M H S
 
-Version one dot six point zero is most useful as an implementation checklist. First, it keeps P C I E Gen six and 64 G T per second signal-integrity work tied to OCP-specific fixture and insertion-loss context. Do not substitute a generic C E M budget for the OCP channel and fixture model.
+Version one dot six is best used as an implementation checklist. Consider D S F F discovery. Presence B encoding first identifies the card as D S F F. Presence alone does not declare every supported P C I E link subdivision.
 
-Second, D S F F capability discovery is more explicit. Presence B encoding identifies the card pattern, then Fru E E Prom OEM records D zero, D one, and D two describe supported link subdivision behavior.
+While the card is in ID Mode, the baseboard reads the relevant Fru E E Prom O E M records: D zero, D one where implemented, and D two. The baseboard also checks record versions. D zero and D one describe supported subdivision choices and their bifurcation encodings. D two declares additional capabilities, including the encoding width. These values are declared by the card, unlike the predefined S F F decoder.
 
-Third, the power-state history clarifies Wake and N C S I over R B T behavior in Aux Mode and removes Wake from Main Power Mode assumptions. The Fru record map also moves Extended OEM and Flex I O records to D two and D three to avoid M H S M P N P conflicts.
+The baseboard then selects a configuration supported by both sides and drives the corresponding bifurcation signals. Do not substitute a generic fixed encoding or assume that a physically fitting card supports the host's preferred lane arrangement.
 
-Finally, L F F is deprecated. It stays in Appendix nine for historical reference, while active implementation should focus on S F F and D S F F paths.
+Other implementation checks remain important. Gen six signal-integrity work must use the OCP-specific fixture and insertion-loss context. Power-state tables must be read with their interface-support conditions. Extended O E M and Flex I O records use D two and D three to avoid M H S allocation conflicts. Finally, L F F is deprecated and retained in Appendix nine for historical context; active designs should focus on S F F and D S F F.
