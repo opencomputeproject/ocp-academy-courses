@@ -1,15 +1,15 @@
 # How to Build Your Brand in the OCP Community
 
-This two-module OCP Academy course is based on Dirk Van Slyke's April 2025 presentation and updated for current OCP membership terminology and durable Community channels. It explains how organizations and individuals earn trust through useful participation, then extend credible work through the OCP Marketplace, events, communications, and OCP Academy.
+This two-module OCP Academy course combines Dirk Van Slyke's original April 2025 recording with his updated 2026 slides and current OCP program rules. There is no replacement recording: the original video is retained and explicitly labelled. The course explains how organizations and individuals earn trust through useful participation, then extend credible work through the OCP Marketplace, events, communications, and OCP Academy.
 
 ## Modules
 
 | Module | Narrated duration | Description |
 |---|---:|---|
-| 1. Earn Trust Before You Amplify | 10.1 minutes | Build credibility by listening first, participating consistently, contributing useful work, and collaborating openly. Membership is a signal, not an entry ticket; the credibility flywheel turns service into trust. |
-| 2. Turn Useful Work into Reach | 11.4 minutes | Choose the right channel for work that already helps the Community: the Marketplace and Solution Provider program, events, communications, and OCP Academy. Apply the editorial filter and turn one contribution into several useful touchpoints. |
+| 1. Earn Trust Before You Amplify | 10.7 minutes | Build credibility by listening first, participating consistently, contributing useful work, and collaborating openly. Distinguish open participation from tier-dependent program benefits and formal eligibility; the credibility flywheel turns service into trust. |
+| 2. Turn Useful Work into Reach | 12.9 minutes | Choose the right channel for useful Community work: the Marketplace and Solution Provider program, Summits, Tech Days, FTS, communications, webinars, and OCP Academy. Understand hosting/exhibit logistics and webinar-specific reporting, apply the editorial filter, and turn one contribution into useful touchpoints. |
 
-The total narrated runtime is approximately 21.5 minutes. Allow 25–30 minutes for the complete learner experience, including reflection and knowledge checks.
+The total narrated runtime is approximately 23.6 minutes. Allow 26–30 minutes for the complete learner experience, including reflection and knowledge checks.
 
 ## LMS navigation
 
@@ -23,7 +23,13 @@ Unfinished modules resume their own saved slide. Completed modules reopen their 
 
 Rebuild with the repository's maintained AcademyWizard templates, retaining the approved course source, Leo v2 narration at speed 1.18, and all existing media. The current shared runtime supplies quiz memory, completion-aware slide resume, transcript/narration controls, and legacy loop-video timing. Mobile teaching content now clears the fixed module badge; glossary definitions clear the taller mobile control bar. This course keeps its silent short-loop animations and does not opt into narration-synchronized single-pass video.
 
-The current PDF-reference rule does not require changes here: the original presentation PDF is authoring evidence, not a learner-facing PDF link. Existing live resource links and the approved informational home tiles/first-module action are retained.
+The 2026 content refresh adds verified, page-specific links to Dirk's published PDF on teaching slides. The user explicitly requested whole-document links on the course opening and closing slides; the opening reference records this narrow exception with `whole_document: true`. The original video remains labelled April 2025, and the updated deck is never described as a new recording.
+
+The refresh clarifies membership versus Solution Provider enrollment, tier-dependent benefits, the historical 1.68%/0.6% click-through comparison, hosting workshops/plugfests, turnkey Summit exhibit logistics, FTS's research audience, webinar-specific attendee reporting, and social/targeted outreach. Allie Bodnar is added as a second contact. Current canonical resource destinations replace redirects. The approved broad Marketplace scale wording is retained; the deck's ~600 listing snapshot is not misrepresented as evidence for the course's around-1,000 approximation. No venue calendar, website screenshots, fee amounts, or lead guarantees are frozen into learner content.
+
+Only M1S2, M1S7, M2S3, M2S4, M2S5, and M2S11 need regenerated narration. Reuse the other 16 clips and all approved visual media with the recorded voice, model, and speed. The updated audio is checked without audible playback; perceptual listening approval remains with the reviewer.
+
+M1S7 uses three two-paragraph groups joined with 180ms pauses after a full-request synthesis developed a sustained closing fade. The groups use the same voice/model/settings, preserve every sentence, and are joined as mono 16-bit PCM at 22050 Hz without gain changes. Only 0.224 seconds of surplus quiet tail was removed after the last active speech window, with a 70ms guard retained. The full clip passes the current speech-level and tail checks; its recipe is recorded in `content_revision.narration_chunking`. Reuse the verified WAV when reproducing the reviewed pages. Its media-first layout keeps the membership artwork and the added reference pills clear of the fixed controls without changing the image asset.
 
 ## Editable source
 
@@ -54,11 +60,13 @@ EXISTING_AUDIO_DIR=/path/to/audio \
 
 ## Public resources
 
-- [Dirk Van Slyke's presentation](https://www.youtube.com/watch?v=k6pL1WJLXAI)
-- [OCP upcoming events](https://www.opencompute.org/events/upcoming-events) and [past events](https://www.opencompute.org/events/past-events)
-- [OCP Podcast](https://www.opencompute.org/ocp-podcast)
-- [OCP Educational Webinar Program](https://www.opencompute.org/summit/ocp-educational-webinar-program)
-- [OCP News and Blog](https://www.opencompute.org/blog)
+- [Dirk Van Slyke's original April 2025 recording](https://www.youtube.com/watch?v=k6pL1WJLXAI)
+- [Dirk Van Slyke's updated 2026 slides (PDF)](https://www.opencompute.org/documents/how-to-build-your-brand-in-ocp/)
+- [OCP upcoming events](https://www.opencompute.org/events/) and [past events](https://www.opencompute.org/events/past-events/)
+- [OCP Future Technologies Symposium](https://www.opencompute.org/events/future-tech-symposium/ocp-future-technologies-symposium/)
+- [OCP Podcast](https://www.opencompute.org/podcast/)
+- [OCP Educational Webinar Program](https://www.opencompute.org/events/ocp-educational-webinar/ocp-educational-webinar-program/)
+- [OCP News and guest blogs](https://www.opencompute.org/news/)
 - [Subscribe to the OCP Newsletter](https://mailchi.mp/opencompute/subscribe-to-ocp)
 - [OCP Academy](https://academy.opencompute.org/learn)
 - [OCP Orientation catalog](https://academy.opencompute.org/learn/public/catalog/view/5)

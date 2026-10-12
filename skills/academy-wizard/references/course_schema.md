@@ -402,6 +402,13 @@ audit in `slides_course_qa.py` checks visible notation, positive page anchors,
 matching first pages, and whole-document closing links; it cannot establish
 source accuracy or PDF-viewer behavior inside the target LMS.
 
+When the user explicitly requests a whole-document link on the course's opening
+slide, record `whole_document: true` on that PDF reference. This narrow exception
+applies only to the first authored slide of the first module, which must be a
+`title` or `course_overview`; it is not a teaching-slide bypass or a new default.
+Use no page fragment or page/range label there. Closing references remain
+whole-document links by default. Record the user approval in course metadata.
+
 ```json
 {
   "reference_links": [

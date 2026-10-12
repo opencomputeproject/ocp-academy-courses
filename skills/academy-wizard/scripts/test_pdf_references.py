@@ -52,6 +52,27 @@ class PdfReferenceTests(unittest.TestCase):
             label="PG25 · Contents · pp. 2–3", url="https://example.test/pg25-final-pdf#page=2")
         self.assertTrue(audit_pdf_references(course)[0])
 
+    def test_explicit_whole_document_opening_exception(self):
+        link = {"label": "2026 slides", "url": "guide.pdf", "whole_document": True}
+        course = {"modules": [{"id": 9, "slides": [
+            {"id": 12, "type": "title", "reference_links": [link]},
+            {"id": 13, "type": "content_bullets"},
+        ]}]}
+        self.assertEqual(audit_pdf_references(course), ([], 1))
+        link.update(label="2026 slides · p. 1", url="guide.pdf#page=1")
+        self.assertTrue(audit_pdf_references(course)[0])
+
+    def test_whole_document_flag_does_not_bypass_teaching_page_policy(self):
+        for slides in ([{"id": 1, "type": "content_bullets"}],
+                       [{"id": 1, "type": "title"}, {"id": 2, "type": "title"}]):
+            slides[-1]["reference_links"] = [{"label": "Guide", "url": "guide.pdf", "whole_document": True}]
+            self.assertTrue(audit_pdf_references({"modules": [{"id": 1, "slides": slides}]})[0])
+
+    def test_opening_default_still_requires_page_without_approved_exception(self):
+        course = {"modules": [{"id": 1, "slides": [{"id": 1, "type": "title",
+            "reference_links": [{"label": "Guide", "url": "guide.pdf"}]}]}]}
+        self.assertTrue(audit_pdf_references(course)[0])
+
     def test_closing_label_and_fragment_are_independently_rejected(self):
         for label, url in (("Guide · p. 3", "guide.pdf"), ("Guide", "guide.pdf#page=3")):
             with self.subTest(label=label, url=url):

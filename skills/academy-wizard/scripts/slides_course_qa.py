@@ -53,8 +53,8 @@ def audit_pdf_references(course: dict) -> tuple[list[str], int]:
             or str(source.get("kind") or "").casefold() == "pdf"
         )
     }
-    for module in course.get("modules") or []:
-        for slide in module.get("slides") or []:
+    for module_index, module in enumerate(course.get("modules") or []):
+        for slide_index, slide in enumerate(module.get("slides") or []):
             refs = list(slide.get("reference_links") or [])
             callout = slide.get("resource_callout") or {}
             if callout.get("url"):
@@ -69,7 +69,13 @@ def audit_pdf_references(course: dict) -> tuple[list[str], int]:
                 location = f"M{module.get('id')}S{slide.get('id')}: PDF resource {label!r}"
                 label_pages = PDF_PAGE_LABEL.search(label)
                 fragment = urlsplit(url).fragment
-                if slide.get("type") == "course_complete":
+                opening_document = ref.get("whole_document") is True
+                if opening_document and not (
+                    module_index == 0 and slide_index == 0
+                    and slide.get("type") in {"title", "course_overview"}
+                ) and slide.get("type") != "course_complete":
+                    errors.append(f"{location}: whole_document is permitted only on the course opening or closing slide")
+                if slide.get("type") == "course_complete" or opening_document:
                     if fragment or label_pages:
                         errors.append(f"{location} must link to the whole document without a page fragment or page/range label")
                     continue
