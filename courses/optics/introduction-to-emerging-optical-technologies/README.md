@@ -19,6 +19,10 @@ The course contains approximately 52 minutes of narration and is designed for ab
 
 Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Generated narration WAV files and rendered SCORM files are not checked in.
 
+Module 1's course overview thanks the OCP community volunteers from VIAVI Solutions, SENKO Advanced Components, and Sumitomo Electric Lightwave. Their supplied, unmodified logos are stored in `resources/images/contributors/`; this visual acknowledgment does not change the narration.
+
+The 800 x 400 LMS catalog poster is `thumbnail.png`. Its editable source and renderer are in `poster/`, using the shared Academy logo and Lato font assets. Re-render it from the repository root with `node courses/optics/introduction-to-emerging-optical-technologies/poster/render_thumbnail.cjs` (requires Playwright and Chrome).
+
 ## Build
 
 From the repository root:
