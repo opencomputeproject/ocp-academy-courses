@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-A key shift is to stop thinking about a link as only the fiber path. The point-to-point figure breaks the connection into monitored segments. On one side, the switch talks electrically to its local module. In the middle, the two modules communicate optically. On the far side, the remote module talks electrically to the host.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+A link is more than the fiber between two modules. There are three interface regions: the switch-to-module electrical connection, the optical connection between modules, and the module-to-server electrical connection.
 
-That segmentation matters during debug. A poor optical signal does not mean the same thing as a host electrical receiver issue. A local alarm may be reporting a symptom whose cause is on a remote segment.
+Traffic travels in both directions, so the specification describes six directional link segments. Each receiver sees a particular incoming signal. A poor result at one receiver does not automatically identify the transmitter, fiber, or electrical interface as the cause.
 
-The telemetry model gives host software a way to ask for evidence across the full path. Once each segment can be measured and reported in a consistent way, operators can reason about where the degradation lives instead of swapping parts by instinct.
-This segment view is also useful when symptoms disagree. A host may see one behavior, a module may log another, and the remote partner may show a third. The model gives you places to compare, not just places to blame.
+This distinction explains why module telemetry and host receiver measurements belong together. The switch also records its own pre-feck B E R and uncorrectable codewords. Remote telemetry helps expose the far-side module even when the operator cannot directly access the server.
+
+The animation groups the six directions into the three interface regions. Use that view to organize the investigation, then compare the measurements at the relevant receiving endpoints.
+
+If symptoms disagree, preserve that disagreement as evidence. A local alarm, a remote event, and a host-side error pattern may describe different parts of the same failure. Segment identity makes those observations useful.

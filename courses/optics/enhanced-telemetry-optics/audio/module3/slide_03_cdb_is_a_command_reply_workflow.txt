@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-C D B gives the host and module a command-reply pattern. The spec describes a typical sequence in four steps.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+C D B provides the host and module with a structured command-reply pattern. It is optional in general C M I S, but compliant enhanced-telemetry optics must use it for telemetry collection and transfer to the host.
 
-First, the host prepares the command message by filling the required header fields and payload. Second, it triggers the command by writing the message to the appropriate location. Third, it polls the C D B status registers to monitor progress. Fourth, when the command is complete, it retrieves the reply header and payload.
+The sequence has four main steps. Prepare the required command header and payload. Trigger the command. Poll its status registers. Then retrieve the reply after execution completes successfully.
 
-That pattern is the backbone for this module. Whether the host is retrieving telemetry, asking for event-log records, or using a larger payload area, the operating discipline is the same: write the request, trigger it, check status, then read the response.
-The four steps also make troubleshooting easier when software misbehaves. You can ask whether the command was formed correctly, whether it was triggered, whether status was read, and whether the reply matched completion.
+Each stage is part of the contract. A reply should not become operator evidence merely because software found bytes in the response area. Those bytes have to belong to the request that actually completed.
+
+The same discipline applies when retrieving measurements, collecting event records, accessing remote registers, or transferring firmware. Check the supported command, selected endpoint, input fields, and final status.
+
+This also gives a useful software-debugging model. Was the request formed correctly? Was it triggered? Did the module finish successfully? Did software retrieve and validate the corresponding reply? Four clear questions are more useful than a tool that prints data without explaining how it obtained it.

@@ -5,7 +5,7 @@ const { chromium } = require('playwright');
 
 const htmlPath = path.resolve(process.argv[2] || 'animation.html');
 const framesDir = path.resolve(process.argv[3] || path.join('/tmp', 'academy_animation_frames'));
-const fps = Number(process.env.ANIMATION_FPS || 24);
+const fps = Number(process.env.ANIMATION_FPS || 30);
 const duration = Number(process.env.ANIMATION_DURATION || 16);
 const frameCount = Math.round(fps * duration);
 
@@ -16,7 +16,7 @@ fs.mkdirSync(framesDir, { recursive: true });
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({
     viewport: { width: 1280, height: 720 },
-    deviceScaleFactor: 1,
+    deviceScaleFactor: 1.5,
   });
   await page.goto(pathToFileURL(htmlPath).href, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);

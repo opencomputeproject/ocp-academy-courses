@@ -8,16 +8,18 @@ This standalone SCORM course belongs to the **Optical Connectivity & Reliability
 
 | Module | Title | Narrated Duration | Summary |
 |---|---|---:|---|
-| 1 | The AI Fabric Visibility Problem | 9 min | Enhanced telemetry as an operations model for local and remote optical endpoints. |
-| 2 | Metrics, Flags, and Link Health | 10 min | Telemetry categories, summary flags, masks, and the worst-category link-health score. |
-| 3 | CDB Workflows, Event Logs, and Remote Access | 10 min | The command-reply pattern that moves telemetry, event history, and far-end data. |
-| 4 | Firmware, Host Software, and Deployment Readiness | 10 min | Lifecycle operations and host tooling that turn telemetry into fleet reliability. |
+| 1 | The AI Fabric Visibility Problem | 10 min | Enhanced telemetry as an operations model for local and remote optical endpoints. |
+| 2 | Metrics, Flags, and Link Health | 12 min | Capability discovery, host/media health scores, flags, default counter masks, thresholds, and autonomous shutdown. |
+| 3 | CDB Workflows, Event Logs, and Remote Access | 11 min | Checked command-reply workflows, durable 32-byte event records, and remote register read/write access. |
+| 4 | Firmware, Host Software, and Deployment Readiness | 11 min | Local and remote firmware maintenance, module-time correlation, host measurements, and verified deployment behavior. |
 
-The course contains approximately 39 minutes of narration and is designed for about 50 minutes of learner time including knowledge checks and interaction.
+The course contains 44.1 minutes of narration and is designed for about 50 minutes of learner time including knowledge checks and interaction. Module durations above are rounded from the generated audio.
 
 ## Media
 
 Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Generated narration WAV files and rendered SCORM files are not checked in.
+
+The 800 x 400 LMS catalog poster is `thumbnail.png`. Its editable source and renderer are in `poster/`; it uses the shared Academy logo and Lato font assets. Re-render it from the repository root with `node courses/optics/enhanced-telemetry-optics/poster/render_thumbnail.cjs` (requires Playwright and Chrome).
 
 ## Build
 
@@ -39,6 +41,6 @@ EXISTING_AUDIO_DIR=/path/to/audio \
 
 ## Public References
 
-The course is based on the OCP Networking Project's Optics Reliability Workstream Enhanced Telemetry Spec, developed by OCP Community volunteers from Credo and Oracle.
+The course teaches the OCP Networking Project's Optics Reliability Workstream Enhanced Telemetry Optics Product Software Specification v1.0.0. The specification is authored by Chris Collins at Credo and acknowledges community feedback from Cisco, Credo, Marvell, and Oracle.
 
-- OCP Optics Telemetry public specification: https://www.opencompute.org/documents/2025-ocp-software-specification-optics-telemetry-rev0-9-pdf
+- Enhanced Telemetry Optics Product Software Specification v1.0.0: https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf

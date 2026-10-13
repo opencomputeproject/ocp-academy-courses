@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Averaging can be comforting and dangerous. If five categories look excellent and one category is failing, an average may still look acceptable. That is not useful for operations, because the failing category can still take the link down.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+A health score should preserve the measurement that needs action. Averaging healthy fields with one failing field can hide the problem.
 
-The spec handles this by selecting the minimum score category for the link-health rating. Put simply, the weakest category drives the reported health. That does not mean every metric has equal meaning in every deployment. It means the summary should not hide the one category that deserves attention.
+The specification first evaluates each supported category against its thresholds. The defined category scores are eighty, sixty, and forty. It then takes the minimum as the rating for the selected host or media side.
 
-This is a good reliability principle. A health score should compress information only when it preserves the action signal. If compression masks the failing field, the score becomes a dashboard ornament rather than a troubleshooting tool.
-This is why a health score should be explainable. The operator should be able to drill from the score to the category and from the category to the evidence. A score without that path is not enough.
+Host-side categories include electrical signal quality, pre-feck B E R, module flags, and the defined counters when enabled. Media-side scoring also includes optical-specific evidence such as M P I, optical-power flags, and laser-bias flags. The two sides do not use an identical category list.
+
+The animation shows selected media-side categories. When the B E R category falls to forty, the minimum follows it. An average still looks healthier, which is exactly the information loss the specification avoids.
+
+The telemetry reply also carries a lowest-rating-category bitmap. Multiple bits can be set when categories tie for the minimum. Read that bitmap and the underlying values rather than choosing only one presumed cause.
+
+Finally, interpret the result with the effective counter masks and threshold settings. A score has meaning only with its configuration and endpoint context.

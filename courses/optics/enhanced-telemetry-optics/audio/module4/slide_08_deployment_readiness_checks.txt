@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Deployment readiness is more than a checklist of fields. It is a behavioral check.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Deployment readiness is a behavioral test of the whole evidence path.
 
-Can the host retrieve local telemetry? Can it retrieve the right remote endpoint in a breakout case? What happens when a compliant module talks to a third-party optic or a non-compliant partner? Does epoch time let event logs correlate with host and monitoring timelines? Can firmware update be discovered, transferred, activated, committed, or aborted with clear status at every step?
+Discover the module's telemetry version, supported commands, and metric capabilities. Verify in-band support and lane establishment. In mixed deployments, a working data link with a third-party partner does not establish that remote enhanced telemetry is available.
 
-The spec also points to host implementation and repository expectations. For operators, that means the common interface should be testable. A deployment is ready when telemetry, event history, remote access, firmware lifecycle, and host tooling all behave predictably under realistic conditions.
-Readiness checks should be run before the first major incident. If the team discovers during an outage that remote partner identity or event time is unreliable, the telemetry system has already failed its most important test.
+Test local and remote queries, including the correct partner and datapath in breakout cases. Establish module time and check that events correlate with host measurements. Preserve history across reset, removal, and reinsertion.
+
+Read back score masks and thresholds. Verify autonomous shutdown starts disabled after reset, and confirm the intended state after configuration. If it is enabled, test how fault and event evidence identify the response.
+
+Exercise firmware discovery, transfer, completion, run, verification, commit, and abort handling. Keep running-image state separate from the default for future resets.
+
+Finally, check that operators can retrieve this evidence through the actual host tools. A deployment is ready when the team can use the interface predictably before the first major incident.

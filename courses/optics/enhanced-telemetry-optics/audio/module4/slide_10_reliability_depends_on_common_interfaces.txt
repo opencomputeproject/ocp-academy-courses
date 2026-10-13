@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-This final module connects the reliability workflow. Firmware management is not just downloading an image. It is a lifecycle with capability discovery, transfer, status, activation, commit, and recovery behavior.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Reliable operations need a common interface and a disciplined interpretation of its results.
 
-Host software remains the local control point. It talks to the local module over I squared C, and the local module retrieves remote partner data in-band. Operator APIs then expose the common actions: telemetry download, event logs, remote C M I S access, firmware update, epoch time, hysteresis, and link rating.
+Firmware maintenance separates discovery, transfer, validation, activation, verification, and commit. The host remains the local control point over I squared C, while the module reaches remote partners in-band.
 
-When those pieces work together, telemetry becomes a timeline and the timeline becomes a fabric-wide health view. That is the operational value of a common interface.
-The course intentionally stays above byte-level implementation because the operational goal is broader. Learners should leave able to ask better questions of tools, vendors, and internal teams when link reliability is at stake.
+Host tools bring together supported capabilities, local and remote measurements, side-specific ratings, score configuration, event history, module time, and firmware results. The switch also contributes its own receiver error measurements.
+
+Configuration stays attached to the evidence. Counter masks affect score participation. Thresholds affect score bands. Autonomous shutdown is a separate response with a disabled reset default and identifiable fault and event records.
+
+When endpoint identity and valid timestamps connect these pieces, current state becomes a timeline and that timeline supports a fabric-wide reliability view.
+
+Use this model to ask precise questions during qualification and incidents: which receiver, which partner, which configuration, which event, and which completed command supports the conclusion?
