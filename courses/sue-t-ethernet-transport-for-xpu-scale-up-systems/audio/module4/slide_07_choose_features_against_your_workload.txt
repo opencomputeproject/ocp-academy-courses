@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The specification presents implementation choices that trade endpoint area and state against capability and wire efficiency. Start with the operation set. Supporting only writes and non-fetching atomics can simplify the implementation. Reads and fetching atomics add functionality and data-bearing responses.
+
+Next, consider transmit buffering. More buffering can increase opportunities to pack commands that are already available together. Less buffering saves area but reduces those opportunities. The scheduler's work-conserving rule still applies; a larger buffer doesn't authorize waiting just to fill a packet.
+
+Transport retransmission adds retained data and state for recovery. Removing it makes a lost packet fatal to the connection. Delivery acknowledgement needs less managed operation state, while Operational acknowledgement can improve wire efficiency by retaining state and compressing successful data-free responses.
+
+In its packed-operation example over the Unified Forwarding Header, or U F H, with sixteen-bit addresses, the specification reports wire efficiency greater than ninety percent for Operational acknowledgement. It compares that with less than eighty percent for Delivery acknowledgement using a sixteen-byte response command. Keep those conditions attached to the percentages. They aren't a universal throughput guarantee across all workloads and formats.
+
+Finally, dedicated versus dynamic delivery contexts changes the state required at scale. The examples called S U E lite and S U E full combine some of these choices. S U E lite uses no transport retransmission, link-layer retry, writes only, and Delivery acknowledgement. S U E full uses retransmission, Operational acknowledgement, and dynamic contexts. They are examples of feature combinations, not mandatory product categories.
+
+Select a combination by stating the workload's operations, latency, visibility, resilience, and scale requirements. Then review the implementation's specific choices against those requirements.

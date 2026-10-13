@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; UET -> "U E T"; ESUN -> "E S U N"; UFH -> "U F H"; UDP -> "U D P"; IP -> "I P"
+Start at the top of the stack, where the accelerator issues a memory transaction. S U E T accepts the transaction through its command interface, maps the control information, and assembles the transport data needed to reach another accelerator.
+
+The transport uses the Unified Local profile of Ultra Ethernet Transport, or U E T. Its reliability and semantic layers give the network packet information about the connection, the command, and the associated data.
+
+Below that transport, the specification provides three network options. These are Ethernet for Scale-Up Networks, or E S U N; the Unified Forwarding Header, or U F H; and User Datagram Protocol over Internet Protocol over Ethernet, usually called U D P over I P. The network envelope changes while the transport continues to serve the accelerator's transactions.
+
+This layering also tells us where integration responsibilities belong. Memory registration and protection-domain management are outside S U E T. Address translation can take place in the command-mapping function or within the accelerator, but the translation service itself is accelerator-specific and outside the transport definition.
+
+The Ethernet fabric provides the service that the transport relies on. S U E T requires lossless network service, and the packet-delivery module will explain the flow-control and retry choices around that requirement.
+
+When you inspect an implementation, identify these boundaries first: the accelerator's memory system, the transport endpoint, and the network beneath it. Each contributes a different part of the behavior.

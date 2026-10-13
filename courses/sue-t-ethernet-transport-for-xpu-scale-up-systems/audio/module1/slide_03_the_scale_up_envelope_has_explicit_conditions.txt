@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; RTT -> "round-trip time"; 16K -> "sixteen thousand"; 256B -> "two hundred fifty-six bytes"; 1500B -> "fifteen hundred bytes"
+The scope table gives us the conditions under which to understand the S U E T architecture. It describes a shared-memory system with up to sixteen thousand accelerators and one-sided load, store, and atomic operations. Memory registration sits outside the transport's scope.
+
+The table specifies an end-to-end round-trip time below two microseconds for a fifteen-hundred-byte packet in a single-hop network. Keep all of those conditions together. The single-hop configuration is central to the design's latency and complexity assumptions. Larger networks are possible, with additional implementation area and complexity.
+
+Traffic is divided into two to four independent traffic classes. At least two are needed because requests and responses must use different classes to avoid deadlock. We'll examine the queue and flow-control consequences in the packet-delivery module.
+
+The same scope table describes a maximum of two hundred fifty-six bytes of data per transaction, with larger operations broken down by the accelerator. Later, the Advanced eXtensible Interface, or A X I, integration section describes support for bursts up to four kilobytes. The relationship between those two statements needs clarification in the specification; we'll keep each in its stated context.
+
+For a design review, ask which topology, packet size, transaction model, and traffic classes the implementation assumes. Those conditions are part of the architectural claim.

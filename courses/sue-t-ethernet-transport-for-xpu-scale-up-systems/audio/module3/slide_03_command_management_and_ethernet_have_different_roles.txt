@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+A S U E T instance exposes three interfaces. The command interface carries the accelerator's transactions and associated data. The management interface configures and queries the instance. The Ethernet interface carries the network traffic.
+
+The command protocol can be adapted to the accelerator architecture. The specification supplies two examples: a signal interface built around a FIFO and credits, and an A X I four interface. Integration can use those examples directly or adapt them to the system's needs.
+
+Management is implementation-specific. An A X I target interface is one example of how configuration and status registers may be accessed, but the specification doesn't prescribe a universal register map.
+
+The management path can also offer full-packet transmission and reception. In that option, the accelerator constructs the packet and triggers transmission; S U E T adds the Ethernet frame check sequence. Received control packets enter a buffer that the accelerator can query. The document explicitly describes this control packet transport as unreliable.
+
+Separately, the optional low-rate control channel supports messages for diagnostics and basic queries. Keep its optional status and limited role clear when evaluating an implementation.
+
+These interfaces serve different decisions. Use the command interface to review transaction semantics and backpressure. Use management to review configuration and status behavior. Use the network interface to review encapsulation and the required fabric service. A management-packet feature should not be mistaken for the reliable memory-transaction path.

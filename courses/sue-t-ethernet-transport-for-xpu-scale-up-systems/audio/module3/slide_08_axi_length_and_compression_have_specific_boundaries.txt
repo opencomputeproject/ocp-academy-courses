@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The A X I integration section supports burst transactions up to four kilobytes. A transaction must not cross a four-kilobyte page multiple. That address-boundary rule applies alongside the payload-length rule.
+
+The wire format also has a compression boundary. The extended write-request length and read-response payload length fields support zero through four thousand ninety-six bytes. The compressed format, indicated by the address-compression field set to one, supports a twelve-bit request length ranging from zero through four thousand ninety-five.
+
+A payload of four thousand ninety-six bytes therefore needs the uncompressed address format, with the compression field set to zero. It adds four bytes of overhead, described as about one tenth of one percent in the specification's example. The smaller format cannot represent that length simply by reusing its maximum code.
+
+There is another reason to use the uncompressed form. The compressed form reuses the extension-header length from the preceding uncompressed transaction in the packet. If a different extension-header length is needed, use the uncompressed form to establish it.
+
+Keep these A X I rules in their own section context. The earlier scope table states a two-hundred-fifty-six-byte maximum transaction data size. The specification also gives this four-kilobyte A X I mapping. We retain both statements and don't invent a universal reconciliation.
+
+For a concrete transaction, check its address range, its length, and its required extension-header state. Those checks tell you whether the chosen encoding is valid.

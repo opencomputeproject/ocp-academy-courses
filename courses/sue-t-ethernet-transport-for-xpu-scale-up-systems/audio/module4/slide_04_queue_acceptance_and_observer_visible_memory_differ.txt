@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Suppose a target transport reports that it has accepted a write into its queue for the accelerator interface. The response can describe successful queue acceptance even though the data hasn't reached memory yet.
+
+Now place another observer beside the memory system. The observer might access that memory through a different interface. A queue-acceptance response does not, by itself, establish that this observer can already read the new data. The specification explicitly calls out that limitation for the target-queue completion alternative.
+
+Global observability supplies a related condition when it is supported and requested. The accelerator holds its response until the data is placed. Either acknowledgement mode can support that behavior. Operational acknowledgement alone is insufficient evidence that the implementation selected the memory-placement point.
+
+The distinction should appear in the application's completion contract. Which event does a successful response confirm? Which observers and access paths rely on that event? What happens if an error occurs after an early response has been returned?
+
+These are implementation questions, so the answer cannot be inferred simply from the presence of a write-response channel or a familiar transport name. The chosen response point must match the behavior the application needs.
+
+Use the queue and memory boundaries as separate facts in the design review. That makes it possible to evaluate a latency optimization without accidentally treating acceptance as a guarantee about all subsequent observation.

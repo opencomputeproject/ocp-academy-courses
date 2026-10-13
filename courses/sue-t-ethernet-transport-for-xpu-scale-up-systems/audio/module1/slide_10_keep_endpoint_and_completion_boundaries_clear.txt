@@ -1,0 +1,8 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"
+You now have the architecture model needed for the rest of the course. S U E T maps accelerator memory transactions into transport packets and back again. Its scope favors a low-latency single-hop fabric, and its stated numerical conditions belong with that deployment context.
+
+The command interface, transport instance, and Ethernet network each have distinct responsibilities. Registration, protection-domain management, and the accelerator-specific address-translation service need their own integration arrangements.
+
+Delivery ack confirms delivery to the destination accelerator. Operational ack associates the destination response with the outstanding command, using local state to reduce response information on the wire where the operation allows it.
+
+Finally, memory visibility depends on the completion contract and, when supported and requested, global observability. Carry that distinction forward. It will help you explain both the reliability choices in the packet path and the write-completion choices at the accelerator interface.

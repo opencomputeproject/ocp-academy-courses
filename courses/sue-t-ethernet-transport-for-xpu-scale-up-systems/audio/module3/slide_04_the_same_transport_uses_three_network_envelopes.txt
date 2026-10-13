@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+S U E T can run over three Ethernet network envelopes. These are Ethernet for Scale-Up Networks, or E S U N, the Unified Forwarding Header or U F H, and User Datagram Protocol, or U D P, over Internet Protocol, or I P, over Ethernet. The transport semantics remain above the chosen network format.
+
+The destination network address is typically configured in the transport instance and looked up from information supplied by the accelerator. A destination accelerator identifier can, for example, select the destination media-access-control, or M A C, address or I P address. In the U F H case, that identifier may be used directly.
+
+The receiver also needs to recognize the transport. For U D P over I P, the specification identifies Ultra Ethernet through destination port four seven nine three. It also gives EtherType hexadecimal E seven nine zero as identifying Ultra Ethernet in the described EtherType case.
+
+With E S U N, the presence of the Ultra Ethernet transport is inferred through network-wide configuration. That is a configuration assumption that the system has to establish consistently.
+
+Within the transport header, the packet-delivery type field identifies the selected Ultra Ethernet Transport, or U E T, type, such as Reliable Ordered Delivery for Local networks, or R O D L. Network identification and packet-delivery selection therefore answer different questions.
+
+When integrating an endpoint, verify the selected envelope, the mapping from the accelerator identifier to network addressing, and the receive-side identification rule. The three source diagrams are useful precisely because they show the same transport payload carried inside different network headers.

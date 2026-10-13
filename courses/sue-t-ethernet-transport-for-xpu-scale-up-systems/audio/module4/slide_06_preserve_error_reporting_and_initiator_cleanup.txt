@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The response carries information that the source needs to complete the A X I transaction. The interface mapping connects A X I response codes to the semantic response codes used by the transport.
+
+An A X I OKAY response maps to the successful return code. A subordinate error maps to vendor-defined return-code entry zero in the specified mapping, and a decode error maps to vendor-defined return-code entry one. EXOKAY is not supported. Keep this concrete mapping separate from an assumption that every possible A X I behavior is directly provided by the minimal interface.
+
+The completion point determines which path has been covered when that response is produced. A destination-memory completion can cover errors along the full round trip. A target-queue completion may omit accelerator-side errors that occur later. An initiator-queue completion may omit later network errors as well.
+
+The specification leaves the selection mechanism implementation-specific. It may be a static mode or use the delivery-complete field where appropriate, but S U E T does not define one universal selector for all four alternatives.
+
+Whatever optimization the implementation chooses, a write response or ack or knack is still needed to clean up outstanding resources at the initiator. Reporting early success to an application doesn't permit the transport to forget the request without that defined cleanup result.
+
+For a design review, ask for the response-code mapping, the completion point, the errors that can be reported there, and the later cleanup path. Those four answers give the word success a precise meaning.

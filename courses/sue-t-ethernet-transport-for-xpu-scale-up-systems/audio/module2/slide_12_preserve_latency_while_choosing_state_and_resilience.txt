@@ -1,0 +1,8 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The packet path gives you a practical set of implementation questions. Requests and responses need separate traffic classes. Destination queues can be dedicated or dynamically allocated, with different area and blocking implications.
+
+Packing uses eligible work already available in the selected queue. The scheduler sends a singleton and respects the configured command and payload limits. It doesn't wait solely to fill a packet.
+
+A delivery context tracks an ordered packet stream. An unexpected sequence number creates a gap that later arrivals cannot bypass. Optional Go Back N adds retained buffers and state for recovery; without transport retransmission, packet loss is fatal to the connection.
+
+Lossless service, link-layer retry, and transport replay have distinct jobs. Keep those mechanisms separate when evaluating scale, load distribution, and resilience. That distinction is the foundation for the interface and completion decisions in the final two modules.

@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The A X I example gives the integrator a specific mapping task. A X I, spoken A X I, is the Advanced eXtensible Interface used here for read and write transactions. The S U E T interface provides a simplified A X I four mapping with additional semantic information carried through user fields.
+
+The address signal is sixty bits. The A X I identifier can use up to sixteen bits, with the used width configured for the implementation. It represents accelerator identity and connection selection in this mapping. On the send side it maps to a packet-delivery-context identifier. The mapping is reversible, so receive-side connection state can recover the interface identifier without carrying it in the semantic header.
+
+The A X user signal has a maximum width of one hundred twenty-eight bits, with supported used sizes of zero, thirty-two, sixty-four, or one hundred twenty-eight. Its contents are opaque to S U E T. The integrator constructs and deconstructs the application-specific information, and explicitly configures how many bits are used. The interface does not convey that width automatically.
+
+Write strobes have a constraint of their own. The supported enabled bytes must form a contiguous range. A noncontiguous write-strobe pattern is a local error. This lets the remote write representation use a base address and length without carrying an arbitrary strobe mask.
+
+These fields establish address, identity, opaque application state, and a valid write shape. Ordering is another question, which we'll examine separately next.

@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Scaling endpoint bandwidth and scaling connection state are related design choices, but they are different resources. A system may integrate several S U E T instances around one accelerator. Work can be distributed among those instances in software or by a hardware load-balancing block in the accelerator.
+
+Each instance can provide congestion state to support that distribution. Within an instance that has two or more ports, packed groups of operations can be assigned to ports according to available bandwidth. Across-instance distribution and within-instance port assignment are therefore two distinct levels of balancing.
+
+Connection state also needs to scale. Keeping a dedicated delivery context for every destination-and-traffic-class pairing can be practical in smaller systems. A larger design may assign fewer contexts dynamically. The specification gives the example of one thousand delivery contexts serving eight thousand accelerators.
+
+That example describes a state-saving choice. It doesn't specify a universal context count, a workload-independent throughput result, or a fixed allocation algorithm. A dynamically allocated resource can create blocking under some highly distributed small-message patterns, so traffic distribution matters to the evaluation.
+
+Finally, retain the future-work boundary. The document discusses moving a connection to another port after a port failure as a possible resiliency enhancement, but leaves the concept for future work. Load distribution across available ports is not itself a promise of automatic failure recovery.
+
+For an implementation review, ask where work is distributed, how contexts are allocated, and how failures are handled. Those answers make the bandwidth, state, and resilience claims concrete.

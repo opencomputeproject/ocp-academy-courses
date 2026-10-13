@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"
+An acknowledgement is useful only when we understand the event it confirms. S U E T uses one-sided memory semantics: the source controls the operation without needing awareness of a destination process. The receiving accelerator still processes the command, and the source still needs the defined completion behavior.
+
+Delivery ack mode confirms that the command reached the destination accelerator. Operational ack mode associates the accelerator's response with the request. The point at which that accelerator response is produced remains important.
+
+Consider a write that has entered a queue on its way to memory. Accepting the write into that queue and placing its data in memory are different events. An implementation may use a completion contract that responds before memory placement. The completion module will compare the alternatives and their error-reporting consequences.
+
+Global observability addresses the memory-placement requirement. When that capability is supported, the accelerator can request it through the command's global-observability control field. The accelerator then holds its response until the data has been placed. The specification allows global observability with either acknowledgement mode.
+
+That means the mode name alone is insufficient. Ask which event produces the accelerator response, whether global observability is supported, and whether the command requests it. These questions connect the transport's acknowledgement to the memory behavior the application actually relies on.
+
+The system also needs registration and protection arrangements outside S U E T. Transporting a memory command doesn't settle those integration responsibilities.

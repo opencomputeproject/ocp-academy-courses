@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Packing combines transaction representations within one packet. Each command retains the semantic information needed to describe its operation, address, and associated data. The packet then carries the reliability information that applies to that packed group.
+
+The packing limit is up to sixteen command payload data units. There are also configured payload limits: two K, four K, or eight K for the sum of store and atomic data, and corresponding limits for the sum of load and fetching-atomic response data. A group must satisfy the applicable limits together. Counting commands alone is insufficient when they carry different amounts of data.
+
+The request semantics can use a twelve-byte header or a compressed eight-byte form. The profile can carry up to sixteen bytes of extra accelerator-specific state per transaction. Response state uses eight bytes per transaction. Those transaction-level quantities are separate from the eight-byte reliability header used by Reliable Ordered Delivery for Local networks, or R O D L around the packet.
+
+During packing, the semantic headers are updated to represent the packed messages and any address compression. The receive path then separates the packet payload into individual command units for delivery to the accelerator.
+
+More buffering can create more opportunities to find commands ready together, but it consumes area. Buffer sizing also changes when retransmission is enabled because outstanding work must be retained until it is acknowledged. Keep the accounting units clear: command data, per-command semantic state, packed payload, and packet headers. That distinction makes an efficiency comparison much easier to audit.

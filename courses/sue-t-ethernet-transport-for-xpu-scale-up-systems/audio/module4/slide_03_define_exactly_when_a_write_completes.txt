@@ -1,0 +1,14 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Follow a write from the initiator's transport queue, through the network and target transport, into the destination memory subsystem. The specification describes four alternative completion contracts along that path.
+
+Begin with the most conservative alternative. Completion covers the full network round trip to destination memory and back. The response guarantees the write reached memory successfully, or reports an error encountered along that full path.
+
+Restart the comparison with completion at the destination memory subsystem's queue. The write has been committed to a queue destined for memory. This preserves order, and the specification notes that there may be no actionable error beyond that point in a given design. Its precise behavior remains implementation-specific.
+
+Restart with completion at the target S U E T queue destined for the accelerator interface. The write has not yet reached memory from another observer's perspective. Errors further into the accelerator, such as translation errors, may not be reported in that response.
+
+Finally, restart with completion at the initiator's own queue destined for its network port. Success can be reported while the write is still local. Network errors, including a corrupted or lost packet, may not be covered by that early response.
+
+These four completion points are alternatives. A write doesn't produce all four responses. Choosing earlier completion changes what success confirms and which errors it covers. The specification leaves that choice to the implementation.
+
+Every choice still needs resource cleanup. The initiator needs a write response, an acknowledgement, or a negative acknowledgement for the outstanding request. Reporting early application success does not remove that requirement.

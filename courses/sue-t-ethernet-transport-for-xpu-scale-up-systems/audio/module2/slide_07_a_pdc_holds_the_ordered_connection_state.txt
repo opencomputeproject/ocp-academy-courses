@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Reliable Ordered Delivery for Local networks, abbreviated R O D L, keeps delivery ordered within its connection. That connection is represented by a Packet Delivery Context, or P D C. Its identifier is the P D C identifier.
+
+The context holds state such as the next packet sequence number, the acknowledged sequence number, and timeout information. This is packet-delivery state. A command's address and opcode still belong to its semantic representation, and the accelerator's operation response still has the meaning established by its acknowledgement and completion modes.
+
+The transmit queues are organized by destination accelerator and traffic class, with queues associated with delivery contexts. How the implementation allocates context identifiers and associates them with those queues is implementation-specific.
+
+In a smaller system, it may be practical to maintain a dedicated context for each destination-and-traffic-class pairing. The context identifier might be derived directly from that pairing. In a larger system, fewer contexts can be assigned dynamically to reduce the state that must exist simultaneously. Reserved contexts can also be configured as static connections.
+
+The ordering guarantee belongs to the connection being tracked. It should not be promoted into a global ordering guarantee across all traffic, all ports, or all memory operations. Later, the A X I interface module will show a particularly important boundary: reads and writes have separate ordering rules even when they use the same interface identifier.
+
+For now, identify which packet stream a context describes, how its state is allocated, and which queue uses it. Those questions connect the abstract reliability protocol to the endpoint's storage requirements.

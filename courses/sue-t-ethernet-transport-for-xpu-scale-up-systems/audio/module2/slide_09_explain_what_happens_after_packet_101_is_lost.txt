@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The receiver has accepted packet one hundred. Packet one hundred one is missing, and packet one hundred two arrives. Decide whether the commands in one hundred two can be delivered to the accelerator now.
+
+They cannot. R O D L is an ordered service. The receiver expects one hundred one and sends a knack when one hundred two arrives unexpectedly. Subsequent arrivals are dropped until the expected packet arrives. Receiving bytes on the link is different from accepting their commands for delivery.
+
+Next, explain what the implementation needs if transport retransmission is enabled. The source retains unacknowledged command data and the relevant delivery state. Its buffering has to cover the round trip and remote processing time. Go Back N can replay from the missing point, after which the receiver accepts the sequence in order.
+
+Now remove transport retransmission from the design. That saves endpoint state and buffering. It also changes the failure consequence: the lost packet is fatal to the connection. The implementation cannot simply deliver later packets out of order to bypass the gap under this protocol.
+
+Finally, ask whether a lossless fabric makes the transport choice irrelevant. It doesn't remove the specified consequence of a packet that is actually lost. Flow control aims to provide lossless service, and link-layer retry addresses failures at the link. The transport's recovery option remains a distinct part of the endpoint contract.
+
+Explain flow control, link retry, and transport recovery separately. Then use the specified failure consequence to evaluate the implementation.

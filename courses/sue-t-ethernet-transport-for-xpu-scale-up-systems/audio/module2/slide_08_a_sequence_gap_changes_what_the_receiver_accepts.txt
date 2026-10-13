@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Follow one illustrative connection with transport retransmission enabled. Its source sends packets numbered one hundred, one hundred one, one hundred two, and one hundred three. The receiver begins by expecting one hundred.
+
+Packet one hundred arrives and is accepted. The expected sequence advances to one hundred one. Now suppose packet one hundred one is lost. The next packet to arrive is one hundred two. The receiver is still expecting one hundred one, so it doesn't deliver the commands in one hundred two. It sends a negative acknowledgement, or knack.
+
+Packet one hundred three then arrives while the gap remains. It is also dropped. The specification describes dropping subsequent arrivals from that source until the expected packet arrives. Our example follows one connection, so there is no ambiguity about which sequence is being tracked.
+
+With Go Back N retransmission enabled, the source can replay from the missing point. One hundred one is received and accepted. Replayed packets one hundred two and one hundred three can then be accepted in order. The later commands waited for recovery even though their first packet copies reached the receiver.
+
+The sequence numbers and event spacing in this example are illustrative. They don't define the wire value of a knack or a fixed timeout. The important behavior is expected-sequence acceptance followed by recovery of the gap.
+
+Now compare an implementation without transport retransmission. Removing retransmission reduces buffer and state requirements, but a lost packet is fatal to the connection. Link-layer retry can make that choice reasonable in some networks; it does not turn a lost transport packet into a successful operation. Lossless network service remains required in either design.

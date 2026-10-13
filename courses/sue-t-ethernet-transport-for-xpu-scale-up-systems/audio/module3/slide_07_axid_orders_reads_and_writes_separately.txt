@@ -1,0 +1,14 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+A shared A X I identifier does not establish one total order across all operations. Follow one illustrative identifier with two writes and two reads.
+
+The writes using that identifier are ordered with respect to each other. The reads using that identifier are also ordered with respect to each other. Those are two separate guarantees: write order and read order.
+
+Now compare a write and a read that use the same identifier. The specification does not guarantee their ordering relative to each other. A read that appears later in an application's intended sequence cannot rely on the identifier alone to establish a dependency on that write.
+
+Next, introduce a different identifier. There is no guaranteed ordering across different identifiers either. The animation uses one permitted illustrative arrangement to make these boundaries visible. It doesn't prescribe a reordering algorithm or say that the implementation must choose that particular schedule.
+
+Before continuing, decide what can be concluded from the identifier. You can conclude the defined same-identifier order within reads and within writes. You cannot infer cross-read/write order, cross-identifier order, or global memory visibility from that identifier alone.
+
+The distinction is especially important after learning about ordered packet delivery. R O D L orders the packet stream tracked by its connection. That statement doesn't replace the separately defined A X I ordering rules or choose a write-completion point. Packet acceptance, interface ordering, and memory visibility each need their own contract.
+
+For an integration review, identify the guarantee the application actually needs and the mechanism that provides it. Avoid filling a missing dependency with an assumption about a familiar field name.
