@@ -75,6 +75,7 @@ courses/
     introduction-to-emerging-optical-technologies/
   project-deschutes-cdu-specification-v1-0/
   short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
+  thermal-boundaries-in-ai-infrastructure/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
 scripts/
   build-course.sh
@@ -158,6 +159,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `optics/introduction-to-emerging-optical-technologies` | Introduction to Emerging Optical Technologies |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
 | `short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics` | Short-Reach Optical Interconnects for AI Scale-Up Fabrics |
+| `thermal-boundaries-in-ai-infrastructure` | [Thermal Boundaries in AI Infrastructure](courses/thermal-boundaries-in-ai-infrastructure/README.md): three narrated modules on cooling limits, architecture choices, and deployment readiness |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
 
 ## Build a course

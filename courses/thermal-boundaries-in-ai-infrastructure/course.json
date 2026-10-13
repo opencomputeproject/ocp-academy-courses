@@ -1,0 +1,2125 @@
+{
+  "style": "Slides",
+  "language": "en-US",
+  "course_slug": "thermal-boundaries-in-ai-infrastructure",
+  "course_title": "Thermal Boundaries in AI Infrastructure",
+  "course_subtitle": "Diagnose cooling limits, evaluate tradeoffs, and prepare the next architecture.",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "OCP whitepaper v1.00 · October 2026",
+  "target_duration_minutes": 54,
+  "audience_level": "intermediate",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo v2",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable",
+    "speed": 1.18
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "thermal_boundaries_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "THERMAL"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco"
+  },
+  "index_module_links": false,
+  "index_navigation_instruction": "Navigate modules in any order using the Syllabus in the left sidebar.",
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
+  "sources": [
+    {
+      "kind": "whitepaper",
+      "title": "Thermal Boundaries in AI Infrastructure",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+      "version": "1.00",
+      "date": "2026-10-12",
+      "sha256": "30f98ae4d788ef57f6665a707d0eedcb37dfc2c474a70b5a663b59ecd6288d48"
+    }
+  ],
+  "authoring": {
+    "gates_waived_by_user": true,
+    "authorization_date": "2026-10-12",
+    "scope": "Complete course, ElevenLabs narration, and strict LMS ZIP",
+    "standalone_course": true,
+    "outline": "OUTLINE.md",
+    "alignment": "CURRICULUM_ALIGNMENT.md",
+    "build_script": "../../scripts/build-course.sh",
+    "layout_repairs": [
+      "The shared Slides home stylesheet wraps long headings; index_title_soft_breaks preserves the reviewed discretionary break in Infrastructure without changing the canonical course or LMS title."
+    ]
+  },
+  "resource_assets": [
+    "attribution.html"
+  ],
+  "term_glossary": [
+    {
+      "id": "heat_flux",
+      "term": "Heat flux",
+      "tooltip": "Heat transfer per unit area; a local acquisition constraint distinct from total package power.",
+      "aliases": [
+        "heat fluxes"
+      ],
+      "reference_label": "Thermal Boundaries · p. 16",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=16"
+    },
+    {
+      "id": "thermal_resistance",
+      "term": "Thermal resistance",
+      "tooltip": "Resistance to heat flow between the junction and coolant; increasing heat flow increases the temperature rise across it.",
+      "aliases": [
+        "thermal resistances"
+      ],
+      "reference_label": "Thermal Boundaries · p. 15",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=15"
+    },
+    {
+      "id": "temperature_budget",
+      "term": "Junction-temperature budget",
+      "tooltip": "The temperature margin between coolant and the permitted junction condition, consumed by the thermal-resistance stack.",
+      "aliases": [
+        "junction temperature budget"
+      ],
+      "reference_label": "Thermal Boundaries · p. 15",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=15"
+    },
+    {
+      "id": "efficiency_boundary",
+      "term": "Efficiency boundary",
+      "tooltip": "The knee where additional compute demand causes disproportionately increasing cooling overhead.",
+      "aliases": [
+        "efficiency boundaries"
+      ],
+      "reference_label": "Thermal Boundaries · p. 18",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=18"
+    },
+    {
+      "id": "economic_boundary",
+      "term": "Economic boundary",
+      "tooltip": "The point where the full ownership-cost comparison favors changing the incumbent method.",
+      "aliases": [
+        "economic boundaries"
+      ],
+      "reference_label": "Thermal Boundaries · p. 18",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=18"
+    },
+    {
+      "id": "physics_boundary",
+      "term": "Physics boundary",
+      "tooltip": "The point where feasible operating conditions cannot maintain the required device junction state.",
+      "aliases": [
+        "physics boundaries"
+      ],
+      "reference_label": "Thermal Boundaries · p. 18",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=18"
+    },
+    {
+      "id": "avoidance_zone",
+      "term": "Avoidance zone",
+      "tooltip": "The span between economic disadvantage and physical infeasibility, where extending the incumbent defers a change.",
+      "aliases": [
+        "avoidance zones"
+      ],
+      "reference_label": "Thermal Boundaries · p. 19",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=19"
+    },
+    {
+      "id": "least_disruption",
+      "term": "Least-disruption law",
+      "tooltip": "The authors’ adoption framework: an ecosystem tends to exhaust options preserving its architecture before accepting new dependencies.",
+      "aliases": [],
+      "reference_label": "Thermal Boundaries · p. 21",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=21"
+    },
+    {
+      "id": "agency_mismatch",
+      "term": "Agency mismatch",
+      "tooltip": "The organization paying a cost or feeling a limit does not necessarily control the design decision that can address it.",
+      "aliases": [],
+      "reference_label": "Thermal Boundaries · p. 23",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=23"
+    },
+    {
+      "id": "preparation_debt",
+      "term": "Preparation debt",
+      "tooltip": "Readiness deferred across the ecosystem: missing suppliers, interfaces, skills, and acceptance capability when a transition becomes urgent.",
+      "aliases": [],
+      "reference_label": "Thermal Boundaries · p. 25",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=25"
+    },
+    {
+      "id": "complexity_debt",
+      "term": "Complexity debt",
+      "tooltip": "The growing cost of extending an incumbent solution across more of the system, including extra connections and service obligations.",
+      "aliases": [],
+      "reference_label": "Thermal Boundaries · p. 25",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=25"
+    },
+    {
+      "id": "distributed_load",
+      "term": "Distributed load",
+      "tooltip": "The combined heat from components spread through the system rather than one concentrated processor surface.",
+      "aliases": [
+        "distributed loads"
+      ],
+      "reference_label": "Thermal Boundaries · p. 27",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=27"
+    },
+    {
+      "id": "surface_method",
+      "term": "Surface method",
+      "tooltip": "Cooling targeted at a specific component surface, such as a cold plate.",
+      "aliases": [
+        "surface methods"
+      ],
+      "reference_label": "Thermal Boundaries · p. 35",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=35"
+    },
+    {
+      "id": "volume_method",
+      "term": "Volume method",
+      "tooltip": "Cooling through the medium surrounding a broader system, such as air or an immersion bath.",
+      "aliases": [
+        "volume methods"
+      ],
+      "reference_label": "Thermal Boundaries · p. 44",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=44"
+    },
+    {
+      "id": "dielectric",
+      "term": "Dielectric",
+      "tooltip": "Electrically insulating; an immersion or phase-change fluid still needs material and system qualification.",
+      "aliases": [],
+      "reference_label": "Thermal Boundaries · p. 44",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=44"
+    },
+    {
+      "id": "microfluidics",
+      "term": "Microfluidics",
+      "tooltip": "An emerging approach using channels within or beneath silicon to reduce acquisition resistance; downstream heat removal remains necessary.",
+      "aliases": [],
+      "reference_label": "Thermal Boundaries · p. 52",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=52"
+    },
+    {
+      "id": "cdu",
+      "term": "CDU",
+      "tooltip": "Coolant distribution unit: a circulation and heat-transfer interface connecting the technology cooling path to an upstream path.",
+      "aliases": [
+        "coolant distribution unit",
+        "coolant distribution units"
+      ],
+      "reference_label": "Thermal Boundaries · p. 99",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=99"
+    },
+    {
+      "id": "tcs",
+      "term": "TCS",
+      "tooltip": "Technology Cooling System: the cooling circuit serving the IT equipment; its operating conditions must match the selected hardware.",
+      "aliases": [
+        "technology cooling system"
+      ],
+      "reference_label": "Thermal Boundaries · p. 99",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=99"
+    },
+    {
+      "id": "tco",
+      "term": "TCO",
+      "tooltip": "Total cost of ownership: capital, operating, service, and failure consequences under stated lifecycle and accounting assumptions.",
+      "aliases": [
+        "total cost of ownership"
+      ],
+      "reference_label": "Thermal Boundaries · p. 54",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=54"
+    },
+    {
+      "id": "failure_domain",
+      "term": "Failure domain",
+      "tooltip": "The group of equipment affected by one failure; a shared cooling dependency can span several systems.",
+      "aliases": [
+        "failure domains"
+      ],
+      "reference_label": "Thermal Boundaries · p. 40",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=40"
+    },
+    {
+      "id": "xpu",
+      "term": "xPU",
+      "tooltip": "A processor socket of any class, including CPUs and accelerators. The distributed-load figure excludes that processor heat.",
+      "aliases": [],
+      "reference_label": "Thermal Boundaries · p. 100",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=100"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "module-1",
+      "title": "Why Cooling Transitions Happen",
+      "subtitle": "Classify the limit, explain the adoption delay, and distinguish two kinds of debt.",
+      "module_badge_text": "Module 1",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Why Cooling Transitions Happen",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "approved": true
+          },
+          "subtitle": "Classify the limit before choosing the response.",
+          "version_chip": "OCP whitepaper v1.00 · October 2026",
+          "mobile_scroll": true,
+          "transcript": "Welcome to Thermal Boundaries in A I Infrastructure. Cooling now helps determine which compute can be deployed, where it can run, and what the deployment will cost. This course gives you a framework for making that decision. We begin by separating three different limits: efficiency, economics, and physics. Then we'll examine why a better cooling method can remain unadopted, and what the industry can prepare before a transition becomes unavoidable."
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "course_overview",
+          "title": "From Thermal Limits to Deployment Readiness",
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_overview.txt",
+            "wav_file": "audio/module1/slide_02_course_overview.wav",
+            "approved": true
+          },
+          "modules_listed": [
+            "Why Cooling Transitions Happen",
+            "Diagnosing the Heat and Matching the Architecture",
+            "Economics, Reliability, and Readiness"
+          ],
+          "chips": [
+            {
+              "text": "Approximately 50–55 minutes"
+            },
+            {
+              "text": "Intermediate audience"
+            },
+            {
+              "text": "OCP whitepaper v1.00"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Optional preparation · Liquid Cooling Overview",
+              "url": "https://academy.opencompute.org/learn/learning-plans/5/liquid-cooling-technologies-overview"
+            },
+            {
+              "label": "Source credits and license",
+              "url": "attribution.html"
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "The course follows three connected decisions. First, identify which boundary the current cooling method is approaching. Second, determine what heat the architecture actually covers and what remains unresolved. Third, evaluate the economics, reliability, and evidence needed to bring a new arrangement into service.\n\nWe assume you're familiar with servers, racks, and basic facility operations. Cooling terms will be introduced as they're used. The optional Liquid Cooling Technologies Overview offers an introductory route if you'd like more preparation.\n\nThe specialist courses remain useful throughout. Fluids covers chemistry and operating practice. Two-Phase D L C covers phase-change loops and their fluids. Deschutes and Brazos examine particular open cooling implementations. Here, those courses are optional routes to detail. The questions in this course can be answered from its own teaching.\n\nKeep one practical question in mind: what is limiting this deployment, and which evidence would justify changing the architecture?"
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "binding_limit",
+          "title": "Locate the Binding Thermal Limit",
+          "audio": {
+            "script_file": "audio/module1/slide_03_binding_limit.txt",
+            "wav_file": "audio/module1/slide_03_binding_limit.wav",
+            "approved": true
+          },
+          "section_label": "Thermal diagnosis",
+          "bullets": [
+            {
+              "bold_lead": "Total power",
+              "text": "The heat transport and rejection must carry."
+            },
+            {
+              "bold_lead": "Heat flux",
+              "text": "The local intensity acquisition must capture."
+            },
+            {
+              "bold_lead": "Temperature margin",
+              "text": "The allowed rise through the resistance stack."
+            }
+          ],
+          "figure": {
+            "path": "figures/temperature_budget.svg",
+            "alt": "A heat source passes through three thermal resistances into coolant; hotter coolant and increasing heat consume the junction-temperature margin.",
+            "caption": "A total-power rating cannot establish adequate local acquisition or junction margin.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "a2e6e76c90f4d90f281612fec22560d685899723dec10a9fe8140a92238aa7f0",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Same heat load. Different temperature margin."
+                },
+                {
+                  "text": "Junction"
+                },
+                {
+                  "text": "Device rating"
+                },
+                {
+                  "text": "Package"
+                },
+                {
+                  "text": "Thermal resistance"
+                },
+                {
+                  "text": "Interface"
+                },
+                {
+                  "text": "Thermal resistance"
+                },
+                {
+                  "text": "Coolant"
+                },
+                {
+                  "text": "Supply condition"
+                },
+                {
+                  "text": "Temperature rise = heat flow × thermal resistance"
+                },
+                {
+                  "text": "More flux or warmer coolant can consume the available margin."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                14,
+                15,
+                16,
+                17
+              ]
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 14–17",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=14",
+              "kind": "pdf"
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "A large heat-rejection plant does not prove that a processor can be cooled. The first task is to identify where the thermal path is failing.\n\nTotal package power tells us how much heat must eventually leave the system. Heat flux tells us how concentrated that heat is at the surface where it must be captured. The same total power spread across a larger area presents a different acquisition problem from power concentrated into a smaller hotspot.\n\nThe junction-temperature budget matters too. Between the silicon and the coolant sits a chain of thermal resistances. As heat passing through that chain increases, each resistance consumes more of the available temperature difference. An interface imperfection that was tolerable at a lower load can become decisive at a higher flux. Power alone therefore does not tell us which device reaches its limit first.\n\nFor a single-phase fluid, the heat carried depends on mass flow, specific heat capacity, and the permitted temperature rise. Increasing flow can carry more heat, but hydraulic resistance and the energy needed to move the fluid make that an increasingly costly response. Allowing a larger temperature rise is also constrained by device and coolant conditions.\n\nConsider a proposed upgrade where the room plant has spare capacity but one component exceeds its junction limit. The open question is the local acquisition path, not simply the building's total heat-removal rating. Start there before selecting a larger downstream system.",
+          "term_refs": [
+            "heat_flux",
+            "thermal_resistance",
+            "temperature_budget"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_grid",
+          "slug": "three_boundaries",
+          "title": "Three Different Reasons a Method Reaches Its Limit",
+          "audio": {
+            "script_file": "audio/module1/slide_04_three_boundaries.txt",
+            "wav_file": "audio/module1/slide_04_three_boundaries.wav",
+            "approved": true
+          },
+          "section_label": "Boundary framework",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Efficiency",
+              "body": "Cooling overhead turns disproportionately upward. The device can still run.",
+              "tone": "amber"
+            },
+            {
+              "title": "Economics",
+              "body": "Capital, operation, service, and failure costs weaken the total-cost case.",
+              "tone": "blue"
+            },
+            {
+              "title": "Physics",
+              "body": "Feasible operating conditions cannot maintain the required junction temperature.",
+              "tone": "red"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                18,
+                19,
+                20
+              ]
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 18–20",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=18",
+              "kind": "pdf"
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "A cooling method can become a poor choice before it becomes incapable of doing the job. The three boundaries help distinguish those situations.\n\nThe efficiency boundary is the point where cooling overhead starts to grow disproportionately. It is the knee of a curve, not a universal percentage. The method still holds the device within specification, but each additional increment of useful compute demands a growing share of power for fans or pumps.\n\nThe economic boundary asks a wider question. Count capital, energy, maintenance, repair consequences, service labor, and the space the architecture consumes. A method can remain thermally feasible while another arrangement provides a better total-cost outcome. Crossing this boundary means the incumbent's full economics have turned against it under the comparison being made.\n\nThe physics boundary is different. Within the available geometry, flow, pressure, temperatures, and device rating, the method cannot maintain the required junction condition. Spending more on the same operating arrangement no longer solves the constraint. The options include reducing the compute load or changing the architecture.\n\nImagine a system that still holds temperature, but now requires expensive hardware additions and service effort. That evidence points toward the economic boundary. If achievable operating conditions cannot hold the junction temperature at the required workload, it points toward the physics boundary.\n\nThe response depends on the classification. An energy penalty calls for efficiency analysis. A cost disadvantage calls for an architectural business case. A feasibility failure requires a change in operating demand or design.",
+          "term_refs": [
+            "efficiency_boundary",
+            "economic_boundary",
+            "physics_boundary"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "avoidance_zone",
+          "title": "Read the Avoidance Zone",
+          "audio": {
+            "script_file": "audio/module1/slide_05_avoidance_zone.txt",
+            "wav_file": "audio/module1/slide_05_avoidance_zone.wav",
+            "approved": true
+          },
+          "section_label": "Transition runway",
+          "figure": {
+            "path": "figures/avoidance_zone.mp4",
+            "alt": "Equal illustrative intervals separate the boundaries. The operating point is green before the avoidance zone, yellow within it, and red at the physics boundary.",
+            "caption": "Equal-width intervals are illustrative: still physically possible can already mean an unfavorable total-cost choice.",
+            "source": "custom",
+            "media_type": "video",
+            "poster": "figures/avoidance_zone_poster.png",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "d55d784aff9cd53e75ca83dd801163affeafb423317b0803cb852e48cb5e8994",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Efficiency",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Economic",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Physics",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Avoidance zone",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Feasible, but costly",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "to extend",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Cost of switching",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Cost",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Increasing thermal demand",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Conceptual positions • no universal wattage or switch date",
+                  "at_seconds": 0.0
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                19,
+                20,
+                24,
+                25
+              ]
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 19–20, 24–25",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=19",
+              "kind": "pdf"
+            }
+          ],
+          "mobile_scroll": true,
+          "media_focus": true,
+          "transcript": "The most revealing part of the framework is the gap between economic disadvantage and physical infeasibility. The paper calls it the avoidance zone.\n\nInside that zone, the incumbent still works. It can be extended to defer a disruptive change, but doing so carries a rising cost. That cost may appear as more fan power, larger heatsinks, more rack space, additional plates and connectors, or more demanding service. The exact form depends on the method and the deployment.\n\nA narrow avoidance zone leaves little room to defer the transition. Once the economics deteriorate, the physical limit follows relatively soon. A wide zone creates a longer opportunity to keep extending the incumbent, even when the full business case favors another arrangement.\n\nThe animation is conceptual. Its operating point moves from a comfortable range into the avoidance zone and toward the feasibility boundary. The axes do not establish a universal device-power threshold or a required switch date. They show the relationship between continuing to extend the current method and accepting the cost of changing it.\n\nThis explains why a method's ability to work is an incomplete decision rule. A proposal can be thermally achievable and still use scarce power, space, labor, or reliability margin badly. Conversely, the replacement may require readiness that the site does not yet have.\n\nUse the diagram to make both sides visible. What does extending the incumbent cost? What does switching require? Which constraints could end the available runway? The useful decision is about the whole transition, not only whether today's temperature remains acceptable.",
+          "term_refs": [
+            "avoidance_zone"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_two_column",
+          "slug": "agency_mismatch",
+          "title": "Why the Business Case Does Not Set the Clock",
+          "audio": {
+            "script_file": "audio/module1/slide_06_agency_mismatch.txt",
+            "wav_file": "audio/module1/slide_06_agency_mismatch.wav",
+            "approved": true
+          },
+          "section_label": "Adoption incentives",
+          "bullets": [
+            {
+              "bold_lead": "Operator",
+              "text": "Feels running cost, service burden, and failure consequences."
+            },
+            {
+              "bold_lead": "Design authority",
+              "text": "Can change the interfaces and thermal requirements."
+            },
+            {
+              "bold_lead": "Coordination",
+              "text": "Align the organizations that must accept the new dependencies."
+            }
+          ],
+          "figure": {
+            "path": "figures/agency_mismatch.svg",
+            "alt": "Operator costs and silicon design authority sit in separate lanes, with required changes crossing server, rack, facility, and service organizations.",
+            "caption": "A coordination problem can delay a transition even when its economic case is favorable.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "97ff2e11db3ee75678e525ff4d56425c1795df182b1c1a7eee7ba403f0ef05d0",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Operator"
+                },
+                {
+                  "text": "Energy • service • repair cost"
+                },
+                {
+                  "text": "Feels the economic boundary"
+                },
+                {
+                  "text": "Design authority"
+                },
+                {
+                  "text": "Product • interfaces • thermal limits"
+                },
+                {
+                  "text": "Can change the architecture"
+                },
+                {
+                  "text": "New dependencies cross organizational boundaries"
+                },
+                {
+                  "text": "Silicon"
+                },
+                {
+                  "text": "Server / rack"
+                },
+                {
+                  "text": "Facility"
+                },
+                {
+                  "text": "Service"
+                },
+                {
+                  "text": "Align cost ownership, design authority, and readiness obligations."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                21,
+                22,
+                23,
+                24,
+                25
+              ]
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 21–25",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=21",
+              "kind": "pdf"
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "An attractive business case does not automatically give anyone the authority to change the architecture. The paper's least-disruption law describes an ecosystem that exhausts options preserving the current arrangement before accepting a new dependency.\n\nThose dependencies are concrete. A cooling change may require different server interfaces, rack plumbing, facility connections, qualified suppliers, and service procedures. The organization initiating the change may not control the parties that must absorb it. Each participant therefore has a reason to avoid disruption while the incumbent can still be made to work.\n\nThe paper names an agency mismatch. The operator experiences energy bills, failures, and service complexity. The silicon supplier controls important design decisions and faces the point where the product cannot perform within its thermal envelope. The party carrying the operating cost is not necessarily the party able to change the design.\n\nVertically integrated organizations can align those roles. If one organization designs the silicon and operates the site, it may act on the economic signal earlier. That is an exception within the framework, not evidence that every operator follows one identical adoption clock.\n\nThe least-disruption law is the authors' explanation of adoption behavior. It is not a thermodynamic law, a command to wait, or an exact forecast for a particular technology.\n\nFor a review, name the required changes and the organizations that can authorize them. Then distinguish a technical obstacle from a coordination obstacle. A transition becomes easier to plan when the cost, design authority, and readiness obligations are visible together.",
+          "term_refs": [
+            "least_disruption",
+            "agency_mismatch"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "two_debts",
+          "title": "Preparation Debt and Complexity Debt",
+          "audio": {
+            "script_file": "audio/module1/slide_07_two_debts.txt",
+            "wav_file": "audio/module1/slide_07_two_debts.wav",
+            "approved": true
+          },
+          "section_label": "Readiness choices",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Preparation debt",
+              "body": "The alternative arrives before its supply chain, interfaces, skills, and acceptance process are ready.",
+              "tone": "blue"
+            },
+            {
+              "title": "Complexity debt",
+              "body": "Extending the incumbent adds connections, qualification, service work, and failure exposure.",
+              "tone": "amber"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 24–26, 63–64",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=24",
+              "kind": "pdf"
+            },
+            {
+              "label": "Deschutes · Module 3 supplier model",
+              "url": "https://academy.opencompute.org/learn/courses/48/ocp-project-deschutes-coolant-distribution-unit-cdu-v10"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                24,
+                25,
+                26,
+                63,
+                64
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Two kinds of debt explain different costs of delaying a transition. Keeping them separate helps identify an action that can actually reduce the problem.\n\nPreparation debt is unbuilt ecosystem readiness. The alternative may need qualified components, supplier capacity, interoperable interfaces, trained staff, and a validated commissioning approach. If those capabilities are deferred while the incumbent still works, they are missing when a forced transition creates sudden demand. No single organization necessarily owns the whole bill.\n\nComplexity debt accumulates while the incumbent is extended. For example, a surface method can acquire more distributed heat by adding plates to more components. Each addition also brings interfaces, connections, qualification, and service obligations. The architecture gains coverage, but its operational burden can grow faster than the initial design argument suggests.\n\nAdding another plate might solve today's local temperature problem. It does not automatically reduce preparation debt for a different future architecture. Likewise, qualifying a second supplier prepares an option, but does not remove the plumbing already installed in the incumbent.\n\nThe Deschutes course provides a concrete example of supply-chain preparation through its qualified supplier model. That is a useful follow-on study of readiness, rather than a supplier table to reproduce here.\n\nThe practical question is which debt a proposed action addresses. Prepare alternative interfaces and capabilities before they become urgent. At the same time, keep the cost of extending the current method visible. Readiness can be chosen even when the precise date of the next transition cannot.",
+          "term_refs": [
+            "preparation_debt",
+            "complexity_debt",
+            "surface_method"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Recognize the Limit Before Planning the Transition",
+          "audio": {
+            "script_file": "audio/module1/slide_08_takeaways.txt",
+            "wav_file": "audio/module1/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "items": [
+            "Classify the demonstrated limit: efficiency, economics, or feasibility.",
+            "Use heat flux and junction margin alongside total power.",
+            "A wide avoidance zone creates room for costly extension.",
+            "Map cost ownership, design authority, and new dependencies.",
+            "Prepare the alternative while tracking the incumbent’s growing complexity."
+          ],
+          "mobile_scroll": true,
+          "transcript": "Begin with the limit you can demonstrate. Total power, local heat flux, and temperature margin answer different questions. A larger downstream cooling rating does not prove that acquisition at the device will work.\n\nThen classify the boundary. Efficiency concerns growing overhead. Economics concerns the full cost of keeping the method. Physics concerns whether achievable conditions can maintain the required operating state.\n\nThe avoidance zone explains how an incumbent can continue after its total-cost advantage has weakened. Adoption also depends on who pays the cost, who controls the design, and who must accept the new dependencies.\n\nFinally, distinguish the debts. Complexity debt grows as the incumbent is stretched. Preparation debt grows when the alternative's readiness is deferred. A useful transition plan tracks both, with named organizations and concrete evidence for the next action."
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Boundary and Adoption Reasoning",
+          "audio": {
+            "script_file": "audio/module1/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "subtitle": "Submit both questions once. Feedback and retry are available.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "The system holds junction temperature, but full ownership cost now favors an alternative. Which boundary has been crossed?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Economic boundary",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Physics boundary",
+                  "correct": false,
+                  "feedback_incorrect": "A physics boundary means feasible conditions cannot maintain the required junction state. This system still holds temperature."
+                },
+                {
+                  "id": "c",
+                  "text": "Only a device power rating",
+                  "correct": false,
+                  "feedback_incorrect": "A device rating does not classify the full-cost disadvantage described in the scenario."
+                }
+              ],
+              "feedback_correct": "Correct. The method is still feasible, but its full ownership economics have turned against it.",
+              "feedback_incorrect": "Distinguish physical capability from full ownership cost."
+            },
+            {
+              "id": "m1_q2",
+              "prompt": "Which actions reduce preparation debt for a future cooling transition?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Qualify alternative suppliers before demand becomes urgent.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Agree shared interfaces and acceptance responsibilities.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Train operations and commissioning teams for the alternative.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Add more plates to the incumbent and assume the alternative is ready.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Supplier capacity, shared interfaces, and trained teams build the readiness a future transition needs.",
+              "feedback_incorrect": "Preparation debt concerns readiness of the alternative. Extending the incumbent does not by itself build that readiness."
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Check the decision framework before continuing. The first question asks you to classify a method that still holds temperature but has lost its total-cost advantage. The second asks which actions build readiness for an alternative before it is urgently needed.\n\nSubmit each question once to continue. Correct answers are not required, and you can retry after the feedback. For the second question, select every applicable choice. Use the feedback to distinguish an economic signal from a physics limit, and preparation from simply extending the incumbent."
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next",
+          "title": "Module 1 Complete",
+          "audio": {
+            "script_file": "audio/module1/slide_10_up_next.txt",
+            "wav_file": "audio/module1/slide_10_up_next.wav",
+            "approved": true
+          },
+          "next_module_number": 2,
+          "next_module_title": "Diagnosing the Heat and Matching the Architecture",
+          "mobile_scroll": true,
+          "transcript": "Thank you for completing Why Cooling Transitions Happen. You now have three different boundaries to classify, an adoption framework to test, and two kinds of debt to keep visible.\n\nNext, we'll diagnose the heat and match the architecture. We'll examine the load left after a processor hotspot is solved, separate acquisition from transport and rejection, and read the single-phase reference boundary as a constrained design envelope. These distinctions help explain why the strongest answer can combine methods."
+        }
+      ],
+      "next_module_title": "Diagnosing the Heat and Matching the Architecture"
+    },
+    {
+      "id": 2,
+      "slug": "module-2",
+      "title": "Diagnosing the Heat and Matching the Architecture",
+      "subtitle": "Diagnose load coverage, locate the limiting step, and read a constrained design envelope.",
+      "module_badge_text": "Module 2",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Diagnosing the Heat and Matching the Architecture",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "approved": true
+          },
+          "subtitle": "Find the remaining problem before adding the next tool.",
+          "version_chip": "OCP whitepaper v1.00 · October 2026",
+          "mobile_scroll": true,
+          "transcript": "Module two: diagnosing the heat and matching the architecture. Cooling a processor does not settle the thermal problem for the whole system. We'll identify the load left behind, separate the jobs of acquisition, transport, and rejection, and examine what a reference cold-plate boundary actually means. Then we'll compare surface and volume approaches by their coverage and dependencies, so a combination can be judged against the work it must do."
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Thermal Coverage Gaps You Will Diagnose",
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "approved": true
+          },
+          "objectives": [
+            "Identify the distributed load remaining after processor cooling.",
+            "Locate a limit in acquisition, transport, or rejection.",
+            "Interpret the reference single-phase cold-plate envelope.",
+            "Match complementary methods to coverage and dependencies."
+          ],
+          "mobile_scroll": true,
+          "transcript": "By the end of this module, you'll be able to identify what remains unresolved after a cooling change. A processor may have enough thermal margin while memory, networking, storage, or power-conversion components continue to stress the surrounding system.\n\nYou'll also locate the limiting step along the thermal path. That lets you distinguish a heat-acquisition problem from a transport or rejection problem, and avoid treating a downstream capacity rating as proof of chip-level capability.\n\nThe reference cold-plate example develops a third skill: reading a boundary with its conditions. Flow, coolant temperature rise, geometry, pressure, and mechanical behavior belong together in that assessment.\n\nFinally, you'll compare the coverage of surface and volume methods and identify where complementary tools may help. The objective is a justified architecture hypothesis, followed by evidence for the actual hardware and operating conditions."
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "residual_load",
+          "title": "A Cooler Processor Can Leave a Growing System Problem",
+          "audio": {
+            "script_file": "audio/module2/slide_03_residual_load.txt",
+            "wav_file": "audio/module2/slide_03_residual_load.wav",
+            "approved": true
+          },
+          "section_label": "Load coverage",
+          "figure": {
+            "path": "figures/distributed_heat.png",
+            "alt": "The paper’s modeled distributed non-processor heat per rack unit by memory, networking and optics, storage, conversion loss, and miscellaneous load.",
+            "caption": "Source Figure 5: modeled platform composition, with published, announced, and extrapolated inputs.",
+            "source": "reuse",
+            "extract_from": {
+              "source": "Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "page": 28,
+              "method": "Poppler render with precise crop preserving chart axes, units, legend and uncertainty markings"
+            },
+            "text_inventory": {
+              "sha256": "9db6c29781268c9986fb238b3f5e7c154e2ae2ae43620d834192107e710bf336",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Distributed non-xPU heat per rack unit, AI platform"
+                },
+                {
+                  "text": "Watts per rack unit"
+                },
+                {
+                  "text": "0 200 400 600 800 1000 1200 1400 1600 1800"
+                },
+                {
+                  "text": "2016 2018 2020 2022 2024 2026 2028 2030"
+                },
+                {
+                  "text": "Memory"
+                },
+                {
+                  "text": "Network and optics"
+                },
+                {
+                  "text": "Storage"
+                },
+                {
+                  "text": "Power conversion loss"
+                },
+                {
+                  "text": "Misc"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                27,
+                28,
+                34,
+                35
+              ]
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 27–28, 34–35",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=27",
+              "kind": "pdf"
+            }
+          ],
+          "mobile_scroll": true,
+          "media_focus": true,
+          "transcript": "The move to liquid began at the concentrated hotspot. A cold plate can remove heat from a well-defined processor surface, where high local flux defeats a practical air-cooled arrangement. But that leaves a second thermal problem.\n\nMemory, network silicon, optics, storage, and power-conversion losses are distributed through the system. Each load may be modest compared with the main processor, yet the combined remainder can be substantial. Its geometry is less convenient, and components can obstruct one another's airflow.\n\nThe paper's distributed-load figure is a model tied to representative platform configurations. It separates the non-processor load from the hottest processor and nearby concentrated memory load. Published anchors, announced designs, and extrapolation have different evidence bases. The curve should therefore be read as a changing coverage problem, not a guaranteed forecast for every rack.\n\nOnce cold plates handle the processors, the remaining air path still needs to carry the distributed heat. Increasing capture at one hotspot does not necessarily solve that remainder. Adding plates component by component may improve coverage, but it also adds interfaces and the complexity debt discussed in module one.\n\nA volume approach instead exposes the broader system to its cooling medium. Air already does this; immersion applies the whole-system idea using a denser dielectric medium. Either arrangement still needs appropriate acquisition at its most demanding locations.\n\nFor the next architecture decision, ask what the cold plates capture, what they leave behind, and how the remainder is distributed. The binding constraint can move after an upgrade, even when the upgraded processor is comfortable.",
+          "term_refs": [
+            "complexity_debt",
+            "distributed_load",
+            "dielectric",
+            "xpu"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "thermal_path",
+          "title": "Locate the Limit Along the Thermal Path",
+          "audio": {
+            "script_file": "audio/module2/slide_04_thermal_path.txt",
+            "wav_file": "audio/module2/slide_04_thermal_path.wav",
+            "approved": true
+          },
+          "section_label": "Thermal path",
+          "figure": {
+            "path": "figures/thermal_path.mp4",
+            "alt": "A staged diagnostic animation distinguishes acquisition, transport, and rejection, then keeps a residual heat path visible after processor cooling.",
+            "caption": "An improvement downstream cannot establish acquisition capability at the device.",
+            "source": "custom",
+            "media_type": "video",
+            "poster": "figures/thermal_path_poster.png",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "d7ea4e5d78442b56c1d9ed5d31b2b0f963f79a606faee880d30b3d4b6e8e3d4c",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Acquisition",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "At the component",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Transport",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Across the rack",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Rejection",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Out of the building",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Acquisition is the limiting step",
+                  "at_seconds": 1.0
+                },
+                {
+                  "text": "Surface cannot hold",
+                  "at_seconds": 1.0
+                },
+                {
+                  "text": "junction condition",
+                  "at_seconds": 1.0
+                },
+                {
+                  "text": "Capacity available",
+                  "at_seconds": 1.0
+                },
+                {
+                  "text": "Capacity available",
+                  "at_seconds": 1.0
+                },
+                {
+                  "text": "More rejection alone leaves acquisition unresolved.",
+                  "at_seconds": 1.0
+                },
+                {
+                  "text": "The processor is cooled; the remainder still needs a path",
+                  "at_seconds": 12.5
+                },
+                {
+                  "text": "Processor: captured",
+                  "at_seconds": 12.5
+                },
+                {
+                  "text": "Remainder: unresolved",
+                  "at_seconds": 12.5
+                },
+                {
+                  "text": "Account for both",
+                  "at_seconds": 12.5
+                },
+                {
+                  "text": "captured heat loads",
+                  "at_seconds": 12.5
+                },
+                {
+                  "text": "Total heat still",
+                  "at_seconds": 12.5
+                },
+                {
+                  "text": "leaves the system",
+                  "at_seconds": 12.5
+                },
+                {
+                  "text": "A solved hotspot does not remove the distributed load.",
+                  "at_seconds": 12.5
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 29–31",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=29",
+              "kind": "pdf"
+            },
+            {
+              "label": "Deschutes · Module 1 facility-water interface",
+              "url": "https://academy.opencompute.org/learn/courses/48/ocp-project-deschutes-coolant-distribution-unit-cdu-v10"
+            },
+            {
+              "label": "Brazos · Module 1 facility-air interface",
+              "url": "https://academy.opencompute.org/learn/courses/78/ocp-project-brazos-liquid-cooling-in-air-cooled-data-centers"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                29,
+                30,
+                31
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "media_focus": true,
+          "transcript": "Cooling has three jobs. Acquisition takes heat from the component. Transport carries the captured heat across the server and rack boundary. Rejection transfers it to the outside environment or a heat-reuse system.\n\nHeat flux governs the hardest local acquisition task. Total heat sets what transport and rejection must carry. Adequate capacity at one step does not establish adequate capacity at the others.\n\nA rear-door heat exchanger illustrates the distinction. It accepts heat that chassis air has already acquired from the electronics. It can improve the downstream path, but does not change the ability of the air-cooled surface to hold a particular processor's junction temperature. If acquisition fails first, more downstream rejection alone cannot restore that margin.\n\nThe animation then follows a different case: a cold plate solves the processor hotspot, while the distributed remainder still needs its own path. That remaining load must be accounted for through all three jobs. It cannot disappear from the system heat balance simply because the main chip moved to liquid.\n\nThe ownership boundary matters too. Acquisition is tied closely to the I T design cycle. Facility rejection changes on a much longer building lifecycle. Transport is the shared seam where their requirements must meet.\n\nDeschutes illustrates a liquid-to-liquid interface to facility water. Brazos illustrates a liquid-to-air interface to an air-cooled site. Their detailed operating conditions belong in their courses. Here, use them to ask which job and which owner a proposal changes, and which upstream duties remain.",
+          "term_refs": [
+            "heat_flux"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "reference_envelope",
+          "title": "What the Single-Phase Boundary Actually Means",
+          "audio": {
+            "script_file": "audio/module2/slide_05_reference_envelope.txt",
+            "wav_file": "audio/module2/slide_05_reference_envelope.wav",
+            "approved": true
+          },
+          "section_label": "Reference envelope",
+          "bullets": [
+            {
+              "bold_lead": "Reference conditions",
+              "text": "Water; 5 L/min; 35°C inlet; 30 mm flow length."
+            },
+            {
+              "bold_lead": "Coolant-rise budget",
+              "text": "10°C gives approximately 3.46 kW of sensible transport."
+            },
+            {
+              "bold_lead": "Coupled constraints",
+              "text": "Thermal, hydraulic, mechanical, and infrastructure limits must all hold."
+            }
+          ],
+          "figure": {
+            "path": "figures/reference_envelope.svg",
+            "alt": "Thermal, hydraulic, and mechanical constraints overlap in a feasible reference design envelope; the approximately 4 kW discussion is configuration-dependent.",
+            "caption": "Appendix B describes a constrained architecture; different operating conditions change its boundary.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "f6f23be3ef0fc4be39523d6b33e43fc474a5bad56e3f016685172d806ef5e85d",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Reference conditions define the design envelope"
+                },
+                {
+                  "text": "Water • 5 L/min • 35°C inlet • 30 mm flow length"
+                },
+                {
+                  "text": "Thermal"
+                },
+                {
+                  "text": "Hydraulic"
+                },
+                {
+                  "text": "Mechanical"
+                },
+                {
+                  "text": "All constraints"
+                },
+                {
+                  "text": "must hold"
+                },
+                {
+                  "text": "10°C coolant-rise budget → approximately 3.46 kW sensible transport"
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 84–98",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=84",
+              "kind": "pdf"
+            },
+            {
+              "label": "Two-Phase DLC · Module 2 loop mechanics",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                84,
+                85,
+                86,
+                87,
+                88,
+                89,
+                90,
+                91,
+                92,
+                93,
+                94,
+                95,
+                96,
+                97,
+                98
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "The approximately four-kilowatt discussion is a reference architectural boundary, not a universal limit on single-phase cooling. Appendix B makes that qualification explicit.\n\nIts comparison uses water at a thirty-five-degree inlet, five liters per minute, a thirty-millimeter flow length, and a ten-degree permitted coolant rise. Under those flow and temperature-rise conditions, sensible heat transport is approximately three point four six kilowatts. Changing the conditions changes that calorimetric result.\n\nThe finer channel geometries can increase local heat-transfer capability, but the hydraulic penalty rises sharply. The very fine reference geometry approaches four kilowatts of nominal modeled heat removal while requiring roughly seventeen bar of pressure drop and exceeding the ten-degree coolant-rise budget. A promising heat-transfer number therefore does not demonstrate a feasible complete system.\n\nPressure also creates mechanical loading. Deflection can worsen package contact and thermal resistance, so the hydraulic and thermal analyses cannot be separated from the mechanical design. Increasing flow may recover coolant-rise margin while increasing pressure and mechanical demands.\n\nThe paper also compares a skived-fin approach that gains wetted area without relying on the most extreme velocity. That example reinforces the design lesson: maximizing a local heat-transfer coefficient is not the same as optimizing the whole cold plate.\n\nA different geometry, parallel path, coolant condition, or operating allowance may extend the envelope. Each change needs evidence against the actual constraints. Two-phase methods provide another architectural lever, with their own fluid and control dependencies. Use the linked specialist course for that detailed loop behavior.",
+          "term_refs": [
+            "thermal_resistance"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "surface_volume",
+          "title": "Match Surface and Volume Methods to Different Loads",
+          "audio": {
+            "script_file": "audio/module2/slide_06_surface_volume.txt",
+            "wav_file": "audio/module2/slide_06_surface_volume.wav",
+            "approved": true
+          },
+          "section_label": "Architecture coverage",
+          "columns": [
+            "Method family",
+            "Coverage strength",
+            "Dependency to evaluate"
+          ],
+          "rows": [
+            [
+              "Single-phase cold plate",
+              "Concentrated component heat",
+              "Residual load, plumbing, flow and pressure"
+            ],
+            [
+              "Two-phase cold plate",
+              "High-flux surface / uniformity",
+              "Boiling regime, wetting, vapor and control"
+            ],
+            [
+              "Single-phase immersion",
+              "Whole-system distributed load",
+              "Hotspot acquisition, material / signal qualification"
+            ],
+            [
+              "Two-phase immersion",
+              "Whole-system phase-change cooling",
+              "Fluid, containment, service and compatibility"
+            ]
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 35–37, 42–45, 49–52",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=35",
+              "kind": "pdf"
+            },
+            {
+              "label": "Overview · Course 3 immersion essentials",
+              "url": "https://academy.opencompute.org/learn/learning-plans/5/liquid-cooling-technologies-overview"
+            },
+            {
+              "label": "Two-Phase DLC · Module 2 boiling regimes",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                35,
+                36,
+                37,
+                42,
+                43,
+                44,
+                45,
+                49,
+                50,
+                51,
+                52
+              ]
+            },
+            {
+              "source": "OCP Academy: Two-Phase DLC",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids",
+              "module": 2,
+              "slides": [
+                4,
+                8
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Compare cooling methods by the thermal job they cover, rather than arranging them as a single ladder with one winner at the top.\n\nA cold plate is a surface method. It targets a particular component and can be engineered for concentrated heat. A single-phase plate transports that heat by warming its coolant. A two-phase plate uses phase change to extend the flux and temperature-uniformity opportunity, while introducing pressure, vapor-management, wetting, and dry-out considerations.\n\nThe paper describes flow boiling as its representative two-phase cold-plate regime. The dedicated Two-Phase D L C course also discusses pool-boiling cold-plate designs. Those are different implementations. Do not turn one representative description into the definition of every two-phase cold plate.\n\nImmersion is a volume method. A dielectric fluid contacts the wider system, covering the distributed load together with the hotspots it can acquire adequately. Single-phase immersion gains broad reach, but its fluid properties and flow design still constrain the most demanding local surfaces. Precision flow or a complementary surface method can be relevant there.\n\nTwo-phase immersion uses boiling in the bath and condensation to return liquid. Its thermal opportunity is accompanied by working-fluid, containment, compatibility, and service requirements. Those dependencies can determine whether a promising thermal arrangement is appropriate for a deployment.\n\nMaterial and high-speed electrical qualification matter for immersion because hardware validated in air is not automatically validated in a fluid environment. The dielectric label does not settle every compatibility question.\n\nThe useful comparison has two parts: which heat does the method cover, and what new dependency must be accepted to obtain that coverage?",
+          "term_refs": [
+            "surface_method",
+            "volume_method"
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_two_column",
+          "slug": "complementary_tools",
+          "title": "Choose Combinations Without Declaring a Winner",
+          "audio": {
+            "script_file": "audio/module2/slide_07_complementary_tools.txt",
+            "wav_file": "audio/module2/slide_07_complementary_tools.wav",
+            "approved": true
+          },
+          "section_label": "Complementary methods",
+          "bullets": [
+            {
+              "bold_lead": "Match the load",
+              "text": "A hotspot and its surroundings can need different methods."
+            },
+            {
+              "bold_lead": "Keep the downstream duty",
+              "text": "Internal improvements still leave heat to transport and reject."
+            },
+            {
+              "bold_lead": "Verify every handoff",
+              "text": "Thermal, fluid, mechanical, and operating interfaces must agree."
+            }
+          ],
+          "figure": {
+            "path": "figures/toolbox.svg",
+            "alt": "A concentrated hotspot uses a surface method while distributed heat uses a qualified volume method; emerging microfluidics can extend the upstream acquisition envelope.",
+            "caption": "Complementary capability still requires a qualified system-level handoff.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "2f8b8ce4d08362cfd655868fdd0dcce1ca6128fe0a03c7aad02e7e03b1b88697",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Concentrated heat"
+                },
+                {
+                  "text": "Distributed heat"
+                },
+                {
+                  "text": "Surface method"
+                },
+                {
+                  "text": "Volume method"
+                },
+                {
+                  "text": "Target the hottest surface"
+                },
+                {
+                  "text": "Cover the surroundings"
+                },
+                {
+                  "text": "Microfluidics can extend acquisition"
+                },
+                {
+                  "text": "Heat still needs transport and rejection"
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 35, 52–53, 61–64",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=35",
+              "kind": "pdf"
+            },
+            {
+              "label": "Open Rack · Module 7 manifold and coupling mechanics",
+              "url": "https://academy.opencompute.org/learn/learning-plans/4/open-rack-and-orv3-past-present-and-future"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                35,
+                52,
+                53,
+                61,
+                62,
+                63,
+                64
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "A modern system can contain different thermal problems at the same time. The toolbox approach matches methods to those problems instead of requiring one method to solve everything.\n\nAir remains useful for suitable moderate loads and for hardware whose operational simplicity matters. A surface method can take the most concentrated hotspot. A qualified volume method can address the distributed surroundings. The handoff between them must be engineered and verified, because combining two capable parts does not automatically create a capable system.\n\nMicrofluidics introduces another lever. Channels within or beneath the silicon can reduce the resistance between the heat source and the coolant. The recovered temperature budget can support more power or warmer coolant conditions. It still needs a downstream route to transport and reject the heat. The paper therefore presents microfluidics as an emerging extension of other methods, rather than a complete facility cooling architecture on its own.\n\nKeep maturity visible. A promising research or co-design direction is not equivalent to a qualified production option for the hardware being purchased today. Its interfaces, manufacturing path, and operating evidence need their own assessment.\n\nThe same care applies to the facility. A changed technology cooling system and coolant distribution unit may preserve a familiar facility-water path if their temperatures, flows, and interfaces remain compatible. A boiling-fluid change does not by itself prove that all upstream infrastructure must be replaced.\n\nOpen Rack Module seven provides the mechanical detail of manifolds and couplings. Here, decide what combination earns its dependencies, then require evidence at each handoff. That is how the toolbox becomes an architecture instead of a list of technologies.",
+          "term_refs": [
+            "microfluidics",
+            "cdu",
+            "tcs"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Match the Tool to the Thermal Job",
+          "audio": {
+            "script_file": "audio/module2/slide_08_takeaways.txt",
+            "wav_file": "audio/module2/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "items": [
+            "Processor cooling can leave a growing distributed load.",
+            "Locate the limiting step: acquisition, transport, or rejection.",
+            "A boundary belongs to an operating and design envelope.",
+            "Compare surface and volume methods by coverage and dependencies.",
+            "Complementary tools require qualified handoffs."
+          ],
+          "mobile_scroll": true,
+          "transcript": "The thermal constraint can move after an upgrade. Solving the processor hotspot may leave the distributed load as the next problem, so account for what the architecture captures and what remains.\n\nAcquisition, transport, and rejection are separate jobs. A downstream capacity claim cannot prove device-level acquisition, and the I T and facility sides have different owners and lifecycle clocks.\n\nRead numerical limits with their conditions. The approximately four-kilowatt cold-plate discussion concerns a constrained reference architecture. Flow, temperature rise, pressure, geometry, and mechanical behavior belong in the same assessment.\n\nFinally, match surface and volume approaches to their coverage. Microfluidics can extend acquisition capability but still needs downstream heat removal. A justified combination has evidence at its interfaces, and every new dependency has an accountable owner."
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Thermal Architecture Reasoning",
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "subtitle": "Submit both questions once. Feedback and retry are available.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "A rear-door exchanger can accept more exhaust heat, but the processor still exceeds its junction limit. What follows?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Downstream capability does not establish adequate processor acquisition.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The processor can run because the exchanger has a large rating.",
+                  "correct": false,
+                  "feedback_incorrect": "A downstream rating does not prove that heat can be acquired from the processor surface fast enough."
+                },
+                {
+                  "id": "c",
+                  "text": "All transport and rejection capacity is irrelevant.",
+                  "correct": false,
+                  "feedback_incorrect": "Those capacities remain necessary. They simply do not solve the demonstrated acquisition failure by themselves."
+                }
+              ],
+              "feedback_correct": "Correct. The exchanger works downstream of the local acquisition step that is failing.",
+              "feedback_incorrect": "Separate getting heat off the component from carrying and rejecting that heat."
+            },
+            {
+              "id": "m2_q2",
+              "prompt": "Which statements correctly describe complementary cooling choices?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A surface method can target a hotspot while a volume method covers distributed heat.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Microfluidics can improve acquisition but still needs downstream heat removal.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "A reference cold-plate boundary must retain its flow and temperature conditions.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Combining individually capable products automatically qualifies their handoff.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Coverage, downstream duty, and reference conditions remain necessary parts of the architecture review.",
+              "feedback_incorrect": "Complementary methods need evidence at their interfaces. Capability of the individual parts is not enough."
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Use the diagnostic model for these two questions. The first asks what a rear-door exchanger can establish when a processor's air-cooled acquisition path is already failing. The second asks which statements correctly describe a complementary cooling architecture.\n\nAttempt both questions once before continuing. Correct answers are not required, and retry is available after feedback. Select every applicable statement in the second question. Keep the local thermal job separate from the total heat-removal duty, and keep each numerical boundary attached to its reference conditions."
+        },
+        {
+          "id": 10,
+          "type": "up_next",
+          "slug": "up_next",
+          "title": "Module 2 Complete",
+          "audio": {
+            "script_file": "audio/module2/slide_10_up_next.txt",
+            "wav_file": "audio/module2/slide_10_up_next.wav",
+            "approved": true
+          },
+          "next_module_number": 3,
+          "next_module_title": "Economics, Reliability, and Readiness",
+          "mobile_scroll": true,
+          "transcript": "Thank you for completing Diagnosing the Heat and Matching the Architecture. You can now identify residual loads, locate a limit along the thermal path, and read a numerical boundary with its reference conditions.\n\nThe final module examines the economic and reliability case. We'll separate component failures from shared outages, read the paper's cost models with their assumptions, and ask what must be witnessed before the assembled cooling system is trusted with production load."
+        }
+      ],
+      "next_module_title": "Economics, Reliability, and Readiness"
+    },
+    {
+      "id": 3,
+      "slug": "module-3",
+      "title": "Economics, Reliability, and Readiness",
+      "subtitle": "Test the full-cost case, identify shared failure domains, and require witnessed system evidence.",
+      "module_badge_text": "Module 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Economics, Reliability, and Readiness",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "approved": true
+          },
+          "subtitle": "Turn capability into a supported deployment decision.",
+          "version_chip": "OCP whitepaper v1.00 · October 2026",
+          "mobile_scroll": true,
+          "transcript": "Module three: economics, reliability, and readiness. A thermally capable architecture still needs a credible cost case and a plan for operating as one system. We'll distinguish component failures from shared outages, interpret the paper's modeled comparisons, and identify the evidence needed at supplier and facility handoffs. By the end, you'll have a practical sequence for turning a promising cooling option into a qualified deployment decision."
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "Deployment Evidence You Will Evaluate",
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "approved": true
+          },
+          "objectives": [
+            "Trace full cost across budgets and lifecycle boundaries.",
+            "Distinguish component failures from shared outages.",
+            "Interpret modeled results using their evidence and assumptions.",
+            "Identify missing system-level acceptance evidence."
+          ],
+          "mobile_scroll": true,
+          "transcript": "By the end of this module, you'll be able to test a cooling proposal beyond its ability to hold temperature.\n\nBegin with full ownership cost. You'll identify the capital and operating consequences that land in different budgets and on different lifecycles. A quoted rack-side price can be only a small part of that comparison.\n\nNext, separate component reliability from system availability. Fewer individual failures can coexist with a shared dependency that affects many devices at once. The architecture and the failure domain determine what the evidence means.\n\nYou'll also distinguish a model assumption, a modeled result, and a reported observation. That lets you use the paper's comparisons without treating them as guaranteed results for your facility.\n\nFinally, you'll evaluate readiness across owners and suppliers: compatible interfaces, visible controls, realistic load and fault tests, and agreed records witnessed before production acceptance."
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "cost_path",
+          "title": "Cooling Cost Spans Two Budgets and Two Lifecycles",
+          "audio": {
+            "script_file": "audio/module3/slide_03_cost_path.txt",
+            "wav_file": "audio/module3/slide_03_cost_path.wav",
+            "approved": true
+          },
+          "section_label": "Full ownership cost",
+          "figure": {
+            "path": "figures/cost_path.svg",
+            "alt": "Capital, operation, service, and repair costs span acquisition, transport, and rejection, with different IT and facility lifecycles.",
+            "caption": "Include the operating obligations behind the quote and state the lifecycle assumptions.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "186c5d0b59cd6e226e3fd405411cf94283aeb4b67f2744f6bc7ef63eac01da46",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Acquisition"
+                },
+                {
+                  "text": "IT hardware"
+                },
+                {
+                  "text": "Fast design cycle"
+                },
+                {
+                  "text": "Transport"
+                },
+                {
+                  "text": "Shared seam"
+                },
+                {
+                  "text": "Interfaces and circulation"
+                },
+                {
+                  "text": "Rejection"
+                },
+                {
+                  "text": "Facility plant"
+                },
+                {
+                  "text": "Long infrastructure cycle"
+                },
+                {
+                  "text": "Capital • energy • maintenance • service • repair consequences"
+                },
+                {
+                  "text": "Include cost outside the equipment purchase order."
+                },
+                {
+                  "text": "Model accounting: 5-year IT / 15-year facility annualization"
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 54–60",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=54",
+              "kind": "pdf"
+            },
+            {
+              "label": "Fluids · Modules 2–4 qualification and operations",
+              "url": "https://academy.opencompute.org/learn/courses/52/cooling-fluids-in-direct-liquid-cooling-dlc"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "media_focus": true,
+          "transcript": "Total cost of ownership is wider than the cooling equipment purchase order. The thermal path helps locate where that cost lands and who can act on it.\n\nAcquisition costs are closely tied to the I T hardware: cooling surfaces, packaging, in-system plumbing, and redesign as the thermal target changes. Transport includes the interfaces and equipment at the seam, such as manifolds, coolant distribution, and an immersion system's integrated circulation arrangement. Rejection includes the facility plant and the infrastructure that ultimately removes or reuses the heat.\n\nThe purchase can look expensive at one boundary while reducing cost elsewhere. A denser arrangement may use less building area for a given deployment. Warmer useful return temperatures may change rejection opportunities. Maintenance, service labor, repairs, and interruptions also belong in the comparison.\n\nHeat reuse has conditions of its own. A warm return is an opportunity only if its temperature, the receiving application, and the local commercial arrangement support useful recovery. It is not an automatic credit to every liquid-cooling proposal.\n\nThe paper's cost case annualizes I T capital over five years and facility capital over fifteen. Those are declared modeling assumptions, not a required replacement schedule for a site. Their purpose here is to make the lifecycle mismatch visible.\n\nThe linked Fluids course describes much of the qualification and operating work that a cost estimate must include. Do not omit that labor because chemistry and maintenance occur outside the equipment quote.\n\nBuild the comparison around the same service objective, operating conditions, and stated accounting assumptions. Then keep both the total and the distribution of cost visible.",
+          "term_refs": [
+            "tco"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "failure_domains",
+          "title": "Fewer Component Failures Can Still Mean Shared Outage Risk",
+          "audio": {
+            "script_file": "audio/module3/slide_04_failure_domains.txt",
+            "wav_file": "audio/module3/slide_04_failure_domains.wav",
+            "approved": true
+          },
+          "section_label": "Reliability and availability",
+          "bullets": [
+            {
+              "bold_lead": "Component outcome",
+              "text": "Count the individual failures under stated assumptions."
+            },
+            {
+              "bold_lead": "Shared-domain outcome",
+              "text": "Identify how far one common-path fault propagates."
+            },
+            {
+              "bold_lead": "Design evidence",
+              "text": "Qualify redundancy, isolation, service, and recovery for the actual arrangement."
+            }
+          ],
+          "figure": {
+            "path": "figures/failure_domains.svg",
+            "alt": "Four systems have local component failure boundaries but depend on a shared cooling unit; the shared failure domain spans all four.",
+            "caption": "Redundancy must be judged against the failure mode and the domain it protects.",
+            "source": "custom",
+            "text_inventory": {
+              "sha256": "1380729f883931567ede5a05da0d1cc497670c5aea911fd3d5959f8560e17ef6",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Shared cooling unit"
+                },
+                {
+                  "text": "A common dependency"
+                },
+                {
+                  "text": "System 1"
+                },
+                {
+                  "text": "Local components"
+                },
+                {
+                  "text": "System 2"
+                },
+                {
+                  "text": "Local components"
+                },
+                {
+                  "text": "System 3"
+                },
+                {
+                  "text": "Local components"
+                },
+                {
+                  "text": "System 4"
+                },
+                {
+                  "text": "Local components"
+                },
+                {
+                  "text": "Shared fault domain: the whole served group"
+                },
+                {
+                  "text": "Redundant parts do not automatically remove every common mode."
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 37–41, 45–49, 58",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=37",
+              "kind": "pdf"
+            },
+            {
+              "label": "Deschutes · Modules 2–3 redundancy and service",
+              "url": "https://academy.opencompute.org/learn/courses/48/ocp-project-deschutes-coolant-distribution-unit-cdu-v10"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                37,
+                38,
+                39,
+                40,
+                41,
+                45,
+                46,
+                47,
+                48,
+                49,
+                58
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Component reliability and system availability describe different outcomes. The distinction becomes especially important when cooling infrastructure is shared.\n\nAt the paper's representative cold-plate design point, lower junction temperature reduces modeled processor failures enough to outweigh the added hydraulic components. But as plates and connectors spread across more components, the model's plumbing terms grow. The initial component-reliability benefit can erode or invert under an extended configuration and different assumed rates.\n\nA shared coolant distribution unit creates another kind of exposure. A fault in an individual component may affect a small part of the system. A shared control, exchanger, valve, or other common path can affect the entire cooling domain that depends on it. Pump redundancy can address particular pump failures without proving that all shared modes have been removed.\n\nImmersion also has shared infrastructure, such as a pump and filtration skid serving a tank or row. Its environmental benefits and smaller coupling count do not eliminate the need to examine that failure domain.\n\nThe diagram is a generic dependency example. It does not claim a measured failure rate for Deschutes, Brazos, or any other product. The paper's rack-level outage assumptions and its component failure counts should not be applied interchangeably.\n\nFor a real design, ask what fails, how much hardware loses cooling, how isolation works, what remains available during service, and what the software must tolerate. Then obtain evidence for the actual configuration.\n\nThe Deschutes course provides an implementation-specific study of redundancy and service. Use it to refine the review questions, while keeping its qualified design claims separate from this generic reliability model.",
+          "term_refs": [
+            "cdu",
+            "failure_domain"
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "model_assumptions",
+          "title": "Read the Models with Their Assumptions",
+          "audio": {
+            "script_file": "audio/module3/slide_05_model_assumptions.txt",
+            "wav_file": "audio/module3/slide_05_model_assumptions.wav",
+            "approved": true
+          },
+          "section_label": "Evidence interpretation",
+          "figure": {
+            "path": "figures/annualized_cost.png",
+            "alt": "Source Figure 19 compares modeled annualized cost for air, single-phase cold plate, and single-phase immersion in the paper’s hypothetical case.",
+            "caption": "Source Figure 19: hypothetical single-technology case; the ranking depends on its declared inputs and bounds.",
+            "source": "reuse",
+            "extract_from": {
+              "source": "Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "page": 60,
+              "method": "Poppler render with precise crop preserving chart axes, units, legend and uncertainty markings"
+            },
+            "text_inventory": {
+              "sha256": "eae58a06dfa9dbb3413dd8a0729bb6f36b28d67bf5522db6c4e1972b951bfd29",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Total cost per year (Annualized TCO, $M/yr)"
+                },
+                {
+                  "text": "$0 $500 $1000 $1500 $2000 $2500"
+                },
+                {
+                  "text": "Air"
+                },
+                {
+                  "text": "Single-phase cold plate"
+                },
+                {
+                  "text": "Single-phase immersion"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                47,
+                48,
+                54,
+                55,
+                58,
+                59,
+                60,
+                79,
+                80,
+                81,
+                82,
+                83
+              ]
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 47–48, 54–55, 58–60, 79–83",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=47",
+              "kind": "pdf"
+            }
+          ],
+          "mobile_scroll": true,
+          "media_focus": true,
+          "transcript": "The cost bars are results of a declared case. They are not observations of three complete facilities, and they are not a universal ranking of cooling technologies.\n\nThe paper compares hypothetical, fully saturated air, single-phase cold-plate, and single-phase immersion deployments within a two-hundred-megawatt facility envelope. I T pricing is normalized to remove asserted server-price differences from the comparison. Energy price, lifecycle treatment, repair costs, and reliability inputs are declared so readers can examine the consequences of cooling choices under that construction.\n\nReal facilities commonly mix technologies, expand in phases, and operate under different climates, prices, workloads, service arrangements, and availability requirements. Those differences need their own analysis. The comparison also has explicit exclusions, including no hybrid case or fluid-replenishment cost line.\n\nThe reliability evidence has more than one category. A conservative immersion model gives an improvement under its assumed mechanism shares. A reported fleet observation supplies a different kind of evidence and a higher reported ceiling. The latter is not a guarantee for hardware and operating conditions that were not part of that observation.\n\nLikewise, cold-plate results differ between the initial design point and a more extensively plumbed stress case. Repair cost assumptions can strongly affect the economic result, especially when a failure is priced as a share of expensive server value.\n\nUse the bars to ask a sensitivity question: which input could change this deployment's conclusion? Substitute relevant evidence, keep the service objective consistent, and preserve the distinction between an assumed rate and a measured one. That makes a model useful for a decision without claiming it has already validated the site."
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "site_case",
+          "title": "Match the Toolbox to the Site and the Supply Chain",
+          "audio": {
+            "script_file": "audio/module3/slide_06_site_case.txt",
+            "wav_file": "audio/module3/slide_06_site_case.wav",
+            "approved": true
+          },
+          "section_label": "Deployment case",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Demonstrated starting point",
+              "body": "Processor junction condition holds; the distributed remainder is growing."
+            },
+            {
+              "title": "Site constraint",
+              "body": "Available power and footprint limit the feasible options."
+            },
+            {
+              "title": "Candidate evidence",
+              "body": "Coverage, full cost, qualified interfaces, service, and shared-domain behavior."
+            },
+            {
+              "title": "Readiness record",
+              "body": "Evidence owner, remaining action, and acceptance responsibility for each handoff."
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 61–64",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=61",
+              "kind": "pdf"
+            },
+            {
+              "label": "Brazos · Modules 2 and 4 site evidence",
+              "url": "https://academy.opencompute.org/learn/courses/78/ocp-project-brazos-liquid-cooling-in-air-cooled-data-centers"
+            },
+            {
+              "label": "Open DC · Modules 3–4 facility compatibility",
+              "url": "https://academy.opencompute.org/learn/courses/69/open-data-center-for-ai-applying-specification-07"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                61,
+                62,
+                63,
+                64
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Apply the framework to a fictional upgrade. The processor's cold plate holds its junction condition. The surrounding memory and networking load is growing, and the site has limited power and space. The proposal is to add more cooling coverage while keeping deployment disruption manageable.\n\nBegin with the demonstrated constraint. The processor acquisition path is not the current failure. The distributed remainder needs characterization, and the facility's available power and footprint constrain the answer. Adding plates, improving the volume path, or qualifying a complementary arrangement are hypotheses to evaluate, not automatic recommendations.\n\nFor each candidate, trace the new dependencies. Which hardware or material qualification changes? What service access is required? Which interface crosses into the facility? Which controls and telemetry tell the operator whether the combined system is working?\n\nThe economic case must include the cost of extending the incumbent and the cost of preparing the alternative. Supply-chain readiness matters because a thermally attractive option is not deployable at the required scale if its qualified components, service capability, or acceptance process are unavailable.\n\nOpen, agreed interfaces can reduce the burden of coordinating those changes. They also need actual compatibility evidence. A familiar connector name or a matching nominal rating is not proof of interoperability for the installed arrangement.\n\nBrazos examines a specific liquid-to-air option and its site conditions. Open Data Center for A I examines facility compatibility and capacity targets. Use those courses when the framework has identified the implementation or facility question that needs detail.\n\nThe review result should name the candidate, the evidence needed, the accountable organizations, and the unresolved decisions. That is a concrete readiness plan even before an architecture is selected."
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "commissioning",
+          "title": "Commission the Handoffs and the Dynamic Response",
+          "audio": {
+            "script_file": "audio/module3/slide_07_commissioning.txt",
+            "wav_file": "audio/module3/slide_07_commissioning.wav",
+            "approved": true
+          },
+          "section_label": "System acceptance",
+          "figure": {
+            "path": "figures/commissioning.mp4",
+            "alt": "A conceptual load-step test proceeds from agreed criteria through a changed load and observed response to a witnessed retained record.",
+            "caption": "Illustrative sequence, not a test specification: criteria and witnesses must be agreed for the actual system.",
+            "source": "custom",
+            "media_type": "video",
+            "poster": "figures/commissioning_poster.png",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "fb24d5c88b4bd0c164dfbcae716e885571499ac246bc2c2ce5e049a5e0e4cd66",
+              "reviewed_at": "2026-10-12",
+              "review_method": "Full-size diagram/poster review and encoded timeline checkpoint review; source labels transcribed only after visual inspection.",
+              "entries": [
+                {
+                  "text": "Illustrative response",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Load change",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Agreed band",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Test progression — no required response time implied",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Agree criteria",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Apply load step",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Observe response",
+                  "at_seconds": 0.0
+                },
+                {
+                  "text": "Witness record",
+                  "at_seconds": 0.0
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries · pp. 65–68",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf#page=65",
+              "kind": "pdf"
+            },
+            {
+              "label": "Fluids · Module 3 startup practice",
+              "url": "https://academy.opencompute.org/learn/courses/52/cooling-fluids-in-direct-liquid-cooling-dlc"
+            },
+            {
+              "label": "Two-Phase DLC · Module 4 operating practice",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Thermal Boundaries in AI Infrastructure v1.00",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "pages": [
+                65,
+                66,
+                67,
+                68
+              ]
+            }
+          ],
+          "mobile_scroll": true,
+          "media_focus": true,
+          "transcript": "A steady temperature at one operating point proves that point. It does not prove the behavior of the assembled cooling system as load changes or faults occur.\n\nCommissioning must connect each stimulus to an observable response. For a load step, agree the starting state, change in load, ramp, measurement locations, allowable excursions, and return-to-band criteria before the test. The power and cooling sides should witness the record together, because a dense-system load change is both an electrical and a thermal event.\n\nFault evidence is separate. Leak detection, isolation, a lost sensor or communication path, and a shared equipment failure need the response expected for the specific architecture. Do not assume every fluid or cooling method should trigger the same action. The approved system and site procedure determine what must happen.\n\nVerify the seam as well as the products. Flow and pressure must be appropriate across the served domain, not only at the nearest rack. Telemetry from acquisition, transport, and rejection must reach the controls and people responsible for acting on it. Where methods are combined, their handoffs need system-level evidence.\n\nThe animation illustrates a witnessed load-change sequence. It does not provide numerical acceptance limits, measured response times, or a complete commissioning procedure. Those belong in the agreed test plan for the actual deployment.\n\nThe Fluids and Two-Phase courses provide startup and operating detail for their respective loops. Here, the key question is whether the assembled ecosystem has a complete evidence trail: agreed criteria, controlled tests, observed responses, named owners, and retained records. Sound components are necessary. Their coordinated behavior must also be demonstrated."
+        },
+        {
+          "id": 8,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Prepare the Option Before the Transition Forces It",
+          "audio": {
+            "script_file": "audio/module3/slide_08_takeaways.txt",
+            "wav_file": "audio/module3/slide_08_takeaways.wav",
+            "approved": true
+          },
+          "items": [
+            "Identify the heat, thermal job, and governing boundary.",
+            "Count full cost across ownership and lifecycle boundaries.",
+            "Separate component reliability from shared-domain availability.",
+            "Keep model assumptions and reported observations distinct.",
+            "Require agreed, witnessed evidence for the assembled thermal system."
+          ],
+          "mobile_scroll": true,
+          "transcript": "Use the framework as a sequence of questions. What thermal job is limiting the deployment? Which boundary is being approached? What does extending the current method cost, and what dependencies would the alternative introduce?\n\nThen examine the evidence. Full ownership cost crosses budgets and lifecycles. Reliability results depend on configuration and assumptions, and individual component failures are different from shared outages. A cost model becomes decision support when its inputs and limits remain visible.\n\nFinally, prepare the handoffs. Shared interfaces, qualified suppliers, service capability, and observable controls help turn an option into something the ecosystem can deploy. Commissioning supplies the witnessed evidence that the assembled system behaves under realistic load and fault conditions.\n\nReadiness is a choice the industry can make before the next transition becomes urgent. Keep the toolbox useful by making its interfaces and evidence ready, while matching each method to the heat and site it must serve."
+        },
+        {
+          "id": 9,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check Your Deployment Judgment",
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "approved": true
+          },
+          "subtitle": "Submit both questions once. Feedback and retry are available.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "Components pass their tests and the assembled system holds temperature at steady full load. What remains unproven?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Its dynamic and fault response under realistic, agreed system tests.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "That the individual components exist.",
+                  "correct": false,
+                  "feedback_incorrect": "The component tests already establish their presence and tested behavior; the gap is coordinated system response."
+                },
+                {
+                  "id": "c",
+                  "text": "That every cooling architecture needs the same fluid procedure.",
+                  "correct": false,
+                  "feedback_incorrect": "Operating and fault procedures depend on the particular architecture and approved site plan."
+                }
+              ],
+              "feedback_correct": "Correct. One stable point does not establish behavior during transitions and faults.",
+              "feedback_incorrect": "Steady-state capability and component tests do not demonstrate the path into or out of that state."
+            },
+            {
+              "id": "m3_q2",
+              "prompt": "Which evidence supports readiness across IT and facility handoffs?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Shared-interface acceptance criteria with named owners.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Qualification of the actual fluid, materials, and installed interfaces.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Witnessed load-step and relevant fault-response records.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "A supplier headline rating used without its conditions.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Readiness needs exact configuration evidence, agreed responsibilities, and witnessed system behavior.",
+              "feedback_incorrect": "A headline rating alone does not qualify the installed arrangement. Keep conditions, ownership, and system test records together."
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "The final check asks you to judge evidence rather than recall a product rating. The first question considers a system whose components and steady full-load temperature have passed. The second asks which records support readiness across the I T and facility handoffs.\n\nAttempt both questions once to continue. Correct answers are not required, and you can retry after feedback. Select every applicable choice in the second question. Use the feedback to distinguish a capable part from a demonstrated system, and a headline claim from an accountable acceptance record."
+        },
+        {
+          "id": 10,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "title": "Apply the Framework to Your Next Cooling Decision",
+          "audio": {
+            "script_file": "audio/module3/slide_10_course_complete.txt",
+            "wav_file": "audio/module3/slide_10_course_complete.wav",
+            "approved": true
+          },
+          "course_title": "Thermal Boundaries in AI Infrastructure",
+          "cert_message": "Apply the framework: diagnose the limit, evaluate the evidence, and prepare the handoffs.",
+          "reference_links": [
+            {
+              "label": "Thermal Boundaries whitepaper",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/Thermal-Boundaries-in-AI-Infrastructure.pdf",
+              "kind": "pdf"
+            },
+            {
+              "label": "Single-phase fluid selection and operations",
+              "url": "https://academy.opencompute.org/learn/courses/52/cooling-fluids-in-direct-liquid-cooling-dlc"
+            },
+            {
+              "label": "Two-phase loop mechanics and fluids",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids"
+            },
+            {
+              "label": "Deschutes · facility-water CDU",
+              "url": "https://academy.opencompute.org/learn/courses/48/ocp-project-deschutes-coolant-distribution-unit-cdu-v10"
+            },
+            {
+              "label": "Brazos · air-cooled-site retrofit",
+              "url": "https://academy.opencompute.org/learn/courses/78/ocp-project-brazos-liquid-cooling-in-air-cooled-data-centers"
+            },
+            {
+              "label": "Introductory cooling overview",
+              "url": "https://academy.opencompute.org/learn/learning-plans/5/liquid-cooling-technologies-overview"
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "Thank you for completing Economics, Reliability, and Readiness, and the full Thermal Boundaries course.\n\nYou can now classify the limit, identify the remaining thermal job, and evaluate the evidence behind a cooling transition. Use the complete O C P document to revisit the models and their assumptions. Choose a specialist Academy course for the implementation or operating detail your next task needs.\n\nBring the framework to your next design review. Name the constraint, make the dependencies visible, and prepare the evidence before the change becomes urgent. Thank you for learning with O C P Academy."
+        }
+      ]
+    }
+  ],
+  "index_title_soft_breaks": [
+    "Infra\u00adstructure"
+  ]
+}
