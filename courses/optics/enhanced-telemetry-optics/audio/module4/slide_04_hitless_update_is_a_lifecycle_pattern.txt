@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Hitless update is not a single command. It is a lifecycle with checkpoints. The spec includes block download behavior, command status, completion, and activation steps. Those details matter in implementation, but the operating pattern is the part to remember.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Hitless firmware maintenance depends on a controlled lifecycle, not a single successful command.
 
-A safe update starts with capability and image information. It moves through start, transfer, completion, run, and commit behavior. At each phase, software needs status feedback, error handling, and a clear understanding of which image is active now and which image becomes active after future resets.
+Inspect the remote image information, then start the download. Transfer the firmware in blocks and check every result. If a block transfer fails, abort the download and perform cleanup rather than continuing with an incomplete image.
 
-Remote update adds one more layer: the local module is helping manage the far endpoint. That makes command discipline and status reporting even more important.
-The phrase hitless should be treated as an operating requirement, not a casual promise. It depends on implementation quality, status feedback, error handling, and the deployment policy that decides when an update is allowed.
+After all blocks arrive, the complete-download command validates that stage. A failure, such as a bad image checksum, means the download has not succeeded. Do not proceed to activation.
+
+Once completion succeeds, run the new image and verify its behavior. Only then commit the running image as the default for future resets. This distinction between run and commit is central to knowing what the module will do now and after a reset.
+
+The local module carries these operations to the chosen remote partner over the in-band interface. Maintain that partner identity throughout the sequence.
+
+Hitless capability still needs deployment verification. Check actual traffic continuity, command status, recovery behavior, and the maintenance policy before relying on the workflow in service.

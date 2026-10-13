@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Firmware management is part of reliability because telemetry is only useful when deployed optics can be maintained safely. The spec points to the C M I S firmware management flow for local operations: image download, activation, and status monitoring.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Firmware maintenance follows two related paths. Standard local operations use the C M I S version five point three firmware-management commands. The enhanced-telemetry specification defines a remote protocol in the eight thousand thirty hex command family.
 
-It also describes a vendor-defined remote firmware upgrade protocol within the firmware management command group. That remote path uses in-band communication between the local and opposite ends.
+Begin by discovering support and inspecting firmware information. The remote information reply distinguishes image validity, the image currently running, and the image committed as the default for future resets.
 
-The source flow diagram is dense, which is normal for a specification. The learner takeaway is the lifecycle pattern. Discover capability. Start the update. Transfer the image. Complete the download. Run the image. Commit it as the future default, or abort if the process fails.
-Firmware workflows also need auditability. Operators should know what image was discovered, what was transferred, what status was returned, and whether activation or commit actually completed before declaring the update successful.
+The normal remote sequence starts the download, transfers data blocks, completes and validates the download, runs the image, and commits the verified running image. There is also an abort command for a download that has been started.
+
+Do not equate successful transfer with successful activation. Likewise, running the new image does not by itself make that image the future reset default. Those are separate states with separate command results.
+
+Record the selected partner, image information, and status at each step. This makes the maintenance action auditable and prevents software from declaring success simply because the last block was sent.

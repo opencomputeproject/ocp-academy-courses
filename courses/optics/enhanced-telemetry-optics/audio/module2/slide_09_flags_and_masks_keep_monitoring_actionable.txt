@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Flags and masks are how the model stays actionable. Summary flags help software and operators see that a metric group has crossed a threshold or moved into a condition worth attention.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Flags and masks solve different problems. Flags tell software where a reported warning or alarm needs attention. Masks determine whether particular accumulated counters participate in the health score.
 
-Masks provide tuning. A deployment may decide that a particular counter should not influence the link-health calculation in a certain operating mode, qualification phase, or integration context. The mask lets the deployment include or exclude fields while keeping the broader structure intact.
+The recommended flag workflow begins with the software interrupt. Software then reads the summary that distinguishes local from remote port flags, and retrieves the detailed module, optical-power, and laser-bias flags in the telemetry reply. These flags are latched and cleared when their registers are read, so harvesting software must preserve what it observes.
 
-The balance is important. Too many raw counters create noise. Too much summarization hides cause. Flags and masks sit in the middle: a concise health view with enough control to keep the monitoring signal meaningful.
-Masks should be used carefully. Excluding a counter can reduce false alarms, but it can also remove a useful signal. The deployment should document why a field is masked and when that choice should be revisited.
+The defined score masks apply to the feck counter and link-down counter. Both are excluded from scoring at module power-up. A mask bit of one excludes its counter; zero includes it. Command eight thousand three hex controls those masks.
+
+Masking is not deleting evidence. The counter data can still be retrieved, and the event history is separate. Resetting accumulated counters uses a different command.
+
+Record the effective masks when comparing scores across modules or across time. If two tools apply different participation settings, an identical-looking score may not describe an identical operating condition.

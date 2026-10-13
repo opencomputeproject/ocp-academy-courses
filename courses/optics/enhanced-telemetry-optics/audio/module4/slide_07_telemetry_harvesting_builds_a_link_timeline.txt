@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-The host software section describes an important intention: the host continuously harvests current link status to create a link performance timeline that can be streamed to a telemetry server for aggregation into a fabric-wide network map.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Continuous harvesting turns isolated measurements into a link-performance timeline. The host can stream that timeline to a telemetry server, where the operator builds a fabric-wide view.
 
-That sentence connects the whole course. A single query is useful. A timeline is better. A fabric map is better still, because it lets operators compare symptoms across switches, modules, lanes, remote endpoints, and time.
+Time synchronization is part of that evidence path. Get Module Time and Set Module Time use commands five hex and six hex. They use a sixty-four-bit nanosecond representation relative to the POSIX epoch, the start of nineteen seventy in coordinated universal time.
 
-The timeline should include current metrics, event-log records, remote partner checks, and host-side measurements such as pre-feck B E R and uncorrectable codewords at the switch serdes receiver. When those values align, troubleshooting moves from isolated alarms to evidence-driven operations.
-A timeline can reveal patterns that a snapshot misses. For example, a temperature rise before relinks, or a remote endpoint event before a local alarm, can change the investigation from guesswork to sequence analysis.
+The enhanced-telemetry definitions extend those commands for remote operations. A host can query a selected remote partner's time. The set command can address the local module or the local and remote ports as defined by its target field.
+
+Timestamp units do not establish clock accuracy. Software still needs to establish and verify the time reference before comparing events across modules and hosts.
+
+The timeline also includes the switch's own receiver measurements: pre-feck B E R and uncorrectable codewords. Module data alone does not cover every receiving segment.
+
+With endpoint identity, valid time, current metrics, and durable event records together, an operator can distinguish a temperature rise before relinks from a remote failure followed by a local alarm.

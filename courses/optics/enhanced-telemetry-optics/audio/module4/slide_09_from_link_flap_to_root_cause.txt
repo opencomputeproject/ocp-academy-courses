@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Put the course together with a simple incident. A link flaps. The first question is not, which part should we replace? The first question is, what evidence do we have?
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+A link flaps. Begin with the evidence, then choose the action.
 
-The operator checks the link-health score and sees which category is weakest. Then they inspect the current metrics behind that category. They read the event log to learn what happened before and after the flap. They query the remote endpoint through the local module. Finally, they compare the module evidence with the host timeline and telemetry-server view.
+Check the host- and media-side ratings for the relevant endpoints. Read every lowest-category contributor, especially when several categories tie. Inspect the measurements, masks, and effective thresholds behind the summary.
 
-That sequence does not guarantee a perfect answer, but it makes the next action evidence-based. Maybe the issue is optical path loss. Maybe it is host electrical margin. Maybe it is temperature, firmware behavior, or a remote endpoint. The workflow narrows the field.
-A mature workflow also records what action was taken. Cleaning, reseating, replacing, updating firmware, or opening a vendor case should tie back to the evidence that justified the decision.
+Then retrieve the event history. Was the drop preceded by an optical-power alarm, receiver condition, reset, firmware action, or configured autonomous shutdown? A shutdown record identifies the affected side, port, category, and value rather than leaving only a generic link-down symptom.
+
+Query the remote partner through the local module, and compare its evidence with the host timeline. Confirm accessibility and time validity before treating missing or misaligned data as a healthy result.
+
+The resulting sequence narrows the possibilities: optical-path loss, electrical margin, thermal conditions, firmware behavior, a remote endpoint issue, or an intentional configured response.
+
+Record the action and the evidence that justified it. Cleaning, replacing a module, changing configuration, or opening a vendor case should follow a reasoned interpretation of the full path.

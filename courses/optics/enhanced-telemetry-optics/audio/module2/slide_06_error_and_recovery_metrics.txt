@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Quality metrics tell you about margin. Error and recovery metrics tell you how that margin is affecting service. The spec includes pre-feck B E R, feck bin histograms, uncorrectable codewords, relink counts, loss of signal, loss of link, and uptime since the last new link-up.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Quality measurements describe margin. Error and recovery measurements show what that margin means for service.
 
-These values help distinguish a noisy but corrected link from a link that is actually dropping and reacquiring. That distinction matters during maintenance. A corrected error pattern may call for trend monitoring or qualification attention. Repeated relinks or uncorrectable codewords may call for immediate isolation.
+Pre-feck B E R describes errors before correction. The feck histogram groups frames by their symbol-error burden. Higher-error bins help reveal whether the receiver is approaching a difficult operating condition. Uncorrectable codewords show where correction cannot recover the data.
 
-The strongest workflows combine both views. You want the signal-quality evidence and the service-impact evidence together, because that combination points to severity and likely location.
-The time dimension is just as important as the count. A single corrected error burst, a rising histogram trend, and repeated relinks across a short window are different operational stories even if they all appear under error metrics.
+Relinks and uptime add the service timeline. A noisy link that stays operational is a different case from a link that repeatedly drops and reacquires.
+
+Loss of signal identifies a receiver that cannot detect its incoming signal. The detailed D S P event definitions use loss of lock for L O L. Keep that receiver condition distinct from an overall link-down event when decoding logs.
+
+Combine current values with time and event history. A brief error burst, a growing population of higher-error frames, and repeated relinks are different operating stories.
+
+Also remember that accumulated feck-bin and link-down counters are available as evidence even when their default masks exclude them from the health score. Their availability and their score participation are separate facts.

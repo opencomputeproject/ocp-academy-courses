@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-The source document names three components in a compliant software system. The first is the transceiver itself: firmware, telemetry metrics, event logging, and the command behavior needed to expose those values.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+A common reliability workflow has three layers. The transceiver implements firmware, measurements, event history, and the command behavior needed to expose local and remote evidence.
 
-The second is host software, typically on the switch. This is the layer that talks to the local module over I squared C, asks for local or remote partner data, and turns module responses into tools an operator can use.
+Host software, typically on a switch, discovers what the module supports, requests data, checks command results, and prepares output for operational tools. The host remains the local control point even when the requested information comes from a remote link partner.
 
-The third is telemetry-server software. The spec expects telemetry to be compiled, summarized, and reported at the fabric level, but it does not prescribe how every operator builds that server side. That boundary is important. The course teaches the common module-to-host interface, because that is the part the contribution standardizes.
-That layered view also helps with responsibility. The transceiver owns what it can measure and preserve. The host owns how it asks and presents. The telemetry server owns broader correlation across the fleet.
+Above that, telemetry-server software can compile, summarize, and report network health. Its implementation is operator dependent. The specification defines the module behavior and common host interface rather than one required monitoring-server design.
+
+This division matters during integration. A vendor can implement the module interface, a switch team can implement harvesting, and an operator can choose aggregation tools that fit the deployment. The shared boundary is what allows those choices to work together.
+
+During an incident, follow the same layers. Ask whether the evidence exists in the module, whether the host retrieved it correctly, and whether the monitoring system preserved the context.

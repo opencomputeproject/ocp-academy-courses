@@ -71,7 +71,7 @@ courses/
     module-6-the-open-rack-wide-orw-expansion/
     module-7-advanced-orw-liquid-cooling-practice/
   optics/
-    enhanced-telemetry-optics/
+    enhanced-telemetry-optics/   # optics/enhanced-telemetry-optics; English spec v1.0.0
     introduction-to-emerging-optical-technologies/
   project-deschutes-cdu-specification-v1-0/
   short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
