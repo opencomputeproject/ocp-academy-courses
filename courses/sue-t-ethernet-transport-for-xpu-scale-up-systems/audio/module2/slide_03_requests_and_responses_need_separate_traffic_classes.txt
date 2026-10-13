@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+A transmit queue belongs to a destination accelerator and a traffic class. That pairing lets the implementation keep work for different destinations and traffic classes distinct as it selects the next packet.
+
+The specification requires at least two traffic classes for one virtual connection. Requests and responses must use different classes to avoid deadlock. A system that also distinguishes higher and lower transaction priorities can require more than two. This is a functional separation to preserve progress, so don't treat the traffic classes as optional labels that can all be collapsed into one queue.
+
+Queue storage can be organized in different ways. With N accelerators and K traffic classes, an implementation may provide N times K dedicated queues. Alternatively, it may allocate fewer queues dynamically to reduce area. The smaller arrangement can experience blocking when the workload spreads small messages across many destinations.
+
+Flow control acts per traffic class. It also matters when the accelerator's command interface can supply work faster than the Ethernet interface transmits it. That mismatch can build up commands in the transmit buffer without any deliberate waiting for packing.
+
+For a design review, separate three questions. Are requests and responses assigned to different traffic classes? How are destination queues allocated? And what makes a queued command eligible for service? The specification fixes the required traffic separation, while leaving queue organization and scheduling discipline to the implementation.

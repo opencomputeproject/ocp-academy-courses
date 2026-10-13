@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Put the rule to work. An eligible destination queue contains one store command. The port can transmit it, and the relevant flow-control conditions allow service. A second command for that destination may arrive later, but it hasn't arrived yet.
+
+Should the scheduler hold the first command to improve wire efficiency? Decide before continuing the explanation. The specification says a single transaction in a selected destination queue is sent. Transactions aren't delayed for packing. A possible future packing partner is not a reason to keep currently eligible work waiting.
+
+Now change one condition. Flow control prevents service of that queue. The work must wait until the queue becomes eligible. That waiting has a defined cause: flow control. If additional commands arrive while it waits, the packing stage may later find several ready together. Their accumulation does not turn the original wait into a packing policy.
+
+Finally, suppose several commands are available but together exceed a configured packet limit. The scheduler can transmit the commands that fit. It cannot ignore the limit merely because a larger group would amortize headers more efficiently.
+
+The useful diagnostic is to name the cause of waiting. Queue eligibility, buffer constraints, flow-control state, and scheduling among eligible work belong in that explanation. Waiting solely for a fuller packet does not. This gives you a concrete way to distinguish a latency-preserving packing implementation from a batching assumption that the specification does not make.

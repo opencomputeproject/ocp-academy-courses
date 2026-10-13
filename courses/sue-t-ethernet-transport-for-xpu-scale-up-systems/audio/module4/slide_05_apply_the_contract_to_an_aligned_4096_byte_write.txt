@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Work through a concrete integration case. An application issues a four-thousand-ninety-six-byte write aligned to a four-kilobyte boundary. Its enabled write-strobe bytes are contiguous. A following read uses the same A X I identifier. The implementation reports write completion at the target S U E T queue.
+
+First, choose the request encoding. The compressed address format cannot represent a length of four thousand ninety-six bytes, so use the uncompressed format with address compression set to zero. The aligned write stays within one four-kilobyte boundary. The contiguous byte enables satisfy the write-strobe constraint.
+
+Second, evaluate the ordering assumption. Sharing the identifier does not guarantee ordering between the write and the read. The specification orders reads with reads and writes with writes separately. The application needs an additional established mechanism for any cross-operation dependency; this example does not invent one.
+
+Third, interpret the successful write response. Target-queue completion reports acceptance into the queue for the accelerator interface. It does not establish that another observer can already read the updated data from memory. It may also omit downstream accelerator errors from that early response.
+
+Finally, account for resources. The initiator still needs the write response or an acknowledgement result to clean up the outstanding request's transport resources. Application-facing early success and transport cleanup remain distinct responsibilities.
+
+This case uses the A X I section's four-kilobyte mapping. Keep the earlier two-hundred-fifty-six-byte scope statement separate; the case doesn't resolve that source distinction. The learning outcome is to name the encoding, ordering, completion, and cleanup conclusions individually.

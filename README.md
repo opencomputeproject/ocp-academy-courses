@@ -75,6 +75,9 @@ courses/
     introduction-to-emerging-optical-technologies/
   project-deschutes-cdu-specification-v1-0/
   short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
+  sue-t-ethernet-transport-for-xpu-scale-up-systems/
+    animations/                 # six narration-synchronized teaching sequences
+    thumbnail.png              # Academy catalog/LMS poster
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
 scripts/
   build-course.sh
@@ -158,6 +161,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `optics/introduction-to-emerging-optical-technologies` | Introduction to Emerging Optical Technologies |
 | `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
 | `short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics` | Short-Reach Optical Interconnects for AI Scale-Up Fabrics |
+| `sue-t-ethernet-transport-for-xpu-scale-up-systems` | [SUE-T: Ethernet Transport for XPU Scale-Up Systems](courses/sue-t-ethernet-transport-for-xpu-scale-up-systems/README.md): four narrated modules with six synchronized teaching videos |
 | `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
 
 ## Build a course

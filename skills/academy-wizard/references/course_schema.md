@@ -60,6 +60,15 @@ The wizard maintains a single `course.json` in the working area. It's the source
 ```
 
 `course_title` is learner-facing and appears inside the rendered course.
+An optional `authoring_renderer` names a trusted course-owned Python file at
+the course root, for example `render_course.py`. The repository build script
+stages it and runs it with `course.json --all` for Slides instead of the standard
+module renderer, passing the selected skill folder as
+`ACADEMY_WIZARD_SKILL_DIR`. Courses without this field keep the standard build.
+Use it for recorded course-specific layout overrides while retaining the
+maintained player and controls; include the renderer and its configuration in
+source control.
+
 For multi-SCO Slides, home tiles never display or infer module progress: no
 status labels, completion coloring or suspend-data reads. The LMS syllabus
 owns that information. `index_show_module_status` applies only to explicitly

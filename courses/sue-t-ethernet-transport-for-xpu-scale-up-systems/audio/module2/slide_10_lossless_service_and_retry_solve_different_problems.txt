@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+S U E T requires lossless network service on all of its traffic classes. The specification uses Priority Flow Control, or P F C, or credit-based flow control, or C B F C, to provide that service. Their role is to control traffic so the fabric can preserve the required delivery behavior.
+
+Link Layer Retransmission, or L L R, operates at the link. Transport retransmission operates at the packet-delivery connection. The specification permits removing transport retransmission in a compact endpoint, with the explicit tradeoff that a lost packet becomes fatal to the connection. Keeping Go Back N adds buffering and state but enables transport recovery.
+
+The costs differ. A retransmission-enabled source holds command data until acknowledgement and sizes its buffer for round trip and remote processing time. A lossless fabric must maintain service for every S U E T traffic class. These requirements should be evaluated together rather than collapsed into a single reliability checkbox.
+
+The document also marks boundaries for future work. Congestion control is not required for its single-switch-hop network model. Multi-tier scale-up congestion-control mechanisms are discussed as possible extensions and left for future work. Multi-port failover is likewise a future-work concept.
+
+Those statements matter in procurement and design reviews. An implementation can offer additional mechanisms, but they need their own documented behavior. The base specification's discussion of future work is not evidence that automatic failover or a complete multi-tier congestion-control solution is already provided by every S U E T endpoint.

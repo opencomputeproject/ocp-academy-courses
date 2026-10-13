@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The signal-interface example is a FIFO-like command path using credits. The accelerator writes a command and any associated data, while S U E T provides flow control per destination and virtual channel and on an aggregate-rate basis.
+
+Some widths are fixed in the example, and others are implementation-specific. The transmit cycle field is four bits. The operation-valid field and virtual-channel field are two bits each. The remote accelerator identifier is ten to sixteen bits, supporting the stated one-thousand-to-sixteen-thousand accelerator range. The control width and data width depend on the implementation.
+
+The data-width example makes that last point concrete. If the data bus is two hundred fifty-six bits wide, each cycle carries thirty-two bytes. Eight cycles carry two hundred fifty-six bytes. Changing the bus width changes the serialization choices; the example is not a required width for every design.
+
+The transmit table also includes an error signal, credit information, and reset signals. The receive table gives the corresponding commands and data flowing back toward the accelerator, with its own signal directions. Read each direction explicitly rather than assuming every transmit field has an identical receive counterpart.
+
+The complete tables remain available through the source link. For the integration model, concentrate on what the endpoint must know: which destination and virtual channel own the command, what operation and data it carries, and whether enough credits exist to transfer it. Those are the fields that connect a local interface transaction to the transport's queued work.

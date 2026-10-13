@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; CMD_PDU -> "command P D U"; TC -> "traffic class"; PSN -> "P S N"
+Follow a store request through one S U E T instance. The accelerator supplies the command and its data. The mapping stage assembles them into a command payload data unit, which we'll call a command P D U. Any required address-translation integration happens around this mapping stage.
+
+The transmit buffer places the command into a queue associated with the destination accelerator and traffic class. The buffer reports whether the queue can be serviced, taking account of available space, queued work, and flow-control state. The scheduler selects an eligible queue.
+
+The packing stage reads the available commands from that queue and combines those that fit into a packet payload. A single available command can be sent immediately; the scheduler doesn't wait just to make a fuller packet. We'll examine that rule in the next module.
+
+The reliability layer adds connection information and a packet sequence number, or P S N. The network layer then adds the selected network headers, and the port transmits the packet.
+
+At the destination, the Ethernet and transport checks establish whether the packet can be accepted. For this example, assume the expected sequence number arrives. The receiver buffers the payload, separates it into individual command payload data units, maps their fields to the local command interface, and passes them to the receiving accelerator.
+
+We've now followed delivery through the endpoint. The timing and meaning of the acknowledgement still depend on the selected acknowledgement mode. A command reaching the destination interface and a memory operation completing are separate events to track.

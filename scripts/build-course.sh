@@ -102,7 +102,24 @@ else
     "$PYTHON_BIN" "$SOURCE_DIR/scripts/build_resources.py" "$BUILD_DIR/course.json"
   fi
 
-  "$PYTHON_BIN" "$SKILL_DIR/scripts/render_module.py" "$BUILD_DIR/course.json" --all
+  COURSE_RENDERER="$($PYTHON_BIN - "$SOURCE_DIR/course.json" <<'PY'
+import json
+import sys
+print(json.load(open(sys.argv[1])).get("authoring_renderer") or "")
+PY
+)"
+  if [[ -n "$COURSE_RENDERER" ]]; then
+    # Course-owned renderers are trusted editable source, like build_resources.py.
+    # Keep the renderer with the staged source so later review edits reproduce it.
+    if [[ "$COURSE_RENDERER" != "$(basename "$COURSE_RENDERER")" || "$COURSE_RENDERER" != *.py || ! -f "$SOURCE_DIR/$COURSE_RENDERER" ]]; then
+      echo "authoring_renderer must name an existing Python file in the course folder." >&2
+      exit 1
+    fi
+    cp "$SOURCE_DIR/$COURSE_RENDERER" "$BUILD_DIR/$COURSE_RENDERER"
+    ACADEMY_WIZARD_SKILL_DIR="$SKILL_DIR" "$PYTHON_BIN" "$BUILD_DIR/$COURSE_RENDERER" "$BUILD_DIR/course.json" --all
+  else
+    "$PYTHON_BIN" "$SKILL_DIR/scripts/render_module.py" "$BUILD_DIR/course.json" --all
+  fi
   "$PYTHON_BIN" "$SKILL_DIR/scripts/render_index.py" "$BUILD_DIR/course.json"
 
   if [[ "${SKIP_AUDIO:-0}" == "1" && -z "${EXISTING_AUDIO_DIR:-}" ]]; then

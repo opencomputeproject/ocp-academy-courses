@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+Watch the scheduler service the five transactions in the specification's example. A and B are in separate queues. C and E share one destination-and-traffic-class queue. D is in another queue.
+
+The first eligible queue contains A. A leaves in its own packet. The scheduler doesn't keep A waiting for another transaction to arrive. It then services the queue containing B, which also leaves by itself.
+
+When the scheduler selects the queue containing C, E is already available in that same queue. The packing stage can include both C and E in one packet, provided the configured command and payload limits are satisfied. The scheduler then services the queue containing D.
+
+The illustrated service order is A, B, C with E, then D. That order explains the example; it doesn't prescribe a single scheduler algorithm for every implementation. The system designer selects the scheduling discipline, subject to the requirement that it be work conserving.
+
+Now consider a distinct case. One destination queue is eligible and contains a single command. There is no second command ready to pack with it. Predict what should happen. The command is transmitted. Waiting only to improve packing would violate the stated rule that transactions aren't delayed for packing.
+
+Packing is therefore an opportunity created by available work. It can improve efficiency when several commands are queued, including when the accelerator interface supplies them faster than the port can send. Eligibility, flow control, and the configured limits still determine what can leave. There is no invented packet-fill timer in this model.

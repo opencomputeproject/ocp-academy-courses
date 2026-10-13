@@ -1,0 +1,10 @@
+# pronunciation: SUE-T -> "S U E T"; UET -> "U E T"; CMD_PDU -> "command P D U"
+The semantic layer tells the receiver what the transported memory operation means. S U E T uses the Unified Local profile of U E T to represent requests and their associated responses. The defined request operations include a no-operation command, writes, reads, atomics, and fetching atomics. Implementations can also use the reserved vendor-defined operation range.
+
+The request header has a twelve-byte form and a compressed eight-byte form. The compressed variant carries a thirty-two-bit address offset relative to the previous address. That preceding address context is part of how the smaller representation works. We'll examine specific compression constraints when we reach A X I integration.
+
+A request can carry up to sixteen bytes of additional accelerator-specific state. The profile also allows up to sixteen transactions to be packed into one packet. Each transaction keeps its semantic information even when several share the same packet.
+
+The response format uses eight bytes of response state per transaction, and up to sixteen responses can be packed into an acknowledgement packet. A response can carry data, or use a zero payload length when there is no data. Its return code distinguishes success from the defined error cases.
+
+Keep the transaction header separate from the packet's reliability header and network envelope. Compression, packing, and acknowledgement choices affect different parts of the wire representation. Understanding those layers will help you compare efficiency without confusing a smaller header with a different memory operation.

@@ -1,0 +1,8 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+The interface mapping has several independent constraints. The command, management, and Ethernet paths have different roles, and optional management-packet transport is unreliable.
+
+The A X I mapping uses a sixty-bit address, a configured identifier width, and explicitly configured opaque user state. Identifier-to-context mapping is reversible. Enabled write-strobe bytes must be contiguous.
+
+Ordering is separate for reads and writes within an identifier. Neither a shared identifier nor ordered packet delivery provides a universal cross-operation memory order.
+
+Finally, check the encoding boundaries. Four thousand ninety-six bytes needs the uncompressed address format. A changed extension-header length also needs that format, and bursts must respect the four-kilobyte address boundary. Carry those concrete constraints into the completion case in the next module.

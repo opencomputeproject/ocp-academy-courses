@@ -1,0 +1,8 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; NACK -> "knack"; PDC -> "P D C"; PSN -> "P S N"; AXI -> "A X I"; AxID -> "A X I identifier"; AxUSER -> "A X user"; WSTRB -> "write strobe"; UET -> "U E T"; RODL -> "R O D L"
+An implementation's completion contract connects reported success to a specific event. The four write-completion alternatives cover different portions of the path, from destination memory back to the initiator's local queue.
+
+Earlier completion can reduce what the response establishes about memory visibility and error coverage. A shared A X I identifier does not fill in missing read/write cross-ordering. An encoding choice does not choose the completion event.
+
+The initiator still needs the response or acknowledgement result that cleans up the outstanding request. Treat that obligation separately from any early application-facing success.
+
+Finally, choose the operation set, buffers, retransmission, acknowledgement mode, and connection allocation against the workload's actual requirements. The specification's examples help frame those choices; the implementation needs to make its own contract clear.

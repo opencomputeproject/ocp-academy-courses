@@ -1,0 +1,12 @@
+# pronunciation: SUE-T -> "S U E T"; XPU -> "X P U"; ACK -> "ack"; PSN -> "P S N"; CMD_PDU -> "command P D U"
+Compare two ways to acknowledge the same successful store. Begin with Delivery ack mode. The source sends a request, and the remote S U E T delivers it to the destination accelerator. The delivery acknowledgement returns for that request packet.
+
+That ack does not generate the response expected by the source's command interface. The destination accelerator produces its own response, which S U E T transports back as a separate command. That response packet has its own sequence number and is itself acknowledged. The accelerator interface associates the returned response with the original request.
+
+Now start the comparison again in Operational ack mode. Here, S U E T retains command state so it can associate the destination's response with the outstanding request. The destination transport waits for the accelerator responses for all commands in that packet before acknowledging the packet.
+
+Suppose every operation succeeds and none returns data. The destination can communicate those results through the acknowledged packet sequence number. The source transport uses its retained state to generate the corresponding success responses for the local command interface. This exchanges more local state for less response information carried over the wire.
+
+In Operational ack mode, data-bearing responses and error responses need dedicated acknowledgement packets. A load, for example, still needs its returned data. Operational acknowledgement doesn't remove that information requirement.
+
+The comparison gives us two useful questions. Has the command been delivered, and has the destination produced the operation's response? Neither question, by itself, defines when every other observer can see data in memory. For that, we also need the completion and global-observability contract.
