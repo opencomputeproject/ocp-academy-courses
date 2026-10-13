@@ -7,6 +7,7 @@ import {chromium} from 'playwright';
 
 if (!process.argv[2]) throw new Error('Usage: node test_syllabus_home_browser.mjs <built-open-dc-package> [qa-folder]');
 const pkg = path.resolve(process.argv[2]);
+const course = JSON.parse(await fs.readFile(path.join(pkg, 'course.json'), 'utf8'));
 const qa = path.resolve(process.argv[3] || path.join(pkg, '..', 'syllabus-home-qa'));
 await fs.mkdir(qa, {recursive: true});
 const checks = [], errors = [];
@@ -98,7 +99,12 @@ try {
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('ArrowRight');
     check(`M${m} saves each visited slide`, await page.evaluate(() => testCalls.filter(c => c[0] === 'set' && c[1] === 'cmi.core.lesson_location')), [3,4,5].map(s => ['set', 'cmi.core.lesson_location', `module${m}:slide${s}`]));
-    check(`M${m} keeps course-home link`, await page.getByRole('link', {name:'Course home', exact:true}).getAttribute('href'), 'index.html');
+    if (course.scorm?.organization === 'single-sco' || course.scorm?.navigation === 'direct' || course.scorm?.compatibility_profile) {
+      check(`M${m} keeps approved course-home link`, await page.getByRole('link', {name:'Course home', exact:true}).getAttribute('href'), 'index.html');
+    } else {
+      check(`M${m} keeps its course mark`, await page.locator('.module-badge-logo img').count(), 1);
+      check(`M${m} does not imply a direct LMS home handoff`, await page.getByRole('link', {name:'Course home', exact:true}).count(), 0);
+    }
   }
   check('No JavaScript errors', errors, []);
   await fs.writeFile(path.join(qa,'browser-results.json'), JSON.stringify({passed:checks.length,checks,silent:true,liveLMSAcceptance:false},null,2)+'\n');

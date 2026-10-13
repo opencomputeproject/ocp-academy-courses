@@ -9,11 +9,11 @@ This standalone SCORM course belongs to the **Optical Connectivity & Reliability
 | Module | Title | Narrated Duration | Summary |
 |---|---|---:|---|
 | 1 | Why AI Infrastructure Is Changing Optics | 12 min | Accelerator fabrics, rising fiber counts, and the different pressures created by scale-up, scale-out, and scale-across. |
-| 2 | Power, Thermal, and Serviceability Shifts | 14 min | Co-packaged optics, expanded beam optics, rear blind mating, and the operational constraints they address. |
+| 2 | Power, Thermal, and Serviceability Shifts | 15 min | Co-packaged optics, expanded beam optics, rear blind mating, and the operational constraints they address. |
 | 3 | Density and Testability in the Optical Plant | 11 min | Multicore fiber, fan-in and fan-out connectivity, compact harnesses, and emerging testing considerations. |
 | 4 | Latency, Quantum, and the Adoption Horizon | 14 min | Hollow-core fiber, latency-sensitive infrastructure, hybrid quantum-classical systems, and technology maturity. |
 
-The course contains approximately 52 minutes of narration and is designed for about 60 minutes of learner time including knowledge checks and interaction.
+The course contains 52.8 minutes of narration and is designed for about 60 minutes of learner time including knowledge checks and interaction.
 
 ## Media
 
@@ -22,6 +22,10 @@ Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editabl
 Module 1's course overview thanks the OCP community volunteers from VIAVI Solutions, SENKO Advanced Components, and Sumitomo Electric Lightwave. Their supplied, unmodified logos are stored in `resources/images/contributors/`; this visual acknowledgment does not change the narration.
 
 The 800 x 400 LMS catalog poster is `thumbnail.png`. Its editable source and renderer are in `poster/`, using the shared Academy logo and Lato font assets. Re-render it from the repository root with `node courses/optics/introduction-to-emerging-optical-technologies/poster/render_thumbnail.cjs` (requires Playwright and Chrome).
+
+The English edition uses the maintained Slides player: centered responsive navigation, transcript and narration controls, per-slide bookmarks, restored quiz attempts, local glossary/resource pills, and icon-based media controls. Course Home uses informational module tiles and a first-module start action; the LMS Syllabus owns separate module launches and completion tracking. SCORM 1.2 and the existing five syllabus entries are preserved.
+
+The three course-owned teaching animations are full-HD, finite master passes with clean final states. Their `animation.html` sources declare the duration/poster time and expose `window.renderAt(seconds)` for deterministic sampling through `skills/academy-wizard/scripts/record_css_animation.mjs`. The supplied expanded-beam video is retained unchanged. Standalone SVG figures and reviewed, hash-bound media text inventories keep glossary placement auditable.
 
 ## Build
 

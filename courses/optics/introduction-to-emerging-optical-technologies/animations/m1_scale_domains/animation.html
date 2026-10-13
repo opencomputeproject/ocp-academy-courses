@@ -7,14 +7,14 @@
   <style>
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
       font-family: Arial, Helvetica, sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
     .facility-label { font-size: 28px; font-weight: 800; fill: #343895; }
     .rack-label { font-size: 18px; font-weight: 800; fill: #343895; }
@@ -32,9 +32,19 @@
     }
   </style>
 </head>
-<body>
+<body data-duration-ms="18000" data-poster-ms="14000">
 <svg viewBox="0 0 1280 720" role="img" aria-label="Animated nested view of scale-up links within a rack, scale-out links across racks, and scale-across links between data-center buildings.">
   <defs>
+    <mask id="device-label-clearance" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="720">
+      <rect width="1280" height="720" fill="#ffffff"/>
+      <g fill="#000000">
+        <rect x="188" y="272" width="34" height="46" rx="6"/>
+        <rect x="234" y="272" width="34" height="46" rx="6"/>
+        <rect x="188" y="330" width="34" height="46" rx="6"/>
+        <rect x="234" y="330" width="34" height="46" rx="6"/>
+        <rect x="190" y="396" width="76" height="30" rx="6"/>
+      </g>
+    </mask>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1f2937" flood-opacity="0.16"/>
     </filter>
@@ -130,7 +140,7 @@
       <text x="919" y="508" text-anchor="middle" class="switch-label">Fabric switch</text>
     </g>
 
-    <g id="base-links" fill="none" stroke-linecap="round">
+    <g id="base-links" fill="none" stroke-linecap="round" mask="url(#device-label-clearance)">
       <path id="up-path-1" d="M205 318 V390 Q205 404 220 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
       <path id="up-path-2" d="M251 318 V390 Q251 404 238 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
       <path id="up-path-3" d="M205 376 V390 Q205 404 220 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
@@ -159,7 +169,7 @@
       <text id="across-label" x="920" y="592" text-anchor="middle" class="domain-label" fill="#007f96">Scale-across</text>
     </g>
 
-    <g id="up-pulses"></g>
+    <g id="up-pulses" mask="url(#device-label-clearance)"></g>
     <g id="out-pulses"></g>
     <g id="across-pulses"></g>
   </g>
@@ -227,8 +237,7 @@
     if (t < 4.9) return mixCamera(cameras.up, cameras.out, (t - 3.6) / 1.3);
     if (t < 8.2) return cameras.out;
     if (t < 9.5) return mixCamera(cameras.out, cameras.across, (t - 8.2) / 1.3);
-    if (t < 16.2) return cameras.across;
-    return mixCamera(cameras.across, cameras.up, (t - 16.2) / 1.8);
+    return cameras.across;
   }
 
   function setCamera(camera) {
@@ -243,7 +252,7 @@
   }
 
   function stageAt(t) {
-    if (t < 4.25 || t >= 17.1) return 'up';
+    if (t < 4.25) return 'up';
     if (t < 8.85) return 'out';
     if (t < 13.1) return 'across';
     return 'all';
@@ -334,7 +343,7 @@
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = Math.max(0, Math.min(rawTime, duration));
     const stage = stageAt(t);
     setCamera(cameraAt(t));
     setStage(stage, t);

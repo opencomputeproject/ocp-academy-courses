@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
 const sourceDir = __dirname;
 const htmlPath = path.join(sourceDir, 'animation.html');
 const framesDir = process.argv[2] || path.join('/tmp', 'm4_anti_resonant_guidance_frames');
-const fps = Number(process.env.ANIMATION_FPS || 24);
+const fps = Number(process.env.ANIMATION_FPS || 30);
 const duration = Number(process.env.ANIMATION_DURATION || 16);
 const frameCount = Math.round(fps * duration);
 
@@ -16,7 +16,7 @@ fs.mkdirSync(framesDir, { recursive: true });
 (async () => {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: 1920, height: 1080 },
     deviceScaleFactor: 1,
   });
   await page.goto(pathToFileURL(htmlPath).href, { waitUntil: 'load' });
