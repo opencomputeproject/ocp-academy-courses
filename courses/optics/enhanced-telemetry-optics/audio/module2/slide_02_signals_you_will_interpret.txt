@@ -1,9 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-By the end of this module, you will be able to do four things. First, you will distinguish a local telemetry query from a remote one without needing to memorize command fields.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+By the end of this module, you will be able to connect measurements to operating decisions.
 
-Second, you will classify the main metric families: signal quality, error and correction behavior, recovery counters, environment, and module context.
+First, you will distinguish local and remote queries, and explain why software discovers module capability before interpreting data. The specification release number and the module's telemetry-version register are different identifiers.
 
-Third, you will explain the link-health score as a worst-category view. That design choice matters because one bad category can make a link operationally risky even if other categories look healthy.
+Second, you will classify signal quality, error and correction behavior, recovery counters, environment, and module identity. You will keep the host and media sides separate so a measurement remains tied to its interface.
 
-Finally, you will describe how summary flags and masks help monitoring systems stay actionable, especially when some counters should be included or excluded for a specific deployment.
-You do not need to memorize every field to be effective. You need to recognize what category a value belongs to, what question it can answer, and what kind of follow-up evidence it suggests.
+Third, you will explain the health score as the minimum of supported category scores. You will also use the lowest-category bitmap to identify every category tied for the worst result.
+
+Finally, you will distinguish flags, counter masks, threshold configuration, and autonomous shutdown. These controls have different purposes and defaults. A summary score is only interpretable when software knows which counters participate and which thresholds are effective.
+
+The goal is to recognize what a value means, where it came from, and what follow-up evidence it suggests.

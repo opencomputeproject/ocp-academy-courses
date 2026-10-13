@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-The host SDK and command-line APIs are where the specification becomes useful to operators. The spec lists categories that map directly to field workflows.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+The host SDK turns the common module interface into operator workflows. The specification describes a sonic implementation and a set of command-line API categories.
 
-Standard C M I S access lets software read local module state. Remote C M I S access lets software extract standard data from the far endpoint. Telemetry download exposes local or remote module parameters. Event-log commands read recent events, clear logs, and adjust hysteresis. Firmware commands manage local or remote update workflows.
+Local and remote C M I S access expose register state. Telemetry download displays measurements for a selected endpoint, side, and port. Event tools retrieve recent history in human-readable form, control hysteresis, and clear history only when intended.
 
-The spec also includes epoch time and module link rating display. Those categories matter because they connect the evidence chain: current values, historical events, time correlation, and a concise health score. A good API makes that chain usable during qualification and during incidents.
-The API categories should also map to documentation and training. Operators should know which command retrieves current telemetry, which command retrieves recent events, which command clears history, and which command changes behavior.
+Firmware tools handle local or remote maintenance with the appropriate command family and checked lifecycle results. Module-time controls provide the reference needed to compare records, while link-rating display gives a concise entry point into the underlying evidence.
+
+Qualification and diagnostic tools also need capability discovery, counter-mask control, threshold control, and shutdown-state verification. The lower-level commands define those operations even when a particular user interface groups them differently.
+
+Keep reads and configuration changes clearly distinguished. Retrieving history, clearing history, and changing how the module reacts are different actions.
+
+A useful tool reports the destination, supported capability, effective configuration, and command result along with the value. That context is what makes output reliable during a real incident.

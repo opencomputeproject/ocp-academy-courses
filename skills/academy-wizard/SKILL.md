@@ -80,6 +80,8 @@ A folder, sitting where the user asked for it, with this exact shape:
 
 For Slides, every `moduleN.html` is a standalone slide deck with narration and prev/next navigation; `index.html` is the course home. The default multi-SCO organization tracks modules separately. An explicitly selected SCORM 1.2 single-SCO organization adds `launch.html`, keeps one LMS session open across those pages, and completes the course only after all modules and their quiz gates are complete. Read `references/scorm_packaging.md` for configuration and migration tradeoffs. For Scrolling, `index.html` is the sole SCO and contains the course cover, left lesson table of contents, all lesson blocks, Continue gates, and course-level completion. Both styles derive all learner content from readable `course.json`, retain binary media as resources, and register every runtime file in the manifest.
 
+**Review Slides through the generated course pages by default.** Use `index.html` for the course home and `module1.html` through `moduleN.html` for module review. Review layout, narration, media, interactions, and navigation in those actual course pages. Do not create a separate review site, dashboard, or duplicate review UI unless the user explicitly requests one. Use the existing `?review=1` option when a fresh editorial pass without saved learner progress is useful; continue to verify learner behavior and tracking in normal playback and the target LMS. If browser or media behavior requires HTTP(S), serve the same generated course pages with a local server. Serving the course does not require a separate review site.
+
 ## The five phases of the wizard
 
 The wizard has five gates. Walk through them in order. Each gate ends with the user explicitly approving — don't proceed without it.
@@ -244,6 +246,8 @@ Then present the finished folder to the user with a `computer://` link to `index
 ```
 [Open your new OCP Academy course](computer:///<absolute-path>/index.html)
 ```
+
+For Slides, include direct links to each generated `moduleN.html` alongside the course-home link at the review handoff and final delivery.
 
 ## Key references
 

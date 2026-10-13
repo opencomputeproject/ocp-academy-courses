@@ -69,7 +69,7 @@
   <g id="flow-card-1" transform="translate(252 180)">
     <rect id="flow-bg-1" width="144" height="150" rx="16" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
     <circle cx="72" cy="42" r="22" fill="#343895"/>
-    <text x="72" y="53" text-anchor="middle" class="icon">42</text>
+    <text x="72" y="53" text-anchor="middle" class="icon">40</text>
     <text x="72" y="87" text-anchor="middle" class="flow-title">Health score</text>
     <text x="72" y="116" text-anchor="middle" class="flow-note">weak category</text>
   </g>
@@ -194,7 +194,7 @@
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = clamp(rawTime, 0, duration);
     const stage = clamp((t - 1.0) / 12.8);
     const p = flowPath.getPointAtLength(flowPath.getTotalLength() * stage);
     pulse.setAttribute('cx', p.x);

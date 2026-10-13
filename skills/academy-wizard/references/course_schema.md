@@ -2,6 +2,8 @@
 
 The wizard maintains a single `course.json` in the working area. It's the source of truth for everything — outline, scripts, figures, manifest. Every render script consumes it.
 
+For a long Slides home heading, `index_title_soft_breaks` may list words containing discretionary U+00AD soft hyphens, such as `["Infra\u00adstructure"]`. Removing the soft hyphens must yield an exact word in `course_title`; the field cannot retitle the course. Breaks affect only the visible home heading, preserving the canonical document and LMS titles. The default is an empty list. Shared home styles allow long words to wrap within narrow viewports without reducing the maintained typography.
+
 ## Top-level shape
 
 ```json

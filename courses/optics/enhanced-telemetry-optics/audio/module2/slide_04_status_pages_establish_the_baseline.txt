@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Before we talk about health scores, the module needs baseline status. The spec points to common C M I S Bank zero pages, configuration and status pages, V D M pages, C D B command pages, C D B payload pages, and custom vendor pages.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; DSP -> D S P; SDK -> S D K; API -> A P I
+Capability discovery comes before telemetry interpretation. A field that is unsupported or a remote partner that is unreachable should not appear as a healthy zero.
 
-For this course, the important point is not the exact page number for every field. The important point is that enhanced telemetry sits on top of a structured management interface. The host can retrieve standard identity and status information, then use the enhanced telemetry definitions to ask deeper reliability questions.
+The version one point zero point zero specification defines behavior advertised as Telemetry Version two. That protocol identifier is reported on page one, byte one hundred ninety-one. It is not the document release number.
 
-That layering keeps the course practical. You should know where the detailed maps live, but your first mental model should be: identity and state first, then measurements, then health interpretation.
-Baseline pages are also how software avoids misreading context. Identity, capability, and state information should be checked before a tool assumes that a telemetry field is available, current, or meaningful for the module under test.
+Software also checks in-band feature support and whether the communication lane is established. Those are separate questions. Some modules support automatic in-band lane detection, allowing a basic link with a partner that lacks enhanced telemetry. Basic link-up alone therefore does not prove remote visibility.
+
+The capability-advertisement command, eight thousand hex, returns supported command-group bitmaps or supported metric lists for a local module or selected remote partner. Software uses those results before issuing operations or interpreting measurements.
+
+Standard C M I S identity and status pages, V D M pages, and the C D B command and payload areas provide the surrounding management context. The practical sequence is identity, capability, state, measurements, then health interpretation.

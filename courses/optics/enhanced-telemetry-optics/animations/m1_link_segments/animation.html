@@ -49,7 +49,7 @@
 
   <rect width="1280" height="720" fill="#f7f9fc"/>
   <rect x="34" y="28" width="1212" height="664" rx="24" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"/>
-  <text x="640" y="82" text-anchor="middle" class="title">A Link Is Three Monitored Segments</text>
+  <text x="640" y="82" text-anchor="middle" class="title">Three Interfaces, Six Directions</text>
   <text id="subtitle" x="640" y="114" text-anchor="middle" class="subtitle">Telemetry keeps the electrical and optical evidence separate.</text>
 
   <g id="fabric" transform="translate(0 12)">
@@ -85,9 +85,9 @@
     <path id="seg-host" d="M952 313 H1014" fill="none" stroke="#8dc63f" stroke-width="13" stroke-linecap="round" opacity="0.38"/>
     <path id="return-optical" d="M774 347 C680 432 600 432 506 347" fill="none" stroke="#00a7c4" stroke-width="9" stroke-linecap="round" opacity="0.24"/>
 
-    <text x="297" y="205" text-anchor="middle" class="segment-label">Switch electrical</text>
-    <text x="640" y="194" text-anchor="middle" class="segment-label">Optical path</text>
-    <text x="983" y="205" text-anchor="middle" class="segment-label">Host electrical</text>
+    <text x="297" y="180" text-anchor="middle" class="segment-label">Switch electrical</text>
+    <text x="640" y="170" text-anchor="middle" class="segment-label">Optical path</text>
+    <text x="983" y="180" text-anchor="middle" class="segment-label">Host electrical</text>
 
     <rect id="highlight-switch" x="66" y="206" width="452" height="226" rx="28" fill="none" stroke="#8dc63f" stroke-width="6" opacity="0"/>
     <rect id="highlight-optical" x="480" y="190" width="320" height="268" rx="38" fill="none" stroke="#d88911" stroke-width="7" opacity="0"/>
@@ -105,25 +105,25 @@
     <g id="card-switch" transform="translate(126 500)">
       <rect width="270" height="112" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
       <text x="22" y="35" class="card-title">Switch electrical</text>
-      <text id="score-switch" x="22" y="75" class="card-score">96</text>
-      <rect x="78" y="58" width="160" height="14" rx="7" fill="#dce2ea"/>
-      <rect id="bar-switch" x="78" y="58" width="154" height="14" rx="7" fill="#8dc63f"/>
+      <text id="score-switch" x="22" y="75" class="card-score">OK</text>
+      <rect x="100" y="58" width="140" height="14" rx="7" fill="#dce2ea"/>
+      <rect id="bar-switch" x="100" y="58" width="134" height="14" rx="7" fill="#8dc63f"/>
       <text x="22" y="99" class="card-note">local evidence</text>
     </g>
     <g id="card-optical" transform="translate(505 500)">
       <rect id="card-optical-bg" width="270" height="112" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
       <text x="22" y="35" class="card-title">Optical path</text>
-      <text id="score-optical" x="22" y="75" class="card-score">94</text>
-      <rect x="78" y="58" width="160" height="14" rx="7" fill="#dce2ea"/>
-      <rect id="bar-optical" x="78" y="58" width="150" height="14" rx="7" fill="#8dc63f"/>
+      <text id="score-optical" x="22" y="75" class="card-score">OK</text>
+      <rect x="100" y="58" width="140" height="14" rx="7" fill="#dce2ea"/>
+      <rect id="bar-optical" x="100" y="58" width="134" height="14" rx="7" fill="#8dc63f"/>
       <text id="note-optical" x="22" y="99" class="card-note">middle segment</text>
     </g>
     <g id="card-host" transform="translate(884 500)">
       <rect width="270" height="112" rx="16" fill="#eef7f9" stroke="#00a7c4" stroke-width="3"/>
       <text x="22" y="35" class="card-title">Host electrical</text>
-      <text id="score-host" x="22" y="75" class="card-score">95</text>
-      <rect x="78" y="58" width="160" height="14" rx="7" fill="#dce2ea"/>
-      <rect id="bar-host" x="78" y="58" width="152" height="14" rx="7" fill="#00a7c4"/>
+      <text id="score-host" x="22" y="75" class="card-score">OK</text>
+      <rect x="100" y="58" width="140" height="14" rx="7" fill="#dce2ea"/>
+      <rect id="bar-host" x="100" y="58" width="134" height="14" rx="7" fill="#00a7c4"/>
       <text x="22" y="99" class="card-note">remote evidence</text>
     </g>
   </g>
@@ -173,13 +173,13 @@
   }
 
   function setScore(score, scoreId, barId, color) {
-    document.getElementById(scoreId).textContent = String(Math.round(score));
-    document.getElementById(barId).setAttribute('width', String(160 * clamp(score / 100)));
+    document.getElementById(scoreId).textContent = score < 55 ? 'LOW' : 'OK';
+    document.getElementById(barId).setAttribute('width', String(140 * clamp(score / 100)));
     document.getElementById(barId).setAttribute('fill', color);
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = clamp(rawTime, 0, duration);
     const cycle = (t % 4.8) / 4.8;
     pulseNodes.forEach((node, i) => {
       const trailProgress = (cycle - i * 0.028 + 1) % 1;
@@ -190,10 +190,9 @@
       node.setAttribute('opacity', String(clamp(head)));
     });
 
-    const degrade = windowValue(t, 5.6, 10.9, 0.9);
+    const degrade = smooth((t - 5.6) / 0.9);
     const confirm = windowValue(t, 10.2, 14.4, 0.8);
-    const reset = smooth((t - 14.2) / 1.3);
-    const opticalScore = mix(94, 38, degrade * (1 - reset));
+    const opticalScore = mix(80, 40, degrade);
     const opticalColor = opticalScore < 55 ? '#d88911' : '#8dc63f';
     setScore(96, 'score-switch', 'bar-switch', '#8dc63f');
     setScore(opticalScore, 'score-optical', 'bar-optical', opticalColor);
