@@ -207,12 +207,26 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     }} catch(e) {{}}
   }}'''
 
-    # Split course_title at last space to allow a colored "span" piece, matching the reference.
-    parts = course_title.rsplit(" ", 1)
+    # Discretionary word breaks affect the visible heading only.
+    # Preserve the canonical title in the document title and LMS manifest.
+    heading_title = course_title
+    soft_breaks = course.get("index_title_soft_breaks", [])
+    if not isinstance(soft_breaks, list):
+        raise ValueError("index_title_soft_breaks must be an array of words containing soft hyphens")
+    for broken_word in soft_breaks:
+        if not isinstance(broken_word, str) or "\u00ad" not in broken_word or any(c.isspace() for c in broken_word):
+            raise ValueError("index_title_soft_breaks entries must be single words containing soft hyphens")
+        original_word = broken_word.replace("\u00ad", "")
+        if original_word not in course_title.split():
+            raise ValueError("index_title_soft_breaks entries must match a word in course_title when soft hyphens are removed")
+        heading_title = heading_title.replace(original_word, broken_word)
+
+    # Split the heading at its last space for the reference's colored suffix.
+    parts = heading_title.rsplit(" ", 1)
     if len(parts) == 2 and any(c.isdigit() or c == "." for c in parts[1]):
         title_html = f'{esc(parts[0])} <span>{esc(parts[1])}</span>'
     else:
-        title_html = esc(course_title)
+        title_html = esc(heading_title)
 
     font_links = (f'<link rel="stylesheet" href="{esc(course["local_font_stylesheet"])}">'
                   if course.get("local_font_stylesheet") else '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">')

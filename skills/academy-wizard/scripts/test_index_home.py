@@ -50,6 +50,27 @@ class IndexHomeTests(unittest.TestCase):
         self.assertFalse(dom.by_class('status'))
         self.assertNotIn('SCORM.getSuspendData()', markup)
 
+    def test_discretionary_word_break_preserves_canonical_title(self):
+        self.course['course_title'] = 'Thermal Boundaries in AI Infrastructure'
+        self.course['index_title_soft_breaks'] = ['Infra\u00adstructure']
+        markup, _ = self.render()
+        self.assertIn('<h1>Thermal Boundaries in AI Infra\u00adstructure</h1>', markup)
+        self.assertIn('<title>Thermal Boundaries in AI Infrastructure</title>', markup)
+        self.assertNotIn('\u00ad', render_manifest(self.course, Path('.')))
+
+    def test_discretionary_word_break_cannot_retitle_the_course(self):
+        for invalid in ['Infra\u00adstructure', ['Infrastructure'], ['Other\u00adword'], ['Home\u00ad Test']]:
+            with self.subTest(value=invalid):
+                self.course['index_title_soft_breaks'] = invalid
+                with self.assertRaisesRegex(ValueError, 'index_title_soft_breaks'):
+                    self.render()
+
+    def test_discretionary_word_break_preserves_escaping_and_suffix_markup(self):
+        self.course['course_title'] = 'span & 3.0'
+        self.course['index_title_soft_breaks'] = ['s\u00adpan']
+        markup, _ = self.render()
+        self.assertIn('<h1>s\u00adpan &amp; <span>3.0</span></h1>', markup)
+
     def test_authorized_direct_tile_override_is_preserved(self):
         self.course['scorm']['navigation'] = 'direct'
         _, dom = self.render()
