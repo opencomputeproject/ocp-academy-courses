@@ -70,6 +70,16 @@ try {
   };
   await fs.writeFile(path.join(tmp, 'mobile-teaching.html'), execFileSync(process.env.PYTHON || 'python3',
     ['-c', render, scripts], {input: JSON.stringify(mobileTeaching), encoding: 'utf8'}));
+  const longWord = structuredClone(mobileTeaching);
+  longWord.language = 'en-US';
+  longWord.modules[0].slides[1].title = 'Infrastructure';
+  await fs.writeFile(path.join(tmp, 'long-word.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(longWord), encoding: 'utf8'}));
+  const cjkTitle = structuredClone(longWord);
+  cjkTitle.language = 'zh-CN';
+  cjkTitle.modules[0].slides[1].title = '\u5149\u5b66\u8fde\u63a5\u4e0e\u57fa\u7840\u8bbe\u65bd';
+  await fs.writeFile(path.join(tmp, 'cjk-title.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(cjkTitle), encoding: 'utf8'}));
   browser = await chromium.launch({headless: true, args: ['--mute-audio']});
   const context = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
   await context.route(/^https?:/, route => route.abort());
@@ -169,6 +179,26 @@ try {
         'Mobile glossary definition sits above the 112px control bar');
     }
   }
+  await page.setViewportSize({width:320,height:640});
+  await page.goto(url('long-word') + '?review=1&slide=2');
+  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => document.getAnimations().forEach(animation => {
+    if (Number.isFinite(animation.effect.getTiming().iterations)) {
+      try { animation.finish(); } catch (_) {}
+    }
+  }));
+  check(await page.locator('.slide.active .slide-title').evaluate(heading => {
+    const range = document.createRange(); range.selectNodeContents(heading);
+    return Array.from(range.getClientRects()).every(box => box.left >= 24 && box.right <= innerWidth - 24);
+  }), true, 'A long heading word fits a narrow screen without breaking mid-word');
+  await page.setViewportSize({width:1440,height:960});
+  check(await page.locator('.slide.active .slide-title').evaluate(heading => heading.style.fontSize), '',
+    'Widening restores the authored heading size');
+  await page.setViewportSize({width:320,height:640});
+  await page.goto(url('cjk-title') + '?review=1&slide=2');
+  await page.evaluate(() => document.fonts.ready);
+  check(await page.locator('.slide.active .slide-title').evaluate(heading => heading.style.fontSize), '',
+    'CJK word segmentation preserves naturally wrapping title typography');
   await page.setViewportSize({width:1440,height:960});
   await page.addInitScript(() => {
     window.Audio = function() {

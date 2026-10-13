@@ -1,4 +1,32 @@
 // This template runs inside the module closure. Controls do not modify defaults.
+const authoredHeadingSizes = new WeakMap();
+function fitHeadingWords() {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  if (!context) return;
+  document.querySelectorAll('.slide-title, .hero-title').forEach(heading => {
+    if (!authoredHeadingSizes.has(heading)) authoredHeadingSizes.set(heading, heading.style.fontSize);
+    heading.style.fontSize = authoredHeadingSizes.get(heading);
+    const width = heading.clientWidth;
+    if (!width) return;
+    const style = getComputedStyle(heading);
+    context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const tracking = parseFloat(style.letterSpacing) || 0;
+    const words = typeof Intl.Segmenter === 'function'
+      ? Array.from(new Intl.Segmenter(document.documentElement.lang || 'en', {granularity: 'word'}).segment(heading.textContent))
+          .filter(segment => segment.isWordLike).map(segment => segment.segment)
+      : heading.textContent.trim().split(/[\s\u2010-\u2015-]+/);
+    const widest = Math.max(0, ...words.map(word => {
+      const text = style.textTransform === 'uppercase' ? word.toUpperCase() : word;
+      return context.measureText(text).width + Math.max(0, Array.from(text).length - 1) * tracking;
+    }));
+    // Preserve authored type sizes unless a single word cannot fit its container.
+    if (widest > width) heading.style.fontSize = `${parseFloat(style.fontSize) * width / widest * .99}px`;
+  });
+}
+fitHeadingWords();
+document.fonts?.ready.then(fitHeadingWords);
+window.addEventListener('resize', fitHeadingWords);
 const transcriptPanel = document.createElement('aside');
 transcriptPanel.id = 'transcriptPanel'; transcriptPanel.className = 'transcript-panel';
 transcriptPanel.setAttribute('aria-label', 'Slide transcript'); transcriptPanel.hidden = true;

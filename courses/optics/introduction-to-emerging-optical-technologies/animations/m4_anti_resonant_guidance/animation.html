@@ -7,14 +7,14 @@
   <style>
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
       font-family: Arial, Helvetica, sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
     .eyebrow { font-size: 15px; font-weight: 800; fill: #6fa030; }
     .label { font-size: 21px; font-weight: 800; fill: #343895; }
@@ -22,7 +22,7 @@
     .status { font-size: 23px; font-weight: 800; fill: #1f2937; }
   </style>
 </head>
-<body>
+<body data-duration-ms="16000" data-poster-ms="12000">
 <svg viewBox="0 0 1280 720" role="img" aria-label="Conceptual animation of anti-resonant hollow-core fiber showing light concentrated in an air-filled core surrounded by nested thin-walled glass membranes.">
   <defs>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
@@ -66,15 +66,15 @@
     <rect x="480" y="215" width="660" height="36" rx="18" fill="#f7f9fc" stroke="#d3d9e2" stroke-width="4"/>
     <rect x="458" y="401" width="704" height="72" rx="34" fill="#ffffff" stroke="#b8c1ce" stroke-width="6"/>
     <rect x="480" y="419" width="660" height="36" rx="18" fill="#f7f9fc" stroke="#d3d9e2" stroke-width="4"/>
-    <rect id="air-core-long" x="456" y="292" width="708" height="86" rx="43" fill="url(#air-core)" stroke="#00a7c4" stroke-width="3"/>
+    <rect id="air-core-long" x="456" y="278" width="708" height="114" rx="55" fill="url(#air-core)" stroke="#00a7c4" stroke-width="3"/>
     <path d="M486 335 H1138" fill="none" stroke="#00a7c4" stroke-width="5" stroke-linecap="round" opacity="0.22"/>
     <g id="membrane-highlight" opacity="0">
       <rect x="458" y="197" width="704" height="72" rx="34" fill="none" stroke="#8dc63f" stroke-width="7" filter="url(#glow-green)"/>
       <rect x="458" y="401" width="704" height="72" rx="34" fill="none" stroke="#8dc63f" stroke-width="7" filter="url(#glow-green)"/>
     </g>
     <text x="820" y="226" text-anchor="middle" class="note">Nested thin-walled glass membranes</text>
-    <text x="820" y="326" text-anchor="middle" class="note">Air-filled core</text>
-    <text x="820" y="365" text-anchor="middle" class="note">Most optical power remains in air</text>
+    <text x="820" y="302" text-anchor="middle" class="note" style="font-size:14px">Air-filled core</text>
+    <text x="820" y="379" text-anchor="middle" class="note" style="font-size:14px">Most optical power remains in air</text>
     <g id="long-field-overlap" opacity="0">
       <path id="overlap-top" d="M690 322 C690 300 690 288 690 270" fill="none" stroke="#00a7c4" stroke-width="4" stroke-dasharray="7 7"/>
       <path id="overlap-bottom" d="M690 348 C690 370 690 382 690 400" fill="none" stroke="#00a7c4" stroke-width="4" stroke-dasharray="7 7"/>
@@ -182,14 +182,14 @@
     if (t >= 1.2 && t < 4.6) message = 'Light enters the hollow air core';
     else if (t >= 4.6 && t < 8.0) message = 'Useful wavelengths interact only weakly with the glass';
     else if (t >= 8.0 && t < 11.6) message = 'Anti-resonant membranes suppress coupling into the cladding';
-    else if (t >= 11.6 && t < 14.6) message = 'The guided mode remains concentrated in air';
+    else if (t >= 11.6) message = 'The guided mode remains concentrated in air';
     statusText.textContent = message;
     const active = t < 1.2 || t > 14.8 ? 0 : Math.sin(Math.PI * clamp((t - 1.2) / 13.6));
     statusRect.setAttribute('fill', active > 0.3 ? '#e3f8fb' : '#eefbfd');
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = Math.max(0, Math.min(rawTime, duration));
     const movement = clamp((t - 1.2) / 12.9);
     const progress = smoothstep(movement);
     let opacity = smoothstep((t - 0.8) / 0.6);

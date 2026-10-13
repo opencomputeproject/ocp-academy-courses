@@ -7,14 +7,14 @@
   <style>
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
       font-family: Arial, Helvetica, sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
     .stage-label {
       font-size: 20px;
@@ -40,7 +40,7 @@
     .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
   </style>
 </head>
-<body>
+<body data-duration-ms="16000" data-poster-ms="12000">
 <svg viewBox="0 0 1280 720" role="img" aria-label="Four single-core optical paths pass through fan-in into a four-core multicore trunk and return through fan-out to four single-core paths.">
   <defs>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
@@ -103,9 +103,9 @@
 
   <g id="fan-in-device">
     <path d="M280 276 L410 322 L410 430 L280 476 Z" fill="#eef0fb" stroke="#343895" stroke-width="4"/>
-    <text x="345" y="363" text-anchor="middle" class="stage-label">Fan-in</text>
-    <text x="345" y="389" text-anchor="middle" class="stage-note">Map paths</text>
-    <text x="345" y="412" text-anchor="middle" class="stage-note">to MCF cores</text>
+    <text x="345" y="502" text-anchor="middle" class="stage-label">Fan-in</text>
+    <text x="345" y="528" text-anchor="middle" class="stage-note">Map paths</text>
+    <text x="345" y="551" text-anchor="middle" class="stage-note">to MCF cores</text>
   </g>
 
   <g id="mcf-trunk">
@@ -117,9 +117,9 @@
 
   <g id="fan-out-device">
     <path d="M870 322 L1000 276 L1000 476 L870 430 Z" fill="#eef7f9" stroke="#00a7c4" stroke-width="4"/>
-    <text x="935" y="363" text-anchor="middle" class="stage-label">Fan-out</text>
-    <text x="935" y="389" text-anchor="middle" class="stage-note">Return cores</text>
-    <text x="935" y="412" text-anchor="middle" class="stage-note">to separate paths</text>
+    <text x="935" y="502" text-anchor="middle" class="stage-label">Fan-out</text>
+    <text x="935" y="528" text-anchor="middle" class="stage-note">Return cores</text>
+    <text x="935" y="551" text-anchor="middle" class="stage-note">to separate paths</text>
   </g>
 
   <g id="base-paths" fill="none" stroke-linecap="round">
@@ -215,7 +215,7 @@
     if (t >= 1.2 && t < 4.6) message = 'Four single-core paths enter with distinct identities';
     else if (t >= 4.6 && t < 7.2) message = 'Fan-in maps each path to a specific MCF core';
     else if (t >= 7.2 && t < 10.9) message = 'Four independent cores travel inside shared cladding';
-    else if (t >= 10.9 && t < 14.6) message = 'Fan-out restores the same four mapped paths';
+    else if (t >= 10.9) message = 'Fan-out restores the same four mapped paths';
     statusText.textContent = message;
 
     const dynamicStrength = t < 1.2 || t > 14.8 ? 0 : Math.sin(Math.PI * clamp((t - 1.2) / 13.6));
@@ -225,7 +225,7 @@
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = Math.max(0, Math.min(rawTime, duration));
     const movement = clamp((t - 1.2) / 12.9);
     const progress = smoothstep(movement);
     let opacity = smoothstep((t - 0.8) / 0.6);

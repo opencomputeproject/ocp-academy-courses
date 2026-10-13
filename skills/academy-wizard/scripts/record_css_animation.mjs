@@ -50,6 +50,8 @@ async function setAnimationTime(page, milliseconds) {
       animation.pause();
       animation.currentTime = time;
     }
+    // Existing JavaScript/SVG sources expose a deterministic seconds-based hook.
+    if (typeof window.renderAt === 'function') window.renderAt(time / 1000);
   }, milliseconds);
 }
 
