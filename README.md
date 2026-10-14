@@ -46,6 +46,7 @@ courses/
     module-4-today-and-tomorrow-the-journey/
   lvdc-power-distribution-for-data-centers/
   multipath-reliable-connection-mrc/
+  nvidia-mgx-1-2-rack-and-tray-interfaces/
   ocp-esun-ethernet-for-scale-up-networks/
   ocp-lock-secure-key-management-for-self-encrypting-storage/
   ocp-mhs-modular-plug-and-play-m-pnp/  # v0.7 source preview; teaching media pending
@@ -136,6 +137,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `intro-to-ocp/module-4-today-and-tomorrow-the-journey` | Module 4: Today and Tomorrow (The Journey) |
 | `lvdc-power-distribution-for-data-centers` | LVDC Power Distribution for Data Centers |
 | `multipath-reliable-connection-mrc` | OCP Academy - MRC Technical Overview |
+| `nvidia-mgx-1-2-rack-and-tray-interfaces` | [NVIDIA MGX 1.2 Rack and Tray Interfaces](courses/nvidia-mgx-1-2-rack-and-tray-interfaces/README.md): six narrated modules on mechanical, electrical, and liquid interfaces with source-derived CAD media |
 | `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
 | `ocp-lock-secure-key-management-for-self-encrypting-storage` | OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage |
 | `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) — [v0.7 source preview](courses/ocp-mhs-modular-plug-and-play-m-pnp/README.md) |
