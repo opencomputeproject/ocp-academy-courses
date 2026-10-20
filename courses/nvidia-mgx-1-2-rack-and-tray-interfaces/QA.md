@@ -75,3 +75,12 @@ M3S4's table, alternative text, and automatic table-layout classes. Strict ZIP
 integrity passes with 117 entries; module3.html is the only changed entry relative
 to the preceding delivery. All narration and media are byte-identical. A fresh
 local-file browser review remains unavailable under browser policy.
+
+## M-CRPS companion reference — October 20, 2026
+
+M3S5 links to the OCP contribution catalog filtered by CRPS, beside its existing
+MGX page citation. The official browser page returns eight contributions,
+including M-CRPS base and power-supply design specifications. Source QA passes;
+source/render comparisons limit the change to this one reference. Strict ZIP
+integrity passes with 117 entries, and only module3.html changes. All narration,
+figures, videos, other references, and slide identifiers remain byte-identical.
