@@ -106,6 +106,7 @@ pinning companion specifications to a particular revision:
 | Teaching point | Companion resource |
 |---|---|
 | M1S4 — rack interfaces | [Open Rack / ORv3 Academy learning plan](https://academy.opencompute.org/learn/learning-plans/4/open-rack-and-orv3-past-present-and-future) |
+| M2S5 — micro MGX board form factor | [M-DNO / M-SDNO contributions](https://www.opencompute.org/contributions/?s=SDNO) |
 | M2S7 — management-module shape and pinout | [DC-SCM / DC-SCI contributions](https://www.opencompute.org/contributions/?s=SCM) |
 | M3S5 — Type C power-supply depth option | [M-CRPS contributions](https://www.opencompute.org/contributions/?s=CRPS) |
 | M5S3 — liquid connector locations | [UQD / UQDB contributions](https://www.opencompute.org/contributions/?s=UQD) and [MQD / MQDB contributions](https://www.opencompute.org/contributions/?s=MQD) |
@@ -114,4 +115,8 @@ pinning companion specifications to a particular revision:
 These companion links appear once at the relevant teaching point. MGX 1.2's
 page-specific primary citations and specified interface revisions remain
 applicable; a newer catalog entry does not automatically change those requirements.
-All six destinations were verified on the official sites on October 20, 2026.
+All seven destinations were verified on the official sites on October 20, 2026.
+
+The SDNO catalog filter includes M-DNO and M-SDNO contributions. M2S5 retains
+the MGX specification's DC-MHS DNO Type 2 outline/mounting reference; the related
+M-SDNO catalog material does not imply an additional MGX compliance claim.

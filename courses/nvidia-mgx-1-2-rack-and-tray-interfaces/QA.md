@@ -84,3 +84,16 @@ including M-CRPS base and power-supply design specifications. Source QA passes;
 source/render comparisons limit the change to this one reference. Strict ZIP
 integrity passes with 117 entries, and only module3.html changes. All narration,
 figures, videos, other references, and slide identifiers remain byte-identical.
+
+## M-DNO / M-SDNO companion reference — October 20, 2026
+
+M2S5 links to the requested SDNO-filtered OCP contribution catalog beside its
+existing MGX citation. The official browser page returns nine contributions,
+including M-SDNO specifications/design files and M-DNO specifications. MGX PDF
+page 51 explicitly names DC-MHS DNO Type 2; the teaching and narration preserve
+that identity. The resource label names both M-DNO and M-SDNO.
+
+Source QA passes with zero flags. Source/render comparisons limit the change to
+one reference anchor. The strict ZIP has 117 entries and only module2.html changes
+relative to the preceding delivery; narration, media, identifiers, and other
+package resources remain byte-identical.
