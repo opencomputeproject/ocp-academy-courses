@@ -1,64 +1,40 @@
-# Validation record
+# MGX revision validation - October 20, 2026
 
-Repository preparation and rebuild: October 14, 2026. Shared renderer and runtime
-files are unchanged. The retained figures, teaching videos, and narration scripts
-are byte-identical to the delivered course. `course.json` differs only in portable
-research-source paths and the worksheet's repository-compatible resource path.
-
-## Checks repeated from the repository source
+The approved Summit integration adds M4S3 and M5S5. Narration is revised on M1S3,
+M6S5, and M6S7; 57 existing narration tracks and all six original teaching videos
+are byte-identical to the prior delivery. The overview-card centering correction
+is retained. The course uses six modules and the existing SCORM 1.2 multi-SCO
+organization. The full Summit recording is optional.
 
 | Check | Result |
 |---|---|
-| Slides source QA with `--repo-root` and `--fail-on-flags` | Zero flags; six modules have teaching video, 32 PDF links checked, nine glossary placements checked |
-| SVG arrow/geometry check | Pass for four SVG/HTML source files |
-| Complete shared course build with retained approved narration | Six module pages, home, manifest, resources, and strict LMS ZIP generated successfully |
-| Audio signal QA during build | All 60 tracks pass; zero tail/fade flags |
-| Package validation and ZIP integrity | Pass; 112 packaged files, about 139.3 MiB; every declared runtime asset is present |
-| Portable teaching-media builder | All six five-position previews render using retained poses and measured timing fallback |
-| Portable promotion extraction/composer | All four excerpt sequences and preview frames regenerate from retained course MP4s and actual home screenshot |
-| Promotion encode verification | Both complete 900-frame MP4s decode; seven representative comparisons pass SSIM ≥ 0.995 and PSNR ≥ 45 dB |
-| Source preservation | Approved course content, scripts, fonts, and teaching media match the delivered files after path normalization |
-| Commit hygiene | No generated narration, runtime course HTML, SCORM ZIP, original research download, API key, or machine-specific home path |
+| Course structure | 62 narrated slides, 12 quiz questions, seven teaching videos |
+| Narration runtime | 68.18 minutes measured; about 95 minutes planned learner time |
+| Audio signal QA | All 62 clips pass; zero flags after same-text paragraph repair of M6S5 |
+| Source QA | Zero flags; 38 PDF links and nine glossary placements checked |
+| Desktop/mobile layout | All 124 slide positions checked at 1440 x 960 and 390 x 844; no JavaScript errors or horizontal overflow |
+| Visual inspection | Settled changed slides, source crops, full-resolution figures, and seven decoded video states reviewed |
+| Quiz persistence and review navigation | 50 browser assertions pass, including the shifted M4/M5 quiz positions |
+| New default-loop video controls | 16 real-media browser assertions pass |
+| Shifted M5 synchronized video | 21 real-media browser assertions pass at M5S6 |
+| New animation encode | All 600 frames decode; seven representative frames pass SSIM >= 0.995 and PSNR >= 45 dB |
+| Public Summit PDF | Official linked PDF resolves inline and exactly matches the supplied local deck |
+| Package | Folder validation and strict ZIP integrity pass; only manifest-declared runtime resources are packaged |
 
-From the repository root, reproduce source checks with:
+The reference design's 800 VDC link, 125 A connector discussion, 2036 A clip,
+roadmap, and TBD labels retain their component/generation boundaries. They do not
+replace MGX 1.2 busbar requirements or create adopted standards from the closing
+call to action. The source graph includes the shared low-voltage rack busbar.
 
-```bash
-python skills/academy-wizard/scripts/slides_course_qa.py \
-  courses/nvidia-mgx-1-2-rack-and-tray-interfaces/course.json \
-  --repo-root . --fail-on-flags
-python skills/academy-wizard/scripts/check_svg_arrows.py \
-  courses/nvidia-mgx-1-2-rack-and-tray-interfaces
-```
+The same Leo v2 voice, eleven_multilingual_v2 model, and speed 1.18 were used for
+the five new/revised tracks. M6S5 records its ordered synthesis_chunks, preserving
+the full spoken text with no gain changes or time stretching. Human listening
+for pronunciation, pacing, and tone remains pending; automated signal checks do
+not establish perceptual quality. Live target-LMS upload and tracking have not
+been tested in this authoring workflow.
 
-See the course README for full build instructions and `promotion/README.md` for
-the promotion extraction, preview, and fidelity checks. Generated check outputs
-remain ignored. Retained verification JSON files identify the delivered media.
+Reproduce source checks with the repository's slides_course_qa.py using
+--repo-root and --fail-on-flags. The course README describes the full build.
+The original delivery remains archived in the local authoring workspace.
 
-## Prior delivered-course review
-
-Before repository preparation, the delivery review covered all 60 slide positions
-at desktop 1440 × 960 and mobile 390 × 844 with no JavaScript errors or horizontal
-overflow. Maintained browser tests passed 50 quiz-persistence/navigation assertions,
-21 synchronized-video assertions, and 16 loop-video assertions. Mobile lower
-content and the second quiz's Submit control remained accessible by scrolling.
-Representative native video frames, transition-adjacent frames, source figures,
-and posters were visually inspected. All six teaching videos exceeded SSIM 0.995
-and PSNR 45 dB in the retained encoded comparisons; all four synchronized clips
-match their measured narration within one 30 fps frame.
-
-The promotional videos were played through their full 30 seconds in Chromium
-from local files; both reached the end with 900 frames. These results describe
-the retained delivery, not an assertion about an external video platform.
-
-## Remaining human and LMS review
-
-Automated waveform checks do not establish pronunciation, pacing, projection, or
-teaching tone. Human narration listening remains pending. Technical reviewers
-should check the cited specification pages and the documented source ambiguities.
-The HPM separation, expanded alignment display, and simultaneous-maxima force
-budget are illustrative rather than validated mechanical simulations.
-
-Live target-LMS upload, syllabus navigation, resume, and independent SCO tracking
-have not been confirmed by the authoring workflow. Preserve the existing SCORM
-1.2 multi-SCO deployment and test those behaviors in the target LMS before
-changing its version or organization.
+Module 4 and 5 insertions shift slide-position bookmarks. Existing SCO and quiz identifiers are preserved; verify resume for learners already in progress in the target LMS before replacing its material.

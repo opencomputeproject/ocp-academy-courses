@@ -1,19 +1,17 @@
-# NVIDIA MGX 1.2 Rack and Tray Interfaces — final course outline
+# NVIDIA MGX 1.2 Rack and Tray Interfaces - current outline
 
-Approved Slides structure; `course.json` is authoritative. Planned seat time: about 90 minutes.
+Approved October 20, 2026. Six modules, 62 narrated slides, about 95 minutes planned learner time.
 
 | Module | Scope | Narration, nearest minute |
 |---|---|---|
 | 1 | Rack geometry, datums, and alignment | 11 min |
 | 2 | Tray architecture, board envelopes, and DC-SCM | 11 min |
 | 3 | Modular I/O bay dimensions and retention | 11 min |
-| 4 | Busbar electrical design and grounding | 10 min |
-| 5 | Liquid cooling and blind-mate mechanics | 11 min |
-| 6 | Load cases, qualification, and integration review | 11 min |
+| 4 | Busbar electrical design and grounding | 12 min |
+| 5 | Liquid cooling and blind-mate mechanics | 12 min |
+| 6 | Load cases, qualification, and integration review | 12 min |
 
 ## Module 1: Rack geometry, datums, and alignment
-
-Trace the mechanical interface chain from rack frame to tray and cartridge, and distinguish controlling dimensions from implementation choices.
 
 1. Rack geometry, datums, and alignment
 2. Six engineering reviews, one interface system
@@ -28,8 +26,6 @@ Trace the mechanical interface chain from rack frame to tray and cartridge, and 
 
 ## Module 2: Tray architecture, board envelopes, and DC-SCM
 
-Interpret hybrid and fanless examples, board mounting and keepout rules, and the MGX management-module interface.
-
 1. Tray architecture, board envelopes, and DC-SCM
 2. Review the tray and board constraints
 3. A shared outside envelope can hide different interiors
@@ -42,8 +38,6 @@ Interpret hybrid and fanless examples, board mounting and keepout rules, and the
 10. Up next
 
 ## Module 3: Modular I/O bay dimensions and retention
-
-Decode bay locations, compare A-E envelopes and depth variants, and verify retention and fanless interface dimensions.
 
 1. Modular I/O bay dimensions and retention
 2. Classify the permitted bay combinations
@@ -58,37 +52,33 @@ Decode bay locations, compare A-E envelopes and depth variants, and verify reten
 
 ## Module 4: Busbar electrical design and grounding
 
-Interpret the current/voltage envelope, grounding variants, layered busbar construction, and electrical acceptance evidence.
-
 1. Busbar electrical design and grounding
 2. Distinguish capacity, isolation, and protective ground
-3. Read 5000 A together with its conditions
-4. Return bonding and rack grounding are separate
-5. Greater depth must preserve the rack interface
-6. Insulation and heat transfer have different jobs
-7. A test result needs its topology and conditions
-8. Capacity is a conditioned claim
-9. Check grounding and evidence applicability
-10. Up next
+3. Trace the conversion before applying the interface rating
+4. Read 5000 A together with its conditions
+5. Return bonding and rack grounding are separate
+6. Greater depth must preserve the rack interface
+7. Insulation and heat transfer have different jobs
+8. A test result needs its topology and conditions
+9. Capacity is a conditioned claim
+10. Check grounding and evidence applicability
+11. Up next
 
 ## Module 5: Liquid cooling and blind-mate mechanics
-
-Trace the fluid interfaces and thermal boundaries, and explain float, preload, overdrive, leakage controls, and wetted-material requirements.
 
 1. Liquid cooling and blind-mate mechanics
 2. Review the liquid path and engagement envelope
 3. Choose the connector for its actual location
 4. Follow the loopback and preserve Table 4 conditions
-5. Float accommodates a controlled misalignment
-6. Read Table 9 at the rack and node boundaries
-7. Review the joint, the spill path, and the wetted material
-8. Keep location, engagement state, and fluid boundary together
-9. Check the engagement and hydraulic boundary
-10. Up next
+5. Follow the heat to the power-shelf contact
+6. Float accommodates a controlled misalignment
+7. Read Table 9 at the rack and node boundaries
+8. Review the joint, the spill path, and the wetted material
+9. Keep location, engagement state, and fluid boundary together
+10. Check the engagement and hydraulic boundary
+11. Up next
 
 ## Module 6: Load cases, qualification, and integration review
-
-Interpret documented connector-force cases and build a source-linked acceptance review for a selected MGX implementation.
 
 1. Load cases, qualification, and integration review
 2. Connect the interface design to acceptance evidence
