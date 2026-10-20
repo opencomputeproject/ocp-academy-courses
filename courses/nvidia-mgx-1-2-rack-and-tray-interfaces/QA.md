@@ -60,3 +60,18 @@ and module5.html changed among the 117 package entries. All 62 WAVs, seven teach
 videos, index, manifest, and other runtime resources are identical to the prior
 Summit build. Narration remains 68.18 minutes and planned learner time about 95
 minutes. No target-LMS upload was performed.
+
+## M3S4 duplicate-width removal — October 20, 2026
+
+Removed the Required width table from M3S4 because its five Type A–E values are
+already labeled in the retained scale-consistent comparison figure. The figure's
+alternative text now states every width so the numeric information remains
+available to screen readers. The explanatory bullets, caption, source citations,
+figure asset, narration, slide/quiz identifiers, and course duration are unchanged.
+The slide uses the existing two-column layout without its table-specific classes.
+
+Source QA reports zero flags. Source/render comparisons limit the change to
+M3S4's table, alternative text, and automatic table-layout classes. Strict ZIP
+integrity passes with 117 entries; module3.html is the only changed entry relative
+to the preceding delivery. All narration and media are byte-identical. A fresh
+local-file browser review remains unavailable under browser policy.
