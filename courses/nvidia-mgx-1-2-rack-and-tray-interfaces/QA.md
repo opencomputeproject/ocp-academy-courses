@@ -42,10 +42,10 @@ Module 4 and 5 insertions shift slide-position bookmarks. Existing SCO and quiz 
 ## Companion-reference update — October 20, 2026
 
 Added five reference pills across M1S4, M2S7, M5S3, and M5S4. Official browser
-results confirmed the ORv3 Academy learning plan and the SCM, UQD, MQD, and PG25
-contribution filters. The filters returned 19, 3, 2, and 1 contributions respectively
-when checked. PG25 resolves to the base specification for single-phase propylene
-glycol-based cold-plate coolants.
+results confirmed the ORv3 Academy learning plan, the Cooling Fluids in Direct
+Liquid Cooling (DLC) Academy course, and the SCM, UQD, and MQD contribution filters.
+The filters returned 19, 3, and 2 contributions respectively when checked. The PG25
+teaching point links to the Academy cooling-fluids course as requested.
 
 Source QA reports zero flags. Source comparison proves only reference_links
 changed; rendered comparison proves only five anchors changed in Modules 1, 2,

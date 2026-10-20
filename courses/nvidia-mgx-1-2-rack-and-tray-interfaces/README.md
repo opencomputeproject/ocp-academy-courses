@@ -108,7 +108,7 @@ pinning companion specifications to a particular revision:
 | M1S4 — rack interfaces | [Open Rack / ORv3 Academy learning plan](https://academy.opencompute.org/learn/learning-plans/4/open-rack-and-orv3-past-present-and-future) |
 | M2S7 — management-module shape and pinout | [DC-SCM / DC-SCI contributions](https://www.opencompute.org/contributions/?s=SCM) |
 | M5S3 — liquid connector locations | [UQD / UQDB contributions](https://www.opencompute.org/contributions/?s=UQD) and [MQD / MQDB contributions](https://www.opencompute.org/contributions/?s=MQD) |
-| M5S4 — working fluid and Table 4 conditions | [PG25 coolant contributions](https://www.opencompute.org/contributions/?s=PG25) |
+| M5S4 — working fluid and Table 4 conditions | [Cooling Fluids in Direct Liquid Cooling (DLC) · OCP Academy](https://academy.opencompute.org/learn/courses/52/cooling-fluids-in-direct-liquid-cooling-dlc) |
 
 These companion links appear once at the relevant teaching point. MGX 1.2's
 page-specific primary citations and specified interface revisions remain
