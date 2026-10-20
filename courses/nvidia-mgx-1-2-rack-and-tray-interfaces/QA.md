@@ -38,3 +38,25 @@ Reproduce source checks with the repository's slides_course_qa.py using
 The original delivery remains archived in the local authoring workspace.
 
 Module 4 and 5 insertions shift slide-position bookmarks. Existing SCO and quiz identifiers are preserved; verify resume for learners already in progress in the target LMS before replacing its material.
+
+## Companion-reference update — October 20, 2026
+
+Added five reference pills across M1S4, M2S7, M5S3, and M5S4. Official browser
+results confirmed the ORv3 Academy learning plan and the SCM, UQD, MQD, and PG25
+contribution filters. The filters returned 19, 3, 2, and 1 contributions respectively
+when checked. PG25 resolves to the base specification for single-phase propylene
+glycol-based cold-plate coolants.
+
+Source QA reports zero flags. Source comparison proves only reference_links
+changed; rendered comparison proves only five anchors changed in Modules 1, 2,
+and 5. All use the existing wrapping resource strip, external-page icon,
+new-tab label, and noopener link behavior. No styles or slide identifiers changed.
+A fresh visual review of this link-only update was unavailable because browser
+policy blocks local-file navigation; the prior desktop/mobile layout review
+still applies to the unchanged slide content and styles.
+
+Strict ZIP integrity and byte comparison confirm only module1.html, module2.html,
+and module5.html changed among the 117 package entries. All 62 WAVs, seven teaching
+videos, index, manifest, and other runtime resources are identical to the prior
+Summit build. Narration remains 68.18 minutes and planned learner time about 95
+minutes. No target-LMS upload was performed.

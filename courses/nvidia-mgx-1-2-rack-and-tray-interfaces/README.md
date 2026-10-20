@@ -97,3 +97,20 @@ The Summit material is a reference design and roadmap. MGX 1.2 remains the
 requirements source for this course's rack/tray interfaces. No substantive
 changes were made to Modules 2 or 3. See `SUMMIT_SOURCE_NOTES.txt` and
 `SUMMIT_FIGURES.json` for source boundaries and figure provenance.
+
+## Companion OCP references
+
+The first key teaching points link to current discovery destinations instead of
+pinning companion specifications to a particular revision:
+
+| Teaching point | Companion resource |
+|---|---|
+| M1S4 — rack interfaces | [Open Rack / ORv3 Academy learning plan](https://academy.opencompute.org/learn/learning-plans/4/open-rack-and-orv3-past-present-and-future) |
+| M2S7 — management-module shape and pinout | [DC-SCM / DC-SCI contributions](https://www.opencompute.org/contributions/?s=SCM) |
+| M5S3 — liquid connector locations | [UQD / UQDB contributions](https://www.opencompute.org/contributions/?s=UQD) and [MQD / MQDB contributions](https://www.opencompute.org/contributions/?s=MQD) |
+| M5S4 — working fluid and Table 4 conditions | [PG25 coolant contributions](https://www.opencompute.org/contributions/?s=PG25) |
+
+These companion links appear once at the relevant teaching point. MGX 1.2's
+page-specific primary citations and specified interface revisions remain
+applicable; a newer catalog entry does not automatically change those requirements.
+All five destinations were verified on the official sites on October 20, 2026.
