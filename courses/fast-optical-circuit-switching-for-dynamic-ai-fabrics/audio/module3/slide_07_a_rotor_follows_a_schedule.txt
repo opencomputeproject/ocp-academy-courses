@@ -1,0 +1,9 @@
+A rotor cycles through a fixed schedule of optical connections. A spinning element presents successive segments, producing a sequence of input-to-output matchings. Its short transition interval should not be confused with arbitrary access to any requested connection at any time.
+
+If the matching you need is next, the wait can be short. If it has just passed, the traffic may wait until that matching returns. The relevant application delay includes the schedule and the way traffic reaches its assigned opportunity, not only the guard interval between optical states.
+
+This behavior shapes the fabric around the device. Endpoints or nearby switches need buffering. Routing or load balancing must cooperate with the schedule. Transceivers need to tolerate the recurring changes. A rotor-based network is therefore a co-designed architecture rather than a drop-in substitute for a switch that establishes and holds a selected circuit on demand.
+
+There can still be good reasons to choose scheduled connectivity. A predictable sequence can reduce online decision complexity and distribute opportunities over time. The design trade-off is that traffic must work within that sequence or use another path.
+
+When reading a rotor result, identify both the transition time and the time until the requested matching is available. Also examine the assumptions about traffic distribution, buffering, synchronization, and parallel switch schedules. Those assumptions determine whether the system provides the useful service your workload needs.

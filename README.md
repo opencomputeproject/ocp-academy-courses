@@ -36,6 +36,7 @@ courses/
   build-your-brand-in-the-ocp-community/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  fast-optical-circuit-switching-for-dynamic-ai-fabrics/
   grid-disturbance-performance/
   high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
@@ -128,6 +129,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `build-your-brand-in-the-ocp-community` | How to Build Your Brand in the OCP Community |
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `fast-optical-circuit-switching-for-dynamic-ai-fabrics` | [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md): four narrated modules on workload timing, system readiness, switching mechanisms, and AI-workload evidence |
 | `grid-disturbance-performance` | Grid Disturbance Performance for Hyperscale Data Centers |
 | `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
 | `integrating-quantum-processing-units-into-data-center-infrastructure` | [Integrating Quantum Processing Units into Data Center Infrastructure](courses/integrating-quantum-processing-units-into-data-center-infrastructure/README.md): four narrated modules with teaching animations and two-question knowledge checks |
