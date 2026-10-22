@@ -1,0 +1,9 @@
+Scheduling answers which endpoints should connect next and when. In a demand-aware design, the controller needs a view of traffic demand, a way to choose useful connections, and a plan to coordinate the change. Gathering that view and computing the decision can take longer than changing the optical element.
+
+One approach is to prepare the next schedule while the current one carries data. Fixed intervals, often called epochs, provide a convenient structure: use the present interval for communication and preparation, then activate the prepared state at the agreed boundary. A predictable workload can offer advance information about the next communication phase.
+
+Another approach uses a precomputed sequence that does not depend on collecting current demand. It avoids part of the decision loop, but endpoints and routing must accommodate the sequence. A scheduled opportunity may require traffic to wait until the right connection appears. The absence of an online optimizer does not mean the system has no coordination cost.
+
+Scaling from one switch to several introduces further dependencies. An end-to-end path may pass through multiple chassis. Each part must be available and configured consistently. If setup fails partway through, the requester needs a defined outcome rather than an assumption that every segment succeeded.
+
+The engineering question is therefore broader than solver speed. Can the system prepare a valid path, coordinate all of its components, and report success or failure within the workload's budget? Precomputation helps when its assumptions remain valid; changing demand, failures, and calibration drift still need to be handled.

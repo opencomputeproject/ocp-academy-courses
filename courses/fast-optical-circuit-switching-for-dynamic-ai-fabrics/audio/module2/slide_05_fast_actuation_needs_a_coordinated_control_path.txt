@@ -1,0 +1,9 @@
+A schedule inside a controller does not yet change the network. Control latency covers the work needed to deliver and act on that decision: preparing a message, moving it to the device, parsing it, and coordinating the selected state. Conventional software and networking stacks can add delay and variation at each step.
+
+Those costs can be hidden when the optical mechanism itself is slow. As device switching becomes much faster, software dispatch can become the limiting stage. Replacing the optical element without changing the actuation path can simply move the bottleneck elsewhere.
+
+The paper describes separating a slower optimization loop from a faster local actuation loop. The controller can install schedules ahead of time. Local hardware then selects or activates a prepared state using a synchronized clock. This reduces the need for a full software transaction at every topology change, but it increases the importance of timing agreement and state consistency.
+
+The requester also needs a useful answer. If the path is ready, transmission can begin under the agreed conditions. If it is not, traffic must wait, take another route, or receive a failure response. A partial setup failure may require trying another path, sometimes called crankback. That recovery is part of the operational behavior, not an optional detail.
+
+In a hybrid fabric, optical changes must also coexist with packet routing. Preserve the connectivity and forwarding assumptions needed by the packet layer. Fast actuation is valuable only when its state changes are coordinated, observable, and safe for traffic already in flight.

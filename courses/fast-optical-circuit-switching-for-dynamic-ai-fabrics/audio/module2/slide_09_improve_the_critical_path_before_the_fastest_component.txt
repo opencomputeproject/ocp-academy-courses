@@ -1,0 +1,9 @@
+Use a simple example to make the budget concrete. Assume all five stages are serial. Scheduling takes forty microseconds, control twenty, the optical switch ten, receiver recovery eighty, and host readiness ten. The total is one hundred and sixty microseconds. These values are illustrative, not measurements of a product.
+
+Suppose a workload provides a one-hundred-microsecond setup window. This serial design misses it. Replacing the ten-microsecond switch with a one-microsecond device saves nine microseconds, bringing the total to one hundred and fifty-one. That is a substantial device speedup, but the system still misses the workload deadline.
+
+Now consider a separate design case. Scheduling and control are completed before the measurement window, using a valid prepared configuration. The switch still takes ten microseconds, receiver recovery eighty, and host readiness ten. The remaining serial path is one hundred microseconds. It just reaches the boundary, leaving no margin for variation.
+
+In another case, keep that preparation and reduce receiver recovery to twenty microseconds. The remaining path becomes forty microseconds. This creates room for the workload to use the new connection, subject to the stated assumptions. It does not prove that every design can precompute its schedule or achieve the faster recovery.
+
+The exercise is about prioritization. Identify the deadline, declare the dependencies, and calculate the effect of the change you can actually make. Then measure the integrated system, including variability and unsuccessful transitions. Optimize the contributor that controls the result rather than the component with the most impressive headline improvement.
