@@ -32,3 +32,15 @@ display separation is illustrative and does not assert a validated assembly path
 
 Editable authoring code, narration, original explanatory layouts, and course
 structure follow the repository license, subject to the third-party rights above.
+
+## 2026 Summit presentation
+
+Supplemental teaching and the two new source-derived visuals credit Jared
+Huntington, NVIDIA, *MGX Power Rack Reference Design*, 2026 OCP Global Summit.
+The official recording is https://www.youtube.com/watch?v=hxcAqFTui8M and the
+official linked deck is listed in course.json. The power topology is redrawn
+for instruction; shelf and contact views are attributed crops retaining their
+technical labels. The original deck and transcript remain authoring inputs,
+outside source control. Their applicable rights are not replaced by the
+repository's MIT license. Reference-design and proposed-standardization status
+are preserved in teaching and source notes.
