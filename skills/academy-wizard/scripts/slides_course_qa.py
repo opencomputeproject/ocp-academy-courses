@@ -159,7 +159,11 @@ def check_course(
                 elif not (root / media_path).is_file():
                     errors.append(f"M{module_id}S{slide.get('id')}: missing media {media_path}")
                 if is_video(figure):
-                    videos.append((slide, figure))
+                    recorded = figure.get("playback_mode") == "recorded"
+                    if not recorded:
+                        videos.append((slide, figure))
+                    elif figure.get("controls") is not True:
+                        errors.append(f"M{module_id}S{slide.get('id')}: recorded video needs visible playback controls")
                     poster = str(figure.get("poster") or "")
                     if not poster:
                         errors.append(f"M{module_id}S{slide.get('id')}: video has no poster")
@@ -169,7 +173,8 @@ def check_course(
                         errors.append(f"M{module_id}S{slide.get('id')}: sync_to_narration must be a boolean")
                     if figure.get("sync_to_narration") is True and not (slide.get("audio") or {}).get("wav_file"):
                         errors.append(f"M{module_id}S{slide.get('id')}: synchronized video needs paired narration")
-                    expected = ({"autoplay": False, "loop": False, "muted": True}
+                    expected = ({"autoplay": False, "loop": False, "muted": False} if recorded else
+                                {"autoplay": False, "loop": False, "muted": True}
                                 if figure.get("sync_to_narration") is True
                                 else {"autoplay": True, "loop": True, "muted": True})
                     for field, value in expected.items():
@@ -177,7 +182,9 @@ def check_course(
                             errors.append(f"M{module_id}S{slide.get('id')}: teaching video must set {field}={str(value).lower()}")
                     if not str(figure.get("alt") or "").strip():
                         errors.append(f"M{module_id}S{slide.get('id')}: video has no alt text")
-                    if not str(figure.get("caption") or "").strip():
+                    has_teaching_context = str(figure.get("caption") or "").strip() or (
+                        recorded and str(slide.get("main_text") or slide.get("caption") or "").strip())
+                    if not has_teaching_context:
                         errors.append(f"M{module_id}S{slide.get('id')}: video has no teaching caption")
 
             for term_id in slide.get("term_refs") or []:

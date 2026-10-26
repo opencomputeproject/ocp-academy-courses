@@ -1,0 +1,7 @@
+# pronunciation: F C S A; input output; nonvolatile memory; chiplet root of trust for attestation.
+
+Separate two questions. First, does the device contain coherent caches? A fully coherent processing device does, and makes coherent accesses to the rest of the system. An input output coherent processing device has no coherent cache of its own, although its accesses to the rest of the system are coherent. Do not use the word coherent without stating which behavior is meant.
+
+Second, where are memory addresses translated and access permissions checked? The translated, untranslated, and remote-translation types make different arrangements visible at the boundary. Follow an access from the processing device toward system-addressable memory and locate the memory management function. Record the address representation on each side of that boundary and the component responsible for protection. The specification's type diagrams and interface requirements make those responsibilities concrete.
+
+These questions interact, but they are not interchangeable. A coherent cache does not tell you where translation occurs. A translated address does not establish that the device holds coherent cache lines. For our accelerator, ask for both facts, then ask which interface requirements the implementation satisfies. Until those answers are known, the classification remains a candidate. Treat this diagram as a way to structure the review, rather than as a complete address-translation design for a product.

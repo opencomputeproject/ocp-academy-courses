@@ -36,6 +36,7 @@ courses/
   build-your-brand-in-the-ocp-community/
   cooling-fluids-in-direct-liquid-cooling/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  fcsa-architecting-interoperable-chiplet-systems/  # five narrated FCSA modules
   fast-optical-circuit-switching-for-dynamic-ai-fabrics/
   grid-disturbance-performance/
   high-bandwidth-flash/
@@ -63,6 +64,7 @@ courses/
   ocp-project-brazos-liquid-to-air-cooling/
   ocp-ready-requirements-for-energy-storage-systems/
   ocp-solid-state-transformers/
+  open-chiplet-economy/            # nine narrated modules and 23 videos
   open-data-center-for-ai/
   open-rack-v3/
     module-1-ocp-orv3-history-and-impact/
@@ -95,9 +97,8 @@ track the generated `lms-catalog.json` and `lms-catalog.md` with the course sour
 Packaging exports matching JSON, Markdown, and HTML files beside the SCORM ZIP.
 
 See the [metadata contract](skills/academy-wizard/references/lms_catalog.md) and
-[approved catalog records](docs/lms-catalog/README.md). The latter are explicitly
-metadata-only records for series whose complete source projects are maintained
-outside this repository.
+[LMS catalog index](docs/lms-catalog/README.md). Each course maintains its own
+approved metadata and exports with its complete source.
 
 ## Install the AcademyWizard skill
 
@@ -107,7 +108,10 @@ The bundled skill lives at:
 skills/academy-wizard
 ```
 
-The build script uses the repo-local AcademyWizard copy by default, so installing the skill is optional for command-line builds. Install it into Codex when you want to interactively create or revise courses:
+The build script uses the repo-local AcademyWizard copy by default. A course may
+record `authoring_toolchain` to use a validated snapshot inside its source folder;
+`ACADEMY_WIZARD_SKILL_DIR` remains the explicit override. Installing the skill is
+optional for command-line builds. Install it into Codex when you want to interactively create or revise courses:
 
 ```bash
 ./scripts/install-academy-wizard-skill.sh
@@ -141,6 +145,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `build-your-brand-in-the-ocp-community` | How to Build Your Brand in the OCP Community |
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `fcsa-architecting-interoperable-chiplet-systems` | [FCSA: Architecting Interoperable Chiplet Systems](courses/fcsa-architecting-interoperable-chiplet-systems/README.md): five narrated modules, five synchronized teaching videos, and an integration workbook |
 | `fast-optical-circuit-switching-for-dynamic-ai-fabrics` | [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md): four narrated modules on workload timing, system readiness, switching mechanisms, and AI-workload evidence |
 | `grid-disturbance-performance` | Grid Disturbance Performance for Hyperscale Data Centers |
 | `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
@@ -164,6 +169,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ocp-project-brazos-liquid-to-air-cooling` | OCP Project Brazos: Liquid Cooling in Air-Cooled Data Centers |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
 | `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
+| `open-chiplet-economy` | [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md): nine narrated modules, nine teaching animations, and fourteen captioned recordings |
 | `open-data-center-for-ai` | Open Data Center for AI |
 | `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
 | `open-rack-v3/module-2-orv3-core-specifications` | Module 2: ORv3 Core Specifications |

@@ -1,0 +1,1803 @@
+#!/usr/bin/env python3
+"""
+render_module.py — render a moduleN.html from course.json + a module index.
+
+Usage:
+    python render_module.py <course.json> --module N [--out moduleN.html]
+    python render_module.py <course.json> --all          # render every module
+
+The module HTML is fully self-contained: CSS inlined from templates/module_styles.css,
+SCORM wiring inlined, audio map built from each slide's audio.wav_file. The output
+goes next to course.json by default unless --out specifies otherwise.
+
+Slide types supported: title, course_overview, objectives, content_bullets,
+content_two_column, content_grid, content_table, content_diagram, takeaways,
+up_next, course_complete.
+"""
+
+from __future__ import annotations
+import argparse
+import hashlib
+import html
+import itertools
+import json
+import re
+import os
+import sys
+from pathlib import Path
+from motion_intro import (
+    load_motion_intro_css,
+    motion_intro_body_class,
+    motion_intro_noscript_style,
+    motion_intro_script,
+    render_motion_intro,
+)
+from render_scrolling import is_scrolling, render_scrolling_course, hydrate_caption_cues, scrolling_video_icon, video_figure
+import single_sco
+import legacy_multi_sco
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+SKILL_DIR = SCRIPT_DIR.parent
+TEMPLATE_DIR = SKILL_DIR / "templates"
+VIDEO_EXTENSIONS = {".mp4", ".webm", ".mov", ".m4v"}
+
+
+def _is_video_figure(fig: dict | None) -> bool:
+    if not fig:
+        return False
+    media_type = (fig.get("media_type") or fig.get("type") or "").lower()
+    return media_type == "video" or Path(fig.get("path", "")).suffix.lower() in VIDEO_EXTENSIONS
+
+
+def esc(s: str | None) -> str:
+    """HTML-escape a value, treating None as ''."""
+    if s is None:
+        return ""
+    return html.escape(str(s), quote=True)
+
+
+def ui(course: dict, key: str, default: str) -> str:
+    """Return an optional course-localized interface label."""
+    return str((course.get("ui_labels") or {}).get(key, default))
+
+
+def _norm_text(value: str | None) -> str:
+    return " ".join(str(value or "").split()).casefold()
+
+
+def _title_for_slide(slide: dict, label: str | None, default: str, module: dict) -> str:
+    """Return a visible title that never duplicates the section label."""
+    title = slide.get("title") or default
+    if label and _norm_text(title) == _norm_text(label):
+        descriptive = slide.get("descriptive_title")
+        if descriptive and _norm_text(descriptive) != _norm_text(label):
+            return str(descriptive)
+        slide_type = slide.get("type", "")
+        norm_label = _norm_text(label)
+        norm_default = _norm_text(default)
+        if slide_type == "course_overview" or norm_label == "course overview" or norm_default == "course overview":
+            return "Course Roadmap"
+        if slide_type == "objectives" or norm_label == "learning objectives" or norm_default == "learning objectives":
+            return "What You Will Learn"
+        if slide_type == "takeaways" or norm_label == "key takeaways" or norm_default == "key takeaways":
+            module_id = module.get("id")
+            return f"Module {module_id} Summary" if module_id else "Module Summary"
+        return f"{label} In Practice"
+    return str(title)
+
+
+def _badge_text_html(course: dict) -> str:
+    brand = course.get("brand", {})
+    text = brand.get("badge_text")
+    if not text or not str(text).strip():
+        return ""
+    return f'<span>{esc(text)}</span>'
+
+
+def _meta_chip_icon_html(icon: str) -> str:
+    """Render a small semantic icon for course-overview metadata chips.
+
+    Older course.json files used short text tokens such as ``80`` or ``OCP``
+    here. Keep those values readable as a fallback, but let new courses use
+    stable inline SVG icons so the chip is not just a repeated numeral or
+    acronym.
+    """
+    icons = {
+        "clock": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v5l3.2 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        "modules": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="4" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="4" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="6" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>',
+        "spec": '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 3.8h8l4 4V20.2H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3.8v4h4M9 12h6M9 16h4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    }
+    return icons.get(icon, esc(icon))
+
+
+def load_styles() -> str:
+    css = (TEMPLATE_DIR / "module_styles.css").read_text()
+    css += "\n\n" + (TEMPLATE_DIR / 'standalone_video.css').read_text()
+    css += "\n\n" + load_motion_intro_css(TEMPLATE_DIR)
+    return css
+
+
+# ----- Slide renderers ------------------------------------------------------
+
+def render_title(slide: dict, course: dict, module: dict) -> str:
+    title = slide.get("title") or module.get("title", "")
+    subtitle = slide.get("subtitle") or course.get("course_subtitle", "")
+    version_chip = slide.get("version_chip") or course.get("spec_version_chip", "")
+    tagline = slide.get("tagline") or course.get("tagline", "")
+    course_logo = course.get("brand", {}).get("course_logo", "")
+    narration_hint = ui(
+        course,
+        "narration_hint",
+        "Narration starts automatically. Advance with → or Space",
+    )
+    learner_aids = _learner_aids_html(slide, course, centered=True, include_glossary=False)
+    resource_class = " slide-hero--with-resources" if learner_aids else ""
+    return f'''
+  <div class="slide slide-hero{resource_class} active" data-slide="{slide["id"]}">
+    <div class="hero-content">
+      {f'<img src="{esc(course_logo)}" alt="{esc(course.get("course_title",""))}" class="hero-logo animate-in">' if course_logo else ""}
+      <h1 class="hero-title animate-in">{esc(title)}</h1>
+      <p class="hero-subtitle animate-in">{esc(subtitle)}</p>
+      {f'<span class="hero-version animate-in">{esc(version_chip)}</span>' if version_chip else ""}
+      <div class="hero-start-hint animate-in">
+        <span>{esc(narration_hint)}</span>
+      </div>
+      {f'<p class="hero-tagline animate-in">{esc(tagline)}</p>' if tagline else ""}
+      {learner_aids}
+    </div>
+  </div>
+'''
+
+
+def render_course_overview(slide: dict, course: dict, module: dict) -> str:
+    label = ui(course, "course_overview", "Course Overview")
+    items = []
+    for i, mt in enumerate(slide.get("modules_listed", []), start=1):
+        current = ' current' if i == module["id"] else ""
+        items.append(f'''
+        <li class="module-item{current}">
+          <div class="module-number">{i}</div>
+          <div class="module-name">{esc(mt)}</div>
+        </li>''')
+    chips_html = ""
+    for chip in slide.get("chips", []):
+        # Optional url makes a chip clickable.
+        url = chip.get("url")
+        icon = str(chip.get("icon", "")).strip()
+        icon_class = "" if icon in {"clock", "modules", "spec"} else " meta-chip-icon--text"
+        inner = f'''
+          {f'<div class="meta-chip-icon{icon_class}">{_meta_chip_icon_html(icon)}</div>' if icon else ""}
+          <span>{esc(chip.get("text",""))}</span>'''
+        if url:
+            chips_html += f'''
+        <a class="meta-chip" href="{esc(url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;">{inner}
+        </a>'''
+        else:
+            chips_html += f'''
+        <div class="meta-chip">{inner}
+        </div>'''
+    media_embed = slide.get("media_embed")
+    if media_embed:
+        # Accept either a raw HTML string OR a dict with {type:'youtube', id:'XXX', title:'...'}
+        if isinstance(media_embed, dict):
+            if media_embed.get("type") == "youtube":
+                yt_id = media_embed.get("id","")
+                title = esc(media_embed.get("title","Video"))
+                label = esc(media_embed.get("label","Watch"))
+                media_embed_html = f'<div class="animate-in" style="margin: 24px auto 0; max-width: 720px; text-align: center;"><div style="font-family: var(--font-heading); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ocp-green); margin-bottom: 10px;">{label}</div><div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.15);"><iframe src="https://www.youtube.com/embed/{yt_id}?rel=0&modestbranding=1" title="{title}" loading="lazy" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div><p style="margin-top: 10px; font-size: 0.85rem; color: var(--text-muted);">If the embed is blocked by your LMS, the video link is also in the chips above.</p></div>'
+            else:
+                media_embed_html = ""
+        else:
+            media_embed_html = str(media_embed)
+    else:
+        media_embed_html = ""
+    return f'''
+  <div class="slide" data-slide="{slide["id"]}">
+    <div class="slide-content">
+      <span class="section-label animate-in">{label}</span>
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "Course Roadmap", module))}</h2>
+      {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
+      <ol class="module-list animate-in">{"".join(items)}
+      </ol>
+      <div class="course-meta animate-in">{chips_html}
+      </div>
+      {media_embed_html}
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def render_objectives(slide: dict, course: dict, module: dict) -> str:
+    label = ui(course, "learning_objectives", "Learning Objectives")
+    items = "".join(
+        f'''
+        <li class="takeaway-item animate-in">
+          <span class="check-icon">&#10003;</span>
+          <p>{esc(obj)}</p>
+        </li>''' for obj in slide.get("objectives", [])
+    )
+    return f'''
+  <div class="slide" data-slide="{slide["id"]}">
+    <div class="slide-content">
+      <span class="section-label animate-in">{label}</span>
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "What You Will Learn", module))}</h2>
+      {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
+      <ul class="takeaway-list">{items}
+      </ul>
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def _bullets_html(bullets: list[dict]) -> str:
+    parts = []
+    for b in bullets:
+        bold_lead = b.get("bold_lead", "")
+        text = b.get("text", "")
+        if bold_lead:
+            inner = f'<strong>{esc(bold_lead)}</strong> {esc(text)}'
+        else:
+            inner = esc(text)
+        parts.append(f'''
+            <li>
+              <span class="bullet-icon">&#10003;</span>
+              <span>{inner}</span>
+            </li>''')
+    return "".join(parts)
+
+
+def _external_page_icon_html() -> str:
+    return '''<svg class="pill-icon pill-icon--external" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M15 3h6v6"></path><path d="M10 14 21 3"></path>
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+    </svg>'''
+
+
+def _terminology_icon_html() -> str:
+    return '''<svg class="pill-icon pill-icon--terminology" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 7v14"></path><path d="M16 12h2"></path><path d="M16 8h2"></path>
+      <path d="M3 18a1 1 0 0 1-1-1V5a2 2 0 0 1 2-2h5a3 3 0 0 1 3 3v15a3 3 0 0 0-3-3Z"></path>
+      <path d="M21 18a1 1 0 0 0 1-1V5a2 2 0 0 0-2-2h-5a3 3 0 0 0-3 3v15a3 3 0 0 1 3-3Z"></path>
+    </svg>'''
+
+
+def _learner_aids_html(
+    slide: dict,
+    course: dict,
+    centered: bool = False,
+    include_glossary: bool = True,
+) -> str:
+    # Render optional learner aids in the slide content flow. The returned
+    # block is appended inside `.slide-content`, after the slide's primary
+    # text/table/image content. It is never fixed or floating.
+    glossary = {
+        item.get("id"): item
+        for item in course.get("term_glossary", [])
+        if isinstance(item, dict) and item.get("id")
+    }
+    glossary_chips = []
+    for term_id in slide.get("term_refs", []) if include_glossary else []:
+        item = glossary.get(term_id)
+        if not item:
+            continue
+        term = esc(item.get("term"))
+        tip = esc(item.get("tooltip"))
+        label = item.get("reference_label")
+        reference_word = esc(ui(course, "reference", "Reference"))
+        tooltip = tip + (f" {reference_word}: {esc(label)}." if label else "")
+        glossary_chips.append(
+            f'<span class="glossary-chip" tabindex="0" data-tooltip="{tooltip}" '
+            f'title="{tip}" aria-label="{term}: {tooltip}">{term}{_terminology_icon_html()}</span>'
+        )
+
+    ref_links = []
+    for link in slide.get("reference_links", []):
+        url = link.get("url")
+        if not url:
+            continue
+        link_label = esc(link.get("label") or ui(course, "learn_more", "Learn more"))
+        opens_new_tab = esc(ui(course, "opens_new_tab", "opens in a new tab"))
+        logo_path = str(link.get("logo") or "").strip()
+        logo_html = (
+            f'<img class="reference-pill-logo" src="{esc(logo_path)}" alt="" aria-hidden="true">'
+            if logo_path
+            else ""
+        )
+        ref_links.append(
+            f'<a class="reference-pill" href="{esc(url)}" target="_blank" rel="noopener" '
+            f'aria-label="{link_label} ({opens_new_tab})">'
+            f'{logo_html}{link_label}{_external_page_icon_html()}</a>'
+        )
+
+    callout_html = ""
+    callout = slide.get("resource_callout")
+    if isinstance(callout, dict) and callout.get("url"):
+        callout_html = f'''
+        <div class="resource-callout animate-in">
+          <div>
+            <span class="resource-label">{esc(ui(course, "learner_resource", "Learner Resource"))}</span>
+            <strong>{esc(callout.get("title"))}</strong>
+            <p>{esc(callout.get("text"))}</p>
+          </div>
+          <a class="resource-button" href="{esc(callout.get("url"))}" target="_blank" rel="noopener">{esc(callout.get("button_text") or ui(course, "open", "Open"))}</a>
+        </div>'''
+
+    if not glossary_chips and not ref_links and not callout_html:
+        return ""
+
+    glossary_html = ""
+    if glossary_chips:
+        glossary_html = '<div class="glossary-strip animate-in">' + "".join(glossary_chips) + '</div>'
+    refs_html = ""
+    if ref_links:
+        refs_html = '<div class="reference-strip animate-in">' + "".join(ref_links) + '</div>'
+    aids_class = "learner-aids learner-aids--centered" if centered else "learner-aids"
+    return f'''
+      <div class="{aids_class}">{glossary_html}{refs_html}{callout_html}
+      </div>'''
+
+
+def _summary_items_html(slide: dict) -> str:
+    items = [str(item).strip() for item in slide.get("summary_items", []) if str(item).strip()]
+    if not items:
+        return ""
+    return '''
+      <ul class="summary-list animate-in">''' + "".join(
+        f'''
+        <li>{esc(item)}</li>''' for item in items
+    ) + '''
+      </ul>'''
+
+
+def render_content_bullets(slide: dict, course: dict, module: dict) -> str:
+    label = slide.get("section_label")
+    slide_class = "slide slide--mobile-scroll" if slide.get("mobile_scroll") else "slide"
+    return f'''
+  <div class="{slide_class}" data-slide="{slide["id"]}">
+    <div class="slide-content">
+      {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
+      {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
+      <ul class="bullet-list animate-in">{_bullets_html(slide.get("bullets", []))}
+      </ul>
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def _figure_caption_tracks(fig: dict) -> tuple[str, str]:
+    """Native selectable tracks, with generated cues for file:// fallback."""
+    tracks = fig.get('captions') or []
+    tags, payload = [], []
+    defaults = 0
+    for track in tracks:
+        if not all(track.get(key) for key in ('path', 'language', 'label')):
+            raise ValueError('Video captions require path, language, and label')
+        cues = track.get('_cues') or []
+        if not cues:
+            raise ValueError(f"Video caption track has no readable WebVTT cues: {track['path']}")
+        is_default = track.get('default') is True
+        defaults += int(is_default)
+        tags.append(f'<track kind="captions" src="{esc(track["path"])}" srclang="{esc(track["language"])}" label="{esc(track["label"])}"{" default" if is_default else ""}>')
+        payload.append({'cues': cues})
+    if defaults > 1:
+        raise ValueError('Only one video caption track can be the default')
+    data = json.dumps(payload, ensure_ascii=False).replace('<', '\\u003c')
+    return '\n'.join(tags), (f'<script type="application/json" data-figure-caption-tracks>{data}</script>' if tracks else '')
+
+
+def _figure_caption_control(fig: dict, course: dict) -> str:
+    tracks = fig.get('captions') or []
+    if not tracks:
+        return ''
+    selected = next((i for i, track in enumerate(tracks) if track.get('default') is True), -1)
+    items = ''.join(
+        f'<button type="button" role="menuitemradio" data-caption-index="{i}" aria-checked="{str(i == selected).lower()}">{esc(label)}</button>'
+        for i, label in [(-1, ui(course, 'captions_off', 'Captions off')),
+                         *((i, track['label']) for i, track in enumerate(tracks))])
+    label = esc(ui(course, 'captions', 'Captions'))
+    return f'''<div class="figure-caption-control">
+      <button type="button" class="figure-video-control" data-video-captions aria-label="{label}" title="{label}" aria-haspopup="menu" aria-expanded="false">{scrolling_video_icon('captions')}</button>
+      <div class="figure-caption-menu" data-caption-menu role="menu" aria-label="{label}" hidden>{items}</div>
+    </div>'''
+
+
+def _recorded_player_html(fig: dict, course: dict) -> str:
+    """One Scrolling-style bottom toolbar for standalone recordings with audio."""
+    body = video_figure(fig, animate=False, ui_labels=course.get('ui_labels'))
+    body = body.replace('data-video-player>', 'data-video-player data-recorded-player>')
+    body = body.replace('<video ', '<video class="figure-video" data-recorded-video="true" ', 1)
+    body = body.replace('preload="auto"', 'preload="metadata"')
+    body = re.sub(r'<button class="academy-video__big-play".*?</button>', '', body, flags=re.S)
+    body = re.sub(r'<figcaption.*?</figcaption>', '', body, flags=re.S)
+    return body
+
+
+def _figure_html(fig: dict | None, course: dict | None = None) -> str:
+    """Wrap media in a compact, evenly padded white frame.
+
+    The frame sizes itself to the media instead of stretching across the slide,
+    so learners see the same 18px white edge on every side of an image, figure,
+    or video. The rounded clip also keeps anti-aliased artwork edges clean in
+    both themes.
+    """
+    if not fig:
+        return ""
+    course = course or {}
+    path = fig.get("path", "")
+    alt = fig.get("alt", "")
+    caption = fig.get("caption", "")
+    media_type = "video" if _is_video_figure(fig) else (fig.get("media_type") or fig.get("type") or "").lower()
+    # Prefer inline SVG markup when explicitly provided (svg_inline + svg key);
+    # otherwise reference the file at `path` via <img>. Browsers render .svg
+    # files via <img> cleanly, so figures with source: "svg_inline" + a .svg
+    # file path also work.
+    inline_svg = fig.get("svg") if fig.get("source") == "svg_inline" else None
+    if media_type == "video":
+        caption_tracks, caption_data = _figure_caption_tracks(fig)
+        poster = fig.get("poster", "")
+        preload = fig.get("preload", "metadata")
+        attr_bits = [
+            f'class="figure-video"',
+            'data-narration-sync="true"' if fig.get("sync_to_narration") is True else "",
+            f'src="{esc(path)}"',
+            f'aria-label="{esc(alt)}"',
+            f'preload="{esc(preload)}"',
+            "playsinline",
+            "controls" if fig.get("controls") is True else "",
+            'data-recorded-video="true"' if fig.get("playback_mode") == "recorded" else "",
+            "muted" if fig.get("muted", True) else "",
+            "loop" if fig.get("loop", True) else "",
+            "autoplay" if fig.get("autoplay", True) else "",
+            f'poster="{esc(poster)}"' if poster else "",
+        ]
+        attrs = " ".join(bit for bit in attr_bits if bit)
+        body = f'''
+          <video {attrs}>{caption_tracks}</video>
+          {caption_data}
+          <div class="figure-video-controls" aria-label="{esc(ui(course, 'video_controls', 'Video controls'))}">
+            {_figure_caption_control(fig, course)}
+            <button type="button" class="figure-video-control" data-video-toggle aria-label="{esc(ui(course, 'pause_video', 'Pause video'))}" title="{esc(ui(course, 'pause_video', 'Pause video'))}">
+              <span class="video-icon video-icon-pause" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="figure-video-control" data-video-zoom aria-label="{esc(ui(course, 'zoom_video', 'Zoom video'))}" title="{esc(ui(course, 'zoom_video', 'Zoom video'))}">
+              <span aria-hidden="true">&#8981;</span>
+            </button>
+          </div>'''
+        if fig.get('playback_mode') == 'recorded':
+            body = _recorded_player_html(fig, course)
+    elif inline_svg:
+        body = inline_svg
+    else:
+        # Standalone SVGs in the package use a 1200x675 viewBox but often
+        # expose a tiny browser intrinsic size (267x150). Give them their
+        # design width explicitly and opt out of the generic height cap: the
+        # width constraint alone then scales the 16:9 artwork proportionally,
+        # avoiding letterboxed side gaps inside the white frame.
+        svg_style = "width:1200px;max-width:100%;height:auto;max-height:none;" if path.lower().endswith(".svg") else "max-width:100%;height:auto;"
+        body = f'<img src="{esc(path)}" alt="{esc(alt)}" style="{svg_style}display:block;margin:0 auto;cursor:zoom-in;">'
+    panel_class = "figure-panel figure-panel--video" if media_type == "video" else "figure-panel"
+    if fig.get('captions'):
+        panel_class += ' figure-panel--captioned'
+    recorded = fig.get('playback_mode') == 'recorded'
+    if recorded:
+        panel_class += ' figure-panel--recorded'
+    video_attr = ' data-video-figure="true"' if media_type == "video" else ""
+    role = "group" if media_type == "video" else "button"
+    aria_label = (
+        ui(course, "video_figure", "Video figure")
+        if media_type == "video"
+        else ui(course, "zoom_figure", "Zoom figure")
+    )
+    # Keep the media frame compact and give it a uniform 18px white inset on
+    # every side. `fit-content` removes the former full-width dark side bands;
+    # `max-width` keeps the frame responsive on narrow screens.
+    panel_style = (
+        "background:#ffffff;"
+        "border-radius:16px;"
+        "padding:18px;"
+        "box-shadow:var(--card-shadow);"
+        "display:flex;"
+        "align-items:center;"
+        "justify-content:center;"
+        "width:fit-content;"
+        "max-width:100%;"
+        "margin:0 auto;"
+        "box-sizing:border-box;"
+        "overflow:hidden;"
+    )
+    return f'''
+      <div class="figure-wrap{' figure-wrap--recorded' if recorded else ''} animate-in" style="margin-top:8px;">
+        <div class="{panel_class}" data-zoomable-figure="{str(not recorded).lower()}"{video_attr} tabindex="0" role="{role}" aria-label="{aria_label}: {esc(alt)}" style="{panel_style}">
+          {body}
+        </div>
+        {f'<p class="figure-caption">{esc(caption)}</p>' if caption else ""}
+      </div>'''
+
+
+def _compact_table_html(table: dict | None) -> str:
+    if not table:
+        return ""
+    columns = table.get("columns", [])
+    rows = table.get("rows", [])
+    if not columns or not rows:
+        return ""
+    header = "".join(f'<th scope="col">{esc(column)}</th>' for column in columns)
+    body = "".join(
+        "<tr>" + "".join(f"<td>{esc(value)}</td>" for value in row) + "</tr>"
+        for row in rows
+    )
+    title = table.get("title")
+    return f'''
+          <div class="compact-data-table animate-in">
+            {f'<h3>{esc(title)}</h3>' if title else ""}
+            <div class="compact-data-table__scroll">
+              <table>
+                <thead><tr>{header}</tr></thead>
+                <tbody>{body}</tbody>
+              </table>
+            </div>
+          </div>'''
+
+
+def render_content_two_column(slide: dict, course: dict, module: dict) -> str:
+    label = slide.get("section_label")
+    compact_table = slide.get("compact_table")
+    slide_class = "slide slide--mobile-scroll" if compact_table or slide.get("mobile_scroll") else "slide"
+    column_class = "two-column two-column--with-table" if compact_table else "two-column"
+    video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
+    return f'''
+  <div class="{slide_class}" data-slide="{slide["id"]}"{video_attr}>
+    <div class="slide-content">
+      {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
+      {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
+      <div class="{column_class}">
+        <div>
+          <ul class="bullet-list animate-in">{_bullets_html(slide.get("bullets", []))}
+          </ul>
+          {_compact_table_html(compact_table)}
+        </div>
+        <div>{_figure_html(slide.get("figure"), course)}
+        </div>
+      </div>
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def render_content_grid(slide: dict, course: dict, module: dict) -> str:
+    label = slide.get("section_label")
+    cards = []
+    for c in slide.get("cards", []):
+        tone = str(c.get("tone", "")).strip().lower()
+        tone = "".join(ch for ch in tone if ch.isalnum() or ch in ("-", "_"))
+        card_class = "tenet-card animate-in" + (f" tenet-card--{tone}" if tone else "")
+        # Optional url + link_text make a card clickable, with a visible
+        # URL line under the body.
+        url = c.get("url")
+        link_text = c.get("link_text")
+        link_html = ""
+        if url and link_text:
+            link_html = (
+                f'<p style="margin-top:8px;font-size:0.78rem;'
+                f'color:var(--ocp-green-dark,#6FA030);word-break:break-all;">'
+                f'<span style="text-decoration:underline;">{esc(link_text)}</span></p>'
+            )
+        elif url:
+            link_html = (
+                f'<p style="margin-top:8px;font-size:0.78rem;'
+                f'color:var(--ocp-green-dark,#6FA030);word-break:break-all;">'
+                f'<span style="text-decoration:underline;">{esc(url)}</span></p>'
+            )
+        inner = f'''
+          {f'<div class="tenet-icon">{esc(c.get("icon",""))}</div>' if c.get("icon") else ""}
+          <h3>{esc(c.get("title",""))}</h3>
+          <p>{esc(c.get("body",""))}</p>
+          {link_html}'''
+        if url:
+            cards.append(f'''
+        <a class="{card_class}" href="{esc(url)}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;">{inner}
+        </a>''')
+        else:
+            cards.append(f'''
+        <div class="{card_class}">{inner}
+        </div>''')
+    # Allow a slide to pin its column count explicitly (e.g., 6 cards as 3x2
+    # instead of the default 5+1).
+    explicit = slide.get("grid_cols")
+    if isinstance(explicit, int) and explicit >= 2:
+        grid_cols = explicit
+    else:
+        grid_cols = max(2, min(5, len(slide.get("cards", [])) or 3))
+    slide_class = "slide slide--mobile-scroll" if slide.get("mobile_scroll") else "slide"
+    return f'''
+  <div class="{slide_class}" data-slide="{slide["id"]}">
+    <div class="slide-content">
+      {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
+      {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
+      <div class="tenets-grid" style="--grid-cols: {grid_cols};">{"".join(cards)}
+      </div>
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def render_content_table(slide: dict, course: dict, module: dict) -> str:
+    label = slide.get("section_label")
+    slide_class = "slide slide--mobile-scroll" if slide.get("mobile_scroll") else "slide"
+    cols = slide.get("columns", [])
+    rows = slide.get("rows", [])
+    header = "".join(f'<th style="text-align:left;padding:10px 14px;border-bottom:2px solid var(--ocp-green);font-size:0.85rem;color:var(--text-primary);">{esc(c)}</th>' for c in cols)
+    body = ""
+    for row in rows:
+        cells = "".join(f'<td style="padding:10px 14px;border-bottom:1px solid var(--border-color);font-size:0.85rem;color:var(--text-secondary);">{esc(v)}</td>' for v in row)
+        body += f"<tr>{cells}</tr>"
+    return f'''
+  <div class="{slide_class}" data-slide="{slide["id"]}">
+    <div class="slide-content">
+      {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
+      {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
+      <div class="animate-in" style="margin-top:24px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;padding:8px 4px;box-shadow:var(--card-shadow);overflow:auto;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead><tr>{header}</tr></thead>
+          <tbody>{body}</tbody>
+        </table>
+      </div>
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
+    label = slide.get("section_label")
+    video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
+    media_class = (' slide--media-focus' if slide.get('media_focus') else '') + (' slide--mobile-scroll' if slide.get('mobile_scroll') else '')
+    return f'''
+  <div class="slide{media_class}" data-slide="{slide["id"]}"{video_attr}>
+    <div class="slide-content">
+      {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
+      {_figure_html(slide.get("figure"), course)}
+      {f'<p class="slide-main-text animate-in">{esc(slide.get("caption"))}</p>' if slide.get("caption") else ""}
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def render_full_slide_image(slide: dict, course: dict, module: dict) -> str:
+    fig = slide.get("figure") or {}
+    path = fig.get("path", "")
+    alt = fig.get("alt", "")
+    return f'''
+  <div class="slide slide-full-image" data-slide="{slide["id"]}">
+    <div class="full-slide-figure animate-in" data-zoomable-figure="true" tabindex="0" role="button" aria-label="{esc(ui(course, 'zoom_figure', 'Zoom figure'))}: {esc(alt)}">
+      <img src="{esc(path)}" alt="{esc(alt)}">
+    </div>
+  </div>
+'''
+
+
+def render_takeaways(slide: dict, course: dict, module: dict) -> str:
+    label = ui(course, "key_takeaways", "Key Takeaways")
+    items = "".join(
+        f'''
+        <li class="takeaway-item animate-in">
+          <span class="check-icon">&#10003;</span>
+          <p>{esc(item)}</p>
+        </li>''' for item in slide.get("items", [])
+    )
+    return f'''
+  <div class="slide" data-slide="{slide["id"]}">
+    <div class="slide-content">
+      <span class="section-label animate-in">{label}</span>
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "Module Summary", module))}</h2>
+      <ul class="takeaway-list">{items}
+      </ul>
+    </div>
+  </div>
+'''
+
+
+def _stable_int(value: str) -> int:
+    return int(hashlib.sha256(value.encode("utf-8")).hexdigest(), 16)
+
+
+def _correct_slots(seed: str, n: int, k: int, multiple: bool) -> set[int]:
+    combos = list(itertools.combinations(range(n), k))
+    if multiple and 1 < k < n:
+        non_edge_blocks = [
+            c for c in combos
+            if c != tuple(range(k)) and c != tuple(range(n - k, n))
+        ]
+        if non_edge_blocks:
+            combos = non_edge_blocks
+        non_contiguous = [
+            c for c in combos
+            if not all(c[i] + 1 == c[i + 1] for i in range(len(c) - 1))
+        ]
+        if non_contiguous:
+            combos = non_contiguous
+    return set(combos[_stable_int(seed + "|correct-slots") % len(combos)])
+
+
+def _shuffled_choices(q: dict, module: dict, slide: dict, qid: str) -> list[dict]:
+    """Return a stable per-question shuffle unless explicitly disabled."""
+    choices = list(q.get("choices", []))
+    if q.get("shuffle_choices") is False or len(choices) < 2:
+        return choices
+    seed = "|".join(
+        str(part or "")
+        for part in (
+            course_key_for_shuffle(module),
+            slide.get("id"),
+            qid,
+            q.get("prompt"),
+        )
+    )
+    shuffled = [
+        choice for _, choice in sorted(
+            enumerate(choices),
+            key=lambda item: (
+                _stable_int(f"{seed}|{item[1].get('id','')}|{item[1].get('text','')}"),
+                item[0],
+            ),
+        )
+    ]
+    correct = [choice for choice in shuffled if choice.get("correct")]
+    incorrect = [choice for choice in shuffled if not choice.get("correct")]
+    if not correct or not incorrect:
+        return shuffled
+    slots = _correct_slots(seed, len(shuffled), len(correct), bool(q.get("multiple")))
+    correct_iter = iter(correct)
+    incorrect_iter = iter(incorrect)
+    return [
+        next(correct_iter) if idx in slots else next(incorrect_iter)
+        for idx in range(len(shuffled))
+    ]
+
+
+def course_key_for_shuffle(module: dict) -> str:
+    return f"module{module.get('id', '')}:{module.get('title', '')}"
+
+
+def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
+    label = ui(course, "knowledge_check", "Knowledge Check")
+    submit_label = ui(course, "submit", "Submit")
+    retry_label = ui(course, "retry", "Retry")
+    gate_note = ui(
+        course,
+        "quiz_gate_note",
+        "Submit each question once to continue. Correct answers are not required, and retries are available.",
+    )
+    gate_warning = ui(
+        course,
+        "quiz_gate_warning",
+        "Submit each question once before advancing.",
+    )
+    questions_html = []
+    for qi, q in enumerate(slide.get("questions", []), start=1):
+        qid = q.get("id") or f"m{module.get('id')}_s{slide.get('id')}_q{qi}"
+        multi = bool(q.get("multiple"))
+        input_type = "checkbox" if multi else "radio"
+        choices_html = []
+        for choice in _shuffled_choices(q, module, slide, qid):
+            cid = choice.get("id", "")
+            input_id = f"{qid}_{cid}"
+            choice_feedback = choice.get("feedback_incorrect") or choice.get("feedback") or ""
+            choices_html.append(f'''
+            <label class="quiz-choice" for="{esc(input_id)}">
+              <input id="{esc(input_id)}" type="{input_type}" name="{esc(qid)}" value="{esc(cid)}" data-correct="{'true' if choice.get('correct') else 'false'}" data-feedback="{esc(choice_feedback)}">
+              <span>{esc(choice.get("text"))}</span>
+            </label>''')
+        questions_html.append(f'''
+        <div class="quiz-card animate-in" data-question-id="{esc(qid)}" data-multiple="{'true' if multi else 'false'}"
+             data-correct-feedback="{esc(q.get("feedback_correct") or q.get("feedback") or ui(course, 'correct', 'Correct.'))}"
+             data-incorrect-feedback="{esc(q.get("feedback_incorrect") or q.get("feedback") or ui(course, 'review_feedback', 'Review the feedback and try again.'))}">
+          <p class="quiz-question">{esc(q.get("prompt"))}</p>
+          <div class="quiz-choices">{"".join(choices_html)}
+          </div>
+          <div class="quiz-actions">
+            <button class="quiz-submit" type="button">{esc(submit_label)}</button>
+            <button class="quiz-retry" type="button">{esc(retry_label)}</button>
+          </div>
+          <div class="quiz-feedback" aria-live="polite"></div>
+        </div>''')
+    return f'''
+  <div class="slide" data-slide="{slide["id"]}" data-quiz-slide="true">
+    <div class="slide-content">
+      <span class="section-label animate-in">{label}</span>
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "Check Your Understanding", module))}</h2>
+      {f'<p class="slide-subtitle animate-in">{esc(slide.get("subtitle"))}</p>' if slide.get("subtitle") else ""}
+      <div class="knowledge-check-wrap">{"".join(questions_html)}
+      </div>
+      <p class="quiz-gate-note animate-in">{esc(gate_note)}</p>
+      <div class="quiz-gate-warning" role="status">{esc(gate_warning)}</div>
+      {_learner_aids_html(slide, course)}
+    </div>
+  </div>
+'''
+
+
+def render_up_next(slide: dict, course: dict, module: dict) -> str:
+    """End-of-module slide. Thanks the learner for completing this module and
+    introduces the next one. Used on every module *except* the final one
+    (which uses course_complete instead)."""
+    nm = slide.get("next_module_number", module["id"] + 1)
+    nt = slide.get("next_module_title", "")
+    this_title = module.get("title", "")
+    # The thank-you line is customizable; provide a sensible default that names this module.
+    thanks = slide.get("thank_you_message") or ui(
+        course,
+        "default_module_thanks",
+        "Thank you for completing Module {module}: {title}.",
+    ).format(module=module["id"], title=this_title)
+    module_label = ui(course, "module", "Module")
+    module_complete = ui(course, "module_complete", "Module {module} Complete").format(module=module["id"])
+    up_next = ui(course, "up_next", "Up Next")
+    go_to_module = ui(course, "go_to_module", "Go to Module {module}").format(module=nm)
+    # Use the standard .slide/.slide-content shell so colors follow the
+    # theme (black on light, white on dark). The .slide-next class was
+    # found to render blank in some browsers; avoid it. Use a vertical
+    # flexbox so block children with their own max-width sit on the
+    # vertical center line instead of flushing left.
+    return f'''
+  <div class="slide" data-slide="{slide["id"]}">
+    <div class="slide-content" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
+      <div class="module-complete-badge animate-in" style="margin: 0 0 28px 0;">
+        &#10003;&ensp;{esc(module_complete)}
+      </div>
+      <span class="section-label animate-in">{esc(up_next)}</span>
+      <div class="next-module-heading animate-in">
+        <h2 class="slide-title">{esc(module_label)} {nm}</h2>
+        <a class="next-module-link" href="module{nm}.html" aria-label="{esc(go_to_module)}" title="{esc(go_to_module)}">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 5l7 7-7 7"></path>
+            <path d="M12 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+      <p class="slide-subtitle animate-in" style="margin: 0 auto 32px; text-align:center;">{esc(nt)}</p>
+      <p class="animate-in" style="margin: 0 auto; max-width: 680px; font-size: 1.05rem; line-height: 1.6; padding: 18px 28px; background: var(--ocp-green-subtle); border: 1px solid rgba(141,198,63,0.35); border-radius: 8px; text-align: center;">{esc(thanks)}</p>
+      {_summary_items_html(slide)}
+    </div>
+  </div>
+'''
+
+
+def render_course_complete(slide: dict, course: dict, module: dict) -> str:
+    """End-of-final-module slide. Thanks the learner and wraps up the course."""
+    this_title = module.get("title", "")
+    course_title = slide.get("course_title", course.get("course_title", ""))
+    # Two messages: a per-module thanks and a course-level wrap-up.
+    module_thanks = slide.get("thank_you_message") or ui(
+        course,
+        "default_module_thanks",
+        "Thank you for completing Module {module}: {title}.",
+    ).format(module=module["id"], title=this_title)
+    wrap_up = slide.get("cert_message") or ui(
+        course,
+        "default_course_wrap",
+        "You've completed every module of {course}. We hope this course leaves you ready to put what you've learned into practice.",
+    ).format(course=course_title)
+    # Survey CTA — invariant URL and body baked into the skill so every
+    # OCP Academy course gets the same feedback ask. These constants must
+    # not be changed by per-course course.json overrides. button_text
+    # alone remains customizable via slide.survey.button_text (defaults
+    # to "Share Feedback").
+    SURVEY_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf-IDIuFSXbRk-nks90x7J_4-iiZ6vEvmmNQoVps3ySP6UFmg/viewform?usp=header"
+    default_survey_body = (
+        "Got a couple minutes to help us improve? Help us shape "
+        "improvements and our future courses by sharing your feedback "
+        "with our development team. We periodically select submitters "
+        "at random for great giveaways!"
+    )
+    survey_body = ui(course, "survey_body", default_survey_body)
+    survey = slide.get("survey") or {}
+    survey_button = survey.get("button_text") or ui(course, "share_feedback", "Share Feedback")
+    module_complete = ui(course, "module_complete", "Module {module} Complete").format(module=module["id"])
+    course_complete = ui(course, "course_complete", "Course Complete")
+    survey_html = f'''
+      <div class="survey-cta animate-in" style="max-width: 680px; margin: 18px auto 0; padding: 18px 24px; background: var(--bg-card); border: 1px solid var(--ocp-green); border-radius: 12px; box-shadow: var(--card-shadow); text-align: center;">
+        <p style="font-size: 1.0rem; line-height: 1.45; margin: 0 0 12px 0; color: var(--text-primary);">{esc(survey_body)}</p>
+        <a class="survey-btn" href="{esc(SURVEY_URL)}" target="_blank" rel="noopener" style="display: inline-block; padding: 10px 24px; background: var(--ocp-green); color: #ffffff; text-decoration: none; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em; border-radius: 8px; transition: background 0.15s ease;">{esc(survey_button)} &#8594;</a>
+      </div>'''
+    # Same centering treatment as render_up_next.
+    return f'''
+  <div class="slide slide--mobile-scroll slide--course-complete" data-slide="{slide["id"]}">
+    <div class="slide-content" style="text-align:center; display:flex; flex-direction:column; align-items:center;">
+      <div class="module-complete-badge animate-in" style="margin: 0 0 18px 0;">
+        &#10003;&ensp;{esc(module_complete)}
+      </div>
+      <p class="animate-in" style="margin: 0 auto 20px; max-width: 680px; font-size: 1.05rem; line-height: 1.5; padding: 14px 24px; background: var(--ocp-green-subtle); border: 1px solid rgba(141,198,63,0.35); border-radius: 8px; text-align: center;">{esc(module_thanks)}</p>
+      <span class="section-label animate-in">{esc(course_complete)}</span>
+      <h2 class="slide-title animate-in" style="margin: 0 0 6px 0; text-align:center;">{esc(course_title)}</h2>
+      <p class="slide-subtitle animate-in" style="margin: 0 auto 18px; text-align:center;">{esc(wrap_up)}</p>
+      {_learner_aids_html(slide, course, centered=True, include_glossary=False)}
+      {_summary_items_html(slide)}{survey_html}
+    </div>
+  </div>
+'''
+
+
+RENDERERS = {
+    "title": render_title,
+    "course_overview": render_course_overview,
+    "objectives": render_objectives,
+    "content_bullets": render_content_bullets,
+    "content_two_column": render_content_two_column,
+    "content_grid": render_content_grid,
+    "content_table": render_content_table,
+    "content_diagram": render_content_diagram,
+    "full_slide_image": render_full_slide_image,
+    "takeaways": render_takeaways,
+    "knowledge_check": render_knowledge_check,
+    "up_next": render_up_next,
+    "course_complete": render_course_complete,
+}
+
+
+def validate_knowledge_check_audio(module: dict) -> None:
+    missing = []
+    for slide in module.get("slides", []):
+        if slide.get("type") != "knowledge_check":
+            continue
+        audio = slide.get("audio") or {}
+        if not audio.get("script_file") or not audio.get("wav_file"):
+            missing.append(
+                f"M{module.get('id')}S{slide.get('id')} "
+                f"({slide.get('slug', 'knowledge_check')})"
+            )
+    if missing:
+        joined = "\n  - ".join(missing)
+        raise ValueError(
+            "Knowledge-check slides must include narration metadata before rendering.\n"
+            "Add audio.script_file and audio.wav_file, generate the matching WAV, "
+            f"then render again:\n  - {joined}"
+        )
+
+
+def render_module(course: dict, module_index: int) -> str:
+    """Return full HTML string for moduleN.html."""
+    legacy_profile = legacy_multi_sco.enabled(course)
+    module = course["modules"][module_index]
+    direct_navigation = (course.get('scorm') or {}).get('navigation') == 'direct'
+    badge_tag = "a" if single_sco.enabled(course) or legacy_profile or direct_navigation else "div"
+    home_label = esc(ui(course, "course_home", "Course home"))
+    badge_link = f' href="index.html" aria-label="{home_label}" title="{home_label}" style="text-decoration:none;color:inherit"' if badge_tag == "a" else ""
+    from glossary_audit import glossary_exclusion_reason
+    for index, slide in enumerate(module["slides"]):
+        reason = glossary_exclusion_reason(slide, index, len(module["slides"]))
+        if reason and slide.get("term_refs"):
+            raise ValueError(
+                f'Glossary pills are prohibited on {reason}: '
+                f'M{module["id"]}S{slide["id"]}. Remove these term_refs before rendering.'
+            )
+    validate_knowledge_check_audio(module)
+    module_num = module["id"]
+    slides_html = []
+    audio_map_entries = []
+    for slide in module["slides"]:
+        renderer = RENDERERS.get(slide["type"])
+        if renderer is None:
+            raise ValueError(f"Unknown slide type: {slide['type']}")
+        slides_html.append(renderer(slide, course, module))
+        audio = slide.get("audio") or {}
+        wav = audio.get("wav_file")
+        if wav:
+            audio_map_entries.append(f'    {slide["id"]}: {json.dumps(wav)},')
+
+    audio_map = "\n".join(audio_map_entries).rstrip(",")
+    css = load_styles()
+    course_title = course.get("course_title", "Course")
+    module_title = module.get("title", "")
+    badge_logo = course.get("brand", {}).get("course_logo", "")
+    language = course.get("language") or "en"
+    module_label = ui(course, "module", "Module")
+    theme_label = ui(course, "theme", "Theme")
+    toggle_dark_mode = ui(course, "toggle_dark_mode", "Toggle dark mode")
+    previous_slide = ui(course, "previous_slide", "Previous slide")
+    next_slide = ui(course, "next_slide", "Next slide")
+    previous_slide_hint = ui(course, "previous_slide_hint", "Previous slide (← Left Arrow). Home: go to slide 1 of this module.")
+    next_slide_hint = ui(course, "next_slide_hint", "Next slide (→ Right Arrow). Home: go to slide 1 of this module.")
+    slide_counter_hint = ui(course, "slide_counter_hint", "Use ← / → arrow keys to move between slides. Home: go to slide 1 of this module.")
+    play_pause_narration = ui(course, "play_pause_narration", "Play/Pause narration")
+    playback_speed = ui(course, "playback_speed", "Playback speed")
+    playback_speed_slider = ui(course, "playback_speed_slider", "Playback speed slider")
+    speed_label = ui(course, "speed", "Speed")
+    toggle_fullscreen = ui(course, "toggle_fullscreen", "Toggle fullscreen")
+    fullscreen_label = ui(course, "fullscreen", "Fullscreen")
+    select_answer = ui(course, "select_answer", "Select at least one answer, then submit.")
+    play_video = ui(course, "play_video", "Play video")
+    pause_video = ui(course, "pause_video", "Pause video")
+    enlarged_figure = ui(course, "enlarged_figure", "Enlarged figure")
+    lightbox_close_hint = ui(course, "lightbox_close_hint", "Click outside or press Esc to close")
+    transcript_map = json.dumps({str(s['id']): {'title': s.get('title') or s.get('next_module_title') or module_title, 'text': s.get('transcript','')} for s in module['slides']}, ensure_ascii=False).replace('</', '<\\/')
+    learner_runtime = (TEMPLATE_DIR / ('learner_features_hbf.js' if legacy_profile else 'learner_features.js')).read_text()
+    if any((slide.get('figure') or {}).get('playback_mode') == 'recorded' for slide in module.get('slides', [])):
+        learner_runtime += '\n' + (TEMPLATE_DIR / 'standalone_video.js').read_text().replace(
+            '__STANDALONE_VIDEO_LABELS__', json.dumps(course.get('ui_labels') or {}, ensure_ascii=False).replace('<', '\\u003c'))
+    bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
+    bookmark_declaration = '' if legacy_profile else f'  const BOOKMARK_KEY = {bookmark_key};\n'
+
+    font_links = (f'<link rel="stylesheet" href="{esc(course["local_font_stylesheet"])}">'
+                  if course.get("local_font_stylesheet") else '<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">')
+
+    return f'''<!DOCTYPE html>
+<html lang="{esc(language)}">
+<head>
+<meta charset="UTF-8">
+<script src="scorm_api.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{esc(course_title)} - {esc(module_label)} {module_num}</title>
+{font_links}
+<style>
+{css}
+</style>
+</head>
+<body{motion_intro_body_class(course, "modules")}>
+{render_motion_intro(course, "modules", module)}
+{motion_intro_noscript_style()}
+<div class="module-badge">
+  <{badge_tag} class="module-badge-logo"{badge_link}>
+    {f'<img src="{esc(badge_logo)}" alt="{esc(course_title)}">' if badge_logo else ""}
+    {_badge_text_html(course)}
+  </{badge_tag}>
+  <div class="module-badge-text">{esc(module_label)} {module_num}</div>
+</div>
+
+<div class="deck" id="deck">
+{"".join(slides_html)}
+</div>
+
+<!-- ===== CONTROLS BAR ===== -->
+<div class="progress-bar" id="progressBar"></div>
+<div class="controls">
+  <div class="controls-left">
+    <button class="btn" id="fullscreenBtn" aria-label="{esc(toggle_fullscreen)}" title="{esc(fullscreen_label)} (F)">
+      <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+    </button>
+    <span class="key-hint">F</span>
+    <span class="theme-label">{esc(theme_label)}</span>
+    <button class="theme-toggle" id="themeToggle" aria-label="{esc(toggle_dark_mode)}"></button>
+    <span class="key-hint">D</span>
+  </div>
+  <div class="controls-center">
+    <button class="btn btn-nav" id="prevBtn" aria-label="{esc(previous_slide)}" title="{esc(previous_slide_hint)}" disabled>&#8592;</button>
+    <span class="slide-counter" id="slideCounter" title="{esc(slide_counter_hint)}">1 / {len(module["slides"])}</span>
+    <button class="btn btn-nav" id="nextBtn" aria-label="{esc(next_slide)}" title="{esc(next_slide_hint)}">&#8594;</button>
+  </div>
+  <div class="controls-right">
+    <div class="audio-controls">
+      <button class="btn-audio" id="audioPlayBtn" aria-label="{esc(play_pause_narration)}" title="{esc(play_pause_narration)} (P)">&#9654;</button>
+      <div class="audio-progress-wrap" id="audioProgressWrap">
+        <div class="audio-progress-fill" id="audioProgressFill"></div>
+      </div>
+      <span class="audio-time" id="audioTime">0:00</span>
+      <div class="audio-speed-wrap" id="audioSpeedWrap">
+        <button class="btn-audio-speed" id="audioSpeedBtn" aria-label="{esc(playback_speed)}" title="{esc(playback_speed)}" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 16a8 8 0 1 1 16 0"/><line x1="12" y1="16" x2="16" y2="11"/><circle cx="12" cy="16" r="1.2" fill="currentColor"/></svg>
+        </button>
+        <div class="audio-speed-popup" id="audioSpeedPopup" role="dialog" aria-label="{esc(playback_speed)}">
+          <div class="audio-speed-popup-label">{esc(speed_label)} <span class="audio-speed-popup-value" id="audioSpeedValue">1.0&times;</span></div>
+          <input type="range" id="audioSpeedSlider" min="0.8" max="1.6" step="0.1" value="1.0" aria-label="{esc(playback_speed_slider)}">
+          <div class="audio-speed-popup-scale"><span>0.8&times;</span><span>1.2&times;</span><span>1.6&times;</span></div>
+        </div>
+      </div>
+      <button class="btn-audio-speed btn-script-audio" id="transcriptBtn" aria-label="Transcript" title="Transcript" aria-controls="transcriptPanel" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h8l4 4v14H5V3h2zM14 3v5h5M8 12h8M8 16h8"/></svg>
+      </button>
+      <button class="btn-audio-speed btn-script-audio" id="narrationModeBtn" aria-label="Automatic narration" aria-pressed="true" title="Narration on — click to turn off">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path class="narration-on-icon" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="narration-off-icon" d="m16 9 5 6m0-6-5 6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+{motion_intro_script()}
+<script>
+(function() {{
+  'use strict';
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const reviewMode = new URLSearchParams(location.search).get('review') === '1';
+  const transcriptMap = {transcript_map};
+{bookmark_declaration}  let currentSlide = 1;
+  const counter = document.getElementById('slideCounter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const progressBar = document.getElementById('progressBar');
+  const themeToggle = document.getElementById('themeToggle');
+  const fullscreenBtn = document.getElementById('fullscreenBtn');
+
+  function syncSlideVideos(activeSlideNumber, restartActive) {{
+    slides.forEach(function(slide) {{
+      const video = slide.querySelector('video.figure-video');
+      if (!video) return;
+      const isActive = slide.dataset.slide === String(activeSlideNumber);
+      if (!isActive) {{
+        video.pause();
+        video.currentTime = 0;
+        return;
+      }}
+      if (restartActive) video.currentTime = 0;
+      if (video.dataset.narrationSync === 'true') video.pause();
+      else if (video.hasAttribute('autoplay')) video.play().catch(function() {{}});
+    }});
+  }}
+
+  function goToSlide(n, direction) {{
+    if (!reviewMode && n > currentSlide) {{
+      const gate = Array.from(slides).find(s => Number(s.dataset.slide) < n && s.dataset.quizSlide === 'true' && Array.from(s.querySelectorAll('.quiz-card')).some(c => c.dataset.attempted !== 'true'));
+      if (gate) n = Number(gate.dataset.slide);
+    }}
+    if (n < 1 || n > totalSlides || n === currentSlide) return;
+    const oldSlide = document.querySelector('.slide.active');
+    const newSlide = document.querySelector(`.slide[data-slide="${{n}}"]`);
+    if (oldSlide) {{
+      oldSlide.inert = true;
+      oldSlide.setAttribute('aria-hidden', 'true');
+      oldSlide.classList.remove('active');
+      if (direction === 'forward') oldSlide.classList.add('exit-left');
+      setTimeout(() => oldSlide.classList.remove('exit-left'), 600);
+    }}
+    requestAnimationFrame(() => newSlide.classList.add('active'));
+    newSlide.inert = false;
+    newSlide.setAttribute('aria-hidden', 'false');
+    currentSlide = n;
+    syncSlideVideos(currentSlide, true);
+    updateControls();
+    if (typeof loadSlideAudio === 'function') loadSlideAudio(n);
+    if (typeof checkCompletion === 'function') checkCompletion();
+    window.dispatchEvent(new CustomEvent('academy:slide', {{detail: n}}));
+    const heading = newSlide.querySelector('h1,h2');
+    if (heading) {{ heading.tabIndex = -1; heading.focus({{preventScroll: true}}); }}
+  }}
+
+  function updateFirstSlideAudioCue() {{
+    document.body.classList.toggle('first-slide-audio-cue', currentSlide === 1 && autoplayFallbackArmed);
+  }}
+
+  function updateControls() {{
+    counter.textContent = `${{currentSlide}} / ${{totalSlides}}`;
+    prevBtn.disabled = currentSlide === 1;
+    nextBtn.disabled = currentSlide === totalSlides;
+    progressBar.style.width = `${{(currentSlide / totalSlides) * 100}}%`;
+    updateFirstSlideAudioCue();
+  }}
+
+  function currentQuizAttempted() {{
+    const slide = document.querySelector(`.slide[data-slide="${{currentSlide}}"]`);
+    if (!slide || slide.dataset.quizSlide !== 'true') return true;
+    const cards = Array.from(slide.querySelectorAll('.quiz-card'));
+    const attempted = cards.length > 0 && cards.every(card => card.dataset.attempted === 'true');
+    slide.classList.toggle('quiz-needs-attempt', !attempted);
+    return attempted;
+  }}
+
+  function nextSlide() {{
+    if (!currentQuizAttempted()) return;
+    goToSlide(currentSlide + 1, 'forward');
+  }}
+  function prevSlide() {{ goToSlide(currentSlide - 1, 'backward'); }}
+
+  function toggleTheme() {{
+    const htmlEl = document.documentElement;
+    const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+    htmlEl.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    localStorage.setItem('ocp-deck-theme', isDark ? 'light' : 'dark');
+  }}
+
+  function toggleFullscreen() {{
+    if (!document.fullscreenElement) {{
+      document.documentElement.requestFullscreen().catch(() => {{}});
+    }} else {{
+      document.exitFullscreen();
+    }}
+  }}
+
+  document.addEventListener('keydown', (e) => {{
+    if (e.defaultPrevented || e.target.closest('input,textarea,select,button,a,[role="button"],.transcript-panel,.lightbox-overlay')) return;
+    switch(e.key) {{
+      case 'ArrowRight': case ' ': e.preventDefault(); nextSlide(); break;
+      case 'ArrowLeft': e.preventDefault(); prevSlide(); break;
+      case 'f': case 'F': e.preventDefault(); toggleFullscreen(); break;
+      case 'd': case 'D': e.preventDefault(); toggleTheme(); break;
+      case 'Home': e.preventDefault(); goToSlide(1, 'backward'); break;
+      case 'End': e.preventDefault(); goToSlide(totalSlides, 'forward'); break;
+    }}
+  }});
+
+  nextBtn.addEventListener('click', nextSlide);
+  prevBtn.addEventListener('click', prevSlide);
+  themeToggle.addEventListener('click', toggleTheme);
+  fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+  let touchStartX = 0, touchEndX = 0;
+  document.addEventListener('touchstart', (e) => {{ touchStartX = e.changedTouches[0].screenX; }}, {{ passive: true }});
+  document.addEventListener('touchend', (e) => {{
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 60) {{ if (diff > 0) nextSlide(); else prevSlide(); }}
+  }}, {{ passive: true }});
+
+  const savedTheme = localStorage.getItem('ocp-deck-theme');
+  if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+  else if (window.matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
+
+  // ===== AUDIO NARRATION =====
+  const audioMap = {{
+{audio_map}
+  }};
+
+  let audioPlayer = new Audio();
+  let audioPlaying = false;
+  let autoPlayAudio = true;
+  try {{ autoPlayAudio = localStorage.getItem('ocp-narration-enabled') !== 'false'; }} catch (_) {{}}
+  if (reviewMode) autoPlayAudio = false;
+  let autoplayFallbackArmed = false;
+  const autoplayRetryEvents = ['pointerdown', 'keydown', 'touchstart'];
+  const audioPlayBtn = document.getElementById('audioPlayBtn');
+  const audioProgressFill = document.getElementById('audioProgressFill');
+  const audioProgressWrap = document.getElementById('audioProgressWrap');
+  const audioTime = document.getElementById('audioTime');
+
+  function formatTime(sec) {{
+    if (!sec || isNaN(sec)) return '0:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }}
+
+  function setAudioPlaying(isPlaying) {{
+    audioPlaying = isPlaying;
+    audioPlayBtn.innerHTML = isPlaying ? '&#9646;&#9646;' : '&#9654;';
+  }}
+
+  function retryBlockedAutoplay(event) {{
+    if (!autoplayFallbackArmed) return;
+    if (!autoPlayAudio || (event && event.target.closest('#narrationModeBtn,#transcriptBtn'))) return;
+    if (event && audioPlayBtn.contains(event.target)) return;
+    disarmAutoplayFallback();
+    attemptAudioPlayback();
+  }}
+
+  function disarmAutoplayFallback() {{
+    if (!autoplayFallbackArmed) return;
+    autoplayFallbackArmed = false;
+    autoplayRetryEvents.forEach((eventName) => {{
+      document.removeEventListener(eventName, retryBlockedAutoplay, true);
+    }});
+    updateFirstSlideAudioCue();
+  }}
+
+  function armAutoplayFallback() {{
+    if (autoplayFallbackArmed) return;
+    autoplayFallbackArmed = true;
+    autoplayRetryEvents.forEach((eventName) => {{
+      document.addEventListener(eventName, retryBlockedAutoplay, {{ capture: true }});
+    }});
+    updateFirstSlideAudioCue();
+  }}
+
+  function attemptAudioPlayback() {{
+    if (!audioMap[currentSlide] || audioPlayBtn.disabled || !audioPlayer.src) return;
+    let playRequest;
+    try {{
+      playRequest = audioPlayer.play();
+    }} catch (_) {{
+      setAudioPlaying(false);
+      armAutoplayFallback();
+      return;
+    }}
+    if (playRequest && typeof playRequest.then === 'function') {{
+      playRequest.then(() => {{
+        setAudioPlaying(true);
+        disarmAutoplayFallback();
+      }}).catch(() => {{
+        setAudioPlaying(false);
+        armAutoplayFallback();
+      }});
+    }} else {{
+      setAudioPlaying(true);
+      disarmAutoplayFallback();
+    }}
+  }}
+
+  function loadSlideAudio(slideNum) {{
+    disarmAutoplayFallback();
+    audioPlayer.pause();
+    setAudioPlaying(false);
+    audioProgressFill.style.width = '0%';
+    audioTime.textContent = '0:00';
+    const src = audioMap[slideNum];
+    const available = Boolean(src);
+    audioPlayBtn.disabled = !available;
+    audioPlayBtn.setAttribute('aria-disabled', String(!available));
+    audioPlayBtn.title = available ? {json.dumps(play_pause_narration + ' (P)', ensure_ascii=False)} : {json.dumps(ui(course, 'no_slide_narration', 'No slide narration. Use the video player controls.'), ensure_ascii=False)};
+    audioProgressWrap.setAttribute('aria-disabled', String(!available));
+    audioProgressWrap.classList.toggle('is-unavailable', !available);
+    ['audioSpeedBtn', 'audioSpeedSlider'].forEach(function(id) {{
+      const control = document.getElementById(id);
+      if (control) control.disabled = !available;
+    }});
+    if (!available) {{
+      audioPlayer.removeAttribute('src');
+      audioPlayer.load();
+      document.getElementById('audioSpeedWrap')?.classList.remove('open');
+      document.getElementById('audioSpeedBtn')?.setAttribute('aria-expanded', 'false');
+      return;
+    }}
+    if (src) {{
+      audioPlayer.src = src;
+      audioPlayer.load();
+      // Re-apply the saved playback rate to the new source. playbackRate
+      // generally persists on HTMLMediaElement across src changes, but this
+      // is a belt-and-braces guarantee that the user's slider value sticks.
+      audioPlayer.playbackRate = getSavedSpeed();
+      if (autoPlayAudio) {{
+        attemptAudioPlayback();
+      }}
+    }}
+  }}
+
+  function toggleAudio() {{
+    if (!audioMap[currentSlide] || audioPlayBtn.disabled || !audioPlayer.src) return;
+    if (audioPlaying) {{
+      audioPlayer.pause();
+      setAudioPlaying(false);
+      disarmAutoplayFallback();
+    }} else {{
+      attemptAudioPlayback();
+    }}
+  }}
+
+  audioPlayer.addEventListener('timeupdate', () => {{
+    if (audioMap[currentSlide] && audioPlayer.duration) {{
+      const pct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+      audioProgressFill.style.width = pct + '%';
+      audioTime.textContent = formatTime(audioPlayer.currentTime);
+    }}
+  }});
+
+  audioPlayer.addEventListener('ended', () => {{
+    audioPlaying = false;
+    audioPlayBtn.innerHTML = '&#9654;';
+    audioProgressFill.style.width = '100%';
+  }});
+
+  audioProgressWrap.addEventListener('click', (e) => {{
+    if (!audioMap[currentSlide] || !audioPlayer.duration) return;
+    const rect = audioProgressWrap.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    audioPlayer.currentTime = pct * audioPlayer.duration;
+  }});
+
+  audioPlayBtn.addEventListener('click', toggleAudio);
+  document.addEventListener('keydown', (e) => {{
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'p' || e.key === 'P') {{ e.preventDefault(); toggleAudio(); }}
+  }});
+
+  // ===== PLAYBACK SPEED =====
+  // Slider 0.8-1.6 in 0.1 increments. Persisted to localStorage so the
+  // setting carries across slides within the module — and across reloads.
+  const SPEED_KEY = 'ocp-deck-audio-speed';
+  const audioSpeedSlider = document.getElementById('audioSpeedSlider');
+  const audioSpeedValue = document.getElementById('audioSpeedValue');
+  const audioSpeedBtn = document.getElementById('audioSpeedBtn');
+
+  function getSavedSpeed() {{
+    const v = parseFloat(localStorage.getItem(SPEED_KEY));
+    if (isNaN(v) || v < 0.8 || v > 1.6) return 1.0;
+    return Math.round(v * 10) / 10;
+  }}
+
+  function applySpeed(rate) {{
+    audioPlayer.playbackRate = rate;
+    if (audioSpeedSlider) audioSpeedSlider.value = String(rate);
+    if (audioSpeedValue) audioSpeedValue.textContent = rate.toFixed(rate === Math.floor(rate) ? 1 : 2) + '×';
+    // Highlight the button when off-default so the user knows speed is engaged.
+    if (audioSpeedBtn) audioSpeedBtn.classList.toggle('active', Math.abs(rate - 1.0) > 1e-6);
+  }}
+
+  applySpeed(getSavedSpeed());
+
+  if (audioSpeedSlider) {{
+    audioSpeedSlider.addEventListener('input', (e) => {{
+      const rate = Math.round(parseFloat(e.target.value) * 10) / 10;
+      applySpeed(rate);
+      try {{ localStorage.setItem(SPEED_KEY, String(rate)); }} catch (_) {{}}
+    }});
+  }}
+
+  // ===== KNOWLEDGE CHECKS =====
+  let quizInteractionIndex = 0;
+  const QUIZ_STATE_KEY = {json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num) + ':quiz-state')};
+
+  function getSuspendObject() {{
+    var data = '';
+    if (!reviewMode) {{
+      if (inLMS) data = SCORM.getSuspendData();
+      else {{ try {{ data = localStorage.getItem(QUIZ_STATE_KEY) || ''; }} catch (_) {{}} }}
+    }}
+    var obj = {{ modules: [] }};
+    try {{ if (data) obj = JSON.parse(data); }} catch(e) {{}}
+    if (!obj || typeof obj !== 'object') obj = {{ modules: [] }};
+    if (!obj.modules) obj.modules = [];
+    if (!obj.quizzes) obj.quizzes = {{}};
+    return obj;
+  }}
+
+  function writeSuspendObject(obj) {{
+    if (reviewMode) return;
+    var data = JSON.stringify(obj);
+    if (inLMS) SCORM.setSuspendData(data);
+    else {{ try {{ localStorage.setItem(QUIZ_STATE_KEY, data); }} catch (_) {{}} }}
+  }}
+
+  function selectedInputs(card) {{
+    return Array.from(card.querySelectorAll('input:checked'));
+  }}
+
+  function selectedChoiceIds(card) {{
+    return selectedInputs(card).map(input => input.value).sort();
+  }}
+
+  function correctChoiceIds(card) {{
+    return Array.from(card.querySelectorAll('input[data-correct="true"]')).map(input => input.value).sort();
+  }}
+
+  function sameArray(a, b) {{
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+    return true;
+  }}
+
+  function selectedChoiceFeedback(card) {{
+    if (card.dataset.multiple === 'true') return '';
+    const input = selectedInputs(card)[0];
+    return input && input.dataset.feedback ? input.dataset.feedback : '';
+  }}
+
+  function saveQuizState(questionId, selected, isCorrect) {{
+    var obj = getSuspendObject();
+    if (!obj.quizzes) obj.quizzes = {{}};
+    obj.quizzes[questionId] = {{
+      module: {module_num},
+      selected: selected,
+      correct: !!isCorrect,
+      attempted: true
+    }};
+    writeSuspendObject(obj);
+  }}
+
+  function clearQuizState(questionId) {{
+    var obj = getSuspendObject();
+    if (obj.quizzes) delete obj.quizzes[questionId];
+    writeSuspendObject(obj);
+  }}
+
+  function recordQuizInteraction(questionId, selected, correctIds, isCorrect) {{
+    if (reviewMode || !SCORM.setValue) return;
+    var count = parseInt(SCORM.getValue ? SCORM.getValue('cmi.interactions._count') : '', 10);
+    if (isNaN(count)) count = quizInteractionIndex;
+    var idx = Math.max(count, quizInteractionIndex);
+    quizInteractionIndex = idx + 1;
+    var studentResponse = selected.join(',');
+    var correctPattern = correctIds.join(',');
+    SCORM.setValue('cmi.interactions.' + idx + '.id', questionId);
+    SCORM.setValue('cmi.interactions.' + idx + '.type', 'choice');
+    SCORM.setValue('cmi.interactions.' + idx + '.student_response', studentResponse);
+    SCORM.setValue('cmi.interactions.' + idx + '.correct_responses.0.pattern', correctPattern);
+    SCORM.setValue('cmi.interactions.' + idx + '.result', isCorrect ? 'correct' : 'wrong');
+    SCORM.setValue('cmi.interactions.' + idx + '.latency', '00:00:00');
+  }}
+
+  function applyQuizFeedback(card, isCorrect) {{
+    const box = card.querySelector('.quiz-feedback');
+    if (!box) return;
+    box.classList.remove('correct', 'incorrect');
+    box.classList.add(isCorrect ? 'correct' : 'incorrect');
+    box.textContent = isCorrect
+      ? card.dataset.correctFeedback
+      : (selectedChoiceFeedback(card) || card.dataset.incorrectFeedback);
+  }}
+
+  function restoreQuizState() {{
+    var obj = getSuspendObject();
+    var quizzes = obj.quizzes || {{}};
+    document.querySelectorAll('.quiz-card').forEach(card => {{
+      const qid = card.dataset.questionId;
+      const state = quizzes[qid];
+      if (!state || !state.attempted) return;
+      card.dataset.attempted = 'true';
+      (state.selected || []).forEach(value => {{
+        const input = card.querySelector('input[value="' + CSS.escape(value) + '"]');
+        if (input) input.checked = true;
+      }});
+      applyQuizFeedback(card, !!state.correct);
+    }});
+  }}
+
+  function setupKnowledgeChecks() {{
+    document.querySelectorAll('.quiz-card').forEach(card => {{
+      const submit = card.querySelector('.quiz-submit');
+      const retry = card.querySelector('.quiz-retry');
+      if (submit) submit.addEventListener('click', () => {{
+        const selected = selectedChoiceIds(card);
+        const correct = correctChoiceIds(card);
+        if (selected.length === 0) {{
+          applyQuizFeedback(card, false);
+          const box = card.querySelector('.quiz-feedback');
+          if (box) box.textContent = {json.dumps(select_answer, ensure_ascii=False)};
+          return;
+        }}
+        const isCorrect = sameArray(selected, correct);
+        card.dataset.attempted = 'true';
+        const slide = card.closest('.slide');
+        if (slide) slide.classList.remove('quiz-needs-attempt');
+        applyQuizFeedback(card, isCorrect);
+        saveQuizState(card.dataset.questionId, selected, isCorrect);
+        recordQuizInteraction(card.dataset.questionId, selected, correct, isCorrect);
+      }});
+      if (retry) retry.addEventListener('click', () => {{
+        card.querySelectorAll('input').forEach(input => {{ input.checked = false; }});
+        delete card.dataset.attempted;
+        clearQuizState(card.dataset.questionId);
+        const box = card.querySelector('.quiz-feedback');
+        if (box) {{
+          box.textContent = '';
+          box.classList.remove('correct', 'incorrect');
+        }}
+      }});
+    }});
+  }}
+
+  // SCORM integration
+  const inLMS = !reviewMode && SCORM.init();
+  const directModuleLinks = {json.dumps((course.get('scorm') or {}).get('navigation') == 'direct')};
+  var existingStatus = SCORM.getStatus();
+  if (!reviewMode && existingStatus !== 'completed' && existingStatus !== 'passed') {{
+    SCORM.setIncomplete();
+  }}
+  restoreQuizState();
+  setupKnowledgeChecks();
+
+  function checkCompletion() {{
+    if (!reviewMode && currentSlide === totalSlides && Array.from(document.querySelectorAll('.quiz-card')).every(c => c.dataset.attempted === 'true')) {{
+      var completed = getSuspendObject();
+      if (!completed.modules) completed.modules = [];
+      if (completed.modules.indexOf({module_num}) === -1) {{
+        completed.modules.push({module_num});
+      }}
+      writeSuspendObject(completed);
+      SCORM.setCompleted();
+    }}
+  }}
+
+  window.addEventListener('beforeunload', function() {{ if (!reviewMode) SCORM.finish(); }});
+
+  {learner_runtime}
+  syncSlideVideos(currentSlide, true);
+  updateControls();
+  loadSlideAudio(currentSlide);
+}})();
+</script>
+<!-- Click-to-enlarge lightbox for figures -->
+<script>
+(function() {{
+  function syncVideoToggle(panel) {{
+    if (!panel) return;
+    var video = panel.querySelector('video.figure-video');
+    var button = panel.querySelector('[data-video-toggle]');
+    if (!video || !button) return;
+    var paused = video.paused;
+    button.innerHTML = paused ? '<span class="video-icon video-icon-play" aria-hidden="true"></span>' : '<span class="video-icon video-icon-pause" aria-hidden="true"></span>';
+    button.setAttribute('aria-label', paused ? {json.dumps(play_video, ensure_ascii=False)} : {json.dumps(pause_video, ensure_ascii=False)});
+    button.setAttribute('title', paused ? {json.dumps(play_video, ensure_ascii=False)} : {json.dumps(pause_video, ensure_ascii=False)});
+  }}
+  var recordedSource = null;
+  function openLightbox(panel) {{
+    var overlay = document.createElement('div');
+    overlay.className = 'lightbox-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-label', {json.dumps(enlarged_figure, ensure_ascii=False)});
+    var frame = document.createElement('div');
+    frame.className = 'lightbox-figure';
+    frame.innerHTML = panel.innerHTML;
+    if (panel.hasAttribute('data-video-figure')) {{
+      frame.classList.add('figure-panel', 'figure-panel--video');
+      frame.setAttribute('data-zoomable-figure', 'true');
+      frame.setAttribute('data-video-figure', 'true');
+      if (panel.classList.contains('figure-panel--captioned')) frame.classList.add('figure-panel--captioned');
+    }}
+    overlay.appendChild(frame);
+    var hint = document.createElement('div');
+    hint.className = 'lightbox-hint';
+    hint.textContent = {json.dumps(lightbox_close_hint, ensure_ascii=False)};
+    overlay.appendChild(hint);
+    overlay.addEventListener('click', function(e) {{
+      if (!e.target.closest('.lightbox-figure')) closeLightbox();
+    }});
+    document.body.appendChild(overlay);
+    document.dispatchEvent(new CustomEvent('academy:figure-open', {{detail: frame}}));
+    var sourceVideo = panel.querySelector('video.figure-video');
+    var lightboxPanel = frame;
+    var lightboxVideo = frame.querySelector('video.figure-video');
+    if (sourceVideo && lightboxVideo) {{
+      var startTime = sourceVideo.currentTime || 0;
+      var captionModes = Array.from(sourceVideo.textTracks).map(function(track) {{ return track.mode; }});
+      function restoreVideoPosition() {{
+        lightboxVideo.currentTime = startTime;
+        captionModes.forEach(function(mode, index) {{
+          if (lightboxVideo.textTracks[index]) lightboxVideo.textTracks[index].mode = mode;
+        }});
+      }}
+      if (lightboxVideo.readyState >= 1) restoreVideoPosition();
+      else lightboxVideo.addEventListener('loadedmetadata', restoreVideoPosition, {{once: true}});
+      if (sourceVideo.dataset.narrationSync === 'true') {{
+        lightboxVideo.playbackRate = sourceVideo.playbackRate;
+        lightboxVideo.addEventListener('loadedmetadata', function() {{
+          lightboxVideo.currentTime = sourceVideo.currentTime || 0;
+          lightboxVideo.playbackRate = sourceVideo.playbackRate;
+        }}, {{once: true}});
+      }}
+      var sourceWasPaused = sourceVideo.paused;
+      if (sourceVideo.dataset.recordedVideo === 'true') {{ recordedSource = sourceVideo; sourceVideo.pause(); }}
+      if (sourceWasPaused) {{
+        lightboxVideo.pause();
+      }} else {{
+        lightboxVideo.play().catch(function() {{}});
+      }}
+      syncVideoToggle(lightboxPanel);
+    }}
+    document.addEventListener('keydown', escClose);
+  }}
+  function closeLightbox() {{
+    var o = document.querySelector('.lightbox-overlay');
+    if (o) {{
+      var enlarged = o.querySelector('video.figure-video');
+      if (recordedSource && enlarged) {{
+        recordedSource.currentTime = enlarged.currentTime;
+        Array.from(enlarged.textTracks).forEach(function(track, index) {{
+          if (recordedSource.textTracks[index]) recordedSource.textTracks[index].mode = track.mode;
+        }});
+        enlarged.pause(); recordedSource = null;
+      }}
+      o.remove();
+    }}
+    document.removeEventListener('keydown', escClose);
+  }}
+  function escClose(e) {{ if (e.key === 'Escape') closeLightbox(); }}
+  function figurePanelFromEventTarget(target) {{
+    if (!target || !target.closest) return null;
+    return target.closest('.figure-panel[data-zoomable-figure="true"]');
+  }}
+  document.addEventListener('click', function(e) {{
+    if (e.target.closest && e.target.closest('.figure-caption-control')) return;
+    var toggle = e.target.closest && e.target.closest('[data-video-toggle]');
+    if (toggle) {{
+      e.preventDefault();
+      e.stopPropagation();
+      var togglePanel = figurePanelFromEventTarget(toggle);
+      var video = togglePanel && togglePanel.querySelector('video.figure-video');
+      if (video) {{
+        if (video.paused) {{
+          video.play().catch(function() {{}});
+        }} else {{
+          video.pause();
+        }}
+        syncVideoToggle(togglePanel);
+      }}
+      return;
+    }}
+    var zoomButton = e.target.closest && e.target.closest('[data-video-zoom]');
+    if (zoomButton) {{
+      e.preventDefault();
+      e.stopPropagation();
+      if (zoomButton.closest('.lightbox-overlay')) return;
+      var zoomPanel = figurePanelFromEventTarget(zoomButton);
+      if (zoomPanel) openLightbox(zoomPanel);
+      return;
+    }}
+    if (e.target.closest && e.target.closest('.lightbox-overlay')) return;
+    if (e.target.closest && e.target.closest('video[controls]')) return;
+    var panel = figurePanelFromEventTarget(e.target);
+    if (panel) {{
+      e.stopPropagation();
+      openLightbox(panel);
+    }}
+  }});
+  document.addEventListener('keydown', function(e) {{
+    if (e.target.closest && e.target.closest('.figure-caption-control')) return;
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest && e.target.closest('.figure-video-control')) return;
+    if (e.target.closest && e.target.closest('.lightbox-overlay')) return;
+    if (e.target.closest && e.target.closest('video[controls]')) return;
+    var panel = figurePanelFromEventTarget(e.target);
+    if (panel) {{
+      e.preventDefault();
+      openLightbox(panel);
+    }}
+  }});
+  document.addEventListener('play', function(e) {{
+    if (e.target && e.target.matches && e.target.matches('video.figure-video')) {{
+      syncVideoToggle(figurePanelFromEventTarget(e.target));
+    }}
+  }}, true);
+  document.addEventListener('pause', function(e) {{
+    if (e.target && e.target.matches && e.target.matches('video.figure-video')) {{
+      syncVideoToggle(figurePanelFromEventTarget(e.target));
+    }}
+  }}, true);
+  document.querySelectorAll('.figure-panel[data-video-figure="true"]').forEach(syncVideoToggle);
+}})();
+</script>
+</body>
+</html>
+'''
+
+
+def fill_missing_transcripts(course: dict, root: Path) -> None:
+    """Older sources retain scripts but have no display transcript metadata."""
+    for module in course.get('modules', []):
+        for slide in module.get('slides', []):
+            if slide.get('transcript'):
+                continue  # Preserve explicitly authored conventional spelling.
+            script = (slide.get('audio') or {}).get('script_file')
+            if script and (root / script).is_file():
+                slide['transcript'] = '\n'.join(
+                    line for line in (root / script).read_text(encoding='utf-8').splitlines()
+                    if not line.lstrip().startswith('#')
+                ).strip()
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("course_json", type=Path)
+    p.add_argument("--module", type=int, help="1-based module number")
+    p.add_argument("--all", action="store_true")
+    p.add_argument("--out", type=Path)
+    args = p.parse_args()
+
+    course = json.loads(args.course_json.read_text())
+    out_dir = args.course_json.resolve().parent
+
+    if is_scrolling(course):
+        out_path = args.out or (out_dir / "index.html")
+        out_path.write_text(render_scrolling_course(course), encoding="utf-8")
+        print(f"wrote {out_path} (Scrolling single-SCO course)")
+        return
+
+    course = hydrate_caption_cues(course, out_dir)
+    if args.all:
+        fill_missing_transcripts(course, out_dir)
+        for i, mod in enumerate(course["modules"]):
+            html_s = render_module(course, i)
+            (out_dir / f'module{mod["id"]}.html').write_text(html_s)
+            print(f'wrote module{mod["id"]}.html')
+    else:
+        fill_missing_transcripts(course, out_dir)
+        if args.module is None:
+            sys.exit("Specify --module N or --all")
+        idx = args.module - 1
+        if idx < 0 or idx >= len(course["modules"]):
+            sys.exit(f"Module {args.module} out of range (1..{len(course['modules'])})")
+        html_s = render_module(course, idx)
+        out_path = args.out or (out_dir / f'module{course["modules"][idx]["id"]}.html')
+        out_path.write_text(html_s)
+        print(f'wrote {out_path}')
+
+
+if __name__ == "__main__":
+    main()

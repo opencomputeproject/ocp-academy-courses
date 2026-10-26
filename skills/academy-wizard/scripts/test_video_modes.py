@@ -37,4 +37,16 @@ class VideoModes(unittest.TestCase):
   c={'course_title':'Test','modules':[{'id':1,'title':'Test','slides':[{'id':1,'type':'title','title':'Test'}]}]}
   for render in [lambda:render_module(c,0),lambda:render_index_html(c)]:
    self.assertIn('fonts.googleapis.com',render());c['local_font_stylesheet']='assets/fonts/open-sans.css';t=render();self.assertNotIn('fonts.googleapis.com',t);self.assertIn('href="assets/fonts/open-sans.css"',t);del c['local_font_stylesheet']
+ def test_recording_keeps_sound_controls_and_does_not_replace_teaching_animation(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp);(root/'recording.mp4').touch();(root/'poster.png').touch()
+   fig={'path':'recording.mp4','poster':'poster.png','playback_mode':'recorded','controls':True,'autoplay':False,'loop':False,'muted':False,'alt':'Interface metrics'}
+   slide={'id':1,'type':'content_diagram','main_text':'Compare latency and energy at the interface.','figure':fig}
+   course={'modules':[{'id':1,'slides':[slide]}]};p=root/'course.json'
+   def errors(opt_out):p.write_text(json.dumps(course));return check_course(p,None,opt_out)[0]
+   self.assertEqual(errors({1}),[])
+   self.assertTrue(any('no teaching video' in e for e in errors(set())))
+   fig['controls']=False;self.assertTrue(any('visible playback controls' in e for e in errors({1})))
+   fig['controls']=True;fig['muted']=True;self.assertTrue(any('muted=false' in e for e in errors({1})))
+   fig['muted']=False;slide['main_text']='';self.assertTrue(any('teaching caption' in e for e in errors({1})))
 if __name__=='__main__':unittest.main()
