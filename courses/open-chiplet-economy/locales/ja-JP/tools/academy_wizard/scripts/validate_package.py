@@ -103,6 +103,57 @@ def _scrolling_caption_tracks(course: dict) -> list[dict]:
     return tracks
 
 
+def _narration_caption_fallback_count(markup: str) -> int:
+    """Native narration-clock tracks intentionally omit src to avoid a VTT load.
+
+    Their generated cue payload is the actual offline caption source. Require
+    complete, ordered, nonempty cues before accepting a source-free track.
+    """
+    count = 0
+    for raw in re.findall(r'<script\b[^>]*\bdata-figure-caption-tracks[^>]*>(.*?)</script>', markup, re.S):
+        try:
+            payload = json.loads(raw)
+        except (TypeError, json.JSONDecodeError):
+            continue
+        if not isinstance(payload, list):
+            continue
+        for track in payload:
+            if not isinstance(track, dict) or track.get('time_source') != 'narration':
+                continue
+            cues = track.get('cues')
+            if not isinstance(cues, list) or not cues:
+                continue
+            valid = True
+            previous_end = 0.0
+            for cue in cues:
+                if not isinstance(cue, dict):
+                    valid = False; break
+                start, end = cue.get('start'), cue.get('end')
+                if (isinstance(start, bool) or isinstance(end, bool)
+                    or not isinstance(start, (int, float)) or not isinstance(end, (int, float))
+                    or not (previous_end <= start < end < float('inf'))
+                    or not isinstance(cue.get('text'), str) or not cue['text'].strip()):
+                    valid = False; break
+                previous_end = end
+            if valid:
+                count += 1
+    return count
+
+
+def _validate_source_caption_files(course: dict, root: Path) -> list[str]:
+    """Check retained VTT resources even when playback uses generated cues."""
+    errors = []
+    for module in course.get('modules') or []:
+        for slide in module.get('slides') or []:
+            for track in (slide.get('figure') or {}).get('captions') or []:
+                path = str(track.get('path') or '')
+                if not path or not (root / path).is_file():
+                    errors.append(f'course.json: missing video caption file: {path}')
+                elif not parse_webvtt((root / path).read_text(encoding='utf-8-sig')):
+                    errors.append(f'course.json: caption file has no valid WebVTT cues: {path}')
+    return errors
+
+
 def _dark_hex_color(value: object) -> bool:
     text = str(value or "").lstrip("#")
     if len(text) == 3:
@@ -182,19 +233,25 @@ def main():
         except ET.ParseError as e:
             err(f"imsmanifest.xml does not parse: {e}")
 
+    errors.extend(_validate_source_caption_files(course, root))
     for module_file in sorted(root.glob("module*.html")):
         html = module_file.read_text(errors="replace")
+        narration_caption_fallbacks = _narration_caption_fallback_count(html)
         for tag in re.findall(r'<track\b[^>]*>', html, re.I):
             attrs = dict(re.findall(r'([\w-]+)="([^"]*)"', tag))
             path = html_lib.unescape(attrs.get('src', ''))
             if attrs.get('kind') != 'captions':
                 continue
-            if not path or not (root / path).is_file():
+            if not path and narration_caption_fallbacks:
+                narration_caption_fallbacks -= 1
+            elif not path or not (root / path).is_file():
                 err(f'{module_file.name}: missing video caption file: {path}')
             elif not parse_webvtt((root / path).read_text(encoding='utf-8-sig')):
                 err(f'{module_file.name}: caption file has no valid WebVTT cues: {path}')
             if not attrs.get('srclang') or not attrs.get('label'):
                 err(f'{module_file.name}: caption track requires a language and label')
+        if narration_caption_fallbacks:
+            err(f'{module_file.name}: narration caption payload has no matching source-free track')
         slide_ids = [int(m.group(1)) for m in re.finditer(r'data-slide="(\d+)"', html)]
         if not slide_ids:
             err(f"{module_file.name}: no data-slide markers")
