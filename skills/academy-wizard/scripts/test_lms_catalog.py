@@ -54,6 +54,9 @@ class CatalogTests(unittest.TestCase):
         result=catalog_metadata(fixture())
         self.assertIn('minutes.**'+MARKDOWN_BREAK+'Explain the system context.',result['long_description'])
         self.assertIn('</strong><br>\nExplain the system context.</p>',result['long_description_html'])
+        markdown=catalog_files(fixture())['lms-catalog.md']
+        self.assertTrue(all(line==line.rstrip() for line in markdown.splitlines()))
+        self.assertIn('**Short Description**'+MARKDOWN_BREAK,markdown)
         self.assertLess(result['long_description'].index('An overview'),result['long_description'].index('Overall duration'))
 
     def test_source_check_catches_stale_exports_without_changing_them(self):

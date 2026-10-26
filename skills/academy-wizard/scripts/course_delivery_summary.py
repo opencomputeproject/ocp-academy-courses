@@ -140,7 +140,7 @@ def catalog_files(course, basename='lms-catalog', include_html=False):
         raise ValueError('Catalog basename must be a filename stem without a directory')
     metadata = catalog_metadata(course)
     labels = metadata['labels']
-    md = (f'**{labels["title"]}**{MARKDOWN_BREAK}{metadata["title"]}\n\n**{labels["short_description"]}**  \n'
+    md = (f'**{labels["title"]}**{MARKDOWN_BREAK}{metadata["title"]}\n\n**{labels["short_description"]}**{MARKDOWN_BREAK}'
           f'{metadata["short_description"]}\n\n**{labels["long_description"]}**\n\n'
           f'{metadata["long_description"]}\n')
     files = {basename + '.json': json.dumps(metadata, ensure_ascii=False, indent=2) + '\n', basename + '.md': md}

@@ -1,7 +1,7 @@
 **Title**\
 Open Chiplet Economy: Business and Technology of Chiplet-based Systems
 
-**Short Description**  
+**Short Description**\
 Explore chiplet architecture, packaging, interfaces, testing, economics, and the standards enabling an open chiplet ecosystem.
 
 **Long Description**

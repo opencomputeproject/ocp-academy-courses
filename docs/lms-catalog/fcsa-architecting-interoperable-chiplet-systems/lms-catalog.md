@@ -1,7 +1,7 @@
 **Title**\
 FCSA: Architecting Interoperable Chiplet Systems
 
-**Short Description**  
+**Short Description**\
 Apply FCSA to chiplet system architecture, interfaces, boot, security, and evidence for interoperable integration.
 
 **Long Description**
