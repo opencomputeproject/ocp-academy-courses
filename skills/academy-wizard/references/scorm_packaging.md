@@ -168,3 +168,14 @@ zip -r <TopicSlug>_OCP_Academy_SCORM.zip <TopicSlug>_OCP_Academy_SCORM \
 ### No inline JavaScript event handlers
 
 Strict LMS content scanners reject HTML containing inline JS event handlers — `onmouseover="..."`, `onclick="..."`, `onload="..."`, etc. The error often surfaces as a generic "file may not be formatted correctly" message with no detail. Always use `addEventListener` or CSS pseudo-classes (`:hover`, `:focus`) instead. The `survey-btn` hover state in `render_course_complete` is implemented as `.slide .survey-btn:hover` in `module_styles.css` for this reason. If you add new interactive elements, follow the same pattern.
+
+## LMS catalog metadata delivered beside the ZIP
+
+Formal LMS Title, Short Description (≤130 characters), and Long Description are
+source-tracked metadata, separate from the course README and runtime. Follow
+[lms_catalog.md](lms_catalog.md). The strict zipper requires valid approved
+`course.json.lms_catalog`; pass `--course-json` when the source is outside the
+runtime folder or its parent. It refreshes source `lms-catalog.json`/`.md` and
+emits `<zip-stem>.lms-catalog.json`, `.md`, and `.html` beside the archive. These
+files are never manifest entries or extra ZIP members. Learner-duration estimates
+remain distinct from narration runtime and unit estimates reconcile to the total.

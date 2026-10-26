@@ -41,7 +41,7 @@ print(style)
 PY
 )"
 
-COMMON_SCRIPTS=(new_course.py render_scrolling.py render_index.py validate_package.py zip_for_lms.py)
+COMMON_SCRIPTS=(new_course.py render_scrolling.py render_index.py validate_package.py course_delivery_summary.py zip_for_lms.py)
 SLIDES_SCRIPTS=(gen_audio.py audio_tail_report.py render_module.py)
 REQUIRED_SCRIPTS=("${COMMON_SCRIPTS[@]}")
 if [[ "$COURSE_STYLE" == "slides" ]]; then
@@ -55,6 +55,11 @@ for script in "${REQUIRED_SCRIPTS[@]}"; do
     exit 1
   fi
 done
+
+# Formal LMS copy belongs to editable source, separately from the course README.
+# Validate before staging media or making paid narration requests.
+"$PYTHON_BIN" "$SKILL_DIR/scripts/course_delivery_summary.py" "$SOURCE_DIR/course.json" --write
+"$PYTHON_BIN" "$SKILL_DIR/scripts/course_delivery_summary.py" "$SOURCE_DIR/course.json" --check
 
 mkdir -p "$BUILD_DIR"
 
@@ -132,9 +137,10 @@ PY
   "$PYTHON_BIN" "$SKILL_DIR/scripts/validate_package.py" "$BUILD_DIR"
 fi
 
-"$PYTHON_BIN" "$SKILL_DIR/scripts/zip_for_lms.py" "$BUILD_DIR"
+"$PYTHON_BIN" "$SKILL_DIR/scripts/zip_for_lms.py" "$BUILD_DIR" --course-json "$SOURCE_DIR/course.json"
 
 echo
 echo "Build complete:"
 echo "  Folder: $BUILD_DIR"
-echo "  Zip:    $BUILD_ROOT/$COURSE_NAME.zip"
+echo "  Zip:    $BUILD_DIR.zip"
+echo "  LMS:    $BUILD_DIR.lms-catalog.{json,md,html}"

@@ -60,6 +60,25 @@ under `locales/<BCP-47 tag>/` with
 `course.json` plus language-specific resource overrides; the build overlays
 those resources onto the canonical media tree to create a self-contained SCO.
 
+## LMS catalog metadata, separate from the README
+
+Read [Formal LMS catalog metadata](references/lms_catalog.md) when authoring,
+refreshing, translating, or packaging a course. Store the approved full formal
+series/course title, a Short Description of at most 130 characters, and the
+structured Long Description under `course.json.lms_catalog`. The long copy has
+an overview paragraph, overall learner duration in minutes, and one paragraph per
+module with its **bold title and duration**, then its summary on the **next line**.
+Keep estimated learner time distinct from narration runtime.
+
+These are **LMS catalog fields**, not the course README. Save and Git-track
+`lms-catalog.json` and `lms-catalog.md` with the editable source. The README keeps
+maintenance/build/provenance information and may link to these files. Run
+`course_delivery_summary.py course.json --write` and `--check`; the strict zipper validates
+and exports the same copy as JSON/Markdown/HTML sidecars beside each ZIP, without
+adding it to the SCORM runtime. Include source metadata and readable exports in
+the normal repository contribution; preserve approved copy during rebuilds and
+localize it independently for translations.
+
 ## What "done" looks like
 
 A folder, sitting where the user asked for it, with this exact shape:
@@ -220,8 +239,8 @@ Slides generation sequence:
 8. `scripts/render_module.py course.json --module <N>` — renders `moduleN.html` for each module from the slide spec.
 9. `scripts/render_index.py course.json` — renders `index.html` and writes `imsmanifest.xml`.
 10. `scripts/validate_package.py <output-folder>` — sanity-checks everything: every audio file in `audioMap` exists, every figure referenced by HTML exists, manifest XML parses, file count matches manifest, no orphan files.
-11. `scripts/zip_for_lms.py <output-folder>` — run only when the user says the course is ready to upload. This creates a strict zip with `imsmanifest.xml` at the archive root and excludes working files.
-12. `scripts/course_delivery_summary.py course.json` — when the package is ready, report the title, a short LMS description candidate, module durations from the actual audio files, total narrated time, and module summaries.
+11. `scripts/course_delivery_summary.py course.json --write`, then `--check` — validate and save approved formal LMS metadata separately from README.md. Preserve learner-time estimates; do not substitute narration runtime.
+12. `scripts/zip_for_lms.py <output-folder> --course-json course.json` — run only after ZIP authorization. Create a strict runtime ZIP and matching `.lms-catalog.json`, `.lms-catalog.md`, and `.lms-catalog.html` sidecars beside it; never put LMS catalog exports inside the runtime ZIP.
 
 If validation fails, fix and re-run. **Don't deliver a package that won't validate.** LMSes will reject it loudly.
 
@@ -229,9 +248,9 @@ If validation fails, fix and re-run. **Don't deliver a package that won't valida
 
 Remove working files (`_outline.md`, `_source_figures.json`, `course.json`) **only after confirming with the user** that the package is final. Some users may want to keep `course.json` so they can re-render later. Do not create the LMS zip until the user has validated slides and audio and explicitly says the course is ready to ship.
 
-For every new course, prepare an exact 800×400 PNG LMS poster in the maintained OCP Academy catalog treatment, including the restrained gradients, translucent layers, and simple accents exemplified by SST and AICC. Read and follow `references/lms_poster_style.md` whenever creating or replacing a course poster; inspect its bundled SST/AICC references or the newest matching repository thumbnails. Save the source-repository asset as `thumbnail.png`, verify it at full size and reduced LMS-card size, and do not substitute a photorealistic hero or an improvised one-off composition. Also prepare a delivery title, a short description under 131 characters, and a long overview with each module summary and approximate duration. Decide explicitly whether the course is standalone or belongs to an existing meta-series; do not infer series placement from topical similarity alone.
+For every new course, prepare an exact 800×400 PNG LMS poster in the maintained OCP Academy catalog treatment, including the restrained gradients, translucent layers, and simple accents exemplified by SST and AICC. Read and follow `references/lms_poster_style.md` whenever creating or replacing a course poster; inspect its bundled SST/AICC references or the newest matching repository thumbnails. Save the source-repository asset as `thumbnail.png`, verify it at full size and reduced LMS-card size, and do not substitute a photorealistic hero or an improvised one-off composition. Prepare and source-track the separate formal LMS catalog metadata described in `references/lms_catalog.md`; it is not README content. Decide explicitly whether the course is standalone or belongs to an existing meta-series; do not infer series placement from topical similarity alone.
 
-When committing a new course to the Academy source repository, keep generated narration, rendered HTML, and SCORM ZIPs out of source control. Add the editable course source, course-owned media, thumbnail, and course-local README. Update both root README locations: the `Repository layout` tree and the `Available Courses` table. Run `scripts/slides_course_qa.py <course.json> --repo-root <repository-root> --fail-on-flags` before opening the PR. Fetch current `main`, confirm the branch diff contains the intended files, and verify the README entries. If the original PR has already merged and its branch was deleted, create a fresh follow-up branch and PR rather than recreating the old branch and assuming the merged PR will update.
+When committing a new course to the Academy source repository, keep generated narration, rendered HTML, and SCORM ZIPs out of source control. Add the editable course source (including `lms_catalog`), source `lms-catalog.json`/`lms-catalog.md`, course-owned media, thumbnail, and the separate course-local README. Check the LMS exports with `course_delivery_summary.py <course.json> --check` before the commit/PR. Update both root README locations: the `Repository layout` tree and the `Available Courses` table. Run `scripts/slides_course_qa.py <course.json> --repo-root <repository-root> --fail-on-flags` before opening the PR. Fetch current `main`, confirm the branch diff contains the intended files, and verify the README entries. If the original PR has already merged and its branch was deleted, create a fresh follow-up branch and PR rather than recreating the old branch and assuming the merged PR will update.
 
 For upload, use the strict zipper rather than manual compression:
 
@@ -282,7 +301,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | `scripts/extract_figures.py` | Extract figures from source PDFs/PPTX for reuse |
 | `scripts/validate_package.py` | Check the finished folder is LMS-ready |
 | `scripts/zip_for_lms.py` | Build a strict upload zip from `imsmanifest.xml` runtime files only |
-| `scripts/course_delivery_summary.py` | Generate delivery metadata and module duration summaries from `course.json` and final audio |
+| `scripts/course_delivery_summary.py` | Validate/export formal LMS title, ≤130-character Short Description, and structured Long Description from approved source metadata |
 | `scripts/scaffold_slides_translation.py` | Create a self-contained locale source branch without modifying the canonical course |
 | `scripts/update_translation_catalog.py` | Refresh or check the alphabetized root README Translations table, including series-name prefixes for multi-course folders in Repository layout |
 | `scripts/scaffold_scrolling_translation.py` | Create a lightweight Scrolling locale that overlays language-specific resources on canonical media |

@@ -4,6 +4,13 @@ The wizard maintains a single `course.json` in the working area. It's the source
 
 For a long Slides home heading, `index_title_soft_breaks` may list words containing discretionary U+00AD soft hyphens, such as `["Infra\u00adstructure"]`. Removing the soft hyphens must yield an exact word in `course_title`; the field cannot retitle the course. Breaks affect only the visible home heading, preserving the canonical document and LMS titles. The default is an empty list. Shared home styles allow long words to wrap within narrow viewports without reducing the maintained typography.
 
+## LMS catalog fields
+
+`lms_catalog` stores approved formal LMS catalog copy separately from README.md.
+See [Formal LMS catalog metadata](lms_catalog.md) for its schema, learner-duration
+validation, bold module headings followed by a line break, source tracking, and
+ZIP-sidecar exports. It is authoring metadata and must not enter the manifest.
+
 ## Top-level shape
 
 ```json
