@@ -1,0 +1,4 @@
+import {chromium} from 'playwright';import fs from 'node:fs/promises';import path from 'node:path';import {pathToFileURL} from 'node:url';
+const root=path.resolve(import.meta.dirname,'..');const browser=await chromium.launch({headless:true,executablePath:process.env.ACADEMY_CHROMIUM_BIN});const p=await browser.newPage({viewport:{width:1200,height:600}});const out=path.join(root,'audit/static-figures');await fs.mkdir(out,{recursive:true});
+for(const name of (await fs.readdir(path.join(root,'figures'))).filter(x=>x.endsWith('.svg'))){await p.goto(pathToFileURL(path.join(root,'figures',name)).href);await p.screenshot({path:path.join(out,name+'.png')});}
+await p.setViewportSize({width:800,height:400});await p.goto(pathToFileURL(path.join(root,'thumbnail.svg')).href);await p.screenshot({path:path.join(root,'thumbnail.png')});await browser.close();console.log('Rendered diagram review images and exact-size poster.');

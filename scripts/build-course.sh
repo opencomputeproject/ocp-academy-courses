@@ -41,6 +41,34 @@ print(style)
 PY
 )"
 
+# A course may pin its validated toolchain to preserve its published runtime.
+# An explicit caller override still takes precedence.
+if [[ -z "${ACADEMY_WIZARD_SKILL_DIR:-}" ]]; then
+  COURSE_TOOLCHAIN="$("$PYTHON_BIN" - "$SOURCE_DIR/course.json" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+source = Path(sys.argv[1]).resolve()
+value = json.loads(source.read_text(encoding="utf-8")).get("authoring_toolchain")
+if value is not None:
+    if not isinstance(value, str) or not value or Path(value).is_absolute():
+        raise SystemExit("authoring_toolchain must be a course-relative directory")
+    target = (source.parent / value).resolve()
+    try:
+        target.relative_to(source.parent)
+    except ValueError:
+        raise SystemExit("authoring_toolchain must stay within the course source folder")
+    if not target.is_dir():
+        raise SystemExit(f"Course toolchain not found: {target}")
+    print(target)
+PY
+)"
+  if [[ -n "$COURSE_TOOLCHAIN" ]]; then
+    SKILL_DIR="$COURSE_TOOLCHAIN"
+  fi
+fi
+
 COMMON_SCRIPTS=(new_course.py render_scrolling.py render_index.py validate_package.py course_delivery_summary.py zip_for_lms.py)
 SLIDES_SCRIPTS=(gen_audio.py audio_tail_report.py render_module.py)
 REQUIRED_SCRIPTS=("${COMMON_SCRIPTS[@]}")
@@ -90,6 +118,12 @@ else
   if [[ -d "$SOURCE_DIR/resources" ]]; then
     rsync -a "$SOURCE_DIR/resources/" "$BUILD_DIR/resources/"
   fi
+
+  for asset_folder in fonts captions; do
+    if [[ -d "$SOURCE_DIR/$asset_folder" ]]; then
+      rsync -a "$SOURCE_DIR/$asset_folder/" "$BUILD_DIR/$asset_folder/"
+    fi
+  done
 
   if [[ -n "${EXISTING_AUDIO_DIR:-}" ]]; then
     rsync -a "$EXISTING_AUDIO_DIR/" "$BUILD_DIR/audio/"

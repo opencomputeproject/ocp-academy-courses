@@ -13,6 +13,14 @@ ZIP-sidecar exports. It is authoring metadata and must not enter the manifest.
 
 ## Top-level shape
 
+Repository source may set `authoring_toolchain` to a validated, course-relative
+toolchain directory such as `tools/academy_wizard`. `scripts/build-course.sh`
+uses that snapshot by default for this course; an explicit
+`ACADEMY_WIZARD_SKILL_DIR` overrides it. The path must stay inside the course
+source folder. Keep the snapshot and its provenance with the editable source,
+and validate runtime and tracking behavior before changing the pin. This is build
+metadata, separate from learner-facing content and LMS catalog fields.
+
 ```json
 {
   "style": "Slides",
