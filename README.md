@@ -87,6 +87,18 @@ skills/
   academy-wizard/
 ```
 
+## LMS catalog metadata
+
+Formal LMS titles, short descriptions, and long descriptions are stored separately
+from course README documentation. Author them in `course.json.lms_catalog` and
+track the generated `lms-catalog.json` and `lms-catalog.md` with the course source.
+Packaging exports matching JSON, Markdown, and HTML files beside the SCORM ZIP.
+
+See the [metadata contract](skills/academy-wizard/references/lms_catalog.md) and
+[approved catalog records](docs/lms-catalog/README.md). The latter are explicitly
+metadata-only records for series whose complete source projects are maintained
+outside this repository.
+
 ## Install the AcademyWizard skill
 
 The bundled skill lives at:

@@ -111,3 +111,12 @@ Build the locale as its own course path, for example:
 
 The resulting SCORM is self-contained even though the checked-in locale stores
 only translated source deltas.
+
+## Localized LMS catalog copy
+
+Translate `lms_catalog` independently of the README: formal title, ≤130-character
+Short Description, overview, unit summaries, and the five label templates. Keep
+unit IDs and approved learner-duration estimates consistent with the locale. Run
+`course_delivery_summary.py <locale-course.json> --write` and `--check`, and commit
+the locale's `lms-catalog.json`/`.md` with its source. The zipper exports matching
+LMS sidecars beside the locale ZIP. See [lms_catalog.md](lms_catalog.md).

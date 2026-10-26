@@ -219,3 +219,12 @@ Render and validate each locale independently. The strict ZIP must contain only
 manifest-declared runtime files. Confirm that the manifest title contains the
 language suffix, the visible HTML title does not, and the canonical English
 source hashes remain unchanged throughout the translation build.
+
+## Localized LMS catalog copy
+
+Translate `lms_catalog` independently of the README: formal title, ≤130-character
+Short Description, overview, unit summaries, and the five label templates. Keep
+unit IDs and approved learner-duration estimates consistent with the locale. Run
+`course_delivery_summary.py <locale-course.json> --write` and `--check`, and commit
+the locale's `lms-catalog.json`/`.md` with its source. The zipper exports matching
+LMS sidecars beside the locale ZIP. See [lms_catalog.md](lms_catalog.md).
