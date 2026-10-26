@@ -6,7 +6,7 @@ import tempfile
 import unittest
 import zipfile
 
-from course_delivery_summary import catalog_metadata, catalog_files, write_catalog
+from course_delivery_summary import catalog_metadata, catalog_files, write_catalog, MARKDOWN_BREAK
 from zip_for_lms import package
 
 
@@ -52,7 +52,7 @@ class CatalogTests(unittest.TestCase):
 
     def test_module_heading_has_line_break_before_summary_in_both_formats(self):
         result=catalog_metadata(fixture())
-        self.assertIn('minutes.**  \nExplain the system context.',result['long_description'])
+        self.assertIn('minutes.**'+MARKDOWN_BREAK+'Explain the system context.',result['long_description'])
         self.assertIn('</strong><br>\nExplain the system context.</p>',result['long_description_html'])
         self.assertLess(result['long_description'].index('An overview'),result['long_description'].index('Overall duration'))
 

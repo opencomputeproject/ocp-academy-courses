@@ -19,6 +19,7 @@ import math
 from pathlib import Path
 
 SHORT_MAX = 130
+MARKDOWN_BREAK = '\\' + '\n'  # CommonMark hard break without trailing spaces.
 
 
 def _text(value, location):
@@ -120,7 +121,7 @@ def catalog_metadata(course):
         heading = labels['unit_heading'].format(number=index, title=row['title'], duration=_number(row['duration_minutes']))
         summary = ' '.join(row['summary'].split())
         row['summary'] = summary
-        long_md.append(f'**{heading}**  \n{summary}')
+        long_md.append(f'**{heading}**{MARKDOWN_BREAK}{summary}')
         long_html.append(f'<p><strong>{html.escape(heading)}</strong><br>\n{html.escape(summary)}</p>')
     result = {'schema_version': 1, 'metadata_purpose': 'LMS catalog fields; separate from the course README', 'labels': labels, 'course_slug': course.get('course_slug'),
               'language': course.get('language') or 'en-US', 'title': title,
@@ -139,7 +140,7 @@ def catalog_files(course, basename='lms-catalog', include_html=False):
         raise ValueError('Catalog basename must be a filename stem without a directory')
     metadata = catalog_metadata(course)
     labels = metadata['labels']
-    md = (f'**{labels["title"]}**  \n{metadata["title"]}\n\n**{labels["short_description"]}**  \n'
+    md = (f'**{labels["title"]}**{MARKDOWN_BREAK}{metadata["title"]}\n\n**{labels["short_description"]}**  \n'
           f'{metadata["short_description"]}\n\n**{labels["long_description"]}**\n\n'
           f'{metadata["long_description"]}\n')
     files = {basename + '.json': json.dumps(metadata, ensure_ascii=False, indent=2) + '\n', basename + '.md': md}
