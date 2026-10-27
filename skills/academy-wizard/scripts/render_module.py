@@ -32,6 +32,7 @@ from motion_intro import (
     render_motion_intro,
 )
 from render_scrolling import is_scrolling, render_scrolling_course
+from video_player import academy_video_html
 import single_sco
 import legacy_multi_sco
 
@@ -112,6 +113,7 @@ def _meta_chip_icon_html(icon: str) -> str:
 def load_styles() -> str:
     css = (TEMPLATE_DIR / "module_styles.css").read_text()
     css += "\n\n" + load_motion_intro_css(TEMPLATE_DIR)
+    css += "\n" + (TEMPLATE_DIR / "video_player.css").read_text()
     return css
 
 
@@ -377,6 +379,11 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
     if not fig:
         return ""
     course = course or {}
+    if fig.get("role") == "original_video":
+        media = dict(fig)
+        media['captions'] = [dict(t, _cues=fig.get('caption_cues', [])) for t in fig.get('captions', [])]
+        player = academy_video_html(media, ui_labels=course.get('ui_labels'), video_class='original-video', video_attributes=f'aria-label="{esc(fig.get("alt", "Video"))}"')
+        return f'<div class="figure-wrap original-video-wrap"><div class="figure-panel original-video-panel">{player}</div><p class="figure-caption">{esc(fig.get("caption", ""))}</p></div>'
     path = fig.get("path", "")
     alt = fig.get("alt", "")
     caption = fig.get("caption", "")
@@ -452,7 +459,7 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
         <div class="{panel_class}" data-zoomable-figure="true"{video_attr} tabindex="0" role="{role}" aria-label="{aria_label}: {esc(alt)}" style="{panel_style}">
           {body}
         </div>
-        {f'<p style="font-size:0.8rem;color:var(--text-muted);margin-top:8px;line-height:1.45;">{esc(caption)}</p>' if caption else ""}
+        {f'<p class="figure-caption">{esc(caption)}</p>' if caption else ""}
       </div>'''
 
 
@@ -931,7 +938,7 @@ def render_module(course: dict, module_index: int) -> str:
         slides_html.append(renderer(slide, course, module))
         audio = slide.get("audio") or {}
         wav = audio.get("wav_file")
-        if wav:
+        if wav and slide.get("narration_enabled", True) and (slide.get("figure") or {}).get("role") != "original_video":
             audio_map_entries.append(f'    {slide["id"]}: {json.dumps(wav)},')
 
     audio_map = "\n".join(audio_map_entries).rstrip(",")
@@ -961,6 +968,7 @@ def render_module(course: dict, module_index: int) -> str:
     lightbox_close_hint = ui(course, "lightbox_close_hint", "Click outside or press Esc to close")
     transcript_map = json.dumps({str(s['id']): {'title': s.get('title') or s.get('next_module_title') or module_title, 'text': s.get('transcript','')} for s in module['slides']}, ensure_ascii=False).replace('</', '<\\/')
     learner_runtime = (TEMPLATE_DIR / ('learner_features_hbf.js' if legacy_profile else 'learner_features.js')).read_text()
+    learner_runtime += "\n" + (TEMPLATE_DIR / "slides_video_player.js").read_text()
     bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
     bookmark_declaration = '' if legacy_profile else f'  const BOOKMARK_KEY = {bookmark_key};\n'
 
@@ -1039,6 +1047,7 @@ def render_module(course: dict, module_index: int) -> str:
 </div>
 
 {motion_intro_script()}
+<script>{(TEMPLATE_DIR / "video_player.js").read_text()}</script>
 <script>
 (function() {{
   'use strict';
@@ -1046,6 +1055,7 @@ def render_module(course: dict, module_index: int) -> str:
   const totalSlides = slides.length;
   const reviewMode = new URLSearchParams(location.search).get('review') === '1';
   const transcriptMap = {transcript_map};
+  const videoUiLabels = {json.dumps(course.get("ui_labels") or {}, ensure_ascii=False)};
 {bookmark_declaration}  let currentSlide = 1;
   const counter = document.getElementById('slideCounter');
   const prevBtn = document.getElementById('prevBtn');
@@ -1141,7 +1151,7 @@ def render_module(course: dict, module_index: int) -> str:
   }}
 
   document.addEventListener('keydown', (e) => {{
-    if (e.defaultPrevented || e.target.closest('input,textarea,select,button,a,[role="button"],.transcript-panel,.lightbox-overlay')) return;
+    if (e.defaultPrevented || e.target.closest('input,textarea,select,button,a,[role="button"],.transcript-panel,.lightbox-overlay,[data-video-player]')) return;
     switch(e.key) {{
       case 'ArrowRight': case ' ': e.preventDefault(); nextSlide(); break;
       case 'ArrowLeft': e.preventDefault(); prevSlide(); break;
@@ -1161,6 +1171,7 @@ def render_module(course: dict, module_index: int) -> str:
   document.addEventListener('touchstart', (e) => {{ touchStartX = e.changedTouches[0].screenX; }}, {{ passive: true }});
   document.addEventListener('touchend', (e) => {{
     touchEndX = e.changedTouches[0].screenX;
+    if (e.target.closest('[data-video-player],.lightbox-overlay')) return;
     const diff = touchStartX - touchEndX;
     if (Math.abs(diff) > 60) {{ if (diff > 0) nextSlide(); else prevSlide(); }}
   }}, {{ passive: true }});
@@ -1200,7 +1211,7 @@ def render_module(course: dict, module_index: int) -> str:
 
   function retryBlockedAutoplay(event) {{
     if (!autoplayFallbackArmed) return;
-    if (!autoPlayAudio || (event && event.target.closest('#narrationModeBtn,#transcriptBtn'))) return;
+    if (!autoPlayAudio || (event && event.target.closest('#narrationModeBtn,#transcriptBtn,[data-video-player]'))) return;
     if (event && audioPlayBtn.contains(event.target)) return;
     disarmAutoplayFallback();
     attemptAudioPlayback();
@@ -1255,6 +1266,17 @@ def render_module(course: dict, module_index: int) -> str:
     audioProgressFill.style.width = '0%';
     audioTime.textContent = '0:00';
     const src = audioMap[slideNum];
+    audioPlayBtn.disabled = !src;
+    audioPlayBtn.setAttribute('aria-disabled', String(!src));
+    audioPlayBtn.title = src ? 'Play / pause narration (P)' : 'Use the video player controls on this slide';
+    audioProgressWrap.style.pointerEvents = src ? '' : 'none';
+    audioProgressWrap.setAttribute('aria-disabled', String(!src));
+    if (audioSpeedBtn) audioSpeedBtn.disabled = !src;
+    if (!src) {{
+      audioPlayer.removeAttribute('src'); audioPlayer.load();
+      audioTime.textContent = '—';
+      return;
+    }}
     if (src) {{
       audioPlayer.src = src;
       audioPlayer.load();
@@ -1532,6 +1554,7 @@ def render_module(course: dict, module_index: int) -> str:
     var frame = document.createElement('div');
     frame.className = 'lightbox-figure';
     frame.innerHTML = panel.innerHTML;
+    frame.querySelectorAll('[data-player-ready]').forEach(function(p) {{ delete p.dataset.playerReady; }});
     if (panel.hasAttribute('data-video-figure')) {{
       frame.classList.add('figure-panel', 'figure-panel--video');
       frame.setAttribute('data-zoomable-figure', 'true');
@@ -1563,6 +1586,8 @@ def render_module(course: dict, module_index: int) -> str:
       }} else {{
         lightboxVideo.play().catch(function() {{}});
       }}
+      var clonedPlayer = frame.querySelector('[data-video-player]');
+      if (clonedPlayer) window.AcademyVideoPlayer(clonedPlayer, sourceVideo.academyPlayerOptions || {{}});
       syncVideoToggle(lightboxPanel);
     }}
     document.addEventListener('keydown', escClose);
@@ -1578,6 +1603,7 @@ def render_module(course: dict, module_index: int) -> str:
     return target.closest('.figure-panel[data-zoomable-figure="true"]');
   }}
   document.addEventListener('click', function(e) {{
+    if (e.target.closest && e.target.closest('[data-video-player]') && !e.target.closest('[data-video-zoom]')) return;
     var toggle = e.target.closest && e.target.closest('[data-video-toggle]');
     if (toggle) {{
       e.preventDefault();

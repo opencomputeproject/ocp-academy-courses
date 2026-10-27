@@ -7,6 +7,8 @@ Usage:
                        [--voice <voice_id>] [--model <model_id>]
                        [--model-policy stable|expressive|balanced] [--force]
                        [--allow-local-fallback-for-partial]
+                       [--pacing-reference-root <baseline-course-folder>]
+                       [--audio-work-dir <working-folder>]
 
 Defaults: walk every module and every slide; use top-level `narration` engine and
 voice metadata when present, otherwise pick the engine from environment variables
@@ -29,6 +31,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -36,6 +39,13 @@ import tempfile
 import wave
 from pathlib import Path
 
+from audio_pacing import (
+    V4_MODELS,
+    find_ffmpeg,
+    reference_files,
+    spoken_script,
+    synth_duration_matched,
+)
 from elevenlabs_model_support import (
     default_model_for_language,
     primary_language_code,
@@ -175,8 +185,8 @@ def synth_elevenlabs(
     # ELEVENLABS_VOICE_ID. Rachel (21m00Tcm4TlvDq8ikWAM) is warmer/conversational.
     voice = voice_id or os.getenv("ELEVENLABS_VOICE_ID") or "bbGtsRRKUfYO634UxSjz"  # Leo v2, default
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_22050"
-    # speed (0.7–1.2) controls pacing. The maintained default is 1.18; a
-    # course-specific, user-approved value is recorded as narration.speed.
+    # v4 has no API speed control. Its final WAV is duration-matched by the
+    # caller to a same-text v2 reference at narration.speed (default 1.18).
     payload = {
         "text": text,
         "model_id": model_id
@@ -184,9 +194,10 @@ def synth_elevenlabs(
         "voice_settings": {
             "stability":        float(os.getenv("ELEVENLABS_STABILITY",  "0.55")),
             "similarity_boost": float(os.getenv("ELEVENLABS_SIMILARITY", "0.75")),
-            "speed":            speed,
         },
     }
+    if payload["model_id"] not in V4_MODELS:
+        payload["voice_settings"]["speed"] = speed
     if language_code and should_send_language_code(str(payload["model_id"])):
         payload["language_code"] = language_code
     body = json.dumps(payload).encode("utf-8")
@@ -319,6 +330,10 @@ def main():
             "WAVs already exist; use only after the user approves the voice mismatch"
         ),
     )
+    p.add_argument("--pacing-reference-root", type=Path,
+                   help="snapshot of paired, unchanged v2 scripts/WAVs at narration.speed; paths mirror course.json")
+    p.add_argument("--audio-work-dir", type=Path,
+                   help="timing cache, native v4 masters and receipts (default: <course>/_narration_work)")
     args = p.parse_args()
 
     course = json.loads(args.course_json.read_text())
@@ -326,135 +341,126 @@ def main():
         print("Scrolling style has no narration by default; no audio generated.")
         return
     out_dir = args.course_json.resolve().parent
-    try:
-        engine = pick_engine(args.engine, course)
-        model_id = pick_model_id(
-            course,
-            engine,
-            args.model,
-            args.model_policy,
-        )
-        speed, speed_source = pick_elevenlabs_speed(course) if engine == "elevenlabs" else (None, None)
-    except ValueError as error:
-        sys.exit(str(error))
-    voice_id = pick_voice_id(args.voice, course, engine)
-    language_code = (
-        primary_language_code(course.get("language"))
-        if engine == "elevenlabs"
-        else None
-    )
-    print(f"engine: {engine}")
-    if voice_id:
-        print(f"voice: {voice_id}")
-    if model_id:
-        print(f"model: {model_id}")
-    if speed is not None:
-        print(f"speed: {speed:g} ({speed_source})")
-
-    if engine == "elevenlabs":
-        def synth(text: str, wav_path: Path) -> None:
-            synth_elevenlabs(
-                text,
-                wav_path,
-                voice_id,
-                model_id,
-                language_code,
-                speed,
-            )
-    elif engine == "openai":
-        def synth(text: str, wav_path: Path) -> None:
-            synth_openai(text, wav_path, voice_id)
-    else:
-        synth = synth_say
-
+    work_dir = (args.audio_work_dir or out_dir / "_narration_work").resolve()
+    reference_root = args.pacing_reference_root
+    if reference_root and reference_root.resolve() == out_dir:
+        sys.exit("Snapshot the baseline course's paired scripts/WAVs to a separate reference root first")
+    reference_course = None
+    if reference_root:
+        metadata = reference_root / "course.json"
+        if not metadata.is_file():
+            sys.exit("Pacing reference root must include the baseline course.json to verify voice/model/speed")
+        reference_course = json.loads(metadata.read_text())
+    plans = {}
     jobs = []
     errors: list[str] = []
-    existing_wavs = 0
-    needs_synth_knowledge_check = False
     for mod, slide in iter_module_slides(course, args.module, args.slide):
+        key = id(mod)
+        if key not in plans:
+            effective = {**course, "narration": {
+                **narration_config(course), **narration_config(mod),
+            }}
+            try:
+                engine = pick_engine(args.engine, effective)
+                model = pick_model_id(effective, engine, args.model, args.model_policy)
+                speed, speed_source = pick_elevenlabs_speed(effective) if engine == "elevenlabs" else (None, None)
+                voice = pick_voice_id(args.voice, effective, engine)
+                language = primary_language_code(course.get("language")) if engine == "elevenlabs" else None
+            except ValueError as error:
+                sys.exit(str(error))
+            plans[key] = dict(engine=engine, model=model, voice=voice, speed=speed,
+                              language=language, existing=0, missing_quiz=False)
+            print(f"module {mod.get('id')}: engine={engine}; voice={voice}; model={model}; speed={speed} ({speed_source if speed is not None else 'not applicable'})")
+            if model in V4_MODELS:
+                print(f"  pacing: match same-text Multilingual v2 at {speed:g}; learner dial remains unchanged")
+                if reference_course is not None:
+                    reference_mod = next((m for m in reference_course.get("modules", []) if m.get("id") == mod.get("id")), {})
+                    recorded = {**narration_config(reference_course), **narration_config(reference_mod)}
+                    if (recorded.get("engine", "elevenlabs") != "elevenlabs"
+                        or recorded.get("model_id") != "eleven_multilingual_v2"
+                        or recorded.get("voice_id") != voice
+                        or float(recorded.get("speed", 1.18)) != speed):
+                        sys.exit(f"Module {mod.get('id')} timing reference must record the same ElevenLabs voice, Multilingual v2, and speed {speed:g}")
+        plan = plans[key]
         audio = slide.get("audio") or {}
-        script_rel = audio.get("script_file")
-        wav_rel = audio.get("wav_file")
-        is_knowledge_check = slide.get("type") == "knowledge_check"
-        if is_knowledge_check and (not script_rel or not wav_rel):
+        script_rel, wav_rel = audio.get("script_file"), audio.get("wav_file")
+        quiz = slide.get("type") == "knowledge_check"
+        if quiz and (not script_rel or not wav_rel):
             errors.append(f"{slide_ref(mod, slide)} missing audio.script_file/audio.wav_file")
-            continue
         if not script_rel or not wav_rel:
             continue
-        script_path = out_dir / script_rel
-        wav_path = out_dir / wav_rel
-        if wav_path.exists():
-            existing_wavs += 1
-        elif is_knowledge_check:
-            needs_synth_knowledge_check = True
-        if args.force and is_knowledge_check:
-            needs_synth_knowledge_check = True
+        script_path, wav_path = out_dir / script_rel, out_dir / wav_rel
+        plan["existing"] += int(wav_path.exists())
+        plan["missing_quiz"] |= quiz and (args.force or not wav_path.exists())
         jobs.append((mod, slide, script_path, wav_path))
-
-    if (
-        engine == "say"
-        and existing_wavs
-        and needs_synth_knowledge_check
-        and not args.allow_local_fallback_for_partial
-        and not args.force
-    ):
-        errors.append(
-            "refusing to synthesize a missing knowledge-check narration with macOS "
-            "`say` while other narration WAVs already exist; provide the same cloud "
-            "TTS credentials/voice used for the course, or get explicit user approval "
-            "and rerun with --allow-local-fallback-for-partial"
-        )
-
-    if errors:
-        print("\nAudio generation blocked:", file=sys.stderr)
-        for err in errors:
-            print(f"  - {err}", file=sys.stderr)
-        sys.exit(1)
-
-    # Validate opt-in plans before any billable text is sent, including jobs
-    # late in a module. Unconfigured slides retain single-request synthesis.
+    if not jobs:
+        sys.exit("No narration jobs match the selected module/slide")
+    for plan in plans.values():
+        if plan["engine"] == "say" and any(p["existing"] for p in plans.values()) and plan["missing_quiz"] and not args.allow_local_fallback_for_partial and not args.force:
+            errors.append("refusing local knowledge-check narration in a partially narrated module; use the same cloud voice or explicitly approve --allow-local-fallback-for-partial")
+    # Validate every requested script, chunk plan and timing source before paid text.
+    references = {}
+    active_plans = {}
     for mod, slide, script_path, wav_path in jobs:
-        if not script_path.exists() or (wav_path.exists() and not args.force):
+        if wav_path.exists() and not args.force:
             continue
-        text = "\n".join(line for line in script_path.read_text().strip().splitlines() if not line.startswith("#")).strip()
+        plan = plans[id(mod)]
+        active_plans[id(mod)] = plan
+        if not script_path.is_file():
+            errors.append(f"{slide_ref(mod, slide)} missing script: {script_path}")
+            continue
         try:
+            text = spoken_script(script_path)
+            if not text:
+                raise ValueError("Empty narration script")
             chunks = approved_chunks(text, slide.get("audio") or {})
-            if chunks and engine == "say":
-                raise ValueError("Chunked narration requires the approved cloud provider, not a local fallback")
-        except ValueError as error:
-            sys.exit(f"{slide_ref(mod, slide)}: {error}")
-
-    needs_synthesis = any(args.force or not job[3].exists() for job in jobs)
-    if engine == "elevenlabs" and needs_synthesis:
+            if chunks and plan["engine"] == "say":
+                raise ValueError("Chunked narration requires the approved cloud provider")
+            if plan["model"] in V4_MODELS:
+                find_ffmpeg()
+                if reference_root:
+                    audio = slide["audio"]
+                    references[str(wav_path)] = reference_files(reference_root, audio["script_file"], audio["wav_file"], text)
+        except (RuntimeError, ValueError, OSError, EOFError, wave.Error) as error:
+            errors.append(f"{slide_ref(mod, slide)}: {error}")
+    if errors:
+        sys.exit("Audio generation blocked before synthesis:\n  - " + "\n  - ".join(errors))
+    validated = set()
+    for plan in active_plans.values():
+        if plan["engine"] != "elevenlabs":
+            continue
         api_key = os.getenv("ELEVENLABS_API_KEY")
         if not api_key:
-            sys.exit(
-                "Audio generation blocked before synthesis: "
-                "ELEVENLABS_API_KEY is not set."
-            )
-        try:
-            validation_source = validate_model_language(
-                str(model_id),
-                course.get("language"),
-                api_key=api_key,
-            )
-            voice_validation_source = validate_voice_model(
-                str(model_id),
-                voice_id,
-                api_key=api_key,
-            )
-        except (RuntimeError, ValueError) as error:
-            sys.exit(str(error))
-        print(
-            "model/language preflight: "
-            f"{model_id} supports {language_code} ({validation_source})"
-        )
-        if model_id == "eleven_v3":
-            print(
-                "voice/model preflight: "
-                f"{voice_id} supports {model_id} "
-                f"({voice_validation_source})"
-            )
+            sys.exit("Audio generation blocked before synthesis: ELEVENLABS_API_KEY is not set")
+        models = [plan["model"]]
+        if plan["model"] in V4_MODELS:
+            models.append("eleven_multilingual_v2")
+        for model in models:
+            key = (model, plan["language"], plan["voice"])
+            if key in validated:
+                continue
+            try:
+                source = validate_model_language(model, course.get("language"), api_key=api_key)
+                voice_source = validate_voice_model(model, plan["voice"], api_key=api_key)
+            except (RuntimeError, ValueError) as error:
+                sys.exit(str(error))
+            validated.add(key)
+            print(f"preflight: {model}/{plan['language']}: {source}; {voice_source}")
+    if any(plan["model"] in V4_MODELS for plan in active_plans.values()) and not reference_root:
+        print("v4 timing: reuse a cached v2 reference or synthesize one extra v2 timing clip per new script; native masters/receipts: " + str(work_dir))
+
+    def render_with_plan(text, path, plan, chunks, model=None):
+        def request(part_text, part_path):
+            if plan["engine"] == "elevenlabs":
+                synth_elevenlabs(part_text, part_path, plan["voice"], model or plan["model"], plan["language"], plan["speed"])
+            elif plan["engine"] == "openai":
+                synth_openai(part_text, part_path, plan["voice"])
+            else:
+                synth_say(part_text, part_path)
+        if chunks:
+            synth_chunks(chunks, path, request)
+        else:
+            request(text, path)
 
     n_done = 0
     n_skip = 0
@@ -474,10 +480,25 @@ def main():
         wav_path.parent.mkdir(parents=True, exist_ok=True)
         try:
             chunks = approved_chunks(text, slide.get("audio") or {})
-            if chunks:
-                synth_chunks(chunks, wav_path, synth)
+            plan = plans[id(mod)]
+            if plan["model"] in V4_MODELS:
+                identity = {
+                    "model_id": plan["model"], "voice_id": plan["voice"],
+                    "reference_model_id": "eleven_multilingual_v2",
+                    "reference_speed": plan["speed"], "language": plan["language"],
+                    "stability": float(os.getenv("ELEVENLABS_STABILITY", "0.55")),
+                    "similarity_boost": float(os.getenv("ELEVENLABS_SIMILARITY", "0.75")),
+                    "chunks": chunks,
+                }
+                receipt = synth_duration_matched(
+                    text, wav_path, work_dir=work_dir, identity=identity,
+                    synth_native=lambda value, path: render_with_plan(value, path, plan, chunks),
+                    synth_reference=lambda value, path: render_with_plan(value, path, plan, chunks, "eleven_multilingual_v2"),
+                    reference=references.get(str(wav_path)),
+                )
+                print(f"  pacing: {receipt['native_seconds']:.3f}s native -> {receipt['final_seconds']:.3f}s; target {receipt['target_seconds']:.3f}s; atempo {receipt['tempo_factor']:.6f}")
             else:
-                synth(text, wav_path)
+                render_with_plan(text, wav_path, plan, chunks)
             n_done += 1
             print(f"  OK {wav_path.relative_to(out_dir)}")
         except Exception as e:
@@ -490,11 +511,8 @@ def main():
                 print(
                     "\n  NOTE: It looks like this sandbox can't reach the TTS endpoint.\n"
                     "  Run this command on your Mac/Linux host instead:\n"
-                    f"      cd {out_dir}\n"
                     "      export ELEVENLABS_API_KEY=<your key>\n"
-                    f"      python3 {Path(__file__).resolve()} {args.course_json.name}"
-                    + (f" --module {args.module}" if args.module else "")
-                    + (f" --slide {args.slide}" if args.slide else "")
+                    + "      " + shlex.join([sys.executable, str(Path(__file__).resolve()), str(args.course_json.resolve()), *sys.argv[2:]])
                     + "\n",
                     file=sys.stderr,
                 )

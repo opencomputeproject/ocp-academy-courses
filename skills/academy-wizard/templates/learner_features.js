@@ -1,4 +1,27 @@
 // This template runs inside the module closure. Controls do not modify defaults.
+
+// Keep desktop glossary bubbles inside the viewport, including rightmost pills.
+function fitGlossaryTooltip(chip) {
+  if (!chip) return;
+  const style = getComputedStyle(chip, '::after');
+  if (style.position !== 'absolute') return; // Mobile retains its shared fixed inset.
+  const extras = style.boxSizing === 'border-box' ? 0
+    : parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)
+      + parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+  const width = parseFloat(style.width) + extras;
+  if (!Number.isFinite(width)) return;
+  const anchor = chip.getBoundingClientRect().left + chip.clientLeft;
+  const inset = 16;
+  const left = Math.max(inset, Math.min(anchor, window.innerWidth - inset - width));
+  chip.style.setProperty('--glossary-tip-offset', (left - anchor) + 'px');
+}
+document.addEventListener('pointerover', event => fitGlossaryTooltip(event.target.closest?.('.glossary-chip')));
+document.addEventListener('focusin', event => fitGlossaryTooltip(event.target.closest?.('.glossary-chip')));
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.slide.active .glossary-chip:hover, .slide.active .glossary-chip:focus').forEach(fitGlossaryTooltip);
+});
+
+
 const authoredHeadingSizes = new WeakMap();
 function fitHeadingWords() {
   const canvas = document.createElement('canvas');

@@ -138,7 +138,109 @@ V3_LANGUAGES = frozenset(
     }
 )
 
+# Official live catalog snapshot verified 2026-10-23; live metadata wins.
+V4_LANGUAGES = frozenset(
+    {
+        'af',
+        'am',
+        'ar',
+        'as',
+        'ast',
+        'az',
+        'be',
+        'bg',
+        'bn',
+        'bs',
+        'ca',
+        'ceb',
+        'ckb',
+        'cs',
+        'cy',
+        'da',
+        'de',
+        'el',
+        'en',
+        'es',
+        'et',
+        'fa',
+        'ff',
+        'fi',
+        'fil',
+        'fr',
+        'ga',
+        'gl',
+        'gu',
+        'ha',
+        'he',
+        'hi',
+        'hr',
+        'hu',
+        'hy',
+        'id',
+        'is',
+        'it',
+        'ja',
+        'jv',
+        'ka',
+        'kam',
+        'kk',
+        'kn',
+        'ko',
+        'ky',
+        'lb',
+        'lg',
+        'ln',
+        'lo',
+        'lt',
+        'lv',
+        'mi',
+        'mk',
+        'ml',
+        'mn',
+        'mr',
+        'ms',
+        'mt',
+        'my',
+        'ne',
+        'nl',
+        'no',
+        'ny',
+        'oc',
+        'or',
+        'pa',
+        'pl',
+        'ps',
+        'pt',
+        'ro',
+        'ru',
+        'sd',
+        'sk',
+        'sl',
+        'sn',
+        'so',
+        'sr',
+        'sv',
+        'sw',
+        'ta',
+        'te',
+        'tg',
+        'th',
+        'tr',
+        'uk',
+        'ur',
+        'uz',
+        'vi',
+        'wo',
+        'yo',
+        'yue',
+        'zh',
+        'zu',
+    }
+)
+
 DOCUMENTED_MODEL_LANGUAGES = {
+    "eleven_v4": V4_LANGUAGES,
+    "eleven_v4_turbo": V4_LANGUAGES,
     "eleven_multilingual_v2": MULTILINGUAL_V2_LANGUAGES,
     "eleven_flash_v2_5": FLASH_V2_5_LANGUAGES,
     "eleven_turbo_v2_5": FLASH_V2_5_LANGUAGES,
@@ -147,10 +249,10 @@ DOCUMENTED_MODEL_LANGUAGES = {
     "eleven_v3": V3_LANGUAGES,
 }
 
-# ElevenLabs supports language-code enforcement on v3 and the 2.5 Flash/Turbo
+# ElevenLabs supports language-code enforcement on v4, v3 and 2.5 Flash/Turbo
 # models. Multilingual v2 explicitly does not support the request parameter.
 LANGUAGE_CODE_MODELS = frozenset(
-    {"eleven_flash_v2_5", "eleven_turbo_v2_5", "eleven_v3"}
+    {"eleven_flash_v2_5", "eleven_turbo_v2_5", "eleven_v3", "eleven_v4", "eleven_v4_turbo"}
 )
 
 MODEL_POLICY_ORDERS = {
@@ -426,14 +528,14 @@ def validate_voice_model(
     api_key: str | None = None,
     voice_metadata: dict | None = None,
 ) -> str:
-    """Require live voice compatibility before using Eleven v3."""
+    """Require live voice metadata for v3/v4; their clone rules differ."""
 
-    if model_id != "eleven_v3":
-        return "voice/model compatibility check not required for stable models"
+    if model_id not in {"eleven_v3", "eleven_v4", "eleven_v4_turbo"}:
+        return "voice/model compatibility check not required for this model"
     voice_id = str(voice_id or "").strip()
     if not voice_id:
         raise RuntimeError(
-            "ElevenLabs v3 voice compatibility check blocked synthesis: "
+            f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
             "a voice_id is required."
         )
 
@@ -441,22 +543,29 @@ def validate_voice_model(
     if metadata is None:
         if not api_key:
             raise RuntimeError(
-                "ElevenLabs v3 voice compatibility check blocked synthesis: "
+                f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
                 "live voice metadata requires ELEVENLABS_API_KEY."
             )
         try:
             metadata = fetch_voice_metadata(api_key, voice_id)
         except Exception as error:
             raise RuntimeError(
-                "ElevenLabs v3 voice compatibility check blocked synthesis: "
+                f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
                 f"live metadata for voice {voice_id!r} was unavailable "
                 f"({type(error).__name__})."
             ) from error
 
+    if model_id in {"eleven_v4", "eleven_v4_turbo"}:
+        # v4 supports professional clones, including voices whose catalog entry
+        # does not yet list a dedicated v4 fine-tune. Do not apply v3's ban.
+        if str(metadata.get("voice_id") or "") != voice_id:
+            raise RuntimeError("ElevenLabs v4 voice metadata did not identify the requested voice")
+        return "ElevenLabs live voice metadata; v4 supports Professional Voice Clones"
+
     category = str(metadata.get("category") or "").strip().lower()
     if category == "professional":
         raise RuntimeError(
-            "ElevenLabs v3 voice compatibility check blocked synthesis: "
+            f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
             f"voice {voice_id!r} is a Professional Voice Clone, which "
             "ElevenLabs does not currently support with v3."
         )
@@ -468,7 +577,7 @@ def validate_voice_model(
     }
     if model_id not in compatible_models:
         raise RuntimeError(
-            "ElevenLabs v3 voice compatibility check blocked synthesis: "
+            f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
             f"voice {voice_id!r} does not list {model_id!r} in "
             "high_quality_base_model_ids. Select a v3-compatible voice or "
             "use the stable model policy."

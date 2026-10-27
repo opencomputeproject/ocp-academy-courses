@@ -183,6 +183,24 @@ that a larger version number is automatically a better technical narrator.
 Before v3 synthesis, require live voice metadata: reject Professional Voice
 Clones and require `eleven_v3` in `high_quality_base_model_ids`.
 
+### Module-specific narration and Eleven v4 pacing
+
+A module may include a `narration` object with the same engine, voice, model,
+and speed fields as the course. Its fields override the top-level object;
+explicit command options still win. Use this to pilot v4 in module 9 without
+changing the other modules, including on a later whole-course rebuild.
+
+For an explicitly selected `eleven_v4` or `eleven_v4_turbo`, keep `speed: 1.18`
+as the Multilingual v2 timing-reference speed. It is not sent to the v4 API.
+The generated v4 WAV is adjusted with pitch preserved to the same-text v2
+reference's actual duration. The learner's default dial remains 1.0, saved
+speed choices remain intact, and duration descriptions need no model-related
+revision. See [Eleven v4 pacing](elevenlabs_v4_pacing.md) for the verified
+baseline workflow, extra-call/cache behavior for new scripts, and timing
+receipts. A fixed factor applied to native v4 does not guarantee equivalent
+pacing across scripts. v4 requires live voice metadata and permits Professional
+Voice Clones; the v3-specific clone restriction does not apply to v4.
+
 ## Presentation style
 
 `style` accepts exactly `"Slides"` or `"Scrolling"`. If omitted, renderers assume Slides so existing courses remain compatible.
@@ -272,7 +290,7 @@ Classic medium-width text blocks are responsive on desktop rather than permanent
 
 Every ordinary `image` block may declare `image_role` as `content` or `decorative`; omitted values default to `content` for backward compatibility. A `text_aside` block may declare `style.image_position` as `left` or `right`, naming the image column. Honor that side without inversion. When the value is absent, use the classic Rise default of `left` and render the corresponding `block--image-left` layout class so DOM child order cannot silently put the image on the right. A content image may use `style.zoom_on_click`. A decorative image is edge-to-edge presentation artwork rather than learner content: the renderer must suppress zoom regardless of that style flag, emit empty alternative text, and remove the image from the accessibility reading order. A recovered `custom_canvas` image retains its authored intrinsic dimensions on desktop and scales down only when the lesson pane is narrower.
 
-Quote blocks may include structured `avatar` media. Classic quote variant `d` renders that image as an 80px circle beside transparent quote content on the block's own background; retain its responsive width and authored typography instead of substituting a generic callout card. Scrolling videos use the maintained custom player: transparent letterboxing, a centered 98px play circle, no browser-native controls before activation, and the configured control order after activation—play/pause, seek/loaded progress, remaining time, seven-choice speed menu, caption-language menu, picture-in-picture, fullscreen, and expandable volume. Use the canonical Video.js-compatible glyph outlines rather than substitute art. Scrolling accordions use right-aligned plus/minus controls rather than native disclosure triangles; light block surfaces render adjoining bordered white cards, dark surfaces retain the configured borderless card treatment, and every expanded item shows a continuous 4px accent rule along its header and content.
+Quote blocks may include structured `avatar` media. Classic quote variant `d` renders that image as an 80px circle beside transparent quote content on the block's own background; retain its responsive width and authored typography instead of substituting a generic callout card. Scrolling videos use the maintained custom player: transparent letterboxing, a centered 98px play circle, no browser-native controls before activation, and the shared persistent control bar—play/pause, seek/loaded progress, remaining time, seven-choice speed menu, caption-language menu, picture-in-picture, fullscreen, and volume. Keep every applicable control exposed before and during playback, wrapping on phones rather than hiding functions. Use the canonical Video.js-compatible glyph outlines rather than substitute art. Scrolling accordions use right-aligned plus/minus controls rather than native disclosure triangles; light block surfaces render adjoining bordered white cards, dark surfaces retain the configured borderless card treatment, and every expanded item shows a continuous 4px accent rule along its header and content.
 
 Labeled-graphic callout bodies must wrap long unbroken text and URLs within the callout, and every callout link must use the same authored link treatment regardless of inline source markup or visited state. Reset white knowledge-check cards to a dark foreground color when their containing block uses a dark background so question and answer text remain readable.
 
@@ -814,9 +832,15 @@ Approval, production and regression requirements are in
 [narration_synced_video.md](narration_synced_video.md).
 
 `extract_figures.py` reads `extract_from`. The image-gen step reads `generate_prompt`.
-The renderer embeds image figures as zoomable images and embeds video figures with hover/focus
-Play/Pause and Zoom controls. `render_index.py` lists both the video and `poster` in the SCORM
-manifest.
+The renderer embeds image figures as zoomable images, generated teaching videos with standard figure controls, and imported recordings with the shared black player described below. `render_index.py` lists both the video and `poster` in the SCORM manifest.
+
+### Video playback standard
+
+Imported Slides recordings and Scrolling videos share the black Chiplet-style player markup, icons, behavior and responsive styles in `scripts/video_player.py` and `templates/video_player.{js,css}`. Always expose Play/Pause, seek, remaining time, speed, captions when present, picture-in-picture when supported, fullscreen and volume. Keep the bar visible and place it below the media. Wrap on narrow screens; do not hide controls in native browser overflow menus or remove speed/volume on phones. Unsupported capabilities remain visibly disabled with an explanation.
+
+For an imported recording with its own audio, set `figure.role` to `original_video`, `audio` to `null` and `narration_enabled` to `false`. Put editable caption tracks in `figure.captions`; `caption_cues` may embed their timed text for reliable `file://` review. Keep `video_transcript` and set the slide's `transcript` to that recording transcript. The slide narration Play button is disabled, its source is cleared, and later narrated slides restore the controls. Existing narration can be archived under authoring, excluded from the runtime manifest.
+
+Generated Slides teaching clips retain the standard figure player with compact overlaid Play/Pause and Enlarge buttons. They do not use the black imported-recording control bar. Keep the approved loop/single-pass and narration settings. For `sync_to_narration: true`, Play/Pause in the figure and enlargement controls the narration clock; the fixed slide controls provide narration seek, speed and volume. Enlargement shares that clock. This presentation standard does not authorize changing SCORM tracking or a course's approved media mode.
 
 ## Local font delivery for Slides
 
