@@ -56,11 +56,12 @@
   "scorm": {
     "version": "1.2",
     "organization": "multi-sco",
-    "include_course_home_sco": false,
+    "include_course_home_sco": true,
     "navigation": "lms",
-    "required_sco_count": 4,
+    "required_sco_count": 5,
     "source_version_preserved": false,
-    "implementation_status": "SCORM 1.2 API and four module SCOs; untracked Home; LMS syllabus navigation."
+    "implementation_status": "SCORM 1.2 with Course Home as first SCO followed by four independently tracked module SCOs; LMS syllabus navigation.",
+    "module_sco_count": 4
   },
   "index_module_links": false,
   "index_navigation_instruction": "Use your LMS course navigation to open a module.",
@@ -11052,7 +11053,7 @@
   "delivery_approval": {
     "date": "2026-10-27",
     "request": "Zip and finalize for the LMS; push the PR.",
-    "scope": "SCORM 1.2 runtime ZIP, four tracked modules, LMS catalog sidecars and editable-source PR."
+    "scope": "SCORM 1.2 runtime ZIP; Course Home as first SCO plus four tracked modules; LMS catalog sidecars and editable-source PR."
   },
   "scorm_migration": {
     "date": "2026-10-27",
@@ -11064,6 +11065,15 @@
     "deployed_lms_history": "No LMS deployment performed in this workflow. Existing deployed 2004 attempts/bookmarks would not transfer through this format change.",
     "archived_delivery": "Parent _baselines/2026-10-27-scorm2004-delivery/",
     "state_budget": 4096,
-    "home": "Untracked asset retained; exactly four module SCOs."
+    "home": "Course Home is the first tracked SCO, followed by four module SCOs (five syllabus items total)."
+  },
+  "course_home_sco_correction": {
+    "date": "2026-10-27",
+    "user_request": "The SCORM is usually packaged in this AcademyWizard skill such that the index is its own first SCO in the SCORM.",
+    "action": "Restore maintained tracked Home as first syllabus item; preserve all four module identifiers, content and media.",
+    "scorm_version": "1.2",
+    "total_scos": 5,
+    "home_item": "ITEM_LAUNCHER",
+    "home_completion": "Complete on launch; module completion remains independent."
   }
 }

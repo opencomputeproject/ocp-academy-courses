@@ -1,6 +1,6 @@
 # Rebuild the approved course
 
-The deliverable is a four-SCO SCORM 1.2 course. Do not compress the whole authoring folder. All runtime files are listed by `imsmanifest.xml`; authoring sources and QA records stay outside that runtime inventory.
+The deliverable is a SCORM 1.2 course with Course Home as first SCO followed by four module SCOs (five total). Do not compress the whole authoring folder. All runtime files are listed by `imsmanifest.xml`; authoring sources and QA records stay outside that runtime inventory.
 
 ## HTML and catalog
 
@@ -13,7 +13,7 @@ python3 authoring/toolchain/academy-wizard/scripts/course_delivery_summary.py co
 python3 authoring/toolchain/academy-wizard/scripts/course_delivery_summary.py course.json --check
 ```
 
-The editable local renderer/templates preserve four-SCO tracking, matching checks, manual imported recordings, captions, exposed imported-video controls, standard generated-video figure controls, top alignment, frame-aligned captions, 16px media spacing and 24px pill spacing. `technical_note` is an optional titled paragraph panel rendered before media. It provides written context without adding separate narration to imported videos. Maintain normal wrapping, slide scrolling and fixed-control clearance.
+The editable local renderer/templates preserve independent Home/module tracking, matching checks, manual imported recordings, captions, exposed imported-video controls, standard generated-video figure controls, top alignment, frame-aligned captions, 16px media spacing and 24px pill spacing. `technical_note` is an optional titled paragraph panel rendered before media. It provides written context without adding separate narration to imported videos. Maintain normal wrapping, slide scrolling and fixed-control clearance.
 
 The local patch records differences from the installed skill. The shared-player patch documents earlier shared skill updates. Do not replace course-local extensions with an unmerged global snapshot.
 
@@ -44,9 +44,9 @@ python3 authoring/toolchain/academy-wizard/scripts/validate_package.py .
 xmllint --noout --schema authoring/qa/scorm12-delivery/manifest-validation.xsd imsmanifest.xml
 ```
 
-Current browser checks and screenshots are in `authoring/qa/approved-content-build/`. Run those Node scripts with Playwright available. They open the actual module files through file URLs and mute audio. Check every media slide at desktop, phone and small-phone widths in both themes, all video controls, full synchronized passes, checks/retries, bookmarks, review isolation and four-SCO tracking. Do not play audio aloud during automated QA.
+Current browser checks and screenshots are in `authoring/qa/approved-content-build/`. Run those Node scripts with Playwright available. They open the actual module files through file URLs and mute audio. Check every media slide at desktop, phone and small-phone widths in both themes, all video controls, full synchronized passes, checks/retries, bookmarks, review isolation and independent Home/module tracking. Do not play audio aloud during automated QA.
 
-Begin human review from `module1.html`; localhost is off. Human listening and a real target-LMS session remain release checks. Keep the four independently tracked modules and untracked Home asset. Final packaging and PR publication are authorized by the user. Keep generated ZIPs and WAVs outside Git.
+Begin human review from `module1.html`; localhost is off. Human listening and a real target-LMS session remain release checks. Keep Course Home as the first tracked SCO and the four independently tracked modules. Final packaging and PR publication are authorized by the user. Keep generated ZIPs and WAVs outside Git.
 
 The latest static Module 2 diagrams are owned by `authoring/build_m2_power_spaces.py`. Rebuild them with that script and visually review them before refreshing their media-text inventories. M2S4, M2S7 and M2S17 have revised same-text v4 pacing receipts under `qa/m2-power-and-spaces/`; native masters and v2 references are in the parent `_narration_work/2026-10-26-m2-power-spaces-v4/`.
 
@@ -102,6 +102,6 @@ Use the pinned strict zipper, never a recursive archive of this working folder:
 python3 authoring/toolchain/academy-wizard/scripts/zip_for_lms.py . --course-json course.json -o ../DC_Basics_OCP_Academy_SCORM_1_2.zip
 ```
 
-The ZIP contains only manifest-listed runtime files. Catalog JSON/Markdown/HTML sidecars and `thumbnail.png` are supplied separately for LMS setup. Preserve four module SCOs and the untracked Home asset. In SCORM 1.2 the LMS syllabus launches modules; direct page links cannot switch tracking context. The adapter enforces the 4096-character saved-state budget and exposes save failures. See `qa/scorm12-delivery/` for the strict API simulation, schema check and final audit. Earlier dated 2004 checks are historical.
+The ZIP contains only manifest-listed runtime files. Catalog JSON/Markdown/HTML sidecars and `thumbnail.png` are supplied separately for LMS setup. Preserve Course Home as the first tracked SCO followed by the four module SCOs. In SCORM 1.2 the LMS syllabus launches modules; direct page links cannot switch tracking context. The adapter enforces the 4096-character saved-state budget and exposes save failures. See `qa/scorm12-delivery/` for the strict API simulation, schema check and final audit. Earlier dated 2004 checks are historical.
 
 The XML helper schema’s reserved XML namespace declaration uses an explicit `xml` prefix for namespace-aware validator compatibility; its original annotations and type declarations are retained. The previous 2004 local delivery is archived outside this course folder. Changing format can require a new LMS upload and may not preserve deployed bookmarks, attempts or completions. Test a separate upload before retiring any existing item; no LMS action has been taken.

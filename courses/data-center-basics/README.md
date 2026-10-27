@@ -1,6 +1,6 @@
 # Data Centers: From Digital Services to Physical Infrastructure
 
-An introductory Slides course connecting digital services to physical data-center infrastructure, then to OCP learning paths. One SCORM **1.2** package contains **four independently tracked modules**, **78 slides**, **10 preserved imported recordings**, **8 narration-synchronized teaching videos**, **68 narrated slides**, and **13 knowledge checks**. Estimated learner time is **95 minutes**; narration and recordings total **74:21** without double-counting teaching animations.
+An introductory Slides course connecting digital services to physical data-center infrastructure, then to OCP learning paths. One SCORM **1.2** package opens with **Course Home as the first SCO**, followed by **four independently tracked teaching modules**, **78 slides**, **10 preserved imported recordings**, **8 narration-synchronized teaching videos**, **68 narrated slides**, and **13 knowledge checks**. Estimated learner time is **95 minutes**; narration and recordings total **74:21** without double-counting teaching animations.
 
 | Module | Title | Slides | Estimated time |
 |---|---|---:|---:|
@@ -21,7 +21,7 @@ From the repository root, extract the approved delivery ZIP outside the checkout
 EXISTING_AUDIO_DIR=/absolute/path/to/approved/audio bash scripts/build-course.sh data-center-basics
 ```
 
-The repository build automatically uses the validated renderer/templates in `authoring/toolchain/academy-wizard`, selected by `authoring_toolchain`. This snapshot preserves the course’s matching questions, imported captions and technical notes, four-SCO organization, SCORM 1.2 adapter and approved media/layout overrides. Declared offline fonts and XML schemas are copied by its scaffold. The strict zipper emits runtime files only and exports LMS catalog sidecars separately.
+The repository build automatically uses the validated renderer/templates in `authoring/toolchain/academy-wizard`, selected by `authoring_toolchain`. This snapshot preserves the course’s matching questions, imported captions and technical notes, Home plus four-module SCO organization, SCORM 1.2 adapter and approved media/layout overrides. Declared offline fonts and XML schemas are copied by its scaffold. The strict zipper emits runtime files only and exports LMS catalog sidecars separately.
 
 Generated WAVs, runtime pages and ZIPs are not tracked. The approved audio is required to reproduce the tested package byte for byte. For new narration, the pinned generator supports Leo / Eleven v4, same-text Multilingual v2 timing references at 1.18, pitch-preserving duration matching and receipts. New audio requires new word alignment and re-encoded teaching videos; clip-length parity alone is insufficient. The learner speed default remains 1.0.
 
@@ -31,9 +31,9 @@ See [BUILDING.md](authoring/BUILDING.md) for source builders and QA. Builders ar
 
 Imported videos use their own audio and black player with exposed controls, editable captions and transcripts. Their slide narration Play control is disabled. Generated teaching videos use the standard compact Play/Pause and Enlarge controls and remain synchronized with narration through pause, seek, speed, replay and enlarged views. They are silent finite passes with useful final states.
 
-The LMS manifest retains `ITEM_MODULE1` through `ITEM_MODULE4` and an untracked Home asset. Each module saves its own bookmark, question attempts and completion. Checks require an attempt and allow retries; no score threshold is imposed. Completed modules return to their final slide. The SCORM 1.2 adapter limits saved state to 4096 characters and exposes save failures.
+The LMS manifest starts with Course Home (`ITEM_LAUNCHER`, launching `index.html`), followed by `ITEM_MODULE1` through `ITEM_MODULE4`: five SCOs total. Home completes on launch and each teaching module remains independent. Each module saves its own bookmark, question attempts and completion. Checks require an attempt and allow retries; no score threshold is imposed. Completed modules return to their final slide. The SCORM 1.2 adapter limits saved state to 4096 characters and exposes save failures.
 
-In an LMS, launch modules through the syllabus. Direct hyperlinks cannot change the tracked SCO, so next-module links become syllabus instructions and Home’s local Start action is hidden. Local editorial review begins at generated `module1.html?review=1`, which does not write learner state.
+In an LMS, launch modules through the syllabus. Direct hyperlinks cannot change the tracked SCO, so next-module links become syllabus instructions The maintained first-module Start action is a direct page link, not an LMS target-SCO request; use the syllabus when separate tracking is required. Local editorial review begins at generated `module1.html?review=1`, which does not write learner state.
 
 ## Validation and provenance
 

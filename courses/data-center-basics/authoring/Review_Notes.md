@@ -1,4 +1,4 @@
-> Final delivery, 2026-10-27: the user approved packaging and PR publication and explicitly selected SCORM 1.2. The current delivery has four module SCOs and untracked Home. The earlier 2004/pre-ZIP notes below describe historical review stages. Current results are in `qa/scorm12-delivery/`.
+> Final delivery, 2026-10-27: the user approved packaging and PR publication and explicitly selected SCORM 1.2. The current delivery has Course Home as the first SCO followed by four module SCOs. The earlier 2004/pre-ZIP notes below describe historical review stages. Current results are in `qa/scorm12-delivery/`.
 
 # Final review notes · approved content update, 26 October 2026
 
