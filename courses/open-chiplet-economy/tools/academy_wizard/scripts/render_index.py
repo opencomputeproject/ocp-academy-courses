@@ -357,7 +357,7 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     org_items = []
     resources = []
 
-    # User-selected nine-SCO edition keeps Home as an untracked asset.
+    # Current course configuration includes Home as the first tracked SCO.
     include_home_sco = (course.get("scorm") or {}).get("include_home_sco", True)
     home_resource_type = "sco" if include_home_sco else "asset"
     # Launcher resource

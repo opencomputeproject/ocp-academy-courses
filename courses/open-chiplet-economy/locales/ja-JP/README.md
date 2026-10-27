@@ -1,6 +1,6 @@
 # Open Chiplet Economy：チップレットシステムのビジネスと技術
 
-Japanese narrated Slides source for nine independently tracked SCORM 1.2 modules: 114 slides, 100 slide narrations, 19 questions, nine teaching videos and 14 dubbed recordings. Home remains an untracked asset. Formal LMS copy is maintained separately in [lms-catalog.md](lms-catalog.md).
+Japanese narrated Slides source for nine independently tracked SCORM 1.2 modules: 114 slides, 100 slide narrations, 19 questions, nine teaching videos and 14 dubbed recordings. Course Home is the first tracked SCO and completes on launch. Formal LMS copy is maintained separately in [lms-catalog.md](lms-catalog.md).
 
 ## Source layout
 
@@ -50,3 +50,7 @@ The [Academy source recordings](https://academy.opencompute.org/learn/learning-p
 Japanese captions use approved script orthography with measured Japanese speech timings. Captions start off. Recording visuals retain their source labels; authored figures, teaching videos, controls, transcripts, alt text, glossary and LMS descriptions are localized. Question IDs, choices, correct answers, technical values, URLs and module tracking match the canonical English source.
 
 Source QA, audio-level/tail checks, caption and media validation, muted browser review and strict package checks are recorded in production evidence. Translation and speech recognition were reviewed by the authoring model; no native-speaker listening review or target-LMS acceptance is claimed. Launch, resume and separate module reporting in the target LMS remain deployment acceptance checks.
+
+## Course Home and LMS order
+
+Course Home (`index.html`) is the first tracked syllabus item and completes on launch. The teaching modules follow in their existing order, with unchanged IDs and numbering. This package contains 10 SCOs in total. The approved content, audio/media, SCORM 1.2 version and green navigation are unchanged.

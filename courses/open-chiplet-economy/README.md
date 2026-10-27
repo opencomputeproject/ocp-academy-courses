@@ -3,8 +3,8 @@
 Editable English Slides source for nine independently tracked SCORM 1.2 modules.
 The course contains 114 slides, 100 narration scripts, nine teaching animations,
 four narration-synchronized sequences, fourteen captioned recordings, and nineteen
-knowledge checks. Course Home is an untracked asset. The approved LMS catalog
-copy and learner-time estimates are in [lms-catalog.md](lms-catalog.md).
+knowledge checks. Course Home is the first tracked SCO and completes on launch.
+The approved LMS catalog copy and learner-time estimates are in [lms-catalog.md](lms-catalog.md).
 
 ## Source layout
 
@@ -75,3 +75,7 @@ can be used directly for normal course builds. See
 Source QA, full package validation, and byte comparisons verified the repository
 build against the approved local delivery. Target-LMS launch, resume, completion,
 and separate module reporting remain deployment acceptance checks.
+
+## Course Home and LMS order
+
+Course Home (`index.html`) is the first tracked syllabus item and completes on launch. The teaching modules follow in their existing order, with unchanged IDs and numbering. This package contains 10 SCOs in total. The approved content, audio/media, SCORM 1.2 version and green navigation are unchanged.

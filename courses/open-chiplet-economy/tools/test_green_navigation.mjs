@@ -86,6 +86,7 @@ try{
    check(await page.locator('a.module-card').count(),0,'Home tiles retain their informational policy');
    const start=page.locator('.index-start-link');check(await start.isVisible(),true,'Home start action stays visible');
    if(mode.lms&&(mode.review||course.scorm?.include_home_sco===false))check(await page.evaluate(()=>testCalls),[],'Untracked Home/review makes no LMS calls');
+   if(mode.lms&&!mode.review&&course.scorm?.include_home_sco!==false){check(await page.evaluate(()=>testValues['cmi.core.lesson_status']),'completed','Tracked Course Home completes on launch');check(await page.evaluate(()=>testCalls.some(c=>c[0]==='get'&&['cmi.suspend_data','cmi.core.lesson_location'].includes(c[1]))),false,'Home never reads teaching-module progress');}
    await start.scrollIntoViewIfNeeded();await start.click();await page.waitForURL(url(course.modules[0].id,mode.review));
    check(await page.locator('.slide.active').getAttribute('data-slide'),'1','Home start continues to open Module 1');
    await context.close();
