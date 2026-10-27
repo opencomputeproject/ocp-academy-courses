@@ -30,3 +30,9 @@ The October 27, 2026 refresh regenerates all thirty clips with Eleven v4 and the
 ## Acceptance boundary
 
 A signal pass does not establish pronunciation or perceptual consistency; human listening review remains unverified. Local SCORM simulations do not establish actual LMS launch, syllabus navigation, resume, or separate module completion. Verify those behaviors in the target LMS before learner release. This refresh does not upload or replace LMS material.
+
+## Next-module navigation parity
+
+The shared Slides default preserves every authored green next-module button in standalone, review, and LMS playback. The course needs no per-course navigation exemption. Course Home, SCORM version/organization, quiz gates, bookmarks, narration, and per-module completion retain their existing policies.
+
+The shared slide-control regression suite passes 50 assertions in both the installed skill and repository skill, comparing the same button destination, label, color, and arrow artwork with and without a SCORM API. The isolated navigation matrix preserves module links across all sixteen LMS/review/single-SCO/compatibility combinations. The actual Thermal Boundaries endings match and navigate in twelve standalone/review/simulated-LMS desktop/phone views. These checks do not change the separate MGX project or make claims about live LMS tracking.

@@ -136,13 +136,16 @@ handoff. In review mode the destination keeps `review=1` and starts at slide 1
 without narration or LMS writes. These fields do not alter the SCORM version,
 organization, module completion, next-module policy, or bookmark policy.
 
-`scorm.navigation: "direct"` is an explicit course-level compatibility override
-for legacy SST-style page links, including in a multi-SCO LMS. Use it only when
-the user requests that behavior after the tracking limitation is explained:
-direct page links do not ask the LMS to launch a different SCO, so separate
-module tracking must not be claimed from link navigation. Keep the approved
-choice recorded in the course source. Omission retains the guarded default;
-this option does not change the manifest's version or organization.
+Slides next-module navigation is part of the maintained learner UI: every
+non-final module keeps its green double-chevron link in standalone, review, and
+LMS playback. No course-specific opt-in is required. Detecting a SCORM API must
+not remove or replace this button. Browser QA compares the same authored button
+and destination with and without an LMS API.
+
+`scorm.navigation: "direct"` remains a compatibility setting for additional
+legacy page links and Course Home behavior. It is not needed for next-module
+buttons and does not change the manifest's version or organization. Keep
+tracking verification separate from learner-visible navigation.
 
 `language` is a BCP 47 tag. English packages use `course_title` unchanged in
 `imsmanifest.xml`; non-English packages append the English language name in
