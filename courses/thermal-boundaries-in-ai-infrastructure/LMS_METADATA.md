@@ -2,6 +2,8 @@
 
 **Placement:** standalone OCP Academy course.
 
+The formal catalog fields are stored in `course.json.lms_catalog` and exported separately in [lms-catalog.md](lms-catalog.md) and `lms-catalog.json`. Use those exports for LMS catalog entry; the notes below also describe the upload assets and behavior.
+
 **Short description**
 
 Diagnose AI cooling limits, evaluate architecture tradeoffs, and prepare for a cooling transition.

@@ -1,4 +1,27 @@
 // This template runs inside the module closure. Controls do not modify defaults.
+
+// Keep desktop glossary bubbles inside the viewport, including rightmost pills.
+function fitGlossaryTooltip(chip) {
+  if (!chip) return;
+  const style = getComputedStyle(chip, '::after');
+  if (style.position !== 'absolute') return; // Mobile retains its shared fixed inset.
+  const extras = style.boxSizing === 'border-box' ? 0
+    : parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)
+      + parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
+  const width = parseFloat(style.width) + extras;
+  if (!Number.isFinite(width)) return;
+  const anchor = chip.getBoundingClientRect().left + chip.clientLeft;
+  const inset = 16;
+  const left = Math.max(inset, Math.min(anchor, window.innerWidth - inset - width));
+  chip.style.setProperty('--glossary-tip-offset', (left - anchor) + 'px');
+}
+document.addEventListener('pointerover', event => fitGlossaryTooltip(event.target.closest?.('.glossary-chip')));
+document.addEventListener('focusin', event => fitGlossaryTooltip(event.target.closest?.('.glossary-chip')));
+window.addEventListener('resize', () => {
+  document.querySelectorAll('.slide.active .glossary-chip:hover, .slide.active .glossary-chip:focus').forEach(fitGlossaryTooltip);
+});
+
+
 const authoredHeadingSizes = new WeakMap();
 function fitHeadingWords() {
   const canvas = document.createElement('canvas');
@@ -112,21 +135,18 @@ slides.forEach(s => {
   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
 });
 storeBookmark(); updateNarrationMode();
-// A multi-SCO LMS owns module changes. Replace local page-jump controls with
-// honest instructions instead of presenting a button that refuses the click.
+// Preserve authored module links in standalone and LMS playback.
+// Course Home retains its existing compatibility policy.
 if (inLMS && !reviewMode && !SCORM.isSingleSCO && !directModuleLinks) {
   document.querySelectorAll('a[href]').forEach(link => {
-  const url = new URL(link.getAttribute('href'), location.href);
-  if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {
-    const target = url.pathname.match(/module(\d+)\.html$/);
-    const note = document.createElement('p');
-    note.className = 'lms-module-handoff';
-    note.textContent = target
-      ? 'Continue with Module ' + target[1] + ' using the Syllabus in the left sidebar.'
-      : 'Open Course Home using the Syllabus in the left sidebar.';
-    note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
-    link.replaceWith(note);
-  }
+    const url = new URL(link.getAttribute('href'), location.href);
+    if (url.origin === location.origin && /\/index\.html$/.test(url.pathname)) {
+      const note = document.createElement('p');
+      note.className = 'lms-module-handoff';
+      note.textContent = 'Open Course Home using the Syllabus in the left sidebar.';
+      note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
+      link.replaceWith(note);
+    }
   });
 }
 if (reviewMode) document.addEventListener('click', e => {

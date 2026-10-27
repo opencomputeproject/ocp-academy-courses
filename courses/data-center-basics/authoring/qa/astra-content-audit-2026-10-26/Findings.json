@@ -1,0 +1,942 @@
+{
+  "metadata": {
+    "auditor": "Astra content-audit subagent",
+    "audit_date": "2026-10-26",
+    "timezone": "America/New_York",
+    "status": "approval_recommendations_only",
+    "course_root": "<local-workspace>/DC_Basics_OCP_Academy_SCORM",
+    "course_json_sha256": "2921de71109bba941c28b65e9ff9eede2d65fec1b7f1564496c7c86b3500666e",
+    "course_title": "Data Centers: From Digital Services to Physical Infrastructure",
+    "slide_count": 76,
+    "module_count": 4,
+    "active_narrations": 66,
+    "imported_recordings": 10,
+    "question_count": 12,
+    "source_recordings_preserved": true,
+    "course_modified": false
+  },
+  "priority_definitions": {
+    "high": "Repair before approving this content revision; affects meaning or assessment integrity.",
+    "medium": "Material clarification or targeted coverage improvement.",
+    "low": "Optional precision, enrichment or verification follow-up."
+  },
+  "findings": [
+    {
+      "id": "F01",
+      "priority": "high",
+      "category": "assessment_alignment",
+      "slides": [
+        "M3S6",
+        "M3S7",
+        "M3S15"
+      ],
+      "title": "Align the form-factor matching exercise to examples actually taught",
+      "current_issue": "M3S15 m3_kc2 keys 1U to compact compute, 2U to general-purpose enterprise, and 4U to high-density storage while referring to an illustrated example layout. M3S6 instead names 2U dual-node and 4U shared multi-node examples; M3S7 has a 4U-plus high-bay enclosure. No single current illustration supplies the tested mapping.",
+      "evidence": "The current cards, figure labels, active scripts and question pairs directly establish the mismatch. These are possible products, so the key is not universally factually false; it is insufficiently grounded in the current teaching.",
+      "proposed_wording": "Prompt: “Match the three named compute examples from ‘Compute Comes in Many Chassis’ to their illustrated vertical allocations.” Pairs: 1U → Compact compute server; 2U → Dual-node chassis; 4U → Multi-node platform with shared chassis infrastructure. Feedback: “These are the examples used here. A workload or server role does not imply one universal U height.”",
+      "implementation_scope": "Revise this question, its feedback and matching narration only after approval. Keep the separate storage example and general-purpose/GPU discussion. Alternative if original keys must remain: show an explicitly labeled second example table before testing it.",
+      "confidence": "high",
+      "source_ids": [],
+      "source_urls": [],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F02",
+      "priority": "high",
+      "category": "factual_error_in_learner_aid",
+      "slides": [
+        "M3S3",
+        "M3S7",
+        "M4S8",
+        "M4S17"
+      ],
+      "title": "Remove three glossary matches with the wrong meaning",
+      "current_issue": "M3S3 attaches the software Container definition to a shipping-container analogy. M3S7 attaches Virtual machine where the content discusses NVMe storage and never teaches a VM. M4S8 attaches DC (direct current) to a DCIM explanation with no direct-current use.",
+      "evidence": "course.json term_refs and the complete same-slide scripts/media inventories confirm these mismatches. VM and DC resemble substrings of NVMe and DCIM; that is not usage evidence. The precise mechanism that produced the pills was not audited.",
+      "proposed_wording": "Remove container from M3S3 and virtual_machine from M3S7. Remove dc from M4S8; its eligible first use in Module 4 is the spoken “direct current” on M4S17. Keep valid software-container and VM aids on M4S6.",
+      "implementation_scope": "Update only placements, then review all term_refs semantically for word boundaries, meaning and first eligible use. Do not add invented aliases or narration just to justify a pill.",
+      "confidence": "high",
+      "source_ids": [
+        "CNCF",
+        "NIST_VM"
+      ],
+      "source_urls": [
+        "https://glossary.cncf.io/container/",
+        "https://csrc.nist.gov/glossary/term/hypervisor"
+      ],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F03",
+      "priority": "high",
+      "category": "misleading_simplification",
+      "slides": [
+        "M4S4",
+        "M4S8"
+      ],
+      "title": "Correct the division between DCIM and workload management",
+      "current_issue": "The imported M4S4 recording says BMS manages the environment and DCIM manages the workload. DCIM does not generally replace application monitoring, operating-system management or workload orchestration. The current “roles depend on implementation” caption is too vague to replace this false mental model.",
+      "evidence": "M4S4 transcript explicitly assigns these roles; M4S8 already provides a much sounder physical-assets/capacity definition. The opened Vertiv definition describes convergence between physical IT infrastructure and facility management.",
+      "proposed_wording": "“BMS monitors or controls building services. DCIM brings together information about physical assets, capacity, power and cooling. Application and workload tools manage software services; integrations and responsibilities vary by site.”",
+      "implementation_scope": "Put a concise editorial clarification next to M4S4 and reinforce it with one sentence on M4S8 if narration is revised. Preserve the recording and its verbatim transcript.",
+      "confidence": "high",
+      "source_ids": [
+        "DCIM"
+      ],
+      "source_urls": [
+        "https://www.vertiv.com/en-us/learn-about/dcim/"
+      ],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F04",
+      "priority": "medium",
+      "category": "misleading_simplification",
+      "slides": [
+        "M4S4"
+      ],
+      "title": "Identify ISO/IEC 27001 accurately",
+      "current_issue": "The recording lists “ISO 27000 for data security” and says the frameworks ensure an efficient, secure, sustainable and accountable facility. The generic applicability caption does not distinguish an overview standard from requirements or explain that a standard is not a guaranteed outcome.",
+      "evidence": "ISO now identifies ISO/IEC 27000:2026 as an ISMS overview; ISO/IEC 27001:2022 specifies ISMS requirements. The 2026 27000 edition should not be described using the older “overview and vocabulary” title.",
+      "proposed_wording": "“ISO/IEC 27001 specifies requirements for an information security management system; ISO/IEC 27000 provides an overview of the family. Management standards support defined practices and assessment, but do not guarantee every service outcome. Applicable reporting obligations depend on the organization and jurisdiction.”",
+      "implementation_scope": "Use an editorial note or short supporting text. Do not add a detailed CSRD/legal lesson; this audit does not determine applicability to any organization.",
+      "confidence": "high",
+      "source_ids": [
+        "ISO27000",
+        "ISO27001"
+      ],
+      "source_urls": [
+        "https://www.iso.org/standard/27000",
+        "https://www.iso.org/standard/27001"
+      ],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F05",
+      "priority": "medium",
+      "category": "unsupported_quantitative_claim",
+      "slides": [
+        "M4S3",
+        "M4S4"
+      ],
+      "title": "Make the market-share correction more decisive",
+      "current_issue": "M4S4 states that about 60% of global IT workload was in hyperscale facilities in 2024. The current caption calls the percentages unverified, but learners may still retain the figure. M4S3 also says the majority of workloads are in centralized hyperscale data centers without a defined workload measure.",
+      "evidence": "Synergy’s 2024 release reports 41% of worldwide data-center capacity and forecasts over 60% for 2029. Its June 2025 release reports 44% capacity and forecasts 61% for 2030. Neither supports the recorded 2024 workload claim. Similar figures suggest a forecast/measurement confusion, but the original chart’s provenance was not established.",
+      "proposed_wording": "“Do not use the recording’s 60% figure as a 2024 workload statistic. Facility capacity, workload counts and forecasts are different measures. The teaching point here is how ownership and contracts divide responsibility.”",
+      "implementation_scope": "Replace the existing uncertainty-only caption with this explicit note; avoid adding another dated share statistic. Keep the ownership teaching and all recordings.",
+      "confidence": "high",
+      "source_ids": [
+        "SYNERGY24",
+        "SYNERGY25"
+      ],
+      "source_urls": [
+        "https://www.srgresearch.com/articles/hyperscale-operators-and-colocation-continue-to-drive-huge-changes-in-data-center-capacity-trends",
+        "https://www.srgresearch.com/articles/the-worlds-total-data-center-capacity-is-shifting-rapidly-to-hyperscale-operators"
+      ],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F06",
+      "priority": "medium",
+      "category": "misleading_simplification",
+      "slides": [
+        "M2S12"
+      ],
+      "title": "Make the server/storage caveat specific enough to counter the recording",
+      "current_issue": "The recording calls 2U two-socket servers the most common today, describes HDDs as requiring more power and failing sooner because of moving parts, and ends by saying redundancy ensures continuous uptime. The existing variation caption is directionally correct but leaves these stronger claims insufficiently qualified.",
+      "evidence": "Current transcript and on-screen inventory contain the broad claims. SNIA describes SSD product segmentation and workload-dependent endurance; form factor, endurance and reliability cannot be ranked universally from one media label. No market-share evidence for the 2U/two-socket assertion is supplied.",
+      "proposed_wording": "“The 2U, two-socket server is an example, not a verified majority. SSDs and HDDs have different failure modes; neither medium is always more reliable or lower-power. Compare product specifications and workload needs. Redundancy supports availability only within its designed failure coverage.”",
+      "implementation_scope": "Expand the adjacent editorial note, ideally with the reliability correction visible before playback. Preserve original caption text as a record of what was said, clearly separated from editorial corrections.",
+      "confidence": "high",
+      "source_ids": [
+        "SNIA",
+        "UPTIME"
+      ],
+      "source_urls": [
+        "https://www.snia.org/education/what-is-ssd",
+        "https://journal.uptimeinstitute.com/explaining-uptime-institutes-tier-classification-system/"
+      ],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F07",
+      "priority": "medium",
+      "category": "misleading_simplification",
+      "slides": [
+        "M4S6",
+        "M4S7"
+      ],
+      "title": "Explain that logical isolation does not create physical redundancy",
+      "current_issue": "M4S6’s caption already corrects the one-application bare-metal model and fixed utilization percentages. However, the recording also presents virtualization/containerization as inherently smarter redundancy with less hardware and implies a universal progression from bare metal to VMs to containers.",
+      "evidence": "M4S7 correctly shows a shared finite host. If that host fails, environments on it share the failure unless additional architecture provides continuity. This is an inference from the shared-host model, not a claim that all virtualized services lack resilience.",
+      "proposed_wording": "“Bare metal can run multiple applications, and containers can run on bare metal or inside virtual machines. Neither VMs nor containers automatically provide high availability. Several logical environments on one host still share that host’s failure; continuity needs suitable placement, spare capacity and recovery mechanisms.”",
+      "implementation_scope": "Strengthen the adjacent M4S6 note; add the one-host failure sentence to M4S7 only if the script update is approved. No container orchestration tutorial is needed.",
+      "confidence": "high",
+      "source_ids": [
+        "NIST_VM",
+        "NIST_CONTAINER"
+      ],
+      "source_urls": [
+        "https://csrc.nist.gov/glossary/term/hypervisor",
+        "https://csrc.nist.gov/pubs/sp/800/190/final"
+      ],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F08",
+      "priority": "medium",
+      "category": "misleading_simplification",
+      "slides": [
+        "M1S5",
+        "M1S8"
+      ],
+      "title": "Qualify the recorded edge and connectivity definitions",
+      "current_issue": "M1S5 defines edge data centers as smaller modular units, implies redundant infrastructure is universal and explains carrier neutrality only as having multiple providers. M1S8 improves the edge definition, but the recording’s adjacent caption is generic.",
+      "evidence": "The current recording transcript is categorical; the current M1S8 definition and OCP AICC project scope accommodate many site forms. A carrier-neutral provider makes provider choice available to customers; presence of multiple carriers alone is an incomplete definition.",
+      "proposed_wording": "“These are examples, not requirements for every facility. Edge describes proximity to the workload, not a required size or modular building. Carrier-neutral facilities allow customers to choose among network providers. Redundancy and connection options depend on the site.”",
+      "implementation_scope": "Add this short editorial note next to the preserved recording. Keep M1S8’s overlapping-dimensions explanation.",
+      "confidence": "high",
+      "source_ids": [
+        "CARRIER"
+      ],
+      "source_urls": [
+        "https://www.flexential.com/resources/blog/carrier-neutral-data-center"
+      ],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F09",
+      "priority": "medium",
+      "category": "coverage_gap",
+      "slides": [
+        "M1S8",
+        "M1S16",
+        "M2S12",
+        "M4S16"
+      ],
+      "title": "Add AI factories as a workload lens, with training and inference",
+      "current_issue": "AI workloads appear later, but Module 1 never names AI factories or explains training versus inference. Adding “AI factory” as another exclusive ownership/location type would undermine M1S8’s correct statement that labels describe different dimensions.",
+      "evidence": "NVIDIA uses the term for purpose-built infrastructure across the AI lifecycle; the IEA uses it for AI-focused data centers; the European Commission also uses it for a computing/data/expertise ecosystem. These usages justify acknowledging the term, not declaring one universally standardized taxonomy.",
+      "proposed_wording": "Proposed new M1S8A title: “AI Workloads Add Another Design Lens.” Script: “Some data centers are designed around AI workloads. You may hear these called AI factories: infrastructure and software organized to develop and run AI at scale. Training adjusts a model using data; inference uses a trained model to produce a result. Their requirements vary. Accelerators, memory, storage and the connections between systems must work together, with suitable power and cooling. AI factory describes a purpose and operating approach. It does not tell you who owns the building or where it sits. An enterprise, a colocation customer or a hyperscale operator can run AI infrastructure.”",
+      "implementation_scope": "Recommend a new short slide after M1S8, with a static workload-versus-facility comparison. Keep the four-card M1S8 unchanged. Add workload/purpose to the M1S16 recap. Do not teach model internals, vendor products, token economics or rack-density thresholds.",
+      "confidence": "high",
+      "source_ids": [
+        "AI_FACTORY",
+        "EU_FACTORY",
+        "IEA"
+      ],
+      "source_urls": [
+        "https://www.nvidia.com/en-us/glossary/ai-factory/",
+        "https://digital-strategy.ec.europa.eu/en/policies/ai-factories",
+        "https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary"
+      ],
+      "approval_package": "recommended",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F10",
+      "priority": "medium",
+      "category": "coverage_gap",
+      "slides": [
+        "M1S8",
+        "M1S12",
+        "M4S16",
+        "M4S23"
+      ],
+      "title": "Connect edge placement to the broader AICC learning path",
+      "current_issue": "Edge is taught, but neither the AICC project nor the existing Academy course is named. AICC must not be reduced to “OCP’s edge tier” or presented as a completed universal platform.",
+      "evidence": "The live OCP project covers hyperscale-adjacent environments and constraints, including regional colocation, enterprise, telco and industrial settings. The supplied local AICC Module 1 explicitly treats a continuum rather than a fixed ladder.",
+      "proposed_wording": "Proposed new M1S8B title: “AI Can Run Across a Computing Continuum.” Script: “Some AI services benefit from running near the people or equipment they serve. Others need more capacity at a regional or large central site. Consider a factory inspection system: a local model may keep making time-sensitive decisions, while selected information goes elsewhere for deeper analysis. OCP’s AI Computing Continuum, or AICC, explores open infrastructure for AI beyond centralized hyperscale facilities. The sites have different limits on power, cooling, space and connectivity. This is broader than one edge category. Placement follows the service’s needs, and a distant connection does not automatically meet them.” Resource text: “Explore the AICC project” and “Optional deep dive: AI Computing Continuum.”",
+      "implementation_scope": "Use a second short slide rather than crowd M1S8. Add the project link there and on M4S16; add the exact Academy course link as an optional path on M4S23 alongside the existing Intro to OCP path. Leave the five domains and Across models to the dedicated course.",
+      "confidence": "high",
+      "source_ids": [
+        "AICC",
+        "AICC_COURSE"
+      ],
+      "source_urls": [
+        "https://www.opencompute.org/projects/aicc/",
+        "https://academy.opencompute.org/learn/courses/58/ai-computing-continuum-aicc-extending-ai-beyond-the-hyperscale-data-center"
+      ],
+      "approval_package": "recommended",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F11",
+      "priority": "medium",
+      "category": "coverage_gap",
+      "slides": [
+        "M2S5",
+        "M2S6"
+      ],
+      "title": "Define N+1 where the original power graphic introduces it",
+      "current_issue": "The imported M2S5 text inventory contains N+1 SETUP, but the current course provides no N+1 definition. The general redundancy glossary does not decode the notation.",
+      "evidence": "The reviewed inventory establishes a visible unexplained term. N+1 expresses additional capacity relative to the amount needed; it does not establish independent distribution paths or guarantee uptime.",
+      "proposed_wording": "“N is the capacity needed to support the intended load. N+1 adds one extra capacity unit so the load can still be supported when one unit is unavailable, if the rest of the design permits it. It does not mean that every path is independent.”",
+      "implementation_scope": "Add a short explanation near M2S5 or in M2S6 supporting text, with a small static two-needed-plus-one example if desired. A glossary entry can support, but should not replace, the explanation. Keep any numbers illustrative.",
+      "confidence": "high",
+      "source_ids": [
+        "UPS"
+      ],
+      "source_urls": [
+        "https://datacenters.lbl.gov/sites/default/files/UPS_Report_2005.pdf"
+      ],
+      "approval_package": "recommended",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F12",
+      "priority": "medium",
+      "category": "coverage_gap",
+      "slides": [
+        "M2S2",
+        "M2S10",
+        "M2S11"
+      ],
+      "title": "Close the promised hot-versus-cold containment comparison",
+      "current_issue": "M2S2 narration promises a comparison of hot and cold aisle containment. Later slides explain hot/cold aisles and general separation, while the generated video shows a contained return side. They do not clearly contrast which aisle is enclosed.",
+      "evidence": "This is a teaching-objective alignment issue, not an error in the existing airflow sequence.",
+      "proposed_wording": "“Cold-aisle containment encloses the cool supply side. Hot-aisle containment encloses the warm exhaust side. Both aim to reduce mixing; their suitability depends on the room’s supply, return and operating arrangements.”",
+      "implementation_scope": "Add one sentence and a small static side-by-side to M2S10, or narrow the M2S2 promise to “explain containment.” Prefer the small comparison if maintaining the original learning intent. Keep M2S11’s substantive causal video.",
+      "confidence": "high",
+      "source_ids": [
+        "DOE"
+      ],
+      "source_urls": [
+        "https://www.energy.gov/sites/default/files/2024-07/best-practice-guide-data-center-design.pdf"
+      ],
+      "approval_package": "recommended",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F13",
+      "priority": "medium",
+      "category": "assessment_alignment",
+      "slides": [
+        "M4S16",
+        "M4S22"
+      ],
+      "title": "Replace the trend-matching exercise’s unstated or ambiguous associations",
+      "current_issue": "M4S22 tests a shift toward modular and hybrid architectures, direct investment, and storage-capacity growth without clearly teaching those exact developments. “Energy Efficiency → Recycling residual heat” also blurs the distinction that M4S13 carefully makes between facility electricity and wider-system useful heat.",
+      "evidence": "All pairs are plausible associations, not proven wrong answer keys. The problem is instructional support and precision: hybrid is not defined here, and the current module does not establish a storage-growth forecast.",
+      "proposed_wording": "Prompt: “Match each area to the planning consideration taught in this course.” Pairs: Location → Match placement to workload and local constraints; Physical deployment → Use modular construction where it fits the site; Heat reuse → Connect recoverable heat to suitable useful demand; Energy sourcing → Check contracts and energy-attribute ownership; Storage planning → Balance capacity, access performance, protection and service needs.",
+      "implementation_scope": "Preserve all five subject areas, but align labels, keys, feedback and narration with taught principles instead of adding several forecast lessons. The storage principle is covered in M3S7; identify this as a course-wide recap or briefly reprise it before the question.",
+      "confidence": "high",
+      "source_ids": [],
+      "source_urls": [],
+      "approval_package": "essential",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F14",
+      "priority": "medium",
+      "category": "coverage_gap",
+      "slides": [
+        "M2S12",
+        "M3S7",
+        "M3S10"
+      ],
+      "title": "Give networking a small, explicit equipment-role treatment",
+      "current_issue": "Compute and storage get dedicated explanation in Module 3. Networking is repeatedly named as a capacity constraint, but switch/router/interface roles are compressed into one sentence in the imported server recording.",
+      "evidence": "This is a proportional coverage gap for a course organized around compute, storage and networks. It is not necessary to add protocol design or detailed AI fabrics.",
+      "proposed_wording": "“A network interface connects a server to a network. Switches connect devices and carry traffic within the facility; routing functions move traffic between networks. Some equipment combines these functions. Check compatible interfaces, link capacity and the complete path: more compute is useful only if information can reach it.”",
+      "implementation_scope": "Optional one 45–60-second slide near M3S7–M3S10 with a static server → switch → other network illustration. If strict duration is preferred, add a compact panel to the existing equipment-role discussion instead. Keep Ethernet, InfiniBand, RDMA and topology tuning for a later course.",
+      "confidence": "medium-high",
+      "source_ids": [
+        "CISCO"
+      ],
+      "source_urls": [
+        "https://www.cisco.com/site/us/en/learn/topics/small-business/network-switch-vs-router.html"
+      ],
+      "approval_package": "optional",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F15",
+      "priority": "low",
+      "category": "optional_enrichment",
+      "slides": [
+        "M3S11",
+        "M4S8",
+        "M4S19"
+      ],
+      "title": "Add one concrete operations loop",
+      "current_issue": "Management is sensibly framed around evidence and responsibility but stays abstract about what an operator does between an alarm and an improvement.",
+      "evidence": "The current M4S8 figure already contains measure, context, procedural action and verification. A brief scenario would make the existing concept transferable without expanding into an operations manual.",
+      "proposed_wording": "“If inlet temperature rises after equipment is added, first identify the affected assets and confirm the reading. The responsible teams review airflow, cooling capacity and the approved operating limits. Any change follows the site’s authorized procedure, and the team checks service performance and temperatures afterward.”",
+      "implementation_scope": "Optional 20–30 seconds within M4S8 or M4S19; no new slide needed. Mention trained/authorized work without adding technical switching, electrical or maintenance procedures.",
+      "confidence": "medium",
+      "source_ids": [],
+      "source_urls": [],
+      "approval_package": "optional",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F16",
+      "priority": "low",
+      "category": "optional_precision",
+      "slides": [
+        "M2S8"
+      ],
+      "title": "Make the temperature correction explicitly about equipment inlets",
+      "current_issue": "The recording moves from higher cooling setpoints to “up to 27 degrees” as though this could be a universal setting. The existing equipment-requirements caption already provides the necessary caveat; a more concrete sentence would reduce misreading.",
+      "evidence": "ASHRAE’s air-cooled classes use different envelopes: the commonly cited 18–27 °C recommended range applies to A1–A4, while H1 is narrower. Recommended inlet conditions are not a universal thermostat setpoint.",
+      "proposed_wording": "“The temperature example concerns equipment inlet conditions, not a universal room setpoint. The applicable equipment class and manufacturer limits govern; some dense systems require lower inlet temperatures. Cooling stages alone do not create redundancy.”",
+      "implementation_scope": "Optional refinement to the existing adjacent caption; keep numerical class tables out of the beginner narrative. The current caption is textually adequate if read, so this is not a release-blocking new error.",
+      "confidence": "high",
+      "source_ids": [
+        "ASHRAE"
+      ],
+      "source_urls": [
+        "https://handbook.ashrae.org/Handbooks/A23/SI/A23_Ch20/a23_ch20_si.aspx"
+      ],
+      "approval_package": "optional",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F17",
+      "priority": "low",
+      "category": "transcription_verification",
+      "slides": [
+        "M4S6"
+      ],
+      "title": "Verify “microservers” versus “microservices”",
+      "current_issue": "The preserved transcript and cues at 163.72–167.62 seconds say “microservers,” while the reviewed visible-text inventory says MICROSERVICES. This may be an ASR error or the speaker’s actual word; this audit did not listen to adjudicate it.",
+      "evidence": "Direct comparison of transcript/cue text and the supplied visible-text inventory. No audio claim is made.",
+      "proposed_wording": "If the spoken word is “microservices,” correct the transcript/cue transcription. If it is actually “microservers,” retain the verbatim speech record and add “Here, the intended software concept is microservices.” as an editorial note.",
+      "implementation_scope": "Targeted listening by an authorized reviewer or a non-audible independent transcription comparison before any change. Do not silently rewrite a verbatim transcript as though the speaker said something else.",
+      "confidence": "medium",
+      "source_ids": [],
+      "source_urls": [],
+      "approval_package": "optional",
+      "status": "recommendation_only"
+    },
+    {
+      "id": "F18",
+      "priority": "low",
+      "category": "optional_assessment_coverage",
+      "slides": [
+        "M2S2",
+        "M2S17"
+      ],
+      "title": "Consider one check on the module’s power or thermal path",
+      "current_issue": "Module 2’s two retained source questions assess server PSU and PCIe functions rather than its main facility power-continuity and cooling outcomes.",
+      "evidence": "The current objectives and both questions were compared directly. This is a coverage opportunity, not an incorrect answer key.",
+      "proposed_wording": "Optional added question: “In the conventional example, what supports the equipment while the backup generator starts?” Correct: “Stored energy through the UPS.” Distractors: “Extra empty rack positions”; “The generator before it is ready and selected”; “Containment alone.” Feedback: “Stored energy can bridge the source transition for the supported load; the actual duration and coverage depend on the design.”",
+      "implementation_scope": "If approved, add this as a formative item while retaining the twelve source questions. It would bring the question count to thirteen and require matching knowledge-check narration; do not silently substitute it for an existing source question.",
+      "confidence": "high",
+      "source_ids": [],
+      "source_urls": [],
+      "approval_package": "optional",
+      "status": "recommendation_only"
+    }
+  ],
+  "video_candidates": [
+    {
+      "rank": 1,
+      "id": "V01",
+      "slides": [
+        "M2S14"
+      ],
+      "title": "Follow two coolant loops and the heat path",
+      "learning_gain": "Separates coolant circulation from heat transfer and shows why a cold plate does not eliminate facility heat rejection.",
+      "sequence": [
+        "Component generates heat; the equipment loop carries it to a heat exchanger.",
+        "Show heat crossing the interface while the two fluids remain in separate closed paths in this example.",
+        "Compare liquid-to-liquid facility transfer with a liquid-to-air retrofit.",
+        "Trace the heat onward to the environment and hold the remaining facility-capacity requirement."
+      ],
+      "duration_seconds": [
+        45,
+        60
+      ],
+      "static_sufficiency": "A properly labeled two-loop static diagram is sufficient for recognition; motion materially helps trace flow, transfer and the retrofit consequence.",
+      "recommendation": "Recommended first new video if approved. Replace the existing static figure; retain one silent video with the approved narration clock.",
+      "source_ids": [
+        "BRAZOS",
+        "DOE"
+      ]
+    },
+    {
+      "rank": 2,
+      "id": "V02",
+      "slides": [
+        "proposed M1S8B",
+        "M4S16"
+      ],
+      "title": "Place an AI task when conditions change",
+      "learning_gain": "Makes the AICC bridge a service-placement decision rather than a map or a fixed hierarchy.",
+      "sequence": [
+        "A local inspection request has a short response deadline.",
+        "A wide-area link becomes unavailable; the defined local service continues with its local model.",
+        "A separate, non-urgent analysis task uses regional capacity when connectivity permits.",
+        "Hold latency, connectivity and site limits as the decision criteria; do not route every request through every site."
+      ],
+      "duration_seconds": [
+        50,
+        65
+      ],
+      "static_sufficiency": "A static continuum is enough to introduce the project; the conditional decision sequence adds genuine causal teaching when the new slide is approved.",
+      "recommendation": "Recommended second only with the AICC addition. Do not reproduce the dedicated AICC course’s deeper architecture.",
+      "source_ids": [
+        "AICC"
+      ]
+    },
+    {
+      "rank": 3,
+      "id": "V03",
+      "slides": [
+        "M4S11"
+      ],
+      "title": "Total energy falls while PUE rises",
+      "learning_gain": "Makes the denominator effect visible and prevents equating a better ratio with all energy improvements.",
+      "sequence": [
+        "Begin with same-period IT energy 1000, overhead 200 and total 1200; calculate 1.20.",
+        "Hold useful work constant in the stated example; reduce IT energy to 800 while overhead remains 200.",
+        "Recalculate total 1000 and PUE 1.25 together.",
+        "Hold the lower total energy beside the higher ratio."
+      ],
+      "duration_seconds": [
+        35,
+        45
+      ],
+      "static_sufficiency": "The existing before/after figure already teaches this correctly. Video is optional, not needed to repair a defect.",
+      "recommendation": "Next optional choice after the top two; add the same-useful-work assumption explicitly if animating consolidation.",
+      "source_ids": [
+        "PUE"
+      ]
+    },
+    {
+      "rank": 4,
+      "id": "V04",
+      "slides": [
+        "M1S14"
+      ],
+      "title": "One excavation defeats two services",
+      "learning_gain": "Shows common-cause failure and why provider count is not physical path diversity.",
+      "sequence": [
+        "Two labeled service links use a common trench.",
+        "One excavation interrupts both.",
+        "Reset to a separate comparison with physically diverse routes.",
+        "The same event interrupts only one path; continued service is conditional on an appropriate working alternate and failover."
+      ],
+      "duration_seconds": [
+        35,
+        45
+      ],
+      "static_sufficiency": "The existing paired static routes are already sufficient. Motion adds a memorable failure event but overlaps the current resilience explanation.",
+      "recommendation": "Optional; do not imply separation alone guarantees uninterrupted application service.",
+      "source_ids": []
+    },
+    {
+      "rank": 5,
+      "id": "V05",
+      "slides": [
+        "M4S7"
+      ],
+      "title": "A host failure affects its logical guests",
+      "learning_gain": "Reinforces the corrected distinction between logical isolation and physical redundancy.",
+      "sequence": [
+        "Several guests share one physical host.",
+        "A host failure affects those guests together.",
+        "Reset to a deliberately separate, designed recovery example with another host, available capacity and recoverable state.",
+        "Hold that recovery may take time and is not an inherent property of containers or VMs."
+      ],
+      "duration_seconds": [
+        30,
+        40
+      ],
+      "static_sufficiency": "One clear shared-host diagram plus a sentence is sufficient for this introductory course.",
+      "recommendation": "Defer unless users still misunderstand resilience. Do not lengthen or replace the existing resource-demand animation just to increase the video count.",
+      "source_ids": [
+        "NIST_VM"
+      ]
+    }
+  ],
+  "quiz_review": [
+    {
+      "id": "m1_kc1",
+      "slide": "M1S9",
+      "type": "matching",
+      "status": "acceptable_with_caveat",
+      "note": "Four associations are distinguishable; global cloud is a hyperscale example, not an exclusive definition. Existing feedback appropriately allows overlap.",
+      "key": [
+        {
+          "prompt": "Edge Data Centers",
+          "match": "Located near end-users to reduce latency"
+        },
+        {
+          "prompt": "Hyperscale Data Center",
+          "match": "Support global-scale cloud infrastructure"
+        },
+        {
+          "prompt": "Enterprise Data Center",
+          "match": "Built and used by a single organization"
+        },
+        {
+          "prompt": "Colocation Data Center",
+          "match": "Shared facility where tenants bring their own equipment"
+        }
+      ]
+    },
+    {
+      "id": "m1_kc2",
+      "slide": "M1S17",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice c is the best answer; feedback also includes networking and facility support.",
+      "key": [
+        "c"
+      ]
+    },
+    {
+      "id": "m1_kc3",
+      "slide": "M1S17",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice b matches the core cloud definition; public internet and multiple sites are correctly not mandatory.",
+      "key": [
+        "b"
+      ]
+    },
+    {
+      "id": "m1_kc4",
+      "slide": "M1S17",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice d; distractors are weak but unambiguous. No need to add difficulty merely for its own sake.",
+      "key": [
+        "d"
+      ]
+    },
+    {
+      "id": "m2_kc1",
+      "slide": "M2S17",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice b; conventional AC-input scope avoids falsely excluding DC-fed architectures.",
+      "key": [
+        "b"
+      ]
+    },
+    {
+      "id": "m2_kc2",
+      "slide": "M2S17",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice c; expansion card role is accurate for the stated examples.",
+      "key": [
+        "c"
+      ]
+    },
+    {
+      "id": "m3_kc1",
+      "slide": "M3S15",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice b; distinguishes panel width from hole spacing, depth and height.",
+      "key": [
+        "b"
+      ]
+    },
+    {
+      "id": "m3_kc2",
+      "slide": "M3S15",
+      "type": "matching",
+      "status": "alignment_repair",
+      "note": "Possible hardware sizes, but the stated illustrated mapping is not supplied by current teaching; F01.",
+      "key": [
+        {
+          "prompt": "1U",
+          "match": "Compact compute server"
+        },
+        {
+          "prompt": "2U",
+          "match": "General-purpose enterprise server"
+        },
+        {
+          "prompt": "4U",
+          "match": "High-Density Storage Server"
+        }
+      ]
+    },
+    {
+      "id": "m4_kc1",
+      "slide": "M4S21",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice c; feedback correctly conditions useful heat on temperature, distance and infrastructure and does not promise lower PUE.",
+      "key": [
+        "c"
+      ]
+    },
+    {
+      "id": "m4_kc2",
+      "slide": "M4S21",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice b; context distinguishes energy-management zombies from malware and legitimate standby capacity.",
+      "key": [
+        "b"
+      ]
+    },
+    {
+      "id": "m4_kc3",
+      "slide": "M4S21",
+      "type": "single_choice",
+      "status": "correct",
+      "note": "Choice b; workload-dependent mixed cooling is defensible. Distractors are broad but not ambiguous.",
+      "key": [
+        "b"
+      ]
+    },
+    {
+      "id": "m4_kc4",
+      "slide": "M4S22",
+      "type": "matching",
+      "status": "alignment_repair",
+      "note": "Plausible associations, but several exact trends are not taught and heat reuse is awkwardly categorized; F13.",
+      "key": [
+        {
+          "prompt": "Location",
+          "match": "Distributed or regional deployment matched to local constraints"
+        },
+        {
+          "prompt": "Structures",
+          "match": "Shift toward modular and hybrid architectures"
+        },
+        {
+          "prompt": "Energy Efficiency",
+          "match": "Recycling residual heat"
+        },
+        {
+          "prompt": "Renewables",
+          "match": "Direct investment and clean energy sourcing"
+        },
+        {
+          "prompt": "Storage",
+          "match": "Growth in high-density storage capacity"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "AICC",
+      "title": "OCP AI Computing Continuum project",
+      "url": "https://www.opencompute.org/projects/aicc/",
+      "date_status": "Undated live project; accessed 2026-10-26",
+      "verification": "Full project text read. The older /index.php/community/aicc URL redirects here."
+    },
+    {
+      "id": "AICC_COURSE",
+      "title": "AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center",
+      "url": "https://academy.opencompute.org/learn/courses/58/ai-computing-continuum-aicc-extending-ai-beyond-the-hyperscale-data-center",
+      "date_status": "Existing course; accessed 2026-10-26",
+      "verification": "Public URL returned a JavaScript loading shell. Course title, scope and introductory scripts verified in the supplied local AICC course; live enrollment/playback not verified."
+    },
+    {
+      "id": "AI_FACTORY",
+      "title": "NVIDIA AI factory glossary",
+      "url": "https://www.nvidia.com/en-us/glossary/ai-factory/",
+      "date_status": "Undated live glossary; accessed 2026-10-26",
+      "verification": "Full definition and lifecycle sections read. A vendor usage of the term, not a universal facility classification."
+    },
+    {
+      "id": "EU_FACTORY",
+      "title": "European Commission AI Factories",
+      "url": "https://digital-strategy.ec.europa.eu/en/policies/ai-factories",
+      "date_status": "Undated live policy page; accessed 2026-10-26",
+      "verification": "Opening definition read; demonstrates broader ecosystem/program usage. No counts or investment forecasts are proposed for this course."
+    },
+    {
+      "id": "OCP_VISION",
+      "title": "Realizing the OCP Open Data Center Ecosystem Vision",
+      "url": "https://www.opencompute.org/news/realizing-the-ocp-open-data-center-ecosystem-vision/",
+      "date_status": "Published 2026-10-12; accessed 2026-10-26",
+      "verification": "Full article read. Publication date verified in page metadata and visible date."
+    },
+    {
+      "id": "OCP_LVDC",
+      "title": "OCP: Powering the Next Era of AI",
+      "url": "https://www.opencompute.org/news/powering-the-next-era-of-ai-how-google-microsoft-and-nvidia-are-standardizing-and-accelerating-the-industry-transition-to-lvdc/",
+      "date_status": "Publication date not established; accessed 2026-10-26",
+      "verification": "Opened article body supports developing 800 VDC community interfaces; do not infer universal deployment."
+    },
+    {
+      "id": "IEA",
+      "title": "IEA, Key Questions on Energy and AI, executive summary",
+      "url": "https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary",
+      "date_status": "Report published 2026-04-16; accessed 2026-10-26",
+      "verification": "Full executive summary read; 485 TWh in 2025 and 950 TWh in 2030 verified. Date from report landing page."
+    },
+    {
+      "id": "UPTIME",
+      "title": "Uptime Institute Tier Classification explanation",
+      "url": "https://journal.uptimeinstitute.com/explaining-uptime-institutes-tier-classification-system/",
+      "date_status": "April 2021 update; accessed 2026-10-26",
+      "verification": "Web reader returned 403; full article retrieved through ordinary HTTP and parsed. Capability definitions and removal of expected-downtime predictions read."
+    },
+    {
+      "id": "NIST_CLOUD",
+      "title": "NIST SP 800-145, The NIST Definition of Cloud Computing",
+      "url": "https://csrc.nist.gov/pubs/sp/800/145/final",
+      "date_status": "Published September 2011; accessed 2026-10-26",
+      "verification": "Official publication page and full abstract read."
+    },
+    {
+      "id": "NIST_VM",
+      "title": "NIST hypervisor glossary",
+      "url": "https://csrc.nist.gov/glossary/term/hypervisor",
+      "date_status": "Undated glossary linked to NIST publications; accessed 2026-10-26",
+      "verification": "Definitions read. Shared-host failure consequences are an architectural inference, not a quoted availability guarantee."
+    },
+    {
+      "id": "NIST_CONTAINER",
+      "title": "NIST SP 800-190, Application Container Security Guide",
+      "url": "https://csrc.nist.gov/pubs/sp/800/190/final",
+      "date_status": "Published September 2017; accessed 2026-10-26",
+      "verification": "Official publication page/abstract read; not claimed to be a full line-by-line review of the publication."
+    },
+    {
+      "id": "CNCF",
+      "title": "CNCF container glossary",
+      "url": "https://glossary.cncf.io/container/",
+      "date_status": "Undated live glossary; accessed 2026-10-26",
+      "verification": "Technical definition read; used to distinguish software containers from shipping containers."
+    },
+    {
+      "id": "DCIM",
+      "title": "Vertiv DCIM and IT management",
+      "url": "https://www.vertiv.com/en-us/learn-about/dcim/",
+      "date_status": "Undated live vendor source; accessed 2026-10-26",
+      "verification": "Body definitions and linked-topic descriptions read; establishes overlap of IT physical infrastructure and facilities."
+    },
+    {
+      "id": "ISO27000",
+      "title": "ISO/IEC 27000:2026 overview",
+      "url": "https://www.iso.org/standard/27000",
+      "date_status": "Edition 6, July 2026; accessed 2026-10-26",
+      "verification": "Official definition and FAQ read; the 2026 edition is an overview, not the older overview-and-vocabulary title."
+    },
+    {
+      "id": "ISO27001",
+      "title": "ISO/IEC 27001:2022 requirements",
+      "url": "https://www.iso.org/standard/27001",
+      "date_status": "Edition 3, October 2022; accessed 2026-10-26",
+      "verification": "Official standard summary read; one amendment noted on the page. No certification or legal advice is inferred."
+    },
+    {
+      "id": "SYNERGY24",
+      "title": "Synergy: hyperscale and colocation capacity trends",
+      "url": "https://www.srgresearch.com/articles/hyperscale-operators-and-colocation-continue-to-drive-huge-changes-in-data-center-capacity-trends",
+      "date_status": "Published 2024-08-07; accessed 2026-10-26",
+      "verification": "Full research release read: 41% worldwide capacity then; over 60% forecast for 2029. Capacity is not workload share."
+    },
+    {
+      "id": "SYNERGY25",
+      "title": "Synergy: capacity shifting to hyperscale operators",
+      "url": "https://www.srgresearch.com/articles/the-worlds-total-data-center-capacity-is-shifting-rapidly-to-hyperscale-operators",
+      "date_status": "Published 2025-06-24; accessed 2026-10-26",
+      "verification": "Full research release read: 44% capacity at Q1 2025, 61% forecast for 2030. Original recording chart provenance not proven."
+    },
+    {
+      "id": "SNIA",
+      "title": "SNIA, What is an SSD?",
+      "url": "https://www.snia.org/education/what-is-ssd",
+      "date_status": "Undated live source; accessed 2026-10-26",
+      "verification": "Definition, product segmentation and workload-dependent endurance discussion read."
+    },
+    {
+      "id": "CARRIER",
+      "title": "Flexential carrier-neutral data centers",
+      "url": "https://www.flexential.com/resources/blog/carrier-neutral-data-center",
+      "date_status": "Published 2025-12-23; accessed 2026-10-26",
+      "verification": "Provider definition and carrier-choice discussion read; promotional resilience claims are not adopted."
+    },
+    {
+      "id": "ASHRAE",
+      "title": "ASHRAE 2023 Applications Handbook, Chapter 20",
+      "url": "https://handbook.ashrae.org/Handbooks/A23/SI/A23_Ch20/a23_ch20_si.aspx",
+      "date_status": "2023 chapter incorporating 2021 thermal guidance; accessed 2026-10-26",
+      "verification": "Relevant definitions, rack dimensions, airflow and environmental tables read. Not a full standards compliance review."
+    },
+    {
+      "id": "DOE",
+      "title": "DOE Best Practices Guide for Energy-Efficient Data Center Design",
+      "url": "https://www.energy.gov/sites/default/files/2024-07/best-practice-guide-data-center-design.pdf",
+      "date_status": "Revised July 2024; accessed 2026-10-26",
+      "verification": "Relevant text: containment PDF pp. 18–21; WUE/CUE PDF pp. 39–40. PDF text inspected; no PDF page-image QA performed."
+    },
+    {
+      "id": "UPS",
+      "title": "LBNL/EPRI UPS report",
+      "url": "https://datacenters.lbl.gov/sites/default/files/UPS_Report_2005.pdf",
+      "date_status": "December 2005; accessed 2026-10-26",
+      "verification": "Section 3.2.3, PDF pp. 30–31, read for N+1 conceptual example only. Old numerical efficiency and uptime predictions are not recommended for reuse."
+    },
+    {
+      "id": "RACK",
+      "title": "Canford rack dimensional data",
+      "url": "https://www.canford.co.uk/TechZone/Article/19InchRackDimensions",
+      "date_status": "Undated dimensional guidance; accessed 2026-10-26",
+      "verification": "Dimension table read. The page cites older mechanical standards; manufacturer drawings remain appropriate for actual fit."
+    },
+    {
+      "id": "CISCO",
+      "title": "Cisco switch versus router",
+      "url": "https://www.cisco.com/site/us/en/learn/topics/small-business/network-switch-vs-router.html",
+      "date_status": "Undated live page; accessed 2026-10-26",
+      "verification": "Functional descriptions read. Data-center switches may perform routing too; no universal box-per-function rule proposed."
+    },
+    {
+      "id": "PUE",
+      "title": "The Green Grid PUE definition",
+      "url": "https://www.thegreengrid.org/node/372",
+      "date_status": "Undated glossary; accessed 2026-10-26",
+      "verification": "Definition read; worked arithmetic independently checked."
+    },
+    {
+      "id": "BRAZOS",
+      "title": "Google: Brazos liquid-to-air cooling",
+      "url": "https://cloud.google.com/blog/topics/systems/brazos-liquid-cooling-system-for-air-cooled-data-centers",
+      "date_status": "Published 2026-06-16; accessed 2026-10-26",
+      "verification": "Full relevant product/design explanation read; used as one retrofit example, not a universal solution."
+    },
+    {
+      "id": "HEAT",
+      "title": "OCP Heat Reuse project",
+      "url": "https://www.opencompute.org/projects/cooling-environments/heat-reuse/",
+      "date_status": "Undated live project; accessed 2026-10-26",
+      "verification": "Project overview read; useful-heat demand and complete-system accounting remain contextual requirements."
+    },
+    {
+      "id": "REC",
+      "title": "US EPA renewable energy certificates",
+      "url": "https://www.epa.gov/green-power-markets/renewable-energy-certificates-recs",
+      "date_status": "Undated live guidance; accessed 2026-10-26",
+      "verification": "Definitions, attributes and ownership discussion read; US instrument context."
+    },
+    {
+      "id": "PPA",
+      "title": "US EPA physical PPA",
+      "url": "https://www.epa.gov/green-power-markets/physical-ppa",
+      "date_status": "Undated live guidance; accessed 2026-10-26",
+      "verification": "Contract, attribute ownership and physical/financial distinction read; no legal conclusion proposed."
+    },
+    {
+      "id": "EIA",
+      "title": "EIA measuring electricity",
+      "url": "https://www.eia.gov/energyexplained/electricity/measuring-electricity.php",
+      "date_status": "Undated live educational page; accessed 2026-10-26",
+      "verification": "Power/energy unit explanation checked."
+    }
+  ]
+}

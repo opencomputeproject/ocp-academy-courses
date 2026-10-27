@@ -1,0 +1,10 @@
+# pronunciation: RDMA -> R D M A
+Once the receiver can recover data, the endpoint still has work to do. Queues may need to be released, forwarding state must describe the current connection, and the transport must send while the intended path exists. Host software and network-interface behavior can therefore remain on the critical path.
+
+Host-bypass techniques, including remote direct memory access or R D M A, can reduce some operating-system involvement. They do not automatically make an endpoint aware of a changing circuit schedule. The interface, application runtime, and fabric still need a compatible way to coordinate communication.
+
+Consider a forwarding table that is normally learned when a link comes up. If the far endpoint changes frequently, relearning after every change can become expensive. Preparing state in advance or overlapping its update with optical configuration can help, but only if the state is correct when traffic is released.
+
+Buffering also needs explicit ownership. While a requested path is pending, something must hold the traffic or provide another route. A failure response must produce a defined action. External connectivity must remain reachable even when a direct path to a peer is temporarily absent.
+
+The takeaway is practical: test successful transmission through the intended endpoint stack. A laboratory optical transition and a receiver measurement cannot establish application readiness on their own. Include the real queues, state updates, and software coordination that the deployed workload will use.

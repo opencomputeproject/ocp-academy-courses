@@ -1,0 +1,10 @@
+# pronunciation: CDR -> C D R
+A receiver that suddenly sees a different transmitter must recover useful data from a different incoming signal. The clock phase can change. So can the received power and the channel characteristics. Clock and data recovery, usually shortened to C D R, aligns the receiver so that it can interpret the bits reliably.
+
+Continuous-mode transceivers normally assume a relatively stable connection. After a path change, their control loops may need time to settle. If that recovery takes much longer than the optical switch, it determines when the link becomes useful, even though the optical path is already present.
+
+Burst-mode reception is designed for signals that arrive abruptly. Other approaches retain information from earlier connections. Phase caching stores a previously measured timing relationship, while amplitude caching retains a useful starting setting for signal strength. Looking up a valid setting can be faster than learning it again from scratch.
+
+The word valid matters. Cached information depends on which paths can occur, how stable they remain, and how the system refreshes measurements. A small, predictable set of source and destination pairs is easier to calibrate than an arbitrary collection of paths through many switch chassis. Drift and failures can invalidate assumptions.
+
+Finally, receiver lock must lead to an actionable readiness decision. Traffic sent before the connection is confirmed can be lost. Evaluate acquisition time, data integrity, synchronization, and the readiness signal together. A fast locking demonstration is useful evidence for a receiver design, but production integration must show that the complete fabric can maintain those conditions.

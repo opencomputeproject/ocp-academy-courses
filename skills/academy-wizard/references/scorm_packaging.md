@@ -30,7 +30,7 @@ fix for unrestricted home navigation.
 
 Docebo accepts SCORM 1.2 and 2004 3rd Edition, but its documentation explicitly says sequencing is not supported. It can convert simple sequencing/linear navigation to platform prerequisites at upload; that is not proof that arbitrary in-course choice requests work. Do not promise that changing to 2004 fixes home-page cards or next-module buttons. Require target-LMS verification of those actions and their tracking before calling a multi-SCO package release-ready.
 
-If the LMS cannot launch the correct next SCO from a course button, retain LMS syllabus navigation with honest UI, or propose a single-SCO course whose own home and module buttons control the pages. The latter keeps internal module organization but changes the LMS syllabus and completion reporting to one tracked activity. Obtain approval for that tradeoff; do not silently collapse modules or record later-module progress against the originally launched SCO.
+Keep the authored green next-module buttons in both local and LMS playback. The LMS Syllabus remains available for arbitrary module selection; it must not replace the course's next-module buttons automatically. Test their destination and tracking in the target LMS and preserve the user's verified deployment behavior. Any change to SCORM version, syllabus organization, or completion reporting remains a separate migration decision.
 
 Primary reference: [Docebo — Uploading and managing SCORM as training material](https://help.docebo.com/hc/en-us/articles/360020128479-Uploading-and-managing-SCORM-as-training-material), especially Introduction, Updating SCORM content and Tracking the progress of SCORM content. Recheck the target LMS documentation when selecting a format; support can change.
 
@@ -168,3 +168,14 @@ zip -r <TopicSlug>_OCP_Academy_SCORM.zip <TopicSlug>_OCP_Academy_SCORM \
 ### No inline JavaScript event handlers
 
 Strict LMS content scanners reject HTML containing inline JS event handlers — `onmouseover="..."`, `onclick="..."`, `onload="..."`, etc. The error often surfaces as a generic "file may not be formatted correctly" message with no detail. Always use `addEventListener` or CSS pseudo-classes (`:hover`, `:focus`) instead. The `survey-btn` hover state in `render_course_complete` is implemented as `.slide .survey-btn:hover` in `module_styles.css` for this reason. If you add new interactive elements, follow the same pattern.
+
+## LMS catalog metadata delivered beside the ZIP
+
+Formal LMS Title, Short Description (≤130 characters), and Long Description are
+source-tracked metadata, separate from the course README and runtime. Follow
+[lms_catalog.md](lms_catalog.md). The strict zipper requires valid approved
+`course.json.lms_catalog`; pass `--course-json` when the source is outside the
+runtime folder or its parent. It refreshes source `lms-catalog.json`/`.md` and
+emits `<zip-stem>.lms-catalog.json`, `.md`, and `.html` beside the archive. These
+files are never manifest entries or extra ZIP members. Learner-duration estimates
+remain distinct from narration runtime and unit estimates reconcile to the total.

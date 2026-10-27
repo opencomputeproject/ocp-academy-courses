@@ -35,7 +35,10 @@ courses/
   ai-computing-continuum/
   build-your-brand-in-the-ocp-community/
   cooling-fluids-in-direct-liquid-cooling/
+  data-center-basics/             # four narrated SCORM 1.2 modules
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  fcsa-architecting-interoperable-chiplet-systems/  # five narrated FCSA modules
+  fast-optical-circuit-switching-for-dynamic-ai-fabrics/
   grid-disturbance-performance/
   high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
@@ -62,6 +65,7 @@ courses/
   ocp-project-brazos-liquid-to-air-cooling/
   ocp-ready-requirements-for-energy-storage-systems/
   ocp-solid-state-transformers/
+  open-chiplet-economy/            # nine narrated modules and 23 videos
   open-data-center-for-ai/
   open-rack-v3/
     module-1-ocp-orv3-history-and-impact/
@@ -72,8 +76,10 @@ courses/
     module-6-the-open-rack-wide-orw-expansion/
     module-7-advanced-orw-liquid-cooling-practice/
   optics/
-    enhanced-telemetry-optics/   # optics/enhanced-telemetry-optics; English spec v1.0.0
-    introduction-to-emerging-optical-technologies/   # optics/introduction-to-emerging-optical-technologies
+    enhanced-telemetry-optics/
+      # optics/enhanced-telemetry-optics; English spec v1.0.0
+    introduction-to-emerging-optical-technologies/
+      # optics/introduction-to-emerging-optical-technologies
   project-deschutes-cdu-specification-v1-0/
   short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
   sue-t-ethernet-transport-for-xpu-scale-up-systems/
@@ -86,6 +92,17 @@ skills/
   academy-wizard/
 ```
 
+## LMS catalog metadata
+
+Formal LMS titles, short descriptions, and long descriptions are stored separately
+from course README documentation. Author them in `course.json.lms_catalog` and
+track the generated `lms-catalog.json` and `lms-catalog.md` with the course source.
+Packaging exports matching JSON, Markdown, and HTML files beside the SCORM ZIP.
+
+See the [metadata contract](skills/academy-wizard/references/lms_catalog.md) and
+[LMS catalog index](docs/lms-catalog/README.md). Each course maintains its own
+approved metadata and exports with its complete source.
+
 ## Install the AcademyWizard skill
 
 The bundled skill lives at:
@@ -94,7 +111,10 @@ The bundled skill lives at:
 skills/academy-wizard
 ```
 
-The build script uses the repo-local AcademyWizard copy by default, so installing the skill is optional for command-line builds. Install it into Codex when you want to interactively create or revise courses:
+The build script uses the repo-local AcademyWizard copy by default. A course may
+record `authoring_toolchain` to use a validated snapshot inside its source folder;
+`ACADEMY_WIZARD_SKILL_DIR` remains the explicit override. Installing the skill is
+optional for command-line builds. Install it into Codex when you want to interactively create or revise courses:
 
 ```bash
 ./scripts/install-academy-wizard-skill.sh
@@ -127,7 +147,10 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ai-computing-continuum` | AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center |
 | `build-your-brand-in-the-ocp-community` | How to Build Your Brand in the OCP Community |
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
+| `data-center-basics` | [Data Centers: From Digital Services to Physical Infrastructure](courses/data-center-basics/README.md): four narrated modules with preserved recordings and timed teaching videos |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `fcsa-architecting-interoperable-chiplet-systems` | [FCSA: Architecting Interoperable Chiplet Systems](courses/fcsa-architecting-interoperable-chiplet-systems/README.md): five narrated modules, five synchronized teaching videos, and an integration workbook |
+| `fast-optical-circuit-switching-for-dynamic-ai-fabrics` | [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md): four narrated modules on workload timing, system readiness, switching mechanisms, and AI-workload evidence |
 | `grid-disturbance-performance` | Grid Disturbance Performance for Hyperscale Data Centers |
 | `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
 | `integrating-quantum-processing-units-into-data-center-infrastructure` | [Integrating Quantum Processing Units into Data Center Infrastructure](courses/integrating-quantum-processing-units-into-data-center-infrastructure/README.md): four narrated modules with teaching animations and two-question knowledge checks |
@@ -150,6 +173,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `ocp-project-brazos-liquid-to-air-cooling` | OCP Project Brazos: Liquid Cooling in Air-Cooled Data Centers |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
 | `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
+| `open-chiplet-economy` | [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md): nine narrated modules, nine teaching animations, and fourteen captioned recordings |
 | `open-data-center-for-ai` | Open Data Center for AI |
 | `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
 | `open-rack-v3/module-2-orv3-core-specifications` | Module 2: ORv3 Core Specifications |
@@ -223,7 +247,7 @@ page.
 | [Intro to OCP: Module 3: OCP Technologies (Open Rack & Cooling)](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/) | [`zh-CN`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-CN/) | [`zh-TW`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-TW/) | [`ja-JP`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ko-KR/) | [`pt-BR`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/pt-BR/) | [`es-419`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/es-419/) | [`vi-VN`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/vi-VN/) |
 | [Intro to OCP: Module 4: Today and Tomorrow (The Journey)](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/) | [`zh-CN`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-CN/) | [`zh-TW`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-TW/) | [`ja-JP`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ko-KR/) | [`pt-BR`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/pt-BR/) | [`es-419`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/es-419/) | [`vi-VN`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/vi-VN/) |
 | [OCP Diablo 400: Disaggregated Power for High-Density AI Racks](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/) | [`zh-CN`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/zh-CN/) | [`zh-TW`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/zh-TW/) | [`ja-JP`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/ja-JP/) | [`ko-KR`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/ko-KR/) | [`pt-BR`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/pt-BR/) | [`es-419`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/es-419/) | [`vi-VN`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/vi-VN/) |
-| [OCP ESUN: Ethernet for Scale-Up Networks](courses/ocp-esun-ethernet-for-scale-up-networks/) | [`zh-CN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-CN/) | [`zh-TW`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-TW/) | [`ja-JP`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP/) | [`ko-KR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR/) | [`pt-BR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/pt-BR/) | [`es-419`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/es-419/) | [`vi-VN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/vi-VN/) |
+| [OCP ESUN](courses/ocp-esun-ethernet-for-scale-up-networks/) | [`zh-CN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-CN/) | [`zh-TW`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-TW/) | [`ja-JP`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP/) | [`ko-KR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR/) | [`pt-BR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/pt-BR/) | [`es-419`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/es-419/) | [`vi-VN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/vi-VN/) |
 | [OCP Orientation: Introduction to the OCP Solution Provider Program](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/) | [`zh-CN`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/ko-KR/) | — | — | — |
 | [OCP Orientation: OCP Contribution Process](courses/ocp-orientation/ocp-contribution-process/) | [`zh-CN`](courses/ocp-orientation/ocp-contribution-process/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/ocp-contribution-process/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/ocp-contribution-process/locales/ko-KR/) | — | — | — |
 | [OCP Orientation: OCP Ready™ Data Center Recognition Program](courses/ocp-orientation/ocp-ready-data-center-recognition-program/) | [`zh-CN`](courses/ocp-orientation/ocp-ready-data-center-recognition-program/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/ocp-ready-data-center-recognition-program/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/ocp-ready-data-center-recognition-program/locales/ko-KR/) | — | — | — |
@@ -231,6 +255,7 @@ page.
 | [OCP Orientation: Understanding and Procuring Open Technologies and Products](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/) | [`zh-CN`](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/locales/ko-KR/) | — | — | — |
 | [OCP Project Deschutes](courses/project-deschutes-cdu-specification-v1-0/) | [`zh-CN`](courses/project-deschutes-cdu-specification-v1-0/locales/zh-CN/) | [`zh-TW`](courses/project-deschutes-cdu-specification-v1-0/locales/zh-TW/) | [`ja-JP`](courses/project-deschutes-cdu-specification-v1-0/locales/ja-JP/) | [`ko-KR`](courses/project-deschutes-cdu-specification-v1-0/locales/ko-KR/) | [`pt-BR`](courses/project-deschutes-cdu-specification-v1-0/locales/pt-BR/) | [`es-419`](courses/project-deschutes-cdu-specification-v1-0/locales/es-419/) | [`vi-VN`](courses/project-deschutes-cdu-specification-v1-0/locales/vi-VN/) |
 | [OCP Ready™ Requirements for Energy Storage Systems](courses/ocp-ready-requirements-for-energy-storage-systems/) | [`zh-CN`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/zh-CN/) | [`zh-TW`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/zh-TW/) | [`ja-JP`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/ja-JP/) | [`ko-KR`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/ko-KR/) | [`pt-BR`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/pt-BR/) | [`es-419`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/es-419/) | [`vi-VN`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/vi-VN/) |
+| [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/) | — | — | [`ja-JP`](courses/open-chiplet-economy/locales/ja-JP/) | — | — | — | — |
 | [Open Rack: Module 1: OCP & ORv3: History and Impact](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/) | [`zh-CN`](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/locales/zh-CN/) | [`zh-TW`](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/locales/zh-TW/) | [`ja-JP`](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/locales/ja-JP/) | [`ko-KR`](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/locales/ko-KR/) | [`pt-BR`](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/locales/pt-BR/) | [`es-419`](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/locales/es-419/) | [`vi-VN`](courses/open-rack-v3/module-1-ocp-orv3-history-and-impact/locales/vi-VN/) |
 | [Open Rack: Module 2: ORv3 Core Specifications](courses/open-rack-v3/module-2-orv3-core-specifications/) | [`zh-CN`](courses/open-rack-v3/module-2-orv3-core-specifications/locales/zh-CN/) | [`zh-TW`](courses/open-rack-v3/module-2-orv3-core-specifications/locales/zh-TW/) | [`ja-JP`](courses/open-rack-v3/module-2-orv3-core-specifications/locales/ja-JP/) | [`ko-KR`](courses/open-rack-v3/module-2-orv3-core-specifications/locales/ko-KR/) | [`pt-BR`](courses/open-rack-v3/module-2-orv3-core-specifications/locales/pt-BR/) | [`es-419`](courses/open-rack-v3/module-2-orv3-core-specifications/locales/es-419/) | [`vi-VN`](courses/open-rack-v3/module-2-orv3-core-specifications/locales/vi-VN/) |
 | [Open Rack: Module 3: ORv3 Real World Implementations](courses/open-rack-v3/module-3-orv3-real-world-implementations/) | [`zh-CN`](courses/open-rack-v3/module-3-orv3-real-world-implementations/locales/zh-CN/) | [`zh-TW`](courses/open-rack-v3/module-3-orv3-real-world-implementations/locales/zh-TW/) | [`ja-JP`](courses/open-rack-v3/module-3-orv3-real-world-implementations/locales/ja-JP/) | [`ko-KR`](courses/open-rack-v3/module-3-orv3-real-world-implementations/locales/ko-KR/) | [`pt-BR`](courses/open-rack-v3/module-3-orv3-real-world-implementations/locales/pt-BR/) | [`es-419`](courses/open-rack-v3/module-3-orv3-real-world-implementations/locales/es-419/) | [`vi-VN`](courses/open-rack-v3/module-3-orv3-real-world-implementations/locales/vi-VN/) |

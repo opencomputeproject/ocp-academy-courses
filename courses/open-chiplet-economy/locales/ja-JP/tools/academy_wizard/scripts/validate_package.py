@@ -1,0 +1,535 @@
+#!/usr/bin/env python3
+"""
+validate_package.py — sanity-check a finished SCORM folder before delivery.
+
+Usage:
+    python validate_package.py <folder>
+
+Checks:
+  - imsmanifest.xml exists and parses as XML
+  - index.html exists
+  - For each <resource>: every <file href="..."/> resolves to a real file
+  - For each moduleN.html: every audioMap path resolves on disk
+  - Each moduleN.html has slide IDs 1..N contiguously
+  - No file in the folder is larger than 50 MB (likely a mistake)
+  - Brand logos and scorm_api.js are present
+
+Exits 0 on clean validation, 1 with a list of failures otherwise.
+"""
+
+from __future__ import annotations
+import argparse
+import json
+import re
+import sys
+import html as html_lib
+from pathlib import Path
+from xml.etree import ElementTree as ET
+
+from render_index import scorm_metadata_title
+from render_scrolling import parse_webvtt
+import single_sco
+import scorm_2004
+
+
+def _is_scrolling(course: dict) -> bool:
+    return str(course.get("style") or "Slides").strip().casefold() == "scrolling"
+
+
+def _resource_paths(value: object) -> set[str]:
+    found: set[str] = set()
+    if isinstance(value, dict):
+        for item in value.values():
+            found.update(_resource_paths(item))
+    elif isinstance(value, list):
+        for item in value:
+            found.update(_resource_paths(item))
+    elif isinstance(value, str) and value.startswith("resources/"):
+        found.add(value)
+    return found
+
+
+def _scrolling_block_types(course: dict) -> set[str]:
+    return {
+        str(block.get("type") or "").strip().casefold()
+        for lesson in course.get("lessons", [])
+        for block in lesson.get("blocks", [])
+        if isinstance(block, dict)
+    }
+
+
+def _scrolling_question_types(course: dict) -> set[str]:
+    return {
+        str(block.get("question_type") or "multiple_choice").strip().casefold()
+        for lesson in course.get("lessons", [])
+        for block in lesson.get("blocks", [])
+        if isinstance(block, dict) and block.get("type") == "knowledge_check"
+    }
+
+
+def _scrolling_block_variants(course: dict) -> set[str]:
+    return {
+        str(block.get("variant") or "").strip().casefold()
+        for lesson in course.get("lessons", [])
+        for block in lesson.get("blocks", [])
+        if isinstance(block, dict)
+    }
+
+
+def _scrolling_has_quote_avatar(course: dict) -> bool:
+    return any(
+        block.get("type") == "quote" and bool(block.get("avatar"))
+        for lesson in course.get("lessons", [])
+        for block in lesson.get("blocks", [])
+        if isinstance(block, dict)
+    )
+
+
+def _scrolling_caption_tracks(course: dict) -> list[dict]:
+    tracks: list[dict] = []
+
+    def walk(value: object) -> None:
+        if isinstance(value, dict):
+            captions = value.get("captions")
+            if isinstance(captions, list):
+                tracks.extend(track for track in captions if isinstance(track, dict))
+            for child in value.values():
+                walk(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk(child)
+
+    walk(course)
+    return tracks
+
+
+def _narration_caption_fallback_count(markup: str) -> int:
+    """Native narration-clock tracks intentionally omit src to avoid a VTT load.
+
+    Their generated cue payload is the actual offline caption source. Require
+    complete, ordered, nonempty cues before accepting a source-free track.
+    """
+    count = 0
+    for raw in re.findall(r'<script\b[^>]*\bdata-figure-caption-tracks[^>]*>(.*?)</script>', markup, re.S):
+        try:
+            payload = json.loads(raw)
+        except (TypeError, json.JSONDecodeError):
+            continue
+        if not isinstance(payload, list):
+            continue
+        for track in payload:
+            if not isinstance(track, dict) or track.get('time_source') != 'narration':
+                continue
+            cues = track.get('cues')
+            if not isinstance(cues, list) or not cues:
+                continue
+            valid = True
+            previous_end = 0.0
+            for cue in cues:
+                if not isinstance(cue, dict):
+                    valid = False; break
+                start, end = cue.get('start'), cue.get('end')
+                if (isinstance(start, bool) or isinstance(end, bool)
+                    or not isinstance(start, (int, float)) or not isinstance(end, (int, float))
+                    or not (previous_end <= start < end < float('inf'))
+                    or not isinstance(cue.get('text'), str) or not cue['text'].strip()):
+                    valid = False; break
+                previous_end = end
+            if valid:
+                count += 1
+    return count
+
+
+def _validate_source_caption_files(course: dict, root: Path) -> list[str]:
+    """Check retained VTT resources even when playback uses generated cues."""
+    errors = []
+    for module in course.get('modules') or []:
+        for slide in module.get('slides') or []:
+            for track in (slide.get('figure') or {}).get('captions') or []:
+                path = str(track.get('path') or '')
+                if not path or not (root / path).is_file():
+                    errors.append(f'course.json: missing video caption file: {path}')
+                elif not parse_webvtt((root / path).read_text(encoding='utf-8-sig')):
+                    errors.append(f'course.json: caption file has no valid WebVTT cues: {path}')
+    return errors
+
+
+def _dark_hex_color(value: object) -> bool:
+    text = str(value or "").lstrip("#")
+    if len(text) == 3:
+        text = "".join(char * 2 for char in text)
+    if not re.fullmatch(r"[0-9a-fA-F]{6}", text):
+        return False
+    red, green, blue = (int(text[index:index + 2], 16) for index in (0, 2, 4))
+    return (0.299 * red + 0.587 * green + 0.114 * blue) / 255 <= 0.58
+
+
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("folder", type=Path)
+    args = p.parse_args()
+    root = args.folder.resolve()
+    if not root.is_dir():
+        sys.exit(f"Not a directory: {root}")
+
+    errors: list[str] = []
+    warnings: list[str] = []
+
+    def err(m): errors.append(m)
+    def warn(m): warnings.append(m)
+
+    manifest = root / "imsmanifest.xml"
+    index = root / "index.html"
+    api = root / "scorm_api.js"
+    course_json = root / "course.json"
+    course = {}
+    if course_json.exists():
+        try:
+            course = json.loads(course_json.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            err(f"course.json does not parse: {e}")
+
+    if not manifest.exists():
+        err("imsmanifest.xml is missing")
+    if not index.exists():
+        err("index.html is missing")
+    if not api.exists():
+        err("scorm_api.js is missing")
+
+    if course and not _is_scrolling(course):
+        modules = course.get("modules") or []
+        final_slides = modules[-1].get("slides") if modules and isinstance(modules[-1], dict) else []
+        final_slide = final_slides[-1] if final_slides and isinstance(final_slides[-1], dict) else {}
+        if final_slide.get("type") == "course_complete" and final_slide.get("term_refs"):
+            err("course.json: the final course_complete slide must not define term_refs")
+
+    if manifest.exists():
+        try:
+            tree = ET.parse(manifest)
+            if course:
+                for issue in single_sco.validate(course, tree, root):
+                    err(issue)
+                for issue in scorm_2004.validate(course, tree, root):
+                    err(issue)
+            ims_namespace = tree.getroot().tag.split("}")[0].lstrip("{")
+            ns = {"ims": ims_namespace,
+                  "adl": "http://www.adlnet.org/xsd/adlcp_rootv1p2"}
+            if course:
+                manifest_title = tree.findtext(
+                    ".//ims:organizations/ims:organization/ims:title",
+                    namespaces=ns,
+                )
+                expected_title = scorm_metadata_title(course)
+                if manifest_title != expected_title:
+                    err(
+                        "manifest organization title does not match course language metadata "
+                        f"— expected {expected_title!r}, got {manifest_title!r}"
+                    )
+            for res in tree.getroot().iter(f"{{{ims_namespace}}}resource"):
+                for f in res.findall(f"{{{ims_namespace}}}file"):
+                    href = f.get("href")
+                    if href and not (root / href).exists():
+                        err(f"manifest references missing file: {href}")
+        except ET.ParseError as e:
+            err(f"imsmanifest.xml does not parse: {e}")
+
+    errors.extend(_validate_source_caption_files(course, root))
+    for module_file in sorted(root.glob("module*.html")):
+        html = module_file.read_text(errors="replace")
+        narration_caption_fallbacks = _narration_caption_fallback_count(html)
+        for tag in re.findall(r'<track\b[^>]*>', html, re.I):
+            attrs = dict(re.findall(r'([\w-]+)="([^"]*)"', tag))
+            path = html_lib.unescape(attrs.get('src', ''))
+            if attrs.get('kind') != 'captions':
+                continue
+            if not path and narration_caption_fallbacks:
+                narration_caption_fallbacks -= 1
+            elif not path or not (root / path).is_file():
+                err(f'{module_file.name}: missing video caption file: {path}')
+            elif not parse_webvtt((root / path).read_text(encoding='utf-8-sig')):
+                err(f'{module_file.name}: caption file has no valid WebVTT cues: {path}')
+            if not attrs.get('srclang') or not attrs.get('label'):
+                err(f'{module_file.name}: caption track requires a language and label')
+        if narration_caption_fallbacks:
+            err(f'{module_file.name}: narration caption payload has no matching source-free track')
+        slide_ids = [int(m.group(1)) for m in re.finditer(r'data-slide="(\d+)"', html)]
+        if not slide_ids:
+            err(f"{module_file.name}: no data-slide markers")
+        else:
+            expected = list(range(1, max(slide_ids) + 1))
+            if sorted(slide_ids) != expected:
+                err(f"{module_file.name}: slide IDs not contiguous 1..{max(slide_ids)} — got {sorted(slide_ids)}")
+        # audioMap audit
+        m = re.search(r"const audioMap\s*=\s*\{([^}]*)\}", html, re.S)
+        if m:
+            for entry in re.finditer(r'(\d+):\s*"([^"]+)"', m.group(1)):
+                audio_rel = entry.group(2)
+                if not (root / audio_rel).exists():
+                    err(f"{module_file.name}: audioMap references missing audio: {audio_rel}")
+
+    if course and _is_scrolling(course):
+        index_html = index.read_text(errors="replace") if index.exists() else ""
+        lesson_ids = [int(match.group(1)) for match in re.finditer(r'data-lesson-id="(\d+)"', index_html)]
+        expected = list(range(1, len(course.get("lessons", [])) + 1))
+        if lesson_ids != expected:
+            err(f"index.html: Scrolling lesson IDs do not match course.json — expected {expected}, got {lesson_ids}")
+        if list(root.glob("module*.html")):
+            err("Scrolling packages must be a single SCO and must not contain moduleN.html files")
+        for resource in sorted(_resource_paths(course)):
+            if not (root / resource).exists():
+                err(f"course.json references missing resource: {resource}")
+        if re.search(r"\son[a-z]+\s*=", index_html, flags=re.I):
+            err("index.html contains an inline JavaScript event handler")
+
+        required_runtime = {
+            "cover-first entry": 'class="course-cover"',
+            "lesson table of contents": 'class="lesson-nav"',
+            "previous-lesson strip": 'class="previous-lesson-nav"',
+            "inline lesson progress": "lesson-read-progress--inline",
+            "sticky lesson progress": 'id="lesson-read-progress-sticky"',
+            "completed-lesson next bar": "data-next-lesson",
+            "next-lesson upward transition": "lesson--enter-next",
+            "previous-lesson downward transition": "lesson--enter-previous",
+            "viewport entrance animation": "IntersectionObserver",
+            "maintained inset TOC shadow": "box-shadow: inset -15px 0 25px -20px #00000050;",
+        }
+        scrolling = course.get("scrolling") or {}
+        if scrolling.get("show_cover_lesson_list", True):
+            required_runtime["cover lesson list"] = 'class="course-cover__lesson-list"'
+        if scrolling.get("show_search", True):
+            required_runtime["full-course search results"] = 'class="sidebar-search-results"'
+        for label, marker in required_runtime.items():
+            if marker not in index_html:
+                err(f"index.html: Scrolling runtime is missing {label} ({marker})")
+
+        block_types = _scrolling_block_types(course)
+        interaction_requirements = {
+            "video": (
+                "data-video-player",
+                "academy-video__big-play",
+                "data-video-progress",
+                'data-video-menu="rate"',
+                'data-video-rate="0.5"',
+                'data-video-rate="2"',
+                'data-video-action="picture-in-picture"',
+                "data-video-volume",
+                "M1419 971H821V523H1419",
+            ),
+            "accordion": ("interactive-card__toggler", "interactive-card__plus", "interactive-card__minus"),
+            "tabs": ("data-tab-panel", "tab-button"),
+            "process": ("data-process-slide", "process-controls__previous", "process-controls__next"),
+            "flashcards": ("flashcard__description-inner", "transform: scale(.9) translateZ(0);", "flashcard.is-flipped"),
+            "knowledge_check": (
+                "quiz-choice__indicator",
+                "data-quiz-choice-result",
+                "quiz-feedback__glyph",
+                "quiz-retake__icon",
+                '.quiz-question [style*="font-size"]',
+                "border-top: 1px solid #8f8f8f;",
+                ".quiz-choice.is-correct .quiz-choice__check",
+                ".quiz-choice.is-incorrect .quiz-choice__x",
+                ".quiz-choice.is-selected::after",
+                "inset: 5px 0;",
+                ".quiz-choice.is-selected.is-correct::after",
+                ".quiz-choice.is-selected.is-incorrect::after",
+            ),
+            "labeled_graphic": (
+                "data-labeled-graphic",
+                "data-labeled-marker",
+                "data-labeled-callout",
+                'data-labeled-action="previous"',
+                "labeled-graphic__plus",
+            ),
+            "attachment": (
+                "attachment-card",
+                "attachment-card__file-icon",
+                "attachment-card__size",
+                "attachment-card__download-icon",
+            ),
+        }
+        for block_type, markers in interaction_requirements.items():
+            if block_type not in block_types:
+                continue
+            for marker in markers:
+                if marker not in index_html:
+                    err(f"index.html: {block_type} rendering is missing {marker}")
+        if "matching" in _scrolling_question_types(course):
+            for marker in (
+                "quiz-match-piece--source",
+                "data-match-drag-source",
+                "data-match-drop-zone",
+                "data-match-order=",
+                "quiz-match-piece__decoration--grip",
+                "background: color-mix(in srgb, var(--accent) 50%, #fff);",
+                ".quiz-match-piece--source::before",
+                "mask-image: radial-gradient(40px 40px at 100% 50%, transparent 19px, #000 19px);",
+                "quiz-match-piece--target",
+                "quiz-match-piece__jigsaw",
+                "quiz-matching-results",
+                "quiz-matching-result__correction",
+                "pairMatchingPieces",
+                "matchingPointerDrag",
+                "matchingDropOverlap = .015",
+                "matchingPointerMoveTolerance = 8",
+                "matchingOverlapRatio",
+                "document.addEventListener('pointerdown'",
+                "document.addEventListener('pointermove'",
+                "document.addEventListener('pointerup'",
+                "document.addEventListener('pointercancel'",
+                "matchChoice.click();",
+                "syncMatchingSourceRows",
+                "restoreMatchingSourceRows",
+                "syncMatchingPieceHeights",
+                "--match-column-gap: 40px;",
+                "--match-snap-offset: 32px;",
+                ".quiz-matching__item--source:has(.quiz-match-piece.is-paired)",
+                ".quiz-matching__item--target:has(.quiz-match-piece.is-paired)",
+            ):
+                if marker not in index_html:
+                    err(f"index.html: matching rendering is missing {marker}")
+        if "numbered_divider" in _scrolling_block_variants(course):
+            for marker in (
+                "numbered-divider__number",
+                ".numbered-divider::before",
+                "margin-inline: -8.3333333%;",
+                "border-top: 1px solid var(--accent);",
+            ):
+                if marker not in index_html:
+                    err(f"index.html: numbered-divider rendering is missing {marker}")
+        if "fill_in_the_blank" in _scrolling_question_types(course):
+            for marker in ("data-quiz-accepted", ".quiz-fillin__accepted"):
+                if marker not in index_html:
+                    err(f"index.html: fill-in rendering is missing {marker}")
+        if "buttons" in block_types:
+            for marker in ("--resource-button-width", "white-space: nowrap;"):
+                if marker not in index_html:
+                    err(f"index.html: resource-button rendering is missing {marker}")
+        caption_tracks = _scrolling_caption_tracks(course)
+        if caption_tracks:
+            ui_labels = course.get("ui_labels") if isinstance(course.get("ui_labels"), dict) else {}
+            captions_off_label = str(ui_labels.get("captions_off") or "Captions off")
+            for marker in (
+                "academy-video__caption-display",
+                "academy-video__caption-data",
+                'data-video-menu="captions"',
+                captions_off_label,
+                "M1419 1493H373",
+            ):
+                if marker not in index_html:
+                    err(f"index.html: captioned video rendering is missing {marker}")
+            rendered_caption_tracks: list[dict] = []
+            for payload_text in re.findall(
+                r'<script class="academy-video__caption-data" type="application/json">(.*?)</script>',
+                index_html,
+                flags=re.S,
+            ):
+                try:
+                    payload = json.loads(payload_text)
+                    rendered_caption_tracks.extend(
+                        track for track in payload.get("tracks", []) if isinstance(track, dict)
+                    )
+                except json.JSONDecodeError as exc:
+                    err(f"index.html: embedded caption data does not parse: {exc}")
+            for track in caption_tracks:
+                path = str(track.get("path") or "")
+                label = str(track.get("label") or "")
+                language = str(track.get("language") or "")
+                if not path or not label or not language:
+                    err(f"course.json: caption track requires path, label, and language: {track}")
+                    continue
+                source = root / path
+                if source.exists():
+                    try:
+                        source_cues = parse_webvtt(source.read_text(encoding="utf-8-sig"))
+                    except (OSError, UnicodeError):
+                        source_cues = []
+                    if not source_cues:
+                        err(f"course.json: caption track is not valid cue-bearing WebVTT: {path}")
+                rendered = next((item for item in rendered_caption_tracks if item.get("path") == path), None)
+                if not rendered:
+                    err(f"index.html: caption track is not embedded for local playback: {path}")
+                elif not rendered.get("cues"):
+                    err(f"index.html: caption track has no embedded local-playback cues: {path}")
+        for lesson in course.get("lessons", []):
+            for block in lesson.get("blocks", []):
+                if not isinstance(block, dict):
+                    continue
+                if block.get("type") == "process":
+                    items = [item for item in block.get("items", []) if isinstance(item, dict) and not item.get("hidden")]
+                    roles = [str(item.get("type") or "step").casefold() for item in items]
+                    if "intro" in roles and roles[0] != "intro":
+                        err("course.json: process intro must be first in learner-facing order")
+                    if "summary" in roles and roles[-1] != "summary":
+                        err("course.json: process summary must be last in learner-facing order")
+                    if "intro" in roles and "process-step--intro" not in index_html:
+                        err("index.html: process intro card/action is missing")
+                    if "summary" in roles and "process-step--summary" not in index_html:
+                        err("index.html: process summary card/action is missing")
+                    style = block.get("style") if isinstance(block.get("style"), dict) else {}
+                    if _dark_hex_color(style.get("background_color")) and "process-carousel--controls-light" not in index_html:
+                        err("index.html: dark process block is missing light carousel controls")
+                    corner_style = str((course.get("theme") or {}).get("corner_style") or "Rounded").casefold()
+                    expected_radius = "10px" if "round" in corner_style else "0px"
+                    if "border-radius: var(--process-step-badge-radius, 10px);" not in index_html:
+                        err("index.html: process Step badge is missing the maintained theme-driven corner rule")
+                    if f"--process-step-badge-radius:{expected_radius}" not in index_html:
+                        err(f"index.html: process Step badge radius does not match theme.corner_style ({expected_radius})")
+                if block.get("type") == "labeled_graphic":
+                    style = block.get("style") if isinstance(block.get("style"), dict) else {}
+                    width_variant = str(style.get("media_width_variant") or "").casefold()
+                    if width_variant in {"medium", "full"} and f"labeled-graphic--{width_variant}" not in index_html:
+                        err(f"index.html: labeled graphic is missing its {width_variant} width variant")
+                style = block.get("style") if isinstance(block.get("style"), dict) else {}
+                variant = str(block.get("variant") or "").strip().casefold().replace("_", " ")
+                if block.get("type") == "image" and variant == "text aside":
+                    position = str(style.get("image_position") or "left").strip().casefold()
+                    if position not in {"left", "right"}:
+                        err("course.json: text-aside style.image_position must be left or right")
+                    elif f"block--image-{position}" not in index_html:
+                        err(f"index.html: text-aside image is missing its {position}-side layout class")
+                background_media = style.get("background_media") if isinstance(style.get("background_media"), dict) else {}
+                if background_media.get("path") and style.get("background_overlay_opacity") is not None:
+                    required = {
+                        "background-image block class": "block--background-image",
+                        "separate background overlay layer": "linear-gradient(",
+                    }
+                    for label, marker in required.items():
+                        if marker not in index_html:
+                            err(f"index.html: image-background rendering is missing {label} ({marker})")
+                if block.get("type") == "buttons" and str(style.get("button_alignment") or "").casefold() == "left":
+                    if "block--button-left" not in index_html:
+                        err("index.html: left-aligned button block is missing its alignment class")
+                    if 'resource-button-row--action-left"><div class="resource-button-action"' not in index_html:
+                        err("index.html: left-aligned button action does not precede its description")
+                if block.get("type") == "buttons" and style.get("button_width_px") is not None:
+                    try:
+                        width = max(170, min(600, int(round(float(style["button_width_px"])))))
+                    except (TypeError, ValueError):
+                        err("course.json: style.button_width_px must be numeric")
+                    else:
+                        if f"--resource-button-width:{width}px" not in index_html:
+                            err(f"index.html: resource button is missing configured width {width}px")
+        if _scrolling_has_quote_avatar(course) and "quote-card__avatar" not in index_html:
+            err("index.html: quote avatar is missing from the rendered quote")
+
+    # Big-file warning
+    for f in root.rglob("*"):
+        if f.is_file() and f.stat().st_size > 50 * 1024 * 1024:
+            warn(f"large file (>50MB): {f.relative_to(root)} ({f.stat().st_size // (1024*1024)} MB)")
+
+    if errors:
+        print(f"\n{len(errors)} error(s):")
+        for e in errors:
+            print(f"  - {e}")
+    if warnings:
+        print(f"\n{len(warnings)} warning(s):")
+        for w in warnings:
+            print(f"  - {w}")
+    if not errors:
+        print(f"\nOK — package at {root} validates.")
+        return 0
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())

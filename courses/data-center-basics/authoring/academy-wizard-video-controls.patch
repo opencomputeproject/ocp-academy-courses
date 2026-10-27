@@ -1,0 +1,1482 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -269,6 +269,14 @@
+ ```
+ 
+ For Slides, include direct links to each generated `moduleN.html` alongside the course-home link at the review handoff and final delivery.
++
++## Video playback standard
++
++Use the shared black Chiplet-style player for imported recordings in Slides and for Scrolling course videos. Keep Play/Pause, seek and remaining time, playback speed, captions when supplied, picture-in-picture when supported, fullscreen and volume directly exposed. Do not rely on a browser-native “...” overflow menu. Keep the control bar below the media and wrap it on narrow screens without hiding functions. Use the shared `video_player.py`, `video_player.js` and `video_player.css` sources.
++
++Generated Slides teaching videos use the standard figure player: compact Play/Pause and Enlarge controls over the media, with narration playback, seeking, speed and volume in the fixed slide controls. Do not wrap generated videos in the imported recording’s black player or add its black control bar. Retain the approved loop/single-pass mode. For narration-synchronized videos, both embedded and enlarged Play/Pause controls operate on the narration clock; seeking, speed and replay stay synchronized.
++
++Imported recordings on standalone Slides are their own audio source: set `figure.role: "original_video"`, `audio: null` and `narration_enabled: false`. Disable the slide narration Play button and clear the prior slide's audio source, including keyboard/autoplay paths. Keep the recording's own audio, editable captions, transcript and controls. Archive retired slide narration outside the runtime manifest when updating an existing course. Verify file-opening playback, paused seeks/captions, restoration of narration controls on the next narrated slide, narrow-screen wrapping and enlargement. See [the video figure schema](references/course_schema.md#video-playback-standard).
+ 
+ ## Key references
+ 
+--- a/references/course_schema.md
++++ b/references/course_schema.md
+@@ -271,7 +271,7 @@
+ 
+ Every ordinary `image` block may declare `image_role` as `content` or `decorative`; omitted values default to `content` for backward compatibility. A `text_aside` block may declare `style.image_position` as `left` or `right`, naming the image column. Honor that side without inversion. When the value is absent, use the classic Rise default of `left` and render the corresponding `block--image-left` layout class so DOM child order cannot silently put the image on the right. A content image may use `style.zoom_on_click`. A decorative image is edge-to-edge presentation artwork rather than learner content: the renderer must suppress zoom regardless of that style flag, emit empty alternative text, and remove the image from the accessibility reading order. A recovered `custom_canvas` image retains its authored intrinsic dimensions on desktop and scales down only when the lesson pane is narrower.
+ 
+-Quote blocks may include structured `avatar` media. Classic quote variant `d` renders that image as an 80px circle beside transparent quote content on the block's own background; retain its responsive width and authored typography instead of substituting a generic callout card. Scrolling videos use the maintained custom player: transparent letterboxing, a centered 98px play circle, no browser-native controls before activation, and the configured control order after activation—play/pause, seek/loaded progress, remaining time, seven-choice speed menu, caption-language menu, picture-in-picture, fullscreen, and expandable volume. Use the canonical Video.js-compatible glyph outlines rather than substitute art. Scrolling accordions use right-aligned plus/minus controls rather than native disclosure triangles; light block surfaces render adjoining bordered white cards, dark surfaces retain the configured borderless card treatment, and every expanded item shows a continuous 4px accent rule along its header and content.
++Quote blocks may include structured `avatar` media. Classic quote variant `d` renders that image as an 80px circle beside transparent quote content on the block's own background; retain its responsive width and authored typography instead of substituting a generic callout card. Scrolling videos use the maintained custom player: transparent letterboxing, a centered 98px play circle, no browser-native controls before activation, and the shared persistent control bar—play/pause, seek/loaded progress, remaining time, seven-choice speed menu, caption-language menu, picture-in-picture, fullscreen, and volume. Keep every applicable control exposed before and during playback, wrapping on phones rather than hiding functions. Use the canonical Video.js-compatible glyph outlines rather than substitute art. Scrolling accordions use right-aligned plus/minus controls rather than native disclosure triangles; light block surfaces render adjoining bordered white cards, dark surfaces retain the configured borderless card treatment, and every expanded item shows a continuous 4px accent rule along its header and content.
+ 
+ Labeled-graphic callout bodies must wrap long unbroken text and URLs within the callout, and every callout link must use the same authored link treatment regardless of inline source markup or visited state. Reset white knowledge-check cards to a dark foreground color when their containing block uses a dark background so question and answer text remain readable.
+ 
+@@ -808,9 +808,15 @@
+ [narration_synced_video.md](narration_synced_video.md).
+ 
+ `extract_figures.py` reads `extract_from`. The image-gen step reads `generate_prompt`.
+-The renderer embeds image figures as zoomable images and embeds video figures with hover/focus
+-Play/Pause and Zoom controls. `render_index.py` lists both the video and `poster` in the SCORM
+-manifest.
++The renderer embeds image figures as zoomable images, generated teaching videos with standard figure controls, and imported recordings with the shared black player described below. `render_index.py` lists both the video and `poster` in the SCORM manifest.
++
++### Video playback standard
++
++Imported Slides recordings and Scrolling videos share the black Chiplet-style player markup, icons, behavior and responsive styles in `scripts/video_player.py` and `templates/video_player.{js,css}`. Always expose Play/Pause, seek, remaining time, speed, captions when present, picture-in-picture when supported, fullscreen and volume. Keep the bar visible and place it below the media. Wrap on narrow screens; do not hide controls in native browser overflow menus or remove speed/volume on phones. Unsupported capabilities remain visibly disabled with an explanation.
++
++For an imported recording with its own audio, set `figure.role` to `original_video`, `audio` to `null` and `narration_enabled` to `false`. Put editable caption tracks in `figure.captions`; `caption_cues` may embed their timed text for reliable `file://` review. Keep `video_transcript` and set the slide's `transcript` to that recording transcript. The slide narration Play button is disabled, its source is cleared, and later narrated slides restore the controls. Existing narration can be archived under authoring, excluded from the runtime manifest.
++
++Generated Slides teaching clips retain the standard figure player with compact overlaid Play/Pause and Enlarge buttons. They do not use the black imported-recording control bar. Keep the approved loop/single-pass and narration settings. For `sync_to_narration: true`, Play/Pause in the figure and enlargement controls the narration clock; the fixed slide controls provide narration seek, speed and volume. Enlargement shares that clock. This presentation standard does not authorize changing SCORM tracking or a course's approved media mode.
+ 
+ ## Local font delivery for Slides
+ 
+--- a/scripts/render_module.py
++++ b/scripts/render_module.py
+@@ -32,6 +32,7 @@
+     render_motion_intro,
+ )
+ from render_scrolling import is_scrolling, render_scrolling_course
++from video_player import academy_video_html
+ import single_sco
+ import legacy_multi_sco
+ 
+@@ -112,6 +113,7 @@
+ def load_styles() -> str:
+     css = (TEMPLATE_DIR / "module_styles.css").read_text()
+     css += "\n\n" + load_motion_intro_css(TEMPLATE_DIR)
++    css += "\n" + (TEMPLATE_DIR / "video_player.css").read_text()
+     return css
+ 
+ 
+@@ -377,6 +379,11 @@
+     if not fig:
+         return ""
+     course = course or {}
++    if fig.get("role") == "original_video":
++        media = dict(fig)
++        media['captions'] = [dict(t, _cues=fig.get('caption_cues', [])) for t in fig.get('captions', [])]
++        player = academy_video_html(media, ui_labels=course.get('ui_labels'), video_class='original-video', video_attributes=f'aria-label="{esc(fig.get("alt", "Video"))}"')
++        return f'<div class="figure-wrap original-video-wrap"><div class="figure-panel original-video-panel">{player}</div><p class="figure-caption">{esc(fig.get("caption", ""))}</p></div>'
+     path = fig.get("path", "")
+     alt = fig.get("alt", "")
+     caption = fig.get("caption", "")
+@@ -931,7 +938,7 @@
+         slides_html.append(renderer(slide, course, module))
+         audio = slide.get("audio") or {}
+         wav = audio.get("wav_file")
+-        if wav:
++        if wav and slide.get("narration_enabled", True) and (slide.get("figure") or {}).get("role") != "original_video":
+             audio_map_entries.append(f'    {slide["id"]}: {json.dumps(wav)},')
+ 
+     audio_map = "\n".join(audio_map_entries).rstrip(",")
+@@ -961,6 +968,7 @@
+     lightbox_close_hint = ui(course, "lightbox_close_hint", "Click outside or press Esc to close")
+     transcript_map = json.dumps({str(s['id']): {'title': s.get('title') or s.get('next_module_title') or module_title, 'text': s.get('transcript','')} for s in module['slides']}, ensure_ascii=False).replace('</', '<\\/')
+     learner_runtime = (TEMPLATE_DIR / ('learner_features_hbf.js' if legacy_profile else 'learner_features.js')).read_text()
++    learner_runtime += "\n" + (TEMPLATE_DIR / "slides_video_player.js").read_text()
+     bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
+     bookmark_declaration = '' if legacy_profile else f'  const BOOKMARK_KEY = {bookmark_key};\n'
+ 
+@@ -1039,6 +1047,7 @@
+ </div>
+ 
+ {motion_intro_script()}
++<script>{(TEMPLATE_DIR / "video_player.js").read_text()}</script>
+ <script>
+ (function() {{
+   'use strict';
+@@ -1046,6 +1055,7 @@
+   const totalSlides = slides.length;
+   const reviewMode = new URLSearchParams(location.search).get('review') === '1';
+   const transcriptMap = {transcript_map};
++  const videoUiLabels = {json.dumps(course.get("ui_labels") or {}, ensure_ascii=False)};
+ {bookmark_declaration}  let currentSlide = 1;
+   const counter = document.getElementById('slideCounter');
+   const prevBtn = document.getElementById('prevBtn');
+@@ -1141,7 +1151,7 @@
+   }}
+ 
+   document.addEventListener('keydown', (e) => {{
+-    if (e.defaultPrevented || e.target.closest('input,textarea,select,button,a,[role="button"],.transcript-panel,.lightbox-overlay')) return;
++    if (e.defaultPrevented || e.target.closest('input,textarea,select,button,a,[role="button"],.transcript-panel,.lightbox-overlay,[data-video-player]')) return;
+     switch(e.key) {{
+       case 'ArrowRight': case ' ': e.preventDefault(); nextSlide(); break;
+       case 'ArrowLeft': e.preventDefault(); prevSlide(); break;
+@@ -1161,6 +1171,7 @@
+   document.addEventListener('touchstart', (e) => {{ touchStartX = e.changedTouches[0].screenX; }}, {{ passive: true }});
+   document.addEventListener('touchend', (e) => {{
+     touchEndX = e.changedTouches[0].screenX;
++    if (e.target.closest('[data-video-player],.lightbox-overlay')) return;
+     const diff = touchStartX - touchEndX;
+     if (Math.abs(diff) > 60) {{ if (diff > 0) nextSlide(); else prevSlide(); }}
+   }}, {{ passive: true }});
+@@ -1200,7 +1211,7 @@
+ 
+   function retryBlockedAutoplay(event) {{
+     if (!autoplayFallbackArmed) return;
+-    if (!autoPlayAudio || (event && event.target.closest('#narrationModeBtn,#transcriptBtn'))) return;
++    if (!autoPlayAudio || (event && event.target.closest('#narrationModeBtn,#transcriptBtn,[data-video-player]'))) return;
+     if (event && audioPlayBtn.contains(event.target)) return;
+     disarmAutoplayFallback();
+     attemptAudioPlayback();
+@@ -1255,6 +1266,17 @@
+     audioProgressFill.style.width = '0%';
+     audioTime.textContent = '0:00';
+     const src = audioMap[slideNum];
++    audioPlayBtn.disabled = !src;
++    audioPlayBtn.setAttribute('aria-disabled', String(!src));
++    audioPlayBtn.title = src ? 'Play / pause narration (P)' : 'Use the video player controls on this slide';
++    audioProgressWrap.style.pointerEvents = src ? '' : 'none';
++    audioProgressWrap.setAttribute('aria-disabled', String(!src));
++    if (audioSpeedBtn) audioSpeedBtn.disabled = !src;
++    if (!src) {{
++      audioPlayer.removeAttribute('src'); audioPlayer.load();
++      audioTime.textContent = '—';
++      return;
++    }}
+     if (src) {{
+       audioPlayer.src = src;
+       audioPlayer.load();
+@@ -1532,6 +1554,7 @@
+     var frame = document.createElement('div');
+     frame.className = 'lightbox-figure';
+     frame.innerHTML = panel.innerHTML;
++    frame.querySelectorAll('[data-player-ready]').forEach(function(p) {{ delete p.dataset.playerReady; }});
+     if (panel.hasAttribute('data-video-figure')) {{
+       frame.classList.add('figure-panel', 'figure-panel--video');
+       frame.setAttribute('data-zoomable-figure', 'true');
+@@ -1563,6 +1586,8 @@
+       }} else {{
+         lightboxVideo.play().catch(function() {{}});
+       }}
++      var clonedPlayer = frame.querySelector('[data-video-player]');
++      if (clonedPlayer) window.AcademyVideoPlayer(clonedPlayer, sourceVideo.academyPlayerOptions || {{}});
+       syncVideoToggle(lightboxPanel);
+     }}
+     document.addEventListener('keydown', escClose);
+@@ -1578,6 +1603,7 @@
+     return target.closest('.figure-panel[data-zoomable-figure="true"]');
+   }}
+   document.addEventListener('click', function(e) {{
++    if (e.target.closest && e.target.closest('[data-video-player]') && !e.target.closest('[data-video-zoom]')) return;
+     var toggle = e.target.closest && e.target.closest('[data-video-toggle]');
+     if (toggle) {{
+       e.preventDefault();
+--- a/scripts/render_scrolling.py
++++ b/scripts/render_scrolling.py
+@@ -86,58 +86,7 @@
+ # Canonical outlines for the maintained Video.js-compatible controls. Keeping
+ # the glyph geometry here avoids substitute artwork while leaving the renderer
+ # readable and dependency-free.
+-SCROLLING_VIDEO_ICONS = {
+-    "play": (1792, "M597 1419V373L1419 896Z"),
+-    "pause": (1792, "M448 373H747V1419H448ZM1045 1419V373H1344V1419Z"),
+-    "volume_muted": (
+-        1792,
+-        "M1232 896Q1232 993 1180 1075Q1130 1155 1045 1197V1032L1229 848Q1232 872 1232 896Z"
+-        "M1419 896Q1419 797 1378 699L1491 586Q1568 732 1568 896Q1568 1053 1499 1193Q1432 1328 1313 1422.5"
+-        "Q1194 1517 1045 1551V1397Q1153 1365 1238 1291.5Q1323 1218 1370 1117Q1419 1012 1419 896Z"
+-        "M319 1568 224 1473 577 1120H224V672H523L896 299V801L1214 483Q1134 422 1045 395V241Q1198 276 1320 376"
+-        "L1473 224L1568 319ZM896 1493 740 1337 896 1181Z",
+-    ),
+-    "volume_high": (
+-        1792,
+-        "M224 1120V672H523L896 299V1493L523 1120ZM1232 896Q1232 993 1180 1075Q1130 1155 1045 1197V595"
+-        "Q1130 637 1180 717Q1232 799 1232 896ZM1045 1551V1397Q1153 1365 1238 1291.5Q1323 1218 1370 1117"
+-        "Q1419 1012 1419 896Q1419 780 1370 675Q1323 574 1238 500.5Q1153 427 1045 395V241Q1194 275 1313 369.5"
+-        "Q1432 464 1499 599Q1568 739 1568 896Q1568 1053 1499 1193Q1432 1328 1313 1422.5Q1194 1517 1045 1551Z",
+-    ),
+-    "fullscreen_enter": (1792, "M523 747H373V373H747V523H523ZM373 1045H523V1269H747V1419H373ZM1269 523H1045V373H1419V747H1269ZM1045 1419V1269H1269V1045H1419V1419Z"),
+-    "fullscreen_exit": (1792, "M373 597H597V373H747V747H373ZM597 1195H373V1045H747V1419H597ZM1045 373H1195V597H1419V747H1045ZM1195 1195V1419H1045V1045H1419V1195Z"),
+-    "captions": (
+-        1792,
+-        "M1419 1493H373Q333 1493 298.5 1473Q264 1453 244 1419Q224 1385 224 1344V448Q224 407 244 373"
+-        "Q264 339 298.5 319Q333 299 373 299H1419Q1459 299 1493.5 319Q1528 339 1548 373Q1568 407 1568 448V1344"
+-        "Q1568 1385 1548 1419Q1528 1453 1493.5 1473Q1459 1493 1419 1493ZM821 971H709V1008H560V784H709V821H821V747"
+-        "Q821 716 799.5 694Q778 672 747 672H523Q492 672 470 694Q448 716 448 747V1045Q448 1076 470 1098Q492 1120 523 1120H747"
+-        "Q778 1120 799.5 1098Q821 1076 821 1045ZM1344 971H1232V1008H1083V784H1232V821H1344V747Q1344 716 1322 694"
+-        "Q1300 672 1269 672H1045Q1014 672 992.5 694Q971 716 971 747V1045Q971 1076 992.5 1098Q1014 1120 1045 1120H1269"
+-        "Q1300 1120 1322 1098Q1344 1076 1344 1045Z",
+-    ),
+-    "picture_in_picture_enter": (
+-        1792,
+-        "M1419 971H821V523H1419ZM1717 373V1420Q1717 1461 1697 1494.5Q1677 1528 1642.5 1548Q1608 1568 1568 1568H224"
+-        "Q184 1568 149.5 1548Q115 1528 95 1494.5Q75 1461 75 1420V373Q75 333 95 298.5Q115 264 149.5 244Q184 224 224 224H1568"
+-        "Q1608 224 1642.5 244Q1677 264 1697 298.5Q1717 333 1717 373ZM1568 372H224V1421H1568Z",
+-    ),
+-    "picture_in_picture_exit": (
+-        2190,
+-        "M1792 1394H398V398H1792ZM2190 199V1595Q2190 1649 2163.5 1694Q2137 1739 2091 1765.5Q2045 1792 1991 1792H199"
+-        "Q145 1792 99.5 1765.5Q54 1739 27 1694Q0 1649 0 1595V199Q0 145 27 99.5Q54 54 99.5 27Q145 0 199 0H1991"
+-        "Q2045 0 2090.5 27Q2136 54 2163 99.5Q2190 145 2190 199ZM1991 197H199V1596H1991Z",
+-    ),
+-}
+-
+-
+-def scrolling_video_icon(name: str, class_name: str = "") -> str:
+-    width, path = SCROLLING_VIDEO_ICONS[name]
+-    class_attr = f' class="{esc(class_name)}"' if class_name else ""
+-    return (
+-        f'<svg{class_attr} aria-hidden="true" viewBox="0 0 {width} 1792" focusable="false">'
+-        f'<g transform="translate(0 1792) scale(1 -1)"><path d="{path}" fill="currentColor"/></g></svg>'
+-    )
++from video_player import SCROLLING_VIDEO_ICONS, scrolling_video_icon
+ 
+ 
+ def _vtt_seconds(value: str) -> float | None:
+@@ -381,109 +330,12 @@
+     return f'<figure class="media-card {esc(extra_class)}{crop_class}"{crop_style}>{image}{caption}</figure>'
+ 
+ 
+-def video_figure(
+-    media: dict | None,
+-    caption_html: str = "",
+-    animate: bool = True,
+-    ui_labels: dict | None = None,
+-) -> str:
+-    if not media or not media.get("path"):
+-        return ""
+-    poster = f' poster="{esc(media.get("poster"))}"' if media.get("poster") else ""
+-    caption_tracks = [track for track in media.get("captions", []) if isinstance(track, dict) and track.get("path")]
+-    tracks = "".join(
+-        f'<track kind="captions" src="{esc(track["path"])}" srclang="{esc(track.get("language") or "en")}" '
+-        f'label="{esc(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions"))}">'
+-        for track in caption_tracks
+-    )
+-    caption_payload = {
+-        "tracks": [
+-            {
+-                "path": str(track["path"]),
+-                "language": str(track.get("language") or "en"),
+-                "label": str(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions")),
+-                "cues": track.get("_cues") or [],
+-            }
+-            for track in caption_tracks
+-        ]
+-    }
+-    caption_json = json.dumps(caption_payload, ensure_ascii=False, indent=2).replace("</", "<\\/")
++def video_figure(media, caption_html="", animate=True, ui_labels=None):
++    from video_player import academy_video_html
++    if not media or not media.get("path"): return ""
++    motion = " scroll-animate scroll-animate--fade" if animate else ""
+     caption = f"<figcaption>{caption_html}</figcaption>" if caption_html else '<figcaption class="is-empty"></figcaption>'
+-    motion = " scroll-animate scroll-animate--fade" if animate else ""
+-    duration = media.get("duration_seconds")
+-    if isinstance(duration, (int, float)) and duration >= 0:
+-        initial_remaining = f'-{int(duration) // 60}:{int(duration) % 60:02d}'
+-    else:
+-        initial_remaining = "-0:00"
+-    speed_items = "".join(
+-        f'<button class="academy-video__menu-item{" is-selected" if rate == 1 else ""}" type="button" role="menuitemradio" '
+-        f'data-video-rate="{rate:g}" aria-checked="{"true" if rate == 1 else "false"}">{rate:g}x</button>'
+-        for rate in (2, 1.75, 1.5, 1.25, 1, 0.75, 0.5)
+-    )
+-    captions_control = ""
+-    caption_data = ""
+-    if caption_tracks:
+-        caption_items = (
+-            '<button class="academy-video__menu-item is-selected" type="button" role="menuitemradio" '
+-            f'data-video-caption-index="-1" aria-checked="true">{esc(ui(ui_labels, "captions_off", "Captions off"))}</button>'
+-            + "".join(
+-                f'<button class="academy-video__menu-item" type="button" role="menuitemradio" '
+-                f'data-video-caption-index="{index}" aria-checked="false">'
+-                f'{esc(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions"))}</button>'
+-                for index, track in enumerate(caption_tracks)
+-            )
+-        )
+-        captions_label = esc(ui(ui_labels, "captions", "Captions"))
+-        captions_control = (
+-            '<div class="academy-video__menu-control academy-video__captions-control">'
+-            '<button class="academy-video__button academy-video__captions" type="button" data-video-menu-button="captions" '
+-            f'title="{captions_label}" aria-label="{captions_label}" aria-haspopup="true" aria-expanded="false">'
+-            f'{scrolling_video_icon("captions")}</button>'
+-            '<div class="academy-video__menu" data-video-menu="captions" hidden>'
+-            f'<div class="academy-video__menu-content" role="menu">{caption_items}</div></div></div>'
+-        )
+-        caption_data = (
+-            '<div class="academy-video__caption-display" data-video-caption-display aria-live="off" aria-atomic="true" hidden>'
+-            '<span data-video-caption-text></span></div>'
+-            f'<script class="academy-video__caption-data" type="application/json">{caption_json}</script>'
+-        )
+-    return (
+-        f'<figure class="media-card video-wrap{motion}">'
+-        '<div class="academy-video" data-video-player>'
+-        f'<video preload="auto" playsinline src="{esc(media["path"])}"{poster}><source src="{esc(media["path"])}">{tracks}</video>'
+-        f'{caption_data}'
+-        f'<button class="academy-video__big-play" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play_video", "Play video"))}">'
+-        f'{scrolling_video_icon("play")}'
+-        '</button>'
+-        '<div class="academy-video__controls">'
+-        f'<button class="academy-video__button academy-video__toggle" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play", "Play"))}">'
+-        f'{scrolling_video_icon("play", "academy-video__play-icon")}{scrolling_video_icon("pause", "academy-video__pause-icon")}'
+-        '</button>'
+-        '<div class="academy-video__progress-control">'
+-        '<div class="academy-video__progress-track"><span class="academy-video__progress-loaded" data-video-loaded></span>'
+-        '<span class="academy-video__progress-played" data-video-played><i aria-hidden="true"></i></span></div>'
+-        f'<input class="academy-video__progress" type="range" min="0" max="100" step="0.1" value="0" data-video-progress aria-label="{esc(ui(ui_labels, "seek", "Seek"))}">'
+-        '</div>'
+-        f'<span class="academy-video__remaining" data-video-remaining>{initial_remaining}</span>'
+-        '<div class="academy-video__menu-control academy-video__rate-control">'
+-        '<span class="academy-video__rate-value" data-video-rate-value aria-hidden="true">1x</span>'
+-        f'<button class="academy-video__button academy-video__rate" type="button" data-video-menu-button="rate" '
+-        f'title="{esc(ui(ui_labels, "playback_rate", "Playback Rate"))}" aria-label="{esc(ui(ui_labels, "playback_rate", "Playback Rate"))}" aria-haspopup="true" aria-expanded="false"></button>'
+-        f'<div class="academy-video__menu" data-video-menu="rate" hidden><div class="academy-video__menu-content" role="menu">{speed_items}</div></div></div>'
+-        f'{captions_control}'
+-        f'<button class="academy-video__button academy-video__picture-in-picture" type="button" data-video-action="picture-in-picture" title="{esc(ui(ui_labels, "picture_in_picture", "Picture-in-picture"))}" aria-label="{esc(ui(ui_labels, "picture_in_picture", "Picture-in-picture"))}">'
+-        f'{scrolling_video_icon("picture_in_picture_enter", "academy-video__pip-enter")}{scrolling_video_icon("picture_in_picture_exit", "academy-video__pip-exit")}</button>'
+-        f'<button class="academy-video__button academy-video__fullscreen" type="button" data-video-action="fullscreen" aria-label="{esc(ui(ui_labels, "fullscreen", "Fullscreen"))}">'
+-        f'{scrolling_video_icon("fullscreen_enter", "academy-video__fullscreen-enter")}{scrolling_video_icon("fullscreen_exit", "academy-video__fullscreen-exit")}'
+-        '</button>'
+-        '<div class="academy-video__volume-panel">'
+-        f'<button class="academy-video__button academy-video__mute" type="button" data-video-action="mute" aria-label="{esc(ui(ui_labels, "mute", "Mute"))}">'
+-        f'{scrolling_video_icon("volume_high", "academy-video__volume-high")}{scrolling_video_icon("volume_muted", "academy-video__volume-muted")}</button>'
+-        f'<div class="academy-video__volume-control"><input class="academy-video__volume" type="range" min="0" max="1" step="0.05" value="1" data-video-volume aria-label="{esc(ui(ui_labels, "volume", "Volume"))}"></div>'
+-        '</div>'
+-        '</div></div>'
+-        f'{caption}</figure>'
+-    )
++    return f'<figure class="media-card video-wrap{motion}">{academy_video_html(media, ui_labels=ui_labels)}{caption}</figure>'
+ 
+ 
+ def interactive_content(item: dict, ui_labels: dict | None = None) -> str:
+@@ -1435,7 +1287,7 @@
+ def render_scrolling_course(course: dict, resource_root: Path | None = None) -> str:
+     ensure_scrolling_runtime_assets(resource_root)
+     course = hydrate_caption_cues(course, resource_root)
+-    css = (TEMPLATE_DIR / "scrolling_styles.css").read_text(encoding="utf-8")
++    css = (TEMPLATE_DIR / "scrolling_styles.css").read_text(encoding="utf-8") + "\n" + (TEMPLATE_DIR / "video_player.css").read_text()
+     brand = course.get("brand") or {}
+     theme = course.get("theme") or {}
+     scrolling = course.get("scrolling") or {}
+@@ -2251,242 +2103,8 @@
+     });
+   }
+ 
+-  function formatVideoTime(seconds) {
+-    if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
+-    var minutes = Math.floor(seconds / 60);
+-    var remainder = Math.floor(seconds % 60);
+-    return minutes + ':' + String(remainder).padStart(2, '0');
+-  }
+-
+   function initVideoPlayer(player) {
+-    var video = player.querySelector('video');
+-    var progress = player.querySelector('[data-video-progress]');
+-    var progressLoaded = player.querySelector('[data-video-loaded]');
+-    var progressPlayed = player.querySelector('[data-video-played]');
+-    var remaining = player.querySelector('[data-video-remaining]');
+-    var rateValue = player.querySelector('[data-video-rate-value]');
+-    var volume = player.querySelector('[data-video-volume]');
+-    var mute = player.querySelector('[data-video-action="mute"]');
+-    var fullscreen = player.querySelector('[data-video-action="fullscreen"]');
+-    var pictureInPicture = player.querySelector('[data-video-action="picture-in-picture"]');
+-    var captionDisplay = player.querySelector('[data-video-caption-display]');
+-    var captionText = player.querySelector('[data-video-caption-text]');
+-    var captionDataNode = player.querySelector('.academy-video__caption-data');
+-    var captionTracks = [];
+-    var activeCaptionIndex = -1;
+-    var inactivityTimer = 0;
+-    if (!video) return;
+-    if (captionDataNode) {
+-      try { captionTracks = (JSON.parse(captionDataNode.textContent || '{}').tracks || []); }
+-      catch (e) { captionTracks = []; }
+-    }
+-
+-    function closeMenus(except) {
+-      player.querySelectorAll('[data-video-menu]').forEach(function(menu) {
+-        if (menu === except) return;
+-        menu.hidden = true;
+-        var control = menu.closest('.academy-video__menu-control');
+-        if (control) control.classList.remove('is-open');
+-        var button = control && control.querySelector('[data-video-menu-button]');
+-        if (button) button.setAttribute('aria-expanded', 'false');
+-      });
+-    }
+-
+-    function toggleMenu(name) {
+-      var menu = player.querySelector('[data-video-menu="' + name + '"]');
+-      var button = player.querySelector('[data-video-menu-button="' + name + '"]');
+-      if (!menu || !button) return;
+-      var open = menu.hidden;
+-      closeMenus(open ? menu : null);
+-      menu.hidden = !open;
+-      var control = menu.closest('.academy-video__menu-control');
+-      if (control) control.classList.toggle('is-open', open);
+-      button.setAttribute('aria-expanded', open ? 'true' : 'false');
+-      if (open) {
+-        var selected = menu.querySelector('[aria-checked="true"]');
+-        if (selected) selected.focus();
+-      }
+-    }
+-
+-    function showControls() {
+-      player.classList.remove('is-user-inactive');
+-      window.clearTimeout(inactivityTimer);
+-      if (!video.paused) {
+-        inactivityTimer = window.setTimeout(function() {
+-          if (!player.matches(':focus-within') && !player.querySelector('.academy-video__menu-control.is-open')) {
+-            player.classList.add('is-user-inactive');
+-          }
+-        }, 2000);
+-      }
+-    }
+-
+-    function disableNativeCaptions() {
+-      Array.from(video.textTracks || []).forEach(function(track) { track.mode = 'disabled'; });
+-    }
+-
+-    function updateCaption() {
+-      if (!captionDisplay || !captionText || activeCaptionIndex < 0 || !captionTracks[activeCaptionIndex]) {
+-        if (captionDisplay) captionDisplay.hidden = true;
+-        if (captionText) captionText.textContent = '';
+-        return;
+-      }
+-      var track = captionTracks[activeCaptionIndex];
+-      var current = Number.isFinite(video.currentTime) ? video.currentTime : 0;
+-      var cue = (track.cues || []).find(function(item) { return current >= Number(item.start) && current < Number(item.end); });
+-      if (!cue && video.textTracks && video.textTracks[activeCaptionIndex]) {
+-        var activeCues = Array.from(video.textTracks[activeCaptionIndex].activeCues || []);
+-        if (activeCues.length) cue = { text: activeCues.map(function(item) { return item.text; }).join('\n') };
+-      }
+-      captionText.textContent = cue ? String(cue.text || '') : '';
+-      captionDisplay.hidden = !cue || !captionText.textContent;
+-    }
+-
+-    function selectCaption(index, persist) {
+-      activeCaptionIndex = index >= 0 && index < captionTracks.length ? index : -1;
+-      player.querySelectorAll('[data-video-caption-index]').forEach(function(item) {
+-        var selected = Number(item.dataset.videoCaptionIndex) === activeCaptionIndex;
+-        item.classList.toggle('is-selected', selected);
+-        item.setAttribute('aria-checked', selected ? 'true' : 'false');
+-      });
+-      disableNativeCaptions();
+-      updateCaption();
+-      if (persist) {
+-        state.videoPreferences.captionLanguage = activeCaptionIndex >= 0 ? String(captionTracks[activeCaptionIndex].language || '') : 'off';
+-        saveState();
+-      }
+-    }
+-
+-    function setPlaybackRate(value, persist) {
+-      var allowed = [2, 1.75, 1.5, 1.25, 1, 0.75, 0.5];
+-      var rate = Number(value);
+-      if (allowed.indexOf(rate) === -1) rate = 1;
+-      video.playbackRate = rate;
+-      if (rateValue) rateValue.textContent = rate + 'x';
+-      player.querySelectorAll('[data-video-rate]').forEach(function(item) {
+-        var selected = Number(item.dataset.videoRate) === rate;
+-        item.classList.toggle('is-selected', selected);
+-        item.setAttribute('aria-checked', selected ? 'true' : 'false');
+-      });
+-      if (persist) {
+-        state.videoPreferences.playbackRate = rate;
+-        saveState();
+-      }
+-    }
+-
+-    function syncState() {
+-      var duration = Number.isFinite(video.duration) ? video.duration : 0;
+-      var current = Number.isFinite(video.currentTime) ? video.currentTime : 0;
+-      player.classList.toggle('is-playing', !video.paused);
+-      if (current > 0) player.classList.add('is-started');
+-      player.querySelectorAll('[data-video-action="toggle"]').forEach(function(button) {
+-        button.setAttribute('aria-label', video.paused ? uiText('play_video', 'Play video') : uiText('pause_video', 'Pause video'));
+-      });
+-      if (progress) progress.value = duration ? String(current / duration * 100) : '0';
+-      if (progressPlayed) progressPlayed.style.width = (duration ? current / duration * 100 : 0) + '%';
+-      if (progressLoaded) {
+-        var buffered = video.buffered && video.buffered.length ? video.buffered.end(video.buffered.length - 1) : 0;
+-        progressLoaded.style.width = (duration ? Math.min(100, buffered / duration * 100) : 0) + '%';
+-      }
+-      if (remaining) remaining.textContent = '-' + formatVideoTime(Math.max(0, duration - current));
+-      if (mute) mute.classList.toggle('is-muted', video.muted || video.volume === 0);
+-      if (volume && document.activeElement !== volume) volume.value = video.muted ? '0' : String(video.volume);
+-      updateCaption();
+-    }
+-
+-    function togglePlayback() {
+-      player.classList.add('is-started');
+-      if (video.paused) {
+-        var promise = video.play();
+-        if (promise && promise.catch) promise.catch(function() {});
+-      } else {
+-        video.pause();
+-      }
+-    }
+-
+-    player.querySelectorAll('[data-video-action="toggle"]').forEach(function(button) {
+-      button.addEventListener('click', togglePlayback);
+-    });
+-    video.addEventListener('click', togglePlayback);
+-    video.addEventListener('loadedmetadata', function() { disableNativeCaptions(); syncState(); });
+-    video.addEventListener('durationchange', syncState);
+-    video.addEventListener('timeupdate', syncState);
+-    video.addEventListener('progress', syncState);
+-    video.addEventListener('play', function() { syncState(); showControls(); });
+-    video.addEventListener('pause', function() { player.classList.remove('is-user-inactive'); syncState(); });
+-    video.addEventListener('ended', syncState);
+-    if (progress) progress.addEventListener('input', function() {
+-      if (Number.isFinite(video.duration)) video.currentTime = Number(progress.value) / 100 * video.duration;
+-      syncState();
+-    });
+-    player.querySelectorAll('[data-video-menu-button]').forEach(function(button) {
+-      button.addEventListener('click', function(event) {
+-        event.stopPropagation();
+-        toggleMenu(button.dataset.videoMenuButton);
+-        showControls();
+-      });
+-    });
+-    player.querySelectorAll('[data-video-rate]').forEach(function(item) {
+-      item.addEventListener('click', function(event) {
+-        event.stopPropagation();
+-        setPlaybackRate(item.dataset.videoRate, true);
+-        closeMenus();
+-        showControls();
+-      });
+-    });
+-    player.querySelectorAll('[data-video-caption-index]').forEach(function(item) {
+-      item.addEventListener('click', function(event) {
+-        event.stopPropagation();
+-        selectCaption(Number(item.dataset.videoCaptionIndex), true);
+-        closeMenus();
+-        showControls();
+-      });
+-    });
+-    if (mute) mute.addEventListener('click', function() {
+-      video.muted = !video.muted;
+-      mute.setAttribute('aria-label', video.muted ? uiText('unmute', 'Unmute') : uiText('mute', 'Mute'));
+-      syncState();
+-      showControls();
+-    });
+-    if (volume) volume.addEventListener('input', function() {
+-      video.volume = Number(volume.value);
+-      video.muted = video.volume === 0;
+-      syncState();
+-      showControls();
+-    });
+-    if (fullscreen) fullscreen.addEventListener('click', function() {
+-      if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
+-      else if (player.requestFullscreen) player.requestFullscreen();
+-    });
+-    document.addEventListener('fullscreenchange', function() {
+-      var active = document.fullscreenElement === player;
+-      player.classList.toggle('is-fullscreen', active);
+-      if (fullscreen) fullscreen.setAttribute('aria-label', active ? uiText('exit_fullscreen', 'Exit fullscreen') : uiText('fullscreen', 'Fullscreen'));
+-    });
+-    if (pictureInPicture) pictureInPicture.addEventListener('click', function() {
+-      if (document.pictureInPictureElement && document.exitPictureInPicture) {
+-        document.exitPictureInPicture().catch(function() {});
+-      } else if (video.requestPictureInPicture) {
+-        video.requestPictureInPicture().catch(function() {});
+-      }
+-    });
+-    video.addEventListener('enterpictureinpicture', function() { player.classList.add('is-picture-in-picture'); });
+-    video.addEventListener('leavepictureinpicture', function() { player.classList.remove('is-picture-in-picture'); });
+-    player.addEventListener('mousemove', showControls);
+-    player.addEventListener('touchstart', showControls, { passive: true });
+-    player.addEventListener('keydown', function(event) {
+-      showControls();
+-      if (event.key === 'Escape') closeMenus();
+-    });
+-    document.addEventListener('click', function(event) {
+-      if (!player.contains(event.target)) closeMenus();
+-    });
+-    var savedRate = Number(state.videoPreferences.playbackRate || 1);
+-    setPlaybackRate(savedRate, false);
+-    var savedLanguage = String(state.videoPreferences.captionLanguage || 'off');
+-    var savedCaptionIndex = captionTracks.findIndex(function(track) { return String(track.language || '') === savedLanguage; });
+-    selectCaption(savedLanguage === 'off' ? -1 : savedCaptionIndex, false);
+-    disableNativeCaptions();
+-    syncState();
++    window.AcademyVideoPlayer(player, {labels:uiText, preferences:state.videoPreferences, savePreferences:saveState});
+   }
+ 
+   function toggleFlashcard(card) {
+@@ -2945,6 +2563,7 @@
+   </main>
+   <div class="lesson-read-progress-sticky" id="lesson-read-progress-sticky" aria-hidden="true"><div class="lesson-read-progress"><div class="lesson-read-progress__progress"><div class="lesson-read-progress__track"><div class="lesson-read-progress__indicator"></div></div></div></div></div>
+   <dialog class="image-zoom-dialog" id="image-zoom-dialog"><button type="button" data-close-zoom aria-label="{esc(ui(ui_labels, "close_image", "Close image"))}">×</button><img alt=""></dialog>
++  <script>{(TEMPLATE_DIR / "video_player.js").read_text()}</script>
+   <script>{script}</script>
+ </body>
+ </html>'''
+--- a/scripts/test_video_modes_browser.mjs
++++ b/scripts/test_video_modes_browser.mjs
+@@ -10,7 +10,7 @@
+ const root=path.resolve(folder), course=JSON.parse(fs.readFileSync(path.join(root,'course.json')));
+ const synced=mode==='synced'; let target;
+ for(const module of course.modules) for(const slide of module.slides) {
+- if(!target&&slide.figure?.path.endsWith('.mp4')&&(slide.figure.sync_to_narration===true)===synced) target={module,slide};
++ if(!target&&slide.figure?.path.endsWith('.mp4')&&slide.figure.role!=='original_video'&&(slide.figure.sync_to_narration===true)===synced) target={module,slide};
+ }
+ assert.ok(target,'Matching video');
+ const {module,slide}=target;
+@@ -27,10 +27,10 @@
+  const close=(a,b,t=.3)=>Math.abs(a-b)<t;
+  let s=await state();check(s.audio.paused,'Review narration is paused');check(synced?s.video.paused:!s.video.paused,'Correct video entry behavior');check(s.loop===!synced,'Correct loop policy');
+  await page.locator('#audioPlayBtn').click();await page.waitForTimeout(350);s=await state();check(!s.audio.paused&&!s.video.paused,'Narration starts video');
+- await page.evaluate(()=>{testNarration.playbackRate=1.5;testNarration.currentTime=31});await page.waitForTimeout(300);s=await state();check(s.video.rate===1.5,'Video follows narration speed');check(close(s.video.time,synced?s.audio.time:s.audio.time%s.video.duration),'Seek uses finite or modulo time');
+- await page.locator('.slide.active [data-video-zoom]').click({force:true});await page.waitForTimeout(250);s=await state();check(s.clones.length===1,'Enlarged video exists');check(s.clones[0].rate===(synced?1.5:1),'Enlarged speed preserves the mode policy');
+- await page.evaluate(synced=>{const v=document.querySelector('.slide.active video'),clone=document.querySelector('.lightbox-overlay video');if(!synced)clone.pause();testNarration.currentTime=synced?45:(clone.currentTime+v.duration/2)%v.duration},synced);await page.waitForTimeout(250);s=await state();check(synced?close(s.audio.time,s.clones[0].time):!close(s.audio.time%s.video.duration,s.clones[0].time),'Enlarged seek follows only the opted-in video');
+- if(synced){await page.locator('.lightbox-overlay [data-video-toggle]').click({force:true});await page.waitForTimeout(100);s=await state();check(s.audio.paused&&s.video.paused&&s.clones[0].paused,'Enlarged pause controls both');}
++ await page.evaluate(()=>{testNarration.playbackRate=1.5;testNarration.currentTime=Math.min(31,testNarration.duration*.6)});await page.waitForTimeout(300);s=await state();check(s.video.rate===1.5,'Video follows narration speed');check(close(s.video.time,synced?s.audio.time:s.audio.time%s.video.duration),'Seek uses finite or modulo time');
++ await page.locator('.slide.active [data-video-zoom]').click();await page.waitForTimeout(250);s=await state();check(s.clones.length===1,'Enlarged video exists');check(s.clones[0].rate===(synced?1.5:1),'Enlarged speed preserves the mode policy');
++ await page.evaluate(synced=>{const v=document.querySelector('.slide.active video'),clone=document.querySelector('.lightbox-overlay video');if(!synced)clone.pause();testNarration.currentTime=synced?Math.min(45,testNarration.duration*.8):(clone.currentTime+v.duration/2)%v.duration},synced);await page.waitForTimeout(250);s=await state();check(synced?close(s.audio.time,s.clones[0].time):!close(s.audio.time%s.video.duration,s.clones[0].time),'Enlarged seek follows only the opted-in video');
++ if(synced){await page.locator('.lightbox-overlay .academy-video__controls [data-video-action="toggle"], .lightbox-overlay [data-video-toggle]:visible').click();await page.waitForTimeout(100);s=await state();check(s.audio.paused&&s.video.paused&&s.clones[0].paused,'Enlarged pause controls both');}
+  await page.keyboard.press('Escape');
+  // With narration enabled, the historical pause listener controls the legacy video.
+  if(!synced){await page.locator('#narrationModeBtn').click();await page.waitForTimeout(150);}
+@@ -38,8 +38,8 @@
+  await page.evaluate(()=>{testNarration.currentTime=20;testNarration.dispatchEvent(new Event('waiting'))});await page.waitForTimeout(120);s=await state();check(s.video.paused,'Paused seek remains paused');
+  await page.evaluate(()=>{testNarration.currentTime=testNarration.duration-.35;return testNarration.play()});await page.waitForTimeout(700);s=await state();check(s.audio.paused,'Audio completes');check(synced?s.video.paused:!s.video.paused,'Old loop continues at audio end; synced video holds');
+  if(synced){
+-  check(s.video.time>s.video.duration-.2,'Synced final state');await page.locator('.slide.active [data-video-toggle]').click({force:true});await page.waitForTimeout(250);s=await state();check(s.audio.time<2&&!s.audio.paused&&!s.video.paused,'Replay resets both');
+-  await page.emulateMedia({reducedMotion:'reduce'});await page.goto(url);await page.evaluate(()=>document.querySelector('#ocpMotionIntroSkip')?.click());await page.waitForFunction(()=>document.querySelector('.slide.active video')?.readyState>=1);await page.waitForTimeout(150);s=await state();check(s.video.paused&&s.video.time>s.video.duration-.2,'Reduced motion holds conclusion');await page.locator('.slide.active [data-video-toggle]').click({force:true});await page.waitForTimeout(250);s=await state();check(!s.audio.paused&&!s.video.paused&&close(s.audio.time,s.video.time),'Explicit reduced-motion playback');
++  check(s.video.time>s.video.duration-.2,'Synced final state');await page.locator('.slide.active .academy-video__controls [data-video-action="toggle"], .slide.active [data-video-toggle]:visible').click();await page.waitForTimeout(250);s=await state();check(s.audio.time<2&&!s.audio.paused&&!s.video.paused,'Replay resets both');
++  await page.emulateMedia({reducedMotion:'reduce'});await page.goto(url);await page.evaluate(()=>document.querySelector('#ocpMotionIntroSkip')?.click());await page.waitForFunction(()=>document.querySelector('.slide.active video')?.readyState>=1);await page.waitForTimeout(150);s=await state();check(s.video.paused&&s.video.time>s.video.duration-.2,'Reduced motion holds conclusion');await page.locator('.slide.active .academy-video__controls [data-video-action="toggle"], .slide.active [data-video-toggle]:visible').click();await page.waitForTimeout(250);s=await state();check(!s.audio.paused&&!s.video.paused&&close(s.audio.time,s.video.time),'Explicit reduced-motion playback');
+  }
+  // Audio-only slide still plays, pauses and seeks normally.
+  await page.goto(pathToFileURL(path.join(root,`module${module.id}.html`)).href+'?review=1&slide=1');await page.evaluate(()=>document.querySelector('#ocpMotionIntroSkip')?.click());await page.waitForFunction(()=>testNarration.readyState>=1);await page.locator('#audioPlayBtn').click();await page.waitForTimeout(180);check(await page.evaluate(()=>!testNarration.paused&&testNarration.currentTime>0),'Audio-only playback');await page.locator('#audioPlayBtn').click();check(await page.evaluate(()=>testNarration.paused),'Audio-only pause');await page.evaluate(()=>testNarration.currentTime=2);await page.waitForTimeout(100);check(await page.evaluate(()=>Math.abs(testNarration.currentTime-2)<.1),'Audio-only seek');
+--- a/scripts/video_player.py
++++ b/scripts/video_player.py
+@@ -0,0 +1,164 @@
++"""Shared Chiplet-style video markup for Slides and Scrolling."""
++from __future__ import annotations
++import json
++from html import escape
++def esc(value): return escape(str(value or ''), quote=True)
++def ui(labels, key, default): return str((labels or {}).get(key, default))
++SCROLLING_VIDEO_ICONS = {
++    "play": (1792, "M597 1419V373L1419 896Z"),
++    "pause": (1792, "M448 373H747V1419H448ZM1045 1419V373H1344V1419Z"),
++    "volume_muted": (
++        1792,
++        "M1232 896Q1232 993 1180 1075Q1130 1155 1045 1197V1032L1229 848Q1232 872 1232 896Z"
++        "M1419 896Q1419 797 1378 699L1491 586Q1568 732 1568 896Q1568 1053 1499 1193Q1432 1328 1313 1422.5"
++        "Q1194 1517 1045 1551V1397Q1153 1365 1238 1291.5Q1323 1218 1370 1117Q1419 1012 1419 896Z"
++        "M319 1568 224 1473 577 1120H224V672H523L896 299V801L1214 483Q1134 422 1045 395V241Q1198 276 1320 376"
++        "L1473 224L1568 319ZM896 1493 740 1337 896 1181Z",
++    ),
++    "volume_high": (
++        1792,
++        "M224 1120V672H523L896 299V1493L523 1120ZM1232 896Q1232 993 1180 1075Q1130 1155 1045 1197V595"
++        "Q1130 637 1180 717Q1232 799 1232 896ZM1045 1551V1397Q1153 1365 1238 1291.5Q1323 1218 1370 1117"
++        "Q1419 1012 1419 896Q1419 780 1370 675Q1323 574 1238 500.5Q1153 427 1045 395V241Q1194 275 1313 369.5"
++        "Q1432 464 1499 599Q1568 739 1568 896Q1568 1053 1499 1193Q1432 1328 1313 1422.5Q1194 1517 1045 1551Z",
++    ),
++    "fullscreen_enter": (1792, "M523 747H373V373H747V523H523ZM373 1045H523V1269H747V1419H373ZM1269 523H1045V373H1419V747H1269ZM1045 1419V1269H1269V1045H1419V1419Z"),
++    "fullscreen_exit": (1792, "M373 597H597V373H747V747H373ZM597 1195H373V1045H747V1419H597ZM1045 373H1195V597H1419V747H1045ZM1195 1195V1419H1045V1045H1419V1195Z"),
++    "captions": (
++        1792,
++        "M1419 1493H373Q333 1493 298.5 1473Q264 1453 244 1419Q224 1385 224 1344V448Q224 407 244 373"
++        "Q264 339 298.5 319Q333 299 373 299H1419Q1459 299 1493.5 319Q1528 339 1548 373Q1568 407 1568 448V1344"
++        "Q1568 1385 1548 1419Q1528 1453 1493.5 1473Q1459 1493 1419 1493ZM821 971H709V1008H560V784H709V821H821V747"
++        "Q821 716 799.5 694Q778 672 747 672H523Q492 672 470 694Q448 716 448 747V1045Q448 1076 470 1098Q492 1120 523 1120H747"
++        "Q778 1120 799.5 1098Q821 1076 821 1045ZM1344 971H1232V1008H1083V784H1232V821H1344V747Q1344 716 1322 694"
++        "Q1300 672 1269 672H1045Q1014 672 992.5 694Q971 716 971 747V1045Q971 1076 992.5 1098Q1014 1120 1045 1120H1269"
++        "Q1300 1120 1322 1098Q1344 1076 1344 1045Z",
++    ),
++    "picture_in_picture_enter": (
++        1792,
++        "M1419 971H821V523H1419ZM1717 373V1420Q1717 1461 1697 1494.5Q1677 1528 1642.5 1548Q1608 1568 1568 1568H224"
++        "Q184 1568 149.5 1548Q115 1528 95 1494.5Q75 1461 75 1420V373Q75 333 95 298.5Q115 264 149.5 244Q184 224 224 224H1568"
++        "Q1608 224 1642.5 244Q1677 264 1697 298.5Q1717 333 1717 373ZM1568 372H224V1421H1568Z",
++    ),
++    "picture_in_picture_exit": (
++        2190,
++        "M1792 1394H398V398H1792ZM2190 199V1595Q2190 1649 2163.5 1694Q2137 1739 2091 1765.5Q2045 1792 1991 1792H199"
++        "Q145 1792 99.5 1765.5Q54 1739 27 1694Q0 1649 0 1595V199Q0 145 27 99.5Q54 54 99.5 27Q145 0 199 0H1991"
++        "Q2045 0 2090.5 27Q2136 54 2163 99.5Q2190 145 2190 199ZM1991 197H199V1596H1991Z",
++    ),
++}
++
++
++def scrolling_video_icon(name: str, class_name: str = "") -> str:
++    width, path = SCROLLING_VIDEO_ICONS[name]
++    class_attr = f' class="{esc(class_name)}"' if class_name else ""
++    return (
++        f'<svg{class_attr} aria-hidden="true" viewBox="0 0 {width} 1792" focusable="false">'
++        f'<g transform="translate(0 1792) scale(1 -1)"><path d="{path}" fill="currentColor"/></g></svg>'
++    )
++
++
++def academy_video_html(
++    media: dict | None,
++    caption_html: str = "",
++    animate: bool = True,
++    video_class: str = "",
++    video_attributes: str = "",
++    ui_labels: dict | None = None,
++) -> str:
++    if not media or not media.get("path"):
++        return ""
++    poster = f' poster="{esc(media.get("poster"))}"' if media.get("poster") else ""
++    caption_tracks = [track for track in media.get("captions", []) if isinstance(track, dict) and track.get("path")]
++    tracks = "".join(
++        f'<track kind="captions" src="{esc(track["path"])}" srclang="{esc(track.get("language") or "en")}" '
++        f'label="{esc(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions"))}">'
++        for track in caption_tracks
++    )
++    caption_payload = {
++        "tracks": [
++            {
++                "path": str(track["path"]),
++                "language": str(track.get("language") or "en"),
++                "label": str(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions")),
++                "cues": track.get("_cues") or [],
++            }
++            for track in caption_tracks
++        ]
++    }
++    caption_json = json.dumps(caption_payload, ensure_ascii=False, indent=2).replace("</", "<\\/")
++    caption = f"<figcaption>{caption_html}</figcaption>" if caption_html else '<figcaption class="is-empty"></figcaption>'
++    motion = " scroll-animate scroll-animate--fade" if animate else ""
++    duration = media.get("duration_seconds")
++    if isinstance(duration, (int, float)) and duration >= 0:
++        initial_remaining = f'-{int(duration) // 60}:{int(duration) % 60:02d}'
++    else:
++        initial_remaining = "-0:00"
++    speed_items = "".join(
++        f'<button class="academy-video__menu-item{" is-selected" if rate == 1 else ""}" type="button" role="menuitemradio" '
++        f'data-video-rate="{rate:g}" aria-checked="{"true" if rate == 1 else "false"}">{rate:g}x</button>'
++        for rate in (2, 1.75, 1.5, 1.25, 1, 0.75, 0.5)
++    )
++    captions_control = ""
++    caption_data = ""
++    if caption_tracks:
++        caption_items = (
++            '<button class="academy-video__menu-item is-selected" type="button" role="menuitemradio" '
++            f'data-video-caption-index="-1" aria-checked="true">{esc(ui(ui_labels, "captions_off", "Captions off"))}</button>'
++            + "".join(
++                f'<button class="academy-video__menu-item" type="button" role="menuitemradio" '
++                f'data-video-caption-index="{index}" aria-checked="false">'
++                f'{esc(track.get("label") or track.get("language") or ui(ui_labels, "captions", "Captions"))}</button>'
++                for index, track in enumerate(caption_tracks)
++            )
++        )
++        captions_label = esc(ui(ui_labels, "captions", "Captions"))
++        captions_control = (
++            '<div class="academy-video__menu-control academy-video__captions-control">'
++            '<button class="academy-video__button academy-video__captions" type="button" data-video-menu-button="captions" '
++            f'title="{captions_label}" aria-label="{captions_label}" aria-haspopup="true" aria-expanded="false">'
++            f'{scrolling_video_icon("captions")}</button>'
++            '<div class="academy-video__menu" data-video-menu="captions" hidden>'
++            f'<div class="academy-video__menu-content" role="menu">{caption_items}</div></div></div>'
++        )
++        caption_data = (
++            '<div class="academy-video__caption-display" data-video-caption-display aria-live="off" aria-atomic="true" hidden>'
++            '<span data-video-caption-text></span></div>'
++            f'<script class="academy-video__caption-data" type="application/json">{caption_json}</script>'
++        )
++    return (
++        '<div class="academy-video" data-video-player>'
++        f'<div class="academy-video__surface"><video class="{esc(video_class)}" {video_attributes} preload="metadata" playsinline src="{esc(media["path"])}"{poster}><source src="{esc(media["path"])}">{tracks}</video>'
++        f'{caption_data}'
++        f'<button class="academy-video__big-play" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play_video", "Play video"))}">'
++        f'{scrolling_video_icon("play")}'
++        '</button>'
++        '</div><div class="academy-video__controls" role="group" aria-label="Video controls">'
++        f'<button class="academy-video__button academy-video__toggle" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play", "Play"))}">'
++        f'{scrolling_video_icon("play", "academy-video__play-icon")}{scrolling_video_icon("pause", "academy-video__pause-icon")}'
++        '</button>'
++        '<div class="academy-video__progress-control">'
++        '<div class="academy-video__progress-track"><span class="academy-video__progress-loaded" data-video-loaded></span>'
++        '<span class="academy-video__progress-played" data-video-played><i aria-hidden="true"></i></span></div>'
++        f'<input class="academy-video__progress" type="range" min="0" max="100" step="0.1" value="0" data-video-progress aria-label="{esc(ui(ui_labels, "seek", "Seek"))}">'
++        '</div>'
++        f'<span class="academy-video__remaining" data-video-remaining>{initial_remaining}</span>'
++        '<div class="academy-video__menu-control academy-video__rate-control">'
++        '<span class="academy-video__rate-value" data-video-rate-value aria-hidden="true">1x</span>'
++        f'<button class="academy-video__button academy-video__rate" type="button" data-video-menu-button="rate" '
++        f'title="{esc(ui(ui_labels, "playback_rate", "Playback Rate"))}" aria-label="{esc(ui(ui_labels, "playback_rate", "Playback Rate"))}" aria-haspopup="true" aria-expanded="false"></button>'
++        f'<div class="academy-video__menu" data-video-menu="rate" hidden><div class="academy-video__menu-content" role="menu">{speed_items}</div></div></div>'
++        f'{captions_control}'
++        f'<button class="academy-video__button academy-video__picture-in-picture" type="button" data-video-action="picture-in-picture" title="{esc(ui(ui_labels, "picture_in_picture", "Picture-in-picture"))}" aria-label="{esc(ui(ui_labels, "picture_in_picture", "Picture-in-picture"))}">'
++        f'{scrolling_video_icon("picture_in_picture_enter", "academy-video__pip-enter")}{scrolling_video_icon("picture_in_picture_exit", "academy-video__pip-exit")}</button>'
++        f'<button class="academy-video__button academy-video__fullscreen" type="button" data-video-action="fullscreen" aria-label="{esc(ui(ui_labels, "fullscreen", "Fullscreen"))}">'
++        f'{scrolling_video_icon("fullscreen_enter", "academy-video__fullscreen-enter")}{scrolling_video_icon("fullscreen_exit", "academy-video__fullscreen-exit")}'
++        '</button>'
++        '<div class="academy-video__volume-panel">'
++        f'<button class="academy-video__button academy-video__mute" type="button" data-video-action="mute" aria-label="{esc(ui(ui_labels, "mute", "Mute"))}">'
++        f'{scrolling_video_icon("volume_high", "academy-video__volume-high")}{scrolling_video_icon("volume_muted", "academy-video__volume-muted")}</button>'
++        f'<div class="academy-video__volume-control"><input class="academy-video__volume" type="range" min="0" max="1" step="0.05" value="1" data-video-volume aria-label="{esc(ui(ui_labels, "volume", "Volume"))}"></div>'
++        '</div>'
++        '</div></div>'
++    )
++
+--- a/templates/module_styles.css
++++ b/templates/module_styles.css
+@@ -77,7 +77,7 @@
+   position: relative;
+   width: 100vw;
+   height: 100vh;
+-  overflow: hidden;
++  overflow: clip;
+ }
+ 
+ .slide {
+@@ -665,6 +665,10 @@
+ 
+ /* ===== LEARNER AIDS: IN-SLIDE TOOLTIP/RESOURCE PILLS ===== */
+ .learner-aids {
++  /* Lift the whole aids stack above video controls; child z-index alone
++     cannot escape the entrance animation’s stacking context. */
++  position: relative;
++  z-index: 20;
+   width: 100%;
+   max-width: 980px;
+   margin: 18px 0 0;
+@@ -758,6 +762,9 @@
+ .pill-icon--terminology {
+   color: var(--ocp-green-dark);
+ }
++
++.glossary-chip:hover,
++.glossary-chip:focus { z-index: 2; }
+ 
+ .glossary-chip:hover,
+ .glossary-chip:focus,
+--- a/templates/slides_video_player.js
++++ b/templates/slides_video_player.js
+@@ -0,0 +1,24 @@
++// Exposed Chiplet player for imported recordings only. Generated teaching videos
++// retain standard figure controls and the learner narration runtime.
++const videoPreferenceKey = 'ocp-academy-video-preferences';
++let videoPreferences = {};
++try { videoPreferences = JSON.parse(localStorage.getItem(videoPreferenceKey) || '{}'); } catch (_) {}
++function saveVideoPreferences() {
++  if (!reviewMode) { try {localStorage.setItem(videoPreferenceKey, JSON.stringify(videoPreferences));} catch (_) {} }
++}
++document.querySelectorAll('[data-video-player]').forEach(player => {
++  const video = player.querySelector('video');
++  if (!video || !video.classList.contains('original-video')) return;
++  const options = {preferences:videoPreferences, savePreferences:saveVideoPreferences, labels:(key,fallback)=>videoUiLabels[key] || fallback};
++  window.AcademyVideoPlayer(player, options);
++  video.addEventListener('play', () => {
++    audioPlayer.pause();setAudioPlaying(false);disarmAutoplayFallback();
++    document.querySelectorAll('video.original-video').forEach(other => {if(other!==video) other.pause();});
++  });
++  audioPlayer.addEventListener('play', () => video.pause());
++  window.addEventListener('academy:slide', () => {
++    if (!video.closest('.slide.active')) video.pause();
++    if (player.academyRefresh) player.academyRefresh();
++  });
++});
++
+--- a/templates/video_player.css
++++ b/templates/video_player.css
+@@ -0,0 +1,323 @@
++.academy-video {
++  position: relative;
++  width: 100%;
++  aspect-ratio: 16 / 9;
++  overflow: hidden;
++  container-type: inline-size;
++  background: transparent;
++  color: #fff;
++  font: 10px/1 Arial, Helvetica, sans-serif;
++}
++.academy-video video { position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer; }
++.academy-video__big-play {
++  position: absolute;
++  top: 50%;
++  left: 50%;
++  z-index: 3;
++  display: grid;
++  place-items: center;
++  width: 98px;
++  height: 98px;
++  padding: 0;
++  border: 0;
++  border-radius: 50%;
++  background: rgba(0,0,0,.67);
++  color: #fff;
++  cursor: pointer;
++  transform: translate(-50%, -50%);
++  transition: background-color .4s;
++}
++.academy-video__big-play svg { width: 40px; height: 40px; }
++.academy-video__big-play:hover,
++.academy-video__big-play:focus-visible { background: rgba(0,0,0,.85); border: 3px solid #fff; outline-offset: 3px; }
++.academy-video.is-playing .academy-video__big-play { display: none; }
++.academy-video__caption-display {
++  position: absolute;
++  inset: 0;
++  z-index: 2;
++  display: flex;
++  align-items: flex-end;
++  justify-content: center;
++  padding: 0 10% 92px;
++  pointer-events: none;
++  text-align: center;
++}
++.academy-video__caption-display[hidden] { display: none; }
++.academy-video__caption-display span {
++  padding: 2px 5px 3px;
++  background: rgba(0,0,0,.8);
++  color: #fff;
++  font: 20px/1.35 Arial, Helvetica, sans-serif;
++  white-space: pre-line;
++  box-decoration-break: clone;
++  -webkit-box-decoration-break: clone;
++}
++.academy-video.is-user-inactive.is-playing .academy-video__caption-display { padding-bottom: 24px; }
++.academy-video__controls {
++  position: absolute;
++  right: 0;
++  bottom: 0;
++  left: 0;
++  z-index: 4;
++  display: none;
++  align-items: center;
++  height: 75px;
++  padding: 0;
++  background: rgba(0,0,0,.67);
++  color: #fff;
++  opacity: 1;
++  transition: visibility .1s, opacity .1s;
++  visibility: visible;
++}
++.academy-video.is-started .academy-video__controls { display: flex; }
++.academy-video.is-playing.is-user-inactive:not(:focus-within) .academy-video__controls {
++  opacity: 0;
++  pointer-events: none;
++}
++.academy-video__button {
++  position: relative;
++  flex: 0 0 40px;
++  display: grid;
++  place-items: center;
++  width: 40px;
++  height: 100%;
++  padding: 0;
++  border: 0;
++  background: transparent;
++  color: inherit;
++  cursor: pointer;
++}
++.academy-video__button:hover svg,
++.academy-video__button:focus-visible svg { filter: drop-shadow(0 0 2.5px #fff); }
++.academy-video__button svg { width: 24px; height: 24px; }
++.academy-video__toggle { margin: 0 5px; }
++.academy-video__play-icon,
++.academy-video__pause-icon { width: 24px; height: 24px; }
++.academy-video__pause-icon { display: none; }
++.academy-video.is-playing .academy-video__play-icon { display: none; }
++.academy-video.is-playing .academy-video__pause-icon { display: block; }
++.academy-video__progress-control {
++  position: relative;
++  flex: 1 1 auto;
++  display: flex;
++  align-items: center;
++  min-width: 40px;
++  height: 100%;
++  margin: 0 10px;
++  touch-action: none;
++}
++.academy-video__progress-track {
++  position: relative;
++  width: 100%;
++  height: 2px;
++  overflow: visible;
++  background: rgba(115,133,159,.5);
++}
++.academy-video__progress-loaded,
++.academy-video__progress-played { position: absolute; inset: 0 auto 0 0; display: block; width: 0; }
++.academy-video__progress-loaded { background: rgba(115,133,159,.75); }
++.academy-video__progress-played { background: #fff; }
++.academy-video__progress-played i {
++  position: absolute;
++  top: 50%;
++  right: -7px;
++  width: 14px;
++  height: 14px;
++  border-radius: 50%;
++  background: #fff;
++  transform: translateY(-50%);
++}
++.academy-video__progress {
++  position: absolute;
++  inset: 0;
++  width: 100%;
++  height: 100%;
++  margin: 0;
++  opacity: 0;
++  cursor: pointer;
++}
++.academy-video__remaining {
++  flex: 0 0 auto;
++  min-width: 40px;
++  margin: 0 5px;
++  color: #fff;
++  font: 700 12px/1 var(--body-font, Lato, sans-serif);
++  text-align: center;
++}
++.academy-video__menu-control {
++  position: relative;
++  flex: 0 0 40px;
++  width: 40px;
++  height: 100%;
++  margin: 0 5px;
++}
++.academy-video__rate-value {
++  position: absolute;
++  inset: 0;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  font-size: 15px;
++  font-weight: 700;
++  pointer-events: none;
++}
++.academy-video__rate { position: absolute; inset: 0; }
++.academy-video__captions svg { width: 30px; height: 30px; }
++.academy-video__menu {
++  position: absolute;
++  bottom: 60px;
++  left: 50%;
++  width: 100px;
++  height: 0;
++  transform: translateX(-50%);
++}
++.academy-video__menu[hidden] { display: none; }
++.academy-video__rate-control .academy-video__menu { width: 70px; }
++.academy-video__menu-content {
++  position: absolute;
++  bottom: 0;
++  left: 0;
++  display: block;
++  width: 100%;
++  max-height: 160px;
++  padding: 0;
++  overflow: hidden auto;
++  background: rgba(0,0,0,.67);
++}
++.academy-video__menu-item {
++  display: flex;
++  align-items: center;
++  justify-content: center;
++  width: 100%;
++  min-height: 21.6px;
++  padding: 2.4px 0;
++  border: 0;
++  background: transparent;
++  color: #fff;
++  font: 12px/16.8px Arial, Helvetica, sans-serif;
++  text-align: center;
++  cursor: pointer;
++}
++.academy-video__menu-item:hover,
++.academy-video__menu-item:focus-visible { background: rgba(115,133,159,.5); outline-offset: -2px; }
++.academy-video__menu-item.is-selected,
++.academy-video__menu-item.is-selected:hover,
++.academy-video__menu-item.is-selected:focus-visible { background: #fff; color: #2b333f; }
++.academy-video__picture-in-picture,
++.academy-video__fullscreen { margin: 0 5px; }
++.academy-video__pip-exit,
++.academy-video__fullscreen-exit,
++.academy-video__volume-muted { display: none; }
++.academy-video.is-picture-in-picture .academy-video__pip-enter,
++.academy-video.is-fullscreen .academy-video__fullscreen-enter,
++.academy-video__mute.is-muted .academy-video__volume-high { display: none; }
++.academy-video.is-picture-in-picture .academy-video__pip-exit,
++.academy-video.is-fullscreen .academy-video__fullscreen-exit,
++.academy-video__mute.is-muted .academy-video__volume-muted { display: block; }
++.academy-video__volume-panel {
++  flex: 0 0 40px;
++  display: flex;
++  align-items: center;
++  width: 40px;
++  height: 100%;
++  overflow: hidden;
++  transition: width .1s, flex-basis .1s;
++}
++.academy-video__volume-panel:hover,
++.academy-video__volume-panel:focus-within { flex-basis: 100px; width: 100px; }
++.academy-video__volume-control {
++  flex: 0 0 50px;
++  width: 50px;
++  margin-right: 10px;
++  opacity: 0;
++  transition: opacity .1s;
++}
++.academy-video__volume-panel:hover .academy-video__volume-control,
++.academy-video__volume-panel:focus-within .academy-video__volume-control { opacity: 1; }
++.academy-video__volume {
++  width: 50px;
++  height: 3px;
++  margin: 0;
++  accent-color: #fff;
++  cursor: pointer;
++}
++@container (max-width: 767px) {
++  .academy-video { font-size: 9px; }
++  .academy-video__big-play { width: 72px; height: 72px; }
++  .academy-video__big-play svg { width: 36px; height: 36px; }
++  .academy-video__controls { height: 60px; }
++  .academy-video__menu { bottom: 50px; }
++  .academy-video__caption-display { padding-bottom: 75px; }
++}
++@container (max-width: 479px) {
++  .academy-video { font-size: 8px; }
++  .academy-video__big-play { width: 56px; height: 56px; }
++  .academy-video__big-play svg { width: 28px; height: 28px; }
++  .academy-video__controls { height: 40px; }
++  .academy-video__button,
++  .academy-video__menu-control { flex-basis: 32px; width: 32px; margin: 0; }
++  .academy-video__button svg { width: 22px; height: 22px; }
++  .academy-video__captions svg { width: 26px; height: 26px; }
++  .academy-video__remaining,
++  .academy-video__rate-control,
++  .academy-video__volume-control { display: none; }
++  .academy-video__progress-control { margin: 0 8px; }
++  .academy-video__picture-in-picture,
++  .academy-video__fullscreen { margin: 0; }
++  .academy-video__volume-panel,
++  .academy-video__volume-panel:hover,
++  .academy-video__volume-panel:focus-within { flex-basis: 32px; width: 32px; }
++  .academy-video__menu { bottom: 40px; }
++  .academy-video__caption-display { padding: 0 8% 52px; }
++  .academy-video__caption-display span { font-size: 16px; }
++}
++
++/* Shared control bar: every function stays exposed, including before playback.
++   Controls sit below the media so they never obscure teaching or captions. */
++.academy-video{aspect-ratio:auto;overflow:visible;min-width:0;max-width:100%}
++.academy-video__surface{position:relative;aspect-ratio:16/9;min-width:0;background:transparent;overflow:hidden;border-radius:4px}
++.academy-video__controls,.academy-video.is-started .academy-video__controls{position:relative;display:flex;flex-wrap:wrap;min-height:52px;height:auto;opacity:1;visibility:visible;pointer-events:auto;background:#262626;border-radius:0 0 4px 4px;padding:0 4px;box-sizing:border-box}
++.academy-video.is-playing.is-user-inactive:not(:focus-within) .academy-video__controls{opacity:1;pointer-events:auto}
++.academy-video__button,.academy-video__menu-control,.academy-video__volume-panel{height:48px;flex-shrink:0}
++.academy-video__progress-control{height:48px;min-width:60px}
++.academy-video__menu{bottom:48px;z-index:10}
++.academy-video__menu-content{max-height:210px}
++.academy-video__menu-item{min-height:32px}
++.academy-video__caption-display,.academy-video.is-user-inactive.is-playing .academy-video__caption-display{padding:0 5% 18px}
++.academy-video__button:disabled{opacity:.35;cursor:default}
++.academy-video__controls button:focus-visible,.academy-video__progress:focus-visible{outline:3px solid #8cc53f;outline-offset:-3px}
++.academy-video__volume-panel,.academy-video__volume-panel:hover,.academy-video__volume-panel:focus-within{flex-basis:96px;width:96px;overflow:visible}
++.academy-video__volume-control{display:block;opacity:1}
++.academy-video:fullscreen{display:flex;flex-direction:column;justify-content:center;background:#111;padding:12px;box-sizing:border-box;width:100%;height:100%}
++.academy-video:fullscreen .academy-video__surface{flex:1;min-height:0;aspect-ratio:auto}
++.academy-video:fullscreen .academy-video__controls{flex-shrink:0}
++@container(max-width:600px){
++ .academy-video__controls{justify-content:space-between;padding:0 4px}
++ .academy-video__progress-control{order:-2;flex:1 1 calc(100% - 70px);margin:0 8px;height:36px}
++ .academy-video__remaining{display:block;order:-1;min-width:44px;font-size:11px}
++ .academy-video__button,.academy-video__menu-control{flex-basis:36px;width:36px;height:44px;margin:0}
++ .academy-video__rate-control{display:block}
++ .academy-video__volume-panel,.academy-video__volume-panel:hover,.academy-video__volume-panel:focus-within{flex-basis:86px;width:86px;height:44px}
++ .academy-video__volume-control{display:block;width:42px;flex-basis:42px;margin-right:6px;opacity:1}
++ .academy-video__volume{width:42px}
++ .academy-video__caption-display span{font-size:clamp(12px,4.5cqw,18px)}
++ .academy-video__menu{bottom:44px}
++}
++
++.academy-video--synced .academy-video__big-play{display:none}
++.figure-panel [data-video-toggle][hidden]{display:none!important}
++.btn-audio:disabled,.btn-audio-speed:disabled{opacity:.35;cursor:default;pointer-events:none}
++
++.figure-panel--video > .academy-video{width:1200px;max-width:100%}
++.figure-panel--video,.original-video-panel{overflow:visible!important}
++
++.lightbox-overlay [data-video-zoom]{display:none}
++
++/* Preserve each Slides media frame's maintained size; avoid native video caps
++   creating unused space inside the shared surface. */
++.slide .figure-panel--video > .academy-video{width:min(871.111px,74.6667vh);max-width:100%}
++.slide--media-focus .figure-panel--video > .academy-video{width:100%}
++.slide .figure-panel .academy-video video.figure-video,.lightbox-figure .academy-video video.figure-video{width:100%;height:100%;max-height:none;margin:0;border-radius:4px;background:transparent}
++.lightbox-figure > .academy-video{width:100%;max-width:100%}
++
++.academy-video.is-started .academy-video__big-play{display:none}
+--- a/templates/video_player.js
++++ b/templates/video_player.js
+@@ -0,0 +1,248 @@
++  function formatVideoTime(seconds) {
++    if (!Number.isFinite(seconds) || seconds < 0) seconds = 0;
++    var minutes = Math.floor(seconds / 60);
++    var remainder = Math.floor(seconds % 60);
++    return minutes + ':' + String(remainder).padStart(2, '0');
++  }
++
++  function initVideoPlayer(player, options) {
++    if (player.dataset.playerReady) return;
++    player.dataset.playerReady = "true";
++    options = options || {};
++    var preferences = options.preferences || {};
++    var savePreferences = options.savePreferences || function() {};
++    var uiText = options.labels || function(key, fallback) {return fallback;};
++    var video = player.querySelector('video');
++    var clock = options.clock || video;
++    video.academyPlayerOptions = options;
++    var progress = player.querySelector('[data-video-progress]');
++    var progressLoaded = player.querySelector('[data-video-loaded]');
++    var progressPlayed = player.querySelector('[data-video-played]');
++    var remaining = player.querySelector('[data-video-remaining]');
++    var rateValue = player.querySelector('[data-video-rate-value]');
++    var volume = player.querySelector('[data-video-volume]');
++    var mute = player.querySelector('[data-video-action="mute"]');
++    var fullscreen = player.querySelector('[data-video-action="fullscreen"]');
++    var pictureInPicture = player.querySelector('[data-video-action="picture-in-picture"]');
++    var captionDisplay = player.querySelector('[data-video-caption-display]');
++    var captionText = player.querySelector('[data-video-caption-text]');
++    var captionDataNode = player.querySelector('.academy-video__caption-data');
++    var captionTracks = [];
++    var activeCaptionIndex = -1;
++    var inactivityTimer = 0;
++    if (!video) return;
++    if (captionDataNode) {
++      try { captionTracks = (JSON.parse(captionDataNode.textContent || '{}').tracks || []); }
++      catch (e) { captionTracks = []; }
++    }
++
++    function closeMenus(except) {
++      player.querySelectorAll('[data-video-menu]').forEach(function(menu) {
++        if (menu === except) return;
++        menu.hidden = true;
++        var control = menu.closest('.academy-video__menu-control');
++        if (control) control.classList.remove('is-open');
++        var button = control && control.querySelector('[data-video-menu-button]');
++        if (button) button.setAttribute('aria-expanded', 'false');
++      });
++    }
++
++    function toggleMenu(name) {
++      var menu = player.querySelector('[data-video-menu="' + name + '"]');
++      var button = player.querySelector('[data-video-menu-button="' + name + '"]');
++      if (!menu || !button) return;
++      var open = menu.hidden;
++      closeMenus(open ? menu : null);
++      menu.hidden = !open;
++      var control = menu.closest('.academy-video__menu-control');
++      if (control) control.classList.toggle('is-open', open);
++      button.setAttribute('aria-expanded', open ? 'true' : 'false');
++      if (open) {
++        var selected = menu.querySelector('[aria-checked="true"]');
++        if (selected) selected.focus();
++      }
++    }
++
++    function showControls() { player.classList.remove('is-user-inactive'); }
++
++    function disableNativeCaptions() {
++      Array.from(video.textTracks || []).forEach(function(track) { track.mode = 'disabled'; });
++    }
++
++    function updateCaption() {
++      if (!captionDisplay || !captionText || activeCaptionIndex < 0 || !captionTracks[activeCaptionIndex]) {
++        if (captionDisplay) captionDisplay.hidden = true;
++        if (captionText) captionText.textContent = '';
++        return;
++      }
++      var track = captionTracks[activeCaptionIndex];
++      var current = Number.isFinite(clock.currentTime) ? clock.currentTime : 0;
++      var cue = (track.cues || []).find(function(item) { return current >= Number(item.start) && current < Number(item.end); });
++      if (!cue && video.textTracks && video.textTracks[activeCaptionIndex]) {
++        var activeCues = Array.from(video.textTracks[activeCaptionIndex].activeCues || []);
++        if (activeCues.length) cue = { text: activeCues.map(function(item) { return item.text; }).join('\n') };
++      }
++      captionText.textContent = cue ? String(cue.text || '') : '';
++      captionDisplay.hidden = !cue || !captionText.textContent;
++    }
++
++    function selectCaption(index, persist) {
++      activeCaptionIndex = index >= 0 && index < captionTracks.length ? index : -1;
++      player.querySelectorAll('[data-video-caption-index]').forEach(function(item) {
++        var selected = Number(item.dataset.videoCaptionIndex) === activeCaptionIndex;
++        item.classList.toggle('is-selected', selected);
++        item.setAttribute('aria-checked', selected ? 'true' : 'false');
++      });
++      disableNativeCaptions();
++      updateCaption();
++      if (persist) {
++        preferences.captionLanguage = activeCaptionIndex >= 0 ? String(captionTracks[activeCaptionIndex].language || '') : 'off';
++        savePreferences();
++      }
++    }
++
++    function setPlaybackRate(value, persist) {
++      var allowed = [2, 1.75, 1.5, 1.25, 1, 0.75, 0.5];
++      var rate = Number(value);
++      if (allowed.indexOf(rate) === -1) rate = 1;
++      if (options.setRate) options.setRate(rate); else clock.playbackRate = rate;
++      if (rateValue) rateValue.textContent = rate + 'x';
++      player.querySelectorAll('[data-video-rate]').forEach(function(item) {
++        var selected = Number(item.dataset.videoRate) === rate;
++        item.classList.toggle('is-selected', selected);
++        item.setAttribute('aria-checked', selected ? 'true' : 'false');
++      });
++      if (persist) {
++        preferences.playbackRate = rate;
++        savePreferences();
++      }
++    }
++
++    function syncState() {
++      var duration = Number.isFinite(clock.duration) ? clock.duration : 0;
++      var current = Number.isFinite(clock.currentTime) ? clock.currentTime : 0;
++      player.classList.toggle('is-playing', !clock.paused);
++      if (rateValue) rateValue.textContent = clock.playbackRate + 'x';
++      if (current > 0) player.classList.add('is-started');
++      player.querySelectorAll('[data-video-action="toggle"]').forEach(function(button) {
++        button.setAttribute('aria-label', clock.paused ? uiText('play_video', 'Play video') : uiText('pause_video', 'Pause video'));
++      });
++      if (progress) progress.value = duration ? String(current / duration * 100) : '0';
++      if (progressPlayed) progressPlayed.style.width = (duration ? current / duration * 100 : 0) + '%';
++      if (progressLoaded) {
++        var buffered = video.buffered && video.buffered.length ? video.buffered.end(video.buffered.length - 1) : 0;
++        progressLoaded.style.width = (duration ? Math.min(100, buffered / duration * 100) : 0) + '%';
++      }
++      if (remaining) remaining.textContent = '-' + formatVideoTime(Math.max(0, duration - current));
++      if (mute) mute.classList.toggle('is-muted', clock.muted || clock.volume === 0);
++      if (volume && document.activeElement !== volume) volume.value = clock.muted ? '0' : String(clock.volume);
++      updateCaption();
++    }
++
++    function togglePlayback() {
++      player.classList.add('is-started');
++      if (options.toggle) { options.toggle(); return; }
++      if (clock.ended) clock.currentTime = 0;
++      if (clock.paused) {
++        var promise = clock.play();
++        if (promise && promise.catch) promise.catch(function() {});
++      } else {
++        clock.pause();
++      }
++    }
++
++    player.addEventListener('click', function(event) {if (!event.target.closest('[data-video-zoom]')) event.stopPropagation();});
++    player.querySelectorAll('[data-video-action="toggle"]').forEach(function(button) {
++      button.addEventListener('click', togglePlayback);
++    });
++    video.addEventListener('click', togglePlayback);
++    video.addEventListener('loadedmetadata', function() { disableNativeCaptions(); syncState(); });
++    video.addEventListener('durationchange', syncState);
++    video.addEventListener('timeupdate', syncState);
++    video.addEventListener('seeked', syncState);
++    video.addEventListener('progress', syncState);
++    video.addEventListener('play', function() { syncState(); showControls(); });
++    video.addEventListener('pause', function() { player.classList.remove('is-user-inactive'); syncState(); });
++    video.addEventListener('ended', syncState);
++    if (clock !== video) ['play','pause','ended','timeupdate','seeking','seeked','ratechange','volumechange','loadedmetadata'].forEach(function(name) {clock.addEventListener(name, syncState);});
++    video.addEventListener('ratechange',syncState);
++    video.addEventListener('volumechange',syncState);
++    if (progress) progress.addEventListener('input', function() {
++      if (Number.isFinite(clock.duration)) clock.currentTime = Number(progress.value) / 100 * clock.duration;
++      syncState();
++    });
++    player.querySelectorAll('[data-video-menu-button]').forEach(function(button) {
++      button.addEventListener('click', function(event) {
++        event.stopPropagation();
++        toggleMenu(button.dataset.videoMenuButton);
++        showControls();
++      });
++    });
++    player.querySelectorAll('[data-video-rate]').forEach(function(item) {
++      item.addEventListener('click', function(event) {
++        event.stopPropagation();
++        setPlaybackRate(item.dataset.videoRate, true);
++        closeMenus();
++        showControls();
++      });
++    });
++    player.querySelectorAll('[data-video-caption-index]').forEach(function(item) {
++      item.addEventListener('click', function(event) {
++        event.stopPropagation();
++        selectCaption(Number(item.dataset.videoCaptionIndex), true);
++        closeMenus();
++        showControls();
++      });
++    });
++    if (mute) mute.addEventListener('click', function() {
++      clock.muted = !clock.muted;
++      mute.setAttribute('aria-label', clock.muted ? uiText('unmute', 'Unmute') : uiText('mute', 'Mute'));
++      syncState();
++      showControls();
++    });
++    if (volume) volume.addEventListener('input', function() {
++      clock.volume = Number(volume.value);
++      clock.muted = clock.volume === 0;
++      syncState();
++      showControls();
++    });
++    if (fullscreen) fullscreen.addEventListener('click', function() {
++      if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen();
++      else if (player.requestFullscreen) player.requestFullscreen();
++    });
++    document.addEventListener('fullscreenchange', function() {
++      var active = document.fullscreenElement === player;
++      player.classList.toggle('is-fullscreen', active);
++      if (fullscreen) fullscreen.setAttribute('aria-label', active ? uiText('exit_fullscreen', 'Exit fullscreen') : uiText('fullscreen', 'Fullscreen'));
++    });
++    if (pictureInPicture && (!video.requestPictureInPicture || document.pictureInPictureEnabled === false)) {pictureInPicture.disabled=true; pictureInPicture.title='Picture-in-picture unavailable in this browser';}
++    if (pictureInPicture) pictureInPicture.addEventListener('click', function() {
++      if (document.pictureInPictureElement && document.exitPictureInPicture) {
++        document.exitPictureInPicture().catch(function() {});
++      } else if (video.requestPictureInPicture) {
++        video.requestPictureInPicture().catch(function() {});
++      }
++    });
++    video.addEventListener('enterpictureinpicture', function() { player.classList.add('is-picture-in-picture'); });
++    video.addEventListener('leavepictureinpicture', function() { player.classList.remove('is-picture-in-picture'); });
++    player.addEventListener('mousemove', showControls);
++    player.addEventListener('touchstart', showControls, { passive: true });
++    player.addEventListener('keydown', function(event) {
++      showControls();
++      if (event.key === 'Escape') closeMenus();
++    });
++    document.addEventListener('click', function(event) {
++      if (!player.contains(event.target)) closeMenus();
++    });
++    var savedRate = Number(preferences.playbackRate || 1);
++    if (clock === video) setPlaybackRate(savedRate, false);
++    var savedLanguage = String(preferences.captionLanguage || 'off');
++    var savedCaptionIndex = captionTracks.findIndex(function(track) { return String(track.language || '') === savedLanguage; });
++    selectCaption(savedLanguage === 'off' ? -1 : savedCaptionIndex, false);
++    disableNativeCaptions();
++    syncState();
++    player.academyRefresh = syncState;
++  }
++
++
++window.AcademyVideoPlayer = initVideoPlayer;
+--- a/scripts/test_video_player_roles.py
++++ b/scripts/test_video_player_roles.py
+@@ -0,0 +1,22 @@
++"""Protect the distinct teaching-animation and imported-recording players."""
++import unittest
++from render_module import _figure_html
++class PlayerRoles(unittest.TestCase):
++    def test_generated_modes_keep_standard_figure_controls(self):
++        for synced in (False, True):
++            with self.subTest(synced=synced):
++                rendered=_figure_html({'path':'figures/example.mp4','media_type':'video','sync_to_narration':synced,'muted':True,'loop':not synced,'autoplay':not synced})
++                self.assertIn('class="figure-video"',rendered)
++                self.assertIn('class="figure-video-controls"',rendered)
++                self.assertIn('data-video-toggle',rendered)
++                self.assertIn('data-video-zoom',rendered)
++                self.assertNotIn('data-video-player',rendered)
++                self.assertNotIn('academy-video__controls',rendered)
++                self.assertEqual('data-narration-sync="true"' in rendered,synced)
++    def test_imported_recording_keeps_exposed_black_player(self):
++        rendered=_figure_html({'path':'resources/original.mp4','media_type':'video','role':'original_video'})
++        self.assertIn('data-video-player',rendered)
++        self.assertIn('academy-video__controls',rendered)
++        self.assertIn('class="original-video"',rendered)
++        self.assertNotIn('class="figure-video-controls"',rendered)
++if __name__=='__main__':unittest.main()

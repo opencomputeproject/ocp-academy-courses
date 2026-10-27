@@ -1,0 +1,9 @@
+# pronunciation: F C S A; input output; nonvolatile memory; chiplet root of trust for attestation.
+
+F C S A describes chiplet activity states because an interface can be physically present and still be unavailable. Inactive, secure boot, initial boot, operational, and power saving describe different availability conditions. Inactive chiplets have no available interfaces. The specification's table distinguishes interfaces available during early boot from the operational memory and input output traffic paths.
+
+This creates a practical dependency test. If firmware must be loaded before the operational memory interface exists, that interface cannot be the only means of establishing the earlier state. The boot path needs an available mechanism at the point where it is used. Some implementation rules allow memory interfaces as alternatives when those interfaces are already available; the condition is part of the rule.
+
+Do the same check for low-power behavior. A control message needed to leave a state cannot depend on a path disabled in that state unless another specified mechanism restores it. Use the particular pair's requirements as well as the summary table; examples of availability are not a substitute for all applicable rules.
+
+Workbook exercise three gives you a proposed boot dependency. Identify what must happen first, mark the unavailable path, and propose the evidence needed to establish a usable alternative. The exercise is about resolving the dependency and its ownership. It does not ask you to invent the protocol entries that F C S A leaves open.

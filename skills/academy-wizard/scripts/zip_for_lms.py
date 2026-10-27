@@ -1,79 +1,104 @@
 #!/usr/bin/env python3
-"""
-zip_for_lms.py — build a strict SCORM zip containing ONLY files listed in
-imsmanifest.xml (plus the manifest itself). Working files like course.json,
-.txt narration scripts, _outline.md, gen_audio_standalone.py, .DS_Store, etc.
-are excluded.
-
-Why this exists: some LMSes reject SCORM uploads that contain files not
-declared in the manifest's resource blocks. A "right-click → Compress" zip
-of the package folder picks up every working file alongside the runtime
-assets, and gets rejected.
+"""Create a strict SCORM ZIP and separate LMS catalog metadata sidecars.
 
 Usage:
-    python zip_for_lms.py <package-folder> [-o <output.zip>]
+  python zip_for_lms.py <runtime-folder> [-o output.zip] [--course-json source/course.json]
 
-Default output: <parent>/<package-folder-name>.zip
+The archive contains only manifest-listed runtime files plus imsmanifest.xml.
+The formal LMS title/descriptions are exported beside it as
+<zip-stem>.lms-catalog.{json,md,html}; they are not the source README or SCORM
+runtime. Source lms-catalog.json and lms-catalog.md are refreshed for Git tracking.
 """
-
 from __future__ import annotations
+
 import argparse
-import re
-import sys
-import zipfile
+import os
 from pathlib import Path
+import sys
+import tempfile
+import xml.etree.ElementTree as ET
+import zipfile
+
+from course_delivery_summary import catalog_files, catalog_metadata, write_catalog
+import json
 
 
-def manifest_file_list(manifest_path: Path) -> list[str]:
-    """Return every `href` referenced by <file> entries in the manifest,
-    plus imsmanifest.xml itself."""
-    text = manifest_path.read_text(encoding="utf-8")
-    hrefs = sorted(set(re.findall(r'<file\s+href="([^"]+)"', text)))
-    return ["imsmanifest.xml"] + hrefs
+def manifest_file_list(manifest_path):
+    root = ET.parse(manifest_path).getroot()
+    return ['imsmanifest.xml'] + sorted({node.get('href') for node in root.iter()
+                                       if node.tag.rsplit('}', 1)[-1] == 'file' and node.get('href') and node.get('href') != 'imsmanifest.xml'})
+
+
+def find_course_source(folder, explicit=None):
+    if explicit is not None:
+        source = Path(explicit).resolve()
+        if not source.is_file():
+            raise ValueError(f'Course source not found: {source}')
+        return source
+    for root in (folder, folder.parent):
+        source = root / 'course.json'
+        if source.is_file():
+            return source
+    raise ValueError('No course.json beside the runtime or in its parent. Pass --course-json to export the formal LMS catalog metadata with the ZIP')
+
+
+def package(folder, output=None, course_json=None):
+    folder = Path(folder).resolve()
+    manifest = folder / 'imsmanifest.xml'
+    if not manifest.is_file():
+        raise ValueError(f'No imsmanifest.xml in {folder}')
+    source = find_course_source(folder, course_json)
+    course = json.loads(source.read_text(encoding='utf-8'))
+    catalog_metadata(course)  # Fail before touching an existing delivery.
+    files = manifest_file_list(manifest)
+    for rel in files:
+        if Path(rel).is_absolute() or '..' in Path(rel).parts or not (folder / rel).is_file():
+            raise ValueError(f'Missing or invalid manifest runtime file: {rel}')
+        if 'lms-catalog' in Path(rel).name:
+            raise ValueError('LMS catalog exports belong beside the ZIP, not in the SCORM manifest')
+    output = Path(output).resolve() if output else folder.parent / (folder.name + '.zip')
+    if output.suffix.casefold() != '.zip':
+        raise ValueError('Output filename must end in .zip')
+    sidecars = catalog_files(course, output.stem + '.lms-catalog', include_html=True)
+    # Prevent an accidental output/metadata collision with an input runtime file.
+    for target in [output, *(output.parent / name for name in sidecars)]:
+        if target in {(folder / rel).resolve() for rel in files} or target == source:
+            raise ValueError(f'Delivery output would overwrite an input: {target}')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=output.parent, prefix=output.name+'.', suffix='.tmp', delete=False) as handle:
+            temp_path = Path(handle.name)
+        with zipfile.ZipFile(temp_path, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
+            for rel in files:
+                archive.write(folder / rel, rel)
+        # Refresh source-tracked metadata and prepare delivery copy before publishing the ZIP.
+        write_catalog(course, source.parent)
+        for name, content in sidecars.items():
+            (output.parent / name).write_text(content, encoding='utf-8')
+        os.replace(temp_path, output)
+        temp_path = None
+    finally:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
+    return output, [output.parent / name for name in sidecars], len(files)
 
 
 def main():
-    p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("folder", type=Path, help="SCORM package folder containing imsmanifest.xml")
-    p.add_argument("-o", "--output", type=Path,
-                   help="Output .zip path (default: <parent>/<folder-name>.zip)")
-    args = p.parse_args()
-
-    folder = args.folder.resolve()
-    if not folder.is_dir():
-        sys.exit(f"ERROR: {folder} is not a directory")
-    manifest = folder / "imsmanifest.xml"
-    if not manifest.exists():
-        sys.exit(f"ERROR: no imsmanifest.xml in {folder}")
-
-    files = manifest_file_list(manifest)
-    # Verify every referenced file exists on disk
-    missing = [f for f in files if not (folder / f).exists()]
-    if missing:
-        sys.stderr.write(f"ERROR: {len(missing)} files referenced by manifest are missing on disk:\n")
-        for m in missing[:20]:
-            sys.stderr.write(f"  {m}\n")
-        if len(missing) > 20:
-            sys.stderr.write(f"  ... and {len(missing)-20} more\n")
-        sys.exit(1)
-
-    out_path = args.output or folder.parent / f"{folder.name}.zip"
-    out_path = Path(out_path).resolve()
-    if out_path.exists():
-        out_path.unlink()
-
-    with zipfile.ZipFile(out_path, "w", compression=zipfile.ZIP_DEFLATED) as z:
-        for rel in files:
-            src = folder / rel
-            # Store files at the root of the zip — imsmanifest.xml must be at
-            # the archive root for strict LMSes (SCORM Cloud, many corporate
-            # LMSes). Some LMSes reject zips with a folder wrapper.
-            z.write(src, rel)
-
-    total_bytes = out_path.stat().st_size
-    print(f"wrote {out_path}")
-    print(f"  {len(files)} files, {total_bytes/1024/1024:.1f} MiB")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('folder', type=Path)
+    parser.add_argument('-o', '--output', type=Path)
+    parser.add_argument('--course-json', type=Path, help='Editable source; otherwise find course.json in the runtime or its parent')
+    args = parser.parse_args()
+    try:
+        output, sidecars, count = package(args.folder, args.output, args.course_json)
+    except (OSError, ValueError, ET.ParseError) as error:
+        parser.exit(1, f'Packaging error: {error}\n')
+    print(f'Wrote {output}\n  {count} runtime files, {output.stat().st_size/1024/1024:.1f} MiB')
+    print('LMS catalog metadata (separate from README and SCORM runtime):')
+    for path in sidecars:
+        print(f'  {path}')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
