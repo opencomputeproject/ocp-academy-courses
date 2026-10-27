@@ -1506,7 +1506,6 @@ def render_module(course: dict, module_index: int) -> str:
   // SCORM integration
   const inLMS = !reviewMode && SCORM.init();
   const directModuleLinks = {json.dumps((course.get('scorm') or {}).get('navigation') == 'direct')};
-  const directNextModuleLinks = directModuleLinks || {json.dumps((course.get('scorm') or {}).get('next_module_navigation') == 'direct')};
   var existingStatus = SCORM.getStatus();
   if (!reviewMode && existingStatus !== 'completed' && existingStatus !== 'passed') {{
     SCORM.setIncomplete();

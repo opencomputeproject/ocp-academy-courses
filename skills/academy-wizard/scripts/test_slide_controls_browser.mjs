@@ -25,11 +25,11 @@ let browser;
 try {
   await fs.copyFile(path.join(skill, 'assets/scorm_api.js'), path.join(tmp, 'scorm_api.js'));
   await fs.writeFile(path.join(tmp, 'module2.html'), '<!doctype html><title>Destination</title>');
-  for (const mode of ['guarded', 'direct', 'next-direct']) {
+  for (const mode of ['default', 'direct']) {
     const course = {
       style: 'Slides', course_slug: 'controls-test', course_title: 'Controls test',
       motion_intro: {enabled: false}, ui_labels: {narration_hint: hint},
-      scorm: {version: '1.2', organization: 'multi-sco', ...(mode === 'direct' ? {navigation: 'direct'} : {}), ...(mode === 'next-direct' ? {next_module_navigation: 'direct'} : {})},
+      scorm: {version: '1.2', organization: 'multi-sco', ...(mode === 'direct' ? {navigation: 'direct'} : {})},
       modules: [{id: 1, title: 'Read and Apply the Voltage Ride-Through Envelope', slides: [
         {id: 1, type: 'title', reference_links: [{label: 'Spec · Table 1 · p. 15', url: reference}]},
         {id: 2, type: 'up_next', next_module_number: 2, next_module_title: 'Destination'}
@@ -94,7 +94,20 @@ try {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   const url = name => pathToFileURL(path.join(tmp, name + '.html')).href;
-  for (const name of ['guarded', 'direct', 'next-direct']) {
+  const navigation = page => page.locator('.slide.active .next-module-link').evaluate(link => ({
+    href: link.getAttribute('href'), label: link.getAttribute('aria-label'),
+    color: getComputedStyle(link).backgroundColor,
+    paths: Array.from(link.querySelectorAll('path'), p => p.getAttribute('d'))
+  }));
+  const localContext = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
+  await localContext.route(/^https?:/, route => route.abort());
+  const localPage = await localContext.newPage();
+  await localPage.goto(url('default'));
+  await localPage.locator('#nextBtn').click();
+  const localNavigation = await navigation(localPage);
+  check(localNavigation.color, 'rgb(141, 198, 63)', 'Standalone default shows the green next-module button');
+  await localContext.close();
+  for (const name of ['default', 'direct']) {
     await page.goto(url(name));
     await page.evaluate(() => localStorage.clear());
     await page.reload();
@@ -129,27 +142,16 @@ try {
     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No horizontal overflow');
     await page.setViewportSize({width: 1440, height: 960});
     await page.locator('#nextBtn').click();
-    if (name !== 'guarded') {
-      if (name === 'next-direct') {
-        check(await page.getByRole('link', {name: 'Course home', exact: true}).count(), 0,
-          'Next-module-only approval does not enable Course Home links');
-      }
-      await page.locator('.slide.active .next-module-link').click();
-      await page.waitForURL('**/module2.html');
-      check(page.url(), url('module2'), 'Explicit direct compatibility choice permits next-module navigation');
-    } else {
-      check(await page.locator('.slide.active .next-module-link').count(), 0,
-        'Default multi-SCO LMS replaces the local module link');
-      check(page.url(), url(name), 'Default LMS navigation guard remains intact');
-      check(await page.locator('.slide.active .lms-module-handoff').innerText(),
-        'Continue with Module 2 using the Syllabus in the left sidebar.',
-        'Default LMS handoff displays the syllabus instruction');
-      check(await page.locator('.slide.active .lms-module-handoff').evaluate(note => {
-        const heading = note.previousElementSibling;
-        return heading?.classList.contains('next-module-heading')
-          && note.getBoundingClientRect().top >= heading.getBoundingClientRect().bottom;
-      }), true, 'Default syllabus instruction occupies a separate line below the heading');
+    check(await navigation(page), localNavigation, `${name}: LMS next-module button matches standalone playback`);
+    check(await page.locator('.slide.active .lms-module-handoff').count(), 0,
+      'LMS playback does not substitute Syllabus text for the next-module button');
+    if (name === 'default') {
+      check(await page.getByRole('link', {name: 'Course home', exact: true}).count(), 0,
+        'Default next-module navigation preserves the separate Course Home policy');
     }
+    await page.locator('.slide.active .next-module-link').click();
+    await page.waitForURL('**/module2.html');
+    check(page.url(), url('module2'), 'Next-module button navigates in LMS playback without an opt-in');
     await page.goto(url(name) + '?review=1&slide=2');
     await page.locator('.slide.active .next-module-link').click();
     await page.waitForURL('**/module2.html?review=1&slide=1');

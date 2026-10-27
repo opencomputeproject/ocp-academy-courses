@@ -135,28 +135,18 @@ slides.forEach(s => {
   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
 });
 storeBookmark(); updateNarrationMode();
-// A multi-SCO LMS owns module changes. Replace local page-jump controls with
-// honest instructions instead of presenting a button that refuses the click.
+// Preserve authored module links in standalone and LMS playback.
+// Course Home retains its existing compatibility policy.
 if (inLMS && !reviewMode && !SCORM.isSingleSCO && !directModuleLinks) {
   document.querySelectorAll('a[href]').forEach(link => {
-  if (directNextModuleLinks && link.matches('.next-module-link')) return;
-  const url = new URL(link.getAttribute('href'), location.href);
-  if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {
-    const target = url.pathname.match(/module(\d+)\.html$/);
-    const note = document.createElement('p');
-    note.className = 'lms-module-handoff';
-    note.textContent = target
-      ? 'Continue with Module ' + target[1] + ' using the Syllabus in the left sidebar.'
-      : 'Open Course Home using the Syllabus in the left sidebar.';
-    note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
-    const heading = link.closest('.next-module-heading');
-    if (heading) {
-      heading.after(note);
-      link.remove();
-    } else {
+    const url = new URL(link.getAttribute('href'), location.href);
+    if (url.origin === location.origin && /\/index\.html$/.test(url.pathname)) {
+      const note = document.createElement('p');
+      note.className = 'lms-module-handoff';
+      note.textContent = 'Open Course Home using the Syllabus in the left sidebar.';
+      note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
       link.replaceWith(note);
     }
-  }
   });
 }
 if (reviewMode) document.addEventListener('click', e => {

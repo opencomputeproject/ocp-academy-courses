@@ -30,7 +30,7 @@ fix for unrestricted home navigation.
 
 Docebo accepts SCORM 1.2 and 2004 3rd Edition, but its documentation explicitly says sequencing is not supported. It can convert simple sequencing/linear navigation to platform prerequisites at upload; that is not proof that arbitrary in-course choice requests work. Do not promise that changing to 2004 fixes home-page cards or next-module buttons. Require target-LMS verification of those actions and their tracking before calling a multi-SCO package release-ready.
 
-If the LMS cannot launch the correct next SCO from a course button, retain LMS syllabus navigation with honest UI, or propose a single-SCO course whose own home and module buttons control the pages. The latter keeps internal module organization but changes the LMS syllabus and completion reporting to one tracked activity. Obtain approval for that tradeoff; do not silently collapse modules or record later-module progress against the originally launched SCO.
+Keep the authored green next-module buttons in both local and LMS playback. The LMS Syllabus remains available for arbitrary module selection; it must not replace the course's next-module buttons automatically. Test their destination and tracking in the target LMS and preserve the user's verified deployment behavior. Any change to SCORM version, syllabus organization, or completion reporting remains a separate migration decision.
 
 Primary reference: [Docebo — Uploading and managing SCORM as training material](https://help.docebo.com/hc/en-us/articles/360020128479-Uploading-and-managing-SCORM-as-training-material), especially Introduction, Updating SCORM content and Tracking the progress of SCORM content. Recheck the target LMS documentation when selecting a format; support can change.
 
