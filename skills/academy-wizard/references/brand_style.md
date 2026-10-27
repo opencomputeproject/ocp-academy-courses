@@ -58,3 +58,9 @@ Toggled via `[data-theme="dark"]` on `<html>`. Persisted in `localStorage` (key 
 ## OCP green: two hexes
 
 The CSS uses `--ocp-green: #8DC63F` for chrome (buttons, accents, links, hover states). The official iconography (CDU icon, OCP Academy hex emblem) uses `#80bc00` — a slightly more saturated green. They look similar but aren't identical. Do *not* try to normalize them — each is intentional in its context. When generating new figures in the OCP visual style, use `#8DC63F` for accents and let any embedded vector logos keep their native `#80bc00`.
+
+## Figure size and glossary layering
+
+Frame static diagrams around their actual artwork rather than a fixed 16:9 reservation. Keep a modest source margin and the standard 15–20px displayed white inset; preserve labels and arrows and let the resulting natural height control slide flow. Glossary tooltip bubbles must paint above video controls. The maintained Slides styles raise the complete `.learner-aids` stacking context and then the active pill; raising a pseudo-element alone is insufficient inside a transformed entrance-animation group. Check hover and keyboard focus on long definitions near recordings at desktop and phone widths.
+
+The learner runtime measures desktop glossary bubbles on hover, focus and resize and offsets them within a 16px viewport inset. Preserve this clamping when merging templates; a high z-index does not prevent right-edge clipping. Mobile keeps its maintained fixed inset.

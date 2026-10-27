@@ -1,0 +1,263 @@
+/* OCP Academy motion intro overlay
+   Brand-gradient animation used before index.html menu and each module deck.
+   Text is placed in a flex column, not absolute-positioned line-by-line, so
+   long generated course/module titles cannot collide with the rule/subtitle. */
+:root {
+  --ocp-intro-blue: #343895;
+  --ocp-intro-green: #8DC63F;
+  --ocp-intro-blue-deep: #19194D;
+}
+
+body.has-motion-intro .index-shell,
+body.has-motion-intro .module-badge,
+body.has-motion-intro .deck,
+body.has-motion-intro .controls,
+body.has-motion-intro .progress-bar {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 650ms ease, transform 650ms ease;
+}
+
+body.has-motion-intro.motion-intro-done .index-shell,
+body.has-motion-intro.motion-intro-done .module-badge,
+body.has-motion-intro.motion-intro-done .deck,
+body.has-motion-intro.motion-intro-done .controls,
+body.has-motion-intro.motion-intro-done .progress-bar {
+  opacity: 1;
+  transform: none;
+}
+
+.ocp-motion-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  color: #fff;
+  background: var(--ocp-intro-blue-deep);
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 650ms ease, visibility 650ms ease;
+}
+
+.ocp-motion-intro.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ocp-motion-intro__bg,
+.ocp-motion-intro__grid,
+.ocp-motion-intro__vignette,
+.ocp-motion-intro__outro {
+  position: absolute;
+  inset: 0;
+}
+
+.ocp-motion-intro__bg {
+  background: linear-gradient(135deg,
+    var(--ocp-intro-blue) 0%,
+    var(--ocp-intro-blue) 25%,
+    #4d6c6a 55%,
+    var(--ocp-intro-green) 80%,
+    var(--ocp-intro-green) 100%);
+  background-size: 220% 220%;
+  background-position: 0% 0%;
+  animation: ocpIntroBgShift 8s cubic-bezier(.45,0,.55,1) forwards;
+}
+
+.ocp-motion-intro__grid {
+  opacity: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: ocpIntroGridDrift 8s .2s linear forwards;
+}
+
+.ocp-motion-intro__vignette {
+  background: radial-gradient(ellipse at center,
+    rgba(0,0,0,0) 30%,
+    rgba(0,0,0,.28) 80%,
+    rgba(0,0,0,.45) 100%);
+  pointer-events: none;
+}
+
+.ocp-motion-intro__lockup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(50vw, 640px);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(.92);
+  animation: ocpIntroLogoTravel 8s forwards;
+}
+
+.ocp-motion-intro__lockup img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ocp-motion-intro__title-block {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  width: min(90vw, 1600px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.ocp-motion-intro__eyebrow {
+  font-size: clamp(16px, 1.15vw, 22px);
+  line-height: 1;
+  letter-spacing: .4em;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: clamp(34px, 4.8vh, 54px);
+  text-shadow: 0 1px 12px rgba(0,0,0,.35);
+  opacity: 0;
+  animation: ocpIntroFadeUp .6s 3.3s forwards;
+}
+
+.ocp-motion-intro__title {
+  max-width: 100%;
+  font-size: clamp(52px, 5.42vw, 104px);
+  line-height: .98;
+  font-weight: 800;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0,0,0,.30);
+  opacity: 0;
+  transform: translateY(20px);
+  margin-bottom: clamp(24px, 3vh, 34px);
+  animation: ocpIntroTitleIn 1s 3.9s cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+.ocp-motion-intro__rule {
+  width: clamp(160px, 12.5vw, 240px);
+  height: 3px;
+  background: #fff;
+  opacity: .85;
+  transform: scaleX(0);
+  transform-origin: center;
+  margin-bottom: clamp(26px, 3.2vh, 36px);
+  animation: ocpIntroRuleIn .7s 4.6s cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+.ocp-motion-intro__subtitle {
+  max-width: min(88vw, 1120px);
+  font-size: clamp(15px, 1.46vw, 28px);
+  line-height: 1.45;
+  font-weight: 300;
+  letter-spacing: .18em;
+  color: rgba(255,255,255,.88);
+  text-transform: uppercase;
+  text-shadow: 0 1px 10px rgba(0,0,0,.30);
+  opacity: 0;
+  animation: ocpIntroFadeUp .8s 4.9s forwards;
+}
+
+.ocp-motion-intro__outro {
+  background: #1a3309;
+  opacity: 0;
+  animation: ocpIntroFadeIn .6s 7.4s forwards;
+}
+
+.ocp-motion-intro__skip {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1;
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 999px;
+  background: rgba(0,0,0,.18);
+  color: #fff;
+  font: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.ocp-motion-intro__skip:hover,
+.ocp-motion-intro__skip:focus-visible {
+  background: rgba(0,0,0,.32);
+  outline: none;
+}
+
+@keyframes ocpIntroLogoTravel {
+  0%, 5% {
+    opacity: 0;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(.92);
+  }
+  18.75%, 37.5% {
+    opacity: 1;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  48.75%, 100% {
+    opacity: 1;
+    top: 14%;
+    transform: translate(-50%, -50%) scale(.46);
+  }
+}
+
+@keyframes ocpIntroFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ocpIntroTitleIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ocpIntroRuleIn {
+  to { transform: scaleX(1); }
+}
+
+@keyframes ocpIntroFadeIn {
+  to { opacity: 1; }
+}
+
+@keyframes ocpIntroGridDrift {
+  0%   { opacity: 0; }
+  20%  { opacity: .7; }
+  100% { opacity: .45; background-position: 80px 80px; }
+}
+
+@keyframes ocpIntroBgShift {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+@media (max-width: 760px) {
+  .ocp-motion-intro__lockup { width: min(72vw, 520px); }
+  .ocp-motion-intro__title-block { top: 36%; width: min(92vw, 680px); }
+  .ocp-motion-intro__title { font-size: clamp(38px, 10vw, 76px); }
+  .ocp-motion-intro__subtitle { letter-spacing: .12em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ocp-motion-intro__bg,
+  .ocp-motion-intro__grid,
+  .ocp-motion-intro__lockup,
+  .ocp-motion-intro__eyebrow,
+  .ocp-motion-intro__title,
+  .ocp-motion-intro__rule,
+  .ocp-motion-intro__subtitle,
+  .ocp-motion-intro__outro {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}

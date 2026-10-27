@@ -2,6 +2,12 @@
 
 A great technical course illustrates almost every content slide. The reference OCP NIC 3.0 course only uses figures on module 5 (airflow + thermal/shock fixtures); aim higher — at least half the content slides should have a figure.
 
+## Compact artboards
+
+Use the artwork’s natural proportions. A single-row flow should be a short, wide SVG, not a row stranded in a 1200×675 canvas. Keep modest edge margins and a small gap before an internal teaching statement; retain the displayed white frame, caption alignment, 16px media/caption gap and 24px learner-aid gap. Preserve arrowheads, labels, measurement extents, explanatory notes and credits when fitting bounds. Do not crop imported recordings or reinterpret charts to fill the available area.
+
+For Slides, with Playwright available, `node scripts/fit_svg_artboards.mjs course.json --report bounds.json` measures active authored static SVGs without editing. It ignores a plain white full-canvas background and includes visible labels/strokes. Inspect the findings before using `--apply`; the helper trims substantial vertical canvas excess while retaining horizontal scale. `--margin` and `--min-trim` are explicit source-unit controls, not CSS dimensions. Bounds measurements cannot identify intentional whitespace inside a diagram, and they do not replace visual review. Rerun after regeneration so source builders cannot restore padded canvases.
+
 ## Decide the figure source
 
 **Reuse first.** Source PDFs and PPTX usually contain better, more accurate diagrams than anything AI generation can produce. Architecture diagrams, pinouts, mechanical drawings, photos of hardware — extract them.
@@ -90,6 +96,7 @@ Run this checklist before rendering a module final:
 - Watch or scrub one complete pass in real time. Five static frames do not reveal backward jumps, flicker, momentary overlap, or an unexplained reset between checkpoints. Inspect the final second specifically and verify that no start-state object or restarted subordinate animation reappears.
 - Compare every animated text element and object with its containing shape at every distinct layout state. Require the same 0.75em text clearance used for static SVGs.
 - Keep labels, axes, trend lines, callouts, and chart panels disjoint unless the overlap intentionally encodes a data relationship. Move explanatory cards outside plotting areas rather than covering the chart.
+- Check the outer pixels of white teaching animations in decoded frames **and in the actual slide player**, including enlarged view. Avoid unintended canvas outlines, corner arcs and side seams. The generated-video element uses a white background, no border/shadow and no inner corner radius; the outer card owns framing. A dark underpaint beneath rounded video pixels can create a faint outline even when the encoded file is clean. Fix the source of the artifact rather than cropping or covering it. Keep imported-recording player styling separate.
 - Verify that the poster is a clean, representative frame and that the video is silent and muted. The final encoded frame must show the true end of the teaching animation. If the player loops the asset, any visual reset belongs after that final frame at the media loop boundary, never inside the encoded asset.
 - Run visual QA with browser or system playback muted so testing does not compete with a learner or reviewer listening nearby.
 

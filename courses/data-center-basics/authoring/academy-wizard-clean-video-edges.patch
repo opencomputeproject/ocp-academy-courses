@@ -1,0 +1,50 @@
+--- a/templates/module_styles.css
++++ b/templates/module_styles.css
+@@ -2283,15 +2283,19 @@
+ .slide[data-video-slide="true"] .glossary-strip + .reference-strip {
+   margin-top: 12px;
+ }
+-.slide .figure-panel video.figure-video {
++.slide .figure-panel > video.figure-video {
+   max-height: min(42vh, 490px);
+   width: auto;
+   max-width: 100%;
+   height: auto;
+   display: block;
+   margin: 0 auto;
+-  border-radius: 8px;
+-  background: #121b31;
++  /* Dark underpaint behind rounded video pixels creates faint corner arcs
++     and edge seams in white teaching animations. The outer card owns framing. */
++  border: 0;
++  border-radius: 0;
++  background: #ffffff;
++  box-shadow: none;
+ }
+ .slide .figure-video-controls {
+   position: absolute;
+@@ -2407,6 +2411,14 @@
+   height: auto;
+   display: block;
+   object-fit: contain;
++}
++/* Generated media keeps its clean edge when enlarged. Imported recordings
++   remain inside their separate shared player with its own surface styling. */
++.lightbox-figure > video.figure-video {
++  border: 0;
++  border-radius: 0;
++  background: #ffffff;
++  box-shadow: none;
+ }
+ .lightbox-figure .figure-panel {
+   width: 100%;
+--- a/references/figure_prompts.md
++++ b/references/figure_prompts.md
+@@ -96,6 +96,7 @@
+ - Watch or scrub one complete pass in real time. Five static frames do not reveal backward jumps, flicker, momentary overlap, or an unexplained reset between checkpoints. Inspect the final second specifically and verify that no start-state object or restarted subordinate animation reappears.
+ - Compare every animated text element and object with its containing shape at every distinct layout state. Require the same 0.75em text clearance used for static SVGs.
+ - Keep labels, axes, trend lines, callouts, and chart panels disjoint unless the overlap intentionally encodes a data relationship. Move explanatory cards outside plotting areas rather than covering the chart.
++- Check the outer pixels of white teaching animations in decoded frames **and in the actual slide player**, including enlarged view. Avoid unintended canvas outlines, corner arcs and side seams. The generated-video element uses a white background, no border/shadow and no inner corner radius; the outer card owns framing. A dark underpaint beneath rounded video pixels can create a faint outline even when the encoded file is clean. Fix the source of the artifact rather than cropping or covering it. Keep imported-recording player styling separate.
+ - Verify that the poster is a clean, representative frame and that the video is silent and muted. The final encoded frame must show the true end of the teaching animation. If the player loops the asset, any visual reset belongs after that final frame at the media loop boundary, never inside the encoded asset.
+ - Run visual QA with browser or system playback muted so testing does not compete with a learner or reviewer listening nearby.
+ 
