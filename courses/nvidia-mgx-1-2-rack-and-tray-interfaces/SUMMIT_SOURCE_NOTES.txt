@@ -1,0 +1,170 @@
+MGX 1.2 course: proposed 2026 Summit integration
+Review date: October 20, 2026
+Status: APPROVED by the user on October 20, 2026 and implemented.
+Measured revised narration: 68.18 minutes. Human listening review is pending.
+
+RECOMMENDATION
+
+Incorporate selected teaching from Jared Huntington's MGX Power Rack Reference
+Design presentation. Keep the course focused on MGX 1.2 rack and tray interfaces.
+The presentation explains the surrounding power architecture and why selected
+power interfaces need liquid cooling; it does not revise the MGX 1.2 standard.
+
+Reviewed sources:
+- All 15 PDF pages of MGX Power Rack Reference Design.pdf, including the diagrams.
+- The supplied timestamped transcript, 00:05 through 16:29.
+- The current 60-slide course source and relevant MGX 1.2 specification pages.
+- OCP's public recorded-content listing, which confirms the title, presenter,
+  video, and official slide links. Direct YouTube fetching was throttled;
+  content analysis therefore uses the supplied slides and transcript rather
+  than claiming to have watched the recording.
+
+Source URLs:
+Video: https://www.youtube.com/watch?v=hxcAqFTui8M
+OCP listing: https://www.opencompute.org/events/ocp-summit/2026-ocp-global-summit/recorded-content/
+Official slides: https://drive.google.com/file/d/1JRgaduxjGl3dCk-SczzF5fCjzF1abq-N/view
+Alternate official slides: https://www.dropbox.com/scl/fi/7n91h14uaf4rha7miazqq/MGX-Power-Rack-Reference-Design.pdf?dl=0&rlkey=72qkxm67mhbubeca6kricr367
+MGX 1.2 specification: https://www.opencompute.org/wp-content/uploads/2026/10/MGX-Accelerated-Computing-Rack-and-Trays-Specification-1.2.0-Final.pdf
+
+All page references below are PDF viewer pages, including the cover.
+Existing slide references below identify the current course before insertion.
+
+1. M1S3 - EXISTING SCOPE SLIDE
+
+Add a short sentence and a source reference explaining that the power rack is
+system context adjacent to the defined rack/tray interfaces. Preserve the
+existing statement that power shelves and power cabling lie outside the
+contribution's scope.
+
+Sources: Summit pp. 2-4 / video 00:30-04:39; MGX specification p. 9.
+Do not import the speaker's product timeline or approximate 220 kW crossover
+as a universal limit for all MGX implementations.
+
+2. AFTER CURRENT M4S2 - NEW ARCHITECTURE SLIDE
+
+Proposed title: Trace the conversion before applying the interface rating
+Estimated narration: approximately 90 seconds.
+
+Teaching points:
+- Follow AC input to an AC/DC power shelf in the power rack, across an 800 VDC
+  link, into the compute-rack DC/DC shelf, then to the depicted 54 VDC busbar.
+- Compare the common-bus approach with NVIDIA's selected repeating point-to-point
+  blocks. Explain the design tradeoff: simpler reusable strings, but shelf
+  allocation and redundancy remain coupled.
+- Locate the 125 A link and the MGX low-voltage busbar at different stages.
+  Do not compare their current ratings as though they describe one interface.
+- Attribute this arrangement to the Summit reference design, not a universal
+  MGX 1.2 requirement.
+
+Visual plan: redraw the source's power path as a clean course figure, with
+separate power-rack and compute-rack boundaries. A silent 20-second loop can
+reveal the conversion stages, highlight the 800 VDC link, and finish at the
+54 VDC busbar. Preserve voltage labels and topology; no invented loss model,
+current-sharing behavior, or efficiency figures. Use the existing default
+short-loop playback mode, not a newly assumed synchronized mode.
+
+Sources: Summit pp. 3-4 / video 02:06-04:39, and p. 9 / 09:28-10:17.
+Retain the MGX specification's own 48 VDC nominal, 40-59.5 VDC range and
+conditioned 5000 A requirement on current M4S3 (specification pp. 33-34).
+
+3. AFTER CURRENT M5S4 - NEW POWER-COOLING CASE
+
+Proposed title: Follow the heat to the power-shelf contact
+Estimated narration: approximately 90 seconds.
+
+Teaching points:
+- Removing shelf airflow changes the thermal situation at the busbar contact.
+  Cooling the shelf's other components does not establish contact temperature.
+- Explain the illustrated liquid-cooled DC/DC shelf, its rear electrical and
+  fluid interfaces, and the liquid-cooled busbar clip.
+- Treat the 1RU/one-PSU arrangement and higher-level redundancy choice as
+  NVIDIA reference-design decisions. Keep the electrical blind-mate connector
+  distinct from the UQD/UQDB liquid engagement mechanism already taught.
+- Ask for evidence at the actual connector, assembly, and cooling boundary.
+
+Visual plan: use an attributed crop of the rear shelf view (p. 11) beside the
+clip cutaway (p. 12), removing the Summit slide header/footer from the teaching
+figure and preserving technical labels and TBD markings. A restrained highlight
+can trace the contact region to its liquid-cooling path. Do not invent thermal
+simulation, connector dimensions, or interface compatibility.
+
+Sources: Summit pp. 10-12 / video 10:22-14:04.
+Retain current M5S3's distinction between the fanless tray's 100% liquid cooling
+and the MGX rack-level 85% heat-capture requirement. The power-shelf roadmap
+does not replace either existing specification boundary.
+
+4. M6S5 AND M6S7 - LIMITED APPLICATION CHANGES
+
+M6S5: briefly distinguish static thermal qualification from transient input-power
+behavior. Use the IPS on/off plot as a source-linked example or optional resource,
+not evidence that every workload/facility will have flat input power.
+
+M6S7: add a review prompt asking which voltage domain, connector, redundancy
+configuration, thermal boundary, and evidence source apply. Preserve the current
+mechanical and fluid acceptance exercise. Keep the new checks conceptual; the
+Summit talk is not a new connector qualification specification.
+
+Sources: Summit pp. 7-8 / video 06:49-09:23, and pp. 10-12 / 10:22-14:04.
+These changes need only a brief narration revision, not another module.
+
+5. REFERENCES AND OPTIONAL FOLLOW-UP
+
+Add Jared Huntington's name, NVIDIA affiliation, presentation title, 2026 OCP
+Global Summit, official recording, and slides to source metadata and closing
+resources. Place timestamped recording references on the affected teaching
+slides; use page-specific slide labels rather than a single generic final link.
+
+Useful recording entry points:
+- 00:30: motivation and AC-to-800 VDC transition.
+- 02:06: point-to-point versus common bus.
+- 06:49: capacitor packing and intelligent power smoothing.
+- 09:28: 125 A continuous connector discussion.
+- 10:22: second-generation power rack and liquid-cooled supplies.
+- 13:20: liquid-cooled busbar clip.
+- 14:07: end-of-row power center.
+- 15:11: proposed standardization actions.
+
+Keep the complete approximately 16.5-minute recording optional. The full power
+center, capacitor optimization, AC whip design, battery chemistry, and roadmaps
+would make a separate power-architecture lesson, rather than an expansion of
+the tray-interface modules. No substantive changes are recommended for M2 or M3.
+
+FACTS AND LIMITS TO CARRY INTO AUTHORING
+
+- Specification scope: MGX 1.2 p. 9 excludes power shelves and IO/power cabling.
+  Its busbar is 48 VDC nominal, 40-59.5 VDC, with a conditioned 5000 A requirement
+  (pp. 33-34). The Summit 800 VDC link is upstream of compute-rack DC/DC conversion.
+- Clip rating: Summit p. 12 says 2036 A; the transcript says approximately 2000 A.
+  Use the precise slide value only as an attributed component example. It does
+  not replace the rating of the whole busbar assembly. The '+11% RMS heating'
+  statement lacks enough stated comparison conditions for a general design rule.
+- Connector rating: distinguish the speaker's 125 A continuous operating claim
+  from 157 A connector/breaker labels. Do not turn the explanation into universal
+  jurisdiction-specific installation or derating instructions.
+- Cooling roadmap: the p. 10 'moving to' 100% liquid cooling language and p. 11
+  'TBD' electrical/management labels must remain visible in their interpretation.
+  These are not evidence of a released, dimensionally interoperable interface.
+- Standards status: the p. 14 call to action asks the industry to evaluate
+  connectors, block sizes, current shaping, and cooling. It does not establish
+  that those proposals are adopted OCP requirements.
+- Generation numbers: 660 kW / 60 seconds and 880 kW / 90 seconds are described
+  configurations, not MGX 1.2's universal rack ratings. Keep generation, redundancy,
+  BBU population, and voltage-conversion boundaries attached to any reuse.
+- Transcript corrections: 'PowerShell' means power shelf; 'silicon' refers to
+  silicone insulation on the slide; energy storage is 65 to 100 J/kW. The speaker
+  corrects the power-floor/peak-limiting explanation at 08:52-09:01; use the
+  corrected explanation and chart, not the earlier verbal reversal.
+
+APPROVED SCOPE (ORIGINAL ESTIMATES RETAINED)
+
+Retain six modules. Add two slides, taking the course from 60 to 62 slides.
+Allow roughly 3-4 additional minutes of narration including the small existing-
+slide edits: about 68-69 minutes narrated in total, and approximately 95 minutes
+planned learner time. These are authoring estimates until revised audio is
+measured; the optional full recording is excluded from core duration.
+
+Regenerate only affected/new narration, produce the new media, update source
+references and duration metadata, and check shifted media/quiz references.
+Preserve the current course title, technical focus, six-module organization,
+SCORM 1.2 format, and existing delivered content outside the approved revisions.
+This scope was approved October 20, 2026 and implemented. See the current validation record for measured durations and verification results.

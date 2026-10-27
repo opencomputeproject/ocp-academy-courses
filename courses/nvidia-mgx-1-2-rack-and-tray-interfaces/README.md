@@ -3,29 +3,28 @@
 [Take the course on OCP Academy](https://academy.opencompute.org/learn/courses/87/nvidia-mgx-12-rack-and-tray-interfaces).
 
 A standalone, deep technical Slides course on MGX 1.2 mechanical, electrical,
-liquid, and module interfaces. Six modules contain 60 narrated slides, six silent
+liquid, and module interfaces. Six modules contain 62 narrated slides, seven silent
 teaching videos, twelve knowledge-check questions, nine first-use terminology
-aids, and a fillable acceptance worksheet. Planned learner time is about 90 minutes;
-measured narration is 64.71 minutes (65 minutes rounded).
+aids, and a fillable acceptance worksheet. Planned learner time is about 95 minutes;
+measured narration is 68.18 minutes (68 minutes rounded).
 
 | Module | Scope | Narration, nearest minute |
 |---|---|---|
 | 1 | Rack geometry, datums, and alignment | 11 min |
 | 2 | Tray architecture, board envelopes, and DC-SCM | 11 min |
 | 3 | Modular I/O bay dimensions and retention | 11 min |
-| 4 | Busbar electrical design and grounding | 10 min |
-| 5 | Liquid cooling and blind-mate mechanics | 11 min |
-| 6 | Load cases, qualification, and integration review | 11 min |
+| 4 | Busbar electrical design and grounding | 12 min |
+| 5 | Liquid cooling and blind-mate mechanics | 12 min |
+| 6 | Load cases, qualification, and integration review | 12 min |
 
-
-Durations above measure narration. Module home cards allow about 15 minutes each
-for playback, drawing review, quizzes, and acceptance work.
+Durations above measure narration. Module home cards allow about 15 minutes for Modules 1-3 and 6, 18 minutes for
+Module 4, and 17 minutes for Module 5, including review and learner interaction.
 
 ## Editable source
 
 - `course.json` is the authoritative content, narration, quiz, and media source.
-- `audio/module*/` retains all 60 approved narration scripts; generated WAV files are excluded.
-- `figures/` retains source-derived figures, six teaching MP4s, and their posters.
+- `audio/module*/` retains all 62 approved narration scripts; generated WAV files are excluded.
+- `figures/` retains source-derived figures, seven teaching MP4s, and their posters.
 - `animations/` retains the media builder, measured master timelines, and 241
   source-derived HPM poses needed to reproduce the CAD sequence.
 - `assets/fonts/` supplies local Open Sans fonts and their OFL license.
@@ -83,3 +82,62 @@ preserves those qualifications and does not invent an unprovided brass zinc limi
 
 Automated QA does not substitute for technical review, narration listening, or
 target-LMS acceptance. See [QA.md](QA.md) for the evidence and remaining review.
+
+## October 2026 Summit integration
+
+The approved update adds M4S3 (AC/800 VDC/54 VDC conversion boundaries) and M5S5
+(power-shelf contact cooling). M1S3 and the M6 qualification/capstone teaching now
+include targeted context. Source metadata and affected teaching slides cite
+Jared Huntington, NVIDIA, *MGX Power Rack Reference Design*, 2026 OCP Global
+Summit, with page-specific deck links and timestamped recording links. The
+official public PDF was checked against the supplied local copy. The full
+recording remains optional.
+
+The Summit material is a reference design and roadmap. MGX 1.2 remains the
+requirements source for this course's rack/tray interfaces. No substantive
+changes were made to Modules 2 or 3. See `SUMMIT_SOURCE_NOTES.txt` and
+`SUMMIT_FIGURES.json` for source boundaries and figure provenance.
+
+## Companion OCP references
+
+The first key teaching points link to current discovery destinations instead of
+pinning companion specifications to a particular revision:
+
+| Teaching point | Companion resource |
+|---|---|
+| M1S4 — rack interfaces | [Open Rack / ORv3 Academy learning plan](https://academy.opencompute.org/learn/learning-plans/4/open-rack-and-orv3-past-present-and-future) |
+| M2S5 — micro MGX board form factor | [M-DNO / M-SDNO contributions](https://www.opencompute.org/contributions/?s=SDNO) |
+| M2S7 — management-module shape and pinout | [DC-SCM / DC-SCI contributions](https://www.opencompute.org/contributions/?s=SCM) |
+| M3S5 — Type C power-supply depth option | [M-CRPS contributions](https://www.opencompute.org/contributions/?s=CRPS) |
+| M5S3 — liquid connector locations | [UQD / UQDB contributions](https://www.opencompute.org/contributions/?s=UQD) and [MQD / MQDB contributions](https://www.opencompute.org/contributions/?s=MQD) |
+| M5S4 — working fluid and Table 4 conditions | [Cooling Fluids in Direct Liquid Cooling (DLC) · OCP Academy](https://academy.opencompute.org/learn/courses/52/cooling-fluids-in-direct-liquid-cooling-dlc) |
+
+These companion links appear once at the relevant teaching point. MGX 1.2's
+page-specific primary citations and specified interface revisions remain
+applicable; a newer catalog entry does not automatically change those requirements.
+All seven destinations were verified on the official sites on October 20, 2026.
+
+The SDNO catalog filter includes M-DNO and M-SDNO contributions. M2S5 retains
+the MGX specification's DC-MHS DNO Type 2 outline/mounting reference; the related
+M-SDNO catalog material does not imply an additional MGX compliance claim.
+
+## Current-runtime rebuild — October 27, 2026
+
+The repository build uses its bundled current AcademyWizard by default. Its
+maintained default preserves green double-chevron next-module links
+in standalone, review, and LMS playback; the course needs no navigation override.
+All 62 narration tracks, seven teaching videos, approved slide/assessment content,
+resource URLs, and SCORM 1.2 multi-SCO identifiers remain unchanged. Review links
+retain review mode and open the next module at slide 1. Each module retains its
+quiz attempts and independent bookmark/completion behavior.
+
+[lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json) export the
+existing approved descriptions and learner-time estimates separately from this
+maintenance README. The source `lms_catalog` records 95 minutes of learner time;
+68.18 minutes is narration runtime. The ZIP sidecars are catalog copy only and
+are excluded from the SCORM runtime. `RUNTIME_REBUILD_2026-10-27.json` records the
+builder hashes. See QA.md for navigation tests and target-LMS limits.
+
+The course owner confirmed successful next-module advancement and LMS progress
+recording for the October 27 delivered build. The receipt records that report and
+the delivered ZIP hash. No course-specific navigation override is required.

@@ -162,9 +162,9 @@ def force(t,D):
     note(im,'Illustrative simultaneous maxima. Derived arithmetic is separate from measured force and structural qualification.')
     return im
 
-FUNCTIONS={'rack_build_up':(rack,1,4),'hpm_exploded':(hpm,2,4),'bay_depth_cases':(depth,3,5),'busbar_layers':(busbar,4,6),'blind_mate_float':(float_mate,5,5),'force_budget':(force,6,3)}
+FUNCTIONS={'rack_build_up':(rack,1,4),'hpm_exploded':(hpm,2,4),'bay_depth_cases':(depth,3,5),'busbar_layers':(busbar,4,7),'blind_mate_float':(float_mate,5,6),'force_budget':(force,6,3)}
 def config(name):
-    c=json.loads((ROOT/'course.json').read_text());fun,m,s=FUNCTIONS[name];sl=c['modules'][m-1]['slides'][s-1]
+    c=json.loads((ROOT/'course.json').read_text());fun,m,s=FUNCTIONS[name];sl=next(slide for slide in c['modules'][m-1]['slides'] if Path(slide.get('figure',{}).get('path','')).stem==name)
     if sl['figure'].get('sync_to_narration'):
         audio = ROOT/sl['audio']['wav_file']
         if audio.exists():
@@ -196,7 +196,7 @@ def encode(name):
     # Review five required positions and transition-adjacent positions, in native resolution.
     positions=sorted(set([0,D*.25,D*.5,D*.75,(count-1)/FPS]+[D*f+d for f in [.23,.25,.28,.37,.44,.46,.48,.49,.59,.63,.68,.82] for d in [-1/FPS,1/FPS] if 0<D*f+d<D]))
     for i,t in enumerate(positions):fun(t,D).save(QA/f'{name}_{i:02}.png')
-    record={'name':name,'module':FUNCTIONS[name][1],'slide':FUNCTIONS[name][2],'master_duration':D,'encoded_duration':count/FPS,'frame_count':count,'fps':FPS,'resolution':[W,H],'sync_to_narration':bool(slide['figure'].get('sync_to_narration')),'timeline_method':'Measured final WAV; scene landmarks weighted to narration paragraphs, held conclusion','lossless_source_review_seconds':positions,'codec':'libx264 CRF 8, slow, yuv420p'}
+    record={'name':name,'module':FUNCTIONS[name][1],'slide':slide['id'],'master_duration':D,'encoded_duration':count/FPS,'frame_count':count,'fps':FPS,'resolution':[W,H],'sync_to_narration':bool(slide['figure'].get('sync_to_narration')),'timeline_method':'Measured final WAV; scene landmarks weighted to narration paragraphs, held conclusion','lossless_source_review_seconds':positions,'codec':'libx264 CRF 8, slow, yuv420p'}
     (QA/(name+'_timeline.json')).write_text(json.dumps(record,indent=2))
     print('Completed',name,flush=True)
 
