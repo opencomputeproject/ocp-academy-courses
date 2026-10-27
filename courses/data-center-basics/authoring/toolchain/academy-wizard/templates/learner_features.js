@@ -1,5 +1,33 @@
 // This template runs inside the module closure. Controls do not modify defaults.
 
+const authoredHeadingSizes = new WeakMap();
+function fitHeadingWords() {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  if (!context) return;
+  document.querySelectorAll('.slide-title, .hero-title').forEach(heading => {
+    if (!authoredHeadingSizes.has(heading)) authoredHeadingSizes.set(heading, heading.style.fontSize);
+    heading.style.fontSize = authoredHeadingSizes.get(heading);
+    const width = heading.clientWidth;
+    if (!width) return;
+    const style = getComputedStyle(heading);
+    context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    const tracking = parseFloat(style.letterSpacing) || 0;
+    const words = typeof Intl.Segmenter === 'function'
+      ? Array.from(new Intl.Segmenter(document.documentElement.lang || 'en', {granularity: 'word'}).segment(heading.textContent))
+          .filter(segment => segment.isWordLike).map(segment => segment.segment)
+      : heading.textContent.trim().split(/[\s\u2010-\u2015-]+/);
+    const widest = Math.max(0, ...words.map(word => {
+      const text = style.textTransform === 'uppercase' ? word.toUpperCase() : word;
+      return context.measureText(text).width + Math.max(0, Array.from(text).length - 1) * tracking;
+    }));
+    // Preserve authored type sizes unless a single word cannot fit its container.
+    if (widest > width) heading.style.fontSize = `${parseFloat(style.fontSize) * width / widest * .99}px`;
+  });
+}
+fitHeadingWords();
+document.fonts?.ready.then(fitHeadingWords);
+window.addEventListener('resize', fitHeadingWords);
 // Keep desktop glossary bubbles inside the viewport, including rightmost pills.
 function fitGlossaryTooltip(chip) {
   if (!chip) return;
@@ -106,24 +134,20 @@ slides.forEach(s => {
   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
 });
 storeBookmark(); updateNarrationMode();
-// Standard SCORM 1.2 does not switch the LMS's active SCO by page hyperlink.
-if (inLMS && !SCORM.isSingleSCO && !directModuleLinks && !SCORM.requestChoice) {
-  document.querySelectorAll('a.next-module-link[href]').forEach(link => {
-    const target = link.getAttribute('href').match(/^module(\d+)\.html$/);
-    if (!target) return;
-    const note = document.createElement('p'); note.className = 'lms-next-instruction';
-    note.textContent = 'Continue with Module ' + target[1] + ' using your LMS course navigation.';
-    link.replaceWith(note);
+// Preserve authored module links in standalone and LMS playback.
+// Course Home retains its existing compatibility policy.
+if (inLMS && !reviewMode && !SCORM.isSingleSCO && !directModuleLinks) {
+  document.querySelectorAll('a[href]').forEach(link => {
+    const url = new URL(link.getAttribute('href'), location.href);
+    if (url.origin === location.origin && /\/index\.html$/.test(url.pathname)) {
+      const note = document.createElement('p');
+      note.className = 'lms-module-handoff';
+      note.textContent = 'Open Course Home using the Syllabus in the left sidebar.';
+      note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
+      link.replaceWith(note);
+    }
   });
-} else if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener('click', e => {
-  const link = e.target.closest('a[href]'); if (!link) return;
-  const url = new URL(link.getAttribute('href'), location.href);
-  if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {
-    const target = url.pathname.match(/\/module(\d+)\.html$/); e.preventDefault();
-    if (target && SCORM.requestChoice && SCORM.requestChoice('ITEM_MODULE'+target[1])) return;
-    lmsNote.hidden = false;
-  }
-});
+}
 if (reviewMode) document.addEventListener('click', e => {
   const link = e.target.closest('a[href]'); if (!link) return;
   const url = new URL(link.href);

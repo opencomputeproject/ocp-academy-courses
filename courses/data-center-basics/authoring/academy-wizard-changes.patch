@@ -806,6 +806,154 @@
 +    rows=''.join(f'''<div class="matching-row"><label for="{e(q['id']+'_'+p['id'])}">{e(p['prompt'])}</label><select id="{e(q['id']+'_'+p['id'])}" data-prompt-id="{e(p['id'])}">{options_html}</select></div>''' for p in pairs)
 +    data=e(json.dumps(pairs,ensure_ascii=False))
 +    return f'''<div class="quiz-card matching-card animate-in" data-question-id="{e(q['id'])}" data-matching="true" data-pairs="{data}" data-correct-feedback="{e(q['feedback_correct'])}" data-incorrect-feedback="{e(q['feedback_incorrect'])}"><p class="quiz-question">{e(q['prompt'])}</p><div class="matching-rows">{rows}</div><div class="quiz-actions"><button class="quiz-submit" type="button">Submit</button><button class="quiz-retry" type="button">Retry</button></div><div class="quiz-feedback" aria-live="polite"></div></div>'''
+--- a/scripts/test_slide_controls_browser.mjs
++++ b/scripts/test_slide_controls_browser.mjs
+@@ -25,11 +25,11 @@
+ try {
+   await fs.copyFile(path.join(skill, 'assets/scorm_api.js'), path.join(tmp, 'scorm_api.js'));
+   await fs.writeFile(path.join(tmp, 'module2.html'), '<!doctype html><title>Destination</title>');
+-  for (const mode of ['default', 'direct']) {
++  for (const direct of [false, true]) {
+     const course = {
+       style: 'Slides', course_slug: 'controls-test', course_title: 'Controls test',
+       motion_intro: {enabled: false}, ui_labels: {narration_hint: hint},
+-      scorm: {version: '1.2', organization: 'multi-sco', ...(mode === 'direct' ? {navigation: 'direct'} : {})},
++      scorm: {version: '1.2', organization: 'multi-sco', ...(direct ? {navigation: 'direct'} : {})},
+       modules: [{id: 1, title: 'Read and Apply the Voltage Ride-Through Envelope', slides: [
+         {id: 1, type: 'title', reference_links: [{label: 'Spec · Table 1 · p. 15', url: reference}]},
+         {id: 2, type: 'up_next', next_module_number: 2, next_module_title: 'Destination'}
+@@ -38,7 +38,7 @@
+     const html = execFileSync(process.env.PYTHON || 'python3', ['-c', render, scripts], {
+       input: JSON.stringify(course), encoding: 'utf8'
+     });
+-    await fs.writeFile(path.join(tmp, mode + '.html'), html);
++    await fs.writeFile(path.join(tmp, direct ? 'direct.html' : 'guarded.html'), html);
+   }
+   const videoCourse = {
+     style: 'Slides', course_slug: 'video-seek-test', course_title: 'Video seek test',
+@@ -56,30 +56,6 @@
+   mobileTitle.modules[0].slides[0].subtitle = 'Coordinate what the facility must carry, clear, connect, and adapt.';
+   await fs.writeFile(path.join(tmp, 'mobile-title.html'), execFileSync(process.env.PYTHON || 'python3',
+     ['-c', render, scripts], {input: JSON.stringify(mobileTitle), encoding: 'utf8'}));
+-  const mobileTeaching = {
+-    style: 'Slides', course_slug: 'mobile-teaching-test', course_title: 'Teaching layout',
+-    motion_intro: {enabled: false},
+-    term_glossary: [{id: 'fungibility', term: 'Fungibility', tooltip: 'Equivalent components can be substituted without changing the required function.'}],
+-    modules: [{id: 1, title: 'Teaching layout', slides: [
+-      {id: 1, type: 'title'},
+-      {id: 2, type: 'content_bullets', title: 'Choose interchangeable components', mobile_scroll: true,
+-        bullets: [{bold_lead: 'Fungibility', text: 'Check the required function before making a substitution.'}],
+-        term_refs: ['fungibility']},
+-      {id: 3, type: 'course_complete'}
+-    ]}]
+-  };
+-  await fs.writeFile(path.join(tmp, 'mobile-teaching.html'), execFileSync(process.env.PYTHON || 'python3',
+-    ['-c', render, scripts], {input: JSON.stringify(mobileTeaching), encoding: 'utf8'}));
+-  const longWord = structuredClone(mobileTeaching);
+-  longWord.language = 'en-US';
+-  longWord.modules[0].slides[1].title = 'Infrastructure';
+-  await fs.writeFile(path.join(tmp, 'long-word.html'), execFileSync(process.env.PYTHON || 'python3',
+-    ['-c', render, scripts], {input: JSON.stringify(longWord), encoding: 'utf8'}));
+-  const cjkTitle = structuredClone(longWord);
+-  cjkTitle.language = 'zh-CN';
+-  cjkTitle.modules[0].slides[1].title = '\u5149\u5b66\u8fde\u63a5\u4e0e\u57fa\u7840\u8bbe\u65bd';
+-  await fs.writeFile(path.join(tmp, 'cjk-title.html'), execFileSync(process.env.PYTHON || 'python3',
+-    ['-c', render, scripts], {input: JSON.stringify(cjkTitle), encoding: 'utf8'}));
+   browser = await chromium.launch({headless: true, args: ['--mute-audio']});
+   const context = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
+   await context.route(/^https?:/, route => route.abort());
+@@ -94,20 +70,7 @@
+   const errors = [];
+   page.on('pageerror', e => errors.push(e.message));
+   const url = name => pathToFileURL(path.join(tmp, name + '.html')).href;
+-  const navigation = page => page.locator('.slide.active .next-module-link').evaluate(link => ({
+-    href: link.getAttribute('href'), label: link.getAttribute('aria-label'),
+-    color: getComputedStyle(link).backgroundColor,
+-    paths: Array.from(link.querySelectorAll('path'), p => p.getAttribute('d'))
+-  }));
+-  const localContext = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
+-  await localContext.route(/^https?:/, route => route.abort());
+-  const localPage = await localContext.newPage();
+-  await localPage.goto(url('default'));
+-  await localPage.locator('#nextBtn').click();
+-  const localNavigation = await navigation(localPage);
+-  check(localNavigation.color, 'rgb(141, 198, 63)', 'Standalone default shows the green next-module button');
+-  await localContext.close();
+-  for (const name of ['default', 'direct']) {
++  for (const name of ['guarded', 'direct']) {
+     await page.goto(url(name));
+     await page.evaluate(() => localStorage.clear());
+     await page.reload();
+@@ -142,16 +105,14 @@
+     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No horizontal overflow');
+     await page.setViewportSize({width: 1440, height: 960});
+     await page.locator('#nextBtn').click();
+-    check(await navigation(page), localNavigation, `${name}: LMS next-module button matches standalone playback`);
+-    check(await page.locator('.slide.active .lms-module-handoff').count(), 0,
+-      'LMS playback does not substitute Syllabus text for the next-module button');
+-    if (name === 'default') {
+-      check(await page.getByRole('link', {name: 'Course home', exact: true}).count(), 0,
+-        'Default next-module navigation preserves the separate Course Home policy');
++    await page.locator('.slide.active .next-module-link').click();
++    if (name === 'direct') {
++      await page.waitForURL('**/module2.html');
++      check(page.url(), url('module2'), 'Explicit direct compatibility choice permits next-module navigation');
++    } else {
++      check(page.url(), url(name), 'Default LMS navigation guard remains intact');
++      check(await page.locator('.lms-navigation-note').isVisible(), true, 'Guard retains syllabus instruction');
+     }
+-    await page.locator('.slide.active .next-module-link').click();
+-    await page.waitForURL('**/module2.html');
+-    check(page.url(), url('module2'), 'Next-module button navigates in LMS playback without an opt-in');
+     await page.goto(url(name) + '?review=1&slide=2');
+     await page.locator('.slide.active .next-module-link').click();
+     await page.waitForURL('**/module2.html?review=1&slide=1');
+@@ -172,45 +133,6 @@
+   });
+   check(titleLayout, {inside:true,belowBadge:true,scrollableEnd:true},
+     'Long mobile title without resources fits, clears badge and scrolls above controls');
+-  for (const width of [320, 390, 768]) {
+-    await page.setViewportSize({width, height: 800});
+-    await page.goto(url('mobile-teaching') + '?review=1&slide=2');
+-    const teachingLayout = await page.evaluate(() => {
+-      const slide = document.querySelector('.slide.active');
+-      const badge = document.querySelector('.module-badge').getBoundingClientRect();
+-      const title = slide.querySelector('.slide-title').getBoundingClientRect();
+-      return {slideTop: slide.getBoundingClientRect().top, titleClearsBadge: title.top >= badge.bottom};
+-    });
+-    check(teachingLayout, {slideTop:80, titleClearsBadge:true},
+-      `Teaching content clears the fixed badge at ${width}px`);
+-    if (width <= 700) {
+-      const chip = page.locator('.slide.active .glossary-chip');
+-      await chip.focus();
+-      check(await chip.evaluate(el => getComputedStyle(el, '::after').bottom), '128px',
+-        'Mobile glossary definition sits above the 112px control bar');
+-    }
+-  }
+-  await page.setViewportSize({width:320,height:640});
+-  await page.goto(url('long-word') + '?review=1&slide=2');
+-  await page.evaluate(() => document.fonts.ready);
+-  await page.evaluate(() => document.getAnimations().forEach(animation => {
+-    if (Number.isFinite(animation.effect.getTiming().iterations)) {
+-      try { animation.finish(); } catch (_) {}
+-    }
+-  }));
+-  check(await page.locator('.slide.active .slide-title').evaluate(heading => {
+-    const range = document.createRange(); range.selectNodeContents(heading);
+-    return Array.from(range.getClientRects()).every(box => box.left >= 24 && box.right <= innerWidth - 24);
+-  }), true, 'A long heading word fits a narrow screen without breaking mid-word');
+-  await page.setViewportSize({width:1440,height:960});
+-  await page.waitForFunction(() => document.querySelector('.slide.active .slide-title').style.fontSize === '');
+-  check(await page.locator('.slide.active .slide-title').evaluate(heading => heading.style.fontSize), '',
+-    'Widening restores the authored heading size');
+-  await page.setViewportSize({width:320,height:640});
+-  await page.goto(url('cjk-title') + '?review=1&slide=2');
+-  await page.evaluate(() => document.fonts.ready);
+-  check(await page.locator('.slide.active .slide-title').evaluate(heading => heading.style.fontSize), '',
+-    'CJK word segmentation preserves naturally wrapping title typography');
+   await page.setViewportSize({width:1440,height:960});
+   await page.addInitScript(() => {
+     window.Audio = function() {
 --- a/templates/index_styles.css
 +++ b/templates/index_styles.css
 @@ -267,3 +267,6 @@
@@ -815,33 +963,6 @@
 +
 +/* Hidden learner controls must override component display rules. */
 +[hidden]{display:none!important}
---- a/templates/learner_features.js
-+++ b/templates/learner_features.js
-@@ -106,11 +106,22 @@
-   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
- });
- storeBookmark(); updateNarrationMode();
--if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener('click', e => {
-+// Standard SCORM 1.2 does not switch the LMS's active SCO by page hyperlink.
-+if (inLMS && !SCORM.isSingleSCO && !directModuleLinks && !SCORM.requestChoice) {
-+  document.querySelectorAll('a.next-module-link[href]').forEach(link => {
-+    const target = link.getAttribute('href').match(/^module(\d+)\.html$/);
-+    if (!target) return;
-+    const note = document.createElement('p'); note.className = 'lms-next-instruction';
-+    note.textContent = 'Continue with Module ' + target[1] + ' using your LMS course navigation.';
-+    link.replaceWith(note);
-+  });
-+} else if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener('click', e => {
-   const link = e.target.closest('a[href]'); if (!link) return;
-   const url = new URL(link.getAttribute('href'), location.href);
-   if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {
--    e.preventDefault(); lmsNote.hidden = false;
-+    const target = url.pathname.match(/\/module(\d+)\.html$/); e.preventDefault();
-+    if (target && SCORM.requestChoice && SCORM.requestChoice('ITEM_MODULE'+target[1])) return;
-+    lmsNote.hidden = false;
-   }
- });
- if (reviewMode) document.addEventListener('click', e => {
 --- a/templates/source_extensions.css
 +++ b/templates/source_extensions.css
 @@ -0,0 +1,47 @@
