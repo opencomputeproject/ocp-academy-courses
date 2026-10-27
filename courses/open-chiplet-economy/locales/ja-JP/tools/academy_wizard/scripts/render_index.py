@@ -290,9 +290,6 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
   // The default start link is limited to the first module. It is not an
   // arbitrary-SCO navigation API and never infers or writes module progress.
   const startLink = document.querySelector('.index-start-link');
-  if (startLink && !homeIsSCO && !reviewMode) startLink.addEventListener('click', function(e) {{
-    if (SCORM.isAvailable()) {{ e.preventDefault(); document.getElementById('lmsNavNote').hidden = false; }}
-  }});
   if (startLink && reviewMode) startLink.addEventListener('click', function(e) {{
     e.preventDefault();
     location.href = this.getAttribute('href') + '?review=1&slide=1';

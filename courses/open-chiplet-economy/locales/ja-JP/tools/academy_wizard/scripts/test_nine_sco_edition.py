@@ -14,6 +14,11 @@ class NineSCOEdition(unittest.TestCase):
   self.assertIn('const homeIsSCO = false;',h);self.assertIn('!reviewMode && homeIsSCO && SCORM.init()',h)
   self.assertIn('!reviewMode && homeIsSCO) SCORM.setCompleted()',h)
   self.assertIn('!reviewMode && homeIsSCO) SCORM.finish()',h)
+ def test_asset_home_start_keeps_the_maintained_green_action(self):
+  h=render_index_html(self.course)
+  self.assertIn('index-start-link',h);self.assertIn('href="module1.html"',h)
+  self.assertNotIn('if (startLink && !homeIsSCO && !reviewMode)',h)
+  self.assertNotIn('if (SCORM.isAvailable())',h)
  def test_recording_controls_and_sound(self):
   h=_figure_html({'path':'original.mp4','playback_mode':'recorded','controls':True,'autoplay':False,'loop':False,'muted':False})
   video=h.split('<video ',1)[1].split('>',1)[0]
