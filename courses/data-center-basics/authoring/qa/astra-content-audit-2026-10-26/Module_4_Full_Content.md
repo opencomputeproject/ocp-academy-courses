@@ -1,0 +1,3478 @@
+# Module 4: Management and Trends
+Course: Data Centers: From Digital Services to Physical Infrastructure
+Review packet generated from the current editable course. Narration marked inactive is absent from the runtime.
+
+## M4S1: Management and Trends
+Type: title
+
+### Authored slide fields
+```json
+{
+  "id": 1,
+  "type": "title",
+  "slug": "management_and_trends",
+  "title": "Management and Trends",
+  "subtitle": "Connect operating responsibility, resource metrics and infrastructure choices.",
+  "audio": {
+    "script_file": "audio/module4/slide_01_management_and_trends.txt",
+    "wav_file": "audio/module4/slide_01_management_and_trends.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 1
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Module four: Management and Trends. Physical infrastructure delivers value through the services people operate. You'll connect ownership and responsibility to resource efficiency, then examine how changing workloads influence facility choices and the need for shared approaches.
+
+
+## M4S2: Connect Ownership, Metrics and Technology Choices
+Type: objectives
+
+### Authored slide fields
+```json
+{
+  "id": 2,
+  "type": "objectives",
+  "slug": "ownership_metrics_choices",
+  "title": "Connect Ownership, Metrics and Technology Choices",
+  "objectives": [
+    "Distinguish facility, equipment and service responsibilities.",
+    "Connect virtual workloads to physical resource use.",
+    "Interpret energy, water and carbon metrics with explicit boundaries.",
+    "Apply a system view to improvement choices and emerging technology."
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_02_ownership_metrics_choices.txt",
+    "wav_file": "audio/module4/slide_02_ownership_metrics_choices.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 1
+    }
+  ]
+}
+```
+
+### Active spoken narration
+By the end of this module, you'll be able to distinguish facility and service responsibilities, explain how virtual workloads depend on physical resources, and interpret basic efficiency metrics without treating one number as the whole goal.
+
+You'll apply that reasoning to a deployment scenario and consider current trends in power, cooling and distributed computing. Those questions lead naturally into the Intro to OCP learning path.
+
+
+## M4S3: The Changing Data Center Landscape
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 3,
+  "type": "content_diagram",
+  "slug": "4_1_data_center_trends_overview_1080p",
+  "title": "The Changing Data Center Landscape",
+  "section_label": "Explanatory Video",
+  "media_focus": true,
+  "figure": {
+    "path": "resources/videos/module4/4-1-data-center-trends-overview-1080p.mp4",
+    "poster": "resources/images/module4/video-slide-3-poster.jpg",
+    "media_type": "video",
+    "role": "original_video",
+    "source": "reuse",
+    "autoplay": false,
+    "loop": false,
+    "muted": false,
+    "controls": true,
+    "alt": "The Changing Data Center Landscape video.",
+    "caption": "Deployment and heat-reuse outcomes depend on the site. Quantum-system requirements differ by platform. Local hosting alone does not establish compliance or resilience.",
+    "source_sha256": "87790644b4e88393b7a9eb002657314cd9763eda0bfb00c967aa2c7d00c6fda2",
+    "captions": [
+      {
+        "path": "resources/captions/module4/4-1-data-center-trends-overview-1080p.vtt",
+        "language": "en",
+        "label": "English (transcribed)"
+      }
+    ],
+    "caption_cues": [
+      {
+        "start": 3.48,
+        "end": 7.0,
+        "text": "When you think of data centers, you might\nimagine a row of servers quietly"
+      },
+      {
+        "start": 7.04,
+        "end": 10.96,
+        "text": "humming away. But today's data centers are\nrapidly evolving,"
+      },
+      {
+        "start": 11.66,
+        "end": 15.02,
+        "text": "driven by powerful new trends shaping the\nfuture of technology and"
+      },
+      {
+        "start": 15.06,
+        "end": 19.04,
+        "text": "infrastructure. Let's look at what's\nemerging in the world"
+      },
+      {
+        "start": 19.08,
+        "end": 22.82,
+        "text": "of data centers. First up, AI and machine"
+      },
+      {
+        "start": 22.86,
+        "end": 26.24,
+        "text": "learning. Data centers are now at the\nheart of AI"
+      },
+      {
+        "start": 26.3,
+        "end": 30.1,
+        "text": "innovation, housing the massive GPU\nclusters needed for"
+      },
+      {
+        "start": 30.16,
+        "end": 33.98,
+        "text": "training and running modules. These AI\nworkloads demand"
+      },
+      {
+        "start": 34.04,
+        "end": 37.38,
+        "text": "much higher performance, which drives more\npower,"
+      },
+      {
+        "start": 38.28,
+        "end": 41.9,
+        "text": "more consumption, and requires optimized\nlayouts and"
+      },
+      {
+        "start": 42.02,
+        "end": 45.0,
+        "text": "advanced thermal designs to get rid of all\nthat heat."
+      },
+      {
+        "start": 45.88,
+        "end": 49.56,
+        "text": "Next, energy efficiency. With increased\npower cost and"
+      },
+      {
+        "start": 49.62,
+        "end": 53.32,
+        "text": "global attention on sustainability, modern\ndata centers are"
+      },
+      {
+        "start": 53.4,
+        "end": 57.04,
+        "text": "focused on reducing power consumption and\nimproving power usage"
+      },
+      {
+        "start": 57.14,
+        "end": 61.04,
+        "text": "effectiveness, or PUE. This means better"
+      },
+      {
+        "start": 61.14,
+        "end": 64.68,
+        "text": "cooling systems, smart airflow management,\nand lower power"
+      },
+      {
+        "start": 64.76,
+        "end": 68.28,
+        "text": "usage. Another key evolution is heat"
+      },
+      {
+        "start": 68.36,
+        "end": 72.04,
+        "text": "reuse. Instead of letting heat generated\nby servers go to"
+      },
+      {
+        "start": 72.08,
+        "end": 75.92,
+        "text": "waste, some data centers are now capturing\nit and redirecting"
+      },
+      {
+        "start": 75.96,
+        "end": 79.78,
+        "text": "it to serve local communities. You can do\nthat by heating"
+      },
+      {
+        "start": 79.84,
+        "end": 83.66,
+        "text": "nearby buildings or supporting industrial\nprocesses that need heat."
+      },
+      {
+        "start": 84.46,
+        "end": 88.36,
+        "text": "This transform every kilowatt hour used\nfor computing into a"
+      },
+      {
+        "start": 88.6,
+        "end": 92.44,
+        "text": "dual-purpose energy source, maximizing\nsustainability"
+      },
+      {
+        "start": 93.02,
+        "end": 96.94,
+        "text": "and value to the surrounding environment.\nThe majority of today's"
+      },
+      {
+        "start": 97.04,
+        "end": 100.82,
+        "text": "workloads sit in hyperscale centralized\ndata centers."
+      },
+      {
+        "start": 101.24,
+        "end": 105.22,
+        "text": "And for a lot of workloads, that's a great\nplace. But there is a"
+      },
+      {
+        "start": 105.4,
+        "end": 108.94,
+        "text": "growing trend to bring data and\ninfrastructure back"
+      },
+      {
+        "start": 109.36,
+        "end": 112.66,
+        "text": "on premise. After years of centralizing\nlarge"
+      },
+      {
+        "start": 112.8,
+        "end": 115.6,
+        "text": "hyperscale cloud facilities, some are now"
+      },
+      {
+        "start": 116.02,
+        "end": 119.58,
+        "text": "repatriating workloads back to on-premise\ninfrastructure."
+      },
+      {
+        "start": 120.46,
+        "end": 124.42,
+        "text": "This trend is called cloud repatriation.\nIt's"
+      },
+      {
+        "start": 124.46,
+        "end": 128.34,
+        "text": "driven by cost control, performance\nconsistency, or the need"
+      },
+      {
+        "start": 128.4,
+        "end": 131.6,
+        "text": "for greater operational oversight. In\nparallel,"
+      },
+      {
+        "start": 132.22,
+        "end": 136.18,
+        "text": "governments and regulated industries are\ninvesting in sovereign data centers"
+      },
+      {
+        "start": 136.22,
+        "end": 140.0,
+        "text": "where sensitive data is stored and managed\nlocally to comply with"
+      },
+      {
+        "start": 140.04,
+        "end": 143.9,
+        "text": "national laws and data residency\nrequirements. To meet"
+      },
+      {
+        "start": 143.94,
+        "end": 147.92,
+        "text": "these evolving needs, many organizations\nare adopting modular and"
+      },
+      {
+        "start": 147.96,
+        "end": 151.82,
+        "text": "distributed architectures. Instead of\nrelying on a massive"
+      },
+      {
+        "start": 151.98,
+        "end": 155.52,
+        "text": "single facility, they deploy smaller\npurpose-built data centers"
+      },
+      {
+        "start": 155.66,
+        "end": 159.3,
+        "text": "closer to the user, reducing latency and\nincreasing"
+      },
+      {
+        "start": 159.34,
+        "end": 163.14,
+        "text": "resilience. These edge nodes are often\ndesigned to be"
+      },
+      {
+        "start": 163.62,
+        "end": 167.46,
+        "text": "energy efficient and secure. And finally,\nquantum computing."
+      },
+      {
+        "start": 168.12,
+        "end": 171.98,
+        "text": "It's still in its early stages, but it's\ngaining traction. Quantum"
+      },
+      {
+        "start": 172.08,
+        "end": 176.06,
+        "text": "systems require specialized environments,\nincluding extreme cooling"
+      },
+      {
+        "start": 176.1,
+        "end": 179.6,
+        "text": "and isolation from external interference.\nWhile not"
+      },
+      {
+        "start": 179.66,
+        "end": 183.34,
+        "text": "mainstream yet, data centers are preparing\nto support these next generation"
+      },
+      {
+        "start": 183.38,
+        "end": 187.08,
+        "text": "machines. In summary, data centers are no"
+      },
+      {
+        "start": 187.14,
+        "end": 191.1,
+        "text": "longer just passive storage hubs. They're\nbecoming"
+      },
+      {
+        "start": 191.2,
+        "end": 194.72,
+        "text": "agile, high-performance engines powering\nthe most advanced"
+      },
+      {
+        "start": 194.78,
+        "end": 198.78,
+        "text": "applications in the world. AI, energy\nefficiency, edge"
+      },
+      {
+        "start": 198.82,
+        "end": 202.56,
+        "text": "computing, and even quantum technologies\nare reshaping the digital"
+      },
+      {
+        "start": 202.62,
+        "end": 206.46,
+        "text": "landscape, and it's only the beginning,\nand data centers are at"
+      },
+      {
+        "start": 206.52,
+        "end": 207.36,
+        "text": "the heart of it."
+      }
+    ],
+    "assets": [
+      "resources/captions/module4/4-1-data-center-trends-overview-1080p.vtt"
+    ],
+    "text_inventory": {
+      "sha256": "87790644b4e88393b7a9eb002657314cd9763eda0bfb00c967aa2c7d00c6fda2",
+      "entries": [
+        {
+          "text": "OPEN",
+          "at_seconds": 2.5
+        },
+        {
+          "text": "Compute Project ®",
+          "at_seconds": 2.5
+        },
+        {
+          "text": "DATA CENTER TRENDS",
+          "at_seconds": 7.5
+        },
+        {
+          "text": "OVERVIEW",
+          "at_seconds": 7.5
+        },
+        {
+          "text": "AI AND MACHINE",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "LEA",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "• POWER CONSUMPTION",
+          "at_seconds": 37.5
+        },
+        {
+          "text": "• OPTIMIZED LAYOUTS",
+          "at_seconds": 42.5
+        },
+        {
+          "text": "• THER",
+          "at_seconds": 42.5
+        },
+        {
+          "text": "ENERGY",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "EFFICIENCY",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "POWER",
+          "at_seconds": 57.5
+        },
+        {
+          "text": "CONSUMPTION",
+          "at_seconds": 57.5
+        },
+        {
+          "text": "POWER USAGE",
+          "at_seconds": 57.5
+        },
+        {
+          "text": "EFFECTIVENESS (PUE)",
+          "at_seconds": 57.5
+        },
+        {
+          "text": "THIS MEANS",
+          "at_seconds": 62.5
+        },
+        {
+          "text": "BETTER COOLING SYSTEMS",
+          "at_seconds": 62.5
+        },
+        {
+          "text": "SMART AIRFLOW MANAGEN",
+          "at_seconds": 62.5
+        },
+        {
+          "text": "Шш",
+          "at_seconds": 72.5
+        },
+        {
+          "text": "DUAL-PURPOSE ENERGY",
+          "at_seconds": 92.5
+        },
+        {
+          "text": "SUSTAINABILITY",
+          "at_seconds": 92.5
+        },
+        {
+          "text": "CLOUD",
+          "at_seconds": 122.5
+        },
+        {
+          "text": "REPATRIATION",
+          "at_seconds": 122.5
+        },
+        {
+          "text": "• COST CONTROL",
+          "at_seconds": 127.5
+        },
+        {
+          "text": "• PERFORMANCE CONSISTENCY",
+          "at_seconds": 127.5
+        },
+        {
+          "text": "MANY ORGANISATIONS ARE ADOPTING",
+          "at_seconds": 147.5
+        },
+        {
+          "text": "MODULAR AND D",
+          "at_seconds": 147.5
+        },
+        {
+          "text": "THESE EDGE NODES ARE OFTEN DESIGNED",
+          "at_seconds": 162.5
+        },
+        {
+          "text": "QUANTUM",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "COMPUTING",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "QUANTUM SYSTEMS REQUIRE SPECIALIZED ENVIRONMENTS",
+          "at_seconds": 172.5
+        },
+        {
+          "text": "DATA CENTERS ARE PREPARING TO SUPPORT THESE NEXT-GENERATION",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "000",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "0000",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "0100",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "100",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "OOOO",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "oooO",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "000E",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "DATA CENTERS ARE NO LONGER JUST",
+          "at_seconds": 187.5
+        },
+        {
+          "text": "THEY'RE BECOMING AGILE,",
+          "at_seconds": 192.5
+        },
+        {
+          "text": "HIGH-PERFORMANCE ENG",
+          "at_seconds": 192.5
+        },
+        {
+          "text": "AI",
+          "at_seconds": 197.5
+        },
+        {
+          "text": "EN",
+          "at_seconds": 197.5
+        },
+        {
+          "text": "EFF",
+          "at_seconds": 197.5
+        },
+        {
+          "text": "TECHNOLOGIES",
+          "at_seconds": 202.5
+        },
+        {
+          "text": "EDGE",
+          "at_seconds": 202.5
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    },
+    "source_poster": "resources/images/module4/4-1-data-center-trends-overview-1080p.jpg"
+  },
+  "audio": null,
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 2
+    }
+  ],
+  "video_transcript": "When you think of data centers, you might imagine a row of servers quietly humming away. But today's data centers are rapidly evolving, driven by powerful new trends shaping the future of technology and infrastructure. Let's look at what's emerging in the world of data centers. First up, AI and machine learning. Data centers are now at the heart of AI innovation, housing the massive GPU clusters needed for training and running modules. These AI workloads demand much higher performance, which drives more power, more consumption, and requires optimized layouts and advanced thermal designs to get rid of all that heat. Next, energy efficiency. With increased power cost and global attention on sustainability, modern data centers are focused on reducing power consumption and improving power usage effectiveness, or PUE. This means better cooling systems, smart airflow management, and lower power usage. Another key evolution is heat reuse. Instead of letting heat generated by servers go to waste, some data centers are now capturing it and redirecting it to serve local communities. You can do that by heating nearby buildings or supporting industrial processes that need heat. This transform every kilowatt hour used for computing into a dual-purpose energy source, maximizing sustainability and value to the surrounding environment. The majority of today's workloads sit in hyperscale centralized data centers. And for a lot of workloads, that's a great place. But there is a growing trend to bring data and infrastructure back on premise. After years of centralizing large hyperscale cloud facilities, some are now repatriating workloads back to on-premise infrastructure. This trend is called cloud repatriation. It's driven by cost control, performance consistency, or the need for greater operational oversight. In parallel, governments and regulated industries are investing in sovereign data centers where sensitive data is stored and managed locally to comply with national laws and data residency requirements. To meet these evolving needs, many organizations are adopting modular and distributed architectures. Instead of relying on a massive single facility, they deploy smaller purpose-built data centers closer to the user, reducing latency and increasing resilience. These edge nodes are often designed to be energy efficient and secure. And finally, quantum computing. It's still in its early stages, but it's gaining traction. Quantum systems require specialized environments, including extreme cooling and isolation from external interference. While not mainstream yet, data centers are preparing to support these next generation machines. In summary, data centers are no longer just passive storage hubs. They're becoming agile, high-performance engines powering the most advanced applications in the world. AI, energy efficiency, edge computing, and even quantum technologies are reshaping the digital landscape, and it's only the beginning, and data centers are at the heart of it. ",
+  "term_refs": [
+    "power",
+    "energy",
+    "hyperscale",
+    "edge_data_center",
+    "latency",
+    "cloud_computing",
+    "gpu",
+    "pue"
+  ],
+  "narration_enabled": false,
+  "transcript": "When you think of data centers, you might imagine a row of servers quietly humming away. But today's data centers are rapidly evolving, driven by powerful new trends shaping the future of technology and infrastructure. Let's look at what's emerging in the world of data centers. First up, AI and machine learning. Data centers are now at the heart of AI innovation, housing the massive GPU clusters needed for training and running modules. These AI workloads demand much higher performance, which drives more power, more consumption, and requires optimized layouts and advanced thermal designs to get rid of all that heat. Next, energy efficiency. With increased power cost and global attention on sustainability, modern data centers are focused on reducing power consumption and improving power usage effectiveness, or PUE. This means better cooling systems, smart airflow management, and lower power usage. Another key evolution is heat reuse. Instead of letting heat generated by servers go to waste, some data centers are now capturing it and redirecting it to serve local communities. You can do that by heating nearby buildings or supporting industrial processes that need heat. This transform every kilowatt hour used for computing into a dual-purpose energy source, maximizing sustainability and value to the surrounding environment. The majority of today's workloads sit in hyperscale centralized data centers. And for a lot of workloads, that's a great place. But there is a growing trend to bring data and infrastructure back on premise. After years of centralizing large hyperscale cloud facilities, some are now repatriating workloads back to on-premise infrastructure. This trend is called cloud repatriation. It's driven by cost control, performance consistency, or the need for greater operational oversight. In parallel, governments and regulated industries are investing in sovereign data centers where sensitive data is stored and managed locally to comply with national laws and data residency requirements. To meet these evolving needs, many organizations are adopting modular and distributed architectures. Instead of relying on a massive single facility, they deploy smaller purpose-built data centers closer to the user, reducing latency and increasing resilience. These edge nodes are often designed to be energy efficient and secure. And finally, quantum computing. It's still in its early stages, but it's gaining traction. Quantum systems require specialized environments, including extreme cooling and isolation from external interference. While not mainstream yet, data centers are preparing to support these next generation machines. In summary, data centers are no longer just passive storage hubs. They're becoming agile, high-performance engines powering the most advanced applications in the world. AI, energy efficiency, edge computing, and even quantum technologies are reshaping the digital landscape, and it's only the beginning, and data centers are at the heart of it. "
+}
+```
+
+### Active spoken narration
+None; imported recording owns the audio. Its transcript and caption cues are in the slide fields.
+
+## M4S4: Who Owns and Manages What?
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 4,
+  "type": "content_diagram",
+  "slug": "4_2_who_owns_and_manages_what_1080p",
+  "title": "Who Owns and Manages What?",
+  "section_label": "Explanatory Video",
+  "media_focus": true,
+  "figure": {
+    "path": "resources/videos/module4/4-2-who-owns-and-manages-what-1080p.mp4",
+    "poster": "resources/images/module4/video-slide-4-poster.jpg",
+    "media_type": "video",
+    "role": "original_video",
+    "source": "reuse",
+    "autoplay": false,
+    "loop": false,
+    "muted": false,
+    "controls": true,
+    "alt": "Who Owns and Manages What? video.",
+    "caption": "The market-share percentages shown are unverified. Focus on how service contracts allocate responsibilities. BMS/DCIM roles depend on implementation; check which standards and reporting rules apply to the site.",
+    "source_sha256": "5bb621d982177333d422bc603f264691f6d5c8201f922ac71ba8afcda2880248",
+    "captions": [
+      {
+        "path": "resources/captions/module4/4-2-who-owns-and-manages-what-1080p.vtt",
+        "language": "en",
+        "label": "English (transcribed)"
+      }
+    ],
+    "caption_cues": [
+      {
+        "start": 3.36,
+        "end": 6.78,
+        "text": "Welcome back. In this video, we'll look at\nwho owns and who"
+      },
+      {
+        "start": 6.92,
+        "end": 10.92,
+        "text": "manages data centers. As you'll see, the\nanswer depends on the"
+      },
+      {
+        "start": 11.0,
+        "end": 14.46,
+        "text": "business model, the scale, and the purpose\nof the data center."
+      },
+      {
+        "start": 15.34,
+        "end": 18.66,
+        "text": "Let's start with ownership. As of 2024,\nabout"
+      },
+      {
+        "start": 18.88,
+        "end": 22.62,
+        "text": "60% of the global IT workload is hosted in\nhyperscale"
+      },
+      {
+        "start": 22.7,
+        "end": 26.6,
+        "text": "data centers, those owned or leased"
+      },
+      {
+        "start": 26.64,
+        "end": 30.04,
+        "text": "by companies like Amazon, Google,\nMicrosoft."
+      },
+      {
+        "start": 31.32,
+        "end": 35.24,
+        "text": "These providers either build their own\nfacilities or lease space"
+      },
+      {
+        "start": 35.3,
+        "end": 39.12,
+        "text": "in massive campuses. Hyperscale facilities\nare"
+      },
+      {
+        "start": 39.26,
+        "end": 42.9,
+        "text": "large, efficient, and designed for scale.\nWhen"
+      },
+      {
+        "start": 42.94,
+        "end": 46.7,
+        "text": "hyperscale companies own the data center,\nthey're responsible for"
+      },
+      {
+        "start": 46.94,
+        "end": 50.72,
+        "text": "everything, from construction to energy\nefficiency to managing"
+      },
+      {
+        "start": 50.78,
+        "end": 54.42,
+        "text": "IT operations. When they lease, they"
+      },
+      {
+        "start": 54.5,
+        "end": 58.44,
+        "text": "manage the IT equipment and typically have\nstringent requirements for"
+      },
+      {
+        "start": 58.52,
+        "end": 62.02,
+        "text": "complete floors in the data center. But"
+      },
+      {
+        "start": 62.22,
+        "end": 65.94,
+        "text": "ultimately, they rely on a colocation\npartner to manage the"
+      },
+      {
+        "start": 65.98,
+        "end": 69.3,
+        "text": "physical facility. Now, let's talk about"
+      },
+      {
+        "start": 69.48,
+        "end": 73.1,
+        "text": "non-hyperscale environments. These include"
+      },
+      {
+        "start": 73.34,
+        "end": 77.24,
+        "text": "enterprise-owned data centers and\ncolocation facilities."
+      },
+      {
+        "start": 78.48,
+        "end": 81.76,
+        "text": "Together, they account for about 40% of\nthe market."
+      },
+      {
+        "start": 83.64,
+        "end": 87.64,
+        "text": "An enterprise-owned data center is built\nand operated by a"
+      },
+      {
+        "start": 87.74,
+        "end": 91.44,
+        "text": "single organization, usually to support\ninternal IT needs."
+      },
+      {
+        "start": 93.46,
+        "end": 97.0,
+        "text": "Think of a bank, a government agency, or\nan"
+      },
+      {
+        "start": 97.06,
+        "end": 100.64,
+        "text": "enterprise running its own data center for\ncompliance and control."
+      },
+      {
+        "start": 101.7,
+        "end": 105.54,
+        "text": "In a colocation model, multiple companies\nrent space,"
+      },
+      {
+        "start": 105.76,
+        "end": 109.26,
+        "text": "power, and cooling from a specialized\nthird-party"
+      },
+      {
+        "start": 109.62,
+        "end": 113.6,
+        "text": "data center provider, but they install and\nmanage their"
+      },
+      {
+        "start": 113.7,
+        "end": 117.28,
+        "text": "own servers and IT equipment. This"
+      },
+      {
+        "start": 117.34,
+        "end": 121.34,
+        "text": "model offers flexibility and reduces the\nneed for capital investment."
+      },
+      {
+        "start": 122.92,
+        "end": 125.8,
+        "text": "So who manages what? Let's break it down."
+      },
+      {
+        "start": 126.78,
+        "end": 130.639,
+        "text": "Management in a data center is divided\ninto two core functions:"
+      },
+      {
+        "start": 131.32,
+        "end": 134.88,
+        "text": "IT infrastructure management and facility\ninfrastructure"
+      },
+      {
+        "start": 134.94,
+        "end": 138.86,
+        "text": "management. Building management is about\nkeeping the lights on,"
+      },
+      {
+        "start": 139.34,
+        "end": 142.64,
+        "text": "literally. This includes power\ndistribution,"
+      },
+      {
+        "start": 143.34,
+        "end": 146.6,
+        "text": "HVAC systems, physical security, and\ncooling."
+      },
+      {
+        "start": 148.02,
+        "end": 151.84,
+        "text": "It's often managed through a BMS, or\nbuilding management"
+      },
+      {
+        "start": 151.92,
+        "end": 155.66,
+        "text": "system. IT management, on the other"
+      },
+      {
+        "start": 155.7,
+        "end": 159.62,
+        "text": "hand, focuses on the servers, storage, and\nnetworking"
+      },
+      {
+        "start": 159.68,
+        "end": 163.5,
+        "text": "systems. These are tracked and managed"
+      },
+      {
+        "start": 163.6,
+        "end": 167.16,
+        "text": "using a DCIM, or a data center\ninfrastructure"
+      },
+      {
+        "start": 167.3,
+        "end": 171.26,
+        "text": "management system. DCIM tools provide for\nvisibility"
+      },
+      {
+        "start": 171.32,
+        "end": 175.08,
+        "text": "into how IT assets are performing and\nconsuming resources."
+      },
+      {
+        "start": 176.38,
+        "end": 180.06,
+        "text": "These two separate systems, BMS and DCIM,\nwork"
+      },
+      {
+        "start": 180.12,
+        "end": 183.72,
+        "text": "together. One manages the environment, the\nother"
+      },
+      {
+        "start": 183.8,
+        "end": 187.66,
+        "text": "manages the workload. When integrated,\nthey allow"
+      },
+      {
+        "start": 187.76,
+        "end": 191.66,
+        "text": "operators to respond proactively to issues\nand optimize performance."
+      },
+      {
+        "start": 193.2,
+        "end": 197.02,
+        "text": "But data center management goes beyond\njust facilities"
+      },
+      {
+        "start": 197.2,
+        "end": 201.16,
+        "text": "and IT. A modern data center also operates\nas a"
+      },
+      {
+        "start": 201.2,
+        "end": 204.94,
+        "text": "business unit with responsibilities that\ninclude customer onboarding,"
+      },
+      {
+        "start": 205.48,
+        "end": 209.0,
+        "text": "contract management, sustainability, and\ncompliance with global"
+      },
+      {
+        "start": 209.08,
+        "end": 212.58,
+        "text": "standards. Some of these standards are ISO"
+      },
+      {
+        "start": 212.74,
+        "end": 216.68,
+        "text": "27000 for data security, ISO 14001 for"
+      },
+      {
+        "start": 216.74,
+        "end": 220.68,
+        "text": "environmental management, ISO 50001 for\nenergy"
+      },
+      {
+        "start": 220.78,
+        "end": 224.6,
+        "text": "use, and new regulations like the EU CSRD\ndirective."
+      },
+      {
+        "start": 225.38,
+        "end": 228.76,
+        "text": "Together, these frameworks ensure that the\ndata center is efficient,"
+      },
+      {
+        "start": 229.08,
+        "end": 231.76,
+        "text": "secure, sustainable, and accountable."
+      },
+      {
+        "start": 233.0,
+        "end": 236.58,
+        "text": "Depending on the ownership model, either a\nthird-party provider,"
+      },
+      {
+        "start": 237.34,
+        "end": 241.32,
+        "text": "an internal enterprise team, or a cloud\nprovider manages"
+      },
+      {
+        "start": 241.4,
+        "end": 245.16,
+        "text": "these management layers. For example, in a\ncolocation"
+      },
+      {
+        "start": 245.22,
+        "end": 249.12,
+        "text": "model, the BMS is managed by the provider,\nbut the"
+      },
+      {
+        "start": 249.34,
+        "end": 253.28,
+        "text": "DCIM might be the tenant's responsibility.\nIn summary,"
+      },
+      {
+        "start": 254.0,
+        "end": 257.959,
+        "text": "the key takeaway is this: ownership and\nmanagement are"
+      },
+      {
+        "start": 258.06,
+        "end": 261.959,
+        "text": "not always the same. You can own and\nmanage"
+      },
+      {
+        "start": 262.06,
+        "end": 265.5,
+        "text": "everything, lease and manage the IT only,"
+      },
+      {
+        "start": 265.98,
+        "end": 269.64,
+        "text": "or outsource both. Understanding these"
+      },
+      {
+        "start": 269.72,
+        "end": 273.32,
+        "text": "roles is key to navigating today's complex\ndata center"
+      },
+      {
+        "start": 273.36,
+        "end": 273.94,
+        "text": "landscape."
+      }
+    ],
+    "assets": [
+      "resources/captions/module4/4-2-who-owns-and-manages-what-1080p.vtt"
+    ],
+    "text_inventory": {
+      "sha256": "5bb621d982177333d422bc603f264691f6d5c8201f922ac71ba8afcda2880248",
+      "entries": [
+        {
+          "text": "OPEN",
+          "at_seconds": 2.5
+        },
+        {
+          "text": "Compute Project ®",
+          "at_seconds": 2.5
+        },
+        {
+          "text": "WHO OWNS AND",
+          "at_seconds": 7.5
+        },
+        {
+          "text": "MANAGES WHAT?",
+          "at_seconds": 7.5
+        },
+        {
+          "text": "• BUSINESS MODEL",
+          "at_seconds": 12.5
+        },
+        {
+          "text": "• SCALE",
+          "at_seconds": 12.5
+        },
+        {
+          "text": "• PU",
+          "at_seconds": 12.5
+        },
+        {
+          "text": "DA",
+          "at_seconds": 12.5
+        },
+        {
+          "text": "DATA CENTER CAPACITY TRENDS",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "100%",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "80%",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "60%",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "40%",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "20%",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "0%",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "2018",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "2024",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "2030",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "HYPERSCALE:",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "OWNED",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "LEASED",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "COLOCATION:",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "NON-HYPERSCALE",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "ENTERPRISE:",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "ON-PREMISE",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "OWNED OR LEASED",
+          "at_seconds": 27.5
+        },
+        {
+          "text": "BY COMPANIES LIKE",
+          "at_seconds": 27.5
+        },
+        {
+          "text": "THESE PROVIDERS EITHER BUILD",
+          "at_seconds": 32.5
+        },
+        {
+          "text": "СЕЛЛИИ",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "RESPONSIBLE FOR",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "EVERYTHING",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "MANAGE THE",
+          "at_seconds": 57.5
+        },
+        {
+          "text": "IT EQUIPMENT",
+          "at_seconds": 57.5
+        },
+        {
+          "text": "LEA",
+          "at_seconds": 62.5
+        },
+        {
+          "text": "LEASEL",
+          "at_seconds": 67.5
+        },
+        {
+          "text": "COLOCATIOI",
+          "at_seconds": 67.5
+        },
+        {
+          "text": "MANAGES FAC",
+          "at_seconds": 67.5
+        },
+        {
+          "text": "ENTERPRISE",
+          "at_seconds": 77.5
+        },
+        {
+          "text": "COLOCATION",
+          "at_seconds": 77.5
+        },
+        {
+          "text": "FACILITIES",
+          "at_seconds": 77.5
+        },
+        {
+          "text": "SIN",
+          "at_seconds": 87.5
+        },
+        {
+          "text": "MODEL",
+          "at_seconds": 102.5
+        },
+        {
+          "text": "IT INFRASTRUCTURE",
+          "at_seconds": 132.5
+        },
+        {
+          "text": "MANAGEMENT",
+          "at_seconds": 132.5
+        },
+        {
+          "text": "POWER",
+          "at_seconds": 142.5
+        },
+        {
+          "text": "Ve",
+          "at_seconds": 142.5
+        },
+        {
+          "text": "BMS OR BUILDING",
+          "at_seconds": 152.5
+        },
+        {
+          "text": "MANAGEMENT SYSTEM",
+          "at_seconds": 152.5
+        },
+        {
+          "text": "SERVERS",
+          "at_seconds": 157.5
+        },
+        {
+          "text": "THESE ARETRACKED AND",
+          "at_seconds": 162.5
+        },
+        {
+          "text": "THESE ARETRACKEDAND",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "MANAGED USING DCIM, OR",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "DATA CENTER INFRASTRUCTURE",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "MANAGEMENT SYSTEMS",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "ENVIRONMENT",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "E=",
+          "at_seconds": 202.5
+        },
+        {
+          "text": "CONTRACT",
+          "at_seconds": 207.5
+        },
+        {
+          "text": "CUSTOMER",
+          "at_seconds": 207.5
+        },
+        {
+          "text": "ONBOARDING",
+          "at_seconds": 207.5
+        },
+        {
+          "text": "SUSTAINABILITY",
+          "at_seconds": 207.5
+        },
+        {
+          "text": "=",
+          "at_seconds": 207.5
+        },
+        {
+          "text": "KEY STANDARDS",
+          "at_seconds": 212.5
+        },
+        {
+          "text": "• ISO 27000 FOR DATA SECUR",
+          "at_seconds": 212.5
+        },
+        {
+          "text": "• ISO 27000 FOR DATA SECURITY",
+          "at_seconds": 217.5
+        },
+        {
+          "text": "• ISO 14001 FOR ENVIRONMENTAL",
+          "at_seconds": 217.5
+        },
+        {
+          "text": "• ISO 50001 FOR ENERGY USE",
+          "at_seconds": 222.5
+        },
+        {
+          "text": "THE DATA CENTER IS",
+          "at_seconds": 227.5
+        },
+        {
+          "text": "THE D",
+          "at_seconds": 232.5
+        },
+        {
+          "text": "EFFICIENT",
+          "at_seconds": 232.5
+        },
+        {
+          "text": "THIRD-PARTY",
+          "at_seconds": 237.5
+        },
+        {
+          "text": "PROVIDER",
+          "at_seconds": 237.5
+        },
+        {
+          "text": "INTERNAL",
+          "at_seconds": 237.5
+        },
+        {
+          "text": "CLOUD",
+          "at_seconds": 242.5
+        },
+        {
+          "text": "BMS",
+          "at_seconds": 247.5
+        },
+        {
+          "text": "BN",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "PRO",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "TEN",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "THE KEY TAKEAWAY IS THIS:",
+          "at_seconds": 257.5
+        },
+        {
+          "text": "OWNERSHIP AND MANAGEMENT",
+          "at_seconds": 257.5
+        },
+        {
+          "text": "ARE NO",
+          "at_seconds": 257.5
+        },
+        {
+          "text": "OWN AND MANAGE",
+          "at_seconds": 262.5
+        },
+        {
+          "text": "OUTSOURCE BOTH",
+          "at_seconds": 267.5
+        },
+        {
+          "text": "UNDERSTANDING THESE ROLES IS",
+          "at_seconds": 272.5
+        },
+        {
+          "text": "KEY TO NAVIGATING TODAY'S COMPLEX",
+          "at_seconds": 272.5
+        },
+        {
+          "text": "DATA",
+          "at_seconds": 272.5
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    },
+    "source_poster": "resources/images/module4/4-2-who-owns-and-manages-what-1080p.jpg"
+  },
+  "audio": null,
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 3
+    }
+  ],
+  "video_transcript": "Welcome back. In this video, we'll look at who owns and who manages data centers. As you'll see, the answer depends on the business model, the scale, and the purpose of the data center. Let's start with ownership. As of 2024, about 60% of the global IT workload is hosted in hyperscale data centers, those owned or leased by companies like Amazon, Google, Microsoft. These providers either build their own facilities or lease space in massive campuses. Hyperscale facilities are large, efficient, and designed for scale. When hyperscale companies own the data center, they're responsible for everything, from construction to energy efficiency to managing IT operations. When they lease, they manage the IT equipment and typically have stringent requirements for complete floors in the data center. But ultimately, they rely on a colocation partner to manage the physical facility. Now, let's talk about non-hyperscale environments. These include enterprise-owned data centers and colocation facilities. Together, they account for about 40% of the market. An enterprise-owned data center is built and operated by a single organization, usually to support internal IT needs. Think of a bank, a government agency, or an enterprise running its own data center for compliance and control. In a colocation model, multiple companies rent space, power, and cooling from a specialized third-party data center provider, but they install and manage their own servers and IT equipment. This model offers flexibility and reduces the need for capital investment. So who manages what? Let's break it down. Management in a data center is divided into two core functions: IT infrastructure management and facility infrastructure management. Building management is about keeping the lights on, literally. This includes power distribution, HVAC systems, physical security, and cooling. It's often managed through a BMS, or building management system. IT management, on the other hand, focuses on the servers, storage, and networking systems. These are tracked and managed using a DCIM, or a data center infrastructure management system. DCIM tools provide for visibility into how IT assets are performing and consuming resources. These two separate systems, BMS and DCIM, work together. One manages the environment, the other manages the workload. When integrated, they allow operators to respond proactively to issues and optimize performance. But data center management goes beyond just facilities and IT. A modern data center also operates as a business unit with responsibilities that include customer onboarding, contract management, sustainability, and compliance with global standards. Some of these standards are ISO 27000 for data security, ISO 14001 for environmental management, ISO 50001 for energy use, and new regulations like the EU CSRD directive. Together, these frameworks ensure that the data center is efficient, secure, sustainable, and accountable. Depending on the ownership model, either a third-party provider, an internal enterprise team, or a cloud provider manages these management layers. For example, in a colocation model, the BMS is managed by the provider, but the DCIM might be the tenant's responsibility. In summary, the key takeaway is this: ownership and management are not always the same. You can own and manage everything, lease and manage the IT only, or outsource both. Understanding these roles is key to navigating today's complex data center landscape. ",
+  "term_refs": [
+    "colocation",
+    "dcim",
+    "bms"
+  ],
+  "narration_enabled": false,
+  "transcript": "Welcome back. In this video, we'll look at who owns and who manages data centers. As you'll see, the answer depends on the business model, the scale, and the purpose of the data center. Let's start with ownership. As of 2024, about 60% of the global IT workload is hosted in hyperscale data centers, those owned or leased by companies like Amazon, Google, Microsoft. These providers either build their own facilities or lease space in massive campuses. Hyperscale facilities are large, efficient, and designed for scale. When hyperscale companies own the data center, they're responsible for everything, from construction to energy efficiency to managing IT operations. When they lease, they manage the IT equipment and typically have stringent requirements for complete floors in the data center. But ultimately, they rely on a colocation partner to manage the physical facility. Now, let's talk about non-hyperscale environments. These include enterprise-owned data centers and colocation facilities. Together, they account for about 40% of the market. An enterprise-owned data center is built and operated by a single organization, usually to support internal IT needs. Think of a bank, a government agency, or an enterprise running its own data center for compliance and control. In a colocation model, multiple companies rent space, power, and cooling from a specialized third-party data center provider, but they install and manage their own servers and IT equipment. This model offers flexibility and reduces the need for capital investment. So who manages what? Let's break it down. Management in a data center is divided into two core functions: IT infrastructure management and facility infrastructure management. Building management is about keeping the lights on, literally. This includes power distribution, HVAC systems, physical security, and cooling. It's often managed through a BMS, or building management system. IT management, on the other hand, focuses on the servers, storage, and networking systems. These are tracked and managed using a DCIM, or a data center infrastructure management system. DCIM tools provide for visibility into how IT assets are performing and consuming resources. These two separate systems, BMS and DCIM, work together. One manages the environment, the other manages the workload. When integrated, they allow operators to respond proactively to issues and optimize performance. But data center management goes beyond just facilities and IT. A modern data center also operates as a business unit with responsibilities that include customer onboarding, contract management, sustainability, and compliance with global standards. Some of these standards are ISO 27000 for data security, ISO 14001 for environmental management, ISO 50001 for energy use, and new regulations like the EU CSRD directive. Together, these frameworks ensure that the data center is efficient, secure, sustainable, and accountable. Depending on the ownership model, either a third-party provider, an internal enterprise team, or a cloud provider manages these management layers. For example, in a colocation model, the BMS is managed by the provider, but the DCIM might be the tenant's responsibility. In summary, the key takeaway is this: ownership and management are not always the same. You can own and manage everything, lease and manage the IT only, or outsource both. Understanding these roles is key to navigating today's complex data center landscape. "
+}
+```
+
+### Active spoken narration
+None; imported recording owns the audio. Its transcript and caption cues are in the slide fields.
+
+## M4S5: Responsibility Follows the Service Contract
+Type: content_table
+
+### Authored slide fields
+```json
+{
+  "id": 5,
+  "type": "content_table",
+  "slug": "responsibility_matrix",
+  "title": "Responsibility Follows the Service Contract",
+  "section_label": "Operating Responsibilities",
+  "subtitle": "Examples only; verify the actual service agreement.",
+  "columns": [
+    "Layer",
+    "Questions to resolve"
+  ],
+  "rows": [
+    [
+      "Facility",
+      "Who operates power, cooling, access and maintenance?"
+    ],
+    [
+      "Equipment",
+      "Who owns, replaces and configures the hardware?"
+    ],
+    [
+      "Service",
+      "Who operates platforms, applications and availability?"
+    ],
+    [
+      "Customer obligations",
+      "Who manages identities, data and permitted configuration?"
+    ]
+  ],
+  "reference_links": [
+    {
+      "label": "NIST cloud service context",
+      "url": "https://www.nist.gov/publications/nist-definition-cloud-computing?pub_id=909616"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_05_responsibility_matrix.txt",
+    "wav_file": "audio/module4/slide_05_responsibility_matrix.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 3
+    }
+  ]
+}
+```
+
+### Active spoken narration
+A facility operator, equipment owner and service operator can be different organizations. In colocation, the provider commonly supplies contracted space, power and supporting infrastructure while the customer operates its equipment. A cloud service can shift more of the stack to the provider.
+
+The exact responsibilities depend on the contract and service model. Customers still need to understand their obligations for areas such as identities, data and configuration. An ownership label alone isn't a complete responsibility map.
+
+
+## M4S6: Physical Versus Virtual Infrastructure
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 6,
+  "type": "content_diagram",
+  "slug": "data_center_101_4_3_physical_vs_virtual_infrastructure_1080p",
+  "title": "Physical Versus Virtual Infrastructure",
+  "section_label": "Explanatory Video",
+  "media_focus": true,
+  "figure": {
+    "path": "resources/videos/module4/data-center-101-4-3-physical-vs-virtual-infrastructure-1080p.mp4",
+    "poster": "resources/images/module4/video-slide-6-poster.jpg",
+    "media_type": "video",
+    "role": "original_video",
+    "source": "reuse",
+    "autoplay": false,
+    "loop": false,
+    "muted": false,
+    "controls": true,
+    "alt": "Physical Versus Virtual Infrastructure video.",
+    "caption": "Bare metal can run multiple applications. VM/container utilization, efficiency and resilience depend on the workload and configuration; quoted percentages are illustrative.",
+    "source_sha256": "493c68bf8dbe4800852bd2fe2d634aa46cdd1fa181f263990847a5025af2d50f",
+    "captions": [
+      {
+        "path": "resources/captions/module4/data-center-101-4-3-physical-vs-virtual-infrastructure-1080p.vtt",
+        "language": "en",
+        "label": "English (transcribed)"
+      }
+    ],
+    "caption_cues": [
+      {
+        "start": 3.34,
+        "end": 6.82,
+        "text": "When you think of data centers, you might\nbe imagining rows of powerful"
+      },
+      {
+        "start": 7.0,
+        "end": 10.74,
+        "text": "buzzing machines. But what's actually\nrunning inside those"
+      },
+      {
+        "start": 10.78,
+        "end": 14.52,
+        "text": "machines? And how do organizations"
+      },
+      {
+        "start": 14.7,
+        "end": 18.14,
+        "text": "make the most of their hardware? That's\nwhere"
+      },
+      {
+        "start": 18.22,
+        "end": 21.84,
+        "text": "understanding physical versus virtual\ninfrastructure"
+      },
+      {
+        "start": 22.06,
+        "end": 25.7,
+        "text": "becomes essential. Let's start with\nphysical"
+      },
+      {
+        "start": 25.94,
+        "end": 29.2,
+        "text": "or bare metal infrastructure. In this\nsetup,"
+      },
+      {
+        "start": 30.12,
+        "end": 33.42,
+        "text": "each piece of hardware runs one operating\nsystem,"
+      },
+      {
+        "start": 33.92,
+        "end": 37.88,
+        "text": "which in turn runs one application. This\nis known as"
+      },
+      {
+        "start": 37.94,
+        "end": 41.8,
+        "text": "a one-to-one model. It's simple and\ndirect, but not"
+      },
+      {
+        "start": 41.88,
+        "end": 45.74,
+        "text": "always efficient. In many traditional\ndeployments, you"
+      },
+      {
+        "start": 45.78,
+        "end": 49.64,
+        "text": "might have powerful servers running at\nonly fifteen or thirty"
+      },
+      {
+        "start": 49.76,
+        "end": 53.62,
+        "text": "percent of their capacity. That's a lot of"
+      },
+      {
+        "start": 53.72,
+        "end": 57.6,
+        "text": "unused compute power, especially when\nhardware, power, and"
+      },
+      {
+        "start": 57.68,
+        "end": 61.3,
+        "text": "cooling costs add up. In fact, low"
+      },
+      {
+        "start": 61.4,
+        "end": 64.92,
+        "text": "utilization can be so persistent that some\nservers"
+      },
+      {
+        "start": 65.2,
+        "end": 68.38,
+        "text": "become what the industry calls zombie\nservers."
+      },
+      {
+        "start": 69.52,
+        "end": 73.34,
+        "text": "These are machines that are still powered\non using electricity and"
+      },
+      {
+        "start": 73.46,
+        "end": 76.58,
+        "text": "cooling, but no longer perform any\nmeaningful work."
+      },
+      {
+        "start": 78.12,
+        "end": 81.68,
+        "text": "Over time, they lose their original\nfunction, but stay online,"
+      },
+      {
+        "start": 82.32,
+        "end": 85.22,
+        "text": "draining resources without adding any\nvalue."
+      },
+      {
+        "start": 86.56,
+        "end": 89.74,
+        "text": "To improve efficiency, organizations often\nmove to"
+      },
+      {
+        "start": 89.82,
+        "end": 93.82,
+        "text": "virtualization. This is where one single\nphysical"
+      },
+      {
+        "start": 94.0,
+        "end": 97.06,
+        "text": "server can host multiple virtual machines,"
+      },
+      {
+        "start": 98.28,
+        "end": 102.28,
+        "text": "each with its own operating system and\napplication. It's"
+      },
+      {
+        "start": 102.32,
+        "end": 106.02,
+        "text": "like turning one powerful machine into\nmany smaller ones."
+      },
+      {
+        "start": 107.6,
+        "end": 111.48,
+        "text": "Virtualization is made possible by a\nsoftware layer called a hypervisor."
+      },
+      {
+        "start": 113.02,
+        "end": 116.88,
+        "text": "It divides the hardware resources like\nprocessing, memory, and"
+      },
+      {
+        "start": 117.0,
+        "end": 120.8,
+        "text": "storage amongst multiple virtual\nenvironments."
+      },
+      {
+        "start": 122.34,
+        "end": 125.58,
+        "text": "Each virtual machine runs independently,"
+      },
+      {
+        "start": 126.16,
+        "end": 128.4,
+        "text": "even though they share the same physical\nserver."
+      },
+      {
+        "start": 129.699,
+        "end": 133.5,
+        "text": "This significantly boosts utilization,\noften above sixty"
+      },
+      {
+        "start": 133.56,
+        "end": 136.86,
+        "text": "percent or more. That means less"
+      },
+      {
+        "start": 136.94,
+        "end": 140.38,
+        "text": "hardware doing more work. But that's not\nthe only"
+      },
+      {
+        "start": 140.46,
+        "end": 143.28,
+        "text": "evolution. The next step is"
+      },
+      {
+        "start": 143.34,
+        "end": 146.62,
+        "text": "containerization. Unlike virtual machines,"
+      },
+      {
+        "start": 147.14,
+        "end": 150.94,
+        "text": "containers share the host operating system\nthat"
+      },
+      {
+        "start": 150.98,
+        "end": 154.66,
+        "text": "makes them lighter, faster, and easier to\nscale."
+      },
+      {
+        "start": 156.04,
+        "end": 160.04,
+        "text": "Think of containers as highly efficient\ncompartments, each running a"
+      },
+      {
+        "start": 160.1,
+        "end": 163.68,
+        "text": "single app. Containers are ideal for"
+      },
+      {
+        "start": 163.72,
+        "end": 167.62,
+        "text": "cloud-native applications, microservers,\nand workloads that need"
+      },
+      {
+        "start": 167.7,
+        "end": 171.32,
+        "text": "rapid scaling. They use fewer resources\nthan"
+      },
+      {
+        "start": 171.36,
+        "end": 175.18,
+        "text": "traditional virtual machines and are\nespecially useful"
+      },
+      {
+        "start": 175.22,
+        "end": 178.38,
+        "text": "in DevOps and modern CI/CD pipelines."
+      },
+      {
+        "start": 179.86,
+        "end": 183.64,
+        "text": "Another way to look at this evolution is\nthrough utilization and redundancy."
+      },
+      {
+        "start": 184.74,
+        "end": 188.58,
+        "text": "In traditional infrastructure, redundancy\noften means duplicating entire"
+      },
+      {
+        "start": 188.72,
+        "end": 191.6,
+        "text": "servers. It's expensive and inefficient."
+      },
+      {
+        "start": 192.24,
+        "end": 196.22,
+        "text": "Virtualization, and especially\ncontainerization, allows for smarter"
+      },
+      {
+        "start": 196.28,
+        "end": 199.92,
+        "text": "redundancy with less hardware. So"
+      },
+      {
+        "start": 200.52,
+        "end": 203.7,
+        "text": "how do you choose between physical and\nvirtual infrastructure?"
+      },
+      {
+        "start": 204.74,
+        "end": 208.24,
+        "text": "It mostly comes down to whether you need\ndedicated or shared"
+      },
+      {
+        "start": 208.3,
+        "end": 211.8,
+        "text": "resources. For highly specialized,"
+      },
+      {
+        "start": 212.0,
+        "end": 215.62,
+        "text": "highly performant tasks like scientific\ncomputing or"
+      },
+      {
+        "start": 215.68,
+        "end": 219.68,
+        "text": "real-time finance data, dedicated\nhardware, also"
+      },
+      {
+        "start": 219.72,
+        "end": 222.9,
+        "text": "called bare metal, gives you maximum power\nand control."
+      },
+      {
+        "start": 224.02,
+        "end": 226.82,
+        "text": "But for most other workloads, shared"
+      },
+      {
+        "start": 226.9,
+        "end": 230.62,
+        "text": "infrastructure like virtual machines or\ncontainers"
+      },
+      {
+        "start": 230.7,
+        "end": 234.54,
+        "text": "offers greater speed, flexibility, and\nbetter cost savings."
+      },
+      {
+        "start": 235.36,
+        "end": 239.22,
+        "text": "In summary, physical infrastructure gives\nyou dedicated hardware"
+      },
+      {
+        "start": 239.3,
+        "end": 243.16,
+        "text": "and performance. Virtual machines add\nflexibility"
+      },
+      {
+        "start": 243.2,
+        "end": 247.2,
+        "text": "by sharing resources. Containers go even\nfurther"
+      },
+      {
+        "start": 247.26,
+        "end": 250.58,
+        "text": "by minimizing overhead and maximizing\nportability."
+      },
+      {
+        "start": 251.78,
+        "end": 255.38,
+        "text": "Understanding this spectrum, physical,\nvirtual, and"
+      },
+      {
+        "start": 255.42,
+        "end": 259.079,
+        "text": "containerized, is key to designing a\nmodern data"
+      },
+      {
+        "start": 259.14,
+        "end": 263.12,
+        "text": "center. It's not about one being better\nthan the other, but about"
+      },
+      {
+        "start": 263.2,
+        "end": 265.34,
+        "text": "choosing the right tool for the job."
+      }
+    ],
+    "assets": [
+      "resources/captions/module4/data-center-101-4-3-physical-vs-virtual-infrastructure-1080p.vtt"
+    ],
+    "text_inventory": {
+      "sha256": "493c68bf8dbe4800852bd2fe2d634aa46cdd1fa181f263990847a5025af2d50f",
+      "entries": [
+        {
+          "text": "OPEN",
+          "at_seconds": 2.5
+        },
+        {
+          "text": "Compute Project ®",
+          "at_seconds": 2.5
+        },
+        {
+          "text": "TR",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "\" BA",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "VIR",
+          "at_seconds": 17.5
+        },
+        {
+          "text": "TRADITIONAL",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "PHYSICAL OR",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "\"BARE METAL\"",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "VIRTUALIZATION",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "HYPERVISOR",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "X CORES",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "XX GB RAM",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "XXX GB HDD",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "30% UTILIZATION",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "6% UTILIZATION",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "60% UTILIZATION",
+          "at_seconds": 22.5
+        },
+        {
+          "text": "UTILIZATION",
+          "at_seconds": 32.5
+        },
+        {
+          "text": "111",
+          "at_seconds": 37.5
+        },
+        {
+          "text": "1:1 MODEL",
+          "at_seconds": 42.5
+        },
+        {
+          "text": "nmmno",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "RAM",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "UUUUU",
+          "at_seconds": 47.5
+        },
+        {
+          "text": "\"ZOMBIE SER",
+          "at_seconds": 67.5
+        },
+        {
+          "text": "XX GB",
+          "at_seconds": 92.5
+        },
+        {
+          "text": "XXX",
+          "at_seconds": 92.5
+        },
+        {
+          "text": "GB HDD",
+          "at_seconds": 92.5
+        },
+        {
+          "text": "60 %",
+          "at_seconds": 92.5
+        },
+        {
+          "text": "60%",
+          "at_seconds": 102.5
+        },
+        {
+          "text": "1:MAN",
+          "at_seconds": 102.5
+        },
+        {
+          "text": "VIRTL",
+          "at_seconds": 107.5
+        },
+        {
+          "text": "VIRTUALI",
+          "at_seconds": 112.5
+        },
+        {
+          "text": "BY A SO",
+          "at_seconds": 112.5
+        },
+        {
+          "text": "EACH VIRTUA",
+          "at_seconds": 122.5
+        },
+        {
+          "text": "EACH VIRTUAL MACHINE RUNS",
+          "at_seconds": 127.5
+        },
+        {
+          "text": "INDEPENDENTLY, EVEN THOUGH THEY",
+          "at_seconds": 127.5
+        },
+        {
+          "text": "SHARE THE SAME PHYSICAL SERVER",
+          "at_seconds": 127.5
+        },
+        {
+          "text": "THAT MEANS LESS HARDWARE",
+          "at_seconds": 137.5
+        },
+        {
+          "text": "CONTAINER",
+          "at_seconds": 147.5
+        },
+        {
+          "text": "APP A",
+          "at_seconds": 147.5
+        },
+        {
+          "text": "APP B",
+          "at_seconds": 147.5
+        },
+        {
+          "text": "APP C",
+          "at_seconds": 147.5
+        },
+        {
+          "text": "CONTAINER ENGINE",
+          "at_seconds": 147.5
+        },
+        {
+          "text": "LIGHTER",
+          "at_seconds": 152.5
+        },
+        {
+          "text": "FASTER TO DEPLOY",
+          "at_seconds": 152.5
+        },
+        {
+          "text": "WORKLOADS THAT NEED RAPID SCALING",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "MICROSERVICES",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "CLOUD-NATIVE APPLICATIONS",
+          "at_seconds": 167.5
+        },
+        {
+          "text": "ANOTHER WAY TO LOOK AT",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "THIS EVOLUTION IS THROUGH",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "UTILIZATION AND REDUNDANCY",
+          "at_seconds": 182.5
+        },
+        {
+          "text": "FAILOVER",
+          "at_seconds": 192.5
+        },
+        {
+          "text": "DEDICATED RESOURCES",
+          "at_seconds": 207.5
+        },
+        {
+          "text": "SHARED RESOURCES",
+          "at_seconds": 207.5
+        },
+        {
+          "text": "FOR HIGHLY SPECIALIZED,",
+          "at_seconds": 212.5
+        },
+        {
+          "text": "HIGH-PERFORMANCE TASKS",
+          "at_seconds": 212.5
+        },
+        {
+          "text": "FOR HIGHLY S",
+          "at_seconds": 217.5
+        },
+        {
+          "text": "HIGH-PERFORI",
+          "at_seconds": 217.5
+        },
+        {
+          "text": "LIKE SCIENTIFI",
+          "at_seconds": 217.5
+        },
+        {
+          "text": "OR REAL-TIME F",
+          "at_seconds": 217.5
+        },
+        {
+          "text": "DEDICATED HARDWARE",
+          "at_seconds": 222.5
+        },
+        {
+          "text": "SHARED INFRASTRUCTURE",
+          "at_seconds": 227.5
+        },
+        {
+          "text": "PHYSICAL INFRASTRUCTURE",
+          "at_seconds": 237.5
+        },
+        {
+          "text": "PHYSICALINFRASTRUCTURE",
+          "at_seconds": 242.5
+        },
+        {
+          "text": "VIRTUAL MACHINES",
+          "at_seconds": 242.5
+        },
+        {
+          "text": "PERFORMANCE",
+          "at_seconds": 242.5
+        },
+        {
+          "text": "ADD FLEXIBILITY",
+          "at_seconds": 242.5
+        },
+        {
+          "text": "BY SHARING RESOURCES",
+          "at_seconds": 242.5
+        },
+        {
+          "text": "CONTAINERS",
+          "at_seconds": 247.5
+        },
+        {
+          "text": "MINIMIZING OVERHEAD",
+          "at_seconds": 247.5
+        },
+        {
+          "text": "CHOOSING THE RIGHT",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "INFRASTRUCTURE",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "PHYSICAL",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "VIRTUAL",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "COATHNCA INUNL",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "HOST OS",
+          "at_seconds": 252.5
+        },
+        {
+          "text": "APp",
+          "at_seconds": 257.5
+        },
+        {
+          "text": "VM",
+          "at_seconds": 257.5
+        },
+        {
+          "text": "CONTANEA IRONS",
+          "at_seconds": 257.5
+        },
+        {
+          "text": "CONTAINERIZATION",
+          "at_seconds": 257.5
+        },
+        {
+          "text": "CORTAACA INONL",
+          "at_seconds": 262.5
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    },
+    "source_poster": "resources/images/module4/data-center-101-4-3-physical-vs-virtual-infrastructure-1080p.jpg"
+  },
+  "audio": null,
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 4
+    }
+  ],
+  "video_transcript": "When you think of data centers, you might be imagining rows of powerful buzzing machines. But what's actually running inside those machines? And how do organizations make the most of their hardware? That's where understanding physical versus virtual infrastructure becomes essential. Let's start with physical or bare metal infrastructure. In this setup, each piece of hardware runs one operating system, which in turn runs one application. This is known as a one-to-one model. It's simple and direct, but not always efficient. In many traditional deployments, you might have powerful servers running at only fifteen or thirty percent of their capacity. That's a lot of unused compute power, especially when hardware, power, and cooling costs add up. In fact, low utilization can be so persistent that some servers become what the industry calls zombie servers. These are machines that are still powered on using electricity and cooling, but no longer perform any meaningful work. Over time, they lose their original function, but stay online, draining resources without adding any value. To improve efficiency, organizations often move to virtualization. This is where one single physical server can host multiple virtual machines, each with its own operating system and application. It's like turning one powerful machine into many smaller ones. Virtualization is made possible by a software layer called a hypervisor. It divides the hardware resources like processing, memory, and storage amongst multiple virtual environments. Each virtual machine runs independently, even though they share the same physical server. This significantly boosts utilization, often above sixty percent or more. That means less hardware doing more work. But that's not the only evolution. The next step is containerization. Unlike virtual machines, containers share the host operating system that makes them lighter, faster, and easier to scale. Think of containers as highly efficient compartments, each running a single app. Containers are ideal for cloud-native applications, microservers, and workloads that need rapid scaling. They use fewer resources than traditional virtual machines and are especially useful in DevOps and modern CI/CD pipelines. Another way to look at this evolution is through utilization and redundancy. In traditional infrastructure, redundancy often means duplicating entire servers. It's expensive and inefficient. Virtualization, and especially containerization, allows for smarter redundancy with less hardware. So how do you choose between physical and virtual infrastructure? It mostly comes down to whether you need dedicated or shared resources. For highly specialized, highly performant tasks like scientific computing or real-time finance data, dedicated hardware, also called bare metal, gives you maximum power and control. But for most other workloads, shared infrastructure like virtual machines or containers offers greater speed, flexibility, and better cost savings. In summary, physical infrastructure gives you dedicated hardware and performance. Virtual machines add flexibility by sharing resources. Containers go even further by minimizing overhead and maximizing portability. Understanding this spectrum, physical, virtual, and containerized, is key to designing a modern data center. It's not about one being better than the other, but about choosing the right tool for the job. ",
+  "term_refs": [
+    "redundancy",
+    "ram",
+    "hdd",
+    "virtualization",
+    "virtual_machine",
+    "hypervisor",
+    "container",
+    "zombie_server"
+  ],
+  "narration_enabled": false,
+  "transcript": "When you think of data centers, you might be imagining rows of powerful buzzing machines. But what's actually running inside those machines? And how do organizations make the most of their hardware? That's where understanding physical versus virtual infrastructure becomes essential. Let's start with physical or bare metal infrastructure. In this setup, each piece of hardware runs one operating system, which in turn runs one application. This is known as a one-to-one model. It's simple and direct, but not always efficient. In many traditional deployments, you might have powerful servers running at only fifteen or thirty percent of their capacity. That's a lot of unused compute power, especially when hardware, power, and cooling costs add up. In fact, low utilization can be so persistent that some servers become what the industry calls zombie servers. These are machines that are still powered on using electricity and cooling, but no longer perform any meaningful work. Over time, they lose their original function, but stay online, draining resources without adding any value. To improve efficiency, organizations often move to virtualization. This is where one single physical server can host multiple virtual machines, each with its own operating system and application. It's like turning one powerful machine into many smaller ones. Virtualization is made possible by a software layer called a hypervisor. It divides the hardware resources like processing, memory, and storage amongst multiple virtual environments. Each virtual machine runs independently, even though they share the same physical server. This significantly boosts utilization, often above sixty percent or more. That means less hardware doing more work. But that's not the only evolution. The next step is containerization. Unlike virtual machines, containers share the host operating system that makes them lighter, faster, and easier to scale. Think of containers as highly efficient compartments, each running a single app. Containers are ideal for cloud-native applications, microservers, and workloads that need rapid scaling. They use fewer resources than traditional virtual machines and are especially useful in DevOps and modern CI/CD pipelines. Another way to look at this evolution is through utilization and redundancy. In traditional infrastructure, redundancy often means duplicating entire servers. It's expensive and inefficient. Virtualization, and especially containerization, allows for smarter redundancy with less hardware. So how do you choose between physical and virtual infrastructure? It mostly comes down to whether you need dedicated or shared resources. For highly specialized, highly performant tasks like scientific computing or real-time finance data, dedicated hardware, also called bare metal, gives you maximum power and control. But for most other workloads, shared infrastructure like virtual machines or containers offers greater speed, flexibility, and better cost savings. In summary, physical infrastructure gives you dedicated hardware and performance. Virtual machines add flexibility by sharing resources. Containers go even further by minimizing overhead and maximizing portability. Understanding this spectrum, physical, virtual, and containerized, is key to designing a modern data center. It's not about one being better than the other, but about choosing the right tool for the job. "
+}
+```
+
+### Active spoken narration
+None; imported recording owns the audio. Its transcript and caption cues are in the slide fields.
+
+## M4S7: Virtual Services Still Consume Physical Resources
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 7,
+  "type": "content_diagram",
+  "slug": "virtual_physical",
+  "title": "Virtual Services Still Consume Physical Resources",
+  "section_label": "Virtual and Physical Dependencies",
+  "figure": {
+    "path": "figures/module4/virtual-physical.mp4",
+    "poster": "figures/module4/virtual-physical-poster.png",
+    "media_type": "video",
+    "source": "custom",
+    "autoplay": false,
+    "loop": false,
+    "muted": true,
+    "alt": "A virtual-machine service still depends on host resources, electrical power and heat removal.",
+    "caption": "A virtual-machine service still depends on host resources, electrical power and heat removal.",
+    "text_inventory": {
+      "sha256": "5453e320fdcb95a86726526e8f421072bdac20ac013089324b8a80c41513e25a",
+      "entries": [
+        {
+          "text": "Virtual-machine example",
+          "at_seconds": 0
+        },
+        {
+          "text": "Alternative: containers",
+          "at_seconds": 0
+        },
+        {
+          "text": "Guest VM A",
+          "at_seconds": 0
+        },
+        {
+          "text": "Guest VM B",
+          "at_seconds": 0
+        },
+        {
+          "text": "Hypervisor mediates access",
+          "at_seconds": 0
+        },
+        {
+          "text": "Container A",
+          "at_seconds": 10.92
+        },
+        {
+          "text": "Container B",
+          "at_seconds": 10.92
+        },
+        {
+          "text": "Shared host kernel",
+          "at_seconds": 10.92
+        },
+        {
+          "text": "Physical host · finite resources",
+          "at_seconds": 0
+        },
+        {
+          "text": "Processors",
+          "at_seconds": 0
+        },
+        {
+          "text": "Memory",
+          "at_seconds": 0
+        },
+        {
+          "text": "Storage",
+          "at_seconds": 0
+        },
+        {
+          "text": "Networks",
+          "at_seconds": 0
+        },
+        {
+          "text": "Electrical power demand",
+          "at_seconds": 0
+        },
+        {
+          "text": "Heat-removal demand",
+          "at_seconds": 0
+        },
+        {
+          "text": "Application work",
+          "at_seconds": 0
+        },
+        {
+          "text": "Logical separation keeps a shared physical dependency",
+          "at_seconds": 0
+        },
+        {
+          "text": "Application activity creates demand on distinct host resources",
+          "at_seconds": 0
+        },
+        {
+          "text": "Illustrative demand · physical limits remain",
+          "at_seconds": 0
+        }
+      ],
+      "reviewed_on": "2026-10-24",
+      "review_method": "Astra review of native-resolution causal scenes, measured final-v4 narration timestamps and decoded video states; root geometry and synchronized-player checks. Timing uses Scribe v2 word estimates, not perceptual listening approval."
+    },
+    "sync_to_narration": true,
+    "animation_source": "animations/module4/virtual-physical.html"
+  },
+  "reference_links": [
+    {
+      "label": "NIST hypervisor definition",
+      "url": "https://csrc.nist.gov/glossary/term/hypervisor"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_07_virtual_physical.txt",
+    "wav_file": "audio/module4/slide_07_virtual_physical.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 4
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Virtualization lets software present and manage logical computing environments on physical resources. In a virtual-machine example, a hypervisor manages the guest systems and their access to the host hardware.
+
+Containers provide another arrangement: they share the kernel of their host operating environment. The animation traces a virtual machine’s physical dependency. More activity in an application can create more demand on processors, memory, storage and networks, with consequences for electricity and heat. Abstraction makes resources easier to use and manage; it doesn't remove their physical limits.
+
+
+## M4S8: Monitor Before You Optimize
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 8,
+  "type": "content_diagram",
+  "slug": "monitor_before_optimizing",
+  "title": "Monitor Before You Optimize",
+  "section_label": "Operational Evidence",
+  "figure": {
+    "path": "figures/module4/measurement-action.svg",
+    "source": "custom",
+    "alt": "Measurements become useful when teams connect them to assets, limits and responsible actions.",
+    "caption": "Measurements become useful when teams connect them to assets, limits and responsible actions.",
+    "design": {
+      "layout": "flow",
+      "nodes": [
+        "Measure and identify",
+        "Understand context",
+        "Act through procedures",
+        "Verify the outcome"
+      ]
+    },
+    "text_inventory": {
+      "sha256": "46b1731f9fbb7c2b55db13bf05ca3ce2ef3a5b52cf8e42eb08bef2f91ca348fe",
+      "entries": [
+        {
+          "text": "Measure and identify"
+        },
+        {
+          "text": "Understand context"
+        },
+        {
+          "text": "Act through procedures"
+        },
+        {
+          "text": "Verify the outcome"
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    }
+  },
+  "audio": {
+    "script_file": "audio/module4/slide_08_monitor_before_optimizing.txt",
+    "wav_file": "audio/module4/slide_08_monitor_before_optimizing.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 4
+    }
+  ],
+  "term_refs": [
+    "dc"
+  ]
+}
+```
+
+### Active spoken narration
+Data center infrastructure management, or D C I M, brings information about physical assets, power, cooling and capacity into operational decisions. Telemetry and trends can reveal patterns that a single reading misses.
+
+Useful monitoring needs a clear question and reliable context. An alarm doesn't by itself establish a root cause or authorize a change. Connect the measurement to the affected service, operating limits and responsible team, then verify the result of any improvement.
+
+
+### Visible static figure text
+Measure and  identify
+Understand  context
+Act through  procedures
+Verify the  outcome
+
+## M4S9: PUE Measures Facility Overhead
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 9,
+  "type": "content_diagram",
+  "slug": "pue_ratio",
+  "title": "PUE Measures Facility Overhead",
+  "section_label": "Energy Accounting",
+  "figure": {
+    "path": "figures/module4/pue-example.svg",
+    "source": "custom",
+    "alt": "Illustrative same-period energy: 1,200 facility units / 1,000 IT units = PUE 1.20.",
+    "caption": "Illustrative same-period energy: 1,200 facility units / 1,000 IT units = PUE 1.20.",
+    "design": {
+      "layout": "pue",
+      "nodes": []
+    },
+    "text_inventory": {
+      "sha256": "855d1072f74aa9df1a380000a807664805fe112f00c2864e9e4fa6cf79e48d1e",
+      "entries": [
+        {
+          "text": "Total facility energy: 1,200 units"
+        },
+        {
+          "text": "IT energy: 1,000 units"
+        },
+        {
+          "text": "Other: 200 units"
+        },
+        {
+          "text": "1,200 ÷ 1,000 = 1.20"
+        },
+        {
+          "text": "Illustrative values • same measurement period and boundary"
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    }
+  },
+  "reference_links": [
+    {
+      "label": "The Green Grid PUE definition",
+      "url": "https://www.thegreengrid.org/node/372"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_09_pue_ratio.txt",
+    "wav_file": "audio/module4/slide_09_pue_ratio.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 5
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Power Usage Effectiveness, or P U E, compares total facility energy with the energy used by IT equipment over the same period and boundary. If a facility uses twelve hundred units while its IT equipment uses one thousand, the ratio is one point two.
+
+The ratio describes overhead. It doesn't tell you how much useful computing was delivered or capture every environmental effect. Compare like boundaries and operating conditions, and consider total energy as well as the ratio.
+
+
+### Visible static figure text
+Total facility energy: 1,200 units
+IT energy: 1,000 units
+Other:  200 units
+1,200 ÷ 1,000 = 1.20
+Illustrative values • same measurement period and boundary
+
+## M4S10: Water and Carbon Need Explicit Boundaries
+Type: content_table
+
+### Authored slide fields
+```json
+{
+  "id": 10,
+  "type": "content_table",
+  "slug": "water_carbon_boundaries",
+  "title": "Water and Carbon Need Explicit Boundaries",
+  "section_label": "Accounting Boundaries",
+  "columns": [
+    "Measure",
+    "What to specify"
+  ],
+  "rows": [
+    [
+      "PUE",
+      "Facility energy / IT energy; same period and boundary."
+    ],
+    [
+      "Site WUE",
+      "Site water use / IT energy; commonly L/kWh."
+    ],
+    [
+      "Source-inclusive water",
+      "State whether electricity-production water is included."
+    ],
+    [
+      "CUE",
+      "Defined energy-related emissions / IT energy; state scope and units."
+    ]
+  ],
+  "reference_links": [
+    {
+      "label": "DOE water accounting",
+      "url": "https://www.energy.gov/cmei/femp/cooling-water-efficiency-opportunities-federal-data-centers"
+    },
+    {
+      "label": "DOE design guide · pp. 39–40",
+      "url": "https://www.energy.gov/sites/default/files/2024-07/best-practice-guide-data-center-design.pdf#page=39",
+      "kind": "pdf"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_10_water_carbon_boundaries.txt",
+    "wav_file": "audio/module4/slide_10_water_carbon_boundaries.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 5
+    }
+  ],
+  "term_refs": [
+    "wue",
+    "cue"
+  ]
+}
+```
+
+### Active spoken narration
+Water Usage Effectiveness, or W U E, relates water use to IT energy. A site-based value counts water used at the facility. A source-inclusive approach can also account for water associated with producing its energy. Those boundaries must not be mixed silently.
+
+Carbon Usage Effectiveness, or C U E, relates the defined energy-related emissions to IT energy. State the emissions scope, period and units. Neither a low water ratio nor a renewable-energy claim establishes the whole environmental outcome.
+
+
+## M4S11: Remove Waste Without Misreading the Ratio
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 11,
+  "type": "content_diagram",
+  "slug": "useful_work",
+  "title": "Remove Waste Without Misreading the Ratio",
+  "section_label": "Workload Efficiency",
+  "figure": {
+    "path": "figures/module4/energy-versus-ratio.svg",
+    "source": "custom",
+    "alt": "Illustrative consolidation can reduce total energy while increasing PUE when fixed overhead remains.",
+    "caption": "Illustrative consolidation can reduce total energy while increasing PUE when fixed overhead remains.",
+    "design": {
+      "layout": "grid",
+      "nodes": [],
+      "items": [
+        [
+          "Before",
+          "IT: 1,000 units; overhead: 200; total: 1,200; PUE: 1.20"
+        ],
+        [
+          "After",
+          "IT: 800 units; overhead: 200; total: 1,000; PUE: 1.25"
+        ],
+        [
+          "Resource outcome",
+          "Total energy falls by 200 units"
+        ],
+        [
+          "Interpretation",
+          "Evaluate useful work and total energy alongside the ratio"
+        ]
+      ]
+    },
+    "text_inventory": {
+      "sha256": "99c9474b96bc59163ba60c04767a595830827ac7e5e2506b279c5821dfc7560f",
+      "entries": [
+        {
+          "text": "Before"
+        },
+        {
+          "text": "IT: 1,000 units; overhead: 200; total: 1,200; PUE: 1.20"
+        },
+        {
+          "text": "After"
+        },
+        {
+          "text": "IT: 800 units; overhead: 200; total: 1,000; PUE: 1.25"
+        },
+        {
+          "text": "Resource outcome"
+        },
+        {
+          "text": "Total energy falls by 200 units"
+        },
+        {
+          "text": "Interpretation"
+        },
+        {
+          "text": "Evaluate useful work and total energy alongside the ratio"
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    }
+  },
+  "reference_links": [
+    {
+      "label": "PUE accounting context",
+      "url": "https://www.thegreengrid.org/node/372"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_11_useful_work.txt",
+    "wav_file": "audio/module4/slide_11_useful_work.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 5
+    }
+  ]
+}
+```
+
+### Active spoken narration
+In energy management, a zombie server is powered on but no longer doing useful work. Consolidating workloads or retiring unneeded equipment can reduce total energy. Confirm dependencies and service needs before changing an asset.
+
+The efficiency ratio can behave unexpectedly. If IT energy falls while some facility overhead stays fixed, P U E can rise even though total facility energy drops. Judge the outcome using useful work, service requirements and total resource use alongside the ratio.
+
+
+### Visible static figure text
+Before
+IT: 1,000 units; overhead: 200;  total: 1,200; PUE: 1.20
+After
+IT: 800 units; overhead: 200;  total: 1,000; PUE: 1.25
+Resource outcome
+Total energy falls by 200 units
+Interpretation
+Evaluate useful work and total  energy alongside the ratio
+
+## M4S12: Improve Cooling and Power Together
+Type: content_grid
+
+### Authored slide fields
+```json
+{
+  "id": 12,
+  "type": "content_grid",
+  "slug": "cooling_power_improvements",
+  "title": "Improve Cooling and Power Together",
+  "section_label": "Practical Improvements",
+  "grid_cols": 2,
+  "cards": [
+    {
+      "title": "Cooling",
+      "body": "Containment, suitable economizers and appropriate air or liquid paths."
+    },
+    {
+      "title": "Power",
+      "body": "Efficient conversion and UPS operation matched to the design."
+    },
+    {
+      "title": "Workloads",
+      "body": "Consolidate useful work and review unneeded equipment."
+    },
+    {
+      "title": "Monitoring",
+      "body": "Track conditions, capacity and the results of changes."
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_12_cooling_power_improvements.txt",
+    "wav_file": "audio/module4/slide_12_cooling_power_improvements.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 5
+    }
+  ],
+  "term_refs": [
+    "ups",
+    "containment"
+  ]
+}
+```
+
+### Active spoken narration
+Several practical actions can improve resource use. Airflow separation and suitable economizer operation can reduce unnecessary cooling effort. Efficient power conversion and appropriately operated backup systems can reduce electrical losses.
+
+Workload consolidation and real-time monitoring address another part of the system. Each action needs context: climate, operating load, resilience requirements and equipment capabilities can change the result. Verify both the service outcome and resource consumption rather than assuming every improvement must lower every metric.
+
+
+## M4S13: Heat Reuse Needs a Useful Heat Customer
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 13,
+  "type": "content_diagram",
+  "slug": "heat_reuse",
+  "title": "Heat Reuse Needs a Useful Heat Customer",
+  "section_label": "Useful Heat",
+  "figure": {
+    "path": "figures/module4/heat-reuse.svg",
+    "source": "custom",
+    "alt": "Heat reuse connects a suitable heat source to a useful customer through the required infrastructure.",
+    "caption": "Heat reuse connects a suitable heat source to a useful customer through the required infrastructure.",
+    "design": {
+      "layout": "flow",
+      "nodes": [
+        "Recoverable heat",
+        "Transfer and temperature matching",
+        "Useful heat demand"
+      ]
+    },
+    "text_inventory": {
+      "sha256": "9652b7cea8b3ff7f6b94361e54ee08b6917961ef8aa28a8f54698cb5ce5c0ceb",
+      "entries": [
+        {
+          "text": "Recoverable heat"
+        },
+        {
+          "text": "Transfer and temperature matching"
+        },
+        {
+          "text": "Useful heat demand"
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    }
+  },
+  "reference_links": [
+    {
+      "label": "OCP Heat Reuse",
+      "url": "https://www.opencompute.org/projects/cooling-environments/heat-reuse/"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_13_heat_reuse.txt",
+    "wav_file": "audio/module4/slide_13_heat_reuse.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 5
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Heat that would otherwise be rejected can sometimes serve a nearby building, district heating system or another process. A viable arrangement needs a suitable temperature, transport path and customer whose demand matches the available heat.
+
+Recovering useful heat can improve wider-system outcomes, but it doesn't automatically reduce the data center's electricity use or P U E. Pumps, heat pumps and other supporting equipment may add energy requirements. Evaluate the complete heat-reuse system and its local context.
+
+
+### Visible static figure text
+Recoverable  heat
+Transfer and  temperature  matching
+Useful heat  demand
+
+## M4S14: Clean Energy Claims Need More Than a Contract Label
+Type: content_two_column
+
+### Authored slide fields
+```json
+{
+  "id": 14,
+  "type": "content_two_column",
+  "slug": "energy_procurement",
+  "title": "Clean Energy Claims Need More Than a Contract Label",
+  "section_label": "Procurement and Claims",
+  "bullets": [
+    {
+      "text": "RECs convey defined renewable-energy attributes."
+    },
+    {
+      "text": "PPA terms and attribute ownership matter."
+    },
+    {
+      "text": "Annual matching differs from hourly and local matching."
+    },
+    {
+      "text": "State the accounting basis behind a claim."
+    }
+  ],
+  "figure": {
+    "path": "figures/module4/energy-claims.svg",
+    "source": "custom",
+    "alt": "Electricity delivery, contracts and energy attributes require separate accounting.",
+    "caption": "Electricity delivery, contracts and energy attributes require separate accounting.",
+    "design": {
+      "layout": "layers",
+      "nodes": [
+        "Physical electricity delivery",
+        "Purchase agreement and energy attributes",
+        "Claim boundary, period and location"
+      ]
+    },
+    "text_inventory": {
+      "sha256": "e0532bbe2bb8d8b8654066e44b3abbdf834e1d9be81407c63dc04553b9b907cb",
+      "entries": [
+        {
+          "text": "Physical electricity delivery"
+        },
+        {
+          "text": "Purchase agreement and energy attributes"
+        },
+        {
+          "text": "Claim boundary, period and location"
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    }
+  },
+  "reference_links": [
+    {
+      "label": "EPA renewable energy certificates",
+      "url": "https://www.epa.gov/green-power-markets/renewable-energy-certificates-recs"
+    },
+    {
+      "label": "EPA power purchase agreements",
+      "url": "https://www.epa.gov/green-power-markets/physical-ppa"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_14_energy_procurement.txt",
+    "wav_file": "audio/module4/slide_14_energy_procurement.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 6
+    }
+  ],
+  "term_refs": [
+    "rec",
+    "ppa"
+  ]
+}
+```
+
+### Active spoken narration
+Renewable energy certificates represent energy attributes that can be transferred separately from electricity. A power purchase agreement, or P P A, is a contract to buy power under agreed terms; the treatment of its energy attributes matters too.
+
+An annual purchase or certificate balance doesn't by itself demonstrate that the facility used matching clean generation at every hour and location. Check the accounting boundary, attribute ownership and timing behind a claim. Procurement and physical supply are related questions that need clear evidence.
+
+
+### Visible static figure text
+Physical electricity delivery
+Purchase agreement and energy attributes
+Claim boundary, period and location
+
+## M4S15: Demand Growth Raises Local Infrastructure Questions
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 15,
+  "type": "content_diagram",
+  "slug": "demand_and_constraints",
+  "title": "Demand Growth Raises Local Infrastructure Questions",
+  "section_label": "April 2026 Outlook",
+  "figure": {
+    "path": "figures/module4/demand-outlook.svg",
+    "source": "custom",
+    "alt": "IEA April 2026 outlook: about 485 TWh in 2025; roughly 950 TWh projected for 2030.",
+    "caption": "IEA April 2026 outlook: about 485 TWh in 2025; roughly 950 TWh projected for 2030.",
+    "design": {
+      "layout": "demand",
+      "nodes": []
+    },
+    "text_inventory": {
+      "sha256": "f866da27e4e2dc62f09f1d31524805f604b2d864d28c58fae73034f74e87aba9",
+      "entries": [
+        {
+          "text": "0"
+        },
+        {
+          "text": "250"
+        },
+        {
+          "text": "500"
+        },
+        {
+          "text": "750"
+        },
+        {
+          "text": "1000"
+        },
+        {
+          "text": "485 TWh"
+        },
+        {
+          "text": "~950 TWh"
+        },
+        {
+          "text": "2025 estimate"
+        },
+        {
+          "text": "2030 projection"
+        },
+        {
+          "text": "Global data-center electricity use • IEA April 2026 outlook"
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    }
+  },
+  "reference_links": [
+    {
+      "label": "IEA 2026 energy and AI outlook",
+      "url": "https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_15_demand_and_constraints.txt",
+    "wav_file": "audio/module4/slide_15_demand_and_constraints.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 2
+    },
+    {
+      "source": "rise_m4",
+      "lesson": 6
+    }
+  ]
+}
+```
+
+### Active spoken narration
+The International Energy Agency's April twenty twenty-six update puts global data-center electricity use around four hundred eighty-five terawatt hours in twenty twenty-five. Its projection reaches roughly nine hundred fifty terawatt hours in twenty thirty.
+
+These are an estimate and a projection of energy use, not a promise of completed facilities or a measure of installed power capacity. For a particular site, power availability, grid connections and supporting infrastructure can determine when and how new capacity can operate.
+
+
+### Visible static figure text
+0
+250
+500
+750
+1000
+485 TWh
+~950 TWh
+2025 estimate
+2030 projection
+Global data-center electricity use • IEA April 2026 outlook
+
+## M4S16: Plan for Mixed Workloads and Cooling
+Type: content_grid
+
+### Authored slide fields
+```json
+{
+  "id": 16,
+  "type": "content_grid",
+  "slug": "mixed_deployments",
+  "title": "Plan for Mixed Workloads and Cooling",
+  "section_label": "Workload-Dependent Choices",
+  "grid_cols": 2,
+  "cards": [
+    {
+      "title": "Centralized scale",
+      "body": "Coordinate large deployments and shared infrastructure."
+    },
+    {
+      "title": "Regional or edge placement",
+      "body": "Match proximity, connectivity and operating needs."
+    },
+    {
+      "title": "Air and liquid cooling",
+      "body": "Choose paths suitable for the actual equipment."
+    },
+    {
+      "title": "Modular approaches",
+      "body": "Support deployment plans within local constraints."
+    }
+  ],
+  "reference_links": [
+    {
+      "label": "OCP cooling context",
+      "url": "https://www.opencompute.org/projects/cooling-environments/"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_16_mixed_deployments.txt",
+    "wav_file": "audio/module4/slide_16_mixed_deployments.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 2
+    },
+    {
+      "source": "rise_m4",
+      "lesson": 6
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Large centralized facilities and smaller regional or edge deployments serve different needs. Location and scale depend on the workload, network conditions, available resources and operating requirements.
+
+The same diversity applies to cooling. Air remains appropriate for many systems, while some dense equipment needs liquid cooling. Modular construction can support a deployment strategy, but it doesn't remove site constraints. Treat offshore and other unusual concepts as specific proposals to evaluate, rather than the inevitable future of every data center.
+
+
+## M4S17: Co-Design from Chip to Grid
+Type: content_diagram
+
+### Authored slide fields
+```json
+{
+  "id": 17,
+  "type": "content_diagram",
+  "slug": "chip_to_grid",
+  "title": "Co-Design from Chip to Grid",
+  "section_label": "October 2026 OCP Context",
+  "figure": {
+    "path": "figures/module4/chip-to-grid.svg",
+    "source": "custom",
+    "alt": "Equipment decisions create dependencies across the rack, facility and grid interface.",
+    "caption": "Equipment decisions create dependencies across the rack, facility and grid interface.",
+    "design": {
+      "layout": "flow",
+      "nodes": [
+        "Chip and board",
+        "Rack systems",
+        "Facility systems",
+        "Grid interface"
+      ]
+    },
+    "text_inventory": {
+      "sha256": "d88e828231c4c959a30a7e9ea46c47d7911cd11fecca05557c4a62945e6ebace",
+      "entries": [
+        {
+          "text": "Chip and board"
+        },
+        {
+          "text": "Rack systems"
+        },
+        {
+          "text": "Facility systems"
+        },
+        {
+          "text": "Grid interface"
+        }
+      ],
+      "reviewed_on": "2026-10-23",
+      "review_method": "Visible media text, OCR-assisted contact sheets and final encoded animation states; original speech independently transcribed. Original-video sampling is every five seconds, not a claim of continuous playback review."
+    }
+  },
+  "reference_links": [
+    {
+      "label": "OCP ecosystem vision",
+      "url": "https://www.opencompute.org/news/realizing-the-ocp-open-data-center-ecosystem-vision/"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_17_chip_to_grid.txt",
+    "wav_file": "audio/module4/slide_17_chip_to_grid.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 2
+    },
+    {
+      "source": "rise_m4",
+      "lesson": 6
+    }
+  ]
+}
+```
+
+### Active spoken narration
+An accelerator choice can change board design, rack power, heat removal, facility distribution and the relationship with the electricity grid. Those dependencies explain why current open-infrastructure work reaches beyond individual servers.
+
+Community efforts on power interfaces, cooling and telemetry illustrate the need to coordinate requirements across the system. Eight hundred volts direct current and very high-density racks are specific developing architectures, not descriptions of every installed facility. The transferable skill is to trace the dependencies before choosing a solution.
+
+
+### Visible static figure text
+Chip and board
+Rack systems
+Facility  systems
+Grid interface
+
+## M4S18: Emerging Technologies Need a Readiness Test
+Type: content_bullets
+
+### Authored slide fields
+```json
+{
+  "id": 18,
+  "type": "content_bullets",
+  "slug": "readiness_questions",
+  "title": "Emerging Technologies Need a Readiness Test",
+  "section_label": "Evaluate New Claims",
+  "bullets": [
+    {
+      "text": "What specific problem does the technology solve?"
+    },
+    {
+      "text": "What evidence exists: design, test, pilot or operating deployment?"
+    },
+    {
+      "text": "Which power, cooling, network and service systems are required?"
+    },
+    {
+      "text": "What remains uncertain about readiness, operation and scale?"
+    }
+  ],
+  "reference_links": [
+    {
+      "label": "OCP system-level outlook",
+      "url": "https://www.opencompute.org/news/realizing-the-ocp-open-data-center-ecosystem-vision/"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_18_readiness_questions.txt",
+    "wav_file": "audio/module4/slide_18_readiness_questions.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 1
+    },
+    {
+      "source": "rise_m4",
+      "lesson": 6
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Quantum, photonic and other emerging technologies may create new capabilities and infrastructure needs. An interesting demonstration doesn't establish a general deployment timetable or prove that conventional facilities will disappear.
+
+Ask what problem the technology solves, what has been demonstrated, which supporting systems it requires and how it can be maintained. Separate a published design, a pilot and a repeatable operating service. That habit helps you explore innovation without presenting speculation as a guaranteed roadmap.
+
+
+## M4S19: Choose an Improvement That Fits the Site
+Type: content_grid
+
+### Authored slide fields
+```json
+{
+  "id": 19,
+  "type": "content_grid",
+  "slug": "site_improvement_case",
+  "title": "Choose an Improvement That Fits the Site",
+  "section_label": "Apply the System View",
+  "grid_cols": 2,
+  "cards": [
+    {
+      "title": "Establish the requirement",
+      "body": "Workload, availability and equipment constraints."
+    },
+    {
+      "title": "Find the limiting condition",
+      "body": "Power, cooling, water, space or connections."
+    },
+    {
+      "title": "Agree responsibilities",
+      "body": "Customer equipment and facility systems must coordinate."
+    },
+    {
+      "title": "Verify the outcome",
+      "body": "Pilot within agreed limits and measure service/resource results."
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_19_site_improvement_case.txt",
+    "wav_file": "audio/module4/slide_19_site_improvement_case.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 1
+    }
+  ]
+}
+```
+
+### Active spoken narration
+A mixed-use facility needs to support a denser workload. Rack positions are available, but cooling is close to its limit. The customer owns the equipment, and the facility operator controls the building systems.
+
+Before selecting a technology, establish the workload requirements and available power, heat-removal paths and service responsibilities. Compare feasible placements or upgrades, including their water and energy implications. Then decide what to measure during a pilot. The strongest choice addresses the site's limiting conditions and defines who will operate the result.
+
+
+## M4S20: Keep the Goal Larger Than One Metric
+Type: takeaways
+
+### Authored slide fields
+```json
+{
+  "id": 20,
+  "type": "takeaways",
+  "slug": "whole_goal_takeaways",
+  "title": "Keep the Goal Larger Than One Metric",
+  "items": [
+    "Map responsibility across facility, equipment, service and customer roles.",
+    "Keep physical dependencies visible behind virtual resources.",
+    "Use energy, water and carbon metrics with explicit boundaries.",
+    "Evaluate improvements and new technology against useful work, site constraints and evidence."
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_20_whole_goal_takeaways.txt",
+    "wav_file": "audio/module4/slide_20_whole_goal_takeaways.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 8
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Responsibility follows the actual service arrangement. Virtual services still depend on physical capacity. Resource metrics are useful only when their boundaries and limits are understood.
+
+Look for useful work and reliable service alongside energy, water and emissions outcomes. Evaluate new technology against a defined problem and evidence of readiness. These habits connect the digital world, facility and rack into one operating system, and prepare you to explore how a community develops common approaches to its challenges.
+
+
+## M4S21: Check Efficiency and Operational Concepts
+Type: knowledge_check
+
+### Authored slide fields
+```json
+{
+  "id": 21,
+  "type": "knowledge_check",
+  "slug": "operations_checks",
+  "title": "Check Efficiency and Operational Concepts",
+  "subtitle": "Answer all three questions. Use the feedback to test your reasoning and retry.",
+  "questions": [
+    {
+      "id": "m4_kc1",
+      "source_check_id": "M4-KC1",
+      "prompt": "Which approach puts otherwise rejected data-center heat to productive use?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Installing more air vents",
+          "correct": false,
+          "feedback_incorrect": "Ventilation can change airflow, but extra vents alone do not connect rejected heat to a useful customer."
+        },
+        {
+          "id": "b",
+          "text": "Expanding hard disk usage",
+          "correct": false,
+          "feedback_incorrect": "Adding storage capacity does not establish a beneficial use for the resulting heat. It can also increase the facility load."
+        },
+        {
+          "id": "c",
+          "text": "Using residual heat to warm nearby communities",
+          "correct": true
+        },
+        {
+          "id": "d",
+          "text": "Increasing lighting systems",
+          "correct": false,
+          "feedback_incorrect": "More lighting can increase energy use and heat. Heat reuse instead connects a recoverable source to useful demand."
+        }
+      ],
+      "feedback_correct": "Heat reuse can serve a suitable nearby demand. Its value depends on temperature, distance and infrastructure, and it need not lower facility PUE.",
+      "feedback_incorrect": "Look for a useful heat customer and the infrastructure needed to deliver suitable heat."
+    },
+    {
+      "id": "m4_kc2",
+      "source_check_id": "M4-KC2",
+      "prompt": "In data-center energy management, what is a “zombie server”?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "A backup server that only activates during a system failure",
+          "correct": false,
+          "feedback_incorrect": "A deliberately maintained standby system can have a required resilience role. It should not be classified as unneeded solely because it is idle."
+        },
+        {
+          "id": "b",
+          "text": "A server that is powered on but no longer doing useful work",
+          "correct": true
+        },
+        {
+          "id": "c",
+          "text": "A server infected with malware",
+          "correct": false,
+          "feedback_incorrect": "Zombie can have a malware-related meaning elsewhere. Here the energy-management question concerns equipment consuming power without useful work."
+        },
+        {
+          "id": "d",
+          "text": "A high-performance server running AI workloads",
+          "correct": false,
+          "feedback_incorrect": "A productive server may consume substantial power while serving a useful workload. High demand alone does not make it a zombie server."
+        }
+      ],
+      "feedback_correct": "In this context, the server consumes energy without useful work. Review ownership, dependencies and resilience needs before retiring it.",
+      "feedback_incorrect": "Judge useful work and intended operational role, rather than power level, malware terminology or temporary idleness."
+    },
+    {
+      "id": "m4_kc3",
+      "source_check_id": "M4-KC3",
+      "prompt": "Which statement is a defensible trend for data-center cooling arrangements?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "All data centers will be replaced by peer-to-peer devices",
+          "correct": false,
+          "feedback_incorrect": "Distributed devices still need computing resources and supporting infrastructure. They do not establish that all facilities disappear."
+        },
+        {
+          "id": "b",
+          "text": "Facilities may need both air and liquid cooling for different workloads",
+          "correct": true
+        },
+        {
+          "id": "c",
+          "text": "All data centers will move into urban high-rise buildings",
+          "correct": false,
+          "feedback_incorrect": "Site choices depend on workload, resources and constraints. One building form is not a universal destination."
+        },
+        {
+          "id": "d",
+          "text": "One global data center will serve every provider",
+          "correct": false,
+          "feedback_incorrect": "Latency, resilience, regional requirements and physical capacity create reasons for multiple deployments. A single universal facility is not the supported trend."
+        }
+      ],
+      "feedback_correct": "Cooling depends on equipment needs and facility conditions. Mixed air/liquid arrangements can support different workloads.",
+      "feedback_incorrect": "Choose the workload-dependent arrangement rather than a sweeping claim about every future facility."
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_21_operations_checks.txt",
+    "wav_file": "audio/module4/slide_21_operations_checks.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 7
+    }
+  ]
+}
+```
+
+### Active spoken narration
+These questions connect operational choices to their purpose. Consider what makes rejected heat useful, what an energy-management team means by a zombie server, and why different workloads can need different cooling paths.
+
+Submit each question once to continue. Correct answers aren't required. Use the explanation for your selected choice to check the underlying concept, then retry if useful.
+
+
+## M4S22: Match Trends to Their Meaning
+Type: knowledge_check
+
+### Authored slide fields
+```json
+{
+  "id": 22,
+  "type": "knowledge_check",
+  "slug": "trend_matching",
+  "title": "Match Trends to Their Meaning",
+  "subtitle": "Match all five categories to the development each one describes.",
+  "questions": [
+    {
+      "id": "m4_kc4",
+      "type": "matching",
+      "source_check_id": "M4-KC4",
+      "prompt": "Match each category to the development it emphasizes.",
+      "pairs": [
+        {
+          "id": "location",
+          "prompt": "Location",
+          "match": "Distributed or regional deployment matched to local constraints",
+          "feedback": "Placement follows workload proximity, connectivity and local resource requirements. Offshore deployment is a specific concept, not a universal outcome."
+        },
+        {
+          "id": "structures",
+          "prompt": "Structures",
+          "match": "Shift toward modular and hybrid architectures",
+          "feedback": "Modular approaches and combinations of systems can suit some deployment needs; they still depend on site constraints."
+        },
+        {
+          "id": "efficiency",
+          "prompt": "Energy Efficiency",
+          "match": "Recycling residual heat",
+          "feedback": "Useful heat recovery can improve wider-system energy outcomes when a suitable customer and infrastructure are available."
+        },
+        {
+          "id": "renewables",
+          "prompt": "Renewables",
+          "match": "Direct investment and clean energy sourcing",
+          "feedback": "Procurement and investment approaches require clear contracts and energy-attribute accounting to support the claims being made."
+        },
+        {
+          "id": "storage",
+          "prompt": "Storage",
+          "match": "Growth in high-density storage capacity",
+          "feedback": "Storage designs balance capacity, access performance, power, protection and service requirements."
+        }
+      ],
+      "feedback_correct": "Each match links a category to the concept emphasized here. Real projects need evidence and site-specific evaluation.",
+      "feedback_incorrect": "Review the category and its expected development. The explanations distinguish general directions from universal predictions."
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_22_trend_matching.txt",
+    "wav_file": "audio/module4/slide_22_trend_matching.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 7
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Match the five categories to the development each description emphasizes. Treat these as directions to evaluate rather than requirements every site must follow. Submit a complete set of matches to continue. The feedback explains each relationship and identifies the expected partner for any pair you want to review.
+
+
+## M4S23: Continue with Intro to OCP
+Type: content_grid
+
+### Authored slide fields
+```json
+{
+  "id": 23,
+  "type": "content_grid",
+  "slug": "intro_to_ocp_path",
+  "title": "Continue with Intro to OCP",
+  "section_label": "Your Next Learning Path",
+  "grid_cols": 2,
+  "cards": [
+    {
+      "title": "1 · The OCP Origins",
+      "body": "Why shared infrastructure approaches emerged."
+    },
+    {
+      "title": "2 · Ecosystem and Governance",
+      "body": "How the community organizes and contributes."
+    },
+    {
+      "title": "3 · Open Rack and Cooling",
+      "body": "A closer look at the technologies introduced here."
+    },
+    {
+      "title": "4 · The Adoption Journey",
+      "body": "How to explore, assess and adopt open infrastructure."
+    }
+  ],
+  "reference_links": [
+    {
+      "label": "OCP Academy",
+      "url": "https://academy.opencompute.org/"
+    },
+    {
+      "label": "Intro to OCP learning path",
+      "url": "https://github.com/opencomputeproject/ocp-academy-courses/tree/main/courses/intro-to-ocp"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_23_intro_to_ocp_path.txt",
+    "wav_file": "audio/module4/slide_23_intro_to_ocp_path.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 8
+    }
+  ]
+}
+```
+
+### Active spoken narration
+You now have the physical vocabulary for the next learning path. Intro to OCP begins with the origins of open infrastructure, then explains the community and its governance. It continues into Open Rack and cooling technologies and closes with the adoption journey.
+
+Use that series to explore how people turn shared requirements into contributions, interoperable designs and practical deployment choices.
+
+
+## M4S24: Apply the System View
+Type: course_complete
+
+### Authored slide fields
+```json
+{
+  "id": 24,
+  "type": "course_complete",
+  "slug": "apply_the_system_view",
+  "title": "Apply the System View",
+  "course_title": "Data Centers: From Digital Services to Physical Infrastructure",
+  "thank_you_message": "Thank you for completing Module 4: Management and Trends.",
+  "cert_message": "Use the system view to connect workloads, physical constraints and operating decisions. Continue with Intro to OCP for shared designs and community participation.",
+  "reference_links": [
+    {
+      "label": "Continue with OCP Academy",
+      "url": "https://academy.opencompute.org/"
+    },
+    {
+      "label": "OCP projects",
+      "url": "https://www.opencompute.org/projects"
+    }
+  ],
+  "audio": {
+    "script_file": "audio/module4/slide_24_apply_the_system_view.txt",
+    "wav_file": "audio/module4/slide_24_apply_the_system_view.wav",
+    "approved": true
+  },
+  "source_refs": [
+    {
+      "source": "rise_m4",
+      "lesson": 8
+    }
+  ]
+}
+```
+
+### Active spoken narration
+Thank you for completing Management and Trends and for working through Data Centers: From Digital Services to Physical Infrastructure. You've connected services to facilities, equipment and the decisions that support them.
+
+Use that system view to ask clearer questions about capacity, responsibility and resource use. Continue with Intro to OCP when you're ready to explore shared designs and community participation. Thank you, and put these connections to work in your next infrastructure conversation.

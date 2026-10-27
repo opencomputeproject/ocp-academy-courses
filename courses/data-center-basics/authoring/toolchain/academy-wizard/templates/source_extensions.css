@@ -1,0 +1,47 @@
+/* Source video and accessible matching support; authored here, never in generated pages. */
+[hidden]{display:none!important}
+.original-video-wrap{width:100%;max-width:960px;margin:0 auto}
+.original-video-panel{padding:18px;border-radius:18px;background:#fff;overflow:hidden;box-sizing:border-box;display:block}
+.original-video{display:block;width:100%;height:auto;max-height:58vh;background:#111;border-radius:4px}
+/* Recorded videos share the maintained figure grid and caption geometry.
+   Keep the course's 960px recording frame and responsive media-focus sizing. */
+.slide--media-focus .original-video-wrap{max-width:min(960px,var(--teaching-media-width,980px))}
+/* Two-column media has its aids outside the figure's immediate siblings.
+   One containing block owns the 24px gap, including wrapped pill strips. */
+.slide--has-media .learner-aids{margin-top:24px}
+.slide--has-media .learner-aids > :first-child{margin-top:0}
+.matching-card{grid-column:1/-1}
+.matching-rows{display:grid;gap:12px;margin-top:16px}
+.matching-row{display:grid;grid-template-columns:minmax(130px,.8fr) minmax(200px,1.5fr);gap:18px;align-items:center}
+.matching-row label{font-weight:700;font-size:.9rem}
+.matching-row select{font:inherit;font-size:.87rem;line-height:1.4;padding:12px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-primary);color:var(--text-primary);width:100%;min-width:0}
+.matching-results{margin:12px 0 0;padding-left:22px;display:grid;gap:10px;font-size:.86rem;line-height:1.45}
+.matching-results li span{display:block;color:var(--text-secondary)}
+.slide[data-quiz-slide="true"]{overflow-y:auto;align-items:flex-start;padding-bottom:125px}
+.slide[data-quiz-slide="true"] .slide-content{margin:0 auto;width:100%;max-width:1100px}
+.slide[data-quiz-slide="true"] .knowledge-check-wrap:has(.quiz-card:nth-child(3)){grid-template-columns:1fr}
+.slide[data-quiz-slide="true"] .knowledge-check-wrap:has(.quiz-card:nth-child(3)) .quiz-card{padding:20px 26px}
+.lms-next-instruction{font-size:.9rem;color:var(--text-secondary);margin-top:16px}
+.lms-navigation-note{bottom:92px!important}
+@media(max-width:700px){.matching-row{grid-template-columns:1fr;gap:7px}.matching-row select{font-size:.83rem}.original-video-panel{padding:15px}.original-video{max-height:50vh}.slide[data-quiz-slide="true"]{padding-bottom:145px}.slide[data-quiz-slide="true"] .knowledge-check-wrap{grid-template-columns:1fr}}
+
+/* Real magnification and panning for narration-synchronized teaching diagrams. */
+.lightbox-overlay--zoomable{flex-direction:column;gap:12px;padding:24px 12px 44px;cursor:default}
+.lightbox-viewport{width:min(1180px,calc(100vw - 48px));max-height:calc(100dvh - 180px);overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;border-radius:12px;cursor:grab}
+.lightbox-viewport:active{cursor:grabbing}
+.lightbox-overlay--zoomable .lightbox-figure{box-sizing:border-box;flex-shrink:0;max-width:none;max-height:none;overflow:visible;margin:0 auto;display:block;position:relative}
+.lightbox-overlay--zoomable .lightbox-figure video{width:100%;max-width:none;max-height:none;height:auto}
+.lightbox-tools{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;max-width:calc(100vw - 24px);color:white;font-size:14px}
+.lightbox-tools button{font:inherit;font-weight:700;min-height:44px;min-width:44px;padding:8px 12px;color:#243244;background:white;border:0;border-radius:8px;cursor:pointer}
+.lightbox-tools button:hover,.lightbox-tools button:focus-visible{background:#8DC63F;outline:2px solid white;outline-offset:2px}
+.lightbox-tools button:disabled{opacity:.45;cursor:default}
+.lightbox-tools output{min-width:44px;text-align:center}
+
+.lightbox-overlay--zoomable .figure-video-controls{display:none}
+
+/* Editable technical context precedes recordings without adding slide narration. */
+.slide .technical-note { width:100%; max-width:960px; margin:0 auto 24px; padding:16px 20px; box-sizing:border-box; border-left:4px solid #8DC63F; border-radius:6px; background:rgba(141,198,63,.10); text-align:left; }
+.slide .technical-note h3 { font-size:.95rem; line-height:1.4; margin:0 0 8px; color:inherit; }
+.slide .technical-note p { font-size:.90rem; line-height:1.55; margin:0 0 10px; color:inherit; }
+.slide .technical-note p:last-child { margin-bottom:0; }
+@media(max-width:600px){ .slide .technical-note {padding:14px 16px;} }

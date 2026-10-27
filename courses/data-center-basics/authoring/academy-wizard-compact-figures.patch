@@ -1,0 +1,110 @@
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -194,6 +194,8 @@
+ For every SVG figure and every SVG/HTML animation source used to make a video, make text fit the shape it lives in. Center labels when the layout calls for it, wrap long labels with `<tspan>` lines, reduce only the affected label, or widen the shape. Never allow labels to spill outside boxes, pills, arrows, badges, or video frames. Text must not touch the containing outline: preserve at least `0.75em` of interior clearance (12 px for 16 px text) on the right and bottom edges, with comparable breathing room on the left and top. Measure rendered text and container bounding rectangles before encoding; widen, heighten, wrap, or reposition any label whose clearance is below that threshold.
+ 
+ Keep the three text roles below media visually distinct. A true slide subtitle uses `.slide-subtitle`; the small descriptive caption attached to a figure stays at caption size; a main teaching statement placed after a full-width figure or video uses `.slide-main-text` at normal body size (`0.95rem`). Never render that main teaching statement with the larger subtitle class.
++
++**Fit the artboard to the artwork.** Static diagrams use their natural aspect ratio. Do not reserve a 16:9 canvas or tall media card for a short flow, table, or schematic. Trim unused space above and below the drawing to a modest margin while retaining labels, arrows, notes and credits; preserve the standard 15–20px displayed white frame. Tighten excessive gaps between the diagram and an internal teaching note as well. Fix editable SVG `viewBox`/dimensions or the source layout, rather than hiding excess space with clipping or negative CSS margins. Audit the whole course during a layout refresh, not only the example slide. Use the read-only `scripts/fit_svg_artboards.mjs` audit, inspect proposed bounds, then opt into `--apply` for reviewed static SVGs. Check actual generated pages at desktop and phone widths afterward.
+ 
+ **Align captions and separate media from learner aids.** Left-align each descriptive `.figure-caption` with the displayed figure/video frame's left edge, constrain it to that frame's width, and wrap longer captions within that column. Do not center captions or align them to a wider slide container. Keep at least 16px between the frame and its caption or following teaching statement, and at least 24px between the final caption/teaching text and the first reference or glossary pill. Let the containing learner-aids block own that latter gap; video and media-focus overrides must never collapse it. Apply the same rules to static figures, animations and recordings, on desktop and mobile. Preserve normal body size for teaching statements. Review every media slide after rebuilding, check actual frame/caption edges and gaps, and retain scrolling and bottom-control clearance when the extra spacing makes a slide taller.
+ 
+@@ -376,6 +378,8 @@
+ 
+ **Never ship silent knowledge checks.** A `knowledge_check` slide is a narrated slide. If its script or WAV is missing, or if only a mismatched voice/fallback can be generated, stop and ask the user to resolve the audio gate before rebuilding the SCORM.
+ 
++**Keep glossary definitions above media controls.** A visible tooltip must remain fully readable when it overlaps a figure, video control bar or neighboring pills. Entrance-animation transforms can isolate a tooltip in a lower stacking context: raise the containing learner-aids group above the media/player, rather than only increasing the tooltip child’s z-index. Keep the active pill above its siblings while preserving the fixed course controls and scrolling. Clamp long desktop definitions inside the viewport so pills near the right edge cannot clip their text. Check long definitions using both pointer hover and keyboard focus at desktop and phone widths, including imported-video slides.
++
+ **Make learner aids precise and local.** A glossary pill requires the actual term, or a documented spelling/plural/acronym-expansion/pronunciation variant, in that slide's narration, rendered teaching text, or legible figure/video text. A related concept, an unlabeled object, a filename, alt text, linked source, or the pill's own label/definition is not usage evidence. Place the pill only at its first substantive use in each module. Follow the evidence schema and media-review procedure in `references/course_schema.md`; never invent wording or aliases merely to justify a stale pill. Remove unsupported pills, move mistimed ones, and remove glossary entries left unused. Treat OCP and AI/ML as baseline Academy audience vocabulary: never create `term_glossary` entries or `term_refs` for OCP, AI/ML, or separate AI and ML entries whose only purpose is to expand that same pair. Never add glossary chips or `term_refs` to the final module's final `course_complete` slide; that slide may retain centered continuing-resource links. Glossary pills are tooltip-only controls, never links; always place the inline terminology/book icon at the pill's right edge. Resource pills always open their URL in a new tab and always place the inline square-and-up-right-arrow icon at the pill's right edge. Keep both icons embedded as accessible, decorative SVG so the SCORM remains self-contained. Tooltip/reference pills must live inside `.slide-content`, left-aligned, below the slide's last text/table/image element, except that resources on the final module's final `course_complete` slide are always center-aligned with the rest of that slide. Never put them in a floating "Terms" area, fixed footer, or control-adjacent panel. Use OCP sources for OCP-specific meanings and established sources such as IEC, DMTF, UL, NERC/IEEE, or NFPA for general electrical terms.
+ 
+ **Keep quizzes and module boundaries glossary-free.** Never define `term_refs` or show glossary pills on any quiz/`knowledge_check` slide, or on the first or last slide of **any** module. First and last mean position in `modules[].slides[]`, regardless of slide ID or layout type. Title, roadmap/overview, objectives, next-module and course-completion slides are also excluded wherever they appear. These slides do not count toward first substantive use; place a term only on its first eligible teaching slide where it actually occurs, or omit it if there is no eligible use. Apply this to every module, not just the final course-completion slide. Both source QA and rendering must reject prohibited placements. These glossary exclusions do not prohibit otherwise appropriate resource links.
+--- a/references/figure_prompts.md
++++ b/references/figure_prompts.md
+@@ -1,6 +1,12 @@
+ # Figures: reuse, generate, or draw inline
+ 
+ A great technical course illustrates almost every content slide. The reference OCP NIC 3.0 course only uses figures on module 5 (airflow + thermal/shock fixtures); aim higher — at least half the content slides should have a figure.
++
++## Compact artboards
++
++Use the artwork’s natural proportions. A single-row flow should be a short, wide SVG, not a row stranded in a 1200×675 canvas. Keep modest edge margins and a small gap before an internal teaching statement; retain the displayed white frame, caption alignment, 16px media/caption gap and 24px learner-aid gap. Preserve arrowheads, labels, measurement extents, explanatory notes and credits when fitting bounds. Do not crop imported recordings or reinterpret charts to fill the available area.
++
++For Slides, with Playwright available, `node scripts/fit_svg_artboards.mjs course.json --report bounds.json` measures active authored static SVGs without editing. It ignores a plain white full-canvas background and includes visible labels/strokes. Inspect the findings before using `--apply`; the helper trims substantial vertical canvas excess while retaining horizontal scale. `--margin` and `--min-trim` are explicit source-unit controls, not CSS dimensions. Bounds measurements cannot identify intentional whitespace inside a diagram, and they do not replace visual review. Rerun after regeneration so source builders cannot restore padded canvases.
+ 
+ ## Decide the figure source
+ 
+--- a/references/brand_style.md
++++ b/references/brand_style.md
+@@ -60,3 +60,9 @@
+ ## OCP green: two hexes
+ 
+ The CSS uses `--ocp-green: #8DC63F` for chrome (buttons, accents, links, hover states). The official iconography (CDU icon, OCP Academy hex emblem) uses `#80bc00` — a slightly more saturated green. They look similar but aren't identical. Do *not* try to normalize them — each is intentional in its context. When generating new figures in the OCP visual style, use `#8DC63F` for accents and let any embedded vector logos keep their native `#80bc00`.
++
++## Figure size and glossary layering
++
++Frame static diagrams around their actual artwork rather than a fixed 16:9 reservation. Keep a modest source margin and the standard 15–20px displayed white inset; preserve labels and arrows and let the resulting natural height control slide flow. Glossary tooltip bubbles must paint above video controls. The maintained Slides styles raise the complete `.learner-aids` stacking context and then the active pill; raising a pseudo-element alone is insufficient inside a transformed entrance-animation group. Check hover and keyboard focus on long definitions near recordings at desktop and phone widths.
++
++The learner runtime measures desktop glossary bubbles on hover, focus and resize and offsets them within a 16px viewport inset. Preserve this clamping when merging templates; a high z-index does not prevent right-edge clipping. Mobile keeps its maintained fixed inset.
+--- a/templates/module_styles.css
++++ b/templates/module_styles.css
+@@ -779,7 +779,7 @@
+   content: attr(data-tooltip);
+   position: absolute;
+   z-index: 1200;
+-  left: 0;
++  left: var(--glossary-tip-offset, 0px);
+   bottom: calc(100% + 10px);
+   width: min(340px, 76vw);
+   padding: 10px 12px;
+--- a/templates/learner_features.js
++++ b/templates/learner_features.js
+@@ -1,4 +1,26 @@
+ // This template runs inside the module closure. Controls do not modify defaults.
++
++// Keep desktop glossary bubbles inside the viewport, including rightmost pills.
++function fitGlossaryTooltip(chip) {
++  if (!chip) return;
++  const style = getComputedStyle(chip, '::after');
++  if (style.position !== 'absolute') return; // Mobile retains its shared fixed inset.
++  const extras = style.boxSizing === 'border-box' ? 0
++    : parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)
++      + parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
++  const width = parseFloat(style.width) + extras;
++  if (!Number.isFinite(width)) return;
++  const anchor = chip.getBoundingClientRect().left + chip.clientLeft;
++  const inset = 16;
++  const left = Math.max(inset, Math.min(anchor, window.innerWidth - inset - width));
++  chip.style.setProperty('--glossary-tip-offset', (left - anchor) + 'px');
++}
++document.addEventListener('pointerover', event => fitGlossaryTooltip(event.target.closest?.('.glossary-chip')));
++document.addEventListener('focusin', event => fitGlossaryTooltip(event.target.closest?.('.glossary-chip')));
++window.addEventListener('resize', () => {
++  document.querySelectorAll('.slide.active .glossary-chip:hover, .slide.active .glossary-chip:focus').forEach(fitGlossaryTooltip);
++});
++
+ const transcriptPanel = document.createElement('aside');
+ transcriptPanel.id = 'transcriptPanel'; transcriptPanel.className = 'transcript-panel';
+ transcriptPanel.setAttribute('aria-label', 'Slide transcript'); transcriptPanel.hidden = true;
+--- a/scripts/fit_svg_artboards.mjs
++++ b/scripts/fit_svg_artboards.mjs
+@@ -0,0 +1,9 @@
++// Inspect authored static SVG ink bounds. Apply only substantial outer-canvas trims.
++// Usage: node fit_svg_artboards.mjs course.json [--apply] [--margin 24] [--min-trim 96] [--report file.json]
++import {chromium} from 'playwright';import fs from 'node:fs/promises';import path from 'node:path';import {pathToFileURL} from 'node:url';
++const args=process.argv.slice(2),input=args.shift();if(!input)throw Error('Provide course.json');const apply=args.includes('--apply');function option(name,fallback){const i=args.indexOf(name);return i<0?fallback:args[i+1]}const margin=Number(option('--margin',24)),minimum=Number(option('--min-trim',96)),reportPath=option('--report','');if(!Number.isFinite(margin)||margin<0||!Number.isFinite(minimum)||minimum<0)throw Error('Invalid margin or minimum trim');const coursePath=path.resolve(input),root=path.dirname(coursePath),course=JSON.parse(await fs.readFile(coursePath));if(!Array.isArray(course.modules))throw Error('This audit supports Slides module figures; inspect Scrolling SVG assets directly.');const rows=course.modules.flatMap(m=>m.slides.filter(s=>s.figure?.path?.toLowerCase().endsWith('.svg')&&s.figure.source==='custom'&&s.figure.media_type!=='video').map(s=>({module:m.id,slide:s.id,path:s.figure.path})));const browser=await chromium.launch({headless:true,args:['--mute-audio']});const page=await browser.newPage({viewport:{width:1200,height:675}});const records=[];
++try{for(const row of rows){const file=path.join(root,row.path);await page.goto(pathToFileURL(file).href);await page.evaluate(()=>document.fonts.ready);const result=await page.evaluate(({margin,minimum,apply})=>{const svg=document.documentElement,v=svg.viewBox.baseVal;const old={x:v.x,y:v.y,width:v.width,height:v.height};const toRoot=svg.getScreenCTM().inverse();const bounds=[],backgrounds=[];
++for(const e of svg.querySelectorAll('rect,path,polygon,polyline,line,circle,ellipse,text,image,use')){if(e.closest('defs,clipPath,mask,marker,symbol'))continue;const c=getComputedStyle(e);let visible=true;for(let p=e;p&&p instanceof Element;p=p.parentElement){const s=getComputedStyle(p);if(s.display==='none'||s.visibility==='hidden'||+s.opacity===0){visible=false;break}}if(!visible||(c.fill==='none'&&c.stroke==='none')||(e.localName==='text'&&!e.textContent.trim()))continue;const b=e.getBBox();if(!b.width&&!b.height)continue;const isBackground=e.localName==='rect'&&Math.abs(b.x-v.x)<.1&&Math.abs(b.y-v.y)<.1&&Math.abs(b.width-v.width)<.1&&Math.abs(b.height-v.height)<.1&&c.stroke==='none'&&c.fill==='rgb(255, 255, 255)';if(isBackground){backgrounds.push(e);continue}const matrix=toRoot.multiply(e.getScreenCTM()),points=[[b.x,b.y],[b.x+b.width,b.y],[b.x,b.y+b.height],[b.x+b.width,b.y+b.height]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(matrix));const stroke=c.stroke==='none'?0:parseFloat(c.strokeWidth)/2;bounds.push({left:Math.min(...points.map(p=>p.x))-stroke,right:Math.max(...points.map(p=>p.x))+stroke,top:Math.min(...points.map(p=>p.y))-stroke,bottom:Math.max(...points.map(p=>p.y))+stroke})}
++if(!bounds.length)return{old,changed:false,reason:'No measurable artwork'};const art={left:Math.min(...bounds.map(b=>b.left)),right:Math.max(...bounds.map(b=>b.right)),top:Math.min(...bounds.map(b=>b.top)),bottom:Math.max(...bounds.map(b=>b.bottom))};const top=Math.floor((art.top-margin)*100)/100,bottom=Math.ceil((art.bottom+margin)*100)/100,newHeight=Number((bottom-top).toFixed(2)),removed=old.height-newHeight;const shouldTrim=removed>=minimum;const next=shouldTrim?{x:old.x,y:top,width:old.width,height:newHeight}:old;let source=null;if(shouldTrim&&apply){svg.setAttribute('viewBox',`${next.x} ${next.y} ${next.width} ${next.height}`);svg.setAttribute('width',String(next.width));svg.setAttribute('height',String(next.height));for(const bg of backgrounds){bg.setAttribute('x',String(next.x));bg.setAttribute('y',String(next.y));bg.setAttribute('width',String(next.width));bg.setAttribute('height',String(next.height))}source=new XMLSerializer().serializeToString(svg)}return{old,art,padding:{top:art.top-old.y,bottom:old.y+old.height-art.bottom},suggested:next,removedHeight:shouldTrim?removed:0,changed:shouldTrim,source}}, {margin,minimum,apply});
++const {source,...record}=result;if(source)await fs.writeFile(file,source+'\n');records.push({...row,...record});console.log(`${apply&&result.changed?'FITTED':'AUDITED'} M${row.module}S${row.slide}: ${result.old.height} → ${result.suggested?.height??result.old.height}`)}
++}finally{await browser.close()}const report={mode:apply?'apply':'read-only',axis:'vertical; horizontal scale and geometry retained',margin,minimumTrim:minimum,figures:records.length,changed:records.filter(r=>r.changed).length,records};if(reportPath)await fs.writeFile(path.resolve(reportPath),JSON.stringify(report,null,2)+'\n');console.log(`${report.figures} figures; ${report.changed} ${apply?'fitted':'proposed trims'}`);
+--- a/scripts/test_video_modes_browser.mjs
++++ b/scripts/test_video_modes_browser.mjs
+@@ -30,7 +30,7 @@
+  await page.evaluate(()=>{testNarration.playbackRate=1.5;testNarration.currentTime=Math.min(31,testNarration.duration*.6)});await page.waitForTimeout(300);s=await state();check(s.video.rate===1.5,'Video follows narration speed');check(close(s.video.time,synced?s.audio.time:s.audio.time%s.video.duration),'Seek uses finite or modulo time');
+  await page.locator('.slide.active [data-video-zoom]').click();await page.waitForTimeout(250);s=await state();check(s.clones.length===1,'Enlarged video exists');check(s.clones[0].rate===(synced?1.5:1),'Enlarged speed preserves the mode policy');
+  await page.evaluate(synced=>{const v=document.querySelector('.slide.active video'),clone=document.querySelector('.lightbox-overlay video');if(!synced)clone.pause();testNarration.currentTime=synced?Math.min(45,testNarration.duration*.8):(clone.currentTime+v.duration/2)%v.duration},synced);await page.waitForTimeout(250);s=await state();check(synced?close(s.audio.time,s.clones[0].time):!close(s.audio.time%s.video.duration,s.clones[0].time),'Enlarged seek follows only the opted-in video');
+- if(synced){await page.locator('.lightbox-overlay .academy-video__controls [data-video-action="toggle"], .lightbox-overlay [data-video-toggle]:visible').click();await page.waitForTimeout(100);s=await state();check(s.audio.paused&&s.video.paused&&s.clones[0].paused,'Enlarged pause controls both');}
++ if(synced){await page.locator('.lightbox-overlay .academy-video__controls [data-video-action="toggle"], .lightbox-overlay [data-video-toggle]:visible, .lightbox-overlay [data-lightbox-play]:visible').first().click();await page.waitForTimeout(100);s=await state();check(s.audio.paused&&s.video.paused&&s.clones[0].paused,'Enlarged pause controls both');}
+  await page.keyboard.press('Escape');
+  // With narration enabled, the historical pause listener controls the legacy video.
+  if(!synced){await page.locator('#narrationModeBtn').click();await page.waitForTimeout(150);}

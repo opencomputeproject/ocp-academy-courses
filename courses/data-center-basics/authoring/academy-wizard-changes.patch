@@ -1,0 +1,920 @@
+--- a/assets/scorm_api.js
++++ b/assets/scorm_api.js
+@@ -1,134 +1,74 @@
+-/**
+- * SCORM 1.2 API Wrapper for OCP NIC 3.0 Academy
+- * Handles communication between the course and the LMS
+- */
++/** SCORM 1.2 adapter for this four-SCO Academy course. */
+ var SCORM = (function() {
+   'use strict';
+-
+-  // Opt-in Slides shell owns one LMS session across all course pages.
+-  try {
+-    if (window.parent !== window && window.parent.AcademySingleSCO) {
+-      var pageSession = window.parent.AcademySingleSCO.forPage(window.location.href);
+-      if (pageSession) return pageSession;
+-    }
+-  } catch (_) { /* A cross-origin LMS ancestor is not a course session. */ }
+-
+-  var api = null;
+-  var initialized = false;
+-
+-  // Find the SCORM API object from the LMS
++  var api = null, initialized = false, started = 0, lastSaveError = '';
++  function succeeded(value) { return value === true || value === 'true'; }
++  function reportError(element) {
++    lastSaveError = String(element);
++    window.dispatchEvent(new CustomEvent('academy:scorm-error', {detail:lastSaveError}));
++  }
+   function findAPI(win) {
+-    var attempts = 0;
+-    while (win && attempts++ < 10) {
+-      try { if (win.API) return win.API; } catch (_) {}
+-      try { if (!win.parent || win.parent === win) break; win = win.parent; }
+-      catch (_) { break; }
++    for (var depth = 0; win && depth < 20; depth++) {
++      try {
++        if (win.API) return win.API;
++        if (!win.parent || win.parent === win) break;
++        win = win.parent;
++      } catch (_) { break; }
+     }
+     return null;
+   }
+-
+   function getAPI() {
+     if (api) return api;
+     api = findAPI(window);
+-    if (!api && window.opener) {
+-      api = findAPI(window.opener);
+-    }
++    try { if (!api && window.opener) api = findAPI(window.opener); } catch (_) {}
+     return api;
+   }
+-
++  function get(element) {
++    return initialized && getAPI() ? api.LMSGetValue(String(element)) : '';
++  }
++  function set(element, value) {
++    if (!initialized || !getAPI()) return '';
++    value = String(value);
++    if (element === 'cmi.suspend_data' && value.length > 4096) {
++      reportError('cmi.suspend_data exceeds 4096 characters'); return 'false';
++    }
++    var result = api.LMSSetValue(String(element), value);
++    var committed = api.LMSCommit('');
++    if (!succeeded(result) || !succeeded(committed)) {
++      reportError(element); return 'false';
++    }
++    return result;
++  }
+   return {
++    version: '1.2',
+     isAvailable: function() { return !!getAPI(); },
++    getLastSaveError: function() { return lastSaveError; },
+     init: function() {
+       if (initialized) return true;
+-      var lmsAPI = getAPI();
+-      if (lmsAPI) {
+-        var result = lmsAPI.LMSInitialize('');
+-        initialized = (result === 'true' || result === true);
++      if (getAPI()) {
++        initialized = succeeded(api.LMSInitialize(''));
++        if (initialized) started = Date.now(); else reportError('LMSInitialize');
+       }
+       return initialized;
+     },
+-
+     finish: function() {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        lmsAPI.LMSCommit('');
+-        lmsAPI.LMSFinish('');
+-        initialized = false;
+-      }
++      if (!initialized || !getAPI()) return;
++      var seconds = Math.max(0, Math.floor((Date.now()-started)/1000));
++      var time = String(Math.floor(seconds/3600)).padStart(4,'0') + ':'
++        + String(Math.floor(seconds/60)%60).padStart(2,'0') + ':'
++        + String(seconds%60).padStart(2,'0');
++      set('cmi.core.session_time', time);
++      set('cmi.core.exit', get('cmi.core.lesson_status') === 'completed' ? '' : 'suspend');
++      if (succeeded(api.LMSFinish(''))) initialized = false; else reportError('LMSFinish');
+     },
+-
+-    setCompleted: function() {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        lmsAPI.LMSSetValue('cmi.core.lesson_status', 'completed');
+-        lmsAPI.LMSCommit('');
+-      }
+-    },
+-
+-    setIncomplete: function() {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        lmsAPI.LMSSetValue('cmi.core.lesson_status', 'incomplete');
+-        lmsAPI.LMSCommit('');
+-      }
+-    },
+-
+-    setLocation: function(location) {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        lmsAPI.LMSSetValue('cmi.core.lesson_location', String(location));
+-        lmsAPI.LMSCommit('');
+-      }
+-    },
+-
+-    getLocation: function() {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        return lmsAPI.LMSGetValue('cmi.core.lesson_location');
+-      }
+-      return '';
+-    },
+-
+-    setSuspendData: function(data) {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        lmsAPI.LMSSetValue('cmi.suspend_data', String(data));
+-        lmsAPI.LMSCommit('');
+-      }
+-    },
+-
+-    getSuspendData: function() {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        return lmsAPI.LMSGetValue('cmi.suspend_data');
+-      }
+-      return '';
+-    },
+-
+-    getStatus: function() {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        return lmsAPI.LMSGetValue('cmi.core.lesson_status');
+-      }
+-      return '';
+-    },
+-
+-    setValue: function(element, value) {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        var result = lmsAPI.LMSSetValue(String(element), String(value));
+-        var committed = lmsAPI.LMSCommit('');
+-        return (committed === 'true' || committed === true) ? result : 'false';
+-      }
+-      return '';
+-    },
+-
+-    getValue: function(element) {
+-      var lmsAPI = getAPI();
+-      if (lmsAPI && initialized) {
+-        return lmsAPI.LMSGetValue(String(element));
+-      }
+-      return '';
+-    }
++    setCompleted: function() { return set('cmi.core.lesson_status', 'completed'); },
++    setIncomplete: function() { return set('cmi.core.lesson_status', 'incomplete'); },
++    setLocation: function(value) { return set('cmi.core.lesson_location', value); },
++    getLocation: function() { return get('cmi.core.lesson_location'); },
++    setSuspendData: function(value) { return set('cmi.suspend_data', value); },
++    getSuspendData: function() { return get('cmi.suspend_data'); },
++    getStatus: function() { return get('cmi.core.lesson_status'); },
++    setValue: set,
++    getValue: get
+   };
+ })();
+--- a/assets/scorm_api_2004.js
++++ b/assets/scorm_api_2004.js
+@@ -3,6 +3,11 @@
+   'use strict';
+   var api = null;
+   var initialized = false;
++  var lastSaveError = "";
++  function reportError(element) {
++    lastSaveError = String(element);
++    window.dispatchEvent(new CustomEvent("academy:scorm-error", {detail:lastSaveError}));
++  }
+   function findAPI(win) {
+     for (var depth = 0; win && depth < 20; depth++) {
+       try {
+@@ -27,13 +32,22 @@
+     if (!initialized || !getAPI()) return '';
+     var result = api.SetValue(String(element), String(value));
+     var committed = api.Commit('');
+-    return succeeded(committed) ? result : 'false';
++    if (!succeeded(result) || !succeeded(committed)) {
++      reportError(element);
++      return 'false';
++    }
++    return result;
+   }
+   return {
++    version: '2004 3rd Edition',
+     isAvailable: function() { return !!getAPI(); },
++    getLastSaveError: function() { return lastSaveError; },
+     init: function() {
+       if (initialized) return true;
+-      if (getAPI()) initialized = succeeded(api.Initialize(''));
++      if (getAPI()) {
++        initialized = succeeded(api.Initialize(''));
++        if (!initialized) reportError('Initialize');
++      }
+       return initialized;
+     },
+     finish: function() {
+@@ -42,7 +56,10 @@
+       api.Commit('');
+       if (succeeded(api.Terminate(''))) initialized = false;
+     },
+-    setCompleted: function() { return set('cmi.completion_status', 'completed'); },
++    setCompleted: function() {
++      if (!succeeded(set('cmi.completion_status', 'completed'))) return 'false';
++      return set('cmi.success_status', 'passed');
++    },
+     setIncomplete: function() { return set('cmi.completion_status', 'incomplete'); },
+     setLocation: function(value) { return set('cmi.location', value); },
+     getLocation: function() { return get('cmi.location'); },
+@@ -53,6 +70,15 @@
+     getSuspendData: function() { return get('cmi.suspend_data'); },
+     getStatus: function() { return get('cmi.completion_status'); },
+     setValue: set,
+-    getValue: get
++    getValue: get,
++    canChoose: function(target) {
++      return initialized && /^[A-Za-z0-9_-]+$/.test(target) && get('adl.nav.request_valid.choice.{target=' + target + '}') === 'true';
++    },
++    requestChoice: function(target) {
++      if (!this.canChoose(target)) return false;
++      if (!succeeded(set('adl.nav.request', '{target=' + target + '}choice'))) return false;
++      this.finish();
++      return true;
++    }
+   };
+ })();
+--- a/scripts/glossary_audit.py
++++ b/scripts/glossary_audit.py
+@@ -18,6 +18,8 @@
+ 
+ def glossary_exclusion_reason(slide, index, count):
+     """Shared audit/render gate; boundaries use array position, never slide IDs."""
++    if slide.get('glossary_exclude_reason'):
++        return slide['glossary_exclude_reason']
+     if slide.get('type') in NON_TEACHING:
+         return slide['type']
+     if index == 0:
+@@ -84,7 +86,11 @@
+         # Pronunciation spelling of an actual acronym, e.g. S L A, not synonyms.
+         if re.fullmatch(r'[A-Z]{2,8}', str(alias)):
+             letters = r'[\s.]+'.join(re.escape(c.casefold()) for c in alias)
+-            if re.search(r'(?<!\w)' + letters + r'(?!\w)', text):
++            for hit in re.finditer(r'(?<!\w)' + letters + r'(?!\w)', text):
++                # Do not treat D C inside spelled D C I M as direct current.
++                prefix, suffix = text[:hit.start()], text[hit.end():]
++                if re.search(r'(?<!\w)[a-z][\s.]+$', prefix) or re.match(r'^[\s.]+[a-z](?!\w)', suffix):
++                    continue
+                 return str(alias)
+     return None
+ 
+@@ -114,6 +120,8 @@
+             sources.append({'kind': 'script', 'path': script, 'text': body})
+     elif slide.get('transcript'):
+         sources.append({'kind': 'transcript', 'text': slide['transcript']})
++    if slide.get('video_transcript'):
++        sources.append({'kind':'original_video_speech','text':slide['video_transcript']})
+     figure = slide.get('figure') or {}
+     if figure:
+         file = root / str(figure.get('path') or '')
+--- a/scripts/new_course.py
++++ b/scripts/new_course.py
+@@ -90,6 +90,16 @@
+         logo = brand.get(key)
+         copy_logo_candidate(logo, f"brand.{key}")
+ 
++    # Declared offline fonts and SCORM schema assets are part of this pinned course.
++    for value in course.get("resource_assets", []):
++        rel = Path(value)
++        if rel.is_absolute() or ".." in rel.parts:
++            raise ValueError("resource_assets must stay within the course source")
++        src, dst = src_dir / rel, out / rel
++        if src.is_file() and src.resolve() != dst.resolve():
++            dst.parent.mkdir(parents=True, exist_ok=True)
++            shutil.copy2(src, dst)
++
+     # Motion intro logo: the skill ships a default white OCP Academy SVG so
+     # every generated package can play the intro without requiring the user
+     # to provide a logo file alongside course.json.
+--- a/scripts/record_css_animation.mjs
++++ b/scripts/record_css_animation.mjs
+@@ -50,6 +50,9 @@
+       animation.pause();
+       animation.currentTime = time;
+     }
++    // Deterministic, narration-timed sources can paint SVG scenes directly.
++    // Legacy finite CSS animation sources keep their existing behavior.
++    if (typeof window.renderAt === 'function') window.renderAt(time);
+   }, milliseconds);
+ }
+ 
+@@ -118,6 +121,7 @@
+   '-framerate', String(fps),
+   '-i', 'pipe:0',
+   '-an',
++  ...(isMp4 ? ['-vf','scale=in_range=pc:out_range=tv:out_color_matrix=bt709'] : []),
+   ...codecArgs,
+   outputPath,
+ ], { stdio: ['pipe', 'ignore', 'pipe'] });
+--- a/scripts/render_index.py
++++ b/scripts/render_index.py
+@@ -113,6 +113,11 @@
+         )
+     suffix = f"({language_name})"
+     return course_title if course_title.endswith(suffix) else f"{course_title} {suffix}"
++
++
++def course_home_tracked(course: dict) -> bool:
++    config = course.get("scorm") or {}
++    return config.get("include_course_home_sco", not scorm_2004.enabled(course))
+ 
+ 
+ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
+@@ -153,7 +158,7 @@
+     if start_config.get("enabled", True):
+         if not course.get("modules"):
+             raise ValueError("index_start requires a first module")
+-        if not single_sco_course and start_config.get("navigation", "direct") != "direct":
++        if not single_sco_course and not scorm_2004.enabled(course) and start_config.get("navigation", "direct") != "direct":
+             raise ValueError("Multi-SCO index_start.navigation must be direct; SCORM 1.2 has no standard target-SCO request")
+         first_module = course["modules"][0]["id"]
+         start_label = start_config.get("label") or ui(course, "start_with_module", "Start with MODULE {module}").format(module=first_module)
+@@ -267,9 +272,10 @@
+ (function() {{
+   'use strict';
+   const reviewMode = new URLSearchParams(location.search).get('review') === '1';
+-  const inLMS = !reviewMode && SCORM.init();
++  const trackedHome = {json.dumps(course_home_tracked(course))};
++  const inLMS = !reviewMode && trackedHome && SCORM.init();
+   const directModuleLinks = {json.dumps(direct_module_links)};
+-  if (!reviewMode) SCORM.setCompleted();
++  if (!reviewMode && trackedHome) SCORM.setCompleted();
+ {progress_script}
+ 
+   document.querySelectorAll('a.module-card').forEach(function(card) {{
+@@ -284,6 +290,7 @@
+   // The default start link is limited to the first module. It is not an
+   // arbitrary-SCO navigation API and never infers or writes module progress.
+   const startLink = document.querySelector('.index-start-link');
++  if (startLink && !trackedHome && !reviewMode && SCORM.isAvailable()) startLink.hidden = true;
+   if (startLink && reviewMode) startLink.addEventListener('click', function(e) {{
+     e.preventDefault();
+     location.href = this.getAttribute('href') + '?review=1&slide=1';
+@@ -303,6 +310,9 @@
+     truthful even if rendered before audio has been generated. Figures come
+     from slides[*].figure.path. The manifest must list every file referenced
+     by HTML pages — strict LMSes reject zips with unlisted files."""
++    if not is_scrolling(course) and scorm_2004.enabled(course):
++        import slides_2004
++        return slides_2004.render_manifest(course,out_dir,render_manifest)
+     if single_sco.enabled(course):
+         legacy_course = dict(course, scorm={"version": "1.2", "organization": "multi-sco"})
+         return single_sco.render_manifest(course, render_manifest(legacy_course, out_dir), scorm_metadata_title(course))
+@@ -320,7 +330,6 @@
+   xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+-                       http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd
+                        http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+   <metadata>
+     <schema>ADL SCORM</schema>
+@@ -367,11 +376,12 @@
+         add_file(launcher_files, motion_intro_logo(course, "index"))
+     launcher_files_xml = "\n      ".join(f'<file href="{xml_escape(f)}"/>' for f in launcher_files)
+     resources.append(f'''
+-    <resource identifier="RES_LAUNCHER" type="webcontent" adlcp:scormtype="sco" href="index.html">
++    <resource identifier="RES_LAUNCHER" type="webcontent" adlcp:scormtype="{'sco' if course_home_tracked(course) else 'asset'}" href="index.html">
+       {launcher_files_xml}
+     </resource>''')
+ 
+-    org_items.append('      <item identifier="ITEM_LAUNCHER" identifierref="RES_LAUNCHER">\n        <title>Course Home</title>\n      </item>')
++    if course_home_tracked(course):
++        org_items.append('      <item identifier="ITEM_LAUNCHER" identifierref="RES_LAUNCHER">\n        <title>Course Home</title>\n      </item>')
+ 
+     for mod in course["modules"]:
+         mid = mod["id"]
+@@ -429,7 +439,6 @@
+   xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+-                       http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd
+                        http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+ 
+   <metadata>
+--- a/scripts/render_module.py
++++ b/scripts/render_module.py
+@@ -24,6 +24,7 @@
+ import os
+ import sys
+ from pathlib import Path
++from slides_extensions import original_video_html, matching_question_html
+ from motion_intro import (
+     load_motion_intro_css,
+     motion_intro_body_class,
+@@ -113,6 +114,7 @@
+ def load_styles() -> str:
+     css = (TEMPLATE_DIR / "module_styles.css").read_text()
+     css += "\n\n" + load_motion_intro_css(TEMPLATE_DIR)
++    css += "\n\n" + (TEMPLATE_DIR / "source_extensions.css").read_text()
+     css += "\n" + (TEMPLATE_DIR / "video_player.css").read_text()
+     return css
+ 
+@@ -492,6 +494,8 @@
+     label = slide.get("section_label")
+     compact_table = slide.get("compact_table")
+     slide_class = "slide slide--mobile-scroll" if compact_table or slide.get("mobile_scroll") else "slide"
++    if slide.get("figure"):
++        slide_class += " slide--has-media"
+     column_class = "two-column two-column--with-table" if compact_table else "two-column"
+     video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
+     return f'''
+@@ -602,15 +606,24 @@
+ '''
+ 
+ 
++def _technical_note_html(slide: dict) -> str:
++    note = slide.get("technical_note") or {}
++    if not note:
++        return ""
++    paragraphs = "".join(f"<p>{esc(p)}</p>" for p in note.get("paragraphs", []))
++    return f'<aside class="technical-note" aria-label="{esc(note.get("title", "Technical context"))}"><h3>{esc(note.get("title", "Technical context"))}</h3>{paragraphs}</aside>'
++
++
+ def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
+     label = slide.get("section_label")
+     video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
+     media_class = ' slide--media-focus' if slide.get('media_focus') else ''
+     return f'''
+-  <div class="slide{media_class}" data-slide="{slide["id"]}"{video_attr}>
++  <div class="slide slide--has-media{media_class}" data-slide="{slide["id"]}"{video_attr}>
+     <div class="slide-content">
+       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
+       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
++      {_technical_note_html(slide)}
+       {_figure_html(slide.get("figure"), course)}
+       {f'<p class="slide-main-text animate-in">{esc(slide.get("caption"))}</p>' if slide.get("caption") else ""}
+       {_learner_aids_html(slide, course)}
+@@ -731,6 +744,9 @@
+     )
+     questions_html = []
+     for qi, q in enumerate(slide.get("questions", []), start=1):
++        if q.get("type") == "matching":
++            questions_html.append(matching_question_html(q, module, slide))
++            continue
+         qid = q.get("id") or f"m{module.get('id')}_s{slide.get('id')}_q{qi}"
+         multi = bool(q.get("multiple"))
+         input_type = "checkbox" if multi else "radio"
+@@ -969,6 +985,7 @@
+     transcript_map = json.dumps({str(s['id']): {'title': s.get('title') or s.get('next_module_title') or module_title, 'text': s.get('transcript','')} for s in module['slides']}, ensure_ascii=False).replace('</', '<\\/')
+     learner_runtime = (TEMPLATE_DIR / ('learner_features_hbf.js' if legacy_profile else 'learner_features.js')).read_text()
+     learner_runtime += "\n" + (TEMPLATE_DIR / "slides_video_player.js").read_text()
++    learner_runtime += '\n' + (TEMPLATE_DIR / 'source_extensions.js').read_text()
+     bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
+     bookmark_declaration = '' if legacy_profile else f'  const BOOKMARK_KEY = {bookmark_key};\n'
+ 
+@@ -1390,10 +1407,12 @@
+   }}
+ 
+   function selectedChoiceIds(card) {{
++    if (card.dataset.matching === 'true') return matchingValues(card, false);
+     return selectedInputs(card).map(input => input.value).sort();
+   }}
+ 
+   function correctChoiceIds(card) {{
++    if (card.dataset.matching === 'true') return matchingValues(card, true);
+     return Array.from(card.querySelectorAll('input[data-correct="true"]')).map(input => input.value).sort();
+   }}
+ 
+@@ -1433,17 +1452,28 @@
+     if (isNaN(count)) count = quizInteractionIndex;
+     var idx = Math.max(count, quizInteractionIndex);
+     quizInteractionIndex = idx + 1;
+-    var studentResponse = selected.join(',');
+-    var correctPattern = correctIds.join(',');
++    const is2004 = SCORM.version === '2004 3rd Edition';
++    var card = document.querySelector('[data-question-id="' + CSS.escape(questionId) + '"]');
++    function response12(values) {{
++      if (!card || card.dataset.matching !== 'true') return values.join(',');
++      const pairs = JSON.parse(card.dataset.pairs), alphabet = 'abcdefghijklmnopqrstuvwxyz0123456789';
++      if (pairs.length > alphabet.length) throw new Error('SCORM 1.2 matching supports at most 36 coded identifiers');
++      const codes = new Map(pairs.map((pair, i) => [pair.id, alphabet[i]]));
++      return values.map(value => value.split('[.]').map(id => codes.get(id)).join('.')).join(',');
++    }}
++    var studentResponse = is2004 ? selected.join('[,]') : response12(selected);
++    var correctPattern = is2004 ? correctIds.join('[,]') : response12(correctIds);
++    if (!is2004 && correctIds.length > 1) correctPattern = '{{' + correctPattern + '}}';
+     SCORM.setValue('cmi.interactions.' + idx + '.id', questionId);
+-    SCORM.setValue('cmi.interactions.' + idx + '.type', 'choice');
+-    SCORM.setValue('cmi.interactions.' + idx + '.student_response', studentResponse);
++    SCORM.setValue('cmi.interactions.' + idx + '.type', card && card.dataset.matching === 'true' ? 'matching' : 'choice');
++    SCORM.setValue('cmi.interactions.' + idx + (is2004 ? '.learner_response' : '.student_response'), studentResponse);
+     SCORM.setValue('cmi.interactions.' + idx + '.correct_responses.0.pattern', correctPattern);
+-    SCORM.setValue('cmi.interactions.' + idx + '.result', isCorrect ? 'correct' : 'wrong');
+-    SCORM.setValue('cmi.interactions.' + idx + '.latency', '00:00:00');
++    SCORM.setValue('cmi.interactions.' + idx + '.result', isCorrect ? 'correct' : (is2004 ? 'incorrect' : 'wrong'));
++    SCORM.setValue('cmi.interactions.' + idx + '.latency', is2004 ? 'PT0S' : '00:00:00');
+   }}
+ 
+   function applyQuizFeedback(card, isCorrect) {{
++    if (card.dataset.matching === 'true') {{ matchingFeedback(card, isCorrect); return; }}
+     const box = card.querySelector('.quiz-feedback');
+     if (!box) return;
+     box.classList.remove('correct', 'incorrect');
+@@ -1462,10 +1492,17 @@
+       if (!state || !state.attempted) return;
+       card.dataset.attempted = 'true';
+       (state.selected || []).forEach(value => {{
++        if (card.dataset.matching === 'true') {{
++          const parts = value.split('[.]');
++          const select = card.querySelector('select[data-prompt-id="' + CSS.escape(parts[0]) + '"]');
++          if (select) select.value = parts[1];
++          return;
++        }}
+         const input = card.querySelector('input[value="' + CSS.escape(value) + '"]');
+         if (input) input.checked = true;
+       }});
+       applyQuizFeedback(card, !!state.correct);
++      card.querySelectorAll('input,select').forEach(input => input.disabled = true);
+     }});
+   }}
+ 
+@@ -1479,7 +1516,7 @@
+         if (selected.length === 0) {{
+           applyQuizFeedback(card, false);
+           const box = card.querySelector('.quiz-feedback');
+-          if (box) box.textContent = {json.dumps(select_answer, ensure_ascii=False)};
++          if (box) box.textContent = card.dataset.matching === 'true' ? 'Match every item, then submit.' : {json.dumps(select_answer, ensure_ascii=False)};
+           return;
+         }}
+         const isCorrect = sameArray(selected, correct);
+@@ -1489,9 +1526,10 @@
+         applyQuizFeedback(card, isCorrect);
+         saveQuizState(card.dataset.questionId, selected, isCorrect);
+         recordQuizInteraction(card.dataset.questionId, selected, correct, isCorrect);
++        card.querySelectorAll('input,select').forEach(input => input.disabled = true);
+       }});
+       if (retry) retry.addEventListener('click', () => {{
+-        card.querySelectorAll('input').forEach(input => {{ input.checked = false; }});
++        card.querySelectorAll('input,select').forEach(input => {{ input.disabled = false; if(input.tagName === 'SELECT') input.selectedIndex = 0; else input.checked = false; }});
+         delete card.dataset.attempted;
+         clearQuizState(card.dataset.questionId);
+         const box = card.querySelector('.quiz-feedback');
+@@ -1566,7 +1604,7 @@
+     hint.textContent = {json.dumps(lightbox_close_hint, ensure_ascii=False)};
+     overlay.appendChild(hint);
+     overlay.addEventListener('click', function(e) {{
+-      if (!e.target.closest('.lightbox-figure')) closeLightbox();
++      if (!e.target.closest('.lightbox-figure,.lightbox-viewport,.lightbox-tools')) closeLightbox();
+     }});
+     document.body.appendChild(overlay);
+     var sourceVideo = panel.querySelector('video.figure-video');
+@@ -1590,11 +1628,98 @@
+       if (clonedPlayer) window.AcademyVideoPlayer(clonedPlayer, sourceVideo.academyPlayerOptions || {{}});
+       syncVideoToggle(lightboxPanel);
+     }}
++    // Synchronized technical diagrams need real magnification on narrow screens.
++    // Keep the existing lightbox for unmarked figures and recorded media.
++    if (sourceVideo && sourceVideo.dataset.narrationSync === 'true') {{
++      overlay.classList.add('lightbox-overlay--zoomable');
++      var viewport = document.createElement('div');
++      viewport.className = 'lightbox-viewport';
++      viewport.tabIndex = 0;
++      viewport.setAttribute('aria-label', 'Enlarged diagram. Zoom for detail, then scroll or drag to pan.');
++      overlay.insertBefore(viewport, frame);
++      viewport.appendChild(frame);
++      var tools = document.createElement('div');
++      tools.className = 'lightbox-tools';
++      tools.setAttribute('role', 'group');
++      tools.setAttribute('aria-label', 'Enlarged video controls');
++      tools.innerHTML = '<button type="button" data-lightbox-zoom="out" aria-label="Zoom out">−</button><button type="button" data-lightbox-fit>Fit</button><button type="button" data-lightbox-zoom="in" aria-label="Zoom in">+</button><output data-lightbox-scale aria-live="polite">100%</output><button type="button" data-lightbox-play>Play</button><button type="button" data-lightbox-close>Close</button>';
++      overlay.appendChild(tools);
++      hint.textContent = 'Zoom for detail. Swipe or drag to pan. Esc or Close to exit.';
++      var scale = 1;
++      function setScale(value) {{
++        var priorWidth = frame.getBoundingClientRect().width || viewport.clientWidth;
++        var center = priorWidth <= viewport.clientWidth ? .5 : (viewport.scrollLeft + viewport.clientWidth / 2) / priorWidth;
++        var overlayStyle = getComputedStyle(overlay);
++        var frameStyle = getComputedStyle(frame);
++        var paddingX = parseFloat(frameStyle.paddingLeft) + parseFloat(frameStyle.paddingRight);
++        var paddingY = parseFloat(frameStyle.paddingTop) + parseFloat(frameStyle.paddingBottom);
++        var exposedControls = frame.querySelector(".academy-video__controls");
++        if (exposedControls) paddingY += exposedControls.getBoundingClientRect().height;
++        var availableHeight = Math.max(100, window.innerHeight - parseFloat(overlayStyle.paddingTop) - parseFloat(overlayStyle.paddingBottom) - tools.getBoundingClientRect().height - 12);
++        viewport.style.maxHeight = availableHeight + 'px';
++        var aspect = (sourceVideo.videoWidth || 1920) / (sourceVideo.videoHeight || 1080);
++        var baseWidth = Math.min(viewport.clientWidth, Math.max(paddingX + 100, (availableHeight - paddingY) * aspect + paddingX));
++        scale = Math.max(1, Math.min(3, value));
++        frame.style.width = (baseWidth * scale) + 'px';
++        tools.querySelector('[data-lightbox-scale]').textContent = Math.round(scale * 100) + '%';
++        tools.querySelector('[data-lightbox-zoom="out"]').disabled = scale <= 1;
++        tools.querySelector('[data-lightbox-zoom="in"]').disabled = scale >= 3;
++        viewport.scrollLeft = scale === 1 ? 0 : center * frame.getBoundingClientRect().width - viewport.clientWidth / 2;
++        if (scale === 1) viewport.scrollTop = 0;
++      }}
++      tools.addEventListener('click', function(e) {{
++        e.stopPropagation();
++        if (e.target.closest('[data-lightbox-close]')) {{ closeLightbox(); return; }}
++        if (e.target.closest('[data-lightbox-play]')) {{
++          var masterToggle = frame.querySelector('[data-video-toggle]');
++          if (masterToggle) masterToggle.click();
++          return;
++        }}
++        if (e.target.closest('[data-lightbox-fit]')) setScale(1);
++        var zoom = e.target.closest('[data-lightbox-zoom]');
++        if (zoom) setScale(scale + (zoom.dataset.lightboxZoom === 'in' ? .5 : -.5));
++      }});
++      function updatePlayLabel() {{
++        tools.querySelector('[data-lightbox-play]').textContent = lightboxVideo.paused ? 'Play' : 'Pause';
++      }}
++      lightboxVideo.addEventListener('play', updatePlayLabel);
++      lightboxVideo.addEventListener('pause', updatePlayLabel);
++      updatePlayLabel();
++      var drag = null;
++      viewport.addEventListener('pointerdown', function(e) {{
++        if (e.pointerType !== 'mouse' || e.button !== 0 || e.target.closest('button')) return;
++        drag = {{x:e.clientX, y:e.clientY, left:viewport.scrollLeft, top:viewport.scrollTop}};
++        viewport.setPointerCapture(e.pointerId);
++        e.preventDefault();
++      }});
++      viewport.addEventListener('pointermove', function(e) {{
++        if (!drag) return;
++        viewport.scrollLeft = drag.left - e.clientX + drag.x;
++        viewport.scrollTop = drag.top - e.clientY + drag.y;
++      }});
++      function stopDrag() {{ drag = null; }}
++      viewport.addEventListener('pointerup', stopDrag);
++      viewport.addEventListener('pointercancel', stopDrag);
++      viewport.addEventListener('keydown', function(e) {{
++        var keys = {{ArrowLeft:[-80,0],ArrowRight:[80,0],ArrowUp:[0,-80],ArrowDown:[0,80]}};
++        if (!keys[e.key]) return;
++        e.preventDefault(); e.stopPropagation();
++        viewport.scrollBy(keys[e.key][0], keys[e.key][1]);
++      }});
++      overlay._returnFocus = panel.querySelector('[data-video-zoom]') || panel;
++      function resizeZoom() {{ setScale(scale); }}
++      window.addEventListener('resize', resizeZoom);
++      overlay._removeZoomListener = function() {{ window.removeEventListener('resize', resizeZoom); }};
++      lightboxVideo.addEventListener('loadedmetadata', resizeZoom, {{once:true}});
++      setScale(1);
++      viewport.focus();
++    }}
++
+     document.addEventListener('keydown', escClose);
+   }}
+   function closeLightbox() {{
+     var o = document.querySelector('.lightbox-overlay');
+-    if (o) o.remove();
++    if (o) {{ if (o._removeZoomListener) o._removeZoomListener(); var returnFocus = o._returnFocus; o.remove(); if (returnFocus) returnFocus.focus({{preventScroll:true}}); }}
+     document.removeEventListener('keydown', escClose);
+   }}
+   function escClose(e) {{ if (e.key === 'Escape') closeLightbox(); }}
+@@ -1676,6 +1801,8 @@
+                     line for line in (root / script).read_text(encoding='utf-8').splitlines()
+                     if not line.lstrip().startswith('#')
+                 ).strip()
++                if slide.get('video_transcript'):
++                    slide['transcript'] += '\n\nVideo transcript:\n\n' + slide['video_transcript']
+ 
+ 
+ def main():
+--- a/scripts/scorm_2004.py
++++ b/scripts/scorm_2004.py
+@@ -8,8 +8,8 @@
+ def enabled(course):
+     config = course.get("scorm") or {}
+     active = config.get("version") == "2004 3rd Edition"
+-    if active and str(course.get("style", "Slides")).lower() != "scrolling":
+-        raise ValueError("SCORM 2004 support currently requires a standalone Scrolling course")
++    if active and str(course.get("style", "Slides")).lower() != "scrolling" and config.get('organization') != 'multi-sco':
++        raise ValueError("SCORM 2004 Slides requires multi-sco organization")
+     return active
+ 
+ 
+@@ -46,7 +46,10 @@
+     if root.findtext(f"{{{IMS}}}metadata/{{{IMS}}}schemaversion") != "2004 3rd Edition":
+         issues.append("SCORM 2004 manifest edition does not match course.json")
+     resources = list(root.iter(f"{{{IMS}}}resource"))
+-    if len(resources) != 1 or resources[0].get(f"{{{ADL}}}scormType") != "sco" or resources[0].get("href") != "index.html":
++    if str(course.get('style','Slides')).lower()=='slides':
++        import slides_2004
++        issues.extend(slides_2004.validate(course,tree))
++    elif len(resources) != 1 or resources[0].get(f"{{{ADL}}}scormType") != "sco" or resources[0].get("href") != "index.html":
+         issues.append("SCORM 2004 Scrolling requires exactly one index.html SCO")
+     api_path = output / "scorm_api.js"
+     api = api_path.read_text() if api_path.exists() else ""
+--- a/scripts/single_sco.py
++++ b/scripts/single_sco.py
+@@ -18,6 +18,8 @@
+             raise ValueError("Unsupported Scrolling SCORM version")
+         if config.get("organization", "single-sco") != "single-sco":
+             raise ValueError("Scrolling courses use one standalone SCO")
++        return False
++    if version == '2004 3rd Edition' and mode == 'multi-sco':
+         return False
+     if version != "1.2":
+         raise ValueError("Only SCORM 1.2 is implemented; do not relabel a 1.2 runtime as 2004")
+--- a/scripts/slides_2004.py
++++ b/scripts/slides_2004.py
+@@ -0,0 +1,43 @@
++"""SCORM 2004 multi-SCO manifest extension, preserving module tracking boundaries."""
++from copy import deepcopy
++from xml.etree import ElementTree as ET
++IMS='http://www.imsglobal.org/xsd/imscp_v1p1'
++ADL='http://www.adlnet.org/xsd/adlcp_v1p3'
++SEQ='http://www.imsglobal.org/xsd/imsss'
++
++def render_manifest(course, out_dir, legacy_renderer):
++    legacy=deepcopy(course);legacy['scorm']={'version':'1.2','organization':'multi-sco'}
++    root=ET.fromstring(legacy_renderer(legacy,out_dir))
++    old_ims=root.tag.split('}')[0][1:]
++    # Do not carry the legacy 1.2 schema-location declarations into 2004.
++    root.attrib.pop('{http://www.w3.org/2001/XMLSchema-instance}schemaLocation', None)
++    if course.get('scorm_schema_assets'):
++        root.set('{http://www.w3.org/2001/XMLSchema-instance}schemaLocation', ' '.join([IMS,'imscp_v1p1.xsd',ADL,'adlcp_v1p3.xsd','http://www.adlnet.org/xsd/adlseq_v1p3','adlseq_v1p3.xsd','http://www.adlnet.org/xsd/adlnav_v1p3','adlnav_v1p3.xsd',SEQ,'imsss_v1p0.xsd']))
++    for node in root.iter():
++        if node.tag.startswith('{'+old_ims+'}'):node.tag='{'+IMS+'}'+node.tag.split('}',1)[1]
++        for key in list(node.attrib):
++            if key.endswith('}scormtype'):
++                node.set('{'+ADL+'}scormType',node.attrib.pop(key))
++    root.find('{'+IMS+'}metadata/{'+IMS+'}schemaversion').text='2004 3rd Edition'
++    org=root.find('{'+IMS+'}organizations/{'+IMS+'}organization')
++    if not course['scorm'].get('include_course_home_sco',False):
++        item=org.find("{*}item[@identifier='ITEM_LAUNCHER']")
++        if item is not None:org.remove(item)
++        launcher=root.find("{*}resources/{*}resource[@identifier='RES_LAUNCHER']")
++        launcher.set('{'+ADL+'}scormType','asset')
++    for item in org.findall('{'+IMS+'}item'):
++        seq=ET.SubElement(item,'{'+SEQ+'}sequencing');ET.SubElement(seq,'{'+SEQ+'}deliveryControls',completionSetByContent='true',objectiveSetByContent='true')
++    seq=ET.SubElement(org,'{'+SEQ+'}sequencing');ET.SubElement(seq,'{'+SEQ+'}controlMode',choice='true',flow='true')
++    ET.register_namespace('',IMS);ET.register_namespace('adlcp',ADL);ET.register_namespace('imsss',SEQ);ET.indent(root,space='  ')
++    return '<?xml version="1.0" encoding="UTF-8"?>\n'+ET.tostring(root,encoding='unicode')+'\n'
++
++def validate(course, tree):
++    issues=[];root=tree.getroot();expected={f'module{m["id"]}.html' for m in course['modules']}
++    resources=list(root.iter('{'+IMS+'}resource'));scos=[r for r in resources if r.get('{'+ADL+'}scormType')=='sco']
++    if {r.get('href') for r in scos}!=expected or len(scos)!=len(expected):issues.append('2004 Slides must have exactly one tracked SCO per authored module')
++    required=course['scorm'].get('required_sco_count',len(expected))
++    if len(scos)!=required:issues.append(f'Expected exactly {required} tracked SCOs')
++    if any(r.get('href')=='index.html' for r in scos):issues.append('Course Home must remain an untracked asset')
++    items=list(root.iter('{'+IMS+'}item'))
++    if {i.get('identifier') for i in items}!={f'ITEM_MODULE{m["id"]}' for m in course['modules']}:issues.append('Syllabus items must preserve exactly the module launch identifiers')
++    return issues
+--- a/scripts/slides_course_qa.py
++++ b/scripts/slides_course_qa.py
+@@ -163,7 +163,9 @@
+                         errors.append(f"M{module_id}S{slide.get('id')}: sync_to_narration must be a boolean")
+                     if figure.get("sync_to_narration") is True and not (slide.get("audio") or {}).get("wav_file"):
+                         errors.append(f"M{module_id}S{slide.get('id')}: synchronized video needs paired narration")
+-                    expected = ({"autoplay": False, "loop": False, "muted": True}
++                    expected = ({"autoplay": False, "loop": False, "muted": False}
++                                if figure.get("role") == "original_video"
++                                else {"autoplay": False, "loop": False, "muted": True}
+                                 if figure.get("sync_to_narration") is True
+                                 else {"autoplay": True, "loop": True, "muted": True})
+                     for field, value in expected.items():
+--- a/scripts/slides_extensions.py
++++ b/scripts/slides_extensions.py
+@@ -0,0 +1,20 @@
++"""Source-preserving Slides extensions for original videos and matching checks."""
++import json
++from html import escape
++import random
++
++def original_video_html(fig, course):
++    from video_player import academy_video_html
++    e=lambda value:escape(str(value or ''),quote=True)
++    media=dict(fig)
++    media['captions']=[dict(t,_cues=fig.get('caption_cues',[])) for t in fig.get('captions',[])]
++    player=academy_video_html(media,ui_labels=course.get('ui_labels'),video_class='original-video')
++    return f'<div class="figure-wrap original-video-wrap"><div class="figure-panel original-video-panel">{player}</div><p class="figure-caption">{e(fig.get("caption"))}</p></div>'
++
++def matching_question_html(q, module, slide):
++    e=lambda s:escape(str(s),quote=True)
++    pairs=q['pairs'];options=list(pairs);random.Random(q['id']).shuffle(options)
++    options_html='<option value="">Choose a match…</option>'+''.join(f'<option value="{e(p["id"])}">{e(p["match"])}</option>' for p in options)
++    rows=''.join(f'''<div class="matching-row"><label for="{e(q['id']+'_'+p['id'])}">{e(p['prompt'])}</label><select id="{e(q['id']+'_'+p['id'])}" data-prompt-id="{e(p['id'])}">{options_html}</select></div>''' for p in pairs)
++    data=e(json.dumps(pairs,ensure_ascii=False))
++    return f'''<div class="quiz-card matching-card animate-in" data-question-id="{e(q['id'])}" data-matching="true" data-pairs="{data}" data-correct-feedback="{e(q['feedback_correct'])}" data-incorrect-feedback="{e(q['feedback_incorrect'])}"><p class="quiz-question">{e(q['prompt'])}</p><div class="matching-rows">{rows}</div><div class="quiz-actions"><button class="quiz-submit" type="button">Submit</button><button class="quiz-retry" type="button">Retry</button></div><div class="quiz-feedback" aria-live="polite"></div></div>'''
+--- a/templates/index_styles.css
++++ b/templates/index_styles.css
+@@ -267,3 +267,6 @@
+   font-weight: 600;
+   color: var(--ocp-green);
+ }
++
++/* Hidden learner controls must override component display rules. */
++[hidden]{display:none!important}
+--- a/templates/learner_features.js
++++ b/templates/learner_features.js
+@@ -106,11 +106,22 @@
+   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
+ });
+ storeBookmark(); updateNarrationMode();
+-if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener('click', e => {
++// Standard SCORM 1.2 does not switch the LMS's active SCO by page hyperlink.
++if (inLMS && !SCORM.isSingleSCO && !directModuleLinks && !SCORM.requestChoice) {
++  document.querySelectorAll('a.next-module-link[href]').forEach(link => {
++    const target = link.getAttribute('href').match(/^module(\d+)\.html$/);
++    if (!target) return;
++    const note = document.createElement('p'); note.className = 'lms-next-instruction';
++    note.textContent = 'Continue with Module ' + target[1] + ' using your LMS course navigation.';
++    link.replaceWith(note);
++  });
++} else if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener('click', e => {
+   const link = e.target.closest('a[href]'); if (!link) return;
+   const url = new URL(link.getAttribute('href'), location.href);
+   if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {
+-    e.preventDefault(); lmsNote.hidden = false;
++    const target = url.pathname.match(/\/module(\d+)\.html$/); e.preventDefault();
++    if (target && SCORM.requestChoice && SCORM.requestChoice('ITEM_MODULE'+target[1])) return;
++    lmsNote.hidden = false;
+   }
+ });
+ if (reviewMode) document.addEventListener('click', e => {
+--- a/templates/source_extensions.css
++++ b/templates/source_extensions.css
+@@ -0,0 +1,47 @@
++/* Source video and accessible matching support; authored here, never in generated pages. */
++[hidden]{display:none!important}
++.original-video-wrap{width:100%;max-width:960px;margin:0 auto}
++.original-video-panel{padding:18px;border-radius:18px;background:#fff;overflow:hidden;box-sizing:border-box;display:block}
++.original-video{display:block;width:100%;height:auto;max-height:58vh;background:#111;border-radius:4px}
++/* Recorded videos share the maintained figure grid and caption geometry.
++   Keep the course's 960px recording frame and responsive media-focus sizing. */
++.slide--media-focus .original-video-wrap{max-width:min(960px,var(--teaching-media-width,980px))}
++/* Two-column media has its aids outside the figure's immediate siblings.
++   One containing block owns the 24px gap, including wrapped pill strips. */
++.slide--has-media .learner-aids{margin-top:24px}
++.slide--has-media .learner-aids > :first-child{margin-top:0}
++.matching-card{grid-column:1/-1}
++.matching-rows{display:grid;gap:12px;margin-top:16px}
++.matching-row{display:grid;grid-template-columns:minmax(130px,.8fr) minmax(200px,1.5fr);gap:18px;align-items:center}
++.matching-row label{font-weight:700;font-size:.9rem}
++.matching-row select{font:inherit;font-size:.87rem;line-height:1.4;padding:12px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-primary);color:var(--text-primary);width:100%;min-width:0}
++.matching-results{margin:12px 0 0;padding-left:22px;display:grid;gap:10px;font-size:.86rem;line-height:1.45}
++.matching-results li span{display:block;color:var(--text-secondary)}
++.slide[data-quiz-slide="true"]{overflow-y:auto;align-items:flex-start;padding-bottom:125px}
++.slide[data-quiz-slide="true"] .slide-content{margin:0 auto;width:100%;max-width:1100px}
++.slide[data-quiz-slide="true"] .knowledge-check-wrap:has(.quiz-card:nth-child(3)){grid-template-columns:1fr}
++.slide[data-quiz-slide="true"] .knowledge-check-wrap:has(.quiz-card:nth-child(3)) .quiz-card{padding:20px 26px}
++.lms-next-instruction{font-size:.9rem;color:var(--text-secondary);margin-top:16px}
++.lms-navigation-note{bottom:92px!important}
++@media(max-width:700px){.matching-row{grid-template-columns:1fr;gap:7px}.matching-row select{font-size:.83rem}.original-video-panel{padding:15px}.original-video{max-height:50vh}.slide[data-quiz-slide="true"]{padding-bottom:145px}.slide[data-quiz-slide="true"] .knowledge-check-wrap{grid-template-columns:1fr}}
++
++/* Real magnification and panning for narration-synchronized teaching diagrams. */
++.lightbox-overlay--zoomable{flex-direction:column;gap:12px;padding:24px 12px 44px;cursor:default}
++.lightbox-viewport{width:min(1180px,calc(100vw - 48px));max-height:calc(100dvh - 180px);overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;border-radius:12px;cursor:grab}
++.lightbox-viewport:active{cursor:grabbing}
++.lightbox-overlay--zoomable .lightbox-figure{box-sizing:border-box;flex-shrink:0;max-width:none;max-height:none;overflow:visible;margin:0 auto;display:block;position:relative}
++.lightbox-overlay--zoomable .lightbox-figure video{width:100%;max-width:none;max-height:none;height:auto}
++.lightbox-tools{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;max-width:calc(100vw - 24px);color:white;font-size:14px}
++.lightbox-tools button{font:inherit;font-weight:700;min-height:44px;min-width:44px;padding:8px 12px;color:#243244;background:white;border:0;border-radius:8px;cursor:pointer}
++.lightbox-tools button:hover,.lightbox-tools button:focus-visible{background:#8DC63F;outline:2px solid white;outline-offset:2px}
++.lightbox-tools button:disabled{opacity:.45;cursor:default}
++.lightbox-tools output{min-width:44px;text-align:center}
++
++.lightbox-overlay--zoomable .figure-video-controls{display:none}
++
++/* Editable technical context precedes recordings without adding slide narration. */
++.slide .technical-note { width:100%; max-width:960px; margin:0 auto 24px; padding:16px 20px; box-sizing:border-box; border-left:4px solid #8DC63F; border-radius:6px; background:rgba(141,198,63,.10); text-align:left; }
++.slide .technical-note h3 { font-size:.95rem; line-height:1.4; margin:0 0 8px; color:inherit; }
++.slide .technical-note p { font-size:.90rem; line-height:1.55; margin:0 0 10px; color:inherit; }
++.slide .technical-note p:last-child { margin-bottom:0; }
++@media(max-width:600px){ .slide .technical-note {padding:14px 16px;} }
+--- a/templates/source_extensions.js
++++ b/templates/source_extensions.js
+@@ -0,0 +1,23 @@
++// Functions are hoisted into the maintained module closure, preserving one state owner.
++function matchingValues(card, correct) {
++  const selects=Array.from(card.querySelectorAll('select[data-prompt-id]'));
++  if (!correct && selects.some(s=>!s.value)) return [];
++  return selects.map(s=>s.dataset.promptId+'[.]'+(correct?s.dataset.promptId:s.value)).sort();
++}
++function showScormSaveError(){lmsNote.textContent='Progress could not be saved. Keep this window open and contact your LMS support team before leaving.';lmsNote.hidden=false}
++window.addEventListener('academy:scorm-error',showScormSaveError);
++if(SCORM.getLastSaveError && SCORM.getLastSaveError()) showScormSaveError();
++function matchingFeedback(card, isCorrect) {
++  const box=card.querySelector('.quiz-feedback');box.replaceChildren();
++  box.classList.remove('correct','incorrect');box.classList.add(isCorrect?'correct':'incorrect');
++  const summary=document.createElement('p');summary.textContent=isCorrect?card.dataset.correctFeedback:card.dataset.incorrectFeedback;box.append(summary);
++  const pairs=JSON.parse(card.dataset.pairs);const byId=Object.fromEntries(pairs.map(p=>[p.id,p]));
++  const list=document.createElement('ul');list.className='matching-results';
++  pairs.forEach(pair=>{const selected=card.querySelector('select[data-prompt-id="'+CSS.escape(pair.id)+'"]').value;const li=document.createElement('li');li.textContent=(selected===pair.id?'Correct: ':'Review: ')+pair.prompt+' → '+(byId[selected]?.match||'No match');const explain=document.createElement('span');explain.textContent=(selected===pair.id?'':'Expected: '+pair.match+'. ')+pair.feedback;li.append(explain);list.append(li)});box.append(list);
++}
++if(inLMS&&SCORM.requestChoice){
++  document.querySelectorAll('a.next-module-link[href]').forEach(link=>{
++    const match=link.getAttribute('href').match(/^module(\d+)\.html$/);if(!match)return;
++    if(!SCORM.canChoose('ITEM_MODULE'+match[1])){link.hidden=true;const note=document.createElement('p');note.className='lms-next-instruction';note.textContent='Open Module '+match[1]+' using your LMS course navigation.';link.parentElement.append(note)}
++  });
++}

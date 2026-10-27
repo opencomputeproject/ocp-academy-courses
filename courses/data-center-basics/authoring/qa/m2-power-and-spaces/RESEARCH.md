@@ -1,0 +1,10 @@
+# Source verification for Module 2 revision
+
+- [OCP Open Rack V3 power shelf, PDF viewer page 6](https://www.opencompute.org/documents/ocp-open-rack-v3-power-shelf-rev-1-0-1-pdf#page=6): centralized modular rectifiers, a common DC busbar and N+1 shelf design. The slide explicitly separates conversion from passive distribution.
+- [Meta FBOSS power architecture](https://facebook.github.io/fboss/docs/architecture/network_hardware_specs/#11-power-delivery-architecture): rack PSU shelves take AC, produce 48 V DC and feed IT through a vertical busbar. DC regulation remains in the equipment; Meta also documents AC-input standalone/EIA equipment. No unsupported numerical claim that most hyperscalers use one architecture is added.
+- [Eaton Open Rack deployment](https://www.eaton.com/ca/en-gb/catalog/backup-power-ups-surge-it-power-distribution/eaton-intelligent-power-manager/power-management-alliance-partners/open-compute-project/deploying-open-compute-rack.html): fewer individual server cords, blind-mate installation, front-access modular servicing and pooled power capacity. Efficiency benefits are conditional on design and operating load. Lower current/loss is explicitly compared with lower-voltage DC at equal power and conductor resistance, not indiscriminately with AC distribution.
+- [OCP chip-to-grid ecosystem discussion](https://www.opencompute.org/news/realizing-the-ocp-open-data-center-ecosystem-vision/): coordinate white-space IT and grey-space infrastructure.
+- [Delta three-zone example](https://www.delta-americas.com/en-US/landing/Architecture-Up-Front-Spaces): white IT, grey support and black utility-facing systems. This is an illustrative vocabulary, not a universal taxonomy.
+- [StayOnline colour-space terminology](https://blog.stayonline.com/2026/02/17/Data-Center-Color-Spaces.html): explicitly nonstandard labels and a different black-space meaning (connectivity). The course therefore defines its example and tells learners to confirm local boundaries. White space does not require a raised floor.
+
+The source PCIe check is archived as `retired-pcie-question.json`. The imported recording remains intact. No audio was played aloud.
