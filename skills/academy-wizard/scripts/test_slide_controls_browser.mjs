@@ -25,11 +25,11 @@ let browser;
 try {
   await fs.copyFile(path.join(skill, 'assets/scorm_api.js'), path.join(tmp, 'scorm_api.js'));
   await fs.writeFile(path.join(tmp, 'module2.html'), '<!doctype html><title>Destination</title>');
-  for (const direct of [false, true]) {
+  for (const mode of ['guarded', 'direct', 'next-direct']) {
     const course = {
       style: 'Slides', course_slug: 'controls-test', course_title: 'Controls test',
       motion_intro: {enabled: false}, ui_labels: {narration_hint: hint},
-      scorm: {version: '1.2', organization: 'multi-sco', ...(direct ? {navigation: 'direct'} : {})},
+      scorm: {version: '1.2', organization: 'multi-sco', ...(mode === 'direct' ? {navigation: 'direct'} : {}), ...(mode === 'next-direct' ? {next_module_navigation: 'direct'} : {})},
       modules: [{id: 1, title: 'Read and Apply the Voltage Ride-Through Envelope', slides: [
         {id: 1, type: 'title', reference_links: [{label: 'Spec · Table 1 · p. 15', url: reference}]},
         {id: 2, type: 'up_next', next_module_number: 2, next_module_title: 'Destination'}
@@ -38,7 +38,7 @@ try {
     const html = execFileSync(process.env.PYTHON || 'python3', ['-c', render, scripts], {
       input: JSON.stringify(course), encoding: 'utf8'
     });
-    await fs.writeFile(path.join(tmp, direct ? 'direct.html' : 'guarded.html'), html);
+    await fs.writeFile(path.join(tmp, mode + '.html'), html);
   }
   const videoCourse = {
     style: 'Slides', course_slug: 'video-seek-test', course_title: 'Video seek test',
@@ -94,7 +94,7 @@ try {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   const url = name => pathToFileURL(path.join(tmp, name + '.html')).href;
-  for (const name of ['guarded', 'direct']) {
+  for (const name of ['guarded', 'direct', 'next-direct']) {
     await page.goto(url(name));
     await page.evaluate(() => localStorage.clear());
     await page.reload();
@@ -129,7 +129,11 @@ try {
     check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No horizontal overflow');
     await page.setViewportSize({width: 1440, height: 960});
     await page.locator('#nextBtn').click();
-    if (name === 'direct') {
+    if (name !== 'guarded') {
+      if (name === 'next-direct') {
+        check(await page.getByRole('link', {name: 'Course home', exact: true}).count(), 0,
+          'Next-module-only approval does not enable Course Home links');
+      }
       await page.locator('.slide.active .next-module-link').click();
       await page.waitForURL('**/module2.html');
       check(page.url(), url('module2'), 'Explicit direct compatibility choice permits next-module navigation');
@@ -140,6 +144,11 @@ try {
       check(await page.locator('.slide.active .lms-module-handoff').innerText(),
         'Continue with Module 2 using the Syllabus in the left sidebar.',
         'Default LMS handoff displays the syllabus instruction');
+      check(await page.locator('.slide.active .lms-module-handoff').evaluate(note => {
+        const heading = note.previousElementSibling;
+        return heading?.classList.contains('next-module-heading')
+          && note.getBoundingClientRect().top >= heading.getBoundingClientRect().bottom;
+      }), true, 'Default syllabus instruction occupies a separate line below the heading');
     }
     await page.goto(url(name) + '?review=1&slide=2');
     await page.locator('.slide.active .next-module-link').click();

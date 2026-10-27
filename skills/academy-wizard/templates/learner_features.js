@@ -139,6 +139,7 @@ storeBookmark(); updateNarrationMode();
 // honest instructions instead of presenting a button that refuses the click.
 if (inLMS && !reviewMode && !SCORM.isSingleSCO && !directModuleLinks) {
   document.querySelectorAll('a[href]').forEach(link => {
+  if (directNextModuleLinks && link.matches('.next-module-link')) return;
   const url = new URL(link.getAttribute('href'), location.href);
   if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {
     const target = url.pathname.match(/module(\d+)\.html$/);
@@ -148,7 +149,13 @@ if (inLMS && !reviewMode && !SCORM.isSingleSCO && !directModuleLinks) {
       ? 'Continue with Module ' + target[1] + ' using the Syllabus in the left sidebar.'
       : 'Open Course Home using the Syllabus in the left sidebar.';
     note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
-    link.replaceWith(note);
+    const heading = link.closest('.next-module-heading');
+    if (heading) {
+      heading.after(note);
+      link.remove();
+    } else {
+      link.replaceWith(note);
+    }
   }
   });
 }

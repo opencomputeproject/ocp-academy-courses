@@ -30,3 +30,7 @@ The October 27, 2026 refresh regenerates all thirty clips with Eleven v4 and the
 ## Acceptance boundary
 
 A signal pass does not establish pronunciation or perceptual consistency; human listening review remains unverified. Local SCORM simulations do not establish actual LMS launch, syllabus navigation, resume, or separate module completion. Verify those behaviors in the target LMS before learner release. This refresh does not upload or replace LMS material.
+
+## Approved LMS next-button follow-up
+
+On October 27, 2026 the user approved direct green next-module buttons after the cross-SCO tracking limitation was explained. The course records the narrow `scorm.next_module_navigation: "direct"` override; Course Home remains guarded. The module-control regression suite passes 63 assertions, including default Syllabus layout, the narrow override, and full direct-link compatibility. Actual M1 and M2 ending pages show and navigate through the green button in four simulated LMS-context desktop/phone views. When the guarded default is used, its Syllabus instruction occupies its own line below the module heading. All thirty v4 recordings are retained unchanged.

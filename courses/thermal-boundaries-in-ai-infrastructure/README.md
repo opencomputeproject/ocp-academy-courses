@@ -65,3 +65,7 @@ The course retains SCORM 1.2 multi-SCO: Course Home and three separate syllabus 
 ## Attribution and license
 
 The adapted teaching content, scripts, and course-owned instructional media are provided under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), matching the primary source. `LICENSE.md` and the generated attribution page identify the original authors and adaptation. OCP marks retain their respective trademark rights; the poster font has its own SIL Open Font License.
+
+## Approved next-module buttons
+
+The user explicitly approved `scorm.next_module_navigation: "direct"` on October 27, 2026 after reviewing the tracking limitation. The green next-module buttons remain visible in LMS playback; the Course Home guard and informational tiles retain their existing behavior. These direct links do not ask the LMS to switch SCO tracking context, so independently tracked launches still use the LMS Syllabus.

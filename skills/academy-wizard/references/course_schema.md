@@ -144,6 +144,12 @@ module tracking must not be claimed from link navigation. Keep the approved
 choice recorded in the course source. Omission retains the guarded default;
 this option does not change the manifest's version or organization.
 
+`scorm.next_module_navigation: "direct"` is a narrower, explicit user-approved
+override for green `.next-module-link` buttons only. It leaves Course Home and
+other LMS links under the existing guard. The same cross-SCO tracking limitation
+applies; record the user's acceptance in the course source. Omission keeps the
+Syllabus instruction, which appears below the next-module heading on its own line.
+
 `language` is a BCP 47 tag. English packages use `course_title` unchanged in
 `imsmanifest.xml`; non-English packages append the English language name in
 parentheses, such as `OCP ESUN (Korean)`. Use `scorm_title` only for an exact
