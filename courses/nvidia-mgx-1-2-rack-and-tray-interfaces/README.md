@@ -46,7 +46,6 @@ Use Python 3.10+ and the repository's bundled AcademyWizard. Reuse a retained
 narration directory to reproduce the approved package without another TTS call:
 
 ```bash
-ACADEMY_WIZARD_SKILL_DIR="$HOME/.codex/skills/academy-wizard" \
 EXISTING_AUDIO_DIR=/path/to/retained/audio \
   ./scripts/build-course.sh nvidia-mgx-1-2-rack-and-tray-interfaces
 ```
@@ -124,8 +123,8 @@ M-SDNO catalog material does not imply an additional MGX compliance claim.
 
 ## Current-runtime rebuild — October 27, 2026
 
-Rebuild with the current installed AcademyWizard via the explicit skill path
-above. Its maintained default preserves green double-chevron next-module links
+The repository build uses its bundled current AcademyWizard by default. Its
+maintained default preserves green double-chevron next-module links
 in standalone, review, and LMS playback; the course needs no navigation override.
 All 62 narration tracks, seven teaching videos, approved slide/assessment content,
 resource URLs, and SCORM 1.2 multi-SCO identifiers remain unchanged. Review links
@@ -138,3 +137,7 @@ maintenance README. The source `lms_catalog` records 95 minutes of learner time;
 68.18 minutes is narration runtime. The ZIP sidecars are catalog copy only and
 are excluded from the SCORM runtime. `RUNTIME_REBUILD_2026-10-27.json` records the
 builder hashes. See QA.md for navigation tests and target-LMS limits.
+
+The course owner confirmed successful next-module advancement and LMS progress
+recording for the October 27 delivered build. The receipt records that report and
+the delivered ZIP hash. No course-specific navigation override is required.

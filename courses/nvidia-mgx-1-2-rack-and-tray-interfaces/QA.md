@@ -1,4 +1,11 @@
-# MGX revision validation - October 20, 2026
+# MGX course validation
+
+The course owner confirmed successful next-module navigation and progress
+recording in the live LMS on October 27, 2026, using the delivered rebuild.
+See the latest runtime-rebuild section for the automated evidence and artifact
+identity. Earlier records below describe their respective revisions.
+
+## Summit revision — October 20, 2026
 
 The approved Summit integration adds M4S3 and M5S5. Narration is revised on M1S3,
 M6S5, and M6S7; 57 existing narration tracks and all six original teaching videos
@@ -131,9 +138,21 @@ The existing approved title, short description, module summaries, and learner
 estimates are retained in the current lms_catalog schema and separate exports.
 Planned learner time is 95 minutes; measured narration remains 68.18 minutes.
 
-These are isolated browser and SCORM API simulation results, not a live Docebo
-upload. Direct SCORM 1.2 page links do not themselves request a new target SCO;
-verify target-LMS syllabus/tracking behavior before replacing published material.
-No LMS content or learner records were changed. Runtime builder hashes are in
-RUNTIME_REBUILD_2026-10-27.json; generated runtime, narration, and ZIPs remain
+The automated results above use isolated browser and SCORM API simulation. On
+October 27, 2026, the course owner additionally reported that next-module
+navigation and progress recording work as expected in the live LMS. This is
+owner-reported deployment verification, not an automated upload or broader
+tracking audit. The verified delivery is MGX_1.2_OCP_Academy_SCORM_2026-10-27.zip,
+SHA-256 `d5eda3c9fbdb6d01d61ecd911dbeb41538187ac3e63c16c713093011a7a5954a`.
+
+The course retains ordinary SCORM 1.2 links and its existing multi-SCO tracking
+architecture. The build process did not upload LMS content or alter learner
+records. Builder hashes and the deployment verification are recorded in
+RUNTIME_REBUILD_2026-10-27.json. Generated runtime, narration, and ZIPs remain
 outside source control.
+
+A fresh repository build using the bundled AcademyWizard also passes all 505
+navigation assertions / 40 next-module clicks, 62 retained-audio signal checks,
+source/catalog validation, package validation, and strict 117-entry ZIP integrity.
+The repository source matches the delivered approved course after normalizing
+portable source-document and worksheet paths.
