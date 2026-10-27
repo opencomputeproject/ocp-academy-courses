@@ -33,7 +33,7 @@ Imported videos use their own audio and black player with exposed controls, edit
 
 The LMS manifest starts with Course Home (`ITEM_LAUNCHER`, launching `index.html`), followed by `ITEM_MODULE1` through `ITEM_MODULE4`: five SCOs total. Home completes on launch and each teaching module remains independent. Each module saves its own bookmark, question attempts and completion. Checks require an attempt and allow retries; no score threshold is imposed. Completed modules return to their final slide. The SCORM 1.2 adapter limits saved state to 4096 characters and exposes save failures.
 
-In an LMS, launch modules through the syllabus. Direct hyperlinks cannot change the tracked SCO, so next-module links become syllabus instructions The maintained first-module Start action is a direct page link, not an LMS target-SCO request; use the syllabus when separate tracking is required. Local editorial review begins at generated `module1.html?review=1`, which does not write learner state.
+Green next-module buttons remain visible and clickable in local, review and LMS playback. Review carries review=1 and starts the next module at slide 1. The LMS syllabus remains available for arbitrary module selection. These direct page links do not provide a standard SCORM 1.2 target-SCO request; target-LMS tracking should be checked separately. Local editorial review begins at generated `module1.html?review=1`, which does not write learner state.
 
 ## Validation and provenance
 
@@ -42,3 +42,7 @@ The [final delivery report](authoring/qa/scorm12-delivery/README.md) records pac
 All 31 recovered source lessons remain represented. The [source crosswalk](authoring/provenance/source_lesson_crosswalk.json), [knowledge-check audit](authoring/provenance/knowledge_check_audit.md), research notes, Astra audits and dated revision records are retained outside the runtime. Two source checks were replaced at the user’s request (rack-busbar architecture and installation fit), and power continuity was added. The two remaining matching interactions preserve their concepts. Current source has 48 glossary definitions and 59 deliberately selected placements. User-approved vendor-link and generic-link removals remain reflected in `course.json`.
 
 **Migration notice:** the user selected SCORM 1.2 for final delivery, replacing a local 2004 review build. A deployed LMS item may require a new upload and may not transfer attempts, bookmarks or completion history. Export needed reports and test a separate upload before retiring any existing item. No LMS upload or deletion was performed. Earlier dated 2004/pre-ZIP audit notes describe historical builds.
+
+## Maintained next-module navigation refresh
+
+The 2026-10-27 rebuild merges the installed AcademyWizard navigation template, retaining green double-chevron next-module buttons when an LMS API is present. Course Home remains the first of five SCOs, followed by the four teaching modules. Approved content, narration, media, manifest identifiers and completion/quiz policies are preserved. See `authoring/qa/green-navigation-refresh/` for 48 navigation-parity cases, fresh package checks and screenshots. The LMS tests use an isolated persistent parent API; no live LMS upload is part of the rebuild.
