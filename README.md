@@ -47,6 +47,7 @@ courses/
     module-2-the-ocp-ecosystem-governance/
     module-3-ocp-technologies-open-rack-cooling/
     module-4-today-and-tomorrow-the-journey/
+  introduction-to-liquid-cooling/  # four modules; Course Home plus four SCOs
   lvdc-power-distribution-for-data-centers/
   multipath-reliable-connection-mrc/
   nvidia-mgx-1-2-rack-and-tray-interfaces/
@@ -158,6 +159,7 @@ Use AcademyWizard to build a Scrolling course from the course source in this rep
 | `intro-to-ocp/module-2-the-ocp-ecosystem-governance` | Module 2: The OCP Ecosystem & Governance |
 | `intro-to-ocp/module-3-ocp-technologies-open-rack-cooling` | Module 3: OCP Technologies (Open Rack & Cooling) |
 | `intro-to-ocp/module-4-today-and-tomorrow-the-journey` | Module 4: Today and Tomorrow (The Journey) |
+| `introduction-to-liquid-cooling` | [Introduction to Liquid Cooling](courses/introduction-to-liquid-cooling/README.md): four narrated modules on complete heat paths, direct and immersion cooling, and deployment readiness |
 | `lvdc-power-distribution-for-data-centers` | LVDC Power Distribution for Data Centers |
 | `multipath-reliable-connection-mrc` | OCP Academy - MRC Technical Overview |
 | `nvidia-mgx-1-2-rack-and-tray-interfaces` | [NVIDIA MGX 1.2 Rack and Tray Interfaces](courses/nvidia-mgx-1-2-rack-and-tray-interfaces/README.md): six narrated modules on mechanical, electrical, and liquid interfaces with source-derived CAD media |
