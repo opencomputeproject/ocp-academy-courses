@@ -192,6 +192,7 @@ try {
     return Array.from(range.getClientRects()).every(box => box.left >= 24 && box.right <= innerWidth - 24);
   }), true, 'A long heading word fits a narrow screen without breaking mid-word');
   await page.setViewportSize({width:1440,height:960});
+  await page.waitForFunction(() => document.querySelector('.slide.active .slide-title').style.fontSize === '');
   check(await page.locator('.slide.active .slide-title').evaluate(heading => heading.style.fontSize), '',
     'Widening restores the authored heading size');
   await page.setViewportSize({width:320,height:640});

@@ -50,7 +50,7 @@ try {
   }, names);
   const buttonProps = ['width','height','minWidth','borderRadius','backgroundColor','color','animationName'];
   await ready(home + '?review=1');
-  check('Four informational tiles', await page.locator('article.module-card').count(), 4);
+  check('Informational tiles match authored modules', await page.locator('article.module-card').count(), course.modules.length);
   check('No tile anchors, tabindex or status elements', await page.locator('a.module-card,.module-card[tabindex],.module-card .status,.module-card.completed').count(), 0);
   check('Exact Syllabus instruction', await page.locator('#lmsNavNote').innerText(), 'Navigate modules in any order using the Syllabus in the left sidebar.');
   check('Syllabus instruction matches normal tile body size', await styles('#lmsNavNote', ['fontSize']), await styles('.module-info p', ['fontSize']));
@@ -92,7 +92,7 @@ try {
   check('Real launch completes Home only', await page.evaluate(() => testCalls.filter(x=>x[0]==='set')), [['set','cmi.core.lesson_status','completed']]);
   check('Home never reads suspend data or module progress', await page.evaluate(() => testCalls.filter(x=>x[0]==='get')), []);
   check('Completed LMS data cannot color tiles', await page.locator('.module-card.completed,.module-card .status').count(), 0);
-  for (let m = 1; m <= 4; m++) {
+  for (const {id: m} of course.modules) {
     await ready(pathToFileURL(path.join(pkg, `module${m}.html`)).href);
     check(`M${m} resumes at saved slide 3`, await page.locator('.slide.active').getAttribute('data-slide'), '3');
     check(`M${m} reads its slide bookmark once`, await page.evaluate(() => testCalls.filter(c => c[0] === 'get' && c[1] === 'cmi.core.lesson_location')), [['get', 'cmi.core.lesson_location']]);

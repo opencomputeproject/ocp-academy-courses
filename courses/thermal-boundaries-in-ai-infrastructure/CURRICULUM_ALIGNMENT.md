@@ -30,7 +30,7 @@ The older Liquid Cooling Technologies Overview is assessed from its public descr
 Two adjacent courses also deserve routes from the new course:
 
 - [Open Rack and ORv3: Past, Present, and Future](https://academy.opencompute.org/learn/learning-plans/4/open-rack-and-orv3-past-present-and-future), **Module 7 — Advanced ORW Liquid Cooling & Practice:** rack/manifold integration, canisters, Pivoting Blind Mate Coupling mechanics, and implementation examples. Thermal Boundaries discusses the value and risk of interfaces; this course owns the mechanical integration detail.
-- [Open Data Center for AI: Applying Specification 0.7](https://academy.opencompute.org/learn/courses/69/open-data-center-for-ai-applying-specification-07): physical compatibility, facility power/cooling envelopes, peak versus blended density, and documented site variations. Thermal Boundaries explains how site constraints change the architecture decision; Open DC owns its specification-specific facility targets.
+- [Open Data Center for AI: Applying Specification 0.7](https://academy.opencompute.org/learn/courses/69/open-data-center-for-ai-applying-the-specification): physical compatibility, facility power/cooling envelopes, peak versus blended density, and documented site variations. Thermal Boundaries explains how site constraints change the architecture decision; Open DC owns its specification-specific facility targets.
 
 **Intro to OCP Module 3 — OCP Technologies (Open Rack & Cooling)** already offers a broad technology survey. Refer learners who need that orientation there; avoid creating another full air/cold-plate/immersion introduction.
 
@@ -72,7 +72,7 @@ Use public Academy course pages, with a visible label naming the relevant module
 | M2 S7, complementary architectures and interfaces | [Open Rack learning plan](https://academy.opencompute.org/learn/learning-plans/4/open-rack-and-orv3-past-present-and-future), Module 7, Lessons 2–3 | Mechanical manifold/coupling detail. The verified destination is the learning plan; the visible link label should direct learners to Module 7. |
 | M3 S3, full cost across lifecycle and ownership | Fluids, Modules 2–4 | The qualification, operating work, and records that belong in the cost/readiness estimate; no chemistry tutorial here. |
 | M3 S4, component versus shared failure domains | Deschutes, Modules 2–3 | An implementation example for redundancy and service requirements; do not assign the paper's generic CDU failure rate to it. |
-| M3 S6, site constraints and candidate architectures | Brazos, Modules 2 and 4; [Open Data Center for AI](https://academy.opencompute.org/learn/courses/69/open-data-center-for-ai-applying-specification-07), Modules 3–4 | Refer to detailed implementation and facility review after the framework identifies the open question. |
+| M3 S6, site constraints and candidate architectures | Brazos, Modules 2 and 4; [Open Data Center for AI](https://academy.opencompute.org/learn/courses/69/open-data-center-for-ai-applying-the-specification), Modules 3–4 | Refer to detailed implementation and facility review after the framework identifies the open question. |
 | M3 S7, system-level commissioning evidence | Fluids, Module 3; Two-Phase DLC, Module 4 | The procedure-level startup and fluid-operation detail belongs in those courses. |
 | M3 S10, course completion | The full paper plus a choice of the four specialist courses and introductory overview | A needs-based next step: fluid operations, two-phase mechanics, facility-water CDU, or air-cooled-site retrofit. |
 

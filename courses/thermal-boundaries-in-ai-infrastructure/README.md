@@ -28,7 +28,7 @@ The course distinguishes efficiency, economic, and physics boundaries; the avoid
 - `animations/`: three finite HTML/CSS master timelines; see its README for re-export instructions.
 - `thermal_boundaries_mark.svg`, `thumbnail.png`, and `artwork/thumbnail.html`: course mark, exact 800×400 LMS poster, and editable poster artwork with its licensed Lato font.
 - `scripts/build_resources.py`: generates the source-credit and license page in the staged build and copies the catalog poster.
-- `LMS_METADATA.md`: delivery title, short description, and module-by-module overview with approximate durations.
+- `course.json.lms_catalog`, `lms-catalog.json`, and `lms-catalog.md`: formal LMS title, short description, and module-by-module overview with approximate learner durations. `LMS_METADATA.md` retains the delivery and upload notes.
 - `OUTLINE.md`, `SOURCE_FIGURES.json`, and `QA.md`: course structure, complete source-visual inventory, and verification record.
 
 ## Rebuild
@@ -42,7 +42,19 @@ EXISTING_AUDIO_DIR=/path/to/thermal-boundaries/audio \
 
 The standard build uses the repository's AcademyWizard copy, generates the credits page, validates audio and runtime files, and writes the package and strict ZIP under `build/`. No original PDF is required for a normal rebuild: the extracted teaching charts are course-owned assets, and paper links use the canonical public URL.
 
-To regenerate narration, provide `ELEVENLABS_API_KEY` through the environment and run the same build without `EXISTING_AUDIO_DIR`. The recorded configuration is ElevenLabs Leo v2, `eleven_multilingual_v2`, stable policy, and speed **1.18**. Credentials are not part of the source. Revised narration needs audio checks and renewed listening review.
+The refreshed configuration is ElevenLabs **Leo v2** with model **`eleven_v4`**. Keep `narration.speed: 1.18`: v4 has no synthesis-speed parameter, so AcademyWizard matches each native v4 clip to the actual duration of its unchanged Multilingual v2 recording generated at 1.18, preserving pitch. The learner speed dial still starts at 1.0 and retains saved preferences. Learner-time estimates remain 18 minutes per module, approximately 50–55 minutes overall.
+
+To regenerate narration, preserve the verified original v2 `course.json` and paired scripts/WAVs in a separate baseline directory, then run:
+
+```bash
+python skills/academy-wizard/scripts/gen_audio.py /path/to/staged/course.json \
+  --force --pacing-reference-root /path/to/original-v2-baseline \
+  --audio-work-dir /path/to/narration-work
+```
+
+Supply `ELEVENLABS_API_KEY` through the environment. Never use already processed v4 audio as the original baseline. Changed scripts require newly generated, cached v2 timing references; omitting the baseline option generates one additional billable reference request per new script. Native v4 masters and timing receipts stay in the separate work directory. Reuse the finished WAVs through `EXISTING_AUDIO_DIR` for subsequent builds. Credentials, masters, references, and generated narration are excluded from Git and the strict ZIP. Run the audio report and review pronunciation after regeneration.
+
+Review the actual `index.html` and `module1.html` through `module3.html`; `?review=1` provides an editorial pass without saved progress. No separate review site is generated. The refresh also fits five static SVG artboards to their artwork; the approved M1S5 animation and M2S5 diagram geometry remain intact.
 
 ## Verification and LMS acceptance
 
