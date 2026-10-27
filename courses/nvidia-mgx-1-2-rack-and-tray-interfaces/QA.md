@@ -97,3 +97,43 @@ Source QA passes with zero flags. Source/render comparisons limit the change to
 one reference anchor. The strict ZIP has 117 entries and only module2.html changes
 relative to the preceding delivery; narration, media, identifiers, and other
 package resources remain byte-identical.
+
+## AcademyWizard runtime rebuild — October 27, 2026
+
+The current installed AcademyWizard supplies the maintained green next-module
+button default. No course-specific navigation override was added. Authored
+slide content, quiz questions/choices/identifiers, narration settings, source
+citations, resource links, SCORM 1.2 organization, seven syllabus entries, SCO
+identifiers, and launch pages remain unchanged. All 62 WAVs, seven MP4s, figures,
+posters, fonts, and the worksheet are byte-identical. Only index.html and the six
+module HTML files change among the 117 runtime package entries. The SCORM API
+wrapper and manifest file membership also match the preceding delivery.
+
+Validation of the actual rebuilt pages:
+
+- 505 navigation assertions, including 40 actual next-module clicks: all five
+  links in standalone, review, parent-frame SCORM 1.2 simulation, and review with
+  that API present; tested at 1440×960 and 390×844.
+- The green color, double-chevron artwork, destination, accessible label, and
+  click result match across playback modes. Home start/review continuation and
+  informational home tiles pass; review remains isolated from saved state.
+- 147 bookmark, completion, review-isolation, controls, and video assertions;
+  50 quiz-restoration/retry assertions; 50 shared-control assertions pass.
+- Retained real-media checks pass 16 default-loop assertions and 21 synchronized
+  video assertions, including enlargement, seeking, pause, and replay.
+- All 124 desktop/mobile slide positions pass without JavaScript errors or
+  horizontal overflow. Representative media, overview, and module endings were
+  visually reviewed.
+- All 62 retained narration clips pass signal QA. Source/glossary/reference QA,
+  arrow checks, package validation, and catalog export checks pass.
+
+The existing approved title, short description, module summaries, and learner
+estimates are retained in the current lms_catalog schema and separate exports.
+Planned learner time is 95 minutes; measured narration remains 68.18 minutes.
+
+These are isolated browser and SCORM API simulation results, not a live Docebo
+upload. Direct SCORM 1.2 page links do not themselves request a new target SCO;
+verify target-LMS syllabus/tracking behavior before replacing published material.
+No LMS content or learner records were changed. Runtime builder hashes are in
+RUNTIME_REBUILD_2026-10-27.json; generated runtime, narration, and ZIPs remain
+outside source control.
