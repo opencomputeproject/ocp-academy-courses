@@ -20,7 +20,7 @@ Use the following shared structure unless an existing series poster establishes 
 5. An optional uppercase white subtitle for a meaningful title qualifier, set smaller than the main title.
 6. A short OCP-green divider followed by a concise white supporting line near the lower left.
 7. A large white circular emblem on the right, outlined in indigo, containing one simplified technical icon or concept illustration. Give the emblem restrained depth through a softly shaded face or edge; an indigo-to-green gradient icon tile is appropriate when it strengthens the topic symbol, as in SST.
-8. A bright OCP-green angled rail or wedge at the far right, partially behind the circular emblem, with a gentle green tonal gradient and an adjacent translucent indigo band.
+8. A bright OCP-green rail or wedge at the far right, with its left boundary sloping down to the right (upper-left to lower-right), partially behind the circular emblem, with a gentle green tonal gradient and an adjacent translucent indigo band.
 9. Sparse thin arcs, circuit or signal-line segments, and small connector dots around the emblem in muted indigo, gray, white, or green. Keep these clear of the text field.
 
 Aim for roughly 56-60 percent of the canvas for the left text field and 40-44 percent for the emblem field. The title, emblem, and green rail are the dominant elements; accents stay quiet.
