@@ -41,6 +41,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | `ocp-orientation/ocp-contribution-process` | OCP Contribution Process |
 | `ocp-project-brazos-liquid-to-air-cooling` | OCP Project Brazos: Liquid Cooling in Air-Cooled Data Centers |
 | `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
+| `ocp-safe-product-security` | [OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements](courses/ocp-safe-product-security/README.md): three narrated modules in one SCORM 1.2 activity, four synchronized teaching videos and the preserved program overview |
 | `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
 | `open-chiplet-economy` | [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md): nine narrated modules, nine teaching animations, and fourteen captioned recordings |
 | `open-data-center-for-ai` | Open Data Center for AI |
@@ -116,6 +117,7 @@ courses/
     ocp-contribution-process/
   ocp-project-brazos-liquid-to-air-cooling/
   ocp-ready-requirements-for-energy-storage-systems/
+  ocp-safe-product-security/
   ocp-solid-state-transformers/
   open-chiplet-economy/
   open-data-center-for-ai/

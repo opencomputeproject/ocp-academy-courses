@@ -71,11 +71,12 @@ class IndexHomeTests(unittest.TestCase):
         markup, _ = self.render()
         self.assertIn('<h1>s\u00adpan &amp; <span>3.0</span></h1>', markup)
 
-    def test_authorized_direct_tile_override_is_preserved(self):
+    def test_direct_navigation_does_not_make_cards_clickable(self):
         self.course['scorm']['navigation'] = 'direct'
+        self.course['index_module_links'] = True
         _, dom = self.render()
-        self.assertEqual([attrs['href'] for _, attrs in dom.by_class('module-card')],
-                         [f'module{n}.html' for n in range(1, 5)])
+        self.assertTrue(all(tag == 'article' and 'href' not in attrs
+                            for tag, attrs in dom.by_class('module-card')))
 
     def test_explicit_informational_tiles_override_direct_navigation(self):
         self.course['scorm']['navigation'] = 'direct'
@@ -145,12 +146,14 @@ class IndexHomeTests(unittest.TestCase):
         self.assertEqual(dom.by_class('index-start-link')[0][1]['href'], 'module8.html')
         self.assertIn('Start with MODULE 8', markup)
 
-    def test_single_sco_retains_trustworthy_progress_and_links(self):
+    def test_single_sco_has_status_free_informational_cards_and_start_action(self):
         self.course['scorm']['organization'] = 'single-sco'
         markup, dom = self.render()
-        self.assertEqual(len(dom.by_class('status')), 4)
-        self.assertIn('SCORM.getSuspendData()', markup)
-        self.assertTrue(all(tag == 'a' for tag, _ in dom.by_class('module-card')))
+        self.assertFalse(dom.by_class('status'))
+        self.assertNotIn('SCORM.getSuspendData()', markup)
+        self.assertTrue(all(tag == 'article' and 'href' not in attrs
+                            for tag, attrs in dom.by_class('module-card')))
+        self.assertFalse(dom.by_class('index-navigation-instruction'))
         self.assertEqual(dom.by_class('index-start-link')[0][1]['href'], 'module1.html')
 
     def test_single_sco_can_hide_progress(self):
@@ -159,6 +162,19 @@ class IndexHomeTests(unittest.TestCase):
         markup, dom = self.render()
         self.assertFalse(dom.by_class('status'))
         self.assertNotIn('SCORM.getSuspendData()', markup)
+
+    def test_explicit_empty_instruction_does_not_insert_a_fallback(self):
+        self.course['index_navigation_instruction'] = ''
+        markup, dom = self.render()
+        self.assertFalse(dom.by_class('index-navigation-instruction'))
+        self.assertNotIn('Use the LMS syllabus', markup)
+
+    def test_single_sco_explicit_progress_opt_in_is_preserved(self):
+        self.course['scorm']['organization'] = 'single-sco'
+        self.course['index_show_module_status'] = True
+        markup, dom = self.render()
+        self.assertEqual(len(dom.by_class('status')), 4)
+        self.assertIn('SCORM.getSuspendData()', markup)
 
     def test_home_options_do_not_change_manifest_or_version(self):
         expected = render_manifest(self.course, Path('.'))

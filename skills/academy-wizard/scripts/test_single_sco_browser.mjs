@@ -61,22 +61,35 @@ try {
     return frame;
   }
   const slide=frame=>frame.locator('.slide.active').getAttribute('data-slide');
+  // Home cards are informational. Use the actual first-module action where
+  // available; arbitrary destinations below are fixture setup for state tests.
+  async function openModule(target, id) {
+    if(new URL(target.url()).pathname.endsWith('/index.html') && id===course.modules[0].id) {
+      await target.locator('.index-start-link').click();
+      return;
+    }
+    const destination=new URL(`module${id}.html`,target.url());
+    if(new URL(target.url()).searchParams.get('review')==='1')destination.search='?review=1';
+    await target.goto(destination.href);
+  }
+
+
   await page.goto(base+'/harness');
   let frame=await current('index.html');
   check('Home does not complete course',await status(),'incomplete');
   for(const module of course.modules) {
-    await frame.locator(`[data-module="${module.id}"]`).click();
+    await openModule(frame,module.id);
     frame=await current(`module${module.id}.html`);
-    check(`Home opens module ${module.id}`,await slide(frame),'1');
+    check(`Persistent host opens module ${module.id}`,await slide(frame),'1');
     await frame.locator('a[href="index.html"]').first().click();
     frame=await current('index.html');
     check(`Return from module ${module.id} preserves incomplete`,await status(),'incomplete');
   }
   // Revisit uses its own bookmark, not the last other module's position.
-  await frame.locator('[data-module="2"]').click();frame=await current('module2.html');
+  await openModule(frame,2);frame=await current('module2.html');
   await frame.locator('#nextBtn').click();await frame.locator('#nextBtn').click();
   await frame.locator('a[href="index.html"]').first().click();frame=await current('index.html');
-  await frame.locator('[data-module="2"]').click();frame=await current('module2.html');
+  await openModule(frame,2);frame=await current('module2.html');
   check('Same-session module bookmark',await slide(frame),'3');
   await page.locator('#lms').evaluate(el=>new Promise(resolve=>{
     el.addEventListener('load',resolve,{once:true});el.contentWindow.location.reload();
@@ -84,7 +97,7 @@ try {
   frame=await current('module2.html');
   check('Relaunch restores last module and slide',await slide(frame),'3');
   await frame.locator('a[href="index.html"]').first().click();frame=await current('index.html');
-  await frame.locator('[data-module="1"]').click();
+  await openModule(frame,1);
   for(const module of course.modules) {
     frame=await current(`module${module.id}.html`);
     await frame.locator('.slide.active h1,.slide.active h2').first().click();await page.keyboard.press('End');
@@ -106,8 +119,9 @@ try {
     }
   }
   await frame.locator('a[href="index.html"]').first().click();frame=await current('index.html');
-  check('All four home cards show completion',await frame.locator('.module-card.completed').count(),4);
-  check('Home completion labels are readable',await frame.locator('.status-completed').allTextContents(),Array(4).fill('Completed'));
+  const showHomeStatus = course.index_show_module_status === true;
+  check('Home completion styling matches explicit status setting',await frame.locator('.module-card.completed').count(),showHomeStatus?course.modules.length:0);
+  check('Home status labels match explicit status setting',await frame.locator('.status').allTextContents(),showHomeStatus?Array(course.modules.length).fill('Completed'):[]);
   const completeWrites=await page.evaluate(()=>calls.filter(x=>x[1]==='cmi.core.lesson_status' && x[2]==='completed').length);
   check('Overall completion is written once',completeWrites,1);
   check('State remains under SCORM 1.2 limit',(await data())['cmi.suspend_data'].length<4096,true);
@@ -117,7 +131,7 @@ try {
   check('Internal navigation does not reinitialize LMS',initCount,2); // launch + explicit reload
   check('Module changes do not finish LMS',await page.evaluate(()=>calls.filter(x=>x[0]==='finish').length),1);
   await page.evaluate(()=>window.rejectCommit=true);
-  await frame.locator('[data-module="1"]').click();frame=await current('module1.html');
+  await openModule(frame,1);frame=await current('module1.html');
   const host=page.frames().find(f=>f.url().endsWith('/launch.html'));
   check('Commit failure is visible',await host.locator('#saveWarning').isVisible(),true);
   await page.evaluate(()=>window.rejectCommit=false);
@@ -133,14 +147,14 @@ try {
     el.addEventListener('load',resolve,{once:true});el.src='/package/launch.html';
   }));frame=await current('index.html');
   check('Completed relaunch retains completion',await status(),'completed');
-  await frame.locator('[data-module="4"]').click();frame=await current('module4.html');
+  await openModule(frame,4);frame=await current('module4.html');
   check('Completed module resumes at final slide',await slide(frame),'9');
   check('Quiz attempts survive relaunch',await frame.locator('.quiz-card[data-attempted="true"]').count(),2);
   // Review mode must never call the real API, even when nested beneath it.
   await page.locator('#lms').evaluate(el=>el.src='/package/launch.html?review=1');
   frame=await current('index.html');
   const callsBefore=await page.evaluate(()=>calls.length);
-  await frame.locator('[data-module="1"]').click();frame=await current('module1.html');
+  await openModule(frame,1);frame=await current('module1.html');
   await frame.locator('.slide.active h1,.slide.active h2').first().click();await page.keyboard.press('End');
   check('Review can inspect final slide',await slide(frame),'9');
   check('Review does not initialize or write LMS',await page.evaluate(()=>calls.length),callsBefore);
@@ -173,7 +187,7 @@ try {
   await local.waitForFunction(()=>document.querySelector('#courseFrame')?.contentWindow.location.pathname.endsWith('/index.html'));
   let localFrame=local.frames().find(f=>f.url().endsWith('/index.html'));
   await localFrame.evaluate(()=>{document.body.classList.add('motion-intro-done');document.querySelector('.ocp-motion-intro')?.remove();});
-  await localFrame.locator('[data-module="3"]').click();
+  await openModule(localFrame,3);
   await local.waitForFunction(()=>document.querySelector('#courseFrame')?.contentWindow.location.pathname.endsWith('/module3.html'));
   localFrame=local.frames().find(f=>f.url().endsWith('/module3.html'));
   await localFrame.waitForLoadState();
