@@ -1,0 +1,21 @@
+const {chromium}=require(process.env.ACADEMY_PLAYWRIGHT_REQUIRE||'playwright');const fs=require('fs'),path=require('path');const {pathToFileURL}=require('url');
+// Optional fourth argument limits follow-up checks to module:slide pairs.
+const selectedSlides=process.argv[4]?new Set(process.argv[4].split(',')):null;
+(async()=>{const root=path.resolve(process.argv[2]),out=path.resolve(process.argv[3]);fs.mkdirSync(out,{recursive:true});const course=JSON.parse(fs.readFileSync(root+'/course.json'));const b=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--mute-audio']});let all=[],errors=[];const page=await b.newPage();page.on('pageerror',e=>errors.push(e.message));await page.route(/^https?:/,r=>r.abort());await page.addInitScript(()=>{const Native=window.Audio;window.Audio=function(...args){const a=new Native(...args);a.muted=true;return a};window.Audio.prototype=Native.prototype;document.addEventListener('play',e=>{if(e.target instanceof HTMLMediaElement)e.target.muted=true},true)});
+for(const vp of [{width:1440,height:960},{width:390,height:844},{width:320,height:740}]){await page.setViewportSize(vp);await page.goto(pathToFileURL(root+'/index.html').href+'?review=1');await page.evaluate(()=>{document.querySelector('#ocpMotionIntroSkip')?.click();document.querySelector('.ocp-motion-intro')?.remove();document.body.classList.add('motion-intro-done')});await page.screenshot({path:out+`/home_${vp.width}.png`,fullPage:true,animations:"disabled"});
+for(const m of course.modules)for(const s of m.slides){if(selectedSlides&&!selectedSlides.has(`${m.id}:${s.id}`))continue;await page.goto(pathToFileURL(root+`/module${m.id}.html`).href+`?review=1&slide=${s.id}`);await page.evaluate(()=>{document.querySelector('#ocpMotionIntroSkip')?.click();document.querySelector('.ocp-motion-intro')?.remove();document.body.classList.add('motion-intro-done');for(const a of document.getAnimations()){if(Number.isFinite(a.effect?.getComputedTiming().endTime))a.finish();else a.pause()}});await page.waitForFunction(()=>document.querySelector('.slide.active'));
+const report=await page.evaluate(expected=>{
+const active=document.querySelector('.slide.active'),c=active.querySelector('.slide-content')||active,r=c.getBoundingClientRect();
+// Verify the authored body is actually rendered, rather than accepting a
+// title-only slide whose selected layout silently ignores its content.
+const normalize=text=>String(text).replace(/\s+/g,' ').trim();
+const visibleBody=normalize(c.innerText),missingContent=[];
+const expectedText=[...(expected.bullets||[]).map(x=>x.text),...(expected.cards||[]).flatMap(x=>[x.title,x.body]),...(expected.objectives||[]),...(expected.items||[]),...(expected.columns||[]),...(expected.rows||[]).flat(),...(expected.modules_listed||[])].filter(Boolean);
+for(const text of expectedText)if(!visibleBody.includes(normalize(text)))missingContent.push(String(text));
+const figure=expected.figure;
+if(figure?.path && ![...active.querySelectorAll('.figure-wrap img,.figure-wrap video')].some(el=>el.getAttribute('src')===figure.path))missingContent.push('Figure: '+figure.path);
+if(expected.type.startsWith('content_')&&!expectedText.length&&!figure)missingContent.push('Empty teaching body');
+return {horizontal:document.documentElement.scrollWidth>innerWidth+1,contentRight:r.right,contentLeft:r.left,title:active.querySelector('h1,h2')?.textContent,missingContent,missingImages:[...active.querySelectorAll('img')].filter(i=>!i.complete||!i.naturalWidth).map(i=>i.src),video:[...active.querySelectorAll('video')].map(v=>({width:v.getBoundingClientRect().width,controls:v.className,muted:v.muted})),fonts:document.fonts.status};
+},s);all.push({width:vp.width,module:m.id,slide:s.id,...report});if(selectedSlides||[1,4,8,10].includes(s.id)||s.type==='knowledge_check'||m.id===3&&[6,7].includes(s.id)||m.id===2&&[3,6].includes(s.id)||m.id===1&&s.id===7)await page.screenshot({path:out+`/m${m.id}s${s.id}_${vp.width}.png`,fullPage:true,animations:"disabled"});}}
+const flags=all.filter(x=>x.horizontal||x.missingImages.length||x.missingContent.length);
+fs.writeFileSync(out+'/layout-report.json',JSON.stringify({checks:all.length,errors,slides:all,flags},null,2));await b.close();console.log(JSON.stringify({checks:all.length,errors,flags}));if(errors.length||flags.length)process.exitCode=1;})();

@@ -86,20 +86,22 @@ Use it for recorded course-specific layout overrides while retaining the
 maintained player and controls; include the renderer and its configuration in
 source control.
 
-For multi-SCO Slides, home tiles never display or infer module progress: no
-status labels, completion coloring or suspend-data reads. The LMS syllabus
-owns that information. `index_show_module_status` applies only to explicitly
-selected single-SCO Slides, where it defaults to true; false hides that UI.
+Slides home tiles omit status labels (including “Not Started” and “Completed”),
+completion coloring and progress reads by default. Record
+`index_show_module_status: false` in new and refreshed course sources; the
+index is an overview rather than a progress display. This only hides the home
+UI and does not disable module bookmarks, quiz attempts or LMS completion.
+Multi-SCO home tiles never infer progress across separately tracked activities.
+An explicitly approved single-SCO progress display may opt in with
+`index_show_module_status: true` when shared tracking has been verified.
 Scrolling is unaffected.
 
-`index_module_links: false` renders the maintained numbered tiles as
-informational articles, with no links, pointer cursor, hover lift or tab stop.
-Record it explicitly for every new or refreshed multi-SCO Slides home, even
-when an approved `scorm.navigation: "direct"` compatibility override exists
-for the start or module-end controls. Only a separately approved linked-tile
-deviation may set it true. Single-SCO Slides defaults to linked tiles. The
-explicit `index_module_links` choice takes precedence. Copying another
-course's tile styling does not authorize copying its navigation override.
+All Slides index cards are informational articles, with no links, click
+handlers, pointer cursor, hover lift or keyboard tab stop. This applies to
+single-SCO and multi-SCO courses. Record `index_module_links: false` in new
+and refreshed sources. A stale true value or `scorm.navigation: "direct"`
+does not make cards clickable. Keep navigation in the separate first-module
+action and module-end controls.
 
 `index_navigation_instruction` places the exact supplied text directly below
 the tiles. For the approved unrestricted Docebo layout use:
@@ -108,6 +110,10 @@ Match the normal tile body-text size (0.85rem).
 For other LMSs confirm the location and permitted order; the informational-tile
 fallback says `Use the LMS syllabus to advance through the course modules in any order.`
 Supply an accurate course-specific instruction when order is restricted.
+Single-SCO homes omit this note by default. Set
+`index_navigation_instruction: ""` to omit it explicitly in either mode;
+an empty string must not cause replacement guidance to appear. Do not add
+editorial-review directions or completion/quiz implementation details here.
 
 Every new or refreshed Slides home includes a first-module action by default
 below that instruction:

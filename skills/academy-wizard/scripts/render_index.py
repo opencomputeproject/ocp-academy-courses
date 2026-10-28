@@ -135,13 +135,16 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     not_started = ui(course, "not_started", "Not Started")
     completed = ui(course, "completed", "Completed")
     single_sco_course = single_sco.enabled(course)
-    # Separate SCOs do not share a reliable course-wide completion record.
-    show_module_status = single_sco_course and course.get("index_show_module_status", True)
-    direct_module_links = (course.get("scorm") or {}).get("navigation") == "direct"
-    module_links = course.get("index_module_links", single_sco_course or direct_module_links)
-    navigation_instruction = course.get("index_navigation_instruction", "")
-    if not module_links and not navigation_instruction:
-        navigation_instruction = ui(course, "syllabus_instruction", "Use the LMS syllabus to advance through the course modules in any order.")
+    # The home is a course overview, without progress labels by default.
+    # A separately approved single-SCO status display may use shared state.
+    show_module_status = single_sco_course and course.get("index_show_module_status", False)
+    # Cards are informational in every Slides organization. Only the separate
+    # first-module action and module-end controls provide course navigation.
+    default_instruction = "" if single_sco_course else ui(
+        course, "syllabus_instruction", "Use the LMS syllabus to advance through the course modules in any order."
+    )
+    # An explicit empty string suppresses the note without inserting a fallback.
+    navigation_instruction = course.get("index_navigation_instruction", default_instruction)
     start_config = course.get("index_start") or {}
     if not isinstance(start_config, dict):
         raise ValueError("index_start must be an object")
@@ -174,17 +177,15 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
             f'<div class="status status-incomplete" id="status-{mod["id"]}">{esc(not_started)}</div>'
             if show_module_status else ""
         )
-        tag = "a" if module_links else "article"
-        link_attributes = f' href="module{mod["id"]}.html"' if module_links else ''
         cards.append(f'''
-  <{tag} class="module-card"{link_attributes} data-module="{mod["id"]}">
+  <article class="module-card" data-module="{mod["id"]}">
     <div class="module-num">{mod["id"]}</div>
     <div class="module-info">
       <h3>{esc(mod.get("title",""))}</h3>
       <p>{esc(mod.get("subtitle",""))}</p>
       {status_html}
     </div>
-  </{tag}>''')
+  </article>''')
 
     progress_script = ""
     if show_module_status:
@@ -263,7 +264,7 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 <div class="modules" id="modules">
 {"".join(cards)}
 </div>
-<p id="lmsNavNote" class="index-navigation-instruction"{'' if navigation_instruction else ' hidden'}>{esc(navigation_instruction or 'Use the LMS course navigation to open a module so its completion is recorded correctly.')}</p>
+{f'<p id="lmsNavNote" class="index-navigation-instruction">{esc(navigation_instruction)}</p>' if navigation_instruction else ''}
 {start_html if start_position == "below_modules" else ""}
 
 <div class="footer">
@@ -281,18 +282,8 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
   'use strict';
   const reviewMode = new URLSearchParams(location.search).get('review') === '1';
   const inLMS = !reviewMode && SCORM.init();
-  const directModuleLinks = {json.dumps(direct_module_links)};
   if (!reviewMode) SCORM.setCompleted();
 {progress_script}
-
-  document.querySelectorAll('a.module-card').forEach(function(card) {{
-    card.addEventListener('click', function(e) {{
-      var mod = this.getAttribute('data-module');
-      if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) {{ e.preventDefault(); document.getElementById('lmsNavNote').hidden = false; return; }}
-      if (reviewMode) {{ e.preventDefault(); location.href = this.getAttribute('href') + '?review=1'; return; }}
-      if (!SCORM.isSingleSCO) SCORM.setLocation('module' + mod);
-    }});
-  }});
 
   // The default start link is limited to the first module. It is not an
   // arbitrary-SCO navigation API and never infers or writes module progress.

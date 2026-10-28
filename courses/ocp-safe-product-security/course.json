@@ -1,0 +1,2212 @@
+{
+  "style": "Slides",
+  "schema_version": "2.0",
+  "course_slug": "ocp_safe_product_security",
+  "course_title": "OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements",
+  "course_subtitle": "Understand independent review, product requirements, and the evidence behind a security decision.",
+  "language": "en-US",
+  "target_duration_minutes": 35,
+  "audience_level": "introductory",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "scorm": {
+    "version": "1.2",
+    "organization": "single-sco"
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "safe_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "S.A.F.E."
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg"
+  },
+  "index_navigation_instruction": "",
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo v2",
+    "model_id": "eleven_multilingual_v2",
+    "model_policy": "stable",
+    "speed": 1.18
+  },
+  "local_font_stylesheet": "assets/fonts/open-sans.css",
+  "term_glossary": [
+    {
+      "id": "firmware",
+      "term": "Firmware",
+      "tooltip": "Device software controlling hardware behavior and security-relevant operations.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+    },
+    {
+      "id": "trust_boundary",
+      "term": "Trust boundary",
+      "aliases": [
+        "trust boundaries"
+      ],
+      "tooltip": "A boundary across which privileges or security assumptions change.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+    },
+    {
+      "id": "srp",
+      "term": "Security Review Provider",
+      "aliases": [
+        "SRP",
+        "Security Review Providers"
+      ],
+      "tooltip": "An OCP-approved independent provider that performs product security reviews.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/security_review_providers.md"
+    },
+    {
+      "id": "threat_model",
+      "term": "Threat model",
+      "aliases": [
+        "threat models"
+      ],
+      "tooltip": "A description of assets, adversaries, attack surfaces, and security objectives.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+    },
+    {
+      "id": "review_scope",
+      "term": "Review scope",
+      "aliases": [
+        "review scopes"
+      ],
+      "tooltip": "The agreed assessment areas, depth, and boundary used to interpret the findings.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+    },
+    {
+      "id": "differential",
+      "term": "Differential review",
+      "tooltip": "A follow-up focused on changes and their implications relative to an agreed reviewed baseline.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+    },
+    {
+      "id": "sbom",
+      "term": "Software bill of materials",
+      "aliases": [
+        "SBOM"
+      ],
+      "tooltip": "An inventory identifying software components and dependencies in a product or release.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SOLID/blob/main/requirements.md#sw002-sbom"
+    },
+    {
+      "id": "sfr",
+      "term": "Short-form report",
+      "aliases": [
+        "SFR"
+      ],
+      "tooltip": "A signed machine-readable summary identifying the reviewed product, firmware, scope, and required results.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+    },
+    {
+      "id": "root_of_trust",
+      "term": "Root of trust",
+      "aliases": [
+        "root-of-trust"
+      ],
+      "tooltip": "A trusted foundation on which other security functions and assurances depend.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SOLID/blob/main/requirements.md#gen005-dedicated-rot"
+    },
+    {
+      "id": "sanitization",
+      "term": "Sanitization",
+      "tooltip": "Rendering stored data inaccessible using methods appropriate to the medium and required guidance.",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SOLID/blob/main/requirements.md#strg002-sanitization"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "title": "S.A.F.E.: Purpose, Scope, and Assurance",
+      "subtitle": "Explain what a S.A.F.E. review establishes and match review depth to the threat model.",
+      "duration_minutes": 16,
+      "slides": [
+        {
+          "id": 1,
+          "slug": "s_a_f_e_purpose_scope_and_assurance",
+          "type": "title",
+          "title": "S.A.F.E.: Purpose, Scope, and Assurance",
+          "source_refs": [
+            "R1",
+            "S4"
+          ],
+          "transcript": "Welcome to OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements. A device can have a familiar name and still contain firmware that changes its security behavior. This course helps you ask what was reviewed, what the evidence establishes, and how that evidence supports your own decisions.",
+          "subtitle": "Explain what a S.A.F.E. review establishes and match review depth to the threat model.",
+          "version_chip": "Product security reviews",
+          "audio": {
+            "script_file": "audio/module1/slide_01_s_a_f_e_purpose_scope_and_assurance.txt",
+            "wav_file": "audio/module1/slide_01_s_a_f_e_purpose_scope_and_assurance.wav"
+          }
+        },
+        {
+          "id": 2,
+          "slug": "from_product_risk_to_review_evidence",
+          "type": "course_overview",
+          "title": "From Product Risk to Review Evidence",
+          "source_refs": [
+            "R1",
+            "R16"
+          ],
+          "transcript": "We'll follow three connected decisions. First, understand what an independent S.A.F.E. review covers and how the three review scopes relate to a threat model. Then prepare an engagement and learn how findings become useful evidence. Finally, connect S.O.L.I.D. product requirements and AI-assisted analysis to the review process. The course includes a program overview recording and six short questions. You don't need prior knowledge of either program.",
+          "modules_listed": [
+            "S.A.F.E.: Purpose, Scope, and Assurance",
+            "Preparing, Completing, and Using a Review",
+            "S.O.L.I.D. Requirements and AI-Assisted Reviews"
+          ],
+          "chips": [
+            {
+              "icon": "clock",
+              "text": "About 35 minutes"
+            },
+            {
+              "icon": "modules",
+              "text": "3 modules"
+            },
+            {
+              "text": "Introductory"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_from_product_risk_to_review_evidence.txt",
+            "wav_file": "audio/module1/slide_02_from_product_risk_to_review_evidence.wav"
+          }
+        },
+        {
+          "id": 3,
+          "slug": "firmware_is_part_of_the_trust_boundary",
+          "type": "content_two_column",
+          "title": "Firmware Is Part of the Trust Boundary",
+          "source_refs": [
+            "R1",
+            "R3"
+          ],
+          "transcript": "Firmware is software that controls a device's behavior close to the hardware. A storage controller, network adapter, or accelerator can depend on firmware to start securely, protect configuration, handle commands, and apply updates. The operating system isn't the only place where a security problem can matter.\n\nThink about a storage device that accepts a firmware update. You need confidence in the code, where it came from, and the mechanism that decides whether the update is authorized. You also need to understand what happens to sensitive data and keys during normal operation, recovery, and changes of ownership.\n\nThese questions cross a trust boundary: a point where privileges or security assumptions change. A useful assessment connects the device's code and architecture to the assets it must protect. That gives you a reason to examine implementation evidence, rather than relying only on a product description.",
+          "section_label": "Device security",
+          "bullets": [
+            {
+              "text": "Firmware controls security-relevant device behavior."
+            },
+            {
+              "text": "Updates, configuration, and secrets cross trust boundaries."
+            },
+            {
+              "text": "Assess code and architecture against the assets at risk."
+            }
+          ],
+          "figure": {
+            "path": "figures/firmware_boundary.svg",
+            "source": "svg_inline",
+            "caption": "Code, configuration, and update decisions affect the assets a device must protect.",
+            "alt": "Code, configuration, and update decisions affect the assets a device must protect.",
+            "text_inventory": {
+              "sha256": "bc882bf7d7d73d9a8c4e028d49e3cbd3c26f89f6dda39837b8e643983eb097e7",
+              "entries": [
+                {
+                  "text": "Authorizedupdate"
+                },
+                {
+                  "text": "Firmwareand config"
+                },
+                {
+                  "text": "Data anddevice keys"
+                },
+                {
+                  "text": "Security decisions cross trust boundaries"
+                }
+              ],
+              "review_record": "Reviewed source figure renders and text containment; exact SVG labels inventory."
+            }
+          },
+          "term_refs": [
+            "firmware",
+            "trust_boundary"
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_firmware_is_part_of_the_trust_boundary.txt",
+            "wav_file": "audio/module1/slide_03_firmware_is_part_of_the_trust_boundary.wav"
+          }
+        },
+        {
+          "id": 4,
+          "slug": "one_independent_review_can_serve_several_customers",
+          "type": "content_diagram",
+          "title": "One Independent Review Can Serve Several Customers",
+          "source_refs": [
+            "R4",
+            "S4"
+          ],
+          "transcript": "Start with a vendor preparing a device for several customers. If each customer commissions an unrelated assessment, the vendor can face repeated requests for similar evidence and repeated review effort.\n\nOCP S.A.F.E. means Security Appraisal Framework and Enablement. The vendor works with an approved independent Security Review Provider, or SRP, to assess the agreed product and firmware scope.\n\nThe review produces a bounded set of evidence. It identifies what was examined, the reviewed firmware, the scope, and the findings and limitations relevant to interpreting the result.\n\nThat evidence can then be shared with several customers. They can each evaluate the same review instead of beginning with an entirely separate assessment of the same material.\n\nEach customer still checks the boundary. Does the product and firmware match? Does the review address the intended deployment and its risks? Reusable evidence reduces duplicate effort while leaving the customer's deployment decision with the customer.",
+          "section_label": "Independent assurance",
+          "media_focus": true,
+          "figure": {
+            "path": "figures/shared_evidence.mp4",
+            "media_type": "video",
+            "poster": "figures/shared_evidence_poster.png",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "caption": "One bounded review can support several customers; each evaluates the fit for its deployment.",
+            "alt": "One bounded review can support several customers; each evaluates the fit for its deployment.",
+            "text_inventory": {
+              "sha256": "9479dbdd106925f0eefa68222f5280e8e6e1baab6bc11ab9a7a7373f7d9ccdde",
+              "entries": [
+                {
+                  "text": "Device vendor",
+                  "at_seconds": 0.7130068027210884
+                },
+                {
+                  "text": "ProductFirmwareReview inputs",
+                  "at_seconds": 0.7130068027210884
+                },
+                {
+                  "text": "Independent SRP",
+                  "at_seconds": 16.01300680272109
+                },
+                {
+                  "text": "ArchitectureCode and findingsAgreed review scope",
+                  "at_seconds": 16.01300680272109
+                },
+                {
+                  "text": "Review evidence",
+                  "at_seconds": 22.97300680272109
+                },
+                {
+                  "text": "Product + firmwareScope + limitationsRecorded results",
+                  "at_seconds": 22.97300680272109
+                },
+                {
+                  "text": "Customer A",
+                  "at_seconds": 31.73300680272109
+                },
+                {
+                  "text": "Checks fit forits deployment",
+                  "at_seconds": 31.73300680272109
+                },
+                {
+                  "text": "Customer B",
+                  "at_seconds": 34.33300680272109
+                },
+                {
+                  "text": "Checks fit forits deployment",
+                  "at_seconds": 34.33300680272109
+                },
+                {
+                  "text": "Customer C",
+                  "at_seconds": 35.81300680272109
+                },
+                {
+                  "text": "Checks fit forits deployment",
+                  "at_seconds": 35.81300680272109
+                },
+                {
+                  "text": "Reuse the reviewed evidence.Check its boundary and deployment fit.",
+                  "at_seconds": 39.55300680272109
+                }
+              ],
+              "review_record": "Reviewed final 1080p encoded checkpoint and transition frames against the finite source timeline; labels remain visible after their reveals. Source and final encode geometry/quality checks recorded under authoring/video-qa."
+            }
+          },
+          "term_refs": [
+            "srp",
+            "review_scope"
+          ],
+          "reference_links": [
+            {
+              "label": "S.A.F.E. framework",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_one_independent_review_can_serve_several_customers.txt",
+            "wav_file": "audio/module1/slide_04_one_independent_review_can_serve_several_customers.wav"
+          }
+        },
+        {
+          "id": 5,
+          "slug": "three_scopes_follow_the_threat_model",
+          "type": "content_grid",
+          "title": "Three Scopes Follow the Threat Model",
+          "source_refs": [
+            "R3",
+            "P_SCOPE"
+          ],
+          "transcript": "A threat model describes the assets to protect, the adversaries and their capabilities, and the ways those adversaries might reach the system. The review scope should follow those concerns.\n\nScope one is a code and architecture assessment. It includes white-box examination of firmware and its security-sensitive behavior, informed by the device's design and threat model. Examples include secure boot, handling of secrets, input validation, and privileged interfaces.\n\nScope two includes those areas and looks more deeply at trust boundaries. Think about isolation between application processing and a security processor, or the protections used when data and control cross those boundaries.\n\nScope three adds resilience to physical attacks. Fault injection and side-channel resistance become important when an attacker can interact physically with security-critical components.\n\nThese aren't three pass grades. They describe increasing assessment depth for the threat model. A device can have different components assessed at different depths. The provider and vendor agree the boundary and the applicable work, rather than assigning one universal depth to every part.",
+          "section_label": "Review depth",
+          "cards": [
+            {
+              "title": "Scope 1",
+              "body": "Code and architecture assessment: firmware, security-sensitive behavior, and implementation."
+            },
+            {
+              "title": "Scope 2",
+              "body": "Includes Scope 1 and adds deeper focus on trust boundaries and isolation."
+            },
+            {
+              "title": "Scope 3",
+              "body": "Includes lower-scope areas and adds resilience to physical attacks."
+            }
+          ],
+          "subtitle": "Select depth for the threat model; different components may need different depths.",
+          "term_refs": [
+            "threat_model"
+          ],
+          "reference_links": [
+            {
+              "label": "Review scope and assessment areas",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_three_scopes_follow_the_threat_model.txt",
+            "wav_file": "audio/module1/slide_05_three_scopes_follow_the_threat_model.wav"
+          }
+        },
+        {
+          "id": 6,
+          "slug": "choose_depth_for_the_asset_at_risk",
+          "type": "content_two_column",
+          "title": "Choose Depth for the Asset at Risk",
+          "source_refs": [
+            "R3",
+            "P_SCOPE"
+          ],
+          "transcript": "Consider three examples. A firmware command parser receives input from a less trusted source. You want the review to examine how that input is validated and whether it can corrupt memory or bypass authorization. That's a code and architecture concern associated with Scope one.\n\nNow consider a system that separates application processing from a security function. The question is whether that separation really protects privileged operations and sensitive assets. A deeper trust-boundary assessment brings the emphasis of Scope two into view.\n\nFinally, consider a long-lived device secret used by a hardware trust anchor. If an attacker can manipulate the device physically, the review may need to examine fault injection or information leakage through side channels. That's the additional emphasis of Scope three.\n\nThe examples show how to ask for the right depth. They don't replace the threat model or the provider's scoping judgment. Start with the asset and the attacker's capabilities, then agree the assessment needed.",
+          "section_label": "Apply the scope model",
+          "bullets": [
+            {
+              "text": "Input parser: code and authorization behavior."
+            },
+            {
+              "text": "Security boundary: isolation and protected operations."
+            },
+            {
+              "text": "Long-lived secret: fault injection and side-channel resistance."
+            }
+          ],
+          "figure": {
+            "path": "figures/scope_examples.svg",
+            "source": "svg_inline",
+            "caption": "Illustrative concerns help frame scope discussions; the provider agrees the actual assessment.",
+            "alt": "Illustrative concerns help frame scope discussions; the provider agrees the actual assessment.",
+            "text_inventory": {
+              "sha256": "3200d9befbfdc5c7ec55ec4a2a26d9fd21e7f2afa9e18113dccd7bbcd23b351b",
+              "entries": [
+                {
+                  "text": "Code"
+                },
+                {
+                  "text": "Command parser"
+                },
+                {
+                  "text": "Isolation"
+                },
+                {
+                  "text": "Security boundary"
+                },
+                {
+                  "text": "Physical attack"
+                },
+                {
+                  "text": "Long-lived secret"
+                }
+              ],
+              "review_record": "Reviewed source figure renders and text containment; exact SVG labels inventory."
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Scope definitions",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_choose_depth_for_the_asset_at_risk.txt",
+            "wav_file": "audio/module1/slide_06_choose_depth_for_the_asset_at_risk.wav"
+          }
+        },
+        {
+          "id": 7,
+          "slug": "read_the_boundary_before_reusing_a_result",
+          "type": "content_two_column",
+          "title": "Read the Boundary Before Reusing a Result",
+          "source_refs": [
+            "R4",
+            "R6",
+            "R7",
+            "S4",
+            "S9"
+          ],
+          "transcript": "A review result has a boundary. The product identity, firmware version or hash, assessed components, and review scope tell you what the evidence is about. Limitations and findings tell you where interpretation needs care.\n\nBefore reusing a result, compare that boundary with what you plan to deploy. A product family name alone doesn't establish that a different firmware build or configuration was examined. A later update may need a follow-up assessment, with the changes and baseline agreed by the vendor and provider.\n\nAlso consider the deployment. A remaining issue may have different consequences in different environments, and a documented mitigation still needs to be appropriate and implemented. S.A.F.E. supports an informed security decision. It doesn't guarantee that every version is vulnerability-free or that every deployment has the same risk.",
+          "section_label": "Interpret the evidence",
+          "bullets": [
+            {
+              "text": "Match product identity and firmware version or hash."
+            },
+            {
+              "text": "Check assessed components, scope, and limitations."
+            },
+            {
+              "text": "Evaluate remaining findings for the intended deployment."
+            }
+          ],
+          "figure": {
+            "path": "figures/evidence_boundary.svg",
+            "source": "svg_inline",
+            "caption": "A result applies to the reviewed boundary and must be interpreted for the deployment.",
+            "alt": "A result applies to the reviewed boundary and must be interpreted for the deployment.",
+            "text_inventory": {
+              "sha256": "938b1e9a5b6a0e0e9b01a2b0ef990fcfbf1da6fc8cab4c68f8142e67645e5e8a",
+              "entries": [
+                {
+                  "text": "Product identity"
+                },
+                {
+                  "text": "Firmware state"
+                },
+                {
+                  "text": "Review scope"
+                },
+                {
+                  "text": "Limitations"
+                }
+              ],
+              "review_record": "Reviewed source figure renders and text containment; exact SVG labels inventory."
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Report deliverables",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_read_the_boundary_before_reusing_a_result.txt",
+            "wav_file": "audio/module1/slide_07_read_the_boundary_before_reusing_a_result.wav"
+          }
+        },
+        {
+          "id": 8,
+          "slug": "safe_program_overview",
+          "type": "content_diagram",
+          "section_label": "Program overview",
+          "title": "See the Review Process in Context",
+          "media_focus": true,
+          "audio": null,
+          "narration_enabled": false,
+          "transcript": "Welcome to the OCP S.A.F.E. or S.A.F.E. program. In this course, you'll gain a foundational understanding of how the S.A.F.E. framework improves device security, streamlines audits, and supports supply chain assurance across modern data centers. Today's data centers use a diverse set of devices, CPUs, GPUs, FPGAs, NICs, and storage systems, all of which run firmware or microcode that may be updated over time. These components form part of a complex software supply chain. Assuring the security and integrity of those devices is essential, especially as regulatory expectations increase globally. Historically, each customer or hyperscaler would request their own audit of a device, creating a patchwork of duplicated work and inconsistent reviews. This model led to delays, inefficiencies, and late discovery of vulnerabilities often during production or deployment. OCP S.A.F.E. was developed to address this problem. It allows a single structured review to serve multiple customers. The goal is simple, reduce audit overhead, share trustworthy results, and enable faster time to market while strengthening the overall security posture of device firmware. S.A.F.E. assessments are conducted by approved security review providers or SRPs. These are trusted third-party firms selected for their independence and technical depth. Each engagement starts with a scope definition. The device vendor and the SRP align on which scopes will be in scope and within each scope which sections apply to the device under test. As part of this early phase, the device vendor is expected to socialize the scope definition with their cloud service provider. Scope 1 addresses privileged firmware and software on a single device. It includes design review, threat modeling, code analysis, and code review. Scope 2 examines architectural isolation of critical components, like management co-processors or TEEs. It relies on hardware design and code reviews, not live attacks. Scope 3 focuses on resilience to physical attacks and the protection of long-term secrets. It includes an analysis of SoC design and fault injection protections. S.A.F.E. reviews are document-driven. The SRP examines firmware, HDL, design documentation, and threat models using white box methods rather than reverse engineering. Device vendors submit artifacts including source code, firmware binaries, and any relevant security models. The SRP reviews and identifies any weaknesses. The review is collaborative. Vendors address findings and resubmit until the assessment meets the safe criteria. The SRP produces two deliverables. The first is a detailed report for the vendor's internal use. The second is a concise, signed summary known as the short-form report. The device vendor can choose to embargo a short-form report where there is concern about publicly disclosing certain findings. This short-form report includes the firmware hash, review scope, SRP name, and whether any vulnerabilities were found. Short-form reports are submitted to OCP's GitHub repository and optionally listed in the OCP marketplace. Consumers can verify audit status without repeating the review. S.A.F.E. ensures that firmware security reviews happen early and can be reused across vendors and cloud platforms. This supports consistent assurance and scalable compliance. The short-form supports reference integrity manifests or RIMs, which help match measured device values to the firmware that was reviewed. S.A.F.E. does not replace regulatory programs like FIPS. It complements them by focusing specifically on firmware level review outcomes and transparency. Several companies have already participated, AMD submitted a GPU, SK hynix reviewed an SSD, and Intel demonstrated end-to-end attestation. As the program evolves, more SRPs and device types will be supported. S.A.F.E. is designed to be flexible, accommodating a range of architectures, use cases, and threat models. In this course will guide you through how to prepare for a safe review, define scope, engage with an SRP, and submit results. S.A.F.E. reflects a shift towards shared security responsibility. It builds trust between producers and consumers, and reduces time to assurance across the ecosystem.",
+          "video_transcript": "Welcome to the OCP S.A.F.E. or S.A.F.E. program. In this course, you'll gain a foundational understanding of how the S.A.F.E. framework improves device security, streamlines audits, and supports supply chain assurance across modern data centers. Today's data centers use a diverse set of devices, CPUs, GPUs, FPGAs, NICs, and storage systems, all of which run firmware or microcode that may be updated over time. These components form part of a complex software supply chain. Assuring the security and integrity of those devices is essential, especially as regulatory expectations increase globally. Historically, each customer or hyperscaler would request their own audit of a device, creating a patchwork of duplicated work and inconsistent reviews. This model led to delays, inefficiencies, and late discovery of vulnerabilities often during production or deployment. OCP S.A.F.E. was developed to address this problem. It allows a single structured review to serve multiple customers. The goal is simple, reduce audit overhead, share trustworthy results, and enable faster time to market while strengthening the overall security posture of device firmware. S.A.F.E. assessments are conducted by approved security review providers or SRPs. These are trusted third-party firms selected for their independence and technical depth. Each engagement starts with a scope definition. The device vendor and the SRP align on which scopes will be in scope and within each scope which sections apply to the device under test. As part of this early phase, the device vendor is expected to socialize the scope definition with their cloud service provider. Scope 1 addresses privileged firmware and software on a single device. It includes design review, threat modeling, code analysis, and code review. Scope 2 examines architectural isolation of critical components, like management co-processors or TEEs. It relies on hardware design and code reviews, not live attacks. Scope 3 focuses on resilience to physical attacks and the protection of long-term secrets. It includes an analysis of SoC design and fault injection protections. S.A.F.E. reviews are document-driven. The SRP examines firmware, HDL, design documentation, and threat models using white box methods rather than reverse engineering. Device vendors submit artifacts including source code, firmware binaries, and any relevant security models. The SRP reviews and identifies any weaknesses. The review is collaborative. Vendors address findings and resubmit until the assessment meets the safe criteria. The SRP produces two deliverables. The first is a detailed report for the vendor's internal use. The second is a concise, signed summary known as the short-form report. The device vendor can choose to embargo a short-form report where there is concern about publicly disclosing certain findings. This short-form report includes the firmware hash, review scope, SRP name, and whether any vulnerabilities were found. Short-form reports are submitted to OCP's GitHub repository and optionally listed in the OCP marketplace. Consumers can verify audit status without repeating the review. S.A.F.E. ensures that firmware security reviews happen early and can be reused across vendors and cloud platforms. This supports consistent assurance and scalable compliance. The short-form supports reference integrity manifests or RIMs, which help match measured device values to the firmware that was reviewed. S.A.F.E. does not replace regulatory programs like FIPS. It complements them by focusing specifically on firmware level review outcomes and transparency. Several companies have already participated, AMD submitted a GPU, SK hynix reviewed an SSD, and Intel demonstrated end-to-end attestation. As the program evolves, more SRPs and device types will be supported. S.A.F.E. is designed to be flexible, accommodating a range of architectures, use cases, and threat models. In this course will guide you through how to prepare for a safe review, define scope, engage with an SRP, and submit results. S.A.F.E. reflects a shift towards shared security responsibility. It builds trust between producers and consumers, and reduces time to assurance across the ecosystem.",
+          "caption": "Use this overview alongside the current product requirements and AI-assisted review guidance. Evaluate findings and limitations for the intended deployment.",
+          "figure": {
+            "path": "resources/videos/safe_program_overview.mp4",
+            "poster": "resources/images/safe_program_overview_poster.png",
+            "media_type": "video",
+            "role": "original_video",
+            "source": "reuse",
+            "source_sha256": "1b558af7d49ec869d7ee903c250b71629f62c31e114ecd587fe8b8bd8ba1bae9",
+            "duration_seconds": 325.325,
+            "autoplay": false,
+            "loop": false,
+            "muted": false,
+            "controls": true,
+            "alt": "Animated introduction to OCP S.A.F.E., its review scopes, independent providers, and report deliverables.",
+            "caption": "Program purpose, review scopes, and the evidence delivered to vendors and customers.",
+            "captions": [
+              {
+                "path": "resources/captions/safe_program_overview.en-US.vtt",
+                "language": "en-US",
+                "label": "English (transcribed)"
+              }
+            ],
+            "caption_cues": [
+              {
+                "start": 2.86,
+                "end": 7.86,
+                "text": "Welcome to the OCP S.A.F.E. or S.A.F.E.\nprogram."
+              },
+              {
+                "start": 7.86,
+                "end": 10.86,
+                "text": "In this course, you'll gain a foundational\nunderstanding"
+              },
+              {
+                "start": 10.86,
+                "end": 14.86,
+                "text": "of how the S.A.F.E. framework improves\ndevice security,"
+              },
+              {
+                "start": 14.86,
+                "end": 16.86,
+                "text": "streamlines audits,"
+              },
+              {
+                "start": 16.86,
+                "end": 21.86,
+                "text": "and supports supply chain assurance across\nmodern data centers."
+              },
+              {
+                "start": 21.86,
+                "end": 24.86,
+                "text": "Today's data centers use a diverse set of\ndevices,"
+              },
+              {
+                "start": 24.86,
+                "end": 30.86,
+                "text": "CPUs, GPUs, FPGAs, NICs, and storage\nsystems,"
+              },
+              {
+                "start": 30.86,
+                "end": 35.86,
+                "text": "all of which run firmware or microcode that\nmay be updated over time."
+              },
+              {
+                "start": 35.86,
+                "end": 39.86,
+                "text": "These components form part of a complex\nsoftware supply chain."
+              },
+              {
+                "start": 39.86,
+                "end": 43.86,
+                "text": "Assuring the security and integrity of\nthose devices is essential,"
+              },
+              {
+                "start": 43.86,
+                "end": 47.86,
+                "text": "especially as regulatory expectations\nincrease globally."
+              },
+              {
+                "start": 47.86,
+                "end": 50.86,
+                "text": "Historically, each customer or hyperscaler"
+              },
+              {
+                "start": 50.86,
+                "end": 53.86,
+                "text": "would request their own audit of a device,"
+              },
+              {
+                "start": 53.86,
+                "end": 58.86,
+                "text": "creating a patchwork of duplicated work and\ninconsistent reviews."
+              },
+              {
+                "start": 58.86,
+                "end": 61.86,
+                "text": "This model led to delays, inefficiencies,"
+              },
+              {
+                "start": 61.86,
+                "end": 66.86,
+                "text": "and late discovery of vulnerabilities often\nduring production or deployment."
+              },
+              {
+                "start": 66.86,
+                "end": 71.86,
+                "text": "OCP S.A.F.E. was developed to address this\nproblem."
+              },
+              {
+                "start": 71.86,
+                "end": 75.86,
+                "text": "It allows a single structured review to\nserve multiple customers."
+              },
+              {
+                "start": 75.86,
+                "end": 78.86,
+                "text": "The goal is simple, reduce audit overhead,"
+              },
+              {
+                "start": 78.86,
+                "end": 80.86,
+                "text": "share trustworthy results,"
+              },
+              {
+                "start": 80.86,
+                "end": 83.86,
+                "text": "and enable faster time to market"
+              },
+              {
+                "start": 83.86,
+                "end": 87.86,
+                "text": "while strengthening the overall security\nposture of device firmware."
+              },
+              {
+                "start": 87.86,
+                "end": 93.86,
+                "text": "S.A.F.E. assessments are conducted by\napproved security review providers or SRPs."
+              },
+              {
+                "start": 93.86,
+                "end": 99.86,
+                "text": "These are trusted third-party firms\nselected for their independence and\ntechnical depth."
+              },
+              {
+                "start": 99.86,
+                "end": 103.86,
+                "text": "Each engagement starts with a scope\ndefinition."
+              },
+              {
+                "start": 103.86,
+                "end": 108.86,
+                "text": "The device vendor and the SRP align on\nwhich scopes will be in scope"
+              },
+              {
+                "start": 108.86,
+                "end": 113.86,
+                "text": "and within each scope which sections apply\nto the device under test."
+              },
+              {
+                "start": 113.86,
+                "end": 116.86,
+                "text": "As part of this early phase, the device\nvendor is expected"
+              },
+              {
+                "start": 116.86,
+                "end": 121.86,
+                "text": "to socialize the scope definition with\ntheir cloud service provider."
+              },
+              {
+                "start": 121.86,
+                "end": 126.86,
+                "text": "Scope 1 addresses privileged firmware and\nsoftware on a single device."
+              },
+              {
+                "start": 126.86,
+                "end": 132.86,
+                "text": "It includes design review, threat modeling,\ncode analysis, and code review."
+              },
+              {
+                "start": 132.86,
+                "end": 139.18,
+                "text": "Scope 2 examines architectural isolation of\ncritical components,"
+              },
+              {
+                "start": 139.18,
+                "end": 143.18,
+                "text": "like management co-processors or TEEs."
+              },
+              {
+                "start": 143.18,
+                "end": 148.18,
+                "text": "It relies on hardware design and code\nreviews, not live attacks."
+              },
+              {
+                "start": 148.18,
+                "end": 152.18,
+                "text": "Scope 3 focuses on resilience to physical\nattacks"
+              },
+              {
+                "start": 152.18,
+                "end": 155.18,
+                "text": "and the protection of long-term secrets."
+              },
+              {
+                "start": 155.18,
+                "end": 161.18,
+                "text": "It includes an analysis of SoC design and\nfault injection protections."
+              },
+              {
+                "start": 161.18,
+                "end": 164.18,
+                "text": "S.A.F.E. reviews are document-driven."
+              },
+              {
+                "start": 164.18,
+                "end": 169.18,
+                "text": "The SRP examines firmware, HDL, design\ndocumentation,"
+              },
+              {
+                "start": 169.18,
+                "end": 174.18,
+                "text": "and threat models using white box methods\nrather than reverse engineering."
+              },
+              {
+                "start": 174.18,
+                "end": 178.18,
+                "text": "Device vendors submit artifacts including\nsource code,"
+              },
+              {
+                "start": 178.18,
+                "end": 182.18,
+                "text": "firmware binaries, and any relevant\nsecurity models."
+              },
+              {
+                "start": 182.18,
+                "end": 186.18,
+                "text": "The SRP reviews and identifies any\nweaknesses."
+              },
+              {
+                "start": 186.18,
+                "end": 188.18,
+                "text": "The review is collaborative."
+              },
+              {
+                "start": 188.18,
+                "end": 194.18,
+                "text": "Vendors address findings and resubmit until\nthe assessment meets the safe criteria."
+              },
+              {
+                "start": 194.18,
+                "end": 197.18,
+                "text": "The SRP produces two deliverables."
+              },
+              {
+                "start": 197.18,
+                "end": 201.18,
+                "text": "The first is a detailed report for the\nvendor's internal use."
+              },
+              {
+                "start": 201.18,
+                "end": 207.18,
+                "text": "The second is a concise, signed summary\nknown as the short-form report."
+              },
+              {
+                "start": 207.18,
+                "end": 212.18,
+                "text": "The device vendor can choose to embargo a\nshort-form report"
+              },
+              {
+                "start": 212.18,
+                "end": 216.18,
+                "text": "where there is concern about publicly\ndisclosing certain findings."
+              },
+              {
+                "start": 216.18,
+                "end": 221.18,
+                "text": "This short-form report includes the\nfirmware hash, review scope,"
+              },
+              {
+                "start": 221.18,
+                "end": 225.18,
+                "text": "SRP name, and whether any vulnerabilities\nwere found."
+              },
+              {
+                "start": 225.18,
+                "end": 230.18,
+                "text": "Short-form reports are submitted to OCP's\nGitHub repository"
+              },
+              {
+                "start": 230.18,
+                "end": 234.18,
+                "text": "and optionally listed in the OCP\nmarketplace."
+              },
+              {
+                "start": 234.18,
+                "end": 239.18,
+                "text": "Consumers can verify audit status without\nrepeating the review."
+              },
+              {
+                "start": 239.18,
+                "end": 243.18,
+                "text": "S.A.F.E. ensures that firmware security\nreviews happen early"
+              },
+              {
+                "start": 243.18,
+                "end": 247.18,
+                "text": "and can be reused across vendors and cloud\nplatforms."
+              },
+              {
+                "start": 247.18,
+                "end": 252.18,
+                "text": "This supports consistent assurance and\nscalable compliance."
+              },
+              {
+                "start": 252.18,
+                "end": 256.18,
+                "text": "The short-form supports reference integrity\nmanifests or RIMs,"
+              },
+              {
+                "start": 256.18,
+                "end": 261.18,
+                "text": "which help match measured device values to\nthe firmware that was reviewed."
+              },
+              {
+                "start": 261.18,
+                "end": 265.18,
+                "text": "S.A.F.E. does not replace regulatory\nprograms like FIPS."
+              },
+              {
+                "start": 265.18,
+                "end": 271.18,
+                "text": "It complements them by focusing\nspecifically on firmware level review\noutcomes"
+              },
+              {
+                "start": 271.18,
+                "end": 273.18,
+                "text": "and transparency."
+              },
+              {
+                "start": 273.18,
+                "end": 278.18,
+                "text": "Several companies have already\nparticipated, AMD submitted a GPU,"
+              },
+              {
+                "start": 278.18,
+                "end": 284.18,
+                "text": "SK hynix reviewed an SSD, and Intel\ndemonstrated end-to-end attestation."
+              },
+              {
+                "start": 284.18,
+                "end": 289.18,
+                "text": "As the program evolves, more SRPs and\ndevice types will be supported."
+              },
+              {
+                "start": 289.18,
+                "end": 292.18,
+                "text": "S.A.F.E. is designed to be flexible,"
+              },
+              {
+                "start": 292.18,
+                "end": 297.18,
+                "text": "accommodating a range of architectures, use\ncases, and threat models."
+              },
+              {
+                "start": 297.18,
+                "end": 301.18,
+                "text": "In this course will guide you through how\nto prepare for a safe review,"
+              },
+              {
+                "start": 301.18,
+                "end": 307.18,
+                "text": "define scope, engage with an SRP, and\nsubmit results."
+              },
+              {
+                "start": 308.18,
+                "end": 312.18,
+                "text": "S.A.F.E. reflects a shift towards shared\nsecurity responsibility."
+              },
+              {
+                "start": 312.18,
+                "end": 316.18,
+                "text": "It builds trust between producers and\nconsumers,"
+              },
+              {
+                "start": 316.18,
+                "end": 320.18,
+                "text": "and reduces time to assurance across the\necosystem."
+              }
+            ],
+            "assets": [
+              "resources/captions/safe_program_overview.en-US.vtt"
+            ],
+            "text_inventory": {
+              "sha256": "1b558af7d49ec869d7ee903c250b71629f62c31e114ecd587fe8b8bd8ba1bae9",
+              "entries": [
+                {
+                  "text": "Introduction to OCP S.A.F.E.",
+                  "at_seconds": 5
+                },
+                {
+                  "text": "Reduce audit overhead",
+                  "at_seconds": 80
+                },
+                {
+                  "text": "Trustworthy results",
+                  "at_seconds": 80
+                },
+                {
+                  "text": "Trusted third-party firms selected for their independence and technical depth",
+                  "at_seconds": 100
+                },
+                {
+                  "text": "Scope 2",
+                  "at_seconds": 140
+                },
+                {
+                  "text": "Isolation of critical components",
+                  "at_seconds": 140
+                },
+                {
+                  "text": "Scope 3",
+                  "at_seconds": 160
+                },
+                {
+                  "text": "Design reviews and threat modeling",
+                  "at_seconds": 160
+                },
+                {
+                  "text": "RTL review",
+                  "at_seconds": 160
+                },
+                {
+                  "text": "Hardware testing",
+                  "at_seconds": 160
+                },
+                {
+                  "text": "Detailed report",
+                  "at_seconds": 200
+                },
+                {
+                  "text": "Short-form report includes: firmware hash",
+                  "at_seconds": 220
+                },
+                {
+                  "text": "RIMs",
+                  "at_seconds": 260
+                },
+                {
+                  "text": "Device values",
+                  "at_seconds": 260
+                },
+                {
+                  "text": "Firmware",
+                  "at_seconds": 260
+                },
+                {
+                  "text": "AMD",
+                  "at_seconds": 280
+                },
+                {
+                  "text": "SK hynix",
+                  "at_seconds": 280
+                },
+                {
+                  "text": "In this course: Prepare for a S.A.F.E. review",
+                  "at_seconds": 300
+                }
+              ],
+              "review_record": "Sampled original recording frames at 5–320 seconds and reviewed complete machine transcript. Inventory identifies reviewed visible phrases; full human listening/caption review remains pending."
+            },
+            "playback_mode": "recorded"
+          },
+          "source_refs": [
+            "R2"
+          ],
+          "reference_links": [
+            {
+              "label": "Current review scope",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+            },
+            {
+              "label": "Current AI review guidance",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/ai_scanning.md"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "slug": "scope_and_evidence_guide_the_decision",
+          "type": "takeaways",
+          "title": "Scope and Evidence Guide the Decision",
+          "source_refs": [
+            "R16",
+            "S4"
+          ],
+          "transcript": "Keep four ideas together. S.A.F.E. provides independent review evidence. Sharing that evidence can reduce duplicate assessment effort. The three scopes connect review depth to the threat model. And a result must be read within its product, firmware, and assessment boundary. When you encounter a review report, ask what it actually covers before deciding how to use it.",
+          "items": [
+            "Independent review produces reusable evidence.",
+            "Threat models guide assessment depth.",
+            "Scopes describe review focus, not pass grades.",
+            "Check product, firmware, scope, and limitations."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_scope_and_evidence_guide_the_decision.txt",
+            "wav_file": "audio/module1/slide_09_scope_and_evidence_guide_the_decision.wav"
+          }
+        },
+        {
+          "id": 10,
+          "slug": "check_your_review_mental_model",
+          "type": "knowledge_check",
+          "title": "Check Your Review Mental Model",
+          "source_refs": [
+            "R8",
+            "P_SCOPE"
+          ],
+          "transcript": "Check the mental model before continuing. The first question asks what a S.A.F.E. review provides. The second asks about the additional emphasis of Scope three. Submit each question once to continue. Correct answers aren't required, and you can retry after reading the feedback. Use the explanations to connect your answer to the scope and evidence concepts.",
+          "questions": [
+            {
+              "id": "m1q1",
+              "prompt": "What does a S.A.F.E. review primarily provide?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A guarantee that every firmware version is free of vulnerabilities.",
+                  "correct": false,
+                  "feedback_incorrect": "A review is bounded evidence, not a guarantee about every version or every vulnerability."
+                },
+                {
+                  "id": "b",
+                  "text": "Independent review evidence customers can evaluate and reuse within its stated scope.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Permission to replace independent review with vendor testing.",
+                  "correct": false,
+                  "feedback_incorrect": "Vendor testing helps preparation but does not replace an independent provider’s review."
+                },
+                {
+                  "id": "d",
+                  "text": "Security certification for the customer’s entire data center.",
+                  "correct": false,
+                  "feedback_incorrect": "The review addresses the agreed product boundary, not the security of an entire customer data center."
+                }
+              ],
+              "feedback_correct": "S.A.F.E. provides independent, reusable evidence. Check its reviewed product, firmware, scope, findings, and limitations.",
+              "feedback_incorrect": "S.A.F.E. provides independent, reusable evidence. Check its reviewed product, firmware, scope, findings, and limitations."
+            },
+            {
+              "id": "m1q2",
+              "prompt": "Which concerns distinguish the additional emphasis of Scope 3? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Fault injection such as glitch attacks.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Side-channel resistance of cryptographic operations.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Commercial pricing for the review.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Expected product sales volume.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Scope 3 adds physical-attack resilience, including fault injection and side-channel concerns, to the lower-scope areas. Price and sales volume do not identify this technical emphasis.",
+              "feedback_incorrect": "Scope 3 adds physical-attack resilience, including fault injection and side-channel concerns, to the lower-scope areas. Price and sales volume do not identify this technical emphasis."
+            }
+          ],
+          "subtitle": "Submit each question once. Feedback and retries are available; correctness is not required to continue.",
+          "audio": {
+            "script_file": "audio/module1/slide_10_check_your_review_mental_model.txt",
+            "wav_file": "audio/module1/slide_10_check_your_review_mental_model.wav"
+          }
+        },
+        {
+          "id": 11,
+          "slug": "prepare_for_an_independent_review",
+          "type": "up_next",
+          "title": "Prepare for an Independent Review",
+          "source_refs": [
+            "R9"
+          ],
+          "transcript": "You've completed the purpose and scope of S.A.F.E. And next, we'll turn those ideas into a practical review engagement: what to prepare, who does the work, and how to interpret the evidence.",
+          "next_module_number": 2,
+          "next_module_title": "Preparing, Completing, and Using a Review",
+          "audio": {
+            "script_file": "audio/module1/slide_11_prepare_for_an_independent_review.txt",
+            "wav_file": "audio/module1/slide_11_prepare_for_an_independent_review.wav"
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Preparing, Completing, and Using a Review",
+      "subtitle": "Prepare a useful review brief and distinguish private findings, public evidence, and customer decisions.",
+      "duration_minutes": 11,
+      "slides": [
+        {
+          "id": 1,
+          "slug": "preparing_completing_and_using_a_review",
+          "type": "title",
+          "title": "Preparing, Completing, and Using a Review",
+          "source_refs": [
+            "R9"
+          ],
+          "transcript": "A useful independent review begins with a clear question about a real product. This module follows the vendor and review provider from preparation through analysis, remediation, and reporting, so you can recognize the evidence a customer will need.",
+          "subtitle": "Prepare a useful review brief and distinguish private findings, public evidence, and customer decisions.",
+          "version_chip": "Product security reviews",
+          "audio": {
+            "script_file": "audio/module2/slide_01_preparing_completing_and_using_a_review.txt",
+            "wav_file": "audio/module2/slide_01_preparing_completing_and_using_a_review.wav"
+          }
+        },
+        {
+          "id": 2,
+          "slug": "build_a_review_brief_that_others_can_use",
+          "type": "objectives",
+          "title": "Build a Review Brief That Others Can Use",
+          "source_refs": [
+            "R10",
+            "R12",
+            "R13"
+          ],
+          "transcript": "By the end of this module, you'll be able to define the assessment boundary, prepare a practical evidence and access brief, and explain how the vendor and Security Review Provider turn findings into review deliverables. You'll also distinguish the private technical report from the public short-form report and recognize when changed firmware needs further attention.",
+          "objectives": [
+            "Separate the assessment boundary from review depth.",
+            "Prepare technical evidence, access, and confidentiality arrangements.",
+            "Explain remediation, verification, and reporting responsibilities."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_build_a_review_brief_that_others_can_use.txt",
+            "wav_file": "audio/module2/slide_02_build_a_review_brief_that_others_can_use.wav"
+          }
+        },
+        {
+          "id": 3,
+          "slug": "define_what_is_being_assessed",
+          "type": "content_two_column",
+          "title": "Define What Is Being Assessed",
+          "source_refs": [
+            "R10",
+            "R11",
+            "R12"
+          ],
+          "transcript": "Two scoping decisions are easy to confuse. The first is what you're asking the provider to assess. That might be a complete device, a particular component, or a change relative to an earlier reviewed baseline. The second is the depth of review, expressed through Scopes one, two, and three.\n\nA component review isn't automatically a Scope one review. A small security component can require physical-attack analysis, while a larger system can contain several areas with different assessment needs.\n\nFor a firmware update, a differential review focuses attention on the changes and their implications. The provider needs an agreed baseline and enough information to understand what changed, including relevant dependencies and interactions. It isn't a promise that every update will be a small or inexpensive assessment.\n\nPrepare a brief that separates the product boundary from the requested depth. Then discuss both with the approved provider and the customers who will depend on the result.",
+          "section_label": "Define the engagement",
+          "bullets": [
+            {
+              "text": "Boundary: whole device, component, or agreed changes."
+            },
+            {
+              "text": "Depth: the applicable numbered review scopes."
+            },
+            {
+              "text": "Differential review: establish the baseline and implications of change."
+            }
+          ],
+          "figure": {
+            "path": "figures/boundary_depth.svg",
+            "source": "svg_inline",
+            "caption": "The assessment boundary and the review depth are separate decisions.",
+            "alt": "The assessment boundary and the review depth are separate decisions.",
+            "text_inventory": {
+              "sha256": "9dfede9cd2c0995c264cd707af724ef7e2f69ccfd7d9a36838c3fc22de49cfe1",
+              "entries": [
+                {
+                  "text": "Whole device"
+                },
+                {
+                  "text": "Component"
+                },
+                {
+                  "text": "Agreed changes"
+                },
+                {
+                  "text": "ASSESSMENT BOUNDARY"
+                },
+                {
+                  "text": "Review depth: applicable Scopes 1, 2, and 3"
+                }
+              ],
+              "review_record": "Reviewed source figure renders and text containment; exact SVG labels inventory."
+            }
+          },
+          "term_refs": [
+            "differential",
+            "review_scope"
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_define_what_is_being_assessed.txt",
+            "wav_file": "audio/module2/slide_03_define_what_is_being_assessed.wav"
+          }
+        },
+        {
+          "id": 4,
+          "slug": "prepare_the_evidence_and_the_access",
+          "type": "content_bullets",
+          "title": "Prepare the Evidence and the Access",
+          "source_refs": [
+            "R10",
+            "R11",
+            "R12",
+            "R14",
+            "P_FRAMEWORK"
+          ],
+          "transcript": "Start with the product's purpose and intended use. Give the provider a clear architecture description, the relevant components, and the assets and interfaces that matter to security. A threat model helps connect those details to realistic adversaries and attack surfaces.\n\nPrepare the source code, firmware information, and build material needed for white-box review. Explain third-party dependencies and supply a software bill of materials, often called an SBOM. The provider can then understand which components are present and how inherited issues may affect the product.\n\nAccess and confidentiality need practical arrangements too. Agree how the provider will inspect the material, which environment will be used, and the appropriate engagement and confidentiality terms. If a threat model is missing, discuss how it will be developed as part of the work.\n\nUse OCP's maintained list of approved providers. The goal is a provider with the technical capability and access needed for this product, supported by a preparation set that makes the assessment possible.",
+          "section_label": "Prepare the review",
+          "bullets": [
+            {
+              "text": "Product purpose, architecture, interfaces, and threat model."
+            },
+            {
+              "text": "Source, firmware, build information, and dependencies."
+            },
+            {
+              "text": "Software bill of materials and appropriate secure access."
+            },
+            {
+              "text": "Engagement and confidentiality arrangements with an approved provider."
+            }
+          ],
+          "term_refs": [
+            "threat_model",
+            "sbom"
+          ],
+          "reference_links": [
+            {
+              "label": "Approved review providers",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/security_review_providers.md"
+            },
+            {
+              "label": "Engagement and evidence guidance",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_prepare_the_evidence_and_the_access.txt",
+            "wav_file": "audio/module2/slide_04_prepare_the_evidence_and_the_access.wav"
+          }
+        },
+        {
+          "id": 5,
+          "slug": "review_fix_and_verify",
+          "type": "content_diagram",
+          "title": "Review, Fix, and Verify",
+          "source_refs": [
+            "R5",
+            "R10",
+            "R13",
+            "P_FRAMEWORK"
+          ],
+          "transcript": "First, agree the scope and the access needed to evaluate it. The vendor, provider, and relevant customers need a shared understanding of the product, firmware, and assessment boundary.\n\nThe independent provider then examines the architecture, code, and supporting evidence, and identifies findings within that scope.\n\nThe vendor addresses the findings. That can mean changing code, strengthening a design, establishing and documenting a secure supported configuration, or preparing other appropriate remediation.\n\nThe provider checks the changes and verifies the claimed fixes. Vendor action and independent verification are separate responsibilities.\n\nSometimes verification shows that more work is needed. The finding returns to the vendor, and the provider evaluates the revised response. This visible return is part of the review process.\n\nThe final evidence records the reviewed state, outcomes, limitations, and any remaining reportable findings. A final report doesn't mean every concern has disappeared.\n\nEngaging during design can make this work more useful, because an architectural issue is easier to address before a device is committed to production.",
+          "section_label": "Assessment workflow",
+          "media_focus": true,
+          "figure": {
+            "path": "figures/review_cycle.mp4",
+            "media_type": "video",
+            "poster": "figures/review_cycle_poster.png",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "caption": "The vendor addresses findings; the independent provider verifies the response and records outcomes.",
+            "alt": "The vendor addresses findings; the independent provider verifies the response and records outcomes.",
+            "text_inventory": {
+              "sha256": "0f3229e6718f3a36671444d470410f3682cacfe509ac46b561871367f67995b4",
+              "entries": [
+                {
+                  "text": "Agree scope",
+                  "at_seconds": 0.8406236734693878
+                },
+                {
+                  "text": "Vendor + providerBoundary, depth and access",
+                  "at_seconds": 0.8406236734693878
+                },
+                {
+                  "text": "Independent analysis",
+                  "at_seconds": 11.720623673469388
+                },
+                {
+                  "text": "Provider assessesand identifies findings",
+                  "at_seconds": 11.720623673469388
+                },
+                {
+                  "text": "Remediation",
+                  "at_seconds": 19.060623673469387
+                },
+                {
+                  "text": "Vendor owns the fixesand supplies changes",
+                  "at_seconds": 19.060623673469387
+                },
+                {
+                  "text": "Retest",
+                  "at_seconds": 28.880623673469387
+                },
+                {
+                  "text": "Provider evaluatesthe changes",
+                  "at_seconds": 28.880623673469387
+                },
+                {
+                  "text": "Repeat if more work is needed",
+                  "at_seconds": 36.08062367346939
+                },
+                {
+                  "text": "Final evidence",
+                  "at_seconds": 46.12062367346939
+                },
+                {
+                  "text": "Final review resultsInclude remaining findings",
+                  "at_seconds": 46.12062367346939
+                },
+                {
+                  "text": "Engage early in design; repeat review at meaningful milestones.",
+                  "at_seconds": 55.76062367346939
+                },
+                {
+                  "text": "One illustrative remediation loop; the actual engagement may differ.",
+                  "at_seconds": 55.76062367346939
+                }
+              ],
+              "review_record": "Reviewed final 1080p encoded checkpoint and transition frames against the finite source timeline; labels remain visible after their reveals. Source and final encode geometry/quality checks recorded under authoring/video-qa."
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Review and remediation process",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_review_fix_and_verify.txt",
+            "wav_file": "audio/module2/slide_05_review_fix_and_verify.wav"
+          }
+        },
+        {
+          "id": 6,
+          "slug": "understand_the_three_evidence_artifacts",
+          "type": "content_table",
+          "title": "Understand the Three Evidence Artifacts",
+          "source_refs": [
+            "R6",
+            "P_FRAMEWORK"
+          ],
+          "transcript": "Three evidence artifacts answer different questions. The scope document explains the assessment boundary: what was included, the areas examined, and the agreed context. It helps you decide whether the work matches the question you're asking.\n\nThe detailed report gives the vendor the technical analysis. It can describe methodology, limitations, findings, their impact, and recommended remediation. This material is generally private and may be protected by confidentiality agreements.\n\nThe short-form report, or SFR, is the signed machine-readable summary used for publication. It identifies the vendor, device, and reviewed firmware, including a firmware hash, and records the required review results. Use the maintained specification for its exact format and reporting rules.\n\nThese artifacts complement each other. A signature helps establish the integrity and origin of a report; it doesn't expand the review scope. To interpret the assurance, connect the identified product and firmware to the scope and the reported outcomes.",
+          "section_label": "Review deliverables",
+          "columns": [
+            "Artifact",
+            "Question it answers",
+            "Audience / form"
+          ],
+          "rows": [
+            [
+              "Scope document",
+              "What was included and agreed?",
+              "Published assessment boundary"
+            ],
+            [
+              "Detailed report",
+              "What was found, how, and with what limitations?",
+              "Private technical analysis for the vendor"
+            ],
+            [
+              "Short-form report",
+              "Which product/firmware and review results are identified?",
+              "Signed machine-readable publication"
+            ]
+          ],
+          "term_refs": [
+            "sfr"
+          ],
+          "reference_links": [
+            {
+              "label": "Required report deliverables",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_understand_the_three_evidence_artifacts.txt",
+            "wav_file": "audio/module2/slide_06_understand_the_three_evidence_artifacts.wav"
+          }
+        },
+        {
+          "id": 7,
+          "slug": "publish_responsibly_and_review_changes",
+          "type": "content_two_column",
+          "title": "Publish Responsibly and Review Changes",
+          "source_refs": [
+            "R4",
+            "R7",
+            "R14",
+            "P_FRAMEWORK",
+            "P_MARKETPLACE",
+            "P_SP_FAQ"
+          ],
+          "transcript": "Published S.A.F.E. evidence is available through the OCP program's repository. Approved products can be promoted and found through the OCP Marketplace. The Marketplace link on this slide opens the OCP S.A.F.E. listings. Use a listing to identify the product, then follow the published review evidence. Vendors can use the Solution Provider guidance to learn the listing requirements.\n\nThe current framework puts the publication submission with the Device Vendor. This gives the vendor control over the timing and messaging around disclosure. A vendor can delay publication or decline it, but then forgoes the associated S.A.F.E. endorsement.\n\nPublication isn't the end of product security work. When firmware or relevant implementation details change, agree the follow-up assessment needed for the changed state. A change-focused review can avoid repeating irrelevant work, but its effort depends on the changes and the review boundary.\n\nFor a customer, the practical habit stays the same: identify the deployed state, find the applicable evidence, and evaluate the findings and limitations for the intended use.",
+          "section_label": "Publication and updates",
+          "bullets": [
+            {
+              "text": "Find and promote approved products through the OCP Marketplace."
+            },
+            {
+              "text": "The Device Vendor submits the publication pull request."
+            },
+            {
+              "text": "Delaying or declining publication forgoes the associated endorsement."
+            },
+            {
+              "text": "Changed firmware needs an agreed follow-up assessment."
+            }
+          ],
+          "figure": {
+            "path": "figures/publication_marketplace.svg",
+            "source": "svg_inline",
+            "caption": "Find approved products in the OCP Marketplace and follow the published review evidence.",
+            "alt": "The official OCP S.A.F.E. logo above provider evidence, vendor submission, and the published review result.",
+            "text_inventory": {
+              "sha256": "20065b15640a3bc0d2f8f4a90733437a0e88d260285f2643317eb7b5ce8ec550",
+              "entries": [
+                {
+                  "text": "OCP S.A.F.E.™"
+                },
+                {
+                  "text": "Providerevidence"
+                },
+                {
+                  "text": "Vendorsubmission"
+                },
+                {
+                  "text": "Publishedreview result"
+                },
+                {
+                  "text": "Review changed firmware against an agreed baseline"
+                }
+              ],
+              "review_record": "User-supplied trademark SVG embedded unchanged above the reviewed publication diagram; final composite render checked on M2S7."
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Publication responsibilities",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+            },
+            {
+              "label": "S.A.F.E. Marketplace listings",
+              "url": "https://www.opencompute.org/marketplace/?certification=OCP%20S.A.F.E.%E2%84%A2"
+            },
+            {
+              "label": "Vendor listing guidance",
+              "url": "https://www.opencompute.org/sp/frequently-asked-questions/"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_publish_responsibly_and_review_changes.txt",
+            "wav_file": "audio/module2/slide_07_publish_responsibly_and_review_changes.wav"
+          }
+        },
+        {
+          "id": 8,
+          "slug": "a_useful_review_has_a_clear_boundary_and_follow_through",
+          "type": "takeaways",
+          "title": "A Useful Review Has a Clear Boundary and Follow-through",
+          "source_refs": [
+            "R13",
+            "R16"
+          ],
+          "transcript": "A review engagement becomes useful when its boundary, evidence, and responsibilities are clear. Define what is being assessed separately from the depth of review. Prepare the architecture, threat model, code and build access, and dependency information. Let the vendor address findings and the independent provider verify the response. Then read the scope, detailed analysis, and signed summary for the questions each can answer.",
+          "items": [
+            "Agree boundary and depth as separate decisions.",
+            "Prepare evidence and access that make review possible.",
+            "Vendor remediation and provider verification have distinct roles.",
+            "Use scope, detailed analysis, and signed results together."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_a_useful_review_has_a_clear_boundary_and_follow_through.txt",
+            "wav_file": "audio/module2/slide_08_a_useful_review_has_a_clear_boundary_and_follow_through.wav"
+          }
+        },
+        {
+          "id": 9,
+          "slug": "check_your_review_readiness",
+          "type": "knowledge_check",
+          "title": "Check Your Review Readiness",
+          "source_refs": [
+            "R11",
+            "R15"
+          ],
+          "transcript": "Apply the preparation and scoping ideas in these two questions. First, consider what must be agreed for a change-focused firmware review. Then select the materials that help an independent provider do useful work. Submit both questions once to continue. You can retry after feedback, and a correct answer isn't required to advance. Focus on why an item supports the review.",
+          "questions": [
+            {
+              "id": "m2q1",
+              "prompt": "For a change-focused firmware review, what should the vendor and provider agree?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "That every future version is automatically covered.",
+                  "correct": false,
+                  "feedback_incorrect": "An earlier result does not automatically cover later firmware. Agree which changes need review."
+                },
+                {
+                  "id": "b",
+                  "text": "The reviewed baseline, the changes to assess, and the applicable review scope.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "That source and build information will not be needed.",
+                  "correct": false,
+                  "feedback_incorrect": "Access needs depend on the assessment. Do not exclude the evidence the provider needs before agreeing the work."
+                },
+                {
+                  "id": "d",
+                  "text": "That change-focused review always means Scope 1.",
+                  "correct": false,
+                  "feedback_incorrect": "Differential describes the changed material; Scope 1 describes review depth. They are not synonyms."
+                }
+              ],
+              "feedback_correct": "Agree the baseline, changes, and applicable depth. The engagement boundary and numbered scopes are separate decisions.",
+              "feedback_incorrect": "Agree the baseline, changes, and applicable depth. The engagement boundary and numbered scopes are separate decisions."
+            },
+            {
+              "id": "m2q2",
+              "prompt": "Which materials help prepare an independent review? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Device purpose, architecture, and intended use.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Threat model and agreed source/build access.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Dependency information and a software bill of materials.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "A condition that the final report contains no findings.",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "A marketing claim in place of technical evidence.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Technical context and inspectable evidence support useful review. Findings are legitimate outcomes, and marketing language does not establish implementation properties.",
+              "feedback_incorrect": "Technical context and inspectable evidence support useful review. Findings are legitimate outcomes, and marketing language does not establish implementation properties."
+            }
+          ],
+          "subtitle": "Submit each question once. Feedback and retries are available; correctness is not required to continue.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_check_your_review_readiness.txt",
+            "wav_file": "audio/module2/slide_09_check_your_review_readiness.wav"
+          }
+        },
+        {
+          "id": 10,
+          "slug": "connect_the_review_to_product_requirements",
+          "type": "up_next",
+          "title": "Connect the Review to Product Requirements",
+          "source_refs": [
+            "S5"
+          ],
+          "transcript": "You've completed the review workflow. Next, we'll connect it to the requirements for a particular kind of product, and examine how AI-assisted analysis contributes to an independent review.",
+          "next_module_number": 3,
+          "next_module_title": "S.O.L.I.D. Requirements and AI-Assisted Reviews",
+          "audio": {
+            "script_file": "audio/module2/slide_10_connect_the_review_to_product_requirements.txt",
+            "wav_file": "audio/module2/slide_10_connect_the_review_to_product_requirements.wav"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "S.O.L.I.D. Requirements and AI-Assisted Reviews",
+      "subtitle": "Explain how applicable S.O.L.I.D. requirements and AI-assisted analysis fit within an independent S.A.F.E. review.",
+      "duration_minutes": 8,
+      "slides": [
+        {
+          "id": 1,
+          "slug": "s_o_l_i_d_requirements_and_ai_assisted_reviews",
+          "type": "title",
+          "title": "S.O.L.I.D. Requirements and AI-Assisted Reviews",
+          "source_refs": [
+            "S5",
+            "S7"
+          ],
+          "transcript": "How do you move from broad security review areas to the requirements for a particular product? This module introduces S.O.L.I.D. and explains how product requirements, vendor evidence, and AI-assisted analysis fit within the S.A.F.E. review process.",
+          "subtitle": "Explain how applicable S.O.L.I.D. requirements and AI-assisted analysis fit within an independent S.A.F.E. review.",
+          "version_chip": "Product security reviews",
+          "audio": {
+            "script_file": "audio/module3/slide_01_s_o_l_i_d_requirements_and_ai_assisted_reviews.txt",
+            "wav_file": "audio/module3/slide_01_s_o_l_i_d_requirements_and_ai_assisted_reviews.wav"
+          }
+        },
+        {
+          "id": 2,
+          "slug": "connect_requirements_evidence_and_review",
+          "type": "objectives",
+          "title": "Connect Requirements, Evidence, and Review",
+          "source_refs": [
+            "S5",
+            "S9"
+          ],
+          "transcript": "You'll learn to explain the relationship between S.O.L.I.D. and S.A.F.E., find the requirement groups that apply to a product, and connect a requirement to evidence. You'll also see how the independent provider uses AI analysis while retaining responsibility for the review.",
+          "objectives": [
+            "Explain how S.O.L.I.D. requirements fit within S.A.F.E.",
+            "Find applicable groups and connect requirements to evidence.",
+            "Describe independent provider responsibility in AI-assisted review."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_connect_requirements_evidence_and_review.txt",
+            "wav_file": "audio/module3/slide_02_connect_requirements_evidence_and_review.wav"
+          }
+        },
+        {
+          "id": 3,
+          "slug": "s_o_l_i_d_makes_product_requirements_concrete",
+          "type": "content_two_column",
+          "title": "S.O.L.I.D. Makes Product Requirements Concrete",
+          "source_refs": [
+            "S5",
+            "S13_QA",
+            "P_SOLID"
+          ],
+          "transcript": "S.O.L.I.D. stands for Securing Of Latest Infrastructure Devices. It defines baseline security requirements for products used in data centers and a structure for identifying which requirements apply to different product types.\n\nThink of three connected parts. The product type and its characteristics determine the applicable requirements. The vendor explains how those requirements are met and prepares supporting evidence. The independent provider evaluates the product through the S.A.F.E. process and records the results and gaps.\n\nThis isn't a second, unrelated audit process. The requirements make the review question more concrete: what should this kind of product provide, and what evidence supports that claim? Start with the applicability mapping, then use the full published requirements. The course examples show how to navigate that relationship; they aren't complete compliance checklists.",
+          "section_label": "Concrete product expectations",
+          "bullets": [
+            {
+              "text": "S.O.L.I.D.: Securing Of Latest Infrastructure Devices."
+            },
+            {
+              "text": "Product characteristics determine applicable requirements."
+            },
+            {
+              "text": "Vendor evidence is evaluated through the S.A.F.E. process."
+            }
+          ],
+          "figure": {
+            "path": "figures/requirements_evidence.svg",
+            "source": "svg_inline",
+            "caption": "Applicable requirements, vendor evidence, and independent review form one connected process.",
+            "alt": "Applicable requirements, vendor evidence, and independent review form one connected process.",
+            "text_inventory": {
+              "sha256": "d784a1d8948f0174ceb8bf238a01bc80b621ae3f9258fbd646bf30dad42304a9",
+              "entries": [
+                {
+                  "text": "Applicablerequirements"
+                },
+                {
+                  "text": "Vendorevidence"
+                },
+                {
+                  "text": "Independentreview"
+                },
+                {
+                  "text": "One connected S.A.F.E. review process"
+                }
+              ],
+              "review_record": "Reviewed source figure renders and text containment; exact SVG labels inventory."
+            }
+          },
+          "reference_links": [
+            {
+              "label": "S.O.L.I.D. overview",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SOLID"
+            },
+            {
+              "label": "Summit explanation · 13:15",
+              "url": "https://www.youtube.com/watch?v=koNJxKHtnmk&t=795s"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_s_o_l_i_d_makes_product_requirements_concrete.txt",
+            "wav_file": "audio/module3/slide_03_s_o_l_i_d_makes_product_requirements_concrete.wav"
+          }
+        },
+        {
+          "id": 4,
+          "slug": "start_with_the_product_type",
+          "type": "content_diagram",
+          "title": "Start With the Product Type",
+          "source_refs": [
+            "S6",
+            "P_TYPES"
+          ],
+          "transcript": "Start with a storage drive and the published product-type mapping.\n\nCommon requirement groups apply across products. They include general security properties, business processes, software, firmware, and cryptography. The exact requirement text determines what must be supported.\n\nThen consider applicable conditions. A physical product brings hardware requirements. A product with a CPU or a PCIe interface brings the corresponding requirement groups. Check the actual design rather than assuming every drive is identical.\n\nThe disk-specific additions include sanitization under requirement STRG002. For a self-encrypting drive, the mapping also includes STRG001, concerning standardized storage security functionality. Those additions sit alongside the common and conditional groups.\n\nAn accelerator has a different set of additions, including system memory and root-of-trust requirements. Platform requirements also apply if it isn't enclosed in a server. The comparison shows why product type matters. Use the full mapping and requirements for the real product, rather than treating this illustration as the entire requirement set.",
+          "section_label": "Requirement applicability",
+          "media_focus": true,
+          "figure": {
+            "path": "figures/product_requirements.mp4",
+            "media_type": "video",
+            "poster": "figures/product_requirements_poster.png",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "caption": "Combine common, conditional, and product-specific groups; consult the complete published requirements.",
+            "alt": "Combine common, conditional, and product-specific groups; consult the complete published requirements.",
+            "text_inventory": {
+              "sha256": "0df560f7d5df29fc5e3c5c08cfb927e075d83bc4e22b623c01e713c85e59d10f",
+              "entries": [
+                {
+                  "text": "Storage drive: build the applicable set",
+                  "at_seconds": 0.932574693877551
+                },
+                {
+                  "text": "Common requirements",
+                  "at_seconds": 4.75257469387755
+                },
+                {
+                  "text": "General + business processesSoftware + firmwareOS/firmwareCryptography",
+                  "at_seconds": 4.75257469387755
+                },
+                {
+                  "text": "+",
+                  "at_seconds": 17.352574693877553
+                },
+                {
+                  "text": "Conditional groups",
+                  "at_seconds": 17.352574693877553
+                },
+                {
+                  "text": "Physical product → hardwareHas a CPU → CPUUses PCIe → PCIe",
+                  "at_seconds": 17.352574693877553
+                },
+                {
+                  "text": "+",
+                  "at_seconds": 31.97257469387755
+                },
+                {
+                  "text": "Disk-specific additions",
+                  "at_seconds": 31.97257469387755
+                },
+                {
+                  "text": "STRG002: SanitizationSelf-encrypting drives only:STRG001: TCG Opal",
+                  "at_seconds": 31.97257469387755
+                },
+                {
+                  "text": "Accelerator comparison",
+                  "at_seconds": 52.252574693877555
+                },
+                {
+                  "text": "Keep the common and applicable conditional groups. Add system memory and root of trust.Add platform requirements when the accelerator is not enclosed in a server.",
+                  "at_seconds": 52.252574693877555
+                },
+                {
+                  "text": "Requirement groups only; consult the full published requirements.",
+                  "at_seconds": 0.932574693877551
+                }
+              ],
+              "review_record": "Reviewed final 1080p encoded checkpoint and transition frames against the finite source timeline; labels remain visible after their reveals. Source and final encode geometry/quality checks recorded under authoring/video-qa."
+            }
+          },
+          "term_refs": [
+            "root_of_trust",
+            "sanitization"
+          ],
+          "reference_links": [
+            {
+              "label": "Product-type applicability",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SOLID/blob/main/producttypes.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_start_with_the_product_type.txt",
+            "wav_file": "audio/module3/slide_04_start_with_the_product_type.wav"
+          }
+        },
+        {
+          "id": 5,
+          "slug": "turn_a_requirement_into_evidence",
+          "type": "content_table",
+          "title": "Turn a Requirement Into Evidence",
+          "source_refs": [
+            "P_REQUIREMENTS_STRG002",
+            "P_SOLID"
+          ],
+          "transcript": "Take the storage-drive sanitization requirement as a simple example. The published requirement refers to the governing sanitization guidance and the S.A.F.E. storage sanitization requirements. Begin with that complete text, not just a marketing statement that the drive can erase data.\n\nThe vendor explains how the applicable behavior is implemented and provides evidence the provider can evaluate. Preparation might include design information, supported commands and states, test results, and the limits or conditions of the claimed behavior. These are illustrative evidence examples, rather than a complete prescribed test method.\n\nThe independent provider assesses the evidence and implementation within the agreed scope, and records the results and any gaps. Keeping the requirement, the vendor's claim, and the reviewed evidence connected makes it easier for a customer to understand what was established and what still needs attention.",
+          "section_label": "A worked preparation example",
+          "columns": [
+            "Step",
+            "Storage-drive sanitization example"
+          ],
+          "rows": [
+            [
+              "Published requirement",
+              "STRG002 refers to governing sanitization guidance and S.A.F.E. storage requirements."
+            ],
+            [
+              "Vendor claim and evidence",
+              "Explain implementation and provide relevant design, supported behavior, test results, and limitations."
+            ],
+            [
+              "Independent evaluation",
+              "Assess implementation and evidence; record the outcomes and any gaps."
+            ]
+          ],
+          "subtitle": "Illustrative evidence examples; this is not a complete prescribed test method.",
+          "reference_links": [
+            {
+              "label": "STRG002 · Sanitization",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SOLID/blob/main/requirements.md#strg002-sanitization"
+            },
+            {
+              "label": "Storage sanitization requirements",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/storage_sanitization.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_turn_a_requirement_into_evidence.txt",
+            "wav_file": "audio/module3/slide_05_turn_a_requirement_into_evidence.wav"
+          }
+        },
+        {
+          "id": 6,
+          "slug": "ai_expands_analysis_the_provider_owns_the_review",
+          "type": "content_diagram",
+          "title": "AI Expands Analysis; the Provider Owns the Review",
+          "source_refs": [
+            "S7",
+            "S9",
+            "P_AI"
+          ],
+          "transcript": "Regular review by a security expert remains part of the assessment. The provider uses judgment to understand the design, its threat model, and the significance of findings.\n\nAI-assisted analysis adds another way to examine the code. The provider runs the AI tool through suitable orchestration, so the analysis can cover the intended material and stay focused on the review.\n\nThe provider then triages the findings. A tool's output needs validation and interpretation before it becomes a review result.\n\nThe vendor addresses the issues that need remediation and supplies the response and evidence.\n\nThe provider verifies the changes and remains responsible for the final report. The AI tool doesn't take ownership of the assurance decision.\n\nA vendor's internal scans can improve preparation, but handing their output to the provider doesn't replace the provider running the independent AI review. The published guidance also describes suitable model access and terms that protect confidential material.",
+          "section_label": "AI-assisted assessment",
+          "media_focus": true,
+          "figure": {
+            "path": "figures/ai_accountability.mp4",
+            "media_type": "video",
+            "poster": "figures/ai_accountability_poster.png",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "caption": "AI expands analysis; the independent provider validates findings, verifies changes, and owns the report.",
+            "alt": "AI expands analysis; the independent provider validates findings, verifies changes, and owns the report.",
+            "text_inventory": {
+              "sha256": "d57596fe890bc9c6b1ff8784985affc54d9bbba2948bb5f6ad684057adf081da",
+              "entries": [
+                {
+                  "text": "Expert review",
+                  "at_seconds": 0.7486726530612244
+                },
+                {
+                  "text": "Security expertiseRegular human review",
+                  "at_seconds": 0.7486726530612244
+                },
+                {
+                  "text": "AI-assisted analysis",
+                  "at_seconds": 11.028672653061223
+                },
+                {
+                  "text": "Provider runs the toolSuitable orchestrationAdditional issue discovery",
+                  "at_seconds": 11.028672653061223
+                },
+                {
+                  "text": "Provider triage",
+                  "at_seconds": 22.388672653061228
+                },
+                {
+                  "text": "Evaluates findingsApplies product contextOwns the review",
+                  "at_seconds": 22.388672653061228
+                },
+                {
+                  "text": "Vendor remediation",
+                  "at_seconds": 29.608672653061227
+                },
+                {
+                  "text": "Addresses findingsSupplies changes",
+                  "at_seconds": 29.608672653061227
+                },
+                {
+                  "text": "Provider verification",
+                  "at_seconds": 34.10867265306123
+                },
+                {
+                  "text": "Checks changesOwns the final report",
+                  "at_seconds": 34.10867265306123
+                },
+                {
+                  "text": "Vendor scans help preparation.They do not replace provider-run review.",
+                  "at_seconds": 41.688672653061225
+                }
+              ],
+              "review_record": "Reviewed final 1080p encoded checkpoint and transition frames against the finite source timeline; labels remain visible after their reveals. Source and final encode geometry/quality checks recorded under authoring/video-qa."
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Current AI review guidance",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/ai_scanning.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_ai_expands_analysis_the_provider_owns_the_review.txt",
+            "wav_file": "audio/module3/slide_06_ai_expands_analysis_the_provider_owns_the_review.wav"
+          },
+          "term_refs": [
+            "threat_model"
+          ]
+        },
+        {
+          "id": 7,
+          "slug": "know_which_requirement_applies_when",
+          "type": "content_table",
+          "title": "Know Which Requirement Applies When",
+          "source_refs": [
+            "S8",
+            "S10",
+            "P_SCOPE",
+            "P_AI"
+          ],
+          "transcript": "Keep two effective dates separate. Starting October first, twenty twenty-six, applicable S.O.L.I.D. gaps must be listed in the long-form report. The checked guidance identifies short-form gap listing as future work without an effective date.\n\nThe AI scanning rule applies to audits with a completion date on or after January first, twenty twenty-seven. Before that threshold, AI review is optional but strongly recommended. Expert review remains required. Consult the current program guidance when planning an engagement, because requirements and tool guidance can evolve.",
+          "section_label": "Adoption rules",
+          "columns": [
+            "Effective point",
+            "What applies"
+          ],
+          "rows": [
+            [
+              "October 1, 2026",
+              "Applicable S.O.L.I.D. gaps must appear in the long-form report."
+            ],
+            [
+              "Audit completion on/after January 1, 2027",
+              "AI-assisted review is mandatory alongside expert review."
+            ],
+            [
+              "Short-form S.O.L.I.D. gap listing",
+              "Future requirement; the checked guidance gives no effective date."
+            ]
+          ],
+          "reference_links": [
+            {
+              "label": "S.O.L.I.D. gap reporting",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+            },
+            {
+              "label": "AI review completion-date rule",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/ai_scanning.md"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_know_which_requirement_applies_when.txt",
+            "wav_file": "audio/module3/slide_07_know_which_requirement_applies_when.wav"
+          }
+        },
+        {
+          "id": 8,
+          "slug": "use_requirements_to_ask_better_questions",
+          "type": "takeaways",
+          "title": "Use Requirements to Ask Better Questions",
+          "source_refs": [
+            "S5",
+            "S9",
+            "S11"
+          ],
+          "transcript": "S.O.L.I.D. makes product expectations concrete, and the applicability mapping tells you which requirement groups to examine. Vendor claims need supporting evidence, and S.A.F.E. provides the independent review process. AI analysis can expand the examination, while the provider retains responsibility for evaluating findings and reporting results. Use those connections to ask better questions about the product you intend to supply or deploy.",
+          "items": [
+            "Find the applicable product requirement groups.",
+            "Connect claims to supporting evidence.",
+            "Use the independent S.A.F.E. review process.",
+            "Keep provider responsibility and current guidance in view."
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_use_requirements_to_ask_better_questions.txt",
+            "wav_file": "audio/module3/slide_08_use_requirements_to_ask_better_questions.wav"
+          }
+        },
+        {
+          "id": 9,
+          "slug": "check_the_s_o_l_i_d_connection",
+          "type": "knowledge_check",
+          "title": "Check the S.O.L.I.D. Connection",
+          "source_refs": [
+            "S5",
+            "S9",
+            "P_AI"
+          ],
+          "transcript": "Use these two questions to check the relationship and the responsibilities. The first connects S.O.L.I.D. requirements to the S.A.F.E. process. The second asks what remains true when AI-assisted analysis is used. Submit both once to continue. Feedback explains the reasoning, and you can retry. A correct answer isn't required for course completion.",
+          "questions": [
+            {
+              "id": "m3q1",
+              "prompt": "How does S.O.L.I.D. fit with S.A.F.E.?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Every product needs two unrelated audit processes.",
+                  "correct": false,
+                  "feedback_incorrect": "S.O.L.I.D. supplies concrete requirements within the review relationship, not a second unrelated audit process."
+                },
+                {
+                  "id": "b",
+                  "text": "S.O.L.I.D. provides applicable requirements evaluated through S.A.F.E. review.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "S.O.L.I.D. makes independent review optional.",
+                  "correct": false,
+                  "feedback_incorrect": "The requirements do not remove the independent review. Evidence is evaluated through S.A.F.E."
+                },
+                {
+                  "id": "d",
+                  "text": "Only product-specific requirements apply; common requirements can be ignored.",
+                  "correct": false,
+                  "feedback_incorrect": "Combine common, conditional, and product-specific groups. Reading only the product-specific paragraph omits part of the mapping."
+                }
+              ],
+              "feedback_correct": "Product type determines applicable requirements. Vendor evidence is evaluated through the independent S.A.F.E. process.",
+              "feedback_incorrect": "Product type determines applicable requirements. Vendor evidence is evaluated through the independent S.A.F.E. process."
+            },
+            {
+              "id": "m3q2",
+              "prompt": "Which statements describe AI-assisted review? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A security expert still performs regular review.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The provider runs the AI review and evaluates findings.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Vendor scans help preparation but do not replace independent evaluation.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Vendor scan output replaces the provider running the AI tool.",
+                  "correct": false
+                },
+                {
+                  "id": "e",
+                  "text": "The AI tool becomes responsible for the final report.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "AI complements expert review. The provider runs and evaluates the analysis and retains report responsibility; vendor preparation alone does not satisfy that independent work.",
+              "feedback_incorrect": "AI complements expert review. The provider runs and evaluates the analysis and retains report responsibility; vendor preparation alone does not satisfy that independent work."
+            }
+          ],
+          "subtitle": "Submit each question once. Feedback and retries are available; correctness is not required to continue.",
+          "audio": {
+            "script_file": "audio/module3/slide_09_check_the_s_o_l_i_d_connection.txt",
+            "wav_file": "audio/module3/slide_09_check_the_s_o_l_i_d_connection.wav"
+          }
+        },
+        {
+          "id": 10,
+          "slug": "put_the_evidence_to_work",
+          "type": "course_complete",
+          "title": "Put the Evidence to Work",
+          "source_refs": [
+            "R14",
+            "P_SOLID"
+          ],
+          "transcript": "Thank you for completing the module and the course. Choose a product you work with, find its applicable requirements, and discuss the evidence and review scope with an approved provider.",
+          "cert_message": "Find your product requirements and discuss the evidence and scope with an approved provider.",
+          "reference_links": [
+            {
+              "label": "S.A.F.E. program",
+              "url": "https://www.opencompute.org/projects/security/ocp-safe-program/"
+            },
+            {
+              "label": "S.O.L.I.D. requirements",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SOLID"
+            },
+            {
+              "label": "Approved providers",
+              "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/security_review_providers.md"
+            },
+            {
+              "label": "OCP Summit session",
+              "url": "https://www.youtube.com/watch?v=koNJxKHtnmk"
+            },
+            {
+              "label": "S.A.F.E. Marketplace listings",
+              "url": "https://www.opencompute.org/marketplace/?certification=OCP%20S.A.F.E.%E2%84%A2"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_put_the_evidence_to_work.txt",
+            "wav_file": "audio/module3/slide_10_put_the_evidence_to_work.wav"
+          }
+        }
+      ]
+    }
+  ],
+  "resource_assets": [
+    "assets/fonts/open-sans-300.ttf",
+    "assets/fonts/open-sans-500.ttf",
+    "assets/fonts/opensans-OFL.txt",
+    "assets/fonts/open-sans-700.ttf",
+    "assets/fonts/open-sans-600.ttf",
+    "assets/fonts/open-sans-400.ttf",
+    "assets/fonts/open-sans-800.ttf",
+    "assets/fonts/open-sans.css"
+  ],
+  "authoring": {
+    "source_format": "Articulate Rise SCORM 2004 3rd Edition",
+    "delivery_format": "Slides; SCORM 1.2 single activity",
+    "source_recovery": "17 lessons, 146 blocks, 11 source questions, and 37 resources recovered without missing media.",
+    "narration_pronunciation": "Spoken TXT scripts are authoritative for synthesis; displayed transcripts retain conventional spelling.",
+    "catalog_status": "User-reviewed and packaged October 28, 2026"
+  },
+  "sources": [
+    {
+      "kind": "pdf",
+      "url": "https://drive.google.com/file/d/1wihOmYFdz7RnPc8O7ow3p0nL7IIvV-oH/view?usp=drivesdk"
+    },
+    {
+      "kind": "transcript",
+      "url": "https://www.youtube.com/watch?v=koNJxKHtnmk"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/framework.md"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/review_scope.md"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SAFE/blob/main/Documentation/ai_scanning.md"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SOLID"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SOLID/blob/main/producttypes.md"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://github.com/opencomputeproject/OCP-Security-SOLID/blob/main/requirements.md"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://www.opencompute.org/marketplace/?certification=OCP%20S.A.F.E.%E2%84%A2"
+    },
+    {
+      "kind": "program_guidance",
+      "url": "https://www.opencompute.org/sp/frequently-asked-questions/"
+    }
+  ],
+  "lms_catalog": {
+    "title": "OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements",
+    "short_description": "Understand S.A.F.E. reviews, S.O.L.I.D. requirements, and the role of AI-assisted analysis in product security.",
+    "overview": "Learn how independent product security reviews support data center decisions. Explore review scopes, preparation, remediation, and reporting, then connect applicable S.O.L.I.D. requirements and AI-assisted analysis to the S.A.F.E. process.",
+    "duration_minutes": 35,
+    "duration_basis": "estimated_learner_time",
+    "duration_note": "Includes the intact 5:25 program overview recording, narration, reading, reflection, and six formative questions. Optional external readings and Summit viewing are excluded.",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 16,
+        "summary": "Explain what a S.A.F.E. review establishes and match review depth to the threat model."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 11,
+        "summary": "Prepare a useful review brief and distinguish private findings, public evidence, and customer decisions."
+      },
+      {
+        "id": 3,
+        "duration_minutes": 8,
+        "summary": "Explain how applicable S.O.L.I.D. requirements and AI-assisted analysis fit within an independent S.A.F.E. review."
+      }
+    ]
+  },
+  "index_show_module_status": false,
+  "index_module_links": false
+}
