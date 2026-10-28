@@ -30,3 +30,5 @@ The course teaches introductory choices and evidence questions, with selective l
 The historical approved narration plan is in `authoring/approved-narration-plan.json`. Its original four-SCO packaging choice was superseded by the user's October 27 correction to include Course Home as its own SCO. The four original SCORM 2004 source packages were consolidated into this user-selected SCORM 1.2 architecture; deployed attempts and bookmarks may require a separate LMS migration review. No LMS upload or deletion is part of this contribution.
 
 See [QA.md](QA.md) for validation scope and remaining acceptance work.
+
+M2S5 introduces DI water, EG25, PG25 and PG55 by name and expansion in both narration and glossary. The percentages are nominal shorthand; the supplier’s concentration basis and complete qualified formulation govern. The matching v4 narration was refreshed on October 28, 2026.
