@@ -18,3 +18,12 @@ Each course owns its source, media, and snapshot. Evaluate later shared-toolchai
 updates against its learner and tracking behavior before changing the pin.
 Background music is maintained in the repository's shared skill assets and is
 not duplicated in these English course snapshots.
+
+## Green next-module navigation — 27 October 2026
+
+The installed AcademyWizard navigation fix is applied to this pinned runtime. Authored green next-module links remain visible and clickable in standalone, review and LMS playback without a special navigation override. The LMS-only click interceptor and its pop-up are removed; the maintained Course Home policy and review query propagation remain. SCORM 1.2, SCO identifiers, quizzes, bookmarks, completion and all approved content/media are preserved. `test_lms_syllabus_handoff.py` covers the shared guard across LMS/review/single-SCO/direct-link combinations.
+The same maintained first-module action is also retained on untracked Home: API availability no longer cancels its click. Informational tiles and the Home asset/session policy are unchanged.
+
+## Course Home as the first SCO — 27 October 2026
+
+The current course source explicitly sets `scorm.include_home_sco: true`. `index.html` is a tracked Course Home item at the beginning of the manifest organization and completes when launched. The existing teaching modules retain their identifiers, numbers, quiz gates, media, bookmarks and green navigation. Course Home plus nine Chiplet modules gives ten SCOs; Course Home plus five FCSA modules gives six.

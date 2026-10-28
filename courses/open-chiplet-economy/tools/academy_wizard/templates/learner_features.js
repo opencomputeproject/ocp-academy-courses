@@ -85,10 +85,6 @@ transcriptPanel.id = 'transcriptPanel'; transcriptPanel.className = 'transcript-
 transcriptPanel.setAttribute('aria-label', 'Slide transcript'); transcriptPanel.hidden = true;
 transcriptPanel.innerHTML = '<button id="transcriptClose" class="learner-control">Close transcript</button><h2 id="transcriptTitle" tabindex="-1"></h2><div id="transcriptText"></div>';
 document.body.appendChild(transcriptPanel);
-const lmsNote = document.createElement('div');
-lmsNote.className = 'lms-navigation-note'; lmsNote.hidden = true; lmsNote.setAttribute('role','status');
-lmsNote.textContent = 'Use the LMS course navigation to open another module so its completion is recorded correctly.';
-document.body.appendChild(lmsNote);
 const transcriptBtn = document.getElementById('transcriptBtn');
 const narrationModeBtn = document.getElementById('narrationModeBtn');
 const narrationHint = document.querySelector('.hero-start-hint span');
@@ -165,13 +161,20 @@ slides.forEach(s => {
   s.classList.toggle('active', active); s.inert = !active; s.setAttribute('aria-hidden', String(!active));
 });
 storeBookmark(); updateNarrationMode();
-if (inLMS && !SCORM.isSingleSCO && !directModuleLinks) document.addEventListener('click', e => {
-  const link = e.target.closest('a[href]'); if (!link) return;
-  const url = new URL(link.getAttribute('href'), location.href);
-  if (url.origin === location.origin && /\/(?:module\d+|index)\.html$/.test(url.pathname)) {
-    e.preventDefault(); lmsNote.hidden = false;
-  }
-});
+// Preserve authored module links in standalone and LMS playback.
+// Course Home retains its existing compatibility policy.
+if (inLMS && !reviewMode && !SCORM.isSingleSCO && !directModuleLinks) {
+  document.querySelectorAll('a[href]').forEach(link => {
+    const url = new URL(link.getAttribute('href'), location.href);
+    if (url.origin === location.origin && /\/index\.html$/.test(url.pathname)) {
+      const note = document.createElement('p');
+      note.className = 'lms-module-handoff';
+      note.textContent = 'Open Course Home using the Syllabus in the left sidebar.';
+      note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
+      link.replaceWith(note);
+    }
+  });
+}
 if (reviewMode) document.addEventListener('click', e => {
   const link = e.target.closest('a[href]'); if (!link) return;
   const url = new URL(link.href);
