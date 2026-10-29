@@ -1,23 +1,25 @@
-// Real media regression. Usage: node test_video_modes_browser.mjs <legacy|synced> <built-course>
-// Uses the first matching figure; media is muted. No network, TTS or live LMS.
+// Usage: node test_video_modes_browser.mjs <legacy|synced> <built-course> [M<n>S<n>]
+// Select a figure or use the first match. Media is muted; no TTS or live LMS.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {chromium} from 'playwright';
-const [mode,folder]=process.argv.slice(2);
+const [mode,folder,requestedTarget]=process.argv.slice(2);
 assert.ok(['legacy','synced'].includes(mode) && folder,'Provide mode and a built course');
+assert.ok(!requestedTarget || /^M\d+S\d+$/.test(requestedTarget),'Target must use M<n>S<n>');
 const root=path.resolve(folder), course=JSON.parse(fs.readFileSync(path.join(root,'course.json')));
 const synced=mode==='synced'; let target;
 for(const module of course.modules) for(const slide of module.slides) {
- if(!target&&slide.figure?.path.endsWith('.mp4')&&slide.figure.role!=='original_video'&&(slide.figure.sync_to_narration===true)===synced) target={module,slide};
+ if(!target&&(!requestedTarget||requestedTarget===`M${module.id}S${slide.id}`)&&slide.figure?.path.endsWith('.mp4')&&slide.figure.role!=='original_video'&&(slide.figure.sync_to_narration===true)===synced) target={module,slide};
 }
 assert.ok(target,'Matching video');
 const {module,slide}=target;
+const viewport=process.env.VIDEO_TEST_VIEWPORT==='phone'?{width:390,height:844}:{width:1440,height:960};
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH||undefined,args:['--mute-audio']});
 let checks=0;const check=(value,message)=>{assert.ok(value,message);checks++};
 try {
- const page=await browser.newPage({viewport:{width:1440,height:960}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ const page=await browser.newPage({viewport});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.route(/^https?:/,route=>route.abort());
  await page.addInitScript(()=>{const Native=window.Audio;window.Audio=function(...args){const audio=new Native(...args);audio.muted=true;window.testNarration=audio;return audio};window.Audio.prototype=Native.prototype;});
  const url=pathToFileURL(path.join(root,`module${module.id}.html`)).href+`?review=1&slide=${slide.id}`;
@@ -38,10 +40,17 @@ try {
  await page.evaluate(()=>{testNarration.currentTime=20;testNarration.dispatchEvent(new Event('waiting'))});await page.waitForTimeout(120);s=await state();check(s.video.paused,'Paused seek remains paused');
  await page.evaluate(()=>{testNarration.currentTime=testNarration.duration-.35;return testNarration.play()});await page.waitForTimeout(700);s=await state();check(s.audio.paused,'Audio completes');check(synced?s.video.paused:!s.video.paused,'Old loop continues at audio end; synced video holds');
  if(synced){
-  check(s.video.time>s.video.duration-.2,'Synced final state');await page.locator('.slide.active .academy-video__controls [data-video-action="toggle"], .slide.active [data-video-toggle]:visible').click();await page.waitForTimeout(250);s=await state();check(s.audio.time<2&&!s.audio.paused&&!s.video.paused,'Replay resets both');
+  check(s.video.time>s.video.duration-.2,'Synced final state');
+  const finalTime=s.video.time;await page.waitForTimeout(1100);s=await state();
+  check(s.video.paused&&close(s.video.time,finalTime,.05),'Final picture stays paused without repeating');
+  await page.locator('.slide.active [data-video-zoom]').click();await page.waitForTimeout(150);s=await state();
+  check(s.clones.length===1&&s.clones[0].paused&&s.clones[0].time>s.clones[0].duration-.2,'Enlargement holds the completed picture');
+  if(process.env.VIDEO_QA_DIR){fs.mkdirSync(process.env.VIDEO_QA_DIR,{recursive:true});await page.screenshot({path:path.join(process.env.VIDEO_QA_DIR,`M${module.id}S${slide.id}-final-${viewport.width}.png`)});}
+  await page.keyboard.press('Escape');
+  await page.locator('.slide.active .academy-video__controls [data-video-action="toggle"], .slide.active [data-video-toggle]:visible').click();await page.waitForTimeout(250);s=await state();check(s.audio.time<2&&!s.audio.paused&&!s.video.paused,'Replay resets both');
   await page.emulateMedia({reducedMotion:'reduce'});await page.goto(url);await page.evaluate(()=>document.querySelector('#ocpMotionIntroSkip')?.click());await page.waitForFunction(()=>document.querySelector('.slide.active video')?.readyState>=1);await page.waitForTimeout(150);s=await state();check(s.video.paused&&s.video.time>s.video.duration-.2,'Reduced motion holds conclusion');await page.locator('.slide.active .academy-video__controls [data-video-action="toggle"], .slide.active [data-video-toggle]:visible').click();await page.waitForTimeout(250);s=await state();check(!s.audio.paused&&!s.video.paused&&close(s.audio.time,s.video.time),'Explicit reduced-motion playback');
  }
  // Audio-only slide still plays, pauses and seeks normally.
  await page.goto(pathToFileURL(path.join(root,`module${module.id}.html`)).href+'?review=1&slide=1');await page.evaluate(()=>document.querySelector('#ocpMotionIntroSkip')?.click());await page.waitForFunction(()=>testNarration.readyState>=1);await page.locator('#audioPlayBtn').click();await page.waitForTimeout(180);check(await page.evaluate(()=>!testNarration.paused&&testNarration.currentTime>0),'Audio-only playback');await page.locator('#audioPlayBtn').click();check(await page.evaluate(()=>testNarration.paused),'Audio-only pause');await page.evaluate(()=>testNarration.currentTime=2);await page.waitForTimeout(100);check(await page.evaluate(()=>Math.abs(testNarration.currentTime-2)<.1),'Audio-only seek');
- assert.deepEqual(errors,[]);console.log(`PASS: ${checks} real-media ${mode} assertions: ${course.course_title}`);
+ assert.deepEqual(errors,[]);console.log(`PASS: ${checks} real-media ${mode} assertions for M${module.id}S${slide.id}: ${course.course_title}`);
 } finally {await browser.close()}

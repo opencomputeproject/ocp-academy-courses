@@ -50,6 +50,21 @@ class IndexHomeTests(unittest.TestCase):
         self.assertFalse(dom.by_class('status'))
         self.assertNotIn('SCORM.getSuspendData()', markup)
 
+    def test_explicit_untracked_home_has_no_lms_lifecycle(self):
+        self.course['scorm']['include_home_sco'] = False
+        markup, _ = self.render()
+        for call in ['SCORM.init()', 'SCORM.setCompleted()', 'SCORM.finish()']:
+            self.assertNotIn(call, markup)
+        manifest = render_manifest(self.course, Path('.'))
+        self.assertNotIn('ITEM_LAUNCHER', manifest)
+        self.assertIn('adlcp:scormtype="asset" href="index.html"', manifest)
+        self.assertIn('ITEM_MODULE1', manifest)
+
+    def test_home_sco_setting_requires_boolean(self):
+        self.course['scorm']['include_home_sco'] = 'false'
+        with self.assertRaisesRegex(ValueError, 'boolean'):
+            self.render()
+
     def test_discretionary_word_break_preserves_canonical_title(self):
         self.course['course_title'] = 'Thermal Boundaries in AI Infrastructure'
         self.course['index_title_soft_breaks'] = ['Infra\u00adstructure']

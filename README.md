@@ -45,6 +45,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
 | `open-chiplet-economy` | [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md): nine narrated modules, nine teaching animations, and fourteen captioned recordings |
 | `open-data-center-for-ai` | Open Data Center for AI |
+| `open-systems-for-ai` | [Open Systems for AI](courses/open-systems-for-ai/README.md): six narrated modules, eight synchronized teaching videos and six preserved recordings in one SCORM 1.2 package |
 | `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
 | `open-rack-v3/module-2-orv3-core-specifications` | Module 2: ORv3 Core Specifications |
 | `open-rack-v3/module-3-orv3-real-world-implementations` | Module 3: ORv3 Real World Implementations |
@@ -121,6 +122,7 @@ courses/
   ocp-solid-state-transformers/
   open-chiplet-economy/
   open-data-center-for-ai/
+  open-systems-for-ai/
   open-rack-v3/
     module-1-ocp-orv3-history-and-impact/
     module-2-orv3-core-specifications/

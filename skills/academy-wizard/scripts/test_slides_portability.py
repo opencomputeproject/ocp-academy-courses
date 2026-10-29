@@ -22,7 +22,7 @@ class SlidesPortabilityTests(unittest.TestCase):
 
     def test_mobile_teaching_scroller_excludes_fixed_badge_region(self):
         css=(Path(__file__).resolve().parent.parent/'templates/module_styles.css').read_text()
-        self.assertIn('top: 80px;\n    height: calc(100vh - 80px);\n    padding-top: 16px;',css)
+        self.assertIn('top: 80px;\n    height: calc(100vh - 80px);\n    padding-top: calc(var(--slide-content-top) - 80px);',css)
         self.assertIn('.glossary-chip::after {bottom:128px;}',css)
 
     def test_default_and_recorded_speed_precedence(self):

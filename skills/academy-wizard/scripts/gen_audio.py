@@ -1,30 +1,14 @@
-#!/usr/bin/env python3
-"""
-gen_audio.py — turn approved narration .txt files into .wav files.
+"""Generate required full Eleven v4 narration for AcademyWizard Slides.
 
-Usage:
-    python gen_audio.py <course.json> [--module N] [--engine elevenlabs|openai|say]
-                       [--voice <voice_id>] [--model <model_id>]
-                       [--model-policy stable|expressive|balanced] [--force]
-                       [--allow-local-fallback-for-partial]
-                       [--pacing-reference-root <baseline-course-folder>]
-                       [--audio-work-dir <working-folder>]
+Usage: gen_audio.py course.json [--module N] [--slide N] [--force]
+       [--voice approved_voice_id] [--audio-work-dir authoring_folder]
 
-Defaults: walk every module and every slide; use top-level `narration` engine and
-voice metadata when present, otherwise pick the engine from environment variables
-(ELEVENLABS_API_KEY, then OPENAI_API_KEY, otherwise macOS `say`). Command-line
-engine/voice/model options are explicit overrides. Skip existing .wav files unless
---force.
-
-The narration script for each slide must already exist at the path declared in
-course.json's `audio.script_file`. The output WAV is written to `audio.wav_file`.
-Knowledge-check slides are always narrated; the script fails if a
-`knowledge_check` slide lacks audio metadata or its script/WAV cannot be
-generated.
-
-Output format target: 22050 Hz, 16-bit PCM, mono. Most LMSes are happiest with
-this. Cloud engines that return mp3 are converted with ffmpeg if available;
-otherwise the .mp3 is left in place and the slide HTML must reference .mp3.
+Full eleven_v4 is required. No model, engine or timing-reference fallback is
+used. Native v4 masters are paced with pitch preserved at narration.speed
+(default 1.18); the learner speed dial is unchanged. Existing WAVs are skipped
+unless --force is supplied. All knowledge checks require narration.
+Output is mono 16-bit PCM at 22050 Hz. Masters and receipts remain outside
+runtime assets. Module selection does not mutate course.json or other modules.
 """
 
 from __future__ import annotations
@@ -42,9 +26,8 @@ from pathlib import Path
 from audio_pacing import (
     V4_MODELS,
     find_ffmpeg,
-    reference_files,
     spoken_script,
-    synth_duration_matched,
+    synth_paced,
 )
 from elevenlabs_model_support import (
     default_model_for_language,
@@ -60,19 +43,10 @@ def narration_config(course: dict) -> dict:
     return value if isinstance(value, dict) else {}
 
 
-def pick_engine(requested: str | None, course: dict | None = None) -> str:
-    if requested:
-        return requested
-    configured = str(narration_config(course or {}).get("engine") or "").strip().lower()
-    if configured:
-        if configured not in ("elevenlabs", "openai", "say"):
-            raise ValueError(f"Unsupported course narration engine: {configured}")
-        return configured
-    if os.getenv("ELEVENLABS_API_KEY"):
-        return "elevenlabs"
-    if os.getenv("OPENAI_API_KEY"):
-        return "openai"
-    return "say"
+def pick_engine(requested=None,course=None):
+    engine=requested or narration_config(course or {}).get('engine') or 'elevenlabs'
+    if engine!='elevenlabs':raise ValueError('AcademyWizard narration requires ElevenLabs full v4; no engine fallback.')
+    return engine
 
 
 def pick_voice_id(requested: str | None, course: dict, engine: str) -> str | None:
@@ -90,30 +64,12 @@ def pick_voice_id(requested: str | None, course: dict, engine: str) -> str | Non
     return None
 
 
-def pick_model_id(
-    course: dict,
-    engine: str,
-    requested: str | None = None,
-    requested_policy: str | None = None,
-) -> str | None:
-    if engine != "elevenlabs":
-        return None
-    if requested:
-        return requested
-    configured = narration_config(course)
-    configured_engine = str(configured.get("engine") or "").strip().lower()
-    configured_model = str(configured.get("model_id") or "").strip()
-    if configured_model and configured_engine in ("", engine):
-        return configured_model
-    environment_model = str(os.getenv("ELEVENLABS_MODEL") or "").strip()
-    if environment_model:
-        return environment_model
-    configured_policy = str(configured.get("model_policy") or "").strip().lower()
-    environment_policy = str(
-        os.getenv("ELEVENLABS_MODEL_POLICY") or ""
-    ).strip().lower()
-    policy = requested_policy or configured_policy or environment_policy or "stable"
-    return default_model_for_language(course.get("language"), policy)
+def pick_model_id(course,engine,requested=None,requested_policy=None):
+    if engine!='elevenlabs':raise ValueError('Narration requires ElevenLabs full v4')
+    configured=narration_config(course)
+    selected=requested or configured.get('model_id') or os.getenv('ELEVENLABS_MODEL') or 'eleven_v4'
+    if selected!='eleven_v4':raise ValueError('This skill generates eleven_v4 only. Update narration.model_id before generating; existing recordings must be re-recorded, never relabeled.')
+    return 'eleven_v4'
 
 
 def pick_elevenlabs_speed(course: dict) -> tuple[float, str]:
@@ -180,24 +136,23 @@ def synth_elevenlabs(
 ) -> None:
     import urllib.request
     api_key = os.environ["ELEVENLABS_API_KEY"]
-    # Default voice: Leo v2 — reads measured and authoritative for technical
+    # Default voice: Leo — reads measured and authoritative for technical
     # narration. Override per call with --voice, or globally with
     # ELEVENLABS_VOICE_ID. Rachel (21m00Tcm4TlvDq8ikWAM) is warmer/conversational.
-    voice = voice_id or os.getenv("ELEVENLABS_VOICE_ID") or "bbGtsRRKUfYO634UxSjz"  # Leo v2, default
+    voice = voice_id or os.getenv("ELEVENLABS_VOICE_ID") or "bbGtsRRKUfYO634UxSjz"  # Leo, default
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_22050"
-    # v4 has no API speed control. Its final WAV is duration-matched by the
-    # caller to a same-text v2 reference at narration.speed (default 1.18).
+    # Full v4 uses pitch-preserving post-generation pacing at narration.speed.
     payload = {
         "text": text,
         "model_id": model_id
-        or os.getenv("ELEVENLABS_MODEL", "eleven_multilingual_v2"),
+        or os.getenv("ELEVENLABS_MODEL", "eleven_v4"),
         "voice_settings": {
             "stability":        float(os.getenv("ELEVENLABS_STABILITY",  "0.55")),
             "similarity_boost": float(os.getenv("ELEVENLABS_SIMILARITY", "0.75")),
         },
     }
-    if payload["model_id"] not in V4_MODELS:
-        payload["voice_settings"]["speed"] = speed
+    if payload["model_id"] != "eleven_v4":
+        raise ValueError("Full eleven_v4 is required; no model fallback is permitted")
     if language_code and should_send_language_code(str(payload["model_id"])):
         payload["language_code"] = language_code
     body = json.dumps(payload).encode("utf-8")
@@ -318,7 +273,7 @@ def main():
         choices=("stable", "expressive", "balanced"),
         help=(
             "select a use-case model when no explicit model is configured; "
-            "stable is the default for technical narration"
+            "all retained policy labels resolve to full v4"
         ),
     )
     p.add_argument("--force", action="store_true", help="re-synth even if .wav exists")
@@ -330,10 +285,8 @@ def main():
             "WAVs already exist; use only after the user approves the voice mismatch"
         ),
     )
-    p.add_argument("--pacing-reference-root", type=Path,
-                   help="snapshot of paired, unchanged v2 scripts/WAVs at narration.speed; paths mirror course.json")
     p.add_argument("--audio-work-dir", type=Path,
-                   help="timing cache, native v4 masters and receipts (default: <course>/_narration_work)")
+                   help="native v4 masters and pacing receipts (default: <course>/_narration_work)")
     args = p.parse_args()
 
     course = json.loads(args.course_json.read_text())
@@ -342,15 +295,6 @@ def main():
         return
     out_dir = args.course_json.resolve().parent
     work_dir = (args.audio_work_dir or out_dir / "_narration_work").resolve()
-    reference_root = args.pacing_reference_root
-    if reference_root and reference_root.resolve() == out_dir:
-        sys.exit("Snapshot the baseline course's paired scripts/WAVs to a separate reference root first")
-    reference_course = None
-    if reference_root:
-        metadata = reference_root / "course.json"
-        if not metadata.is_file():
-            sys.exit("Pacing reference root must include the baseline course.json to verify voice/model/speed")
-        reference_course = json.loads(metadata.read_text())
     plans = {}
     jobs = []
     errors: list[str] = []
@@ -372,15 +316,7 @@ def main():
                               language=language, existing=0, missing_quiz=False)
             print(f"module {mod.get('id')}: engine={engine}; voice={voice}; model={model}; speed={speed} ({speed_source if speed is not None else 'not applicable'})")
             if model in V4_MODELS:
-                print(f"  pacing: match same-text Multilingual v2 at {speed:g}; learner dial remains unchanged")
-                if reference_course is not None:
-                    reference_mod = next((m for m in reference_course.get("modules", []) if m.get("id") == mod.get("id")), {})
-                    recorded = {**narration_config(reference_course), **narration_config(reference_mod)}
-                    if (recorded.get("engine", "elevenlabs") != "elevenlabs"
-                        or recorded.get("model_id") != "eleven_multilingual_v2"
-                        or recorded.get("voice_id") != voice
-                        or float(recorded.get("speed", 1.18)) != speed):
-                        sys.exit(f"Module {mod.get('id')} timing reference must record the same ElevenLabs voice, Multilingual v2, and speed {speed:g}")
+                print(f"  pacing: native full v4; pitch-preserving tempo {speed:g}; learner dial remains unchanged")
         plan = plans[key]
         audio = slide.get("audio") or {}
         script_rel, wav_rel = audio.get("script_file"), audio.get("wav_file")
@@ -394,12 +330,13 @@ def main():
         plan["missing_quiz"] |= quiz and (args.force or not wav_path.exists())
         jobs.append((mod, slide, script_path, wav_path))
     if not jobs:
+        if errors:
+            sys.exit("Audio generation blocked before synthesis:\n  - " + "\n  - ".join(errors))
         sys.exit("No narration jobs match the selected module/slide")
     for plan in plans.values():
         if plan["engine"] == "say" and any(p["existing"] for p in plans.values()) and plan["missing_quiz"] and not args.allow_local_fallback_for_partial and not args.force:
             errors.append("refusing local knowledge-check narration in a partially narrated module; use the same cloud voice or explicitly approve --allow-local-fallback-for-partial")
     # Validate every requested script, chunk plan and timing source before paid text.
-    references = {}
     active_plans = {}
     for mod, slide, script_path, wav_path in jobs:
         if wav_path.exists() and not args.force:
@@ -418,9 +355,6 @@ def main():
                 raise ValueError("Chunked narration requires the approved cloud provider")
             if plan["model"] in V4_MODELS:
                 find_ffmpeg()
-                if reference_root:
-                    audio = slide["audio"]
-                    references[str(wav_path)] = reference_files(reference_root, audio["script_file"], audio["wav_file"], text)
         except (RuntimeError, ValueError, OSError, EOFError, wave.Error) as error:
             errors.append(f"{slide_ref(mod, slide)}: {error}")
     if errors:
@@ -433,8 +367,6 @@ def main():
         if not api_key:
             sys.exit("Audio generation blocked before synthesis: ELEVENLABS_API_KEY is not set")
         models = [plan["model"]]
-        if plan["model"] in V4_MODELS:
-            models.append("eleven_multilingual_v2")
         for model in models:
             key = (model, plan["language"], plan["voice"])
             if key in validated:
@@ -446,8 +378,8 @@ def main():
                 sys.exit(str(error))
             validated.add(key)
             print(f"preflight: {model}/{plan['language']}: {source}; {voice_source}")
-    if any(plan["model"] in V4_MODELS for plan in active_plans.values()) and not reference_root:
-        print("v4 timing: reuse a cached v2 reference or synthesize one extra v2 timing clip per new script; native masters/receipts: " + str(work_dir))
+    if any(plan["model"] in V4_MODELS for plan in active_plans.values()):
+        print("v4 masters and pacing receipts: " + str(work_dir))
 
     def render_with_plan(text, path, plan, chunks, model=None):
         def request(part_text, part_path):
@@ -484,17 +416,15 @@ def main():
             if plan["model"] in V4_MODELS:
                 identity = {
                     "model_id": plan["model"], "voice_id": plan["voice"],
-                    "reference_model_id": "eleven_multilingual_v2",
-                    "reference_speed": plan["speed"], "language": plan["language"],
+                    "tempo_multiplier": plan["speed"], "language": plan["language"],
                     "stability": float(os.getenv("ELEVENLABS_STABILITY", "0.55")),
                     "similarity_boost": float(os.getenv("ELEVENLABS_SIMILARITY", "0.75")),
                     "chunks": chunks,
                 }
-                receipt = synth_duration_matched(
+                receipt = synth_paced(
                     text, wav_path, work_dir=work_dir, identity=identity,
                     synth_native=lambda value, path: render_with_plan(value, path, plan, chunks),
-                    synth_reference=lambda value, path: render_with_plan(value, path, plan, chunks, "eleven_multilingual_v2"),
-                    reference=references.get(str(wav_path)),
+                    speed=plan["speed"],
                 )
                 print(f"  pacing: {receipt['native_seconds']:.3f}s native -> {receipt['final_seconds']:.3f}s; target {receipt['target_seconds']:.3f}s; atempo {receipt['tempo_factor']:.6f}")
             else:

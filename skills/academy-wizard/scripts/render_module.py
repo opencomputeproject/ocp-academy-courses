@@ -1547,12 +1547,14 @@ def render_module(course: dict, module_index: int) -> str:
     button.setAttribute('title', paused ? {json.dumps(play_video, ensure_ascii=False)} : {json.dumps(pause_video, ensure_ascii=False)});
   }}
   function openLightbox(panel) {{
+    var returnFocus = document.activeElement;
     var overlay = document.createElement('div');
     overlay.className = 'lightbox-overlay';
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-label', {json.dumps(enlarged_figure, ensure_ascii=False)});
     var frame = document.createElement('div');
     frame.className = 'lightbox-figure';
+    frame.tabIndex = 0;
     frame.innerHTML = panel.innerHTML;
     frame.querySelectorAll('[data-player-ready]').forEach(function(p) {{ delete p.dataset.playerReady; }});
     if (panel.hasAttribute('data-video-figure')) {{
@@ -1564,11 +1566,14 @@ def render_module(course: dict, module_index: int) -> str:
     var hint = document.createElement('div');
     hint.className = 'lightbox-hint';
     hint.textContent = {json.dumps(lightbox_close_hint, ensure_ascii=False)};
+    if (window.matchMedia('(max-width: 700px)').matches) hint.textContent = {json.dumps(ui(course, 'lightbox_pan_hint', 'Drag to inspect. Tap outside to close.'), ensure_ascii=False)};
     overlay.appendChild(hint);
     overlay.addEventListener('click', function(e) {{
       if (!e.target.closest('.lightbox-figure')) closeLightbox();
     }});
     document.body.appendChild(overlay);
+    overlay.returnFocus = returnFocus;
+    frame.focus({{preventScroll: true}});
     var sourceVideo = panel.querySelector('video.figure-video');
     var lightboxPanel = frame;
     var lightboxVideo = frame.querySelector('video.figure-video');
@@ -1594,7 +1599,11 @@ def render_module(course: dict, module_index: int) -> str:
   }}
   function closeLightbox() {{
     var o = document.querySelector('.lightbox-overlay');
-    if (o) o.remove();
+    if (o) {{
+      var returnFocus = o.returnFocus;
+      o.remove();
+      if (returnFocus && returnFocus.isConnected) returnFocus.focus({{preventScroll: true}});
+    }}
     document.removeEventListener('keydown', escClose);
   }}
   function escClose(e) {{ if (e.key === 'Escape') closeLightbox(); }}

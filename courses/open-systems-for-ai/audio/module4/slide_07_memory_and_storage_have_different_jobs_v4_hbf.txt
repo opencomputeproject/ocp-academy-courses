@@ -1,0 +1,11 @@
+# pronunciation: NVMe -> "N V M E"; HBF -> "H B F"; OCP -> "O C P"; HBM -> "H B M"; CXL -> "C X L"
+
+Memory and storage support different parts of the workload. Accelerator-attached high-bandwidth memory serves active computation close to the accelerator. Host memory supports the processor and system software. Persistent storage retains datasets, models, results and checkpoints across operating sessions.
+
+Another option is High Bandwidth Flash, or H B F. O C P's H B F specification describes a flash-based tier close to the accelerator, intended to combine high capacity with high aggregate read bandwidth. It complements H B M, with its own latency, software and endurance tradeoffs. Durable copies still belong in persistent storage. The linked Academy course explains the architecture in more detail.
+
+The paths between these resources matter as much as their capacities. Data must reach the compute resources fast enough for the intended work. A large storage system does not remove a narrow feeding path. A larger memory pool does not automatically behave like local accelerator memory.
+
+Compute Express Link, or C X L, enables particular device and memory capabilities in systems that implement them. The available functions depend on the equipment, software and architecture. N V M E is a storage interface family; its presence alone does not establish the throughput of a complete storage path.
+
+For our deployment review, identify where the working data sits, how it reaches the processors, and where it is saved. Include checkpoint and recovery needs. Distinguish capacity, bandwidth, latency and persistence when comparing options. Those quantities describe different requirements, and improving one may leave another as the workload's limiting factor.

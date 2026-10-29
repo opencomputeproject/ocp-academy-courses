@@ -51,6 +51,14 @@ def ui(course: dict, key: str, default: str) -> str:
     return str((course.get("ui_labels") or {}).get(key, default))
 
 
+def include_home_sco(course: dict) -> bool:
+    """Preserve tracked Home by default; allow an explicitly authored asset Home."""
+    value = (course.get("scorm") or {}).get("include_home_sco", True)
+    if not isinstance(value, bool):
+        raise ValueError("scorm.include_home_sco must be a boolean")
+    return value
+
+
 def local_resource_path(url: str | None) -> str | None:
     """Return a package-relative link target, ignoring external URL schemes."""
     if not url:
@@ -115,6 +123,8 @@ def scorm_metadata_title(course: dict) -> str:
 
 
 def render_index_html(course: dict, resource_root: Path | None = None) -> str:
+    home_init = "const inLMS = !reviewMode && SCORM.init();\n  if (!reviewMode) SCORM.setCompleted();" if include_home_sco(course) else "const inLMS = false; // Untracked course-home asset: no LMS session or completion writes."
+    home_finish = "window.addEventListener('beforeunload', function() { if (!reviewMode) SCORM.finish(); });" if include_home_sco(course) else "// Untracked course-home asset does not finish a module's LMS session."
     if is_scrolling(course):
         return render_scrolling_course(course, resource_root)
     css = (TEMPLATE_DIR / "index_styles.css").read_text()
@@ -281,8 +291,7 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 (function() {{
   'use strict';
   const reviewMode = new URLSearchParams(location.search).get('review') === '1';
-  const inLMS = !reviewMode && SCORM.init();
-  if (!reviewMode) SCORM.setCompleted();
+  {home_init}
 {progress_script}
 
   // The default start link is limited to the first module. It is not an
@@ -293,7 +302,7 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     location.href = this.getAttribute('href') + '?review=1&slide=1';
   }});
 
-  window.addEventListener('beforeunload', function() {{ if (!reviewMode) SCORM.finish(); }});
+  {home_finish}
 }})();
 </script>
 </body>
@@ -369,11 +378,12 @@ def render_manifest(course: dict, out_dir: Path) -> str:
         add_file(launcher_files, motion_intro_logo(course, "index"))
     launcher_files_xml = "\n      ".join(f'<file href="{xml_escape(f)}"/>' for f in launcher_files)
     resources.append(f'''
-    <resource identifier="RES_LAUNCHER" type="webcontent" adlcp:scormtype="sco" href="index.html">
+    <resource identifier="RES_LAUNCHER" type="webcontent" adlcp:scormtype="{'sco' if include_home_sco(course) else 'asset'}" href="index.html">
       {launcher_files_xml}
     </resource>''')
 
-    org_items.append('      <item identifier="ITEM_LAUNCHER" identifierref="RES_LAUNCHER">\n        <title>Course Home</title>\n      </item>')
+    if include_home_sco(course):
+        org_items.append('      <item identifier="ITEM_LAUNCHER" identifierref="RES_LAUNCHER">\n        <title>Course Home</title>\n      </item>')
 
     for mod in course["modules"]:
         mid = mod["id"]

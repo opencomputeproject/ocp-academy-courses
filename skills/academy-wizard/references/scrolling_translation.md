@@ -73,10 +73,7 @@ Validate the final single audio stream, language tag, audible music before and
 between narration, foreground narration level, end fade, absence of mapped
 source audio, and packaged-video hash.
 
-For Vietnamese (`vi` and regional variants), use
-`eleven_flash_v2_5` or a later model with explicit Vietnamese support. Do not
-use `eleven_multilingual_v2`; the API may return billable audio even though
-that model does not support Vietnamese.
+Use full `eleven_v4` for every localized narration job, including Vietnamese, with the approved locale voice.
 
 Before submitting any localized video script to ElevenLabs, run the shared
 model/language preflight:
@@ -92,11 +89,7 @@ table. Do not generate a paid sample when the result is unsupported or
 unverifiable. When another dubbing language is added, record its model in the
 dubbing manifest and run this preflight before the first segment.
 
-Use the stable model policy for neutral technical narration. v3 is available
-for languages only it supports or when the user explicitly approves a more
-expressive delivery. Before using v3, require live voice metadata, reject
-Professional Voice Clones, and require `eleven_v3` in the voice's
-`high_quality_base_model_ids`.
+Use full v4 without alternate-model fallbacks. Validate live model/language and voice support before generating any segment.
 
 For Simplified Chinese (`zh-CN` or `zh-Hans`), use the approved ElevenLabs Lan
 Chen voice (`bZtjnyJAFD0Cp3lfNG5g`) unless the user selects another voice.
