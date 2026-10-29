@@ -23,6 +23,6 @@ The course resource hook stages local fonts and branding. Reuse matching approve
 
 ## Companion course
 
-[Open Cluster Designs for AI outline](authoring/open-cluster-designs-outline.json) is a deferred planning draft for Academy course 93. This series targets course 92 and supplies its system-level prerequisite. Revalidate the companion specifications and draft page references before authoring; its narration, media, assessments and packaging are not yet approved or built. The six-module series remains the completed production priority.
+[Open Cluster Designs for AI outline](authoring/open-cluster-designs-outline.json) is a deferred planning draft for Academy course 93; its [source registry](authoring/open-cluster-designs-references.json) preserves the specification and Summit links. This series targets course 92 and supplies its system-level prerequisite. Revalidate the companion specifications and draft page references before authoring; its narration, media, assessments and packaging are not yet approved or built. The six-module series remains the completed production priority.
 
 See [QA.md](QA.md) for checks and acceptance limits.
