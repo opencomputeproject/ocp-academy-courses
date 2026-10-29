@@ -23,121 +23,6 @@ MODELS_URL = "https://api.elevenlabs.io/v1/models"
 VOICE_URL_TEMPLATE = "https://api.elevenlabs.io/v1/voices/{voice_id}"
 MODEL_DOCS_URL = "https://elevenlabs.io/docs/overview/models"
 
-MULTILINGUAL_V2_LANGUAGES = frozenset(
-    {
-        "ar",
-        "bg",
-        "cs",
-        "da",
-        "de",
-        "el",
-        "en",
-        "es",
-        "fi",
-        "fil",
-        "fr",
-        "hi",
-        "hr",
-        "id",
-        "it",
-        "ja",
-        "ko",
-        "ms",
-        "nl",
-        "pl",
-        "pt",
-        "ro",
-        "ru",
-        "sk",
-        "sv",
-        "ta",
-        "tr",
-        "uk",
-        "zh",
-    }
-)
-
-FLASH_V2_5_LANGUAGES = MULTILINGUAL_V2_LANGUAGES | {"hu", "no", "vi"}
-
-V3_LANGUAGES = frozenset(
-    {
-        "af",
-        "ar",
-        "as",
-        "az",
-        "be",
-        "bg",
-        "bn",
-        "bs",
-        "ca",
-        "ceb",
-        "cs",
-        "cy",
-        "da",
-        "de",
-        "el",
-        "en",
-        "es",
-        "et",
-        "fa",
-        "fi",
-        "fil",
-        "fr",
-        "ga",
-        "gl",
-        "gu",
-        "ha",
-        "he",
-        "hi",
-        "hr",
-        "hu",
-        "hy",
-        "id",
-        "is",
-        "it",
-        "ja",
-        "jv",
-        "ka",
-        "kk",
-        "kn",
-        "ko",
-        "ky",
-        "lb",
-        "ln",
-        "lt",
-        "lv",
-        "mk",
-        "ml",
-        "mr",
-        "ms",
-        "ne",
-        "nl",
-        "no",
-        "ny",
-        "pa",
-        "pl",
-        "ps",
-        "pt",
-        "ro",
-        "ru",
-        "sd",
-        "sk",
-        "sl",
-        "so",
-        "sr",
-        "sv",
-        "sw",
-        "ta",
-        "te",
-        "th",
-        "tr",
-        "uk",
-        "ur",
-        "vi",
-        "zh",
-    }
-)
-
 # Official live catalog snapshot verified 2026-10-23; live metadata wins.
 V4_LANGUAGES = frozenset(
     {
@@ -238,46 +123,10 @@ V4_LANGUAGES = frozenset(
     }
 )
 
-DOCUMENTED_MODEL_LANGUAGES = {
-    "eleven_v4": V4_LANGUAGES,
-    "eleven_v4_turbo": V4_LANGUAGES,
-    "eleven_multilingual_v2": MULTILINGUAL_V2_LANGUAGES,
-    "eleven_flash_v2_5": FLASH_V2_5_LANGUAGES,
-    "eleven_turbo_v2_5": FLASH_V2_5_LANGUAGES,
-    "eleven_flash_v2": frozenset({"en"}),
-    "eleven_turbo_v2": frozenset({"en"}),
-    "eleven_v3": V3_LANGUAGES,
-}
-
-# ElevenLabs supports language-code enforcement on v4, v3 and 2.5 Flash/Turbo
-# models. Multilingual v2 explicitly does not support the request parameter.
-LANGUAGE_CODE_MODELS = frozenset(
-    {"eleven_flash_v2_5", "eleven_turbo_v2_5", "eleven_v3", "eleven_v4", "eleven_v4_turbo"}
-)
-
-MODEL_POLICY_ORDERS = {
-    # ElevenLabs currently recommends Multilingual v2 for professional content
-    # and calls it the most stable long-form model. Fall through to Flash for
-    # its three extra languages, then v3 for broader language coverage.
-    "stable": (
-        "eleven_multilingual_v2",
-        "eleven_flash_v2_5",
-        "eleven_v3",
-    ),
-    # Prefer the newest expressive model, but require live voice compatibility
-    # before paid synthesis.
-    "expressive": (
-        "eleven_v3",
-        "eleven_multilingual_v2",
-        "eleven_flash_v2_5",
-    ),
-    # Prefer the lower-cost, lower-latency all-rounder where it has coverage.
-    "balanced": (
-        "eleven_flash_v2_5",
-        "eleven_multilingual_v2",
-        "eleven_v3",
-    ),
-}
+DOCUMENTED_MODEL_LANGUAGES = {'eleven_v4': V4_LANGUAGES}
+LANGUAGE_CODE_MODELS = frozenset({'eleven_v4'})
+# Existing policy labels are compatibility aliases, never alternate models.
+MODEL_POLICY_ORDERS = {name:('eleven_v4',) for name in ('stable','expressive','balanced')}
 
 ISO_639_3_TO_PRIMARY = {
     "afr": "af",
@@ -521,68 +370,18 @@ def validate_model_language(
     return source
 
 
-def validate_voice_model(
-    model_id: str,
-    voice_id: str | None,
-    *,
-    api_key: str | None = None,
-    voice_metadata: dict | None = None,
-) -> str:
-    """Require live voice metadata for v3/v4; their clone rules differ."""
-
-    if model_id not in {"eleven_v3", "eleven_v4", "eleven_v4_turbo"}:
-        return "voice/model compatibility check not required for this model"
-    voice_id = str(voice_id or "").strip()
-    if not voice_id:
-        raise RuntimeError(
-            f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
-            "a voice_id is required."
-        )
-
-    metadata = voice_metadata
+def validate_voice_model(model_id,voice_id,*,api_key=None,voice_metadata=None):
+    """Verify the requested voice using the full-model live catalog."""
+    if model_id!='eleven_v4':raise RuntimeError('AcademyWizard requires eleven_v4; no model fallback.')
+    voice_id=str(voice_id or '').strip()
+    if not voice_id:raise RuntimeError('Full v4 synthesis requires a voice_id.')
+    metadata=voice_metadata
     if metadata is None:
-        if not api_key:
-            raise RuntimeError(
-                f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
-                "live voice metadata requires ELEVENLABS_API_KEY."
-            )
-        try:
-            metadata = fetch_voice_metadata(api_key, voice_id)
-        except Exception as error:
-            raise RuntimeError(
-                f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
-                f"live metadata for voice {voice_id!r} was unavailable "
-                f"({type(error).__name__})."
-            ) from error
-
-    if model_id in {"eleven_v4", "eleven_v4_turbo"}:
-        # v4 supports professional clones, including voices whose catalog entry
-        # does not yet list a dedicated v4 fine-tune. Do not apply v3's ban.
-        if str(metadata.get("voice_id") or "") != voice_id:
-            raise RuntimeError("ElevenLabs v4 voice metadata did not identify the requested voice")
-        return "ElevenLabs live voice metadata; v4 supports Professional Voice Clones"
-
-    category = str(metadata.get("category") or "").strip().lower()
-    if category == "professional":
-        raise RuntimeError(
-            f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
-            f"voice {voice_id!r} is a Professional Voice Clone, which "
-            "ElevenLabs does not currently support with v3."
-        )
-
-    compatible_models = {
-        str(value).strip()
-        for value in metadata.get("high_quality_base_model_ids") or []
-        if str(value).strip()
-    }
-    if model_id not in compatible_models:
-        raise RuntimeError(
-            f"ElevenLabs {model_id} voice compatibility check blocked synthesis: "
-            f"voice {voice_id!r} does not list {model_id!r} in "
-            "high_quality_base_model_ids. Select a v3-compatible voice or "
-            "use the stable model policy."
-        )
-    return "ElevenLabs live voice metadata"
+        if not api_key:raise RuntimeError('Live voice validation requires ELEVENLABS_API_KEY.')
+        try:metadata=fetch_voice_metadata(api_key,voice_id)
+        except Exception as error:raise RuntimeError(f'Live voice metadata unavailable ({type(error).__name__}).') from error
+    if str(metadata.get('voice_id') or '')!=voice_id:raise RuntimeError('Voice metadata does not identify the requested voice.')
+    return 'ElevenLabs live voice metadata; full v4 supports Professional Voice Clones'
 
 
 def should_send_language_code(model_id: str) -> bool:
@@ -643,8 +442,6 @@ def main() -> None:
         f"compatible: {model_id} supports "
         f"{primary_language_code(args.language_tag)} ({source})"
     )
-    if model_id == "eleven_v3":
-        print(f"voice compatible: {args.voice_id} ({voice_source})")
 
 
 if __name__ == "__main__":

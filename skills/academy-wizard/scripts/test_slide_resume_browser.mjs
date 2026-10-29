@@ -204,7 +204,7 @@ try {
 
   // Exercise the maintained player with both video timing policies.
   const withVideo = course.modules.flatMap(m => m.slides.map(s => ({m, s})))
-    .find(({s}) => s.figure?.media_type === 'video');
+    .find(({s}) => s.figure?.media_type === 'video' && s.figure.role !== 'original_video');
   assert.ok(withVideo, 'Fixture includes a video');
   await local.page.goto(`${url(withVideo.m.id)}?review=1&slide=${withVideo.s.id}`);
   const times = await local.page.evaluate(() => {

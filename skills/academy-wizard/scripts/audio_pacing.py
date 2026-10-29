@@ -1,71 +1,29 @@
-"""Match native v4 narration to a v2 timing reference without changing pitch.
-
-Working masters and receipts stay outside the manifest's runtime file list.
-Never pad or truncate speech to manufacture the target duration.
-"""
-
+"""Pace full Eleven v4 narration with pitch preserved and no reference synthesis."""
 from __future__ import annotations
-
-import hashlib
-import json
-import math
-import os
-import shutil
-import subprocess
-import tempfile
-import wave
+import hashlib,json,math,os,shutil,subprocess,tempfile,wave
 from pathlib import Path
+V4_MODELS=frozenset({'eleven_v4'})
+DURATION_TOLERANCE_SECONDS=0.05
 
-V4_MODELS = frozenset({"eleven_v4", "eleven_v4_turbo"})
-DURATION_TOLERANCE_SECONDS = 0.05
-
-
-def find_ffmpeg() -> str:
-    executable = shutil.which("ffmpeg")
-    if executable:
-        return executable
+def find_ffmpeg():
+    executable=shutil.which('ffmpeg')
+    if executable:return executable
     try:
         import imageio_ffmpeg
-        executable = imageio_ffmpeg.get_ffmpeg_exe()
-        if Path(executable).is_file():
-            return executable
-    except (ImportError, RuntimeError):
-        pass
-    raise RuntimeError(
-        "Duration-matched v4 requires ffmpeg (on PATH or provided by "
-        "imageio_ffmpeg). Install it before sending billable text."
-    )
+        executable=imageio_ffmpeg.get_ffmpeg_exe()
+        if Path(executable).is_file():return executable
+    except (ImportError,RuntimeError):pass
+    raise RuntimeError('Paced narration requires ffmpeg before synthesis.')
 
+def spoken_script(path):
+    return '\n'.join(line for line in path.read_text(encoding='utf-8').splitlines() if not line.startswith('#')).strip()
 
-def spoken_script(path: Path) -> str:
-    return "\n".join(
-        line for line in path.read_text(encoding="utf-8").splitlines()
-        if not line.startswith("#")
-    ).strip()
-
-
-def wav_duration(path: Path) -> float:
-    with wave.open(str(path), "rb") as reader:
-        duration = reader.getnframes() / reader.getframerate()
-        if reader.getcomptype() != "NONE" or not math.isfinite(duration) or duration <= 0:
-            raise ValueError(f"Invalid PCM timing reference: {path}")
+def wav_duration(path):
+    with wave.open(str(path),'rb') as reader:
+        duration=reader.getnframes()/reader.getframerate()
+        if reader.getcomptype()!='NONE' or not math.isfinite(duration) or duration<=0:
+            raise ValueError(f'Invalid PCM narration: {path}')
         return duration
-
-
-def reference_files(root: Path, script_rel: str, wav_rel: str, text: str) -> Path:
-    """Require the unchanged paired script, not just a similarly named WAV."""
-    root = root.resolve()
-    script = (root / script_rel).resolve()
-    wav = (root / wav_rel).resolve()
-    if not script.is_relative_to(root) or not wav.is_relative_to(root):
-        raise ValueError("Pacing reference paths must remain inside the reference root")
-    if not script.is_file() or not wav.is_file():
-        raise ValueError(f"Missing paired timing reference script/WAV: {wav}")
-    if " ".join(spoken_script(script).split()) != " ".join(text.split()):
-        raise ValueError(f"Timing reference script differs from the current narration: {script}")
-    wav_duration(wav)
-    return wav
-
 
 def match_wav_duration(native: Path, output: Path, target_seconds: float, *, ffmpeg: str | None = None) -> dict:
     """Use atempo, iterating on encoder rounding; replace only on success."""
@@ -111,47 +69,23 @@ def match_wav_duration(native: Path, output: Path, target_seconds: float, *, ffm
     raise RuntimeError("Could not match narration within 50 ms; previous output preserved")
 
 
-def synth_duration_matched(
-    text: str, output: Path, *, work_dir: Path, identity: dict,
-    synth_native, synth_reference, reference: Path | None = None,
-) -> dict:
-    """Cache a v2 reference, retain the native master, and pace the final WAV."""
-    executable = find_ffmpeg()  # Must fail before either paid callback.
-    settings = {**identity, "text_sha256": hashlib.sha256(text.encode()).hexdigest()}
-    cache_key = hashlib.sha256(json.dumps(settings, sort_keys=True).encode()).hexdigest()
-    cache = work_dir / cache_key
-    cache.mkdir(parents=True, exist_ok=True)
-    cached_reference = cache / "reference-v2.wav"
-    if reference is not None:
-        target_seconds = wav_duration(reference)
-        # The timing reference must survive later retries or output replacement.
-        if reference.resolve() != cached_reference.resolve():
-            shutil.copy2(reference, cached_reference)
-        reference_source = str(reference.resolve())
-    elif cached_reference.is_file():
-        target_seconds = wav_duration(cached_reference)
-        reference_source = "cached v2 synthesis"
-    else:
-        with tempfile.TemporaryDirectory(prefix="reference-", dir=cache) as directory:
-            temporary_reference = Path(directory) / "reference.wav"
-            synth_reference(text, temporary_reference)
-            target_seconds = wav_duration(temporary_reference)
-            temporary_reference.replace(cached_reference)
-        reference_source = "new v2 synthesis"
-    with tempfile.TemporaryDirectory(prefix="native-", dir=cache) as directory:
-        native = Path(directory) / "native.wav"
-        synth_native(text, native)
-        wav_duration(native)
-        receipt = match_wav_duration(native, output, target_seconds, ffmpeg=executable)
-        native.replace(cache / "native-v4.wav")
-    receipt.update({
-        **settings, "reference_source": reference_source,
-        "reference_sha256": hashlib.sha256(cached_reference.read_bytes()).hexdigest(),
-        "native_master": str((cache / "native-v4.wav").resolve()),
-        "output": str(output.resolve()),
-        "output_sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
-    })
-    temporary_receipt = cache / f"receipt-{os.getpid()}.tmp"
-    temporary_receipt.write_text(json.dumps(receipt, indent=2) + "\n")
-    temporary_receipt.replace(cache / "receipt.json")
+def synth_paced(text,output,*,work_dir,identity,synth_native,speed=1.18):
+    """Make one full-model master, then apply the recorded tempo multiplier."""
+    executable=find_ffmpeg()
+    if not 0.7<=speed<=1.2:raise ValueError('Narration tempo must be between 0.7 and 1.2')
+    if identity.get('model_id')!='eleven_v4':raise ValueError('Narration requires eleven_v4')
+    settings={**identity,'tempo_multiplier':speed,'text_sha256':hashlib.sha256(text.encode()).hexdigest()}
+    key=hashlib.sha256(json.dumps(settings,sort_keys=True).encode()).hexdigest()
+    cache=work_dir/key;cache.mkdir(parents=True,exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix='native-',dir=cache) as directory:
+        native=Path(directory)/'native.wav'
+        synth_native(text,native)
+        duration=wav_duration(native)
+        receipt=match_wav_duration(native,output,duration/speed,ffmpeg=executable)
+        native.replace(cache/'native-v4.wav')
+    receipt.update({**settings,'native_master':str((cache/'native-v4.wav').resolve()),
+        'native_sha256':hashlib.sha256((cache/'native-v4.wav').read_bytes()).hexdigest(),
+        'output':str(output.resolve()),'output_sha256':hashlib.sha256(output.read_bytes()).hexdigest(),
+        'synthesis_calls':'Full Eleven v4 only; no reference model or fallback.'})
+    temp=cache/f'receipt-{os.getpid()}.tmp';temp.write_text(json.dumps(receipt,indent=2)+'\n');temp.replace(cache/'receipt.json')
     return receipt

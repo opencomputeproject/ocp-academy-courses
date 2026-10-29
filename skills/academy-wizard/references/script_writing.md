@@ -83,7 +83,7 @@ Cloud TTS engines (ElevenLabs, OpenAI) generally handle technical acronyms well.
 
 ### TTS pronunciation cheat sheet
 
-These are field-tested substitutions for ElevenLabs Turbo v2.5 and similar voices. Bake them into your scripts the first time you write the term, not after you hear the TTS botch it.
+These are pronunciation substitutions to verify with the approved full-v4 voice. Bake them into your scripts the first time you write the term, not after you hear the TTS botch it.
 
 | Term | Write in script as | Why |
 |---|---|---|

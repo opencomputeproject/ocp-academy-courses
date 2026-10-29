@@ -2301,7 +2301,7 @@ body.first-slide-audio-cue .btn-audio {
   background: #ffffff;
   box-shadow: none;
 }
-.slide .figure-video-controls {
+:is(.slide, .lightbox-figure) .figure-video-controls {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -2317,7 +2317,7 @@ body.first-slide-audio-cue .btn-audio {
   opacity: 1;
   transform: translateY(0);
 }
-.slide .figure-video-control {
+:is(.slide, .lightbox-figure) .figure-video-control {
   border: 1px solid rgba(52,56,149,0.22);
   border-radius: 50%;
   background: rgba(255,255,255,0.92);
@@ -2335,14 +2335,14 @@ body.first-slide-audio-cue .btn-audio {
   align-items: center;
   justify-content: center;
 }
-.slide .figure-video-control .video-icon {
+:is(.slide, .lightbox-figure) .figure-video-control .video-icon {
   display: inline-block;
   width: 16px;
   height: 16px;
   position: relative;
 }
-.slide .figure-video-control .video-icon-pause::before,
-.slide .figure-video-control .video-icon-pause::after {
+:is(.slide, .lightbox-figure) .figure-video-control .video-icon-pause::before,
+:is(.slide, .lightbox-figure) .figure-video-control .video-icon-pause::after {
   content: "";
   position: absolute;
   top: 2px;
@@ -2351,9 +2351,9 @@ body.first-slide-audio-cue .btn-audio {
   border-radius: 1px;
   background: currentColor;
 }
-.slide .figure-video-control .video-icon-pause::before { left: 3px; }
-.slide .figure-video-control .video-icon-pause::after { right: 3px; }
-.slide .figure-video-control .video-icon-play::before {
+:is(.slide, .lightbox-figure) .figure-video-control .video-icon-pause::before { left: 3px; }
+:is(.slide, .lightbox-figure) .figure-video-control .video-icon-pause::after { right: 3px; }
+:is(.slide, .lightbox-figure) .figure-video-control .video-icon-play::before {
   content: "";
   position: absolute;
   left: 4px;
@@ -2364,8 +2364,8 @@ body.first-slide-audio-cue .btn-audio {
   border-bottom: 6px solid transparent;
   border-left: 9px solid currentColor;
 }
-.slide .figure-video-control:hover,
-.slide .figure-video-control:focus {
+:is(.slide, .lightbox-figure) .figure-video-control:hover,
+:is(.slide, .lightbox-figure) .figure-video-control:focus {
   background: var(--ocp-green);
   color: #ffffff;
   outline: none;
@@ -2443,6 +2443,39 @@ body.first-slide-audio-cue .btn-audio {
   font-size: 0.85rem;
   letter-spacing: 0.05em;
   pointer-events: none;
+}
+
+/* Narrow screens need real magnification, with local pan rather than page overflow. */
+@media (max-width: 700px) {
+  .lightbox-overlay { padding: 16px; }
+  .lightbox-figure {
+    display: block;
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 104px);
+    overflow: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+  }
+  .lightbox-figure.figure-panel--video { overflow: auto !important; }
+  .lightbox-figure > img,
+  .lightbox-figure > svg,
+  .lightbox-figure > video.figure-video {
+    width: 900px !important;
+    min-width: 900px;
+    max-width: none !important;
+    max-height: none !important;
+  }
+  .lightbox-figure .figure-video-controls {
+    position: sticky;
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 0;
+    width: max-content;
+    margin-top: 12px;
+  }
+  .lightbox-figure .figure-video-controls [data-video-zoom] { display: none; }
 }
 
 /* Survey CTA hover state — replaces inline onmouseover/onmouseout (which

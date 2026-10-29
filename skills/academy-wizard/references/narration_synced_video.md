@@ -13,9 +13,20 @@ single-pass alternative before producing it: it follows the narration clock,
 holds its conclusion, and shares pause, seek, replay and speed with narration,
 including the enlarged view. Obtain user approval for the course or selected
 slides and record that approval in editable course metadata or the figure plan.
+An explicit request for videos timed to narration is already approval for this
+mode within that scope; do not ask again for each slide.
 An existing recorded approval is sufficient; do not ask again. A general rebuild,
 permission to finish, or a request for a video alone does not approve conversion
 of existing loops. Preserve their authored settings unless conversion is requested.
+
+## Required ending for narration-timed videos
+
+A video timed to narration plays exactly once on the narration clock, then holds
+the completed final picture. It must not loop, rewind, or revert to its poster at
+the end. Apply this in both the embedded and enlarged views, using the explicit
+settings below; matching file durations is not enough. Pause, seek, speed and
+learner-requested replay continue to follow narration. When reviewing a series,
+audit every generated narration-timed video for this behavior, not just the first.
 
 ## Explicit per-figure opt-in
 
@@ -63,7 +74,13 @@ inventory after any revision.
 Run `test_video_seek.mjs`, `test_video_playback_compatibility.mjs`, and
 `test_video_modes.py` after shared player/renderer edits. Use
 `test_video_modes_browser.mjs <legacy|synced> <built-course>` with real paired
-media to check the first matching teaching video and an audio-only slide. Browser checks must
+media to check the first matching teaching video and an audio-only slide. Pass an
+optional `M<n>S<n>` argument to select each additional video in a series. For every
+narration-timed video, let narration end, wait at least one second, verify the
+embedded and enlarged views stay paused on the completed picture, then verify
+intentional replay. Repeat with `VIDEO_TEST_VIEWPORT=phone` for the phone layout;
+`VIDEO_QA_DIR` optionally saves the completed enlarged view for visual review.
+Browser checks must
 cover real legacy loops, an audio-only slide, and an opted-in sequence, including
 pause/resume, seeking beyond one old loop, speed, end/replay, slide return, zoom,
 review mode, narration preference and reduced motion. Check buffering events do

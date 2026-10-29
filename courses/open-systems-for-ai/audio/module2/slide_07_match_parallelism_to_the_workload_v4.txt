@@ -1,0 +1,7 @@
+Parallelism divides work among resources, but the division creates communication. In data parallel work, different resources process different data and exchange information needed to keep the computation coordinated. In model parallel work, parts of the model are placed on different resources, creating exchanges between those parts.
+
+The useful balance depends on the model, the software and the available memory and interconnects. More accelerators can add capacity while also adding synchronization or data-movement cost. A communication pattern that works well at one size may become a bottleneck at another.
+
+Inference can create different pressure during different stages. Processing the input and generating subsequent output do not always stress computation, memory and communication in the same way. That is one reason architecture should follow the workload rather than a single accelerator-count target.
+
+A high-bandwidth domain is a useful way to discuss closely connected resources. It does not automatically mean one physical rack or universally coherent shared memory. Verify the semantics and software support of the selected implementation. Ask how the workload uses the links, which exchanges dominate, and what evidence supports the expected scaling behavior.

@@ -22,7 +22,7 @@ For every newly authored narrated Slides course, include at least one silent tea
 
 Animations must earn their motion. Do not animate decorative progress bars, counters, arrows, or state changes that imply an event the narration never explains. Quantities that represent accumulation, reach, completion, or capacity must move monotonically unless a visible and narrated reset, failure, rollback, or comparison boundary causes the reversal. A seamless loop may reset only at the loop boundary, where the restart is visually unmistakable.
 
-For a richer timed explanation, propose the opt-in [narration-synchronized video workflow](narration_synced_video.md). Approval changes only the selected figures; short looping videos remain the default for existing and unapproved work.
+For a richer timed explanation, use the [narration-synchronized video workflow](narration_synced_video.md) when requested or approved. Videos timed to narration must play once and hold the completed final picture in the slide and enlarged view. Approval changes only the selected figures; independent short loops remain the default where narration timing has not been requested or approved.
 
 ## OCP visual style
 

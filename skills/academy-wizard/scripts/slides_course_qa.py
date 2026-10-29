@@ -159,7 +159,7 @@ def check_course(
                 elif not (root / media_path).is_file():
                     errors.append(f"M{module_id}S{slide.get('id')}: missing media {media_path}")
                 if is_video(figure):
-                    recorded = figure.get("playback_mode") == "recorded"
+                    recorded = figure.get("playback_mode") == "recorded" or figure.get("role") == "original_video"
                     if not recorded:
                         videos.append((slide, figure))
                     elif figure.get("controls") is not True:
@@ -173,6 +173,8 @@ def check_course(
                         errors.append(f"M{module_id}S{slide.get('id')}: sync_to_narration must be a boolean")
                     if figure.get("sync_to_narration") is True and not (slide.get("audio") or {}).get("wav_file"):
                         errors.append(f"M{module_id}S{slide.get('id')}: synchronized video needs paired narration")
+                    if figure.get("role") == "original_video" and (slide.get("audio") is not None or slide.get("narration_enabled") is not False):
+                        errors.append(f"M{module_id}S{slide.get('id')}: original recording requires audio=null and narration_enabled=false")
                     expected = ({"autoplay": False, "loop": False, "muted": False} if recorded else
                                 {"autoplay": False, "loop": False, "muted": True}
                                 if figure.get("sync_to_narration") is True

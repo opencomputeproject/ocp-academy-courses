@@ -33,7 +33,7 @@ metadata, separate from learner-facing content and LMS catalog fields.
     "engine": "elevenlabs",
     "voice_id": "Course-specific ElevenLabs voice ID",
     "voice_name": "Human-readable voice name",
-    "model_id": "eleven_multilingual_v2",
+    "model_id": "eleven_v4",
     "model_policy": "stable",
     "speed": 1.18
   },
@@ -159,56 +159,33 @@ parentheses, such as `OCP ESUN (Korean)`. Use `scorm_title` only for an exact
 manifest-only override. Use `metadata_language_name` to override the automatic
 language label without changing course content.
 
-For narrated Slides courses, optional top-level `narration` makes the TTS engine
-and voice reproducible. `gen_audio.py` uses this course-specific configuration
-before environment defaults; `--engine` and `--voice` remain explicit command
-overrides. Maintained locale scaffolds set Korean `Chris - Warm and clear`
-(`PDoCXqBQFGsvfO0hNkEs`), the approved Japanese voice
-(`b34JylakFZPlGS0BnwyY`), Simplified Chinese `Lan Chen`
-(`bZtjnyJAFD0Cp3lfNG5g`), Traditional Chinese `Tiffy`
-(`1AKkSX7KMPHIWuz76m0n`), Vietnamese `Nhu`
-(`A5w1fw5x0uXded1LDvZp`) with `eleven_flash_v2_5`, Brazilian Portuguese `Carla`
-(`m151rjrbWXbBqyq56tly`), and Latin American Spanish `Ninoska`
-(`zl1Ut8dvwcVSuQSB9XkG`). Every maintained locale scaffold writes an explicit
-`model_id`. Before paid ElevenLabs synthesis, `gen_audio.py` verifies that model
-against the primary language in `language` using the live ElevenLabs model
-catalog, with a bundled official-documentation table as a fail-safe for known
-models. Unsupported or unverifiable combinations are blocked before any text
-is submitted. Additions to the maintained locale table must include a model and
-pass `scripts/elevenlabs_model_support.py <language> <model>`.
+For narrated Slides courses, record top-level `narration` with engine
+`elevenlabs`, model `eleven_v4`, the approved voice ID and `speed: 1.18`.
+Full v4 is required for every generation job; retired models are rejected rather
+than used as fallbacks. Maintained locale scaffolds retain their approved voice
+IDs and select full v4. Validate live language/voice support before synthesis.
 
-For ElevenLabs, record `narration.speed` explicitly. The maintained default is
-`1.18`. Use a different value only after the user explicitly approves that
-exact override; do not alter speed to compensate for course-duration estimates
-or other editorial judgments. `gen_audio.py` prints the resolved speed and its
-configuration source before synthesis so the paid run is auditable.
+`speed` is the pitch-preserving multiplier applied to the native v4 master after
+generation; it is not sent as an API speed field. The learner dial remains 1.0
+and retains saved preferences. Native masters and timing receipts stay outside
+the runtime package. No secondary-model reference is synthesized or reused.
 
-`model_id` is the reproducible pin and takes precedence. When it is omitted,
-`model_policy` chooses a use-case profile: `stable` (the default) prefers
-Multilingual v2 for the professional technical narration it supports, then
-Flash v2.5, then v3; `expressive` prefers v3; and `balanced` prefers Flash v2.5.
-The fallback to v3 lets newly added v3-only languages work without pretending
-that a larger version number is automatically a better technical narrator.
-Before v3 synthesis, require live voice metadata: reject Professional Voice
-Clones and require `eleven_v3` in `high_quality_base_model_ids`.
+A module may override the approved voice or pacing fields when the user has
+explicitly authorized that change. Its model must still be full v4. Re-record
+existing files before identifying them as v4; during staged review, record which
+modules are complete and which still await re-recording. Do not change duration
+estimates or SCORM organization to accommodate narration. See
+[Full v4 pacing](elevenlabs_v4_pacing.md).
 
-### Module-specific narration and Eleven v4 pacing
+### Optional untracked Slides Home
 
-A module may include a `narration` object with the same engine, voice, model,
-and speed fields as the course. Its fields override the top-level object;
-explicit command options still win. Use this to pilot v4 in module 9 without
-changing the other modules, including on a later whole-course rebuild.
-
-For an explicitly selected `eleven_v4` or `eleven_v4_turbo`, keep `speed: 1.18`
-as the Multilingual v2 timing-reference speed. It is not sent to the v4 API.
-The generated v4 WAV is adjusted with pitch preserved to the same-text v2
-reference's actual duration. The learner's default dial remains 1.0, saved
-speed choices remain intact, and duration descriptions need no model-related
-revision. See [Eleven v4 pacing](elevenlabs_v4_pacing.md) for the verified
-baseline workflow, extra-call/cache behavior for new scripts, and timing
-receipts. A fixed factor applied to native v4 does not guarantee equivalent
-pacing across scripts. v4 requires live voice metadata and permits Professional
-Voice Clones; the v3-specific clone restriction does not apply to v4.
+For an explicitly requested modules-only multi-SCO organization, set
+`scorm.include_home_sco: false`. The default remains `true`: Home is a SCO and
+completes on launch. The explicit false value removes Home from the syllabus,
+registers its resource as an asset, and suppresses Home LMS lifecycle writes.
+It does not change module tracking or authorize an organization migration.
+The value must be a JSON boolean. This setting applies to Slides multi-SCO
+output; single-SCO and Scrolling retain their own lifecycle.
 
 ## Presentation style
 
@@ -834,7 +811,10 @@ MP4, WebM, MOV, or M4V file:
 
 A figure may explicitly opt into a narration-master sequence with
 `"sync_to_narration": true`, `"autoplay": false`, `"loop": false`, and
-`"muted": true`. It requires paired slide narration. This is a boolean; strings
+`"muted": true`. These settings are required when the video is timed to narration:
+play once and hold the final picture in both embedded and enlarged views until
+the learner requests replay or seeks. Matching media durations alone does not
+select this behavior. It requires paired slide narration. This is a boolean; strings
 such as `"false"` must not activate it. Omission or `false` retains the historical
 player, including modulo seeking for loops and its existing pause/end behavior.
 Approval, production and regression requirements are in

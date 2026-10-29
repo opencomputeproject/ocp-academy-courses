@@ -1,0 +1,15 @@
+# pronunciation: NVIDIA -> "Nvidia"; GB200 -> "G B two hundred"; GB300 -> "G B three hundred"; NVL72 -> "N V L seventy-two"; GPUs -> "G P Yous"; HGX -> "H G X"; GPU -> "G P U"
+
+The rack outlines are examples, not definitions of the communication domains. Scale-up connects accelerators within a high-bandwidth domain for tightly coupled exchanges. Scale-out connects those domains. Their size and shape depend on the architecture.
+
+A scale-up domain can be smaller than a rack. In a typical eight-G P U Nvidia H G X server, the G P Yous share a scale-up fabric inside the server. Scale-out connects those server domains, whether the servers occupy the same rack or different racks.
+
+In rack-scale G B two hundred and G B three hundred N V L seventy-two systems, the scale-up domain spans the rack, so scale-out connects rack domains. The video places scale-up inside one rack and scale-out between racks as one illustrative arrangement, rather than a universal rule.
+
+Copper reach helps shape many current implementations. Longer-reach optical links can enable scale-up across racks when the protocol, switches and system architecture support that design. Changing the cable medium alone does not create a larger domain.
+
+Front-end and storage paths carry requests, datasets, checkpoints and results. The management path carries telemetry and supported control actions. These responsibilities need their own availability and isolation review, even when infrastructure is shared.
+
+Scale-across connects clusters, or groups of pods, over distance to assemble a much larger distributed cluster. Distance, bandwidth and latency still constrain which workloads can use those connections effectively.
+
+Keep the three levels clear: scale-up within a high-bandwidth domain, scale-out between those domains, and scale-across between larger groups over distance. The domain boundaries may change; the communication role is what matters.
