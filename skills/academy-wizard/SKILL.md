@@ -81,6 +81,8 @@ localize it independently for translations.
 
 ## What "done" looks like
 
+Every Slides course includes a Course Home at `index.html`. An explicit `scorm.include_home_sco: false` changes Home to an untracked asset and removes its LMS syllabus entry; it never removes the Home/index page, its Start action, or its visual design. Keep the default tracked Home unless a course records an approved tracking override.
+
 A folder, sitting where the user asked for it, with this exact shape:
 
 ```

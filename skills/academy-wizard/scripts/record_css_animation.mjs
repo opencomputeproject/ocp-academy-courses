@@ -46,6 +46,8 @@ function findFfmpeg(encoderName) {
 
 async function setAnimationTime(page, milliseconds) {
   await page.evaluate((time) => {
+    // Deterministic SVG/JS sources share the same finite master clock.
+    if (typeof window.setTeachingTime === 'function') window.setTeachingTime(time);
     for (const animation of document.getAnimations()) {
       animation.pause();
       animation.currentTime = time;
@@ -73,8 +75,8 @@ await page.evaluate(() => Promise.race([
 ]));
 
 const declared = await page.evaluate(() => ({
-  durationMs: Number(document.body.dataset.durationMs || 0),
-  posterMs: Number(document.body.dataset.posterMs || 0),
+  durationMs: Number(document.body.dataset.durationMs || document.documentElement.dataset.durationMs || 0),
+  posterMs: Number(document.body.dataset.posterMs || document.documentElement.dataset.posterMs || 0),
   infiniteAnimations: document.getAnimations().filter((animation) => !Number.isFinite(Number(animation.effect.getTiming().iterations))).length,
   animationEndMs: Math.max(0, ...document.getAnimations().map((animation) => Number(animation.effect.getComputedTiming().endTime || 0))),
 }));

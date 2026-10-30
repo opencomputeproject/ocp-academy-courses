@@ -17,6 +17,13 @@ class PdfReferenceTests(unittest.TestCase):
         self.assertEqual(self.audit("Spec · Table 13 · pp. 5–7, 10–11",
                                     "https://example.test/spec-final-pdf#page=5"), ([], 1))
 
+    def test_ocp_document_route_with_trailing_slash_is_audited(self):
+        url = "https://www.opencompute.org/documents/cluster-architecture-final-pdf/"
+        self.assertEqual(self.audit("Architecture · p. 8", url + "#page=8"), ([], 1))
+        errors, count = self.audit("Architecture", url)
+        self.assertEqual(count, 1)
+        self.assertTrue(any("#page=" in error for error in errors))
+
     def test_local_pdf_range_and_query_are_preserved(self):
         self.assertEqual(self.audit("Guide · pp. 2-4", "resources/guide.PDF?download=1#page=2"), ([], 1))
 
