@@ -33,7 +33,7 @@ PDF_PAGE_LABEL = re.compile(
 
 
 def pdf_url(url: str) -> bool:
-    return unquote(urlsplit(url).path).casefold().endswith((".pdf", "-pdf"))
+    return unquote(urlsplit(url).path).rstrip("/").casefold().endswith((".pdf", "-pdf"))
 
 
 def document_url(url: str) -> str:

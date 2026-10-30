@@ -44,6 +44,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | `ocp-safe-product-security` | [OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements](courses/ocp-safe-product-security/README.md): three narrated modules in one SCORM 1.2 activity, four synchronized teaching videos and the preserved program overview |
 | `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
 | `open-chiplet-economy` | [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md): nine narrated modules, nine teaching animations, and fourteen captioned recordings |
+| `open-cluster-designs-for-ai` | [Open Cluster Designs for AI](courses/open-cluster-designs-for-ai/README.md): four narrated modules, five synchronized teaching videos and practical deployment-evidence scenarios in 55 minutes |
 | `open-data-center-for-ai` | Open Data Center for AI |
 | `open-systems-for-ai` | [Open Systems for AI](courses/open-systems-for-ai/README.md): six narrated modules, eight synchronized teaching videos and six preserved recordings in one SCORM 1.2 package |
 | `open-rack-v3/module-1-ocp-orv3-history-and-impact` | Module 1: OCP & ORv3: History and Impact |
@@ -121,6 +122,7 @@ courses/
   ocp-safe-product-security/
   ocp-solid-state-transformers/
   open-chiplet-economy/
+  open-cluster-designs-for-ai/
   open-data-center-for-ai/
   open-systems-for-ai/
   open-rack-v3/
