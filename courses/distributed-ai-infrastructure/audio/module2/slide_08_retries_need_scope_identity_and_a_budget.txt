@@ -1,0 +1,7 @@
+A retry can happen at several layers, and the layer matters. A transport may retransmit missing data while preserving the communication contract. An application may repeat an operation after a timeout. A framework may restart a group and restore a checkpoint. These actions have different costs and correctness requirements.
+
+For an operation retry, ask how the system identifies the operation and handles duplicates. A timeout tells you that an expected response was not observed in time. It does not, by itself, prove that the other participant failed or that the operation never completed.
+
+A retry budget limits repeated work and gives the system a point at which to escalate. A job restart also needs a known recovery state and a clear affected group.
+
+Retries can protect progress when they follow the relevant protocol. Unbounded or incorrectly scoped retries can create more load while obscuring the original problem. State the identity, scope and budget before calling a retry policy reliable.

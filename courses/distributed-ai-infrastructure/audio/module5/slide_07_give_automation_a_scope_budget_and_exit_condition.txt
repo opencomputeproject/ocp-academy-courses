@@ -1,0 +1,9 @@
+A guardrail turns an intention into a bounded decision. Define the condition being checked, the actor allowed to respond, the affected scope and the evidence required to exit the condition.
+
+For admission, that might mean keeping a workload pending until capacity and readiness checks pass. For a timeout, it might mean a limited investigation or retry rather than immediately declaring a participant dead. For recovery, it means selecting a valid state and a supported membership transition before resuming.
+
+Retries need a budget. Changes need an escalation path. A controller that repeatedly restarts a group without resolving the cause can consume resources while preventing useful progress.
+
+Also define rollback criteria for the action itself. What would show that the chosen recovery made matters worse, and who can stop it? Keep the decision auditable so an operator can explain why it happened.
+
+These rules don't remove every failure. They keep detection, authority and recovery from becoming an uncontrolled chain of additional disruptions.

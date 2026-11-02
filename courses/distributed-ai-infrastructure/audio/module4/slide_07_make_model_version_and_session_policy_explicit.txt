@@ -1,0 +1,9 @@
+Global inference needs an explicit version policy. It doesn't follow that every region must change its model at the exact same instant.
+
+A service might test a candidate version in one region while approved traffic continues using another version elsewhere. It can then promote the candidate after validation, or roll back if the service outcome is unacceptable. That is a deliberate rollout policy rather than an accidental inconsistency.
+
+The team must still define what is unacceptable. Does a conversation need to remain on a compatible model version? Must a response use data with a specified freshness? Can different request classes be routed to different versions? The answers depend on the service contract.
+
+Separate model artifacts from application state and user data. A model deployment policy does not automatically resolve session-state consistency or data-location requirements.
+
+For a computation split across hosts, the runtime's dependencies add another contract. Keep that execution relationship distinct from independent replicas serving different users in different regions.

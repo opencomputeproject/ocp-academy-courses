@@ -17,6 +17,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
 | `data-center-basics` | [Data Centers: From Digital Services to Physical Infrastructure](courses/data-center-basics/README.md): four narrated SCORM 1.2 modules with preserved recordings and timed teaching videos |
 | `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
+| `distributed-ai-infrastructure` | [Distributed AI Infrastructure](courses/distributed-ai-infrastructure/README.md): five narrated modules, eight original recordings, five synchronized teaching videos and ten knowledge-check questions in 80 minutes |
 | `fcsa-architecting-interoperable-chiplet-systems` | [FCSA: Architecting Interoperable Chiplet Systems](courses/fcsa-architecting-interoperable-chiplet-systems/README.md): five narrated modules, five synchronized teaching videos, and an integration workbook |
 | `fast-optical-circuit-switching-for-dynamic-ai-fabrics` | [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md): four narrated modules on workload timing, system readiness, switching mechanisms, and AI-workload evidence |
 | `grid-disturbance-performance` | Grid Disturbance Performance for Hyperscale Data Centers |
@@ -91,6 +92,7 @@ courses/
   cooling-fluids-in-direct-liquid-cooling/
   data-center-basics/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
+  distributed-ai-infrastructure/
   fcsa-architecting-interoperable-chiplet-systems/
   fast-optical-circuit-switching-for-dynamic-ai-fabrics/
   grid-disturbance-performance/

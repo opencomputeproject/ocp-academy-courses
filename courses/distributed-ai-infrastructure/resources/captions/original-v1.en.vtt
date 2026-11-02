@@ -1,0 +1,221 @@
+WEBVTT
+
+0
+00:00:03.450 --> 00:00:04.070
+Welcome
+
+1
+00:00:04.889 --> 00:00:05.730
+If you're here,
+
+2
+00:00:06.019 --> 00:00:08.840
+it's likely because you have realised something the hard way.
+
+3
+00:00:09.960 --> 00:00:12.649
+The playbooks we have used for the last decade to build and
+
+4
+00:00:12.649 --> 00:00:15.489
+scale cloud infrastructure don't translate cleanly
+
+5
+00:00:15.489 --> 00:00:17.790
+into your distributed AI systems.
+
+6
+00:00:18.209 --> 00:00:19.360
+In many cases,
+
+7
+00:00:19.610 --> 00:00:22.819
+systems appear to work until you try to reason about them.
+
+8
+00:00:23.290 --> 00:00:25.450
+We are used to stateless microservices,
+
+9
+00:00:25.729 --> 00:00:28.309
+we are used to infinite elastic compute,
+
+10
+00:00:28.569 --> 00:00:32.029
+and we are used to treating network latency as a minor,
+
+11
+00:00:32.090 --> 00:00:33.419
+manageable annoyance.
+
+12
+00:00:34.049 --> 00:00:36.659
+But when you apply those traditional transactional
+
+13
+00:00:36.659 --> 00:00:39.569
+instincts to massively distributed AI systems,
+
+14
+00:00:39.860 --> 00:00:42.580
+it is a recipe for failures that are hard to detect,
+
+15
+00:00:42.740 --> 00:00:44.299
+diagnose and reason about.
+
+16
+00:00:45.549 --> 00:00:47.779
+My name is Ankur Sharma from Oracle.
+
+17
+00:00:47.959 --> 00:00:50.069
+Welcome to distributed AI infrastructure,
+
+18
+00:00:50.189 --> 00:00:52.389
+architecture coherence and scale.
+
+19
+00:00:52.950 --> 00:00:56.250
+Distributed AI isn't just cloud on steroids.
+
+20
+00:00:56.709 --> 00:01:01.130
+It requires a fundamental rethinking of your architectural assumptions.
+
+21
+00:01:01.669 --> 00:01:04.150
+When you have thousands of GPUs that must coordinate
+
+22
+00:01:04.150 --> 00:01:08.370
+and align state across systems spanning massive infrastructure boundaries,
+
+23
+00:01:08.669 --> 00:01:10.589
+you aren't just moving data anymore,
+
+24
+00:01:10.870 --> 00:01:12.739
+you're fighting the physics of time,
+
+25
+00:01:12.949 --> 00:01:13.669
+latency,
+
+26
+00:01:13.750 --> 00:01:15.209
+and system coherence.
+
+27
+00:01:15.739 --> 00:01:16.819
+Throughout this course,
+
+28
+00:01:16.949 --> 00:01:18.110
+we are going to explore the
+
+29
+00:01:18.110 --> 00:01:21.349
+real world architectural realities of these environments
+
+30
+00:01:22.029 --> 00:01:23.029
+across data centres,
+
+31
+00:01:23.139 --> 00:01:24.019
+hybrid clouds,
+
+32
+00:01:24.190 --> 00:01:26.870
+and emerging AI native compute platforms.
+
+33
+00:01:27.489 --> 00:01:30.169
+We will examine how system coherence,
+
+34
+00:01:30.470 --> 00:01:32.000
+coordination behaviour,
+
+35
+00:01:32.260 --> 00:01:35.059
+and control mechanisms ultimately determine the
+
+36
+00:01:35.059 --> 00:01:37.959
+reliability and scalability of your system.
+
+37
+00:01:38.930 --> 00:01:41.250
+We will expose the hidden failure modes caused
+
+38
+00:01:41.250 --> 00:01:45.129
+by variability and coordination mismatches across systems,
+
+39
+00:01:45.489 --> 00:01:48.120
+navigate the multiplied complexity of running
+
+40
+00:01:48.120 --> 00:01:50.400
+federated systems across different regions,
+
+41
+00:01:50.569 --> 00:01:54.750
+and outline the strict guard rails needed to scale without losing control.
+
+42
+00:01:55.489 --> 00:01:56.339
+At scale,
+
+43
+00:01:56.849 --> 00:01:59.690
+small inconsistencies don't stay small,
+
+44
+00:01:59.919 --> 00:02:01.230
+and most of the time,
+
+45
+00:02:01.339 --> 00:02:02.569
+you won't even notice.
+
+46
+00:02:03.709 --> 00:02:04.690
+Our goal is simple,
+
+47
+00:02:05.110 --> 00:02:06.410
+to help you rethink
+
+48
+00:02:06.709 --> 00:02:09.250
+those deeply ingrained cloud assumptions
+
+49
+00:02:09.589 --> 00:02:13.210
+and understand how distributed AI infrastructure behaves at scale.
+
+50
+00:02:13.830 --> 00:02:15.149
+By the end of this journey,
+
+51
+00:02:15.350 --> 00:02:19.580
+you won't just look at infrastructure as a collection of servers and cables,
+
+52
+00:02:19.949 --> 00:02:23.190
+you will see the invisible forces of coordination and
+
+53
+00:02:23.190 --> 00:02:26.369
+coherence that actually make distributed AI systems work.
+
+54
+00:02:27.759 --> 00:02:30.149
+So let's dive into our first concept.

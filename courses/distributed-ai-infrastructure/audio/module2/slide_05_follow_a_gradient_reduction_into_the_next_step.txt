@@ -1,0 +1,13 @@
+Follow one update through four data-parallel model replicas. Each worker has a rank, its identity within the group. Each replica starts step forty-two with the same weight, ten, and processes different input data.
+
+This is a scalar teaching example, with one weight and equally weighted batches. The local gradients are two, four, six, and eight. A gradient describes how the loss changes as a weight changes.
+
+The declared reduction sums those four contributions to twenty. We then divide by four to obtain the averaged gradient, five. Summation alone doesn't perform that division. Every participant receives the same result.
+
+Using simple stochastic gradient descent with a learning rate of zero point one, each replica subtracts zero point five from ten. All reach nine point five and advance to step forty-three.
+
+These are replicated models. Tensor or pipeline parallelism places different model parts on different resources. Don't confuse that arrangement with this example.
+
+Now a replacement worker arrives without the required state. It must pass a supported membership and restoration process before participating. Recovery must define the model, optimizer, and input-progress state required by the implementation.
+
+Matching operation identities and restored state matter. Accepting contributions merely in arrival order doesn't define the training algorithm.

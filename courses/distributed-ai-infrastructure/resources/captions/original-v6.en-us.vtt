@@ -1,0 +1,133 @@
+WEBVTT
+
+0
+00:00:03.630 --> 00:00:04.650
+Welcome back.
+
+1
+00:00:05.070 --> 00:00:08.229
+We have established that AI requires extremely
+
+2
+00:00:08.229 --> 00:00:11.270
+tight coordination within a single data center.
+
+3
+00:00:12.569 --> 00:00:14.060
+But what happens when you split
+
+4
+00:00:14.060 --> 00:00:17.170
+that workload across different geographic regions,
+
+5
+00:00:17.540 --> 00:00:21.100
+it becomes a massive architectural challenge.
+
+6
+00:00:21.500 --> 00:00:25.250
+Running training or inference across multiple regions
+
+7
+00:00:25.420 --> 00:00:28.780
+significantly increases coordination overhead.
+
+8
+00:00:30.399 --> 00:00:33.259
+Let us look at a cross-region training scenario.
+
+9
+00:00:35.029 --> 00:00:39.009
+You might have your data preprocessing happening in region A
+
+10
+00:00:39.189 --> 00:00:42.270
+and your heavy GPU compute in region B.
+
+11
+00:00:43.889 --> 00:00:49.200
+The physical distance between these regions introduces hard latency floors.
+
+12
+00:00:50.529 --> 00:00:53.049
+You cannot bypass the speed of light.
+
+13
+00:00:55.000 --> 00:00:58.090
+If the network link between region A and region
+
+14
+00:00:58.090 --> 00:01:00.950
+B drops even a fraction of its bandwidth,
+
+15
+00:01:01.169 --> 00:01:03.189
+the GPUs in region B
+
+16
+00:01:03.319 --> 00:01:06.410
+can become underutilized while waiting for data.
+
+17
+00:01:07.269 --> 00:01:11.360
+They sit idle waiting for data to cross the geographic divide,
+
+18
+00:01:11.709 --> 00:01:14.690
+instantly destroying your compute efficiency.
+
+19
+00:01:15.779 --> 00:01:19.639
+Inference introduces a different set of boundary issues.
+
+20
+00:01:20.519 --> 00:01:23.709
+When coordinating a global inference architecture,
+
+21
+00:01:23.910 --> 00:01:26.559
+you must maintain model consistency
+
+22
+00:01:26.559 --> 00:01:30.339
+across all physical locations simultaneously.
+
+23
+00:01:30.639 --> 00:01:33.059
+If a user query hits region A,
+
+24
+00:01:33.239 --> 00:01:36.400
+or region A is slightly out of sync with region B,
+
+25
+00:01:37.160 --> 00:01:42.349
+The system may produce inconsistent behavior depending on the synchronization
+
+26
+00:01:42.559 --> 00:01:43.690
+and update timing.
+
+27
+00:01:44.750 --> 00:01:49.050
+Your coordination mechanisms must actively force consistency
+
+28
+00:01:49.430 --> 00:01:51.089
+across thousands of miles.
+
+29
+00:01:52.550 --> 00:01:57.720
+Geographic boundaries amplify every single timing issue we discussed earlier.
+
+30
+00:01:59.260 --> 00:02:01.760
+You are no longer just managing a network,
+
+31
+00:02:02.019 --> 00:02:04.419
+you are managing a globally coordinated,
+
+32
+00:02:04.660 --> 00:02:05.800
+distributed system.

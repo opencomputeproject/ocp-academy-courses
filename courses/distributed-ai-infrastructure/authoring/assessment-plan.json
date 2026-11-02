@@ -1,0 +1,387 @@
+{
+  "status": "proposed_for_approval",
+  "attempt_required": true,
+  "correctness_required": false,
+  "retry_allowed": true,
+  "narrated_orientation": true,
+  "modules": [
+    {
+      "id": 1,
+      "questions": [
+        {
+          "prompt": "Four ranks participate in one synchronous training step. A separate inference service has four independent replicas. One training rank slows down. What is the most defensible immediate consequence?",
+          "multiple": false,
+          "choices": [
+            {
+              "id": "A",
+              "text": "The training group may wait for its required participant; the inference service is not automatically part of that barrier.",
+              "correct": true
+            },
+            {
+              "id": "B",
+              "text": "Every service using the same data center must wait for the training rank.",
+              "correct": false,
+              "feedback_incorrect": "A shared location does not establish a shared synchronization group. Other services might share resource contention, but they do not automatically participate in this barrier."
+            },
+            {
+              "id": "C",
+              "text": "The training result is necessarily corrupted as soon as one rank is delayed.",
+              "correct": false,
+              "feedback_incorrect": "Delay can increase waiting without making the calculation incorrect. Correctness depends on the operation and state protocol."
+            },
+            {
+              "id": "D",
+              "text": "The scheduler can always replace that rank with any idle inference replica during the step.",
+              "correct": false,
+              "feedback_incorrect": "A replacement must have the supported membership, state and role. An arbitrary device cannot be inserted into an in-flight collective."
+            }
+          ],
+          "feedback_correct": "The dependency belongs to the declared training group. A performance stall is not, by itself, evidence of corrupted state or a shared barrier with independent services.",
+          "feedback_incorrect": "The dependency belongs to the declared training group. A performance stall is not, by itself, evidence of corrupted state or a shared barrier with independent services.",
+          "taught_on": [
+            "M1S3",
+            "M1S5"
+          ],
+          "id": "M1Q1"
+        },
+        {
+          "prompt": "Before approving more accelerators for the workload, which evidence would help evaluate useful scaling? Select all that apply.",
+          "multiple": true,
+          "choices": [
+            {
+              "id": "A",
+              "text": "The workload’s communication and synchronization groups.",
+              "correct": true
+            },
+            {
+              "id": "B",
+              "text": "Measured throughput or service latency, together with the relevant step-time distribution.",
+              "correct": true
+            },
+            {
+              "id": "C",
+              "text": "Available fabric, data-supply, power and cooling capacity.",
+              "correct": true
+            },
+            {
+              "id": "D",
+              "text": "The accelerator count alone, without workload or resource measurements.",
+              "correct": false
+            }
+          ],
+          "feedback_correct": "Workload dependencies, useful-progress measurements and supporting capacity together explain the proposed expansion. Device count is an inventory measure, not a scaling result.",
+          "feedback_incorrect": "Select the dependency, measurement and capacity evidence. Count alone cannot show whether extra devices will produce useful progress.",
+          "taught_on": [
+            "M1S3",
+            "M1S7",
+            "M1S8"
+          ],
+          "id": "M1Q2"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "questions": [
+        {
+          "prompt": "Four data-parallel ranks contribute scalar gradients 2, 4, 6 and 8. The declared operation sums them and then divides by four. What value should every participating rank use for this averaged gradient?",
+          "multiple": false,
+          "choices": [
+            {
+              "id": "A",
+              "text": "8, because the last arriving contribution replaces the earlier ones.",
+              "correct": false,
+              "feedback_incorrect": "Arrival order is not a last-write-wins rule for this collective. All four contributions belong to the declared reduction."
+            },
+            {
+              "id": "B",
+              "text": "5, because the sum of the four declared contributions is divided by four.",
+              "correct": true
+            },
+            {
+              "id": "C",
+              "text": "20, because sum reduction always performs averaging automatically.",
+              "correct": false,
+              "feedback_incorrect": "20 is the sum before the separate division. A sum reduction does not by itself imply averaging."
+            },
+            {
+              "id": "D",
+              "text": "A different value on each rank, because each rank must own a different model shard.",
+              "correct": false,
+              "feedback_incorrect": "Data-parallel replicas are not necessarily different model shards. The operation specifies the same aggregate for each participant."
+            }
+          ],
+          "feedback_correct": "The sum is 20; the explicitly declared division gives 5. In this teaching example every data-parallel rank receives the same aggregate. Reduction and averaging are distinct operations.",
+          "feedback_incorrect": "The sum is 20; the explicitly declared division gives 5. In this teaching example every data-parallel rank receives the same aggregate. Reduction and averaging are distinct operations.",
+          "taught_on": [
+            "M2S5"
+          ],
+          "id": "M2Q1"
+        },
+        {
+          "prompt": "A supported framework is changing a training job’s worker-group membership at a recovery boundary. Which items should the recovery plan define? Select all that apply.",
+          "multiple": true,
+          "choices": [
+            {
+              "id": "A",
+              "text": "Which committed model, optimizer and input-progress state must be restored.",
+              "correct": true
+            },
+            {
+              "id": "B",
+              "text": "How membership, roles and communication groups are re-established.",
+              "correct": true
+            },
+            {
+              "id": "C",
+              "text": "Timeouts, retry budgets and checks before resuming useful work.",
+              "correct": true
+            },
+            {
+              "id": "D",
+              "text": "A rule allowing any replacement GPU to consume in-flight messages under the failed rank’s identity immediately.",
+              "correct": false
+            }
+          ],
+          "feedback_correct": "Recovery needs coherent state, supported group setup and bounded behavior. Reusing a failed participant’s identity without those checks is not a recovery protocol.",
+          "feedback_incorrect": "Select state restoration, group re-establishment and bounded validation. An in-flight identity shortcut can confuse membership and operation state.",
+          "taught_on": [
+            "M2S3",
+            "M2S7",
+            "M2S8",
+            "M2S9"
+          ],
+          "id": "M2Q2"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "questions": [
+        {
+          "prompt": "A correlated trace shows receipt of message 17 at 10:00:00.003 on B and its send at 10:00:00.005 on A. What should the engineer conclude first?",
+          "multiple": false,
+          "choices": [
+            {
+              "id": "A",
+              "text": "The message must have traveled backward in time.",
+              "correct": false,
+              "feedback_incorrect": "Unsynchronized or uncertain timestamps can invert the displayed order. They do not invert the message’s causal dependency."
+            },
+            {
+              "id": "B",
+              "text": "The model must have accepted the wrong gradient.",
+              "correct": false,
+              "feedback_incorrect": "The trace alone does not show an incorrect model update. Inspect operation identity and runtime behavior before diagnosing correctness."
+            },
+            {
+              "id": "C",
+              "text": "Check clock offset and uncertainty, then use the matching message identity and dependency to interpret the sequence.",
+              "correct": true
+            },
+            {
+              "id": "D",
+              "text": "Discard all physical timestamps because they can never be useful.",
+              "correct": false,
+              "feedback_incorrect": "Physical timestamps remain useful when interpreted with their uncertainty and corroborating identifiers."
+            }
+          ],
+          "feedback_correct": "The matching message establishes a send/receive dependency. Cross-clock timestamps require an uncertainty or alignment check; the apparent inversion alone proves neither backward causality nor model corruption.",
+          "feedback_incorrect": "The matching message establishes a send/receive dependency. Cross-clock timestamps require an uncertainty or alignment check; the apparent inversion alone proves neither backward causality nor model corruption.",
+          "taught_on": [
+            "M3S3",
+            "M3S7"
+          ],
+          "id": "M3Q1"
+        },
+        {
+          "prompt": "A synchronous job has stable average latency but inconsistent step completion. Which evidence helps distinguish causes? Select all that apply.",
+          "multiple": true,
+          "choices": [
+            {
+              "id": "A",
+              "text": "Per-step tails and the readiness times of required participants.",
+              "correct": true
+            },
+            {
+              "id": "B",
+              "text": "Queue, retransmission and accelerator-compute evidence correlated with the affected steps.",
+              "correct": true
+            },
+            {
+              "id": "C",
+              "text": "Message or operation identifiers and the uncertainty of cross-host timestamps.",
+              "correct": true
+            },
+            {
+              "id": "D",
+              "text": "Peak link speed alone as proof that the fabric cannot be involved.",
+              "correct": false
+            }
+          ],
+          "feedback_correct": "Tails expose waiting, layer-specific signals test alternative causes, and identifiers plus timestamp uncertainty support correlation. Peak speed does not rule out congestion, loss or slow participants.",
+          "feedback_incorrect": "Select readiness/tail evidence, correlated system signals and trace identity/time uncertainty. Peak link rate alone cannot diagnose the stall.",
+          "taught_on": [
+            "M3S5",
+            "M3S7",
+            "M3S8"
+          ],
+          "id": "M3Q2"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "questions": [
+        {
+          "prompt": "A regional GPU consumer uses four equal-sized batches per second. Its buffer initially holds eight batches. Supply drops to two batches per second for three seconds. Under this simplified flow model, what happens?",
+          "multiple": false,
+          "choices": [
+            {
+              "id": "A",
+              "text": "The consumer starves immediately when supply drops.",
+              "correct": false,
+              "feedback_incorrect": "The buffer covers the short deficit in this scenario. Its initial eight batches exceed the six-batch shortfall."
+            },
+            {
+              "id": "B",
+              "text": "The buffer falls to two batches and supplies the consumer throughout the three-second dip.",
+              "correct": true
+            },
+            {
+              "id": "C",
+              "text": "The buffer grows to fourteen batches.",
+              "correct": false,
+              "feedback_incorrect": "Consumption exceeds supply, so the buffer drains rather than grows: 8 minus (4 minus 2) times 3 equals 2."
+            },
+            {
+              "id": "D",
+              "text": "Private connectivity makes the buffer calculation unnecessary.",
+              "correct": false,
+              "feedback_incorrect": "Connection type does not remove the stated supply and consumption rates or guarantee an uninterrupted service."
+            }
+          ],
+          "feedback_correct": "The deficit is two batches per second for three seconds, so six buffered batches are consumed and two remain. Longer deficits can exhaust the buffer, but starvation is not immediate.",
+          "feedback_incorrect": "The deficit is two batches per second for three seconds, so six buffered batches are consumed and two remain. Longer deficits can exhaust the buffer, but starvation is not immediate.",
+          "taught_on": [
+            "M4S3",
+            "M4S5",
+            "M4S6"
+          ],
+          "id": "M4Q1"
+        },
+        {
+          "prompt": "Which requirements belong in a cross-provider inference deployment review? Select all that apply.",
+          "multiple": true,
+          "choices": [
+            {
+              "id": "A",
+              "text": "Model-version rollout, routing and session-compatibility policy.",
+              "correct": true
+            },
+            {
+              "id": "B",
+              "text": "Data-location policy, identity/key ownership and recovery authority.",
+              "correct": true
+            },
+            {
+              "id": "C",
+              "text": "Capacity, path/failover behavior and measured latency or loss objectives.",
+              "correct": true
+            },
+            {
+              "id": "D",
+              "text": "A universal requirement that every region changes model version at the exact same instant, regardless of service policy.",
+              "correct": false
+            }
+          ],
+          "feedback_correct": "The review needs explicit service, governance and link contracts. Coordinated global model cutover is one possible policy, not a rule for every inference deployment.",
+          "feedback_incorrect": "Select the service policy, administrative controls and operating-link evidence. Simultaneous worldwide updates are not universally necessary.",
+          "taught_on": [
+            "M4S6",
+            "M4S7",
+            "M4S8"
+          ],
+          "id": "M4Q2"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "questions": [
+        {
+          "prompt": "Training group A loses a worker. Independent group B is healthy. A replacement resource is available, but its required power/cooling envelope has not been checked. What is the best next action?",
+          "multiple": false,
+          "choices": [
+            {
+              "id": "A",
+              "text": "Resume A immediately because available accelerator count is the only admission criterion.",
+              "correct": false,
+              "feedback_incorrect": "Inventory alone does not show safe power, cooling, communication or state readiness."
+            },
+            {
+              "id": "B",
+              "text": "Roll back every job at the facility because any AI failure requires global recovery.",
+              "correct": false,
+              "feedback_incorrect": "A failure in one group does not establish a dependency requiring facility-wide rollback."
+            },
+            {
+              "id": "C",
+              "text": "Bound recovery to A using the supported framework, verify required state and resource readiness, and resume only after the checks pass.",
+              "correct": true
+            },
+            {
+              "id": "D",
+              "text": "Disable checkpointing so the replacement cannot load an older state.",
+              "correct": false,
+              "feedback_incorrect": "A committed checkpoint can provide a defined recovery state. Removing it does not make a replacement coherent."
+            }
+          ],
+          "feedback_correct": "The affected group and its resource envelope define the recovery decision. Preserve a healthy independent group unless actual shared-resource evidence requires broader action.",
+          "feedback_incorrect": "The affected group and its resource envelope define the recovery decision. Preserve a healthy independent group unless actual shared-resource evidence requires broader action.",
+          "taught_on": [
+            "M5S3",
+            "M5S5",
+            "M5S7"
+          ],
+          "id": "M5Q1"
+        },
+        {
+          "prompt": "Which items make an automated recovery decision reviewable? Select all that apply.",
+          "multiple": true,
+          "choices": [
+            {
+              "id": "A",
+              "text": "A declared affected group, failure boundary and authorized actor.",
+              "correct": true
+            },
+            {
+              "id": "B",
+              "text": "A tested state-restoration procedure, bounded retries and an escalation path.",
+              "correct": true
+            },
+            {
+              "id": "C",
+              "text": "Correlated telemetry and explicit readiness/exit checks before resuming.",
+              "correct": true
+            },
+            {
+              "id": "D",
+              "text": "A dashboard’s green device count alone, without workload or state evidence.",
+              "correct": false
+            }
+          ],
+          "feedback_correct": "Authority and scope, a tested recovery procedure, bounded action and evidence-based readiness checks make the decision explainable. Device count alone cannot establish service or training readiness.",
+          "feedback_incorrect": "Select scope/authority, tested bounded recovery and correlated readiness evidence. A green count does not replace those checks.",
+          "taught_on": [
+            "M5S5",
+            "M5S6",
+            "M5S7",
+            "M5S9"
+          ],
+          "id": "M5Q2"
+        }
+      ]
+    }
+  ]
+}

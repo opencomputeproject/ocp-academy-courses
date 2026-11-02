@@ -1,0 +1,13 @@
+A recovery decision starts with the affected workload and the authority to act. Consider two independent training groups, A and B. Each has four participants.
+
+Group A has a committed checkpoint after step forty-two. It completes steps forty-three and forty-four, then loses a participant during step forty-five. Under this example's supported recovery policy, A stops as a group. B continues because it has no dependency on A's recovery.
+
+The controller correlates the job failure with device and network evidence. A compatible spare is available, but availability alone doesn't establish readiness. The controller must check health, communication, and the required power and cooling capacity, then restore the training state.
+
+Restoring the checkpoint returns A to the end of step forty-two. Completed steps forty-three and forty-four must be repeated, along with the unfinished work from forty-five. This is explicit recovery from a known state.
+
+After validating restored state and group membership, the controller resumes at step forty-three. Retry limits and an escalation path bound further attempts.
+
+Now consider an expansion request needing forty kilowatts where the approved facility capacity has only thirty kilowatts of headroom. The request remains pending, even if more devices are idle. Both figures refer to the same illustrative facility boundary.
+
+Define the recovery group, restore valid state, and verify capacity before admitting work. Broaden the response only when evidence identifies shared dependencies or wider failure.
