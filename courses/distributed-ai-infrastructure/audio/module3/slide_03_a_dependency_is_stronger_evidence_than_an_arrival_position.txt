@@ -1,0 +1,9 @@
+Causality describes a dependency between events. If one process sends a message and another receives that message, the send precedes the receive. If a calculation requires the received value, that calculation also follows the dependency.
+
+Other events may be independent. Two participants can finish separate calculations without either completion causing the other. Which one finishes first does not establish a rule that its contribution must be applied first.
+
+The algorithm defines the required operation sequence. Step numbers, collective identities and message identifiers help the runtime associate data with the intended work. They are different from simply sorting everything by arrival time.
+
+This creates a partial order: some events have a dependency relationship, while others can remain concurrent. You don't need to invent a global causal sequence for every independent event.
+
+Physical clocks still help with measurement and correlation. But a timestamp only has the meaning supported by its clock and uncertainty. Establish the dependency first, then use timing evidence to investigate how long the required work took.

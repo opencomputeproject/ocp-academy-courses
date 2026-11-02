@@ -1,0 +1,11 @@
+# pronunciation: AI -> "A I"
+
+An A I label doesn't tell you how a workload coordinates. Compare three arrangements.
+
+First, independent inference replicas each hold a model and answer separate requests. A request may depend on databases or other services, but the replicas don't necessarily synchronize with one another before every answer.
+
+Second, a model can be divided across devices. One device may need an intermediate result from another before continuing. The boundary follows that execution dependency.
+
+Third, in synchronous data-parallel training, model replicas process different input batches and combine their gradient contributions before the next update. Those participants share a coordination requirement. A gradient describes how a model parameter should change to reduce the training error.
+
+The distinction matters because the same hardware can support different dependency patterns. A familiar cloud mechanism may work well for independent requests while needing a training-aware counterpart for a coordinated job. Before choosing a scaling policy, identify the operation, its required participants, and the state they must preserve.

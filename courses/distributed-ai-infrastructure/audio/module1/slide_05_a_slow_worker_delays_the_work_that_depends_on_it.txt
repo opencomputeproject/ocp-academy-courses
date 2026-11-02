@@ -1,0 +1,13 @@
+# pronunciation: GPU-milliseconds -> "G P U milliseconds"; GPUs -> "G P Yous"; GPU -> "G P U"
+
+Four G P Yous can serve independent requests, or participate in one synchronous training group. The device count matches, but the dependencies differ.
+
+In this illustrative serving example, three requests finish at one hundred milliseconds. The fourth takes one hundred and forty. The first three can return without waiting for the fourth.
+
+Now consider the training group. Three participants are ready after one hundred milliseconds, but the fourth needs another forty. The next operation requires all four, so the early participants wait. We're isolating this dependency: communication duration and overlapping work aren't included.
+
+Three G P Yous each wait forty milliseconds. That's one hundred and twenty G P U milliseconds of aggregate waiting time. A G P U-millisecond means one G P U waiting for one millisecond here. The group's elapsed delay is forty milliseconds, not one hundred and twenty.
+
+An independent job outside this group can continue. A fifth G P U doesn't automatically supply the missing contribution.
+
+Before adding devices, identify which operation needs which participants. A delay can reduce useful throughput without corrupting the training state or stopping every service in the data center.

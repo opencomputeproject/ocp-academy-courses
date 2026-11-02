@@ -1,0 +1,341 @@
+WEBVTT
+
+0
+00:00:03.839 --> 00:00:05.699
+Welcome to module 2.
+
+1
+00:00:06.159 --> 00:00:07.590
+For the last 10 years,
+
+2
+00:00:07.679 --> 00:00:10.100
+cloud engineers have relied on a few
+
+3
+00:00:10.640 --> 00:00:14.500
+well-established design principles to build highly available,
+
+4
+00:00:14.720 --> 00:00:16.020
+scalable systems.
+
+5
+00:00:16.799 --> 00:00:20.069
+But what happens when you take those proven rules
+
+6
+00:00:20.290 --> 00:00:23.840
+and apply them to a massive AI training cluster?
+
+7
+00:00:24.170 --> 00:00:27.200
+The system starts to behave in unexpected ways,
+
+8
+00:00:27.370 --> 00:00:28.799
+and the worst part is,
+
+9
+00:00:28.969 --> 00:00:30.430
+it doesn't break loudly,
+
+10
+00:00:30.549 --> 00:00:32.909
+it breaks in ways that are hard to detect,
+
+11
+00:00:33.360 --> 00:00:34.270
+diagnose,
+
+12
+00:00:34.409 --> 00:00:35.529
+and reason about,
+
+13
+00:00:35.759 --> 00:00:38.909
+often leading to underutilized compute capacity.
+
+14
+00:00:40.099 --> 00:00:43.360
+These systems don't fail the way traditional systems fail.
+
+15
+00:00:44.430 --> 00:00:44.889
+Today,
+
+16
+00:00:45.069 --> 00:00:48.810
+we are gonna break down the hidden infrastructure assumptions
+
+17
+00:00:49.029 --> 00:00:52.209
+that create these bottlenecks at AI scale.
+
+18
+00:00:52.509 --> 00:00:54.569
+Let's look at assumption number one,
+
+19
+00:00:54.869 --> 00:00:56.830
+the infinite compute illusion.
+
+20
+00:00:57.709 --> 00:00:59.830
+In traditional cloud architecture,
+
+21
+00:01:00.009 --> 00:01:02.630
+if a web application gets too much traffic,
+
+22
+00:01:02.869 --> 00:01:03.700
+what do we do?
+
+23
+00:01:03.990 --> 00:01:06.410
+We spin up more virtual machines.
+
+24
+00:01:06.870 --> 00:01:07.610
+The assumption
+
+25
+00:01:07.870 --> 00:01:10.510
+is that scaling compute horizontally
+
+26
+00:01:10.949 --> 00:01:13.769
+provides a linear increase in performance.
+
+27
+00:01:14.610 --> 00:01:16.360
+But in distributed AI
+
+28
+00:01:16.790 --> 00:01:19.010
+compute does not scale independently.
+
+29
+00:01:19.660 --> 00:01:23.680
+Imagine you're running a massive large language model training job.
+
+30
+00:01:23.930 --> 00:01:26.739
+You throw 10,000 GPUs at the problem,
+
+31
+00:01:26.900 --> 00:01:28.559
+but instead of going faster,
+
+32
+00:01:28.699 --> 00:01:30.690
+your performance flatlines.
+
+33
+00:01:31.180 --> 00:01:31.650
+Why?
+
+34
+00:01:32.059 --> 00:01:36.440
+Because AI compute is driven by coordination across the network.
+
+35
+00:01:37.300 --> 00:01:41.569
+If your interconnects can't feed data to those GPUs fast enough,
+
+36
+00:01:42.029 --> 00:01:45.489
+you just bought the world's most expensive space heaters.
+
+37
+00:01:47.019 --> 00:01:48.230
+Assumption number 2,
+
+38
+00:01:48.430 --> 00:01:51.010
+the independent stateless node fallacy.
+
+39
+00:01:52.540 --> 00:01:55.300
+Traditional cloud thrives on statelessness.
+
+40
+00:01:56.989 --> 00:01:58.760
+If server A crashes,
+
+41
+00:01:59.059 --> 00:02:03.010
+the load balancer simply routes the traffic to server B.
+
+42
+00:02:03.430 --> 00:02:04.849
+The system survives
+
+43
+00:02:05.190 --> 00:02:07.809
+because the nodes don't depend on each other.
+
+44
+00:02:08.589 --> 00:02:12.210
+Distributed AI systems are the exact opposite.
+
+45
+00:02:12.509 --> 00:02:14.070
+They are highly stateful,
+
+46
+00:02:14.210 --> 00:02:15.389
+tightly coupled,
+
+47
+00:02:15.589 --> 00:02:17.330
+and tightly coordinated.
+
+48
+00:02:18.029 --> 00:02:19.710
+During an AI training run,
+
+49
+00:02:20.100 --> 00:02:23.550
+nodes must continuously exchange updates to
+
+50
+00:02:23.550 --> 00:02:26.490
+maintain consistency across the cluster.
+
+51
+00:02:27.380 --> 00:02:30.559
+Here is a concrete example of how this breaks down.
+
+52
+00:02:31.300 --> 00:02:37.940
+If one single GPU out of 1000 experiences a microsecond delay or drops a packet,
+
+53
+00:02:38.229 --> 00:02:40.770
+the other 999 GPUs
+
+54
+00:02:41.029 --> 00:02:43.619
+often cannot make progress efficiently.
+
+55
+00:02:43.910 --> 00:02:47.570
+They must sit idle and wait for the lagging node to catch up.
+
+56
+00:02:48.399 --> 00:02:49.350
+In the cloud,
+
+57
+00:02:49.600 --> 00:02:52.240
+a localized failure is isolated.
+
+58
+00:02:52.399 --> 00:02:53.220
+In AI,
+
+59
+00:02:53.520 --> 00:02:55.059
+a localized failure
+
+60
+00:02:55.199 --> 00:02:58.830
+can propagate rapidly across the entire cluster,
+
+61
+00:02:59.160 --> 00:03:01.470
+which brings us to assumption number 3,
+
+62
+00:03:01.639 --> 00:03:04.449
+latency as a best effort metric.
+
+63
+00:03:05.949 --> 00:03:07.929
+In a standard web environment,
+
+64
+00:03:08.119 --> 00:03:11.330
+an extra 50 milliseconds of network latency
+
+65
+00:03:11.630 --> 00:03:13.750
+goes completely unnoticed by a user.
+
+66
+00:03:14.619 --> 00:03:16.059
+In an AI cluster,
+
+67
+00:03:16.229 --> 00:03:19.179
+latency is not just a user experience issue,
+
+68
+00:03:19.350 --> 00:03:23.210
+it is a critical system constraint for maintaining coherence.
+
+69
+00:03:24.119 --> 00:03:29.119
+When you are coordinating massive gradient updates across data center halls,
+
+70
+00:03:29.559 --> 00:03:31.520
+small variations in latency
+
+71
+00:03:31.759 --> 00:03:33.660
+doesn't just slow things down,
+
+72
+00:03:33.919 --> 00:03:37.160
+it can significantly reduce your scale efficiency.
+
+73
+00:03:38.070 --> 00:03:40.289
+The network is no longer just a pipe,
+
+74
+00:03:40.589 --> 00:03:43.559
+it is the actual backplane of the computer.
+
+75
+00:03:44.509 --> 00:03:48.949
+If you try to architect an AI system using cloud native instincts,
+
+76
+00:03:49.059 --> 00:03:54.059
+focusing only on raw compute power while treating the network as an afterthought,
+
+77
+00:03:54.389 --> 00:03:56.949
+you quickly run into scaling limits.
+
+78
+00:03:58.270 --> 00:03:59.520
+To build for AI
+
+79
+00:03:59.919 --> 00:04:03.960
+we have to move beyond designing for independent stateless systems
+
+80
+00:04:04.240 --> 00:04:08.449
+and start designing for large scale coordinated system behavior.
+
+81
+00:04:09.130 --> 00:04:10.479
+In our next lesson,
+
+82
+00:04:10.690 --> 00:04:14.550
+we'll look at how this directly changes the physical architecture
+
+83
+00:04:14.970 --> 00:04:16.829
+between transactional systems
+
+84
+00:04:17.089 --> 00:04:18.510
+and AI systems.

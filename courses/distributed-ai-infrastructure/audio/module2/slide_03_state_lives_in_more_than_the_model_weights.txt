@@ -1,0 +1,7 @@
+Training state includes more than the model weights. The weights are the parameters being learned, but the optimizer may also maintain values needed for its next update. Input progress records which data has been consumed. Random-number state and other execution details may matter for a consistent restart. The training implementation defines the complete requirement.
+
+How that state is distributed also varies. In ordinary data parallelism, participants can each hold a model replica and process different data. In model parallelism, parts of the model or its computation are divided among devices. Other arrangements shard optimizer or parameter state.
+
+Don't infer the arrangement from the number of devices. Ask where each state category lives, which operation reads or updates it, and what must be restored after an interruption.
+
+Those answers determine whether an extra device can take independent work, join through a membership change, or participate only after a coordinated restart.

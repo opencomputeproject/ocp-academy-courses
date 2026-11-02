@@ -1,0 +1,177 @@
+WEBVTT
+
+0
+00:00:03.769 --> 00:00:06.039
+When managing traditional networks,
+
+1
+00:00:06.170 --> 00:00:09.529
+we obsess over bandwidth and average latency.
+
+2
+00:00:10.250 --> 00:00:12.289
+If the average speed is fast,
+
+3
+00:00:12.630 --> 00:00:14.949
+we assume the system is healthy.
+
+4
+00:00:15.369 --> 00:00:17.129
+But in distributed AI,
+
+5
+00:00:17.370 --> 00:00:19.530
+the average is often not enough.
+
+6
+00:00:19.770 --> 00:00:21.930
+What matters is predictability.
+
+7
+00:00:22.920 --> 00:00:24.920
+One of the biggest hidden challenges
+
+8
+00:00:24.920 --> 00:00:28.579
+in AI infrastructure isn't consistent latency,
+
+9
+00:00:28.840 --> 00:00:30.819
+it's micro variability.
+
+10
+00:00:31.360 --> 00:00:32.709
+We call this jitter.
+
+11
+00:00:33.950 --> 00:00:35.229
+At AI scale,
+
+12
+00:00:35.680 --> 00:00:38.180
+small variability compounds quickly.
+
+13
+00:00:39.400 --> 00:00:44.540
+Jitter refers to small variations in network timing and delivery behavior.
+
+14
+00:00:45.349 --> 00:00:48.619
+It means your network packet delivery times are fluctuating.
+
+15
+00:00:49.990 --> 00:00:51.830
+In a standard cloud app,
+
+16
+00:00:51.990 --> 00:00:55.119
+a 5 millisecond fluctuation is invisible,
+
+17
+00:00:55.430 --> 00:00:58.299
+but in a synchronous AI training cluster,
+
+18
+00:00:58.509 --> 00:01:01.529
+a 5 millisecond delay on a single packet
+
+19
+00:01:01.790 --> 00:01:04.269
+can ripple across coordinated workloads.
+
+20
+00:01:05.129 --> 00:01:05.138
+Because
+
+21
+00:01:05.569 --> 00:01:07.639
+AI nodes are tightly coupled,
+
+22
+00:01:07.889 --> 00:01:13.739
+they can only proceed as fast as the slowest participating node in any given cycle.
+
+23
+00:01:14.129 --> 00:01:18.269
+If GPU number 4 experiences a tiny network jitter,
+
+24
+00:01:18.690 --> 00:01:20.209
+GPUs 12,
+
+25
+00:01:20.290 --> 00:01:21.110
+and 3
+
+26
+00:01:21.330 --> 00:01:24.669
+may spend time waiting for coordination to catch up.
+
+27
+00:01:25.250 --> 00:01:28.370
+Progress across the workload slows down.
+
+28
+00:01:29.449 --> 00:01:29.949
+Now,
+
+29
+00:01:30.089 --> 00:01:31.099
+scale that up.
+
+30
+00:01:31.360 --> 00:01:34.650
+2 milliseconds of idle time doesn't sound like much,
+
+31
+00:01:34.970 --> 00:01:40.629
+but when you have 10,000 GPUs running thousands of coordination cycles every hour,
+
+32
+00:01:41.050 --> 00:01:45.129
+that jitter creates compounding coordination overhead
+
+33
+00:01:45.580 --> 00:01:47.330
+across your entire cluster.
+
+34
+00:01:48.319 --> 00:01:48.910
+Suddenly,
+
+35
+00:01:49.160 --> 00:01:51.059
+you aren't just losing milliseconds.
+
+36
+00:01:51.900 --> 00:01:56.160
+You are accumulating significant compute inefficiency over time
+
+37
+00:01:56.559 --> 00:02:01.760
+and consuming substantial infrastructure resources with reduced efficiency.
+
+38
+00:02:03.239 --> 00:02:04.769
+In distributed AI
+
+39
+00:02:05.250 --> 00:02:08.910
+performance instability becomes a system level problem.
+
+40
+00:02:10.149 --> 00:02:11.949
+You must architect your networks
+
+41
+00:02:11.949 --> 00:02:15.089
+to prioritize predictable coordination behavior
+
+42
+00:02:15.270 --> 00:02:16.169
+over peak
+
+43
+00:02:16.350 --> 00:02:17.610
+theoretical speed.

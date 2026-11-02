@@ -1,0 +1,15 @@
+# pronunciation: GPU -> "G P U"
+
+The effect of distance depends on what must cross it. Compare three illustrative workloads using the same regional boundary.
+
+First, assume an optical cable path of one thousand kilometers and a propagation speed of two hundred thousand kilometers per second. Dividing distance by speed gives five milliseconds one way. A return traversal adds another five, before processing, queuing, or other delays. This is a propagation calculation, not total application latency. Calling the connection private doesn't shorten its path.
+
+Next, consider data supply. Region B has a buffer containing eight equal-sized batches. Its G P U consumer uses four batches per second, initially matched by supply. Supply then falls to two batches per second.
+
+The shortfall is two batches each second. After one second, the buffer holds six. After two, it holds four. After three, it holds two. The buffer has supplied the consumer throughout the dip.
+
+If the deficit continues, the buffer empties after the fourth second. During the following second, supply can provide only two of the four demanded batches. The consumer becomes supply-limited. These are simplified flow assumptions, not measured production rates.
+
+Finally, consider independent regional inference replicas. A service can test version two in one region while routing approved version-one traffic elsewhere, then promote the change after validation. Its rollout and session policies define the required consistency.
+
+A blocking exchange, buffered supply, and independent serving create different dependencies. Identify those dependencies before deciding how distance, link capacity, and regional policies affect the workload.

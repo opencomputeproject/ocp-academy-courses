@@ -1,0 +1,189 @@
+WEBVTT
+
+0
+00:00:03.660 --> 00:00:04.760
+Welcome back.
+
+1
+00:00:05.179 --> 00:00:06.400
+On a single server,
+
+2
+00:00:06.820 --> 00:00:07.940
+time is simple.
+
+3
+00:00:09.189 --> 00:00:10.420
+Event A happens,
+
+4
+00:00:10.710 --> 00:00:12.029
+then event B happens.
+
+5
+00:00:13.689 --> 00:00:19.079
+But when you spread a single AI workload across a massive distributed cluster,
+
+6
+00:00:19.329 --> 00:00:23.950
+assuming distributed systems share a perfectly consistent view of time,
+
+7
+00:00:24.170 --> 00:00:26.489
+can quickly become problematic.
+
+8
+00:00:27.870 --> 00:00:29.450
+In distributed AI
+
+9
+00:00:29.799 --> 00:00:31.479
+event order is everything.
+
+10
+00:00:33.470 --> 00:00:35.909
+We aren't just moving independent files,
+
+11
+00:00:36.150 --> 00:00:41.430
+we are actively updating the interdependent weights of a massive neural network.
+
+12
+00:00:41.669 --> 00:00:43.939
+If those updates happen out of sequence,
+
+13
+00:00:44.229 --> 00:00:46.290
+the model doesn't just slow down.
+
+14
+00:00:47.330 --> 00:00:50.310
+The training process can become unstable.
+
+15
+00:00:51.630 --> 00:00:56.240
+Imagine you have 2 GPUs computing different parts of the same problem.
+
+16
+00:00:57.639 --> 00:01:00.709
+GPU 1 finishes its calculation first,
+
+17
+00:01:01.000 --> 00:01:02.810
+followed by GPU 2,
+
+18
+00:01:03.080 --> 00:01:05.629
+but because of a temporary network delay,
+
+19
+00:01:05.959 --> 00:01:09.419
+GPU 2's data arrives at the destination
+
+20
+00:01:09.879 --> 00:01:11.360
+before GPU 1.
+
+21
+00:01:12.360 --> 00:01:17.480
+If the destination note simply accepts the data in the order it physically arrived,
+
+22
+00:01:17.690 --> 00:01:20.830
+the expected sequence of updates is disrupted.
+
+23
+00:01:21.970 --> 00:01:25.569
+The model applies the 2nd step before the 1st step.
+
+24
+00:01:27.879 --> 00:01:31.099
+The mathematical state of the entire neural network
+
+25
+00:01:31.099 --> 00:01:33.980
+may diverge from the expected training state.
+
+26
+00:01:35.370 --> 00:01:38.540
+This is why distributed AI systems place such
+
+27
+00:01:38.540 --> 00:01:43.080
+heavy emphasis on coordination and consistency across nodes.
+
+28
+00:01:44.480 --> 00:01:47.900
+They cannot depend entirely on physical arrival order
+
+29
+00:01:48.199 --> 00:01:49.660
+because network behavior
+
+30
+00:01:49.800 --> 00:01:51.400
+is inherently variable.
+
+31
+00:01:52.410 --> 00:01:55.160
+Distributed systems don't just move data,
+
+32
+00:01:55.410 --> 00:01:57.110
+they coordinate behavior.
+
+33
+00:01:58.239 --> 00:02:03.199
+Every single node in the cluster must maintain a sufficiently consistent view
+
+34
+00:02:03.199 --> 00:02:08.429
+of update ordering of events before any model weights are actually updated.
+
+35
+00:02:08.639 --> 00:02:10.699
+The system forces nodes to wait,
+
+36
+00:02:11.160 --> 00:02:12.679
+verify the sequence,
+
+37
+00:02:12.919 --> 00:02:16.440
+and apply updates in a tightly coordinated sequence.
+
+38
+00:02:18.710 --> 00:02:23.690
+We intentionally trade raw speed for system coordination and consistency.
+
+39
+00:02:25.130 --> 00:02:25.139
+Because
+
+40
+00:02:25.449 --> 00:02:26.240
+in AI
+
+41
+00:02:26.449 --> 00:02:27.830
+doing things fast
+
+42
+00:02:27.970 --> 00:02:31.880
+is far less valuable if you do them in the wrong order.
+
+43
+00:02:32.669 --> 00:02:33.940
+In the next lesson,
+
+44
+00:02:34.229 --> 00:02:38.080
+we'll look at the specific infrastructure cost of that trade-off
+
+45
+00:02:38.190 --> 00:02:40.470
+as we compare network latency
+
+46
+00:02:40.669 --> 00:02:42.550
+to synchronization overhead.

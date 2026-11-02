@@ -1,0 +1,35 @@
+"""Verify a built course against its reviewed source, media, audio and captions."""
+from pathlib import Path
+import hashlib,json,re,sys,wave,xml.etree.ElementTree as ET
+
+SOURCE=Path(__file__).resolve().parents[1]
+root=Path(sys.argv[1]).resolve()
+course=json.loads((root/'course.json').read_text())
+integrity=json.loads((SOURCE/'authoring/media-integrity.json').read_text())
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for entry in integrity['files']:
+    assert sha(root/entry['path'])==entry['sha256'],entry['path']
+for entry in integrity['generated_audio']:
+    audio=root/entry['path'];assert sha(audio)==entry['sha256'],entry['path']
+    with wave.open(str(audio)) as w:duration=w.getnframes()/w.getframerate()
+    assert abs(duration-entry['duration_seconds'])<.001,entry['path']
+assert len(course['modules'])==5 and sum(len(m['slides']) for m in course['modules'])==57
+assert sum(len(s.get('questions',[])) for m in course['modules'] for s in m['slides'])==10
+payloads=[];recordings=animations=0
+for m in course['modules']:
+    html=(root/f"module{m['id']}.html").read_text()
+    for s in m['slides']:
+        f=s.get('figure') or {}
+        if f.get('role')=='original_video':
+            recordings+=1;assert s['audio'] is None and s['narration_enabled'] is False
+            expected='With Ankur Sharma' if (m['id'],s['id']) in [(1,4),(5,8)] else 'By Ankur Sharma'
+            assert s['section_label']==expected
+        if f.get('sync_to_narration'):
+            animations+=1;assert f['loop'] is False and f['autoplay'] is False and f['muted'] is True
+    payloads.extend(json.loads(p) for p in re.findall(r'<script class="academy-video__caption-data" type="application/json">(.*?)</script>',html,re.S))
+assert recordings==8 and animations==5 and len(payloads)==8
+assert sum(len(t['cues']) for p in payloads for t in p['tracks'])==390
+manifest=ET.parse(root/'imsmanifest.xml')
+scos=[e for e in manifest.iter() if e.get('{http://www.adlnet.org/xsd/adlcp_rootv1p2}scormtype')=='sco']
+assert len(scos)==5 and {e.get('href') for e in scos}=={f'module{n}.html' for n in range(1,6)}
+print('PASS: reviewed asset/audio hashes, 57 slides, 5 SCOs, 8 recordings, 5 animations, 10 questions and 390 caption cues.')

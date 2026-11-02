@@ -31,7 +31,7 @@ from motion_intro import (
     motion_intro_script,
     render_motion_intro,
 )
-from render_scrolling import is_scrolling, render_scrolling_course
+from render_scrolling import hydrate_caption_cues, is_scrolling, render_scrolling_course
 from video_player import academy_video_html
 import single_sco
 import legacy_multi_sco
@@ -381,7 +381,7 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
     course = course or {}
     if fig.get("role") == "original_video":
         media = dict(fig)
-        media['captions'] = [dict(t, _cues=fig.get('caption_cues', [])) for t in fig.get('captions', [])]
+        media['captions'] = [dict(t, _cues=t.get('_cues') or fig.get('caption_cues', [])) for t in fig.get('captions', [])]
         player = academy_video_html(media, ui_labels=course.get('ui_labels'), video_class='original-video', video_attributes=f'aria-label="{esc(fig.get("alt", "Video"))}"')
         return f'<div class="figure-wrap original-video-wrap"><div class="figure-panel original-video-panel">{player}</div><p class="figure-caption">{esc(fig.get("caption", ""))}</p></div>'
     path = fig.get("path", "")
@@ -1697,6 +1697,7 @@ def main():
 
     course = json.loads(args.course_json.read_text())
     out_dir = args.course_json.resolve().parent
+    course = hydrate_caption_cues(course, out_dir)
 
     if is_scrolling(course):
         out_path = args.out or (out_dir / "index.html")

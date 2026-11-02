@@ -1,0 +1,7 @@
+A clock reading and an elapsed duration are different kinds of evidence. Clock offset is the difference between clock readings at the same reference moment. Rate drift describes how their relative rates change over time. Both can complicate comparisons between hosts.
+
+Suppose a trace records receipt of message seventeen on host B at three milliseconds past the second, but its send on host A at five milliseconds past the second. The matching message still has a send-before-receive dependency. The apparent inversion tells you to examine the clocks and the trace association; it does not establish backward transit or an incorrect model update.
+
+Before subtracting timestamps from different hosts, understand their alignment and uncertainty. An apparent difference smaller than that uncertainty may not support a precise transit measurement.
+
+Use operation and message identities to connect events, then corroborate timing with the available measurements. Better clock alignment can improve diagnosis. It does not automatically remove a real queue, retransmission or slow compute phase.

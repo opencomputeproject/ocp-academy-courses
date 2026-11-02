@@ -1,0 +1,241 @@
+WEBVTT
+
+0
+00:00:03.500 --> 00:00:04.679
+Welcome back.
+
+1
+00:00:05.019 --> 00:00:06.260
+In the last video,
+
+2
+00:00:06.380 --> 00:00:09.399
+we dismantle the illusion of the independent
+
+3
+00:00:09.699 --> 00:00:10.880
+stateless node.
+
+4
+00:00:11.300 --> 00:00:14.810
+Distributed AI systems are deeply stateful,
+
+5
+00:00:15.060 --> 00:00:17.760
+but what does maintaining state actually mean
+
+6
+00:00:18.319 --> 00:00:20.420
+across 10,000 GPUs?
+
+7
+00:00:21.129 --> 00:00:23.049
+In a traditional application,
+
+8
+00:00:24.000 --> 00:00:27.209
+state usually means saving user data to a database.
+
+9
+00:00:28.139 --> 00:00:29.879
+But in distributed AI
+
+10
+00:00:30.319 --> 00:00:30.819
+state
+
+11
+00:00:31.040 --> 00:00:35.500
+refers to the billions of mathematical weights that make up the neural network.
+
+12
+00:00:36.729 --> 00:00:36.740
+Because
+
+13
+00:00:37.130 --> 00:00:40.009
+the model is too massive to fit on a single chip.
+
+14
+00:00:41.080 --> 00:00:44.689
+It is fractured across thousands of GPUs
+
+15
+00:00:44.799 --> 00:00:47.860
+that must behave as a coordinated system.
+
+16
+00:00:48.439 --> 00:00:52.159
+This brings us to the heaviest burden in AI infrastructure,
+
+17
+00:00:52.319 --> 00:00:53.799
+the coordination tax.
+
+18
+00:00:54.619 --> 00:00:58.000
+Every time those GPUs compute a new batch of data,
+
+19
+00:00:58.419 --> 00:00:59.479
+they must stop,
+
+20
+00:00:59.740 --> 00:01:02.330
+communicate their results across the network,
+
+21
+00:01:02.599 --> 00:01:04.290
+average out the new parameters,
+
+22
+00:01:04.459 --> 00:01:07.480
+and coordinate before progressing to the next step.
+
+23
+00:01:08.400 --> 00:01:09.120
+At scale,
+
+24
+00:01:09.410 --> 00:01:11.589
+coordination becomes infrastructure.
+
+25
+00:01:12.910 --> 00:01:16.080
+Think about the sheer physics of that coordination.
+
+26
+00:01:16.400 --> 00:01:19.580
+You're forcing thousands of independent machines
+
+27
+00:01:19.800 --> 00:01:23.800
+to share gigabytes of data in a tightly coordinated manner.
+
+28
+00:01:24.120 --> 00:01:27.199
+If coordination across the network slows down,
+
+29
+00:01:27.559 --> 00:01:30.029
+the coordination tax skyrockets,
+
+30
+00:01:30.250 --> 00:01:31.980
+and your compute efficiency
+
+31
+00:01:32.279 --> 00:01:33.959
+drops significantly.
+
+32
+00:01:34.750 --> 00:01:38.029
+But what happens when something inevitably goes wrong?
+
+33
+00:01:38.800 --> 00:01:38.809
+Because
+
+34
+00:01:39.519 --> 00:01:42.720
+distributed AI systems are so tightly coupled,
+
+35
+00:01:43.000 --> 00:01:48.300
+the blast radius of a failure is very different from traditional systems.
+
+36
+00:01:48.879 --> 00:01:49.900
+We call this
+
+37
+00:01:50.279 --> 00:01:51.599
+failure propagation.
+
+38
+00:01:52.309 --> 00:01:53.739
+In a standard cloud,
+
+39
+00:01:53.959 --> 00:01:56.970
+a degraded node is an isolated incident.
+
+40
+00:01:57.269 --> 00:01:58.199
+In AI,
+
+41
+00:01:58.470 --> 00:02:02.309
+if just one GPU out of thousands experiences a
+
+42
+00:02:02.309 --> 00:02:05.980
+thermal throttle and slows down by a few milliseconds,
+
+43
+00:02:06.220 --> 00:02:09.050
+it becomes a straggler because the system
+
+44
+00:02:09.389 --> 00:02:10.419
+is synchronous,
+
+45
+00:02:10.710 --> 00:02:13.210
+the rest of the system may be forced to wait.
+
+46
+00:02:13.589 --> 00:02:14.889
+They sit idle.
+
+47
+00:02:15.350 --> 00:02:20.910
+That single degraded node can introduce cascading delays across the cluster.
+
+48
+00:02:22.089 --> 00:02:24.110
+And if a node outright fails,
+
+49
+00:02:24.410 --> 00:02:27.350
+the current training step may need to be retried.
+
+50
+00:02:28.800 --> 00:02:30.039
+The system halts,
+
+51
+00:02:30.410 --> 00:02:32.119
+discards the current step,
+
+52
+00:02:32.399 --> 00:02:37.490
+and may require rolling portions of the workload back to the last saved checkpoint.
+
+53
+00:02:38.550 --> 00:02:41.460
+Introducing significant recovery overhead
+
+54
+00:02:41.839 --> 00:02:43.600
+and lost compute capacity.
+
+55
+00:02:45.009 --> 00:02:48.039
+You are no longer managing independent servers,
+
+56
+00:02:48.289 --> 00:02:50.850
+you are managing a tightly coordinated,
+
+57
+00:02:50.889 --> 00:02:52.070
+distributed system
+
+58
+00:02:52.449 --> 00:02:53.949
+where small disruptions
+
+59
+00:02:54.089 --> 00:02:57.529
+can affect behavior across the entire environment.
