@@ -187,6 +187,21 @@ It does not change module tracking or authorize an organization migration.
 The value must be a JSON boolean. This setting applies to Slides multi-SCO
 output; single-SCO and Scrolling retain their own lifecycle.
 
+## Multi-SCO syllabus count
+
+Content-module count excludes Course Home. Five Slides modules normally have six tracked syllabus entries, with Home first:
+
+```json
+"scorm": {
+  "version": "1.2",
+  "organization": "multi-sco",
+  "include_home_sco": true,
+  "expected_sco_count": 6
+}
+```
+
+`expected_sco_count` is the total tracked syllabus count, not the number of content modules. Validation rejects a stale count or a missing/reordered Home item. A deliberate untracked Home requires `home_sco_omission` with `approved: true` and the actual user instruction explicitly mentioning Home/index. A generic request for a number of modules or SCOs is insufficient. Single-SCO Slides and Scrolling organizations are unaffected by this multi-SCO rule.
+
 ## Presentation style
 
 `style` accepts exactly `"Slides"` or `"Scrolling"`. If omitted, renderers assume Slides so existing courses remain compatible.

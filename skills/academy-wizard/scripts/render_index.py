@@ -34,6 +34,7 @@ from motion_intro import (
 )
 from render_scrolling import is_scrolling, render_scrolling_course, runtime_files
 import single_sco
+from slides_syllabus import include_home_sco, expected_syllabus_hrefs
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -49,14 +50,6 @@ def esc(s):
 def ui(course: dict, key: str, default: str) -> str:
     """Return an optional course-localized interface label."""
     return str((course.get("ui_labels") or {}).get(key, default))
-
-
-def include_home_sco(course: dict) -> bool:
-    """Preserve tracked Home by default; allow an explicitly authored asset Home."""
-    value = (course.get("scorm") or {}).get("include_home_sco", True)
-    if not isinstance(value, bool):
-        raise ValueError("scorm.include_home_sco must be a boolean")
-    return value
 
 
 def local_resource_path(url: str | None) -> str | None:
@@ -359,6 +352,7 @@ def render_manifest(course: dict, out_dir: Path) -> str:
     course_slug = course.get("course_slug", "ocp_academy_course")
     course_title = scorm_metadata_title(course)
 
+    expected_syllabus_hrefs(course)  # Reject count-only attempts to remove Course Home.
     org_items = []
     resources = []
 

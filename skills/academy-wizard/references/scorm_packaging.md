@@ -6,6 +6,12 @@ AcademyWizard supports these package organizations:
 - **Slides, explicitly selected single-SCO:** one `launch.html` SCO hosts the same course home and module pages, retaining one SCORM 1.2 session throughout navigation. Module progress and quiz attempts are saved inside that course; the LMS records overall completion.
 - **Scrolling:** single-SCO package where `index.html` contains the course cover and every lesson. Lesson progress and Continue-gate state live in `cmi.suspend_data`; the SCO completes after all lessons complete.
 
+## Course Home is a separate syllabus entry
+
+For multi-SCO Slides, N content modules normally produce N + 1 tracked syllabus entries. Five modules produce six: Course Home (`index.html`) first, then `module1.html` through `module5.html`. Record `include_home_sco: true` and `expected_sco_count: 6` for that case. The homepage must be both an organization item and a resource with `adlcp:scormtype="sco"`; shipping index.html only as an asset does not make it appear in the LMS syllabus.
+
+A requested module/SCO count alone never authorizes removal of Home. An intentional exception requires `include_home_sco: false` plus `home_sco_omission: {"approved": true, "user_instruction": "<actual Home/index-specific instruction>"}` under `scorm`. Do not fabricate that record from a generic count. Existing opt-outs must have their actual Home-related authorization recorded before rebuilding; do not silently change their deployed structure. The scaffold checks the configuration, while package validation and strict zipping check the exact ordered syllabus and tracked-resource set.
+
 ## New courses versus existing deployments
 
 SCORM 2004 3rd Edition is allowed for new courses without requiring an exception to a universal 1.2 default. Prefer it when the target LMS supports the features the course needs: it provides more saved-state capacity and defines content-to-LMS navigation requests. Do not call it universally better, select 4th Edition for a 3rd-Edition-only LMS, or equate accepting an uploaded version with implementing its sequencing. Announce and record the selected version. Keep 1.2 where compatibility, the selected single-SCO design or an existing deployment calls for it.

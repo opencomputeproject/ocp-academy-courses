@@ -69,7 +69,7 @@ PY
   fi
 fi
 
-COMMON_SCRIPTS=(new_course.py render_scrolling.py render_index.py validate_package.py course_delivery_summary.py zip_for_lms.py)
+COMMON_SCRIPTS=(new_course.py render_scrolling.py render_index.py slides_syllabus.py validate_package.py course_delivery_summary.py zip_for_lms.py)
 SLIDES_SCRIPTS=(gen_audio.py audio_tail_report.py render_module.py)
 REQUIRED_SCRIPTS=("${COMMON_SCRIPTS[@]}")
 if [[ "$COURSE_STYLE" == "slides" ]]; then

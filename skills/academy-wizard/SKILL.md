@@ -83,6 +83,10 @@ localize it independently for translations.
 
 Every Slides course includes a Course Home at `index.html`. An explicit `scorm.include_home_sco: false` changes Home to an untracked asset and removes its LMS syllabus entry; it never removes the Home/index page, its Start action, or its visual design. Keep the default tracked Home unless a course records an approved tracking override.
 
+**Count Course Home separately from the content modules.** A five-module Slides course normally has **six tracked syllabus entries: Course Home first, then Modules 1–5**. For new and refreshed multi-SCO sources, explicitly record `scorm.include_home_sco: true` and `scorm.expected_sco_count: N + 1`. Do not infer Home omission from a requested content-module count, a phrase such as “five SCOs,” a duration target, or a previous planning file. A generic count is not a Home/index-specific opt-out.
+
+If the user specifically asks to omit Home from tracking, preserve that choice with `scorm.include_home_sco: false` and `scorm.home_sco_omission: {"approved": true, "user_instruction": "<the actual Home/index-specific instruction>"}`. The instruction must explicitly refer to Home or index; do not invent an approval record. The scaffold, manifest validation and strict zipper reject an unrecorded omission, inconsistent SCO totals, or a manifest that drops/reorders Home. Keep the first syllabus item titled Course Home and preserve the content module identifiers and numbers.
+
 A folder, sitting where the user asked for it, with this exact shape:
 
 ```

@@ -4,7 +4,7 @@ A five-module OCP Academy Slides course connecting workload coordination, distri
 
 The course contains **57 slides**, **49 narration clips**, **eight original recordings**, **five narration-synchronized teaching animations** and **ten knowledge-check questions**. Estimated learner time is **80 minutes**, including media, reading, reflection and questions. Narration alone runs 36.36 minutes. Optional external courses and Summit viewing are excluded from the learner-time estimate. Formal LMS fields are in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json); `thumbnail.png` is the approved 800×400 poster.
 
-The approved SCORM **1.2** package contains **exactly five tracked module SCOs**. Course Home remains an untracked asset with informational module tiles and the maintained Start Module 1 control. Keep the LMS syllabus available for module selection and verify launch, resume and completion in the target LMS. Direct page links do not switch the LMS tracking context.
+The SCORM **1.2** package contains **six tracked syllabus entries: Course Home first, then the five content-module SCOs**. Course Home retains informational module tiles and the maintained Start Module 1 control. Keep the LMS syllabus available for module selection and verify launch, resume and completion in the target LMS. Direct page links do not switch the LMS tracking context.
 
 ## Edit and build
 
@@ -38,4 +38,4 @@ The original Rise ZIPs and recovered research workspace remain outside this repo
 
 This course is a standalone series. It links selectively to Open Systems for AI, Open Cluster Designs for AI, AICC and the 2026 Global Summit AI Clusters track; it is not part of those other courses.
 
-The original five Rise packages were SCORM 2004 3rd Edition. The requested delivery combines them into one five-SCO SCORM 1.2 item. Test a separate LMS upload and retain needed reports before retiring prior materials; existing bookmarks, attempts and completion history may not transfer.
+The original five Rise packages were SCORM 2004 3rd Edition. The requested delivery combines them into one SCORM 1.2 item with Course Home plus five content-module SCOs. Test a separate LMS upload and retain needed reports before retiring prior materials; existing bookmarks, attempts and completion history may not transfer.

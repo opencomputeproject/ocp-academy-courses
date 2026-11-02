@@ -21,6 +21,7 @@ import zipfile
 
 from course_delivery_summary import catalog_files, catalog_metadata, write_catalog
 import json
+import slides_syllabus
 
 
 def manifest_file_list(manifest_path):
@@ -50,6 +51,9 @@ def package(folder, output=None, course_json=None):
     source = find_course_source(folder, course_json)
     course = json.loads(source.read_text(encoding='utf-8'))
     catalog_metadata(course)  # Fail before touching an existing delivery.
+    syllabus_issues = slides_syllabus.validate(course, ET.parse(manifest), folder)
+    if syllabus_issues:
+        raise ValueError('; '.join(syllabus_issues))
     files = manifest_file_list(manifest)
     for rel in files:
         if Path(rel).is_absolute() or '..' in Path(rel).parts or not (folder / rel).is_file():
