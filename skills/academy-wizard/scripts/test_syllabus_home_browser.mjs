@@ -5,7 +5,7 @@ import path from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {chromium} from 'playwright';
 
-if (!process.argv[2]) throw new Error('Usage: node test_syllabus_home_browser.mjs <built-open-dc-package> [qa-folder]');
+if (!process.argv[2]) throw new Error('Usage: node test_syllabus_home_browser.mjs <built-slides-package> [qa-folder]');
 const pkg = path.resolve(process.argv[2]);
 const course = JSON.parse(await fs.readFile(path.join(pkg, 'course.json'), 'utf8'));
 const qa = path.resolve(process.argv[3] || path.join(pkg, '..', 'syllabus-home-qa'));
@@ -52,7 +52,7 @@ try {
   await ready(home + '?review=1');
   check('Informational tiles match authored modules', await page.locator('article.module-card').count(), course.modules.length);
   check('No tile anchors, tabindex or status elements', await page.locator('a.module-card,.module-card[tabindex],.module-card .status,.module-card.completed').count(), 0);
-  check('Exact Syllabus instruction', await page.locator('#lmsNavNote').innerText(), 'Navigate modules in any order using the Syllabus in the left sidebar.');
+  check('Exact authored Syllabus instruction', await page.locator('#lmsNavNote').innerText(), course.index_navigation_instruction || 'Navigate modules in any order using the Syllabus in the left sidebar.');
   check('Syllabus instruction matches normal tile body size', await styles('#lmsNavNote', ['fontSize']), await styles('.module-info p', ['fontSize']));
   check('Exact start label', await page.locator('.index-start-label').innerText(), 'Start with MODULE 1');
   check('Start label uses OCP indigo', await styles('.index-start-label', ['color']), {color: 'rgb(52, 56, 149)'});

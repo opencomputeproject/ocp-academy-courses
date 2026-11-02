@@ -31,5 +31,9 @@ assert recordings==8 and animations==5 and len(payloads)==8
 assert sum(len(t['cues']) for p in payloads for t in p['tracks'])==390
 manifest=ET.parse(root/'imsmanifest.xml')
 scos=[e for e in manifest.iter() if e.get('{http://www.adlnet.org/xsd/adlcp_rootv1p2}scormtype')=='sco']
-assert len(scos)==5 and {e.get('href') for e in scos}=={f'module{n}.html' for n in range(1,6)}
-print('PASS: reviewed asset/audio hashes, 57 slides, 5 SCOs, 8 recordings, 5 animations, 10 questions and 390 caption cues.')
+assert len(scos)==6 and {e.get('href') for e in scos}=={'index.html',*[f'module{n}.html' for n in range(1,6)]}
+namespace=manifest.getroot().tag.split('}')[0].lstrip('{')
+resources={e.get('identifier'):e.get('href') for e in manifest.iter(f'{{{namespace}}}resource')}
+organization=manifest.find(f'.//{{{namespace}}}organization')
+assert [resources[e.get('identifierref')] for e in organization.findall(f'{{{namespace}}}item')]==['index.html',*[f'module{n}.html' for n in range(1,6)]]
+print('PASS: reviewed asset/audio hashes, 57 slides, 6 Home-first SCOs, 8 recordings, 5 animations, 10 questions and 390 caption cues.')

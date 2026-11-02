@@ -52,6 +52,7 @@ class IndexHomeTests(unittest.TestCase):
 
     def test_explicit_untracked_home_has_no_lms_lifecycle(self):
         self.course['scorm']['include_home_sco'] = False
+        self.course['scorm']['home_sco_omission'] = {'approved': True, 'user_instruction': 'Keep Course Home as an untracked index.html asset; omit its syllabus entry.'}
         markup, _ = self.render()
         for call in ['SCORM.init()', 'SCORM.setCompleted()', 'SCORM.finish()']:
             self.assertNotIn(call, markup)

@@ -1,6 +1,7 @@
 # Validation and review record
 
-- 57 slides across five modules; exactly five tracked SCORM 1.2 SCOs and an untracked Course Home.
+- 57 slides across five content modules; six tracked SCORM 1.2 syllabus entries, with Course Home first and the five modules following it. The earlier five-entry package incorrectly suppressed Home; this structure is corrected in the editable source and protected by syllabus validation.
+- Home-first correction: 47 shared skill regression tests passed, including rejected unrecorded Home omissions, incorrect totals, missing/reordered Home entries and stale delivery manifests. A clean repository rebuild passed source QA and asset/audio/caption integrity verification. The Home/browser harness passed 55 checks, including Home-only completion, review-mode isolation and bookmarks for all five content modules; this uses a local mock LMS, not Docebo acceptance.
 - 49 full-v4 narration clips checked by the complete level/tail report with zero flags; playback confirmed for each generated clip. Signal checks do not substitute for human judgment of pronunciation or delivery.
 - 114 desktop/phone slide views checked with zero remaining layout flags.
 - Eight original recordings retain their own audio and unchanged media/caption hashes. Narration controls are disabled on those slides and restored on narrated slides.
