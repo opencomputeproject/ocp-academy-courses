@@ -2,11 +2,20 @@
 set -euo pipefail
 
 if [[ $# -lt 1 ]]; then
-  echo "Usage: $0 <course-folder-or-nested-path>" >&2
+  echo "Usage: $0 <course-folder-or-nested-path> [--audio-delivery-choice mp3|keep-wav]" >&2
   exit 2
 fi
 
 COURSE_NAME="$1"
+shift
+AUDIO_DELIVERY_CHOICE=""
+if [[ $# -gt 0 ]]; then
+  if [[ $# -ne 2 || "$1" != "--audio-delivery-choice" || ( "$2" != "mp3" && "$2" != "keep-wav" ) ]]; then
+    echo "Expected --audio-delivery-choice mp3|keep-wav after the course path." >&2
+    exit 2
+  fi
+  AUDIO_DELIVERY_CHOICE="$2"
+fi
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE_DIR="$ROOT_DIR/courses/$COURSE_NAME"
 BUILD_ROOT="${BUILD_ROOT:-$ROOT_DIR/build}"
@@ -70,7 +79,7 @@ PY
 fi
 
 COMMON_SCRIPTS=(new_course.py render_scrolling.py render_index.py slides_syllabus.py validate_package.py course_delivery_summary.py zip_for_lms.py)
-SLIDES_SCRIPTS=(gen_audio.py audio_tail_report.py encode_delivery_audio.py render_module.py)
+SLIDES_SCRIPTS=(audio_delivery_defaults.py gen_audio.py audio_tail_report.py encode_delivery_audio.py render_module.py)
 REQUIRED_SCRIPTS=("${COMMON_SCRIPTS[@]}")
 if [[ "$COURSE_STYLE" == "slides" ]]; then
   REQUIRED_SCRIPTS+=("${SLIDES_SCRIPTS[@]}")
@@ -83,6 +92,16 @@ for script in "${REQUIRED_SCRIPTS[@]}"; do
     exit 1
   fi
 done
+
+# Resolve WAV migration consent before staging files or making paid TTS calls.
+# This writes the decision into editable source, not only a disposable build copy.
+if [[ "$COURSE_STYLE" == "slides" ]]; then
+  if [[ -n "$AUDIO_DELIVERY_CHOICE" ]]; then
+    "$PYTHON_BIN" "$SKILL_DIR/scripts/audio_delivery_defaults.py" "$SOURCE_DIR/course.json" --audio-delivery-choice "$AUDIO_DELIVERY_CHOICE"
+  else
+    "$PYTHON_BIN" "$SKILL_DIR/scripts/audio_delivery_defaults.py" "$SOURCE_DIR/course.json"
+  fi
+fi
 
 # Formal LMS copy belongs to editable source, separately from the course README.
 # Validate before staging media or making paid narration requests.
@@ -135,7 +154,7 @@ else
     fi
   fi
 
-  # Opt-in delivery copies preserve the paced lossless masters and audio QA.
+  # Default MP3 delivery preserves paced authoring masters and explicit overrides.
   "$PYTHON_BIN" "$SKILL_DIR/scripts/encode_delivery_audio.py" "$BUILD_DIR/course.json" --report "$BUILD_DIR.audio-delivery.json"
 
   # Optional trusted course source generates offline learner resources directly

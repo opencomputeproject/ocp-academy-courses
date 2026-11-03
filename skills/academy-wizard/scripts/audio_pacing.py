@@ -6,6 +6,8 @@ V4_MODELS=frozenset({'eleven_v4'})
 DURATION_TOLERANCE_SECONDS=0.05
 
 def find_ffmpeg():
+    configured=os.getenv('FFMPEG_BIN')
+    if configured and Path(configured).is_file():return configured
     executable=shutil.which('ffmpeg')
     if executable:return executable
     try:
@@ -83,6 +85,23 @@ def synth_paced(text,output,*,work_dir,identity,synth_native,speed=1.18):
         duration=wav_duration(native)
         receipt=match_wav_duration(native,output,duration/speed,ffmpeg=executable)
         native.replace(cache/'native-v4.wav')
+        provider = native.with_suffix('.provider.mp3')
+        if provider.exists():
+            provider.replace(cache/'native-v4.provider.mp3')
+            receipt['provider_master'] = str((cache/'native-v4.provider.mp3').resolve())
+            receipt['provider_sha256'] = hashlib.sha256((cache/'native-v4.provider.mp3').read_bytes()).hexdigest()
+            receipt['wav_provenance'] = 'Decoded from provider MP3; not a lossless provider recording.'
+        parts = native.with_suffix('.provider-parts')
+        if parts.is_dir():
+            destination = cache / 'provider-parts'
+            destination.mkdir(exist_ok=True)
+            receipt['provider_parts'] = []
+            for part in sorted(parts.glob('*.mp3')):
+                target = destination / part.name
+                shutil.copy2(part, target)
+                receipt['provider_parts'].append({'path': str(target.resolve()),
+                    'sha256': hashlib.sha256(target.read_bytes()).hexdigest()})
+            receipt['wav_provenance'] = 'Assembled decoded provider MP3 chunks; not lossless provider output.'
     receipt.update({**settings,'native_master':str((cache/'native-v4.wav').resolve()),
         'native_sha256':hashlib.sha256((cache/'native-v4.wav').read_bytes()).hexdigest(),
         'output':str(output.resolve()),'output_sha256':hashlib.sha256(output.read_bytes()).hexdigest(),

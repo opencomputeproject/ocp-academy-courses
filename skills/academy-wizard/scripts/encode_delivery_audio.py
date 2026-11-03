@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Encode an explicitly selected MP3 narration delivery; preserve WAV masters."""
+"""Encode default MP3 narration delivery; preserve WAV masters and overrides."""
 from __future__ import annotations
 import argparse
 import hashlib
@@ -10,15 +10,18 @@ import shutil
 import subprocess
 import tempfile
 import wave
+from audio_delivery_defaults import apply_delivery_defaults
 
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def encode(course_file, ffmpeg=None, report_path=None):
+def encode(course_file, ffmpeg=None, report_path=None, migration_choice=None):
     course_file = Path(course_file).resolve()
     course = json.loads(course_file.read_text(encoding='utf-8'))
+    if apply_delivery_defaults(course, migration_choice):
+        course_file.write_text(json.dumps(course, indent=2, ensure_ascii=False)+'\n', encoding='utf-8')
     config = (course.get('narration') or {}).get('delivery') or {}
     selected = [s for m in course.get('modules', []) for s in m.get('slides', [])
                 if (s.get('audio') or {}).get('delivery_file')
@@ -96,9 +99,11 @@ def main():
     p.add_argument('course_json', type=Path)
     p.add_argument('--ffmpeg')
     p.add_argument('--report', type=Path, help='Authoring receipt outside the runtime manifest')
+    p.add_argument('--audio-delivery-choice', choices=['mp3', 'keep-wav'],
+                   help='Explicit user decision for a legacy WAV course')
     args = p.parse_args()
     try:
-        report = encode(args.course_json, args.ffmpeg, args.report)
+        report = encode(args.course_json, args.ffmpeg, args.report, args.audio_delivery_choice)
     except (OSError, ValueError, wave.Error) as error:
         p.exit(1, 'Audio delivery error: '+str(error)+'\n')
     print(report['status']+': '+str(len(report['clips']))+' MP3 delivery clips; no TTS calls')

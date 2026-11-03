@@ -420,20 +420,27 @@ Every slide has:
 
 Plus type-specific fields. See `slide_design_patterns.md` for what each type needs.
 
-For an explicitly selected compressed narration delivery format, retain
-`audio.wav_file` as the paced lossless master and add `audio.delivery_file`,
+For new and refreshed Slides courses, use MP3 narration delivery by default. Retain
+`audio.wav_file` as the paced authoring master and add `audio.delivery_file`,
 for example `audio/module1/slide_01_title.mp3`. The player and manifest prefer
-that delivery copy; omission preserves WAV playback. Record the approved
+that delivery copy. A legacy course with no delivery field retains WAV playback.
+Before rebuilding it, ask for MP3 migration consent; scaffolding and delivery
+encoding stop until an explicit MP3 or keep-WAV decision is recorded. Generic
+rebuild permission is not migration consent. See `mp3_narration.md`. Preserve
+other explicit course-level delivery overrides. Record the
 codec settings under `narration.delivery`, for example
 `{"format":"mp3","approved":true,"bitrate_kbps":96,"sample_rate_hz":44100,"channels":1,"bitrate_mode":"CBR"}`.
 After synthesis/pacing and before rendering, run
 `scripts/encode_delivery_audio.py course.json --report /outside/runtime/audio-delivery.json`.
-The normal repository build runs this opt-in step automatically. Set
+The normal repository build runs this step automatically. Set
 `FFMPEG_BIN` or use `--ffmpeg` when needed. It preserves and hashes the WAV,
 fully decodes the MP3 and rejects timing differences above 5 ms. Keep native
 masters and delivery receipts outside the runtime manifest. Local encoding
-does not regenerate the performance or consume TTS credits; do not call it
-direct ElevenLabs compressed API output. Validate actual playback, seek, speed,
+does not regenerate the performance or consume TTS credits. New ElevenLabs
+synthesis requests `mp3_44100_96` directly and retains those provider bytes, then
+decodes to WAV for pitch-preserving pacing. That WAV is not a lossless original.
+The paced learner MP3 requires re-encoding and is not byte-identical to the
+provider MP3. See [MP3 narration](mp3_narration.md). Validate actual playback, seek, speed,
 animation synchronization and final hold before packaging. A local browser
 pass does not establish LMS or additional-browser acceptance.
 

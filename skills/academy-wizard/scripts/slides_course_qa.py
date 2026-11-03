@@ -249,7 +249,8 @@ def check_course(
             available = section(markdown, "Available Courses")
             if folder not in layout:
                 errors.append(f"root README Repository layout is missing {folder}")
-            if f"`{folder}`" not in available:
+            if (f"`{folder}`" not in available
+                    and not re.search(r'\]\(courses/' + re.escape(folder) + r'/(?:README\.md)?\)', available)):
                 errors.append(f"root README Available Courses table is missing {folder}")
 
     return errors, notes

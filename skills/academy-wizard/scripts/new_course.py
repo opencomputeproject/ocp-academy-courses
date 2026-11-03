@@ -21,6 +21,7 @@ from render_scrolling import is_scrolling
 import single_sco
 from slides_syllabus import expected_syllabus_hrefs
 import legacy_multi_sco
+from audio_delivery_defaults import apply_delivery_defaults
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 SKILL_DIR = SCRIPT_DIR.parent
@@ -31,9 +32,15 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument("output_dir", type=Path)
     p.add_argument("course_json", type=Path)
+    p.add_argument("--audio-delivery-choice", choices=['mp3', 'keep-wav'],
+                   help="Explicit user decision for a legacy WAV course")
     args = p.parse_args()
 
     course = json.loads(args.course_json.read_text())
+    try:
+        delivery_defaults_changed = apply_delivery_defaults(course, args.audio_delivery_choice)
+    except ValueError as error:
+        p.exit(2, str(error)+'\n')
     expected_syllabus_hrefs(course)
     legacy_profile = legacy_multi_sco.enabled(course)
     if single_sco.enabled(course):  # Validate before output or later paid steps.
@@ -111,8 +118,8 @@ def main():
 
     # If course.json itself is not yet in out_dir, copy it so renderers can find it.
     target_json = out / args.course_json.name
-    if not target_json.exists() or target_json.resolve() != args.course_json.resolve():
-        shutil.copy(args.course_json, target_json)
+    if delivery_defaults_changed or not target_json.exists() or target_json.resolve() != args.course_json.resolve():
+        target_json.write_text(json.dumps(course, indent=2, ensure_ascii=False)+'\n')
         print(f"copied {args.course_json.name} -> {target_json}")
 
     print("\nScaffold complete. Next steps:")
@@ -122,7 +129,7 @@ def main():
     else:
         print(f"  1. Write narration scripts under {out}/audio/moduleN/slide_*.txt")
         print(f"  2. Drop or generate figures under {out}/figures/")
-        print(f"  3. Run gen_audio.py, then render_module.py --all, then render_index.py")
+        print(f"  3. Run gen_audio.py, then encode_delivery_audio.py, then render_module.py --all and render_index.py")
 
 
 if __name__ == "__main__":

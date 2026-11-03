@@ -1,6 +1,7 @@
 """Observable LMS metadata, localized formatting, and ZIP delivery contracts."""
 import copy
 import json
+import shutil
 from pathlib import Path
 import tempfile
 import unittest
@@ -8,6 +9,7 @@ import zipfile
 
 from course_delivery_summary import catalog_metadata, catalog_files, write_catalog, MARKDOWN_BREAK
 from zip_for_lms import package
+from render_index import render_manifest, render_index_html
 
 
 def fixture():
@@ -96,17 +98,21 @@ class PackagingTests(unittest.TestCase):
         source=root/'course.json';source.write_text(json.dumps(course))
         (root/'README.md').write_text('Maintenance notes, not LMS catalog copy.')
         runtime=root/'SCORM';runtime.mkdir()
-        (runtime/'imsmanifest.xml').write_text('<manifest xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"><resources><resource><file href="index.html"/></resource></resources></manifest>')
-        (runtime/'index.html').write_text('<h1>Runtime</h1>')
+        (runtime/'imsmanifest.xml').write_text(render_manifest(course,runtime))
+        (runtime/'index.html').write_text(render_index_html(course,runtime))
+        (runtime/'scorm_api.js').write_text('// Test SCORM adapter')
+        shutil.copy(Path(__file__).resolve().parents[1]/'assets/ocp_academy_white.svg',runtime/'ocp_academy_white.svg')
+        for module in course['modules']:
+            (runtime/f'module{module["id"]}.html').write_text('<h1>Module</h1>')
         return source,runtime
 
     def test_zip_and_separate_sidecars_use_same_approved_metadata(self):
         with tempfile.TemporaryDirectory() as temp:
             root=Path(temp);source,runtime=self.make_runtime(root,fixture())
             output,sidecars,count=package(runtime,root/'course.zip')
-            self.assertEqual(count,2)
+            self.assertEqual(count,6)
             with zipfile.ZipFile(output) as archive:
-                self.assertEqual(set(archive.namelist()),{'imsmanifest.xml','index.html'})
+                self.assertEqual(set(archive.namelist()),{'imsmanifest.xml','index.html','module11.html','module22.html','scorm_api.js','ocp_academy_white.svg'})
                 self.assertIsNone(archive.testzip())
             self.assertEqual({p.suffix for p in sidecars},{'.json','.md','.html'})
             delivered=json.loads((root/'course.lms-catalog.json').read_text())
