@@ -90,11 +90,6 @@ courses/
   high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
   intro-to-ocp/
-    animations/
-    audio/
-    figures/
-    resources/
-    thumbnail.png
   introduction-to-liquid-cooling/
   lvdc-power-distribution-for-data-centers/
   multipath-reliable-connection-mrc/
@@ -103,8 +98,6 @@ courses/
   ocp-lock-secure-key-management-for-self-encrypting-storage/
   ocp-mhs-modular-plug-and-play-m-pnp/
   ocp-nic-3-0-technical-overview/
-    animations/
-    thumbnail.png
   ocp-orientation/
     understanding-and-procuring-open-technologies-and-products/
     introduction-to-the-ocp-solution-provider-program/
