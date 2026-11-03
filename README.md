@@ -10,52 +10,52 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 
 ## Available Courses
 
-| Folder | Course |
+| Course | Summary |
 |---|---|
-| `ai-computing-continuum` | AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center |
-| `build-your-brand-in-the-ocp-community` | How to Build Your Brand in the OCP Community |
-| `cooling-fluids-in-direct-liquid-cooling` | Cooling Fluids in Direct Liquid Cooling (DLC) |
-| `data-center-basics` | [Data Centers: From Digital Services to Physical Infrastructure](courses/data-center-basics/README.md): four narrated SCORM 1.2 modules with preserved recordings and timed teaching videos |
-| `diablo-400-disaggregated-power-for-high-density-ai-racks` | OCP Diablo 400: Disaggregated Power for High-Density AI Racks |
-| `distributed-ai-infrastructure` | [Distributed AI Infrastructure](courses/distributed-ai-infrastructure/README.md): five narrated modules, eight original recordings, five synchronized teaching videos and ten knowledge-check questions in 80 minutes |
-| `fcsa-architecting-interoperable-chiplet-systems` | [FCSA: Architecting Interoperable Chiplet Systems](courses/fcsa-architecting-interoperable-chiplet-systems/README.md): five narrated modules, five synchronized teaching videos, and an integration workbook |
-| `fast-optical-circuit-switching-for-dynamic-ai-fabrics` | [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md): four narrated modules on workload timing, system readiness, switching mechanisms, and AI-workload evidence |
-| `grid-disturbance-performance` | Grid Disturbance Performance for Hyperscale Data Centers |
-| `high-bandwidth-flash` | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance |
-| `integrating-quantum-processing-units-into-data-center-infrastructure` | [Integrating Quantum Processing Units into Data Center Infrastructure](courses/integrating-quantum-processing-units-into-data-center-infrastructure/README.md): four narrated modules with teaching animations and two-question knowledge checks |
-| `intro-to-ocp/module-1-the-ocp-origins` | Module 1: The OCP Origins |
-| `intro-to-ocp/module-2-the-ocp-ecosystem-governance` | Module 2: The OCP Ecosystem & Governance |
-| `intro-to-ocp/module-3-ocp-technologies-open-rack-cooling` | Module 3: OCP Technologies (Open Rack & Cooling) |
-| `intro-to-ocp/module-4-today-and-tomorrow-the-journey` | Module 4: Today and Tomorrow (The Journey) |
-| `introduction-to-liquid-cooling` | [Introduction to Liquid Cooling](courses/introduction-to-liquid-cooling/README.md): four narrated modules on complete heat paths, direct and immersion cooling, and deployment readiness; SCORM 1.2 with Course Home plus four module SCOs |
-| `lvdc-power-distribution-for-data-centers` | LVDC Power Distribution for Data Centers |
-| `multipath-reliable-connection-mrc` | OCP Academy - MRC Technical Overview |
-| `nvidia-mgx-1-2-rack-and-tray-interfaces` | [NVIDIA MGX 1.2 Rack and Tray Interfaces](courses/nvidia-mgx-1-2-rack-and-tray-interfaces/README.md): six narrated modules on mechanical, electrical, and liquid interfaces with source-derived CAD media |
-| `ocp-esun-ethernet-for-scale-up-networks` | OCP ESUN: Ethernet for Scale-Up Networks |
-| `ocp-lock-secure-key-management-for-self-encrypting-storage` | OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage |
-| `ocp-mhs-modular-plug-and-play-m-pnp` | OCP MHS Modular Plug-and-Play (M-PNP) — [v0.7 source preview](courses/ocp-mhs-modular-plug-and-play-m-pnp/README.md); teaching media pending |
-| `ocp-nic-3-0-technical-overview` | [OCP NIC 3.0 Technical Overview](courses/ocp-nic-3-0-technical-overview/README.md): six narrated modules with synchronized teaching animations |
-| `ocp-orientation/understanding-and-procuring-open-technologies-and-products` | Understanding and Procuring Open Technologies and Products |
-| `ocp-orientation/introduction-to-the-ocp-solution-provider-program` | Introduction to the OCP Solution Provider Program |
-| `ocp-orientation/ocp-volunteer-leadership-guide` | OCP's Volunteer Leadership Guide |
-| `ocp-orientation/ocp-ready-data-center-recognition-program` | OCP Ready™ Data Center Recognition Program |
-| `ocp-orientation/ocp-contribution-process` | OCP Contribution Process |
-| `ocp-project-brazos-liquid-to-air-cooling` | OCP Project Brazos: Liquid Cooling in Air-Cooled Data Centers |
-| `ocp-ready-requirements-for-energy-storage-systems` | OCP Ready™ Requirements for Energy Storage Systems |
-| `ocp-safe-product-security` | [OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements](courses/ocp-safe-product-security/README.md): three narrated modules in one SCORM 1.2 activity, four synchronized teaching videos and the preserved program overview |
-| `ocp-solid-state-transformers` | OCP Solid State Transformers: From Medium Voltage to 800 VDC |
-| `open-chiplet-economy` | [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md): nine narrated modules, nine teaching animations, and fourteen captioned recordings |
-| `open-cluster-designs-for-ai` | [Open Cluster Designs for AI](courses/open-cluster-designs-for-ai/README.md): four narrated modules, five synchronized teaching videos and practical deployment-evidence scenarios in 55 minutes |
-| `open-data-center-for-ai` | Open Data Center for AI |
-| `open-rack-architecture-power-cooling-deployment` | [Open Rack: Architecture, Power, Cooling and Deployment](courses/open-rack-architecture-power-cooling-deployment/README.md): seven narrated modules in one SCORM 1.2 package, MP3 narration, 16 synchronized teaching videos and 12 captioned recordings; replaces the former seven-course scrolling series |
-| `open-systems-for-ai` | [Open Systems for AI](courses/open-systems-for-ai/README.md): six narrated modules, eight synchronized teaching videos and six preserved recordings in one SCORM 1.2 package |
-| `optics/enhanced-telemetry-optics` | Enhanced Telemetry Optics — English source for specification v1.0.0 |
-| `optics/introduction-to-emerging-optical-technologies` | Introduction to Emerging Optical Technologies |
-| `project-deschutes-cdu-specification-v1-0` | OCP Project Deschutes |
-| `short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics` | Short-Reach Optical Interconnects for AI Scale-Up Fabrics |
-| `sue-t-ethernet-transport-for-xpu-scale-up-systems` | [SUE-T: Ethernet Transport for XPU Scale-Up Systems](courses/sue-t-ethernet-transport-for-xpu-scale-up-systems/README.md) |
-| `thermal-boundaries-in-ai-infrastructure` | [Thermal Boundaries in AI Infrastructure](courses/thermal-boundaries-in-ai-infrastructure/README.md): three narrated modules on cooling limits, architecture choices, and deployment readiness |
-| `two-phase-direct-liquid-cooling-efficiencies-and-fluids` | Two-Phase Direct Liquid Cooling Efficiencies and Fluids |
+| [AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center](courses/ai-computing-continuum/README.md) | Explore how distributed AI inference shapes infrastructure across data centers, edge sites, and regions, including Scale-Across, Sync-Across, and Reach-Across architectures. |
+| [How to Build Your Brand in the OCP Community](courses/build-your-brand-in-the-ocp-community/README.md) | Build credibility through participation and useful contributions, then choose OCP community channels to share work and reach relevant audiences. |
+| [Cooling Fluids in Direct Liquid Cooling (DLC)](courses/cooling-fluids-in-direct-liquid-cooling/README.md) | Compare water and PG25 coolants for direct liquid cooling, and apply compatibility, commissioning, monitoring, and maintenance practices. |
+| [Data Centers: From Digital Services to Physical Infrastructure](courses/data-center-basics/README.md) | Connect digital services to facility types, power and cooling paths, racks, operational responsibilities, and resource efficiency measures. |
+| [OCP Diablo 400: Disaggregated Power for High-Density AI Racks](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/README.md) | Examine Diablo 400 sidecar power architecture, electrical interfaces, protection, telemetry, and its relationship to facility LVDC distribution. |
+| [Distributed AI Infrastructure](courses/distributed-ai-infrastructure/README.md) | Connect AI workload coordination to distributed state, timing, geographic placement, scaling, and controlled recovery. |
+| [FCSA: Architecting Interoperable Chiplet Systems](courses/fcsa-architecting-interoperable-chiplet-systems/README.md) | Apply Foundation Chiplet System Architecture to chiplet roles, interfaces, boot coordination, security, and the evidence needed for interoperable integration. |
+| [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md) | Evaluate optical circuit switching against AI workload timing, complete reconfiguration delays, switching mechanisms, and deployment constraints. |
+| [Grid Disturbance Performance for Hyperscale Data Centers](courses/grid-disturbance-performance/README.md) | Interpret voltage ride-through and active-power recovery requirements, coordinate facility responses, and assess mitigations at the utility interface. |
+| [High Bandwidth Flash: Bridging SSD Capacity and HBM Performance](courses/high-bandwidth-flash/README.md) | Explore where high-bandwidth flash fits between SSDs and HBM, including interconnect architecture, memory mapping, reliability, and AI serving workloads. |
+| [Integrating Quantum Processing Units into Data Center Infrastructure](courses/integrating-quantum-processing-units-into-data-center-infrastructure/README.md) | Connect hybrid quantum-classical architectures to QPU facility requirements, environmental controls, shared services, and operational readiness. |
+| [Module 1: The OCP Origins](courses/intro-to-ocp/module-1-the-ocp-origins/README.md) | Learn why OCP was founded, how Open Rack evolved, and how openly shared hardware designs influence infrastructure innovation. |
+| [Module 2: The OCP Ecosystem & Governance](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/README.md) | Understand OCP community roles, project organization, governance, and the lifecycle of a technical contribution. |
+| [Module 3: OCP Technologies (Open Rack & Cooling)](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/README.md) | Explore ORv3 architecture and the power, thermal, and cooling choices that connect open hardware designs to physical infrastructure. |
+| [Module 4: Today and Tomorrow (The Journey)](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/README.md) | Navigate OCP hardware recognition tiers and the Marketplace, and use an adoption framework to plan your participation. |
+| [Introduction to Liquid Cooling](courses/introduction-to-liquid-cooling/README.md) | Compare direct and immersion cooling, trace complete heat paths, and assess fluid compatibility, equipment interfaces, and deployment readiness. |
+| [LVDC Power Distribution for Data Centers](courses/lvdc-power-distribution-for-data-centers/README.md) | Review facility-to-rack DC power architectures, voltage compatibility, grounding, protection, conversion, controls, and installation verification. |
+| [OCP Academy - MRC Technical Overview](courses/multipath-reliable-connection-mrc/README.md) | Examine the MRC RDMA transport, including multipath routing, reliability, congestion control, failure recovery, and AI training fabric deployment. |
+| [NVIDIA MGX 1.2 Rack and Tray Interfaces](courses/nvidia-mgx-1-2-rack-and-tray-interfaces/README.md) | Interpret MGX rack and tray geometry, modular I/O, power and grounding, liquid interfaces, and qualification evidence for integration reviews. |
+| [OCP ESUN: Ethernet for Scale-Up Networks](courses/ocp-esun-ethernet-for-scale-up-networks/README.md) | Explore Ethernet for scale-up networks, the ESUN packet header, and the endpoint and switch requirements for interoperable AI fabrics. |
+| [OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage](courses/ocp-lock-secure-key-management-for-self-encrypting-storage/README.md) | Trace secure key management for self-encrypting storage through threat models, key hierarchies, lifecycle rules, controller interfaces, and compliance requirements. |
+| [OCP MHS Modular Plug-and-Play (M-PNP)](courses/ocp-mhs-modular-plug-and-play-m-pnp/README.md) | Explore modular hardware discovery, FRU data, boot coordination, programmable-device interfaces, and conformance requirements for interoperable platforms. |
+| [OCP NIC 3.0 Technical Overview](courses/ocp-nic-3-0-technical-overview/README.md) | Review NIC form factors, mechanical and electrical interfaces, management, firmware, signal integrity, thermal design, and compliance requirements. |
+| [Understanding and Procuring Open Technologies and Products](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/README.md) | Assess open-technology ecosystems, commercial models, benefits, and qualification criteria to support informed procurement decisions. |
+| [Introduction to the OCP Solution Provider Program](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/README.md) | Understand how OCP Marketplace listings, recognition programs, agreements, and fees help solution providers bring offerings to the OCP market. |
+| [OCP's Volunteer Leadership Guide](courses/ocp-orientation/ocp-volunteer-leadership-guide/README.md) | Learn volunteer leadership responsibilities, project onboarding, community collaboration, contribution processes, and product and data-center recognition. |
+| [OCP Ready™ Data Center Recognition Program](courses/ocp-orientation/ocp-ready-data-center-recognition-program/README.md) | Understand the requirements and recognition process for data centers prepared to support OCP infrastructure and solutions. |
+| [OCP Contribution Process](courses/ocp-orientation/ocp-contribution-process/README.md) | Follow a technical contribution from initiation and submission through review, document preparation, approval, and publication. |
+| [OCP Project Brazos: Liquid Cooling in Air-Cooled Data Centers](courses/ocp-project-brazos-liquid-to-air-cooling/README.md) | Trace Brazos liquid-to-air heat paths, interpret cooling performance, and assess rack integration, serviceability, controls, and deployment readiness. |
+| [OCP Ready™ Requirements for Energy Storage Systems](courses/ocp-ready-requirements-for-energy-storage-systems/README.md) | Compare energy storage deployment architectures and technologies, then connect safety hazards, operational practices, and applicable standards to OCP Ready™ requirements. |
+| [OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements](courses/ocp-safe-product-security/README.md) | Understand independent product security review scope, preparation, remediation, and reporting, including S.O.L.I.D. requirements and the role of AI-assisted analysis. |
+| [OCP Solid State Transformers: From Medium Voltage to 800 VDC](courses/ocp-solid-state-transformers/README.md) | Examine solid-state transformer architecture, medium-voltage conversion to 800 VDC, grid interaction, ride-through behavior, protection, and integration into LVDC facilities. |
+| [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md) | Connect chiplet architecture, packaging, die-to-die interfaces, testing, economics, standards, and supplier qualification to viable interoperable systems. |
+| [Open Cluster Designs for AI](courses/open-cluster-designs-for-ai/README.md) | Interpret OCP cluster reference designs, trace building blocks into complete clusters, compare AI fabrics, and assemble deployment and operating evidence. |
+| [Open Data Center for AI](courses/open-data-center-for-ai/README.md) | Evaluate facility compatibility for AI infrastructure through structural loads, movement paths, row geometry, power, cooling, and compatibility with equipment from different suppliers. |
+| [Open Rack: Architecture, Power, Cooling and Deployment](courses/open-rack-architecture-power-cooling-deployment/README.md) | Connect ORv3, high-power racks, and Open Rack Wide to mechanical fit, power, cooling, resilience, serviceability, and deployment validation. |
+| [Open Systems for AI](courses/open-systems-for-ai/README.md) | Connect AI workload requirements to cluster architecture, physical infrastructure, modular IT building blocks, shared interfaces, and systems management. |
+| [Enhanced Telemetry Optics](courses/optics/enhanced-telemetry-optics/README.md) | Use optical metrics, link-health indicators, event logs, remote access, and firmware workflows to diagnose issues in AI fabrics and assess deployment readiness. |
+| [Introduction to Emerging Optical Technologies](courses/optics/introduction-to-emerging-optical-technologies/README.md) | Compare emerging optical approaches for AI infrastructure, including co-packaged optics, blind-mate connectivity, multicore fiber, hollow-core fiber, and quantum applications. |
+| [OCP Project Deschutes](courses/project-deschutes-cdu-specification-v1-0/README.md) | Explore coolant distribution unit architecture, facility and technology cooling loops, performance requirements, controls, serviceability, and deployment considerations. |
+| [Short-Reach Optical Interconnects for AI Scale-Up Fabrics](courses/short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/README.md) | Evaluate the copper-to-optics crossover for scale-up fabrics, including reach, optical placement, reliability, diagnostics, and architecture tradeoffs. |
+| [SUE-T: Ethernet Transport for XPU Scale-Up Systems](courses/sue-t-ethernet-transport-for-xpu-scale-up-systems/README.md) | Trace XPU transactions across Ethernet transport, including packet handling, reliable delivery, ordering, interface mapping, and completion semantics. |
+| [Thermal Boundaries in AI Infrastructure](courses/thermal-boundaries-in-ai-infrastructure/README.md) | Diagnose cooling limits, compare thermal architectures, and evaluate cost, reliability, and evidence for a supported cooling transition. |
+| [Two-Phase Direct Liquid Cooling Efficiencies and Fluids](courses/two-phase-direct-liquid-cooling-efficiencies-and-fluids/README.md) | Explain phase-change cooling and loop efficiency, then assess dielectric-fluid selection, material compatibility, deployment, monitoring, and lifecycle practices. |
 
 ## Course styles
 
