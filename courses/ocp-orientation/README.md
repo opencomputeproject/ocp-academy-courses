@@ -1,36 +1,27 @@
-# OCP Orientation
+# OCP Community Orientation
 
-Readable source for five independent OCP Academy orientation courses. Each child folder is a standalone Scrolling course with its own `course.json`, course-owned resources, and LMS-ready build output.
+Five independent narrated Slides courses for a nontechnical audience. Each replaces its previous Scrolling edition at the same course path. Build and upload each course separately; they are not modules inside a shared package.
 
-The courses are grouped here for source management, but they are not modules inside one SCORM package. Build and upload each course separately.
+| Course | Content modules | Estimated learner time |
+|---|---:|---:|
+| [Introduction to the OCP Solution Provider Program](introduction-to-the-ocp-solution-provider-program/README.md) | 1 | 7 min |
+| [OCP Contribution Process](ocp-contribution-process/README.md) | 1 | 8 min |
+| [OCP Ready™ Data Center Recognition Program](ocp-ready-data-center-recognition-program/README.md) | 1 | 6 min |
+| [OCP's Volunteer Leadership Guide](ocp-volunteer-leadership-guide/README.md) | 1 | 10 min |
+| [Understanding and Procuring Open Technologies and Products](understanding-and-procuring-open-technologies-and-products/README.md) | 1 | 7 min |
 
-## Course sources
+The English set contains 84 slides, 81 narrated sections, ten narration-synchronized teaching videos, 35 screenshot placements and six retained original-video placements. Contribution Process adds caption-timed narration to its three originally silent demonstrations. The other original recordings retain their own soundtracks and shared player.
 
-| Folder | Course | Focus |
-|---|---|---|
-| `understanding-and-procuring-open-technologies-and-products` | Understanding and Procuring Open Technologies and Products | Open-technology ecosystems, procurement benefits, commercial models, and adoption strategy. |
-| `introduction-to-the-ocp-solution-provider-program` | Introduction to the OCP Solution Provider Program | The OCP Marketplace, product and facility recognition, agreements, and fees. |
-| `ocp-volunteer-leadership-guide` | OCP's Volunteer Leadership Guide | Volunteer roles, project leadership, contribution processes, and recognition programs. |
-| `ocp-ready-data-center-recognition-program` | OCP Ready™ Data Center Recognition Program | Recognition paths, site-assessment requirements, submission, and maintenance. |
-| `ocp-contribution-process` | OCP Contribution Process | Contribution initiation, review, approval, publication, and supporting tools. |
+Each course uses SCORM 1.2 with one tracked course activity, including Course Home and one teaching module. Course marks and 800 × 400 posters are approved; Ready and Solution Provider posters retain the supplied official program logos. The user confirmed synchronization to OCP Academy on November 3, 2026.
 
-## Source contract
+## Editable sources
 
-- `course.json` is the human-readable Scrolling course definition used by AcademyWizard.
-- `resources/` contains course-owned learner media, captions, fonts, and documents.
-- `conversion.json` records recovery and porting provenance from the original Rise course.
-- Rendered HTML, manifests, runtime files, original Rise packages, and SCORM ZIPs are not committed.
+Each course owns its `course.json`, current narration scripts, figures, animation sources, original media, captions, course mark, `thumbnail.png`, `poster.html`, poster assets and separate LMS catalog exports. Generated narration, rendered runtime pages and ZIPs remain outside Git under repository policy.
 
-See [OCP Academy course styles](../../docs/course-styles.md) for the Scrolling format and fidelity rules.
+Use `./scripts/build-course.sh ocp-orientation/<course-folder>` from the repository root. `EXISTING_AUDIO_DIR` reuses approved narration without paid regeneration. The Contribution Process cue generator preserves its authored caption windows and fails when a new phrase does not fit.
 
-## Build all five courses
+## Translations
 
-From the repository root:
+The 15 superseded Scrolling locale editions have been retired from the current catalog and remain recoverable in Git history. Create replacement Slides locales from the current approved English sources. The maintained target choices are Korean, Japanese, Simplified Chinese, Traditional Chinese, Vietnamese, Brazilian Portuguese and Latin American Spanish: 35 independent course editions.
 
-```bash
-./scripts/build-course.sh ocp-orientation/understanding-and-procuring-open-technologies-and-products
-./scripts/build-course.sh ocp-orientation/introduction-to-the-ocp-solution-provider-program
-./scripts/build-course.sh ocp-orientation/ocp-volunteer-leadership-guide
-./scripts/build-course.sh ocp-orientation/ocp-ready-data-center-recognition-program
-./scripts/build-course.sh ocp-orientation/ocp-contribution-process
-```
+[Live voice compatibility record](../../docs/orientation-v4-language-compatibility.json) verifies every selected language and professional voice against full `eleven_v4`. Locale scaffolding preserves MP3 delivery, pacing, media and narration hooks while resetting script, cue-plan and LMS-copy approval. Use native-language editorial review before generating new speech.

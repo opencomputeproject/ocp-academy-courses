@@ -45,6 +45,17 @@ class SingleSCOTests(unittest.TestCase):
         render_index.render_manifest(course, Path('.'))
         self.assertEqual(course, before)
 
+    def test_preserved_screenshot_galleries_are_packaged(self):
+        course = self.single()
+        course['modules'][0]['slides'][0]['screenshot_gallery'] = [
+            {'path': 'resources/images/marketplace.png'},
+            {'path': 'resources/images/contribution-step.png'},
+        ]
+        root = ET.fromstring(render_index.render_manifest(course, Path('.')))
+        files = {node.get('href') for node in root.iter(f'{{{single_sco.IMS}}}file')}
+        self.assertIn('resources/images/marketplace.png', files)
+        self.assertIn('resources/images/contribution-step.png', files)
+
     def test_unimplemented_version_is_rejected(self):
         course = self.single()
         course['scorm']['version'] = '2004'

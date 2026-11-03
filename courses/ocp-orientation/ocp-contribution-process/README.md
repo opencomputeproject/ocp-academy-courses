@@ -1,18 +1,23 @@
 # OCP Contribution Process
 
-This standalone Scrolling course follows an OCP contribution from initial submission through review, approval, publication, and the tools used throughout the process.
+One narrated Slides course in OCP Community Orientation, written for a nontechnical audience. Bring an idea through review to a useful public contribution.
 
-## Lessons
+The course has one content module, 20 slides and 20 narrated sections. Narration runs 6:12; narration plus original recordings runs 6:12. Estimated learner time is 8 minutes, including reading and the final two-question check. Optional resource exploration takes longer.
 
-1. Introduction
-2. Platform and Process Overview
-3. Initiation and Submission
-4. Review and Document Preparation
-5. Approval and Publication
-6. Knowledge Check
-7. Summary
+## Source and delivery
 
-## Build
+- `course.json` is the editable course definition. It replaces the previous Scrolling course at the same path.
+- `audio/module1/*.txt` contains the current narration scripts. Generated MP3/WAV audio and SCORM ZIPs remain outside Git under repository policy.
+- `figures/` and `animations/` contain course-owned media and editable teaching-video sources. Teaching videos play once on the narration clock and hold the completed final scene.
+- `resources/` preserves original recordings, screenshots, captions and supporting documents. Screenshot galleries retain the original image bytes and can be updated as the OCP website changes.
+- `course-mark.svg` is the approved course mark. [Catalog poster](thumbnail.png) is exactly 800 × 400; [poster.html](poster.html) and `poster-assets/` retain its editable design and authoritative branding.
+- [LMS catalog fields](lms-catalog.md) and [structured metadata](lms-catalog.json) are separate from the README and runtime ZIP.
+
+Narration uses full Eleven v4 (`eleven_v4`), Leo (`bbGtsRRKUfYO634UxSjz`), pitch-preserving 1.18 pacing, and 44.1 kHz, 96 kbps CBR mono MP3 delivery. The learner speed dial starts at 1.0.
+
+SCORM delivery is 1.2 with one tracked course activity containing Course Home and the single teaching module. Completion requires the final check to be attempted and the final slide reached. The user confirmed LMS synchronization on November 3, 2026.
+
+## Rebuild
 
 From the repository root:
 
@@ -20,4 +25,10 @@ From the repository root:
 ./scripts/build-course.sh ocp-orientation/ocp-contribution-process
 ```
 
-The source of truth is `course.json`. Course-owned learner media and video are retained under `resources/`. Generated SCORM files are not checked in.
+Use the approved existing audio masters with `EXISTING_AUDIO_DIR` to avoid paid regeneration. Without those masters, the wrapper generates narration through the configured ElevenLabs voice and retains authoring receipts outside the runtime package. Preserve the approved voice, pacing, narration timing and SCORM organization.
+
+## Language editions
+
+Previous Scrolling translations were retired because they describe the superseded course. They remain recoverable in Git history. Replacement Slides translations must branch from this approved English source, preserving the one-module structure, media scope and authoritative links. The maintained voice choices are verified in [the live v4 compatibility record](../../../docs/orientation-v4-language-compatibility.json).
+
+The three originally silent demonstrations on slides 6, 10 and 12 use generated narration timed to 23 existing caption windows. Original video and VTT bytes are preserved. Regular video controls, narration pause/seek/speed and enlarged views remain synchronized. The course-owned `scripts/generate_demo_narration.py` hook and `scripts/narration-cue-plan.json` rebuild these three clips before ordinary slide narration; a phrase that overruns its caption window stops the build instead of changing the approved pace.

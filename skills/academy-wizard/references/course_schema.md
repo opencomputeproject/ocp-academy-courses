@@ -204,6 +204,23 @@ Content-module count excludes Course Home. Five Slides modules normally have six
 
 ## Presentation style
 
+Imported recording slides may set `media_only: true` with
+`figure.role: "original_video"`, `audio: null`, and
+`narration_enabled: false`. This renders only the shared imported-video player
+inside the slide content area: no section label, slide heading, caption,
+teaching statement or learner-aid strip. Keep the title and figure caption in
+editable source for identification and media audits. Retain captions and
+transcripts, and use the recording's own controls. Generated teaching animations
+must not use `media_only`.
+
+An explicitly authorized narration of a silent retained recording may instead
+use `figure.role: "caption_narrated_recording"` with `media_only: true`, normal
+slide `audio`, `narration_enabled: true`, and `sync_to_narration: true`. Preserve
+the original video and VTT bytes and record that authorization. Use the regular
+figure controls, `autoplay: false`, `loop: false`, and `muted: true`; captions
+remain available in the slide and enlarged view. This exception does not
+authorize replacing the soundtrack or controls of other original recordings.
+
 `style` accepts exactly `"Slides"` or `"Scrolling"`. If omitted, renderers assume Slides so existing courses remain compatible.
 
 - Slides uses `modules[].slides[]`, narration, and multiple SCO pages.
@@ -511,6 +528,22 @@ Use `reference_links` for small bottom-of-slide link pills. Every resource pill 
 ```
 
 Attach a term only to its first substantive use in each module's spoken script, rendered slide text, or legible figure/video text. Never define `term_refs` or display glossary pills on a quiz/`knowledge_check` slide or on the first or last slide of any module, regardless of layout type or ID. Determine boundaries by position in `modules[].slides[]`, not by assuming IDs start at 1 or that the last slide is `up_next`/`course_complete`. Intro/title, roadmap/overview, objectives and next-module/completion slides are excluded even at interior positions. All these excluded slides also do not count toward first substantive use. Use the first eligible teaching occurrence, or omit the pill when none exists. Resource links are not glossary pills and remain independently permitted. Keep image-only `full_slide_image` layouts free of pills; do not change their layout without approval. Put learner aids after the last text/table/figure in the slide content flow.
+
+### Original screenshot galleries
+
+Slides may retain supporting interface images in `screenshot_gallery`, an ordered
+array of image objects with `path`, `alt` and `caption`. Optional `source_sha256`,
+`source_lesson` and `source_block` fields preserve recovery provenance. The gallery
+appears after the main teaching content and before resource links. Previous/next
+controls select one image at a time; each image uses the standard enlargement
+view. Gallery selection does not change narration or slide progress. Stage every
+image path in the runtime output. Preserve original files until the author chooses
+to replace them.
+
+For a substantially restructured local review, optional top-level
+`progress_revision` separates its local bookmarks and quiz attempts from an older
+slide sequence. Omission preserves existing local storage keys. This does not
+migrate LMS saved state or authorize a deployment/tracking change.
 
 ### Glossary usage evidence
 
@@ -842,13 +875,16 @@ MP4, WebM, MOV, or M4V file:
   "alt": "Silent animation comparing dust impact on physical-contact and expanded-beam connectors.",
   "caption": "Expanded beam spreads the optical spot so the same contaminant blocks less of the path.",
   "source": "custom",
-  "autoplay": true,
-  "loop": true,
+  "sync_to_narration": true,
+  "autoplay": false,
+  "loop": false,
   "muted": true
 }
 ```
 
-A figure may explicitly opt into a narration-master sequence with
+Prefer this narration-master sequence for newly authored narrated Slides. Record
+`narration.teaching_video_mode: "narration-synchronized"` at course level to reject
+accidental loops during source QA. Configure every paired teaching figure with
 `"sync_to_narration": true`, `"autoplay": false`, `"loop": false`, and
 `"muted": true`. These settings are required when the video is timed to narration:
 play once and hold the final picture in both embedded and enlarged views until
@@ -856,7 +892,9 @@ the learner requests replay or seeks. Matching media durations alone does not
 select this behavior. It requires paired slide narration. This is a boolean; strings
 such as `"false"` must not activate it. Omission or `false` retains the historical
 player, including modulo seeking for loops and its existing pause/end behavior.
-Approval, production and regression requirements are in
+This omission behavior exists for compatibility with approved legacy media; it
+is not the authoring recommendation for a new narrated teaching sequence.
+Production, exception and regression requirements are in
 [narration_synced_video.md](narration_synced_video.md).
 
 `extract_figures.py` reads `extract_from`. The image-gen step reads `generate_prompt`.
@@ -869,6 +907,16 @@ Imported Slides recordings and Scrolling videos share the black Chiplet-style pl
 For an imported recording with its own audio, set `figure.role` to `original_video`, `audio` to `null` and `narration_enabled` to `false`. Put editable caption tracks in `figure.captions`; `caption_cues` may embed their timed text for reliable `file://` review. Keep `video_transcript` and set the slide's `transcript` to that recording transcript. The slide narration Play button is disabled, its source is cleared, and later narrated slides restore the controls. Existing narration can be archived under authoring, excluded from the runtime manifest.
 
 Generated Slides teaching clips retain the standard figure player with compact overlaid Play/Pause and Enlarge buttons. They do not use the black imported-recording control bar. Keep the approved loop/single-pass and narration settings. For `sync_to_narration: true`, Play/Pause in the figure and enlargement controls the narration clock; the fixed slide controls provide narration seek, speed and volume. Enlargement shares that clock. This presentation standard does not authorize changing SCORM tracking or a course's approved media mode.
+
+Regular figure videos with caption cues add a CC toggle. Render the editable
+VTT cues into the generated page so local-file review works without a caption
+fetch. Keep captions anchored to the visible viewport during phone enlargement
+and panning. A timed recording's `audio.generation_hook` identifies its
+course-owned cue generator: the repository build wrapper prepares that audio
+before ordinary narration. `gen_audio.py` must not overwrite hook-owned clips,
+including forced retries, or synthesize untimed replacements when they are
+missing. Keep the cue recipe and generator in source; generated audio remains
+outside Git.
 
 ## Local font delivery for Slides
 

@@ -28,6 +28,7 @@ try {
  const state=()=>page.evaluate(()=>{const a=testNarration,v=document.querySelector('.slide.active video');const pick=v=>({time:v.currentTime,rate:v.playbackRate,paused:v.paused,duration:v.duration});return {audio:pick(a),video:pick(v),marked:v.dataset.narrationSync,loop:v.loop,clones:[...document.querySelectorAll('.lightbox-overlay video')].map(pick)}});
  const close=(a,b,t=.3)=>Math.abs(a-b)<t;
  let s=await state();check(s.audio.paused,'Review narration is paused');check(synced?s.video.paused:!s.video.paused,'Correct video entry behavior');check(s.loop===!synced,'Correct loop policy');
+ if(synced)check(Math.abs(s.audio.duration-s.video.duration)<=1/30+.005,'Video duration matches delivered narration within one frame');
  await page.locator('#audioPlayBtn').click();await page.waitForTimeout(350);s=await state();check(!s.audio.paused&&!s.video.paused,'Narration starts video');
  await page.evaluate(()=>{testNarration.playbackRate=1.5;testNarration.currentTime=Math.min(31,testNarration.duration*.6)});await page.waitForTimeout(300);s=await state();check(s.video.rate===1.5,'Video follows narration speed');check(close(s.video.time,synced?s.audio.time:s.audio.time%s.video.duration),'Seek uses finite or modulo time');
  await page.locator('.slide.active [data-video-zoom]').click();await page.waitForTimeout(250);s=await state();check(s.clones.length===1,'Enlarged video exists');check(s.clones[0].rate===(synced?1.5:1),'Enlarged speed preserves the mode policy');
@@ -40,7 +41,11 @@ try {
  if(!synced){await page.locator('#narrationModeBtn').click();await page.waitForTimeout(150);}
  await page.evaluate(()=>testNarration.pause());await page.waitForTimeout(100);s=await state();check(s.audio.paused&&s.video.paused,'Pause preserves narration-enabled behavior');
  await page.evaluate(()=>{testNarration.currentTime=20;testNarration.dispatchEvent(new Event('waiting'))});await page.waitForTimeout(120);s=await state();check(s.video.paused,'Paused seek remains paused');
- await page.evaluate(()=>{testNarration.currentTime=testNarration.duration-.35;return testNarration.play()});await page.waitForTimeout(700);s=await state();check(s.audio.paused,'Audio completes');check(synced?s.video.paused:!s.video.paused,'Old loop continues at audio end; synced video holds');
+ await page.evaluate(()=>{testNarration.currentTime=testNarration.duration-.35;return testNarration.play()});
+ // Compressed-audio seeks can buffer before the last 350 ms plays. Observe
+ // the real ending instead of assuming the seek settles inside a fixed delay.
+ await page.waitForFunction(()=>testNarration.ended&&testNarration.paused,{},{timeout:5000});
+ s=await state();check(s.audio.paused,'Audio completes');check(synced?s.video.paused:!s.video.paused,'Old loop continues at audio end; synced video holds');
  if(synced){
   check(s.video.time>s.video.duration-.2,'Synced final state');
   const finalTime=s.video.time;await page.waitForTimeout(1100);s=await state();

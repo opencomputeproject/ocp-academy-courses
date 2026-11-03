@@ -355,6 +355,10 @@ def main():
     # Validate every requested script, chunk plan and timing source before paid text.
     active_plans = {}
     for mod, slide, script_path, wav_path in jobs:
+        if (slide.get('audio') or {}).get('generation_hook'):
+            if not wav_path.is_file():
+                errors.append(f"{slide_ref(mod, slide)} requires its course narration hook before ordinary synthesis; use the repository build wrapper")
+            continue
         if wav_path.exists() and not args.force:
             continue
         plan = plans[id(mod)]
@@ -415,6 +419,9 @@ def main():
     for mod, slide, script_path, wav_path in jobs:
         if not script_path.exists():
             errors.append(f"{slide_ref(mod, slide)} missing script: {script_path}")
+            continue
+        if (slide.get('audio') or {}).get('generation_hook'):
+            n_skip += 1  # The course hook owns cue timing and forced retries.
             continue
         if wav_path.exists() and not args.force:
             n_skip += 1

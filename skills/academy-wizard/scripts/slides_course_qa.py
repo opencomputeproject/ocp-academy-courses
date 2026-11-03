@@ -19,6 +19,7 @@ import json
 import re
 import struct
 import sys
+import wave
 from collections import defaultdict
 from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlsplit, urlunsplit
@@ -142,6 +143,10 @@ def check_course(
     if not modules:
         errors.append("course has no modules")
 
+    teaching_video_mode = (course.get("narration") or {}).get("teaching_video_mode")
+    if teaching_video_mode not in (None, "narration-synchronized", "independent-loop"):
+        errors.append("narration.teaching_video_mode must be narration-synchronized or independent-loop")
+
     reference_errors, reference_count = audit_pdf_references(course)
     errors.extend(reference_errors)
     notes.append(f"{reference_count} PDF resource links checked for teaching-page labels and whole-document closing links")
@@ -162,6 +167,8 @@ def check_course(
                     recorded = figure.get("playback_mode") == "recorded" or figure.get("role") == "original_video"
                     if not recorded:
                         videos.append((slide, figure))
+                        if teaching_video_mode == "narration-synchronized" and figure.get("sync_to_narration") is not True:
+                            errors.append(f"M{module_id}S{slide.get('id')}: course requires narration-synchronized single-pass teaching videos; enable sync_to_narration=true instead of an independent loop")
                     elif figure.get("controls") is not True:
                         errors.append(f"M{module_id}S{slide.get('id')}: recorded video needs visible playback controls")
                     poster = str(figure.get("poster") or "")
@@ -173,6 +180,17 @@ def check_course(
                         errors.append(f"M{module_id}S{slide.get('id')}: sync_to_narration must be a boolean")
                     if figure.get("sync_to_narration") is True and not (slide.get("audio") or {}).get("wav_file"):
                         errors.append(f"M{module_id}S{slide.get('id')}: synchronized video needs paired narration")
+                    if figure.get("sync_to_narration") is True and figure.get("duration_seconds") is not None:
+                        audio_path = root / str((slide.get("audio") or {}).get("wav_file") or "")
+                        if audio_path.is_file():
+                            try:
+                                with wave.open(str(audio_path), "rb") as audio_file:
+                                    narration_seconds = audio_file.getnframes() / audio_file.getframerate()
+                                difference = abs(float(figure["duration_seconds"]) - narration_seconds)
+                                if difference > 1 / 30 + .005:
+                                    errors.append(f"M{module_id}S{slide.get('id')}: synchronized video duration differs from paired narration by {difference:.3f}s; retime within one frame")
+                            except (OSError, ValueError, wave.Error) as error:
+                                errors.append(f"M{module_id}S{slide.get('id')}: cannot verify synchronized narration duration: {error}")
                     if figure.get("role") == "original_video" and (slide.get("audio") is not None or slide.get("narration_enabled") is not False):
                         errors.append(f"M{module_id}S{slide.get('id')}: original recording requires audio=null and narration_enabled=false")
                     expected = ({"autoplay": False, "loop": False, "muted": False} if recorded else

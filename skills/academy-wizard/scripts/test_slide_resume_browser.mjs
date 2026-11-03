@@ -64,12 +64,14 @@ try {
     await context.close();
   }
 
+  if (course.modules.length > 1) {
   const otherSession = await contextFor('completed', {
     'cmi.core.lesson_location': 'module1', 'cmi.suspend_data': '{"modules":[1],"quizzes":{}}'});
   await otherSession.page.goto(url(course.modules[1].id));
   check(await otherSession.page.locator('.slide.active').getAttribute('data-slide'), '1',
     'A completed previous-module session does not send the next module to its ending');
   await otherSession.context.close();
+  }
   const homeSession = await contextFor('completed', {'cmi.core.lesson_location':'', 'cmi.suspend_data':''});
   await homeSession.page.goto(url(course.modules[0].id));
   check(await homeSession.page.locator('.slide.active').getAttribute('data-slide'), '1',
@@ -148,12 +150,13 @@ try {
   const local = await contextFor();
   const first = course.modules[0];
   await local.page.goto(url(first.id));
-  await local.page.evaluate(({slug, modules}) => {
+  await local.page.evaluate(({slug, revision, modules}) => {
     for (const module of modules) {
-      localStorage.setItem(`ocp:${slug}:module${module.id}:quiz-state`, JSON.stringify({modules: [module.id], quizzes: {}}));
-      localStorage.setItem(`ocp:${slug}:module${module.id}`, `module${module.id}:slide3`);
+      const prefix=`ocp:${slug}${revision ? ':'+revision : ''}:module${module.id}`;
+      localStorage.setItem(prefix+':quiz-state', JSON.stringify({modules: [module.id], quizzes: {}}));
+      localStorage.setItem(prefix, `module${module.id}:slide3`);
     }
-  }, {slug: course.course_slug, modules: course.modules});
+  }, {slug: course.course_slug, revision:course.progress_revision, modules: course.modules});
   let saved = await local.page.evaluate(() => ({...localStorage}));
   for (const module of course.modules) {
     await local.page.goto(`${url(module.id)}?review=1&slide=1`);

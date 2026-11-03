@@ -99,12 +99,16 @@ Video and short animation assets may also live in `figures/` and use the same `f
 figure: {
   path: "figures/expanded_beam_dust_compare.mp4",
   media_type: "video",
+  sync_to_narration: true,
+  autoplay: false,
+  loop: false,
+  muted: true,
   poster: "figures/expanded_beam_dust_compare_frame.png",
   alt: "...",
   caption: "..."
 }
 ```
-Video figures render with Play/Pause and Zoom buttons that appear on mouse hover or keyboard focus. Keep video clips short, silent or muted by default, and support the teaching point without requiring extra instructions on the slide.
+Video figures render with Play/Pause and Zoom buttons that appear on mouse hover or keyboard focus. For narrated teaching sequences, use silent narration-synchronized media with `sync_to_narration: true`, `autoplay: false`, `loop: false`, and `muted: true`. Match the measured narration, play once, and hold the completed picture in both views. Preserve an independent loop only when it is an explicitly selected cyclic teaching exception.
 
 For inline SVG figures, make labels fit inside their shapes. Center text in boxes when the layout is symmetrical, wrap long labels with `<tspan>` lines, or widen the box or pill. Do not leave text spilling outside the drawn shape.
 
