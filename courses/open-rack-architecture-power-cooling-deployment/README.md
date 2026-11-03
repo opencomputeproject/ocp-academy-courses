@@ -8,6 +8,8 @@ One narrated, seven-module **Slides** course for OCP Academy: 112 slides, 100 na
 
 This course replaces the seven independent Scrolling courses formerly under `courses/open-rack-v3/`. Those English course folders and their 49 translated editions are removed in this replacement, not retained as parallel active courses. The new source is English-only; the previous translations do not represent this revised curriculum. Earlier source remains recoverable from Git history. See [replacement provenance](provenance/replacement.json).
 
+New editions in all seven previous languages are tracked in [translation issue #124](https://github.com/opencomputeproject/ocp-academy-courses/issues/124).
+
 This consolidates seven separately uploaded courses into one SCORM 1.2 package with separately tracked content modules. Do not assume old bookmarks, attempts or completions transfer. Export needed LMS reports and test a separate upload before retiring prior LMS material. Repository replacement does not delete or modify live LMS content.
 
 The approved LMS syllabus has **eight entries: Course Home first, then Modules 1–7**. Course Home completes on launch; content-module completion and quiz gates remain independent. This Home choice was explicitly confirmed on 2 November 2026.
@@ -25,6 +27,18 @@ The approved LMS syllabus has **eight entries: Course Home first, then Modules 1
 | 7 | Liquid Cooling, Serviceability and the Integrated Design Review | 22 min |
 
 Formal LMS title, short description and long description are maintained separately in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json), generated from `course.json.lms_catalog`.
+
+## Catalog poster
+
+`thumbnail.png` is the 800×400 Academy catalog poster, matching the SST/AICC navy-and-green treatment and using the approved Open Structure mark. The editable source is [poster/poster.html](poster/poster.html); it reuses the repository's authoritative Academy logo and bundled Lato font rather than rasterized rack artwork.
+
+With Playwright available, regenerate it from the repository root:
+
+```bash
+node courses/open-rack-architecture-power-cooling-deployment/poster/render.mjs
+```
+
+The renderer checks text bounds and local asset loading, writes the course thumbnail, and saves 400×200 and 240×120 inspection previews under the ignored `build/poster-qa/open-rack/` directory. The catalog poster is delivered separately from the SCORM runtime; replacing it does not change the existing ZIP.
 
 ## Editable source and rebuilding
 
