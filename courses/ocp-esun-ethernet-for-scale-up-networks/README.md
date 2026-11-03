@@ -111,3 +111,13 @@ The original research files are not included in this repository. Public learner/
 - OCP announcement: Introducing ESUN: Advancing Ethernet for Scale-Up AI Infrastructure at OCP: https://www.opencompute.org/blog/introducing-esun-advancing-ethernet-for-scale-up-ai-infrastructure-at-ocp
 - OCP Networking Project: https://www.opencompute.org/community/networking
 - 2026 OCP EMEA Summit: https://www.opencompute.org/events/past-events/2026-ocp-emea-summit
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-esun-ethernet-for-scale-up-networks
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

@@ -9,7 +9,7 @@ An introductory Slides course connecting digital services to physical data-cente
 | 3 | Inside the Rack | 16 | 15 minutes |
 | 4 | Management and Trends | 24 | 30 minutes |
 
-Formal LMS copy is in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json), separate from this maintainer README. `thumbnail.png` is the separate LMS poster; its editable source is `authoring/thumbnail.svg`.
+Formal LMS copy is in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json), separate from this maintainer README. `thumbnail.png` is the separate LMS poster; its editable source is `poster.json`.
 
 ## Edit and rebuild
 
@@ -50,3 +50,13 @@ The 2026-10-27 rebuild merges the installed AcademyWizard navigation template, r
 ## Course author acknowledgement
 
 Module 1, Slide 2 credits **Matty Bakkeren, Founder of Momenthesis** with his original Rise headshot in the same circular, green-bordered card used for Ankur Sharma in Distributed AI Infrastructure and Dirk Van Slyke in Build Your Brand in the OCP Community. See [provenance, screenshots and validation](authoring/qa/matty-author-credit-2026-11-03/README.md). The approved overview, narration, videos and five-SCO structure are preserved.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/data-center-basics
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

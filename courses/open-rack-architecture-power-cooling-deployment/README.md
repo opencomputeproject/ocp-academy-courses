@@ -30,7 +30,7 @@ Formal LMS title, short description and long description are maintained separate
 
 ## Catalog poster
 
-`thumbnail.png` is the 800×400 Academy catalog poster, matching the SST/AICC navy-and-green treatment and using the approved Open Structure mark. The editable source is [poster/poster.html](poster/poster.html); it reuses the repository's authoritative Academy logo and bundled Lato font rather than rasterized rack artwork.
+`thumbnail.png` is the 800×400 Academy catalog poster, matching the SST/AICC navy-and-green treatment and using the approved Open Structure mark. The editable source is [poster.json](poster.json); it reuses the repository's authoritative Academy logo and bundled Lato font rather than rasterized rack artwork.
 
 With Playwright available, regenerate it from the repository root:
 
@@ -38,7 +38,7 @@ With Playwright available, regenerate it from the repository root:
 node courses/open-rack-architecture-power-cooling-deployment/poster/render.mjs
 ```
 
-The renderer checks text bounds and local asset loading, writes the course thumbnail, and saves 400×200 and 240×120 inspection previews under the ignored `build/poster-qa/open-rack/` directory. The catalog poster is delivered separately from the SCORM runtime; replacing it does not change the existing ZIP.
+The renderer checks text bounds and local asset loading, writes the course thumbnail, and saves 400×200 and 240×120 inspection previews under the ignored `build/poster-qa/` directory. The catalog poster is delivered separately from the SCORM runtime; replacing it does not change the existing ZIP.
 
 ## Editable source and rebuilding
 

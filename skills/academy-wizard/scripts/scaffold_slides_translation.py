@@ -257,6 +257,19 @@ def main() -> None:
     for filename in ("poster.html", "thumbnail.png"):
         if (source_root / filename).is_file():
             shutil.copy2(source_root / filename, target_root / filename)
+    poster_source = source_root / "poster.json"
+    if poster_source.is_file():
+        poster = json.loads(poster_source.read_text(encoding="utf-8"))
+        poster["language"] = language
+        poster["localization_required"] = True
+        mark_source = (source_root / poster["mark"]).resolve()
+        mark_target = target_root / "poster-assets" / ("course-mark" + mark_source.suffix)
+        mark_target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(mark_source, mark_target)
+        poster["mark"] = mark_target.relative_to(target_root).as_posix()
+        (target_root / "poster.json").write_text(
+            json.dumps(poster, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
     cue_plan = target_root / "scripts/narration-cue-plan.json"
     if cue_plan.is_file():
         cue_source = json.loads(cue_plan.read_text(encoding="utf-8"))

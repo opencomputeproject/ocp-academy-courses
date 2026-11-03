@@ -35,7 +35,7 @@ endorsement.
 - `resources/` contains original recordings, captions, posters and the
   membership document. The recordings keep their original video soundtracks.
 - `thumbnail.png` is the exact 800 × 400 Academy catalog poster;
-  `poster.html` is its editable source using the bundled logo and Lato font.
+  `poster.json` is its editable metadata; the shared renderer supplies the bundled logo and Lato font.
 
 Narration uses full Eleven v4, Leo, 1.18 pitch-preserving authoring pacing,
 and 44.1 kHz / 96 kbps CBR mono MP3 delivery. The learner speed dial remains
@@ -92,3 +92,13 @@ resume/retry/navigation checks, and desktop/phone light/dark layout checks.
 The final slide retains OCP Community and Contribution database resource
 pills plus one Share Feedback box. Live LMS enrollment and tracking remain
 to be verified during upload.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/intro-to-ocp
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

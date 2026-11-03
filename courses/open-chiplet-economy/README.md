@@ -21,7 +21,7 @@ The approved LMS catalog copy and learner-time estimates are in [lms-catalog.md]
   are in `video_source/storyboards/`.
 - `tools/academy_wizard/`: the validated course toolchain; see its `SOURCE.md`.
 - `scripts/build_resources.py`: generates the offline glossary.
-- `thumbnail.svg` and `thumbnail.png`: editable poster and 800 × 400 LMS image.
+- `poster.json` and `thumbnail.png`: editable poster and 800 × 400 LMS image.
 
 ## Rebuild
 
@@ -79,3 +79,13 @@ and separate module reporting remain deployment acceptance checks.
 ## Course Home and LMS order
 
 Course Home (`index.html`) is the first tracked syllabus item and completes on launch. The teaching modules follow in their existing order, with unchanged IDs and numbering. This package contains 10 SCOs in total. The approved content, audio/media, SCORM 1.2 version and green navigation are unchanged.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/open-chiplet-economy
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

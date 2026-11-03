@@ -46,3 +46,13 @@ EXISTING_AUDIO_DIR=/path/to/audio \
 - OCP Optical Circuit Switching Subproject - https://www.opencompute.org/community/optical-circuit-switching
 - OCP Academy course - https://academy.opencompute.org/learn/courses/66/short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics
 - OCP Data Center Technologies catalog - https://academy.opencompute.org/pages/21/ocp-data-center-technologies
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

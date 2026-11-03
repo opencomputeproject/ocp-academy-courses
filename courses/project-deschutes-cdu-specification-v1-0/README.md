@@ -42,3 +42,13 @@ The original research files are not included in this repository. Public learner/
 - OCP contribution: Project Deschutes: Data Center Facilities V1.0.0
 - 2025 OCP EMEA Summit recording: Project Deschutes: Google's Open Spec CDU contribution to the industry
 - Google Cloud blog: AI infrastructure is hot. New power distribution and liquid cooling infrastructure can help
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/project-deschutes-cdu-specification-v1-0
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

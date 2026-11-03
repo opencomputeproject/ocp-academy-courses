@@ -26,7 +26,7 @@ The course preserves the conditions behind ratings, distinguishes chassis and ra
 - `figures/`: source illustrations, three SVG explanations, four H.264 teaching videos, and final-state posters.
 - `animations/`: editable deterministic scene sources, measured storyboards, HTML previews, and a portable exporter.
 - `assets/fonts/`: the licensed Open Sans font set for offline use.
-- `brazos_mark.svg`, `thumbnail.png`, and `artwork/thumbnail.html`: the liquid-to-air course mark and editable 800×400 catalog poster.
+- `brazos_mark.svg`, `thumbnail.png`, and `poster.json`: the liquid-to-air course mark and editable 800×400 catalog poster.
 - `LMS_UPLOAD_COPY.md`: title, short description, and module-by-module course overview.
 - `QA.md`: reviewed-build checks and the target-LMS acceptance boundary.
 
@@ -58,3 +58,13 @@ Open `http://127.0.0.1:8765/index.html?review=1`, or a specific `moduleN.html?re
 The reviewed architecture remains SCORM 1.2 multi-SCO: Course Home and four separate module syllabus entries. Home tiles are informational, and the instruction directs learners to the LMS syllabus. The reviewed first-module start action is retained; direct page links are not standard SCORM target-SCO launch requests.
 
 The ZIP is packaged for target-LMS acceptance testing. Home/Start/Next navigation, resume, and independent module completion still need verification on the actual LMS before learner release. Browser checks do not establish target-LMS tracking compatibility. This contribution does not upload, replace, or merge live LMS material.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-project-brazos-liquid-to-air-cooling
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

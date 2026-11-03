@@ -30,7 +30,7 @@ Module 4, and 17 minutes for Module 5, including review and learner interaction.
 - `assets/fonts/` supplies local Open Sans fonts and their OFL license.
 - `resources/documents/mgx_acceptance_worksheet.pdf` is the learner worksheet.
 - `thumbnail.png` is the exact 800 × 400 catalog poster; editable poster source
-  is `animations/lms_poster.html`.
+  is `poster.json`.
 - [Course outline](OUTLINE.md), [LMS metadata](LMS_METADATA.md),
   [media notes](animations/README.md), [attribution](ATTRIBUTION.md), and
   [validation record](QA.md) accompany the source.
@@ -141,3 +141,13 @@ builder hashes. See QA.md for navigation tests and target-LMS limits.
 The course owner confirmed successful next-module advancement and LMS progress
 recording for the October 27 delivered build. The receipt records that report and
 the delivered ZIP hash. No course-specific navigation override is required.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/nvidia-mgx-1-2-rack-and-tray-interfaces
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

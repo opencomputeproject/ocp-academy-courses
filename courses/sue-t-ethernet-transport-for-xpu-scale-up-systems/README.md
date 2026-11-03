@@ -51,3 +51,13 @@ python skills/academy-wizard/scripts/slides_course_qa.py \
 The reviewed course passed source/reference/glossary QA, automated audio level/tail checks, real synchronized-media playback checks, quiz/resume checks, course/module navigation checks, and desktop/mobile caption geometry checks. The release ZIP is checked for CRC integrity, manifest membership, and agreement with the built runtime resources.
 
 Use the LMS syllabus to launch each tracked module. Local file playback can continue between modules, but a direct HTML link cannot switch the active SCO in an LMS. The maintained player uses syllabus handoff instructions for those transitions. Actual target-LMS acceptance and a signed-off full human audio listening pass remain unverified; neither an LMS upload nor a merge is part of this source submission.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/sue-t-ethernet-transport-for-xpu-scale-up-systems
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

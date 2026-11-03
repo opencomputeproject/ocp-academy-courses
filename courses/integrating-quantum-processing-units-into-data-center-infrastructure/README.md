@@ -53,7 +53,7 @@ python3 skills/academy-wizard/scripts/check_svg_arrows.py \
   --fail-on-flags
 ```
 
-Animation reproduction and media-review details are documented in `animations/README.md`. To reproduce the thumbnail, install Sharp for Node.js, then run `node poster/render_thumbnail.cjs` from this course folder. The artwork uses Avenir Next with Arial as a fallback; font availability can affect rasterized text.
+Animation reproduction and media-review details are documented in `animations/README.md`. The poster uses `poster.json` and the shared Academy renderer with bundled Lato Bold; see the repository poster build instructions.
 
 ## Verification
 
@@ -71,3 +71,13 @@ The original research files are not included in this repository. Public learner/
 - OCP FTI workstream: Data Center Integration of Quantum Information Infrastructure: https://www.opencompute.org/community/data-center-integration-of-quantum-information-infrastructure
 - 2026 OCP EMEA Summit FTS Quantum Track: https://www.opencompute.org/events/past-events/2026-ocp-emea-summit#fts-quantum
 - YouTube playlist: 2026 OCP EMEA Summit FTS Quantum Track: https://www.youtube.com/playlist?list=PLAG-eekRQBSgWit1dUFGB4vbjs7FstsXy
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/integrating-quantum-processing-units-into-data-center-infrastructure
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

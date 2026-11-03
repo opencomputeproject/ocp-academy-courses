@@ -4,7 +4,7 @@ An introductory Slides course with three modules, 31 slides, 30 narration script
 
 One SCORM **1.2** activity launches through `launch.html`, keeping a single LMS session across Course Home and all three internal modules. Completion requires all modules and an attempt on each of six formative questions; correctness is not a completion gate. Bookmarks and quiz attempts are retained within the activity. Index cards are informational, without progress labels or click actions; the separate start control opens module 1.
 
-Formal LMS fields are in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json). `thumbnail.png` is the exact 800×400 LMS poster, with editable source at `authoring/thumbnail.svg`. The supplied official outlined trademark SVG is used on M2S7 and the poster, including its TM artwork. The separate course mark is retained in `safe_mark.svg`.
+Formal LMS fields are in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json). `thumbnail.png` is the exact 800×400 LMS poster, with editable source at `poster.json`. The supplied official outlined trademark SVG is used on M2S7 and the poster, including its TM artwork. The separate course mark is retained in `safe_mark.svg`.
 
 ## Edit and build
 
@@ -24,7 +24,7 @@ Review from the generated `index.html` and `moduleN.html` files; `?review=1&slid
 
 Editable static figures are in `figures/`. The four finite HTML/SVG animation sources, measured timing sidecars, local Lato fonts and timing updater are in `animations/`; the final MP4s are silent, single-pass, 1080p, and follow the narration clock. Do not regenerate them against unmeasured audio durations. `authoring/animation-sync.json` records the approved narration hashes and beat timing. Re-encode only when content/timing changes, using the maintained lossless-frame recorder.
 
-For the logo/diagram composite, edit `authoring/build_marketplace_figure.py`, render and review it, then pass `--reviewed` to bind the text inventory. The original outlined logo remains unchanged in `authoring/ocp_safe_official_tm.svg`. For poster edits, use `python3 authoring/build_static_art.py --poster-only`, then export `authoring/thumbnail.svg` at exactly 800×400. Preserve the trademark paths and the course mark.
+For the logo/diagram composite, edit `authoring/build_marketplace_figure.py`, render and review it, then pass `--reviewed` to bind the text inventory. The original outlined logo remains unchanged in `authoring/ocp_safe_official_tm.svg`. For poster edits, update `poster.json` and run `python3 authoring/build_static_art.py --poster-only`, which delegates to the shared Academy renderer. Preserve the trademark paths and the course mark.
 
 ## Source and review context
 
@@ -37,3 +37,13 @@ M2S7 links to the verified OCP Marketplace recognition filter and vendor listing
 This intentionally migrates a SCORM 2004 3rd Edition source to user-selected single-activity SCORM 1.2. Existing LMS attempts, bookmarks and completion history may not transfer. Test a separate upload and preserve needed reports before replacing old material. No upload, deletion or tracking reset is part of this source contribution.
 
 See [QA.md](QA.md) for verification scope and target-LMS acceptance limits.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-safe-product-security
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

@@ -10,7 +10,7 @@ The course has one content module, 12 slides and 12 narrated sections. Narration
 - `audio/module1/*.txt` contains the current narration scripts. Generated MP3/WAV audio and SCORM ZIPs remain outside Git under repository policy.
 - `figures/` and `animations/` contain course-owned media and editable teaching-video sources. Teaching videos play once on the narration clock and hold the completed final scene.
 - `resources/` preserves original recordings, screenshots, captions and supporting documents. Screenshot galleries retain the original image bytes and can be updated as the OCP website changes.
-- `course-mark.svg` is the approved course mark. [Catalog poster](thumbnail.png) is exactly 800 × 400; [poster.html](poster.html) and `poster-assets/` retain its editable design and authoritative branding.
+- `course-mark.svg` is the approved course mark. [Catalog poster](thumbnail.png) is exactly 800 × 400; [poster.json](poster.json) and `poster-assets/` retain its editable design and authoritative branding.
 - [LMS catalog fields](lms-catalog.md) and [structured metadata](lms-catalog.json) are separate from the README and runtime ZIP.
 
 Narration uses full Eleven v4 (`eleven_v4`), Leo (`bbGtsRRKUfYO634UxSjz`), pitch-preserving 1.18 pacing, and 44.1 kHz, 96 kbps CBR mono MP3 delivery. The learner speed dial starts at 1.0.
@@ -32,3 +32,13 @@ Use the approved existing audio masters with `EXISTING_AUDIO_DIR` to avoid paid 
 Previous Scrolling translations were retired because they describe the superseded course. They remain recoverable in Git history. Replacement Slides translations must branch from this approved English source, preserving the one-module structure, media scope and authoritative links. The maintained voice choices are verified in [the live v4 compatibility record](../../../docs/orientation-v4-language-compatibility.json).
 
 The poster uses the exact official program logo supplied by OCP inside the right-hand white circle. The separate course mark appears in the course player.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-orientation/ocp-ready-data-center-recognition-program
+```
+
+See [the poster standard](../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

@@ -14,7 +14,7 @@ Japanese narrated Slides source for nine independently tracked SCORM 1.2 modules
 - `video_source/narration/`: approved full Japanese recording scripts.
 - `tools/academy_wizard/`: locale toolchain, including Japanese controls, offline CC and SCORM 1.2 generation.
 - `fonts/`: bundled Open Sans and [Noto Sans JP](https://github.com/google/fonts/tree/main/ofl/notosansjp), with OFL licenses.
-- `thumbnail.svg` / `thumbnail.png`: editable artwork and 800 × 400 LMS poster.
+- `poster.json` / `thumbnail.png`: editable artwork and 800 × 400 LMS poster.
 
 ## Build
 
@@ -54,3 +54,13 @@ Source QA, audio-level/tail checks, caption and media validation, muted browser 
 ## Course Home and LMS order
 
 Course Home (`index.html`) is the first tracked syllabus item and completes on launch. The teaching modules follow in their existing order, with unchanged IDs and numbering. This package contains 10 SCOs in total. The approved content, audio/media, SCORM 1.2 version and green navigation are unchanged.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/open-chiplet-economy/locales/ja-JP
+```
+
+See [the poster standard](../../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

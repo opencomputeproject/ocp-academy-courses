@@ -4,7 +4,7 @@ An introductory Slides course in four modules: Why Liquid Cooling Now?; Direct L
 
 One SCORM **1.2** package has **five syllabus SCOs**: Course Home (`index.html`) first, followed by the four teaching modules. Home completes on launch; each module saves its own bookmark, quiz attempts and completion. Both quiz questions require an attempt; correctness is not a completion gate. Green next-module controls remain visible and clickable locally, in review and in LMS playback. Direct page links do not switch LMS tracking contexts; use LMS syllabus launches for separately tracked module selection and verify the target LMS behavior.
 
-Formal LMS copy is in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json). `thumbnail.png` is the 800×400 LMS poster; its editable SVG is in `authoring/thumbnail.svg`.
+Formal LMS copy is in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json). `thumbnail.png` is the 800×400 LMS poster; its editable metadata is in `poster.json`.
 
 ## Edit and build
 
@@ -32,3 +32,13 @@ The historical approved narration plan is in `authoring/approved-narration-plan.
 See [QA.md](QA.md) for validation scope and remaining acceptance work.
 
 M2S5 introduces DI water, EG25, PG25 and PG55 by name and expansion in both narration and glossary. The percentages are nominal shorthand; the supplier’s concentration basis and complete qualified formulation govern. The matching v4 narration was refreshed on October 28, 2026.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/introduction-to-liquid-cooling
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

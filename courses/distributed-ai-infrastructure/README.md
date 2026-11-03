@@ -39,3 +39,13 @@ The original Rise ZIPs and recovered research workspace remain outside this repo
 This course is a standalone series. It links selectively to Open Systems for AI, Open Cluster Designs for AI, AICC and the 2026 Global Summit AI Clusters track; it is not part of those other courses.
 
 The original five Rise packages were SCORM 2004 3rd Edition. The requested delivery combines them into one SCORM 1.2 item with Course Home plus five content-module SCOs. Test a separate LMS upload and retain needed reports before retiring prior materials; existing bookmarks, attempts and completion history may not transfer.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/distributed-ai-infrastructure
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

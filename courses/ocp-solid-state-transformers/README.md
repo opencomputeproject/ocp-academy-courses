@@ -75,3 +75,13 @@ node courses/ocp-solid-state-transformers/tests/test_runtime.mjs build/ocp-solid
 - SemiAnalysis, “Inside the 800VDC Revolution - Part 1” - https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part
 - OCP Diablo 400 course - https://academy.opencompute.org/learn/courses/49/ocp-diablo-400/
 - OCP Ready Requirements for Energy Storage Systems course - https://academy.opencompute.org/learn/courses/50/ocp-ready-requirements-for-energy-storage-systems
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-solid-state-transformers
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

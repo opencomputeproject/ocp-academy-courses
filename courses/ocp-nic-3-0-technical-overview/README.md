@@ -128,3 +128,13 @@ context; the LMS syllabus remains the module-launch mechanism.
 
 - [OCP NIC 3.0 Design Specification, released v1.6.0](https://www.opencompute.org/documents/ocp-nic-3-0-r1v60-20250410a-tn-no-cb-pdf)
 - [OCP NIC Subproject](https://www.opencompute.org/community/mezz-nic)
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-nic-3-0-technical-overview
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.
