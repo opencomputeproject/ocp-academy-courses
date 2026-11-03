@@ -742,10 +742,17 @@ def render_knowledge_check(slide: dict, course: dict, module: dict) -> str:
             choices_html.append(f'''
             <label class="quiz-choice" for="{esc(input_id)}">
               <input id="{esc(input_id)}" type="{input_type}" name="{esc(qid)}" value="{esc(cid)}" data-correct="{'true' if choice.get('correct') else 'false'}" data-feedback="{esc(choice_feedback)}">
-              <span>{esc(choice.get("text"))}</span>
+              <span class="quiz-choice__indicator" aria-hidden="true">
+                <svg class="quiz-choice__dot" viewBox="0 0 10 10" focusable="false"><circle cx="5" cy="5" r="5"/></svg>
+                <svg class="quiz-choice__check" viewBox="0 0 11 8" focusable="false"><path d="M9.6 0 11 1.3 3.9 8 0 4.3 1.4 3l2.6 2.4L9.6 0Z"/></svg>
+                <svg class="quiz-choice__x" viewBox="0 0 10 10" focusable="false"><path d="M5 4.17 9.17 0 10 .83 5.83 5 10 9.17 9.17 10 5 5.83.83 10 0 9.17 4.17 5 0 .83.83 0Z"/></svg>
+              </span>
+              <span class="quiz-choice__text">{esc(choice.get("text"))}</span>
+              <span class="quiz-choice__result" data-quiz-choice-result></span>
             </label>''')
         questions_html.append(f'''
         <div class="quiz-card animate-in" data-question-id="{esc(qid)}" data-multiple="{'true' if multi else 'false'}"
+             data-correct-answer-label="{esc(ui(course, 'correct', 'Correct.'))}" data-incorrect-answer-label="{esc(ui(course, 'incorrect', 'Incorrect.'))}"
              data-correct-feedback="{esc(q.get("feedback_correct") or q.get("feedback") or ui(course, 'correct', 'Correct.'))}"
              data-incorrect-feedback="{esc(q.get("feedback_incorrect") or q.get("feedback") or ui(course, 'review_feedback', 'Review the feedback and try again.'))}">
           <p class="quiz-question">{esc(q.get("prompt"))}</p>
@@ -1443,7 +1450,23 @@ def render_module(course: dict, module_index: int) -> str:
     SCORM.setValue('cmi.interactions.' + idx + '.latency', '00:00:00');
   }}
 
+  function renderQuizAnswerState(card) {{
+    const submitted = card.dataset.attempted === 'true';
+    card.classList.toggle('is-submitted', submitted);
+    card.querySelectorAll('.quiz-choice').forEach(row => {{
+      const input = row.querySelector('input');
+      const correct = input.dataset.correct === 'true';
+      row.classList.toggle('is-selected', submitted && input.checked);
+      row.classList.toggle('is-correct', submitted && correct);
+      row.classList.toggle('is-incorrect', submitted && !correct);
+      input.disabled = submitted;
+      const result = row.querySelector('[data-quiz-choice-result]');
+      if (result) result.textContent = submitted ? (correct ? card.dataset.correctAnswerLabel : card.dataset.incorrectAnswerLabel) : '';
+    }});
+  }}
+
   function applyQuizFeedback(card, isCorrect) {{
+    renderQuizAnswerState(card);
     const box = card.querySelector('.quiz-feedback');
     if (!box) return;
     box.classList.remove('correct', 'incorrect');
@@ -1493,6 +1516,7 @@ def render_module(course: dict, module_index: int) -> str:
       if (retry) retry.addEventListener('click', () => {{
         card.querySelectorAll('input').forEach(input => {{ input.checked = false; }});
         delete card.dataset.attempted;
+        renderQuizAnswerState(card);
         clearQuizState(card.dataset.questionId);
         const box = card.querySelector('.quiz-feedback');
         if (box) {{

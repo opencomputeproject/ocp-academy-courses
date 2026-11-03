@@ -143,7 +143,7 @@ Keep the slide count and `audioMap` accurate per module. SCORM 1.2 tracking is a
 - **Path mismatches.** All paths are relative to the package root, forward-slash style. No leading `./`. No `../`.
 - **Spaces in filenames.** Don't. Use `slide_03_form_factors.wav`, not `slide 03 form factors.wav`.
 - **Case sensitivity.** Some LMSes run on case-sensitive filesystems. `Module1.html` and `module1.html` are different files. Use lowercase consistently.
-- **Audio file format.** `.wav` is widely supported. The reference uses 16-bit PCM at 22050 Hz. Some LMSes balk at 48 kHz files. The TTS script outputs 22050 Hz by default.
+- **Audio file format.** New narration delivery defaults to 44.1 kHz, 96 kbps CBR mono MP3. Retain WAV authoring masters outside the manifest and ZIP. Existing WAV courses require the user's MP3 migration agreement before changing delivery; see `mp3_narration.md`. Preserve an explicit choice to keep WAV.
 
 ## Packaging for upload
 

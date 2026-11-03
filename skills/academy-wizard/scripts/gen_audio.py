@@ -22,6 +22,8 @@ import sys
 import tempfile
 import wave
 from pathlib import Path
+from copy import deepcopy
+from audio_delivery_defaults import apply_delivery_defaults
 
 from audio_pacing import (
     V4_MODELS,
@@ -140,7 +142,8 @@ def synth_elevenlabs(
     # narration. Override per call with --voice, or globally with
     # ELEVENLABS_VOICE_ID. Rachel (21m00Tcm4TlvDq8ikWAM) is warmer/conversational.
     voice = voice_id or os.getenv("ELEVENLABS_VOICE_ID") or "bbGtsRRKUfYO634UxSjz"  # Leo, default
-    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=pcm_22050"
+    executable = find_ffmpeg()  # Validate decoding before sending billable text.
+    url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice}?output_format=mp3_44100_96"
     # Full v4 uses pitch-preserving post-generation pacing at narration.speed.
     payload = {
         "text": text,
@@ -159,17 +162,18 @@ def synth_elevenlabs(
     req = urllib.request.Request(url, data=body, method="POST", headers={
         "xi-api-key": api_key,
         "content-type": "application/json",
-        "accept": "audio/pcm",
+        "accept": "audio/mpeg",
     })
     with urllib.request.urlopen(req, timeout=120) as resp:
-        pcm = resp.read()
-    # Wrap raw PCM into a WAV
-    import wave
-    with wave.open(str(out_wav), "wb") as w:
-        w.setnchannels(1)
-        w.setsampwidth(2)
-        w.setframerate(22050)
-        w.writeframes(pcm)
+        encoded = resp.read()
+    provider = out_wav.with_suffix('.provider.mp3')
+    provider.write_bytes(encoded)
+    # The WAV is a decoded authoring master, not lossless provider output.
+    result = subprocess.run([executable, '-nostdin', '-v', 'error', '-y',
+        '-i', str(provider), '-ar', '22050', '-ac', '1', '-c:a', 'pcm_s16le',
+        str(out_wav)], capture_output=True, text=True)
+    if result.returncode:
+        raise RuntimeError('Provider MP3 decode failed: ' + result.stderr[-800:])
 
 
 def synth_openai(text: str, out_wav: Path, voice_id: str | None) -> None:
@@ -236,6 +240,12 @@ def synth_chunks(chunks: list[str], out_wav: Path, synth) -> None:
             writer.setparams((1, 2, 22050, 0, "NONE", "not compressed"))
             writer.writeframes(b"".join(parts))
         assembled.replace(out_wav)
+        providers = sorted(temporary.glob('*.provider.mp3'))
+        if providers:
+            destination = out_wav.with_suffix('.provider-parts')
+            destination.mkdir(exist_ok=True)
+            for provider in providers:
+                shutil.copy2(provider, destination / provider.name)
 
 
 def slide_ref(mod: dict, slide: dict) -> str:
@@ -293,6 +303,12 @@ def main():
     if str(course.get("style") or "Slides").strip().casefold() == "scrolling":
         print("Scrolling style has no narration by default; no audio generated.")
         return
+    try:
+        # Check consent without changing other modules' metadata during a retry.
+        # The scaffold/delivery preflight records defaults in canonical source.
+        apply_delivery_defaults(deepcopy(course))
+    except ValueError as error:
+        p.exit(2, str(error)+'\nResolve the decision with audio_delivery_defaults.py before synthesis.\n')
     out_dir = args.course_json.resolve().parent
     work_dir = (args.audio_work_dir or out_dir / "_narration_work").resolve()
     plans = {}
@@ -415,6 +431,7 @@ def main():
             plan = plans[id(mod)]
             if plan["model"] in V4_MODELS:
                 identity = {
+                    "provider_output_format": "mp3_44100_96",
                     "model_id": plan["model"], "voice_id": plan["voice"],
                     "tempo_multiplier": plan["speed"], "language": plan["language"],
                     "stability": float(os.getenv("ELEVENLABS_STABILITY", "0.55")),

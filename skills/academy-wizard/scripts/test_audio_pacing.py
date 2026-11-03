@@ -30,7 +30,13 @@ class PacingTests(unittest.TestCase):
             request.assert_not_called()
     def test_request_uses_full_model_and_no_api_speed(self):
         calls=[]
-        def respond(request,**kwargs):calls.append(json.loads(request.data));return io.BytesIO(b'\0\0'*22050)
+        import subprocess
+        write_tone(self.root/'fixture.wav',1)
+        subprocess.run([audio_pacing.find_ffmpeg(),'-v','error','-i',str(self.root/'fixture.wav'),'-ar','44100','-ac','1','-b:a','96k',str(self.root/'fixture.mp3')],check=True)
+        def respond(request,**kwargs):
+            self.assertIn('output_format=mp3_44100_96',request.full_url)
+            self.assertEqual(request.get_header('Accept'),'audio/mpeg')
+            calls.append(json.loads(request.data));return io.BytesIO((self.root/'fixture.mp3').read_bytes())
         with patch.dict(os.environ,{'ELEVENLABS_API_KEY':'test-key'}),patch('urllib.request.urlopen',side_effect=respond):
             gen_audio.synth_elevenlabs('Text',self.root/'out.wav','Leo','eleven_v4','en',1.18)
         self.assertEqual(len(calls),1);self.assertEqual(calls[0]['model_id'],'eleven_v4')
@@ -56,7 +62,7 @@ class PacingTests(unittest.TestCase):
         with self.assertRaises(RuntimeError):audio_pacing.synth_paced('text',out,work_dir=self.root/'work',identity={'model_id':'eleven_v4'},synth_native=Mock(side_effect=RuntimeError('provider failed')))
         self.assertEqual(out.read_bytes(),b'previous recording')
     def fixture(self,chunks=False,missing_quiz=False):
-        c={'language':'en-US','narration':{'engine':'elevenlabs','voice_id':'Leo','model_id':'eleven_v4','speed':1.18},'modules':[]}
+        c={'language':'en-US','narration':{'engine':'elevenlabs','voice_id':'Leo','model_id':'eleven_v4','speed':1.18,'delivery':{'format':'mp3','approved':True}},'modules':[]}
         for n in [1,2]:
             a={'script_file':f'audio/module{n}/slide.txt','wav_file':f'audio/module{n}/slide.wav'}
             p=self.root/a['script_file'];p.parent.mkdir(parents=True);p.write_text('Complete approved script.')

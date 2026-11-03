@@ -23,10 +23,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [Grid Disturbance Performance for Hyperscale Data Centers](courses/grid-disturbance-performance/README.md) | Interpret voltage ride-through and active-power recovery requirements, coordinate facility responses, and assess mitigations at the utility interface. |
 | [High Bandwidth Flash: Bridging SSD Capacity and HBM Performance](courses/high-bandwidth-flash/README.md) | Explore where high-bandwidth flash fits between SSDs and HBM, including interconnect architecture, memory mapping, reliability, and AI serving workloads. |
 | [Integrating Quantum Processing Units into Data Center Infrastructure](courses/integrating-quantum-processing-units-into-data-center-infrastructure/README.md) | Connect hybrid quantum-classical architectures to QPU facility requirements, environmental controls, shared services, and operational readiness. |
-| [Module 1: The OCP Origins](courses/intro-to-ocp/module-1-the-ocp-origins/README.md) | Learn why OCP was founded, how Open Rack evolved, and how openly shared hardware designs influence infrastructure innovation. |
-| [Module 2: The OCP Ecosystem & Governance](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/README.md) | Understand OCP community roles, project organization, governance, and the lifecycle of a technical contribution. |
-| [Module 3: OCP Technologies (Open Rack & Cooling)](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/README.md) | Explore ORv3 architecture and the power, thermal, and cooling choices that connect open hardware designs to physical infrastructure. |
-| [Module 4: Today and Tomorrow (The Journey)](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/README.md) | Navigate OCP hardware recognition tiers and the Marketplace, and use an adoption framework to plan your participation. |
+| [Introduction to the Open Compute Project](courses/intro-to-ocp/README.md) | Discover the OCP Community, governance and contribution process, connect Open Rack and cooling to infrastructure decisions, and plan a practical next step. |
 | [Introduction to Liquid Cooling](courses/introduction-to-liquid-cooling/README.md) | Compare direct and immersion cooling, trace complete heat paths, and assess fluid compatibility, equipment interfaces, and deployment readiness. |
 | [LVDC Power Distribution for Data Centers](courses/lvdc-power-distribution-for-data-centers/README.md) | Review facility-to-rack DC power architectures, voltage compatibility, grounding, protection, conversion, controls, and installation verification. |
 | [OCP Academy - MRC Technical Overview](courses/multipath-reliable-connection-mrc/README.md) | Examine the MRC RDMA transport, including multipath routing, reliability, congestion control, failure recovery, and AI training fabric deployment. |
@@ -93,10 +90,11 @@ courses/
   high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
   intro-to-ocp/
-    module-1-the-ocp-origins/
-    module-2-the-ocp-ecosystem-governance/
-    module-3-ocp-technologies-open-rack-cooling/
-    module-4-today-and-tomorrow-the-journey/
+    animations/
+    audio/
+    figures/
+    resources/
+    thumbnail.png
   introduction-to-liquid-cooling/
   lvdc-power-distribution-for-data-centers/
   multipath-reliable-connection-mrc/
@@ -237,10 +235,6 @@ page.
 | [AI Computing Continuum](courses/ai-computing-continuum/) | — | — | [`ja-JP`](courses/ai-computing-continuum/locales/ja-JP/) | — | — | — | — |
 | [Cooling Fluids in Direct Liquid Cooling (DLC)](courses/cooling-fluids-in-direct-liquid-cooling/) | [`zh-CN`](courses/cooling-fluids-in-direct-liquid-cooling/locales/zh-CN/) | [`zh-TW`](courses/cooling-fluids-in-direct-liquid-cooling/locales/zh-TW/) | [`ja-JP`](courses/cooling-fluids-in-direct-liquid-cooling/locales/ja-JP/) | [`ko-KR`](courses/cooling-fluids-in-direct-liquid-cooling/locales/ko-KR/) | [`pt-BR`](courses/cooling-fluids-in-direct-liquid-cooling/locales/pt-BR/) | [`es-419`](courses/cooling-fluids-in-direct-liquid-cooling/locales/es-419/) | [`vi-VN`](courses/cooling-fluids-in-direct-liquid-cooling/locales/vi-VN/) |
 | [High Bandwidth Flash: Bridging SSD Capacity and HBM Performance](courses/high-bandwidth-flash/) | — | — | — | [`ko-KR`](courses/high-bandwidth-flash/locales/ko-KR/) | — | — | — |
-| [Intro to OCP: Module 1: The OCP Origins](courses/intro-to-ocp/module-1-the-ocp-origins/) | [`zh-CN`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/zh-CN/) | [`zh-TW`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/zh-TW/) | [`ja-JP`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/ko-KR/) | [`pt-BR`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/pt-BR/) | [`es-419`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/es-419/) | [`vi-VN`](courses/intro-to-ocp/module-1-the-ocp-origins/locales/vi-VN/) |
-| [Intro to OCP: Module 2: The OCP Ecosystem & Governance](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/) | [`zh-CN`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/zh-CN/) | [`zh-TW`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/zh-TW/) | [`ja-JP`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/ko-KR/) | [`pt-BR`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/pt-BR/) | [`es-419`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/es-419/) | [`vi-VN`](courses/intro-to-ocp/module-2-the-ocp-ecosystem-governance/locales/vi-VN/) |
-| [Intro to OCP: Module 3: OCP Technologies (Open Rack & Cooling)](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/) | [`zh-CN`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-CN/) | [`zh-TW`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/zh-TW/) | [`ja-JP`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/ko-KR/) | [`pt-BR`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/pt-BR/) | [`es-419`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/es-419/) | [`vi-VN`](courses/intro-to-ocp/module-3-ocp-technologies-open-rack-cooling/locales/vi-VN/) |
-| [Intro to OCP: Module 4: Today and Tomorrow (The Journey)](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/) | [`zh-CN`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-CN/) | [`zh-TW`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/zh-TW/) | [`ja-JP`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/ko-KR/) | [`pt-BR`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/pt-BR/) | [`es-419`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/es-419/) | [`vi-VN`](courses/intro-to-ocp/module-4-today-and-tomorrow-the-journey/locales/vi-VN/) |
 | [OCP Diablo 400: Disaggregated Power for High-Density AI Racks](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/) | [`zh-CN`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/zh-CN/) | [`zh-TW`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/zh-TW/) | [`ja-JP`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/ja-JP/) | [`ko-KR`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/ko-KR/) | [`pt-BR`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/pt-BR/) | [`es-419`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/es-419/) | [`vi-VN`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/vi-VN/) |
 | [OCP ESUN: Ethernet for Scale-Up Networks](courses/ocp-esun-ethernet-for-scale-up-networks/) | [`zh-CN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-CN/) | [`zh-TW`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-TW/) | [`ja-JP`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP/) | [`ko-KR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR/) | [`pt-BR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/pt-BR/) | [`es-419`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/es-419/) | [`vi-VN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/vi-VN/) |
 | [OCP Orientation: Introduction to the OCP Solution Provider Program](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/) | [`zh-CN`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/ko-KR/) | — | — | — |
@@ -255,13 +249,23 @@ page.
 | [Optics: Introduction to Emerging Optical Technologies](courses/optics/introduction-to-emerging-optical-technologies/) | [`zh-CN`](courses/optics/introduction-to-emerging-optical-technologies/locales/zh-CN/) | [`zh-TW`](courses/optics/introduction-to-emerging-optical-technologies/locales/zh-TW/) | [`ja-JP`](courses/optics/introduction-to-emerging-optical-technologies/locales/ja-JP/) | [`ko-KR`](courses/optics/introduction-to-emerging-optical-technologies/locales/ko-KR/) | [`pt-BR`](courses/optics/introduction-to-emerging-optical-technologies/locales/pt-BR/) | [`es-419`](courses/optics/introduction-to-emerging-optical-technologies/locales/es-419/) | [`vi-VN`](courses/optics/introduction-to-emerging-optical-technologies/locales/vi-VN/) |
 <!-- translations-table:end -->
 
-To build one standalone course in the Intro to OCP Scrolling series, no narration API key is required:
+Introduction to OCP is now one narrated Slides course with four modules. Build
+its single SCORM package with approved existing narration:
 
 ```bash
-./scripts/build-course.sh intro-to-ocp/module-1-the-ocp-origins
+EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh intro-to-ocp
 ```
 
-This writes the package folder and zip beneath `build/intro-to-ocp/`. Run the same command with each sibling folder to produce the four independent LMS packages.
+This writes `build/intro-to-ocp/` and `build/intro-to-ocp.zip`. The four former
+Scrolling courses and their translated editions are retired from the active
+tree and remain in Git history. See the course README for migration notes.
+
+New Slides narration defaults to MP3. Rebuilding a WAV-based course first asks
+for a delivery choice, including older sources with no delivery metadata.
+After the user agrees, run
+`./scripts/build-course.sh <course> --audio-delivery-choice mp3`; use
+`--audio-delivery-choice keep-wav` if they decline. The decision is recorded in
+source. Compression reuses approved WAV masters without paid re-recording.
 
 The script defaults to the bundled skill under `skills/academy-wizard`. If you use a different skill location:
 
