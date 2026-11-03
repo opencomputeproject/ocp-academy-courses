@@ -46,3 +46,7 @@ All 31 recovered source lessons remain represented. The [source crosswalk](autho
 ## Maintained next-module navigation refresh
 
 The 2026-10-27 rebuild merges the installed AcademyWizard navigation template, retaining green double-chevron next-module buttons when an LMS API is present. Course Home remains the first of five SCOs, followed by the four teaching modules. Approved content, narration, media, manifest identifiers and completion/quiz policies are preserved. See `authoring/qa/green-navigation-refresh/` for 48 navigation-parity cases, fresh package checks and screenshots. The LMS tests use an isolated persistent parent API; no live LMS upload is part of the rebuild.
+
+## Course author acknowledgement
+
+Module 1, Slide 2 credits **Matty Bakkeren, Founder of Momenthesis** with his original Rise headshot in the same circular, green-bordered card used for Ankur Sharma in Distributed AI Infrastructure and Dirk Van Slyke in Build Your Brand in the OCP Community. See [provenance, screenshots and validation](authoring/qa/matty-author-credit-2026-11-03/README.md). The approved overview, narration, videos and five-SCO structure are preserved.
