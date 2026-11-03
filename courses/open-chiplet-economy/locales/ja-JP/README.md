@@ -14,7 +14,7 @@ Japanese narrated Slides source for nine independently tracked SCORM 1.2 modules
 - `video_source/narration/`: approved full Japanese recording scripts.
 - `tools/academy_wizard/`: locale toolchain, including Japanese controls, offline CC and SCORM 1.2 generation.
 - `fonts/`: bundled Open Sans and [Noto Sans JP](https://github.com/google/fonts/tree/main/ofl/notosansjp), with OFL licenses.
-- `poster.json` / `thumbnail.png`: editable artwork and 800 × 400 LMS poster.
+- All language editions use the [canonical English LMS poster](../../thumbnail.png).
 
 ## Build
 
@@ -57,10 +57,4 @@ Course Home (`index.html`) is the first tracked syllabus item and completes on l
 
 ## Catalog poster
 
-Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
-
-```sh
-node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/open-chiplet-economy/locales/ja-JP
-```
-
-See [the poster standard](../../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.
+All translations share the [canonical English poster](../../thumbnail.png). Edit [the canonical poster metadata](../../poster.json) and rebuild the parent course; do not create a Japanese poster or a duplicate `thumbnail.png` here.

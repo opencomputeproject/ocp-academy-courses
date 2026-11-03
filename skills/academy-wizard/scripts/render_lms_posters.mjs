@@ -18,7 +18,7 @@ for(let i=0;i<args.length;i++){
 const check = args.includes('--check');
 const value = flag => {const i=args.indexOf(flag);return i<0?null:args[i+1];};
 if(args.includes('--help')){
-  console.log('node render_lms_posters.mjs --repo-root <repo> [--course <course-folder>] [--check] [--qa-dir <folder>]\nWithout --course, discovers every courses/**/thumbnail.png and requires poster.json. --check renders and compares without writing source assets.');
+  console.log('node render_lms_posters.mjs --repo-root <repo> [--course <course-folder>] [--check] [--qa-dir <folder>]\nWithout --course, discovers canonical courses/**/thumbnail.png (excluding locales) and requires poster.json. --check renders and compares without writing source assets.');
   process.exit(0);
 }
 const root = path.resolve(value('--repo-root') || process.cwd());
@@ -34,13 +34,14 @@ const uri = async file => {
 async function discover(dir){
   const result=[];
   for(const entry of await fs.readdir(dir,{withFileTypes:true})){
-    if(entry.isDirectory()) result.push(...await discover(path.join(dir,entry.name)));
+    if(entry.isDirectory()&&entry.name!=='locales') result.push(...await discover(path.join(dir,entry.name)));
     else if(entry.name==='thumbnail.png'||entry.name==='poster.json') result.push(dir);
   }
   return [...new Set(result)].sort();
 }
 const dirs=value('--course')?[path.resolve(root,value('--course'))]:await discover(path.join(root,'courses'));
 assert.ok(dirs.length,'No posters found');
+for(const dir of dirs)assert.ok(!dir.split(path.sep).includes('locales'),'Use the canonical English poster; translations do not have separate posters');
 await fs.mkdir(qa,{recursive:true});
 const logo = await uri(path.join(skill,'assets/ocp_academy_white.svg'));
 const lato = await uri(path.join(skill,'assets/fonts/lato2-bold.woff'));
@@ -48,28 +49,21 @@ const backgroundSource=await fs.readFile(path.join(skill,'templates/poster/backg
 const backgroundPng=await fs.readFile(path.join(skill,'templates/poster/background.png'));
 assert.ok(new Resvg(backgroundSource).render().asPng().equals(backgroundPng),'Shared background is stale; run render_poster_background.mjs');
 const background=await uri(path.join(skill,'templates/poster/background.png'));
-const fontCatalog = JSON.parse(await fs.readFile(path.join(skill,'assets/fonts/poster-locale-fonts.json'),'utf8'));
 const browser = await chromium.launch({headless:true,args:['--disable-gpu','--force-color-profile=srgb']});
 const reports=[];
 try{
   for(const dir of dirs){
     const rel=path.relative(root,dir).split(path.sep).join('/');
     const data=JSON.parse(await fs.readFile(path.join(dir,'poster.json'),'utf8'));
-    for(const key of Object.keys(data))assert.ok(['schema_version','language','badge','title_lines','support_lines','mark','mark_alt','localization_required'].includes(key),`${rel}: unknown poster field ${key}; layout is shared`);
-    assert.ok(!data.localization_required,`${rel}: translate and review poster copy before rendering`);
+    for(const key of Object.keys(data))assert.ok(['schema_version','language','badge','title_lines','support_lines','mark','mark_alt'].includes(key),`${rel}: unknown poster field ${key}; layout is shared`);
+    assert.ok(/^en(?:-|$)/i.test(data.language),`${rel}: catalog posters must be in English; reuse one poster for every translation`);
     assert.equal(data.schema_version,1,`${rel}: schema_version must be 1`);
     for(const key of ['badge','mark','mark_alt','language'])assert.ok(typeof data[key]==='string'&&data[key].trim(),`${rel}: ${key} required`);
     for(const key of ['title_lines','support_lines'])assert.ok(Array.isArray(data[key])&&data[key].length&&data[key].every(x=>typeof x==='string'&&x.trim()),`${rel}: ${key} required`);
     assert.ok(data.support_lines.length<=2,`${rel}: at most two support lines`);
     const text=[data.badge,...data.title_lines,...data.support_lines].join('');
-    let localeFont='';
-    const cjk=[...text].filter(c=>/[\u3000-\u9fff\uac00-\ud7af]/u.test(c));
-    if(cjk.length){
-      const font=fontCatalog[data.language];assert.ok(font,`${rel}: bundle a font for ${data.language}`);
-      for(const c of cjk)assert.ok(font.characters.includes(c),`${rel}: extend bundled font subset for ${c}`);
-      localeFont=`@font-face{font-family:AcademyLocale;src:url('${await uri(path.join(skill,'assets/fonts',font.file))}') format('woff2');font-weight:700;font-display:block}`;
-    }
-    const replacements={LANG:escape(data.language),TITLE:escape(data.title_lines.join(' ')),LATO:lato,LOCALE_FONT:localeFont,LOGO:logo,BACKGROUND:background,BADGE:escape(data.badge),TITLE_LINES:data.title_lines.map(x=>`<span class="title-line">${escape(x).replaceAll('™','<sup>TM</sup>')}</span>`).join(''),SUPPORT:data.support_lines.map(x=>`<span>${escape(x)}</span>`).join(''),MARK:await uri(path.resolve(dir,data.mark)),MARK_ALT:escape(data.mark_alt)};
+    assert.ok(!/[\u3000-\u9fff\uac00-\ud7af]/u.test(text),`${rel}: catalog poster copy must be in English`);
+    const replacements={LANG:escape(data.language),TITLE:escape(data.title_lines.join(' ')),LATO:lato,LOGO:logo,BACKGROUND:background,BADGE:escape(data.badge),TITLE_LINES:data.title_lines.map(x=>`<span class="title-line">${escape(x).replaceAll('™','<sup>TM</sup>')}</span>`).join(''),SUPPORT:data.support_lines.map(x=>`<span>${escape(x)}</span>`).join(''),MARK:await uri(path.resolve(dir,data.mark)),MARK_ALT:escape(data.mark_alt)};
     const html=template.replace(/\{\{([A-Z_]+)\}\}/g,(_,key)=>{assert.ok(key in replacements,key);return replacements[key];});
     const page=await browser.newPage({viewport:{width:800,height:400},deviceScaleFactor:1});
     const errors=[];page.on('pageerror',e=>errors.push(e.message));
@@ -82,7 +76,7 @@ try{
       // Prefer editorial line breaks. If they do not fit, wrap at word boundaries
       // before stepping down the shared size ladder; never distort or crop text.
       function wrap(words,size){
-        canvas.font=`700 ${size}px AcademyLato, AcademyLocale`;
+        canvas.font=`700 ${size}px AcademyLato`;
         const measure=s=>canvas.measureText(s.replaceAll('™','')).width+(s.includes('™')?size*.55:0);
         const maxLines=Math.floor(144/(size*1.1));
         const memo=new Map();

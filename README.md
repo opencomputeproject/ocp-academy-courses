@@ -56,7 +56,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 
 ## Catalog posters
 
-Every course, series and localized catalog poster uses the same 800 × 400 template. Edit course-local `poster.json` for copy and artwork; the shared renderer fixes Lato Bold typography, gradients, logo/pill placement and the white emblem dimensions. Only long titles step down from 40px to 36px or 32px.
+Each course or series has exactly one English catalog poster, shared by all its translations, using the same 800 × 400 template. Do not create separate posters under `locales/`. Edit course-local `poster.json` for copy and artwork; the shared renderer fixes Lato Bold typography, gradients, logo/pill placement and the white emblem dimensions. Only long titles step down from 40px to 36px or 32px.
 
 Follow [the poster standard](skills/academy-wizard/references/lms_poster_style.md) for setup and review. From this repository root, rebuild all posters and then verify them:
 

@@ -1,4 +1,4 @@
-/** Behavioral checks: long-title fitting, rejected overflow, locale gate and check immutability. */
+/** Behavioral checks: long-title fitting, rejected overflow, English-only posters and check immutability. */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -15,16 +15,19 @@ try{
     await fs.writeFile(path.join(course,'poster.json'),JSON.stringify(data));
     return spawnSync(process.execPath,[path.join(scripts,'render_lms_posters.mjs'),'--repo-root',temp,...extra],{encoding:'utf8'});
   }
+  const locale=path.join(course,'locales/ko-KR');await fs.mkdir(locale,{recursive:true});
+  await fs.writeFile(path.join(locale,'poster.json'),'deliberately invalid: must not be discovered');
   let result=await run(base);assert.equal(result.status,0,result.stderr);
   const report=JSON.parse(await fs.readFile(path.join(temp,'build/poster-qa/report.json'),'utf8'));
+  assert.equal(report.posters.length,1,'Translations must not create duplicate catalog posters');
   assert.equal(report.posters[0].titleSize,32);
   const original=await fs.readFile(path.join(course,'thumbnail.png'));
   result=await run(base,['--check']);assert.equal(result.status,0,result.stderr);
   result=await run({...base,title_lines:['UNBREAKABLE'.repeat(30)]});assert.notEqual(result.status,0);assert.match(result.stderr,/Title exceeds/);
   assert.ok(original.equals(await fs.readFile(path.join(course,'thumbnail.png'))),'Overflow must not replace accepted artwork');
-  result=await run({...base,localization_required:true});assert.notEqual(result.status,0);assert.match(result.stderr,/translate and review/);
-  result=await run({...base,language:'ko-KR',badge:'뷁'});assert.notEqual(result.status,0);assert.match(result.stderr,/extend bundled font subset/);
+  result=await run(base,['--course',locale]);assert.notEqual(result.status,0);assert.match(result.stderr,/canonical English poster/);
+  result=await run({...base,language:'ko-KR',badge:'뷁'});assert.notEqual(result.status,0);assert.match(result.stderr,/posters must be in English/);
   result=await run({...base,title_lines:['DIFFERENT TITLE']},['--check']);assert.notEqual(result.status,0);assert.match(result.stderr,/thumbnail differs/);
   assert.ok(original.equals(await fs.readFile(path.join(course,'thumbnail.png'))),'Check must not overwrite a stale image');
-  console.log('PASS: long titles fit; overflow, unreviewed locales and missing glyphs fail; --check detects drift without changing accepted images.');
+  console.log('PASS: long titles fit; overflow and translated posters fail; locale folders are excluded; --check detects drift without changing accepted images.');
 }finally{await fs.rm(temp,{recursive:true,force:true});}

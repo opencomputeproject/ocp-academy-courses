@@ -65,7 +65,7 @@ The scaffold:
 
 - refuses to overwrite a non-empty locale;
 - copies figures, animations, and referenced brand assets;
-- copies original resources, course-owned narration hooks and poster sources;
+- copies original resources and course-owned narration hooks;
 - preserves module, slide, quiz, glossary, source-reference, and URL structure;
 - sets `language` and a locale-specific `course_slug`;
 - applies any maintained locale narration default to top-level `narration`;
@@ -76,7 +76,7 @@ The scaffold:
 The scaffold retains the canonical narration delivery format, approved pacing
 and teaching-video policy while applying the selected locale voice/model. It
 never copies English audio. Caption-narration cue plans and LMS copy are reset
-to unapproved. Translate the cue text and poster/UI copy, review each phrase
+to unapproved. Translate the cue text and UI copy, review each phrase
 against its local caption window, and approve the locale cue plan before paid
 speech generation. Never speed up a locale beyond the approved pace to fit a
 window; revise its wording or review a localized video/caption timing change.
@@ -159,7 +159,7 @@ render or package after a required knowledge-check audio failure.
 Classify every visual:
 
 - copy language-neutral diagrams unchanged;
-- translate labels, legends, axes, captions, posters, and alt text on
+- translate labels, legends, axes, captions, video poster frames, and alt text on
   text-bearing visuals;
 - rebuild animations or videos when visible text changes; and
 - retain technical symbols, dimensions, and acronym spelling exactly.
@@ -225,3 +225,7 @@ unit IDs and approved learner-duration estimates consistent with the locale. Run
 `course_delivery_summary.py <locale-course.json> --write` and `--check`, and commit
 the locale's `lms-catalog.json`/`.md` with its source. The zipper exports matching
 LMS sidecars beside the locale ZIP. See [lms_catalog.md](lms_catalog.md).
+
+## Shared English LMS poster
+
+All language editions share the canonical course’s English `thumbnail.png` and `poster.json`. Do not translate or duplicate the LMS catalog poster under `locales/`. This rule does not apply to teaching-video poster frames, which remain part of localized course media.

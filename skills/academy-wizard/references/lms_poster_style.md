@@ -1,6 +1,6 @@
 # OCP Academy LMS poster standard
 
-All catalog posters use the single maintained [HTML/CSS template](../templates/poster/poster.html) and [renderer](../scripts/render_lms_posters.mjs). This includes course, series and localized `thumbnail.png` files. Do not create a separate composition per course or use image generation for the poster's text, logo, frame or background. Topic artwork is the variable part.
+All catalog posters use the single maintained [HTML/CSS template](../templates/poster/poster.html) and [renderer](../scripts/render_lms_posters.mjs). Maintain exactly one English `thumbnail.png` per course or series, shared by every language edition. Do not create translated posters or duplicate them under `locales/`. Do not create a separate composition per course or use image generation for the poster's text, logo, frame or background. Topic artwork is the variable part.
 
 ## Fixed design
 
@@ -23,7 +23,7 @@ Coordinates are CSS pixels measured from the top-left of an 800 × 400 artboard.
 
 The rail always slopes down to the right. Do not move the logo, pill, title, divider or circle to fit a long title. Only the title's wrapping and the three defined size tiers can change. Pill width may grow; its anchor and height stay fixed. Short titles retain the same size as other titles, even when that leaves additional space below them. Qualifiers belong in the title at the same weight and size, rather than introducing another course-specific hierarchy.
 
-For characters outside Lato, bundle a licensed matching bold font. The current Japanese and Korean posters use Noto Sans JP / KR at weight 700. Their small WOFF2 subsets and glyph inventories are in `assets/fonts/poster-*`; extend the appropriate subset and inventory when adding new localized wording. The renderer fails on unsupported CJK characters instead of silently using an operating-system fallback. See [font provenance](poster_fonts.md).
+Use bundled Lato Bold for all catalog poster text, which stays in English regardless of course translations. See [font provenance](poster_fonts.md).
 
 ## Editable course source
 
@@ -41,7 +41,7 @@ Store `poster.json` beside `thumbnail.png`. It is the source of poster copy and 
 }
 ```
 
-Use `title_lines` for preferred editorial line breaks. The renderer preserves them when they fit at the current size; otherwise it balances word wrapping before trying a smaller tier. It never truncates text. `™` in titles renders as superscript TM. A poster with `localization_required: true` must be translated and reviewed before rendering; remove the flag or set it to false once complete.
+Use `title_lines` for preferred editorial line breaks. The renderer preserves them when they fit at the current size; otherwise it balances word wrapping before trying a smaller tier. It never truncates text. `™` in titles renders as superscript TM. Set `language` to `en-US` (or another English locale). Translated course content and LMS descriptions remain independent; they reuse the canonical English poster.
 
 Prefer the course's existing vector mark or supplied official program logo. Keep official trademark artwork exact. A series may reuse a relevant course mark. Keep symbolic graphics simple and readable, inside the artwork box. Do not add vendor logos, tiny schematic labels, or invented branding. New artwork may use appropriate vector or image-generation tools, but composition and typography always come from the template.
 
@@ -54,7 +54,7 @@ npm ci --prefix skills/academy-wizard
 npx --prefix skills/academy-wizard playwright install chromium
 ```
 
-Rebuild every catalog poster, including nested series and locales:
+Rebuild every catalog poster, including nested series, excluding locale folders:
 
 ```sh
 node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root .
@@ -72,7 +72,7 @@ Verify the committed outputs without replacing them:
 node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --check
 ```
 
-The renderer discovers both `poster.json` and existing `thumbnail.png` files, so missing metadata cannot silently omit a poster. It loads bundled assets offline, checks fonts, measured text bounds, fixed geometry, PNG format/dimensions, and reports the chosen title tier. `--check` compares PNG bytes first, then decoded pixels if necessary. It tolerates only isolated native text-smoothing rounding: at most 16 of 320,000 pixels (0.005%), each at most 16/255 per channel. Comparison metrics are recorded in the QA report; larger changes fail and save a drift PNG. Use the pinned dependencies on the same platform when checking exact raster reproduction. A platform difference still needs visual review, not automatic replacement of accepted output.
+The renderer skips `locales/` and discovers both canonical `poster.json` and existing `thumbnail.png` files, so missing metadata cannot silently omit a poster. It loads bundled assets offline, checks fonts, measured text bounds, fixed geometry, PNG format/dimensions, and reports the chosen title tier. `--check` compares PNG bytes first, then decoded pixels if necessary. It tolerates only isolated native text-smoothing rounding: at most 16 of 320,000 pixels (0.005%), each at most 16/255 per channel. Comparison metrics are recorded in the QA report; larger changes fail and save a drift PNG. Use the pinned dependencies on the same platform when checking exact raster reproduction. A platform difference still needs visual review, not automatic replacement of accepted output.
 
 The fixed background, rail, accents and circle are authored in `templates/poster/background.svg` and rasterized once with pinned resvg into `background.png`. Every poster embeds that same asset, avoiding browser-specific curve smoothing differences between cards. The renderer verifies that the PNG matches its SVG on every run. After an intentional shell edit, run `node skills/academy-wizard/scripts/render_poster_background.mjs`, then rebuild the full catalog. Keep both background files in source control.
 
