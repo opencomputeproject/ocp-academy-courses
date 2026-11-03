@@ -10,6 +10,15 @@ class Tags(HTMLParser):
  def handle_starttag(self,tag,attrs):
   if tag=='video':self.video=dict(attrs)
 class VideoModes(unittest.TestCase):
+ def test_course_policy_rejects_accidental_loop_and_accepts_single_pass(self):
+  with tempfile.TemporaryDirectory() as tmp:
+   root=Path(tmp);(root/'v.mp4').touch();(root/'v.png').touch()
+   fig={'path':'v.mp4','poster':'v.png','media_type':'video','alt':'Sequence','caption':'A complete explanation.','autoplay':True,'loop':True,'muted':True}
+   c={'narration':{'teaching_video_mode':'narration-synchronized'},'modules':[{'id':1,'slides':[{'id':1,'type':'content_diagram','figure':fig,'audio':{'wav_file':'a.wav'}}]}]};p=root/'course.json'
+   p.write_text(json.dumps(c));errors=check_course(p,None,set())[0]
+   self.assertTrue(any('course requires narration-synchronized' in e for e in errors))
+   fig.update(sync_to_narration=True,autoplay=False,loop=False)
+   p.write_text(json.dumps(c));self.assertEqual(check_course(p,None,set())[0],[])
  def test_old_markup_defaults_and_false_flag(self):
   base={'path':'v.mp4'}
   for flag in [None,False,'false','true',1]:

@@ -220,10 +220,13 @@ def main() -> None:
     source_language = canonical_language_tag(str(course.get("language") or "en-US"))
     course["style"] = "Slides"
     course["language"] = language
-    course.pop("narration", None)
+    source_narration = course.get("narration") or {}
+    inherited_narration = {key: source_narration[key] for key in
+        ("speed", "delivery", "teaching_video_mode") if key in source_narration}
+    course["narration"] = inherited_narration
     narration_default = locale_narration_default(language)
     if narration_default:
-        course["narration"] = narration_default
+        course["narration"].update(narration_default)
     course.pop("scorm_title", None)
     if args.scorm_title:
         course["scorm_title"] = args.scorm_title
@@ -247,7 +250,24 @@ def main() -> None:
     audio_count = reset_audio_approvals(course, target_root)
     copy_tree_if_present(source_root, target_root, "figures")
     copy_tree_if_present(source_root, target_root, "animations")
+    copy_tree_if_present(source_root, target_root, "resources")
+    copy_tree_if_present(source_root, target_root, "scripts")
+    copy_tree_if_present(source_root, target_root, "poster-assets")
     copy_root_assets(course, source_root, target_root)
+    for filename in ("poster.html", "thumbnail.png"):
+        if (source_root / filename).is_file():
+            shutil.copy2(source_root / filename, target_root / filename)
+    cue_plan = target_root / "scripts/narration-cue-plan.json"
+    if cue_plan.is_file():
+        cue_source = json.loads(cue_plan.read_text(encoding="utf-8"))
+        cue_source["approved"] = False
+        cue_source["localization_required"] = True
+        if narration_default:
+            cue_source["voice_id"] = narration_default["voice_id"]
+            cue_source["model_id"] = narration_default["model_id"]
+        cue_plan.write_text(json.dumps(cue_source, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if isinstance(course.get("lms_catalog"), dict):
+        course["lms_catalog"]["approved"] = False
 
     target_json = target_root / "course.json"
     target_json.write_text(

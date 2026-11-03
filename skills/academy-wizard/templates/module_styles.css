@@ -900,6 +900,11 @@ body.first-slide-audio-cue .btn-audio {
   text-decoration: none;
   white-space: nowrap;
 }
+@media (max-width: 700px) {
+  .resource-callout { flex-direction:column; align-items:flex-start; }
+  .resource-callout > div { min-width:0; }
+  .resource-button { max-width:100%; white-space:normal; }
+}
 
 .summary-list {
   width: min(860px, 100%);
@@ -2267,6 +2272,12 @@ body.first-slide-audio-cue .btn-audio {
   line-height: 1.45;
   color: var(--text-muted);
 }
+.figure-gallery { width:100%; margin-top:24px; }
+.figure-gallery-controls { display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px; font-size:12px; color:var(--text-muted); }
+.figure-gallery-controls button:disabled { opacity:.4; cursor:default; }
+.slide .figure-gallery .figure-panel { width:fit-content !important; max-width:100%; }
+.slide .figure-gallery .figure-panel img { width:auto; max-width:100%; max-height:48vh; object-fit:contain; }
+.slide .figure-gallery .figure-caption:empty { display:none; }
 /* Keep resource/glossary pills clearly separated from the final media/text.
    A first strip has no extra margin; the enclosing block owns this gap. */
 .slide .figure-wrap ~ .learner-aids,
@@ -2388,6 +2399,11 @@ body.first-slide-audio-cue .btn-audio {
   height: 16px;
   position: relative;
 }
+:is(.slide, .lightbox-figure) .figure-video-control > svg { width:23px; height:23px; }
+:is(.slide, .lightbox-figure) .figure-video-control[data-video-captions][aria-pressed="true"] { box-shadow:inset 0 -3px 0 var(--ocp-green),0 6px 18px rgba(0,0,0,0.18); }
+.figure-video-caption-display { position:absolute; bottom:32px; left:28px; right:28px; z-index:2; text-align:center; pointer-events:none; font:600 clamp(13px,1.4vw,21px)/1.4 'Open Sans',sans-serif; color:#fff; }
+.figure-video-caption-display[hidden] { display:none !important; }
+.figure-video-caption-display > span { background:rgba(0,0,0,0.84); padding:3px 7px; border-radius:3px; box-decoration-break:clone; -webkit-box-decoration-break:clone; white-space:normal; overflow-wrap:anywhere; }
 :is(.slide, .lightbox-figure) .figure-video-control .video-icon-pause::before,
 :is(.slide, .lightbox-figure) .figure-video-control .video-icon-pause::after {
   content: "";
@@ -2441,6 +2457,7 @@ body.first-slide-audio-cue .btn-audio {
   padding: 24px;
 }
 .lightbox-figure {
+  position: relative;
   background: #ffffff;
   border-radius: 12px;
   padding: 18px;
@@ -2523,6 +2540,7 @@ body.first-slide-audio-cue .btn-audio {
     margin-top: 12px;
   }
   .lightbox-figure .figure-video-controls [data-video-zoom] { display: none; }
+  .lightbox-figure .figure-video-caption-display { position:sticky; bottom:56px; left:0; right:auto; width:calc(100vw - 68px); max-width:100%; margin-top:10px; font-size:16px; }
 }
 
 /* Survey CTA hover state — replaces inline onmouseover/onmouseout (which
@@ -2545,6 +2563,12 @@ body.first-slide-audio-cue .btn-audio {
 .slide--media-focus .figure-panel { width:100% !important; }
 .slide--media-focus .figure-panel video.figure-video { width:100%; max-height:none; height:auto; background:#fff; }
 .slide--media-focus .figure-panel img { width:100%; max-height:none; }
+.slide--original-video-only .figure-caption:empty { display:none; }
+.brand-trademark { font-size:0.5em; line-height:0; vertical-align:super; }
+.slide--original-video-only .figure-wrap { max-width:min(1120px,calc((100vh - 240px) * 1.777778)); }
+@media(max-width:700px) {
+  .slide--original-video-only .figure-wrap { max-width:100%; }
+}
 .tenet-card { min-width:0; overflow-wrap:anywhere; }
 @media(min-width:1001px) {
   /* Intrinsic artwork height keeps compact diagrams from reserving a 16:9 frame.

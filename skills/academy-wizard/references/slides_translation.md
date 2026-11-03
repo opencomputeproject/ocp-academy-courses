@@ -65,12 +65,21 @@ The scaffold:
 
 - refuses to overwrite a non-empty locale;
 - copies figures, animations, and referenced brand assets;
+- copies original resources, course-owned narration hooks and poster sources;
 - preserves module, slide, quiz, glossary, source-reference, and URL structure;
 - sets `language` and a locale-specific `course_slug`;
 - applies any maintained locale narration default to top-level `narration`;
 - records the source path and SHA-256 under `localization`;
 - creates empty locale narration folders; and
 - resets every narration approval to `false`.
+
+The scaffold retains the canonical narration delivery format, approved pacing
+and teaching-video policy while applying the selected locale voice/model. It
+never copies English audio. Caption-narration cue plans and LMS copy are reset
+to unapproved. Translate the cue text and poster/UI copy, review each phrase
+against its local caption window, and approve the locale cue plan before paid
+speech generation. Never speed up a locale beyond the approved pace to fit a
+window; revise its wording or review a localized video/caption timing change.
 
 Use `--output-dir` only when the repository has a different convention. Use
 `--scorm-title` only when the automatic manifest title is unsuitable.

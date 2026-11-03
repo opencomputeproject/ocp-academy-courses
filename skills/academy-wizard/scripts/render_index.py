@@ -115,6 +115,9 @@ def scorm_metadata_title(course: dict) -> str:
     return course_title if course_title.endswith(suffix) else f"{course_title} {suffix}"
 
 
+from branded_text import visible_trademarks
+
+@visible_trademarks
 def render_index_html(course: dict, resource_root: Path | None = None) -> str:
     home_init = "const inLMS = !reviewMode && SCORM.init();\n  if (!reviewMode) SCORM.setCompleted();" if include_home_sco(course) else "const inLMS = false; // Untracked course-home asset: no LMS session or completion writes."
     home_finish = "window.addEventListener('beforeunload', function() { if (!reviewMode) SCORM.finish(); });" if include_home_sco(course) else "// Untracked course-home asset does not finish a module's LMS session."
@@ -397,6 +400,8 @@ def render_manifest(course: dict, out_dir: Path) -> str:
         # files, so registering them would break the manifest. Video figures
         # may also declare a poster frame; include both runtime files.
         for slide in mod.get("slides", []):
+            for image in slide.get("screenshot_gallery", []):
+                add_file(files, image.get("path"))
             for link in slide.get("reference_links", []):
                 if isinstance(link, dict):
                     add_file(files, link.get("logo"))

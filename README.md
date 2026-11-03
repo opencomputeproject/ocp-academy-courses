@@ -98,12 +98,11 @@ courses/
   ocp-lock-secure-key-management-for-self-encrypting-storage/
   ocp-mhs-modular-plug-and-play-m-pnp/
   ocp-nic-3-0-technical-overview/
-  ocp-orientation/
-    understanding-and-procuring-open-technologies-and-products/
-    introduction-to-the-ocp-solution-provider-program/
-    ocp-volunteer-leadership-guide/
-    ocp-ready-data-center-recognition-program/
-    ocp-contribution-process/
+  ocp-orientation/understanding-and-procuring-open-technologies-and-products/
+  ocp-orientation/introduction-to-the-ocp-solution-provider-program/
+  ocp-orientation/ocp-volunteer-leadership-guide/
+  ocp-orientation/ocp-ready-data-center-recognition-program/
+  ocp-orientation/ocp-contribution-process/
   ocp-project-brazos-liquid-to-air-cooling/
   ocp-ready-requirements-for-energy-storage-systems/
   ocp-safe-product-security/
@@ -223,23 +222,8 @@ Published editions are available on the
 page.
 
 <!-- translations-table:start -->
-| Course | Chinese (Simplified) | Chinese (Traditional) | Japanese | Korean | Portuguese (Brazil) | Spanish (LATAM) | Vietnamese |
-|---|---|---|---|---|---|---|---|
-| [AI Computing Continuum](courses/ai-computing-continuum/) | — | — | [`ja-JP`](courses/ai-computing-continuum/locales/ja-JP/) | — | — | — | — |
-| [Cooling Fluids in Direct Liquid Cooling (DLC)](courses/cooling-fluids-in-direct-liquid-cooling/) | [`zh-CN`](courses/cooling-fluids-in-direct-liquid-cooling/locales/zh-CN/) | [`zh-TW`](courses/cooling-fluids-in-direct-liquid-cooling/locales/zh-TW/) | [`ja-JP`](courses/cooling-fluids-in-direct-liquid-cooling/locales/ja-JP/) | [`ko-KR`](courses/cooling-fluids-in-direct-liquid-cooling/locales/ko-KR/) | [`pt-BR`](courses/cooling-fluids-in-direct-liquid-cooling/locales/pt-BR/) | [`es-419`](courses/cooling-fluids-in-direct-liquid-cooling/locales/es-419/) | [`vi-VN`](courses/cooling-fluids-in-direct-liquid-cooling/locales/vi-VN/) |
-| [High Bandwidth Flash: Bridging SSD Capacity and HBM Performance](courses/high-bandwidth-flash/) | — | — | — | [`ko-KR`](courses/high-bandwidth-flash/locales/ko-KR/) | — | — | — |
-| [OCP Diablo 400: Disaggregated Power for High-Density AI Racks](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/) | [`zh-CN`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/zh-CN/) | [`zh-TW`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/zh-TW/) | [`ja-JP`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/ja-JP/) | [`ko-KR`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/ko-KR/) | [`pt-BR`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/pt-BR/) | [`es-419`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/es-419/) | [`vi-VN`](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/locales/vi-VN/) |
-| [OCP ESUN: Ethernet for Scale-Up Networks](courses/ocp-esun-ethernet-for-scale-up-networks/) | [`zh-CN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-CN/) | [`zh-TW`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/zh-TW/) | [`ja-JP`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ja-JP/) | [`ko-KR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/ko-KR/) | [`pt-BR`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/pt-BR/) | [`es-419`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/es-419/) | [`vi-VN`](courses/ocp-esun-ethernet-for-scale-up-networks/locales/vi-VN/) |
-| [OCP Orientation: Introduction to the OCP Solution Provider Program](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/) | [`zh-CN`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/ko-KR/) | — | — | — |
-| [OCP Orientation: OCP Contribution Process](courses/ocp-orientation/ocp-contribution-process/) | [`zh-CN`](courses/ocp-orientation/ocp-contribution-process/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/ocp-contribution-process/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/ocp-contribution-process/locales/ko-KR/) | — | — | — |
-| [OCP Orientation: OCP Ready™ Data Center Recognition Program](courses/ocp-orientation/ocp-ready-data-center-recognition-program/) | [`zh-CN`](courses/ocp-orientation/ocp-ready-data-center-recognition-program/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/ocp-ready-data-center-recognition-program/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/ocp-ready-data-center-recognition-program/locales/ko-KR/) | — | — | — |
-| [OCP Orientation: OCP's Volunteer Leadership Guide](courses/ocp-orientation/ocp-volunteer-leadership-guide/) | [`zh-CN`](courses/ocp-orientation/ocp-volunteer-leadership-guide/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/ocp-volunteer-leadership-guide/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/ocp-volunteer-leadership-guide/locales/ko-KR/) | — | — | — |
-| [OCP Orientation: Understanding and Procuring Open Technologies and Products](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/) | [`zh-CN`](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/locales/zh-TW/) | — | [`ko-KR`](courses/ocp-orientation/understanding-and-procuring-open-technologies-and-products/locales/ko-KR/) | — | — | — |
-| [OCP Project Deschutes](courses/project-deschutes-cdu-specification-v1-0/) | [`zh-CN`](courses/project-deschutes-cdu-specification-v1-0/locales/zh-CN/) | [`zh-TW`](courses/project-deschutes-cdu-specification-v1-0/locales/zh-TW/) | [`ja-JP`](courses/project-deschutes-cdu-specification-v1-0/locales/ja-JP/) | [`ko-KR`](courses/project-deschutes-cdu-specification-v1-0/locales/ko-KR/) | [`pt-BR`](courses/project-deschutes-cdu-specification-v1-0/locales/pt-BR/) | [`es-419`](courses/project-deschutes-cdu-specification-v1-0/locales/es-419/) | [`vi-VN`](courses/project-deschutes-cdu-specification-v1-0/locales/vi-VN/) |
-| [OCP Ready™ Requirements for Energy Storage Systems](courses/ocp-ready-requirements-for-energy-storage-systems/) | [`zh-CN`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/zh-CN/) | [`zh-TW`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/zh-TW/) | [`ja-JP`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/ja-JP/) | [`ko-KR`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/ko-KR/) | [`pt-BR`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/pt-BR/) | [`es-419`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/es-419/) | [`vi-VN`](courses/ocp-ready-requirements-for-energy-storage-systems/locales/vi-VN/) |
-| [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/) | — | — | [`ja-JP`](courses/open-chiplet-economy/locales/ja-JP/) | — | — | — | — |
-| [Optics: Enhanced Telemetry Optics](courses/optics/enhanced-telemetry-optics/) | [`zh-CN`](courses/optics/enhanced-telemetry-optics/locales/zh-CN/) | [`zh-TW`](courses/optics/enhanced-telemetry-optics/locales/zh-TW/) | [`ja-JP`](courses/optics/enhanced-telemetry-optics/locales/ja-JP/) | [`ko-KR`](courses/optics/enhanced-telemetry-optics/locales/ko-KR/) | [`pt-BR`](courses/optics/enhanced-telemetry-optics/locales/pt-BR/) | [`es-419`](courses/optics/enhanced-telemetry-optics/locales/es-419/) | [`vi-VN`](courses/optics/enhanced-telemetry-optics/locales/vi-VN/) |
-| [Optics: Introduction to Emerging Optical Technologies](courses/optics/introduction-to-emerging-optical-technologies/) | [`zh-CN`](courses/optics/introduction-to-emerging-optical-technologies/locales/zh-CN/) | [`zh-TW`](courses/optics/introduction-to-emerging-optical-technologies/locales/zh-TW/) | [`ja-JP`](courses/optics/introduction-to-emerging-optical-technologies/locales/ja-JP/) | [`ko-KR`](courses/optics/introduction-to-emerging-optical-technologies/locales/ko-KR/) | [`pt-BR`](courses/optics/introduction-to-emerging-optical-technologies/locales/pt-BR/) | [`es-419`](courses/optics/introduction-to-emerging-optical-technologies/locales/es-419/) | [`vi-VN`](courses/optics/introduction-to-emerging-optical-technologies/locales/vi-VN/) |
+| Course |
+|---|
 <!-- translations-table:end -->
 
 Introduction to OCP is now one narrated Slides course with four modules. Build

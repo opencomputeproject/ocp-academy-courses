@@ -1,19 +1,23 @@
 # Introduction to the OCP Solution Provider Program
 
-This standalone Scrolling course introduces the OCP Marketplace, product and facility recognition programs, agreements, fees, and the path for organizations bringing solutions to the OCP market.
+One narrated Slides course in OCP Community Orientation, written for a nontechnical audience. Bring open products, facilities and services to the people who need them.
 
-## Lessons
+The course has one content module, 14 slides and 13 narrated sections. Narration runs 3:46; narration plus original recordings runs 5:27. Estimated learner time is 7 minutes, including reading and the final two-question check. Optional resource exploration takes longer.
 
-1. Introduction
-2. OCP Marketplace
-3. Product Recognition
-4. OCP S.A.F.E.™ Program
-5. OCP Ready™ Data Center Recognition Program
-6. Agreements & Fees
-7. Knowledge Check
-8. Summary
+## Source and delivery
 
-## Build
+- `course.json` is the editable course definition. It replaces the previous Scrolling course at the same path.
+- `audio/module1/*.txt` contains the current narration scripts. Generated MP3/WAV audio and SCORM ZIPs remain outside Git under repository policy.
+- `figures/` and `animations/` contain course-owned media and editable teaching-video sources. Teaching videos play once on the narration clock and hold the completed final scene.
+- `resources/` preserves original recordings, screenshots, captions and supporting documents. Screenshot galleries retain the original image bytes and can be updated as the OCP website changes.
+- `course-mark.svg` is the approved course mark. [Catalog poster](thumbnail.png) is exactly 800 × 400; [poster.html](poster.html) and `poster-assets/` retain its editable design and authoritative branding.
+- [LMS catalog fields](lms-catalog.md) and [structured metadata](lms-catalog.json) are separate from the README and runtime ZIP.
+
+Narration uses full Eleven v4 (`eleven_v4`), Leo (`bbGtsRRKUfYO634UxSjz`), pitch-preserving 1.18 pacing, and 44.1 kHz, 96 kbps CBR mono MP3 delivery. The learner speed dial starts at 1.0.
+
+SCORM delivery is 1.2 with one tracked course activity containing Course Home and the single teaching module. Completion requires the final check to be attempted and the final slide reached. The user confirmed LMS synchronization on November 3, 2026.
+
+## Rebuild
 
 From the repository root:
 
@@ -21,4 +25,10 @@ From the repository root:
 ./scripts/build-course.sh ocp-orientation/introduction-to-the-ocp-solution-provider-program
 ```
 
-The source of truth is `course.json`. Course-owned learner media, video, and captions are retained under `resources/`. Generated SCORM files are not checked in.
+Use the approved existing audio masters with `EXISTING_AUDIO_DIR` to avoid paid regeneration. Without those masters, the wrapper generates narration through the configured ElevenLabs voice and retains authoring receipts outside the runtime package. Preserve the approved voice, pacing, narration timing and SCORM organization.
+
+## Language editions
+
+Previous Scrolling translations were retired because they describe the superseded course. They remain recoverable in Git history. Replacement Slides translations must branch from this approved English source, preserving the one-module structure, media scope and authoritative links. The maintained voice choices are verified in [the live v4 compatibility record](../../../docs/orientation-v4-language-compatibility.json).
+
+The poster uses the exact official program logo supplied by OCP inside the right-hand white circle. The separate course mark appears in the course player.

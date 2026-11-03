@@ -32,7 +32,7 @@ from motion_intro import (
     render_motion_intro,
 )
 from render_scrolling import hydrate_caption_cues, is_scrolling, render_scrolling_course
-from video_player import academy_video_html
+from video_player import academy_video_html, scrolling_video_icon
 import single_sco
 import legacy_multi_sco
 
@@ -272,6 +272,8 @@ def _learner_aids_html(
     # Render optional learner aids in the slide content flow. The returned
     # block is appended inside `.slide-content`, after the slide's primary
     # text/table/image content. It is never fixed or floating.
+    screenshots = slide.get("screenshot_gallery") or []
+    screenshot_html = _figure_html({"gallery": screenshots}, course) if screenshots else ""
     glossary = {
         item.get("id"): item
         for item in course.get("term_glossary", [])
@@ -325,7 +327,7 @@ def _learner_aids_html(
         </div>'''
 
     if not glossary_chips and not ref_links and not callout_html:
-        return ""
+        return screenshot_html
 
     glossary_html = ""
     if glossary_chips:
@@ -334,7 +336,7 @@ def _learner_aids_html(
     if ref_links:
         refs_html = '<div class="reference-strip animate-in">' + "".join(ref_links) + '</div>'
     aids_class = "learner-aids learner-aids--centered" if centered else "learner-aids"
-    return f'''
+    return screenshot_html + f'''
       <div class="{aids_class}">{glossary_html}{refs_html}{callout_html}
       </div>'''
 
@@ -379,6 +381,25 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
     if not fig:
         return ""
     course = course or {}
+    gallery = fig.get("gallery")
+    if gallery:
+        if not isinstance(gallery, list) or any(not isinstance(item, dict) or not item.get("path") for item in gallery):
+            raise ValueError("A figure gallery requires image entries with paths")
+        first = {**fig, **gallery[0], "media_type": "image"}
+        first.pop("gallery", None)
+        first.setdefault("caption", "")
+        media = _figure_html(first, course)
+        # A caption node is retained even for an empty first caption so later
+        # screenshots can supply their own description without shifting roles.
+        if not first["caption"]:
+            media = media.replace('</div>', '</div><p class="figure-caption"></p>', 1)
+        controls = f'''
+          <div class="figure-gallery-controls" role="group" aria-label="{esc(ui(course, 'screenshot_navigation', 'Screenshot navigation'))}">
+            <button class="learner-control" type="button" data-gallery-step="-1" disabled>{esc(ui(course, 'previous_image', 'Previous image'))}</button>
+            <span data-gallery-count aria-live="polite">1 / {len(gallery)}</span>
+            <button class="learner-control" type="button" data-gallery-step="1">{esc(ui(course, 'next_image', 'Next image'))}</button>
+          </div>''' if len(gallery) > 1 else ""
+        return f'<div class="figure-gallery" data-figure-gallery="{esc(json.dumps(gallery, ensure_ascii=False))}" data-gallery-index="0">{media}{controls}</div>'
     if fig.get("role") == "original_video":
         media = dict(fig)
         media['captions'] = [dict(t, _cues=t.get('_cues') or fig.get('caption_cues', [])) for t in fig.get('captions', [])]
@@ -396,6 +417,17 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
     if media_type == "video":
         poster = fig.get("poster", "")
         preload = fig.get("preload", "metadata")
+        caption_tracks = [
+            {"language": track.get("language", "en"), "label": track.get("label", "Captions"),
+             "cues": track.get("_cues") or []}
+            for track in fig.get("captions", []) if track.get("_cues")
+        ]
+        caption_control = (
+            '<button type="button" class="figure-video-control" data-video-captions '
+            f'aria-pressed="true" aria-label="{esc(ui(course, "hide_captions", "Hide captions"))}" '
+            f'title="{esc(ui(course, "hide_captions", "Hide captions"))}">'
+            f'{scrolling_video_icon("captions")}</button>'
+        ) if caption_tracks else ""
         attr_bits = [
             f'class="figure-video"',
             'data-narration-sync="true"' if fig.get("sync_to_narration") is True else "",
@@ -407,14 +439,18 @@ def _figure_html(fig: dict | None, course: dict | None = None) -> str:
             "loop" if fig.get("loop", True) else "",
             "autoplay" if fig.get("autoplay", True) else "",
             f'poster="{esc(poster)}"' if poster else "",
+            f'data-caption-tracks="{esc(json.dumps(caption_tracks, ensure_ascii=False))}"' if caption_tracks else "",
+            'data-captions-enabled="true"' if caption_tracks else "",
         ]
         attrs = " ".join(bit for bit in attr_bits if bit)
         body = f'''
           <video {attrs}></video>
+          {'<div class="figure-video-caption-display" data-figure-caption-display aria-live="off" hidden><span data-figure-caption-text></span></div>' if caption_tracks else ''}
           <div class="figure-video-controls" aria-label="{esc(ui(course, 'video_controls', 'Video controls'))}">
             <button type="button" class="figure-video-control" data-video-toggle aria-label="{esc(ui(course, 'pause_video', 'Pause video'))}" title="{esc(ui(course, 'pause_video', 'Pause video'))}">
               <span class="video-icon video-icon-pause" aria-hidden="true"></span>
             </button>
+            {caption_control}
             <button type="button" class="figure-video-control" data-video-zoom aria-label="{esc(ui(course, 'zoom_video', 'Zoom video'))}" title="{esc(ui(course, 'zoom_video', 'Zoom video'))}">
               <span aria-hidden="true">&#8981;</span>
             </button>
@@ -603,6 +639,26 @@ def render_content_table(slide: dict, course: dict, module: dict) -> str:
 
 
 def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
+    # Imported recordings may occupy a slide without any teaching copy around
+    # the shared player. Keep caption metadata for source/accessibility audits,
+    # while the recording itself supplies the visible content and controls.
+    if slide.get('media_only') is True:
+        role = (slide.get('figure') or {}).get('role')
+        if role not in ('original_video', 'caption_narrated_recording'):
+            raise ValueError('media_only requires an original_video or caption_narrated_recording figure')
+        if role == 'caption_narrated_recording' and (
+            slide['figure'].get('sync_to_narration') is not True or not slide.get('audio')
+        ):
+            raise ValueError('caption_narrated_recording requires synchronized slide narration')
+        figure = {**slide['figure'], 'caption': ''}
+        media_class = 'slide--original-video-only' if role == 'original_video' else 'slide--narrated-video-only'
+        return f'''
+  <div class="slide slide--media-focus {media_class}" data-slide="{slide['id']}" data-video-slide="true" aria-label="{esc(slide.get('title'))}">
+    <div class="slide-content">
+      {_figure_html(figure, course)}
+    </div>
+  </div>
+'''
     label = slide.get("section_label")
     video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
     media_class = ' slide--media-focus' if slide.get('media_focus') else ''
@@ -648,6 +704,7 @@ def render_takeaways(slide: dict, course: dict, module: dict) -> str:
       <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "Module Summary", module))}</h2>
       <ul class="takeaway-list">{items}
       </ul>
+      {_learner_aids_html(slide, course)}
     </div>
   </div>
 '''
@@ -918,6 +975,9 @@ def validate_knowledge_check_audio(module: dict) -> None:
         )
 
 
+from branded_text import visible_trademarks
+
+@visible_trademarks
 def render_module(course: dict, module_index: int) -> str:
     """Return full HTML string for moduleN.html."""
     legacy_profile = legacy_multi_sco.enabled(course)
@@ -976,7 +1036,11 @@ def render_module(course: dict, module_index: int) -> str:
     transcript_map = json.dumps({str(s['id']): {'title': s.get('title') or s.get('next_module_title') or module_title, 'text': s.get('transcript','')} for s in module['slides']}, ensure_ascii=False).replace('</', '<\\/')
     learner_runtime = (TEMPLATE_DIR / ('learner_features_hbf.js' if legacy_profile else 'learner_features.js')).read_text()
     learner_runtime += "\n" + (TEMPLATE_DIR / "slides_video_player.js").read_text()
-    bookmark_key = json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num))
+    progress_key = 'ocp:' + course.get('course_slug','course')
+    if course.get('progress_revision'):
+        progress_key += ':' + str(course['progress_revision'])
+    progress_key += ':module' + str(module_num)
+    bookmark_key = json.dumps(progress_key)
     bookmark_declaration = '' if legacy_profile else f'  const BOOKMARK_KEY = {bookmark_key};\n'
 
     font_links = (f'<link rel="stylesheet" href="{esc(course["local_font_stylesheet"])}">'
@@ -1369,7 +1433,7 @@ def render_module(course: dict, module_index: int) -> str:
 
   // ===== KNOWLEDGE CHECKS =====
   let quizInteractionIndex = 0;
-  const QUIZ_STATE_KEY = {json.dumps('ocp:' + course.get('course_slug','course') + ':module' + str(module_num) + ':quiz-state')};
+  const QUIZ_STATE_KEY = {json.dumps(progress_key + ':quiz-state')};
 
   function getSuspendObject() {{
     var data = '';
@@ -1560,6 +1624,66 @@ def render_module(course: dict, module_index: int) -> str:
 <!-- Click-to-enlarge lightbox for figures -->
 <script>
 (function() {{
+  // Materialize editable caption cues without fetching VTT files, so local
+  // review and the enlarged regular player share the same native caption clock.
+  function setupFigureCaptions(panel) {{
+    var video = panel.querySelector('video.figure-video[data-caption-tracks]');
+    if (!video || video.academyFigureCaptionTracks) return;
+    var tracks = JSON.parse(video.dataset.captionTracks);
+    video.academyFigureCaptionTracks = tracks.map(function(item) {{
+      var track = video.addTextTrack('captions', item.label, item.language);
+      item.cues.forEach(function(cue) {{ track.addCue(new VTTCue(cue.start, cue.end, cue.text)); }});
+      track.mode = 'hidden';
+      return track;
+    }});
+    video.academyUpdateFigureCaptions = function() {{
+      var display = panel.querySelector('[data-figure-caption-display]');
+      var content = panel.querySelector('[data-figure-caption-text]');
+      var active = tracks[0].cues.filter(function(cue) {{
+        return video.currentTime >= cue.start && video.currentTime < cue.end;
+      }});
+      content.textContent = active.map(function(cue) {{ return cue.text; }}).join(String.fromCharCode(10));
+      display.hidden = video.dataset.captionsEnabled === 'false' || !active.length;
+    }};
+    ['timeupdate', 'seeked', 'loadeddata'].forEach(function(name) {{ video.addEventListener(name, video.academyUpdateFigureCaptions); }});
+    setFigureCaptions(panel, video.dataset.captionsEnabled !== 'false');
+  }}
+  function setFigureCaptions(panel, enabled) {{
+    var video = panel.querySelector('video.figure-video[data-caption-tracks]');
+    if (!video) return;
+    video.dataset.captionsEnabled = String(enabled);
+    (video.academyFigureCaptionTracks || []).forEach(function(track) {{
+      // Keep native cues available, but draw their text in the visible media
+      // viewport so magnification/panning cannot crop a subtitle off-screen.
+      track.mode = 'hidden';
+    }});
+    if (video.academyUpdateFigureCaptions) video.academyUpdateFigureCaptions();
+    var button = panel.querySelector('[data-video-captions]');
+    if (button) {{
+      var label = enabled ? {json.dumps(ui(course, 'hide_captions', 'Hide captions'))} : {json.dumps(ui(course, 'show_captions', 'Show captions'))};
+      button.setAttribute('aria-pressed', String(enabled));
+      button.setAttribute('aria-label', label);
+      button.title = label;
+    }}
+  }}
+  document.querySelectorAll('.figure-panel[data-video-figure]').forEach(setupFigureCaptions);
+  document.querySelectorAll('[data-figure-gallery]').forEach(function(gallery) {{
+    var items = JSON.parse(gallery.dataset.figureGallery);
+    gallery.querySelectorAll('[data-gallery-step]').forEach(function(button) {{
+      button.addEventListener('click', function() {{
+        var index = Math.max(0, Math.min(items.length - 1, Number(gallery.dataset.galleryIndex) + Number(button.dataset.galleryStep)));
+        var item = items[index], image = gallery.querySelector('.figure-panel img');
+        image.src = item.path;
+        image.alt = item.alt || '';
+        gallery.querySelector('.figure-panel').setAttribute('aria-label', {json.dumps(ui(course, 'zoom_figure', 'Zoom figure'), ensure_ascii=False)} + ': ' + image.alt);
+        gallery.querySelector('.figure-caption').textContent = item.caption || '';
+        gallery.dataset.galleryIndex = String(index);
+        gallery.querySelector('[data-gallery-count]').textContent = (index + 1) + ' / ' + items.length;
+        gallery.querySelector('[data-gallery-step="-1"]').disabled = index === 0;
+        gallery.querySelector('[data-gallery-step="1"]').disabled = index === items.length - 1;
+      }});
+    }});
+  }});
   function syncVideoToggle(panel) {{
     if (!panel) return;
     var video = panel.querySelector('video.figure-video');
@@ -1596,6 +1720,7 @@ def render_module(course: dict, module_index: int) -> str:
       if (!e.target.closest('.lightbox-figure')) closeLightbox();
     }});
     document.body.appendChild(overlay);
+    setupFigureCaptions(frame);
     overlay.returnFocus = returnFocus;
     frame.focus({{preventScroll: true}});
     var sourceVideo = panel.querySelector('video.figure-video');
@@ -1636,6 +1761,18 @@ def render_module(course: dict, module_index: int) -> str:
     return target.closest('.figure-panel[data-zoomable-figure="true"]');
   }}
   document.addEventListener('click', function(e) {{
+    var captionsButton = e.target.closest && e.target.closest('[data-video-captions]');
+    if (captionsButton) {{
+      e.preventDefault(); e.stopPropagation();
+      var captionsPanel = captionsButton.closest('.figure-panel');
+      var captionsVideo = captionsPanel.querySelector('video.figure-video');
+      var enabled = captionsVideo.dataset.captionsEnabled === 'false';
+      document.querySelectorAll('.slide.active .figure-panel, .lightbox-overlay .figure-panel').forEach(function(panel) {{
+        var video = panel.querySelector('video.figure-video');
+        if (video && video.getAttribute('src') === captionsVideo.getAttribute('src')) setFigureCaptions(panel, enabled);
+      }});
+      return;
+    }}
     if (e.target.closest && e.target.closest('[data-video-player]') && !e.target.closest('[data-video-zoom]')) return;
     var toggle = e.target.closest && e.target.closest('[data-video-toggle]');
     if (toggle) {{

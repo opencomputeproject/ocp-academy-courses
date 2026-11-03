@@ -27,7 +27,7 @@ try {
     const quiz = module.slides.find(slide => slide.type === 'knowledge_check');
     if (!quiz) continue;
     const last = module.slides.at(-1);
-    const bookmarkKey = `ocp:${course.course_slug}:module${module.id}`;
+    const bookmarkKey = `ocp:${course.course_slug}${course.progress_revision ? ':'+course.progress_revision : ''}:module${module.id}`;
     const quizKey = `${bookmarkKey}:quiz-state`;
     await page.goto(url(module.id));
     await page.evaluate(() => localStorage.clear());

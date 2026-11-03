@@ -1,23 +1,24 @@
 # Narration-synchronized teaching video
 
-## Recommend, then obtain approval
+## Prefer a narration-timed single pass
 
-Prefer recommending a substantive timed sequence when the lesson benefits from
-following a circuit, changing quantity, comparison case or operating decision.
-Do not lengthen a simple loop just to fill time or impose a video where a static
-comparison teaches better.
+For newly authored narrated Slides, prefer a substantive sequence timed to the
+final narration. Use the narration clock, hold the completed conclusion, and
+share pause, seek, replay and speed with narration, including the enlarged view.
+Do not repeat a short reveal to fill a longer explanation or stretch an unsuitable
+visual merely to meet a duration target; use a static figure when motion adds no
+teaching value.
 
-The established default remains a silent short video with `autoplay: true`,
-`loop: true`, `muted: true`, and no `sync_to_narration` flag. Explain the proposed
-single-pass alternative before producing it: it follows the narration clock,
-holds its conclusion, and shares pause, seek, replay and speed with narration,
-including the enlarged view. Obtain user approval for the course or selected
-slides and record that approval in editable course metadata or the figure plan.
-An explicit request for videos timed to narration is already approval for this
-mode within that scope; do not ask again for each slide.
-An existing recorded approval is sufficient; do not ask again. A general rebuild,
-permission to finish, or a request for a video alone does not approve conversion
-of existing loops. Preserve their authored settings unless conversion is requested.
+Record `narration.teaching_video_mode: "narration-synchronized"` and the explicit
+per-figure settings below. These settings are essential: a duration-matched file
+with `loop: true` will still cycle. Source QA must reject that mismatch.
+
+Independent loops are exceptions for intentionally cyclic teaching that the user
+has explicitly selected. Preserve an existing approved loop exception during a
+rebuild unless conversion is requested. A request to time videos to narration or
+hold their final scene already authorizes the corresponding conversion; do not
+ask again for each clip. Original recordings remain separate and keep their own
+soundtrack and player.
 
 ## Required ending for narration-timed videos
 

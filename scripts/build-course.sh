@@ -147,6 +147,15 @@ else
   if [[ -n "${EXISTING_AUDIO_DIR:-}" ]]; then
     rsync -a "$EXISTING_AUDIO_DIR/" "$BUILD_DIR/audio/"
   elif [[ "${SKIP_AUDIO:-0}" != "1" ]]; then
+    # A course-owned narration hook prepares recordings with authored cue windows
+    # before ordinary slide generation. It owns forced retries for those clips.
+    if [[ -f "$SOURCE_DIR/scripts/generate_demo_narration.py" ]]; then
+      if [[ "${FORCE_AUDIO:-0}" == "1" ]]; then
+        "$PYTHON_BIN" "$SOURCE_DIR/scripts/generate_demo_narration.py" "$BUILD_DIR/course.json" --force
+      else
+        "$PYTHON_BIN" "$SOURCE_DIR/scripts/generate_demo_narration.py" "$BUILD_DIR/course.json"
+      fi
+    fi
     if [[ "${FORCE_AUDIO:-0}" == "1" ]]; then
       "$PYTHON_BIN" "$SKILL_DIR/scripts/gen_audio.py" "$BUILD_DIR/course.json" --force
     else
