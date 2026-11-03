@@ -28,7 +28,7 @@ if [[ ! -f "$SOURCE_DIR/course.json" ]]; then
   exit 1
 fi
 
-COURSE_STYLE="$($PYTHON_BIN - "$SOURCE_DIR/course.json" <<'PY'
+COURSE_STYLE="$("$PYTHON_BIN" - "$SOURCE_DIR/course.json" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -70,7 +70,7 @@ PY
 fi
 
 COMMON_SCRIPTS=(new_course.py render_scrolling.py render_index.py slides_syllabus.py validate_package.py course_delivery_summary.py zip_for_lms.py)
-SLIDES_SCRIPTS=(gen_audio.py audio_tail_report.py render_module.py)
+SLIDES_SCRIPTS=(gen_audio.py audio_tail_report.py encode_delivery_audio.py render_module.py)
 REQUIRED_SCRIPTS=("${COMMON_SCRIPTS[@]}")
 if [[ "$COURSE_STYLE" == "slides" ]]; then
   REQUIRED_SCRIPTS+=("${SLIDES_SCRIPTS[@]}")
@@ -135,13 +135,16 @@ else
     fi
   fi
 
+  # Opt-in delivery copies preserve the paced lossless masters and audio QA.
+  "$PYTHON_BIN" "$SKILL_DIR/scripts/encode_delivery_audio.py" "$BUILD_DIR/course.json" --report "$BUILD_DIR.audio-delivery.json"
+
   # Optional trusted course source generates offline learner resources directly
   # into the staged package; rendered resource HTML is not kept in source control.
   if [[ -f "$SOURCE_DIR/scripts/build_resources.py" ]]; then
     "$PYTHON_BIN" "$SOURCE_DIR/scripts/build_resources.py" "$BUILD_DIR/course.json"
   fi
 
-  COURSE_RENDERER="$($PYTHON_BIN - "$SOURCE_DIR/course.json" <<'PY'
+  COURSE_RENDERER="$("$PYTHON_BIN" - "$SOURCE_DIR/course.json" <<'PY'
 import json
 import sys
 print(json.load(open(sys.argv[1])).get("authoring_renderer") or "")

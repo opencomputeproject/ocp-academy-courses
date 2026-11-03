@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A04 editable teaching source</title><style>html,body{margin:0;width:100%;height:100%;background:white;overflow:hidden}svg{display:block;width:100%;height:100%;object-fit:contain}</style></head><body data-duration-ms="52677.9138322" data-poster-ms="48990.459863946"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img"><style>text{font-family:Arial,Helvetica,sans-serif;fill:#28374A;font-size:32px} .small{font-size:27px;fill:#687887}.tiny{font-size:23px;fill:#687887}.strong{font-weight:700}.label{font-size:30px}.outline{fill:none;stroke:#BCC7CF;stroke-width:3}.flow{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.arrowhead{stroke:none}</style><rect width="1920" height="1080" fill="white"/><text x="90" y="80" text-anchor="start" class="tiny"><tspan x="90" dy="0em">Conceptual envelope · not an insertion or maintenance procedure</tspan></text><g data-start="0" ><rect x="700" y="200" width="760" height="570" rx="6" fill="#FFFFFF" stroke="#28374A" stroke-width="3" /><text x="1080" y="175" text-anchor="middle" class="strong" style="font-size:36px;"><tspan x="1080" dy="0em">Rack integration envelope</tspan></text><line x1="820" y1="240" x2="820" y2="730" stroke="#BCC7CF" stroke-width="5"/><line x1="1340" y1="240" x2="1340" y2="730" stroke="#BCC7CF" stroke-width="5"/></g><g data-start="0.04" data-move="0.04,0.22,-650,0"><rect x="850" y="345" width="450" height="200" rx="4" fill="#F4F6F8" stroke="#28374A" stroke-width="3" /><text x="1075" y="445" text-anchor="middle"><tspan x="1075" dy="0em">Equipment</tspan></text></g><g data-start="0.24" ><text x="390" y="310" text-anchor="start" class="label"><tspan x="390" dy="0em">Mounting / pitch</tspan></text><line x1="810" y1="320" x2="810" y2="550" stroke="#76A931" stroke-width="7"/><text x="1505" y="390" text-anchor="start" class="label"><tspan x="1505" dy="0em">Depth +</tspan></text><text x="1505" y="432" text-anchor="start" class="label"><tspan x="1505" dy="0em">service access</tspan></text></g><g data-start="0.42" ><line x1="1380" y1="250" x2="1380" y2="700" stroke="#76A931" stroke-width="8"/><text x="1180" y="820" text-anchor="start" class="label"><tspan x="1180" dy="0em">Power interface</tspan></text></g><g data-start="0.57" ><line x1="1430" y1="250" x2="1430" y2="700" stroke="#168A9B" stroke-width="8"/><text x="1480" y="680" text-anchor="start" class="label"><tspan x="1480" dy="0em">Cooling</tspan></text><text x="1480" y="722" text-anchor="start" class="small"><tspan x="1480" dy="0em">if fitted</tspan></text></g><g data-start="0.3" ><rect x="1260" y="420" width="45" height="55" rx="2" fill="#FFF4E8" stroke="#A65D22" stroke-width="3" /><text x="1500" y="530" text-anchor="start" class="label" style="fill:#A65D22;"><tspan x="1500" dy="0em">Rear position</tspan></text><text x="1500" y="575" text-anchor="start" class="label" style="fill:#A65D22;"><tspan x="1500" dy="0em">UNRESOLVED</tspan></text></g><g data-start="0.41" ><polyline points="900,560 900,660 1200,660 1200,760" fill="none" stroke="#168A9B" stroke-width="10" stroke-linejoin="round"/><text x="250" y="665" text-anchor="start" class="label"><tspan x="250" dy="0em">Hose crosses the</tspan></text><text x="250" y="710" text-anchor="start" class="label"><tspan x="250" dy="0em">replacement envelope</tspan></text></g><g data-start="0.72" ><g class="text-container" data-box="120,910,1680,100"><rect x="120" y="910" width="1680" height="100" rx="10" fill="#FFF4E8" stroke="none" stroke-width="3" /><text x="960.0" y="971.88" text-anchor="middle" style="font-size:36px;"><tspan x="960.0" dy="0em">HOLD — resolve connection position and service routing together</tspan></text></g></g></svg><script>window.TEACHING_CUE_MAP=[[0,0],[0.04,0.04252256471536261],[0.24,0.11238106389060117],[0.3,0.17616491096364506],[0.41,0.22476212778120233],[0.42,0.4145950059747854],[0.57,0.479897516073378],[0.72,0.5676003057988133],[1,1]];
+
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+window.renderFraction=function(f){
+ f=clamp(Number(f)||0,0,1); window.currentTeachingFraction=f;
+ const cues=window.TEACHING_CUE_MAP;
+ if(Array.isArray(cues)&&cues.length>1){
+  let j=1;while(j<cues.length-1&&f>cues[j][1])j++;
+  const a=cues[j-1],b=cues[j];
+  f=a[0]+clamp((f-a[1])/(b[1]-a[1]),0,1)*(b[0]-a[0]);
+ }
+ for(const g of document.querySelectorAll('[data-start]')){
+  const a=Number(g.dataset.start), b=g.dataset.end?Number(g.dataset.end):2;
+  const enter=a===0?1:clamp((f-a)/.025,0,1);
+  const leave=b===2?1:1-clamp((f-b)/.025,0,1);
+  g.style.opacity=String(Math.min(enter,leave));
+ }
+ for(const g of document.querySelectorAll('[data-move]')){
+  const [a,b,dx,dy]=g.dataset.move.split(',').map(Number);
+  const t=clamp((f-a)/(b-a),0,1); const e=t*t*(3-2*t);
+  g.setAttribute('transform',`translate(${dx*(1-e)} ${dy*(1-e)})`);
+ }
+ for(const g of document.querySelectorAll('[data-draw]')){
+  const [a,b]=g.dataset.draw.split(',').map(Number); const t=clamp((f-a)/(b-a),0,1);
+  const length=g.getTotalLength(); g.style.strokeDasharray=String(length);g.style.strokeDashoffset=String(length*(1-t));
+ }
+ for(const g of document.querySelectorAll('[data-route]')){
+  const [a,b,c,d,start,mid]=g.dataset.route.split(',').map(Number);
+  const tween=(x)=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+  const dx=f<c?start+(mid-start)*tween((f-a)/(b-a)):mid*(1-tween((f-c)/(d-c)));
+  g.setAttribute('transform',`translate(${dx} 0)`);
+ }
+};
+window.setTeachingTime=function(ms){window.renderFraction(ms/Number(document.body.dataset.durationMs));};
+window.renderAt=function(seconds){window.setTeachingTime(seconds*1000);};
+window.setDuration=function(seconds){document.body.dataset.durationMs=String(seconds*1000);document.body.dataset.posterMs=String(seconds*1000*.92);};
+window.renderFraction(0);
+</script></body></html>

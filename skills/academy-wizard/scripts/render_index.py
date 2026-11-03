@@ -415,13 +415,12 @@ def render_manifest(course: dict, out_dir: Path) -> str:
                 files.append(poster)
             for asset in fig.get("assets", []):
                 add_file(files, asset)
-        # Audio files declared in course.json (canonical) — derive even if
-        # .wav doesn't exist yet, so the manifest stays correct across renders.
+        # Prefer the selected delivery copy; keep authoring WAVs out of the ZIP.
         for slide in mod.get("slides", []):
             audio = slide.get("audio") or {}
-            wav = audio.get("wav_file")
-            if wav and wav not in files:
-                files.append(wav)
+            delivery = audio.get("delivery_file") or audio.get("wav_file")
+            if delivery and slide.get("narration_enabled", True) and (slide.get("figure") or {}).get("role") != "original_video" and delivery not in files:
+                files.append(delivery)
         files_xml = "\n      ".join(f'<file href="{xml_escape(f)}"/>' for f in files)
         resources.append(f'''
     <resource identifier="RES_MODULE{mid}" type="webcontent" adlcp:scormtype="sco" href="module{mid}.html">

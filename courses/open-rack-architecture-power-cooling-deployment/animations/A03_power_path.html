@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A03 editable teaching source</title><style>html,body{margin:0;width:100%;height:100%;background:white;overflow:hidden}svg{display:block;width:100%;height:100%;object-fit:contain}</style></head><body data-duration-ms="61087.029478458" data-poster-ms="56810.93741496594"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img"><style>text{font-family:Arial,Helvetica,sans-serif;fill:#28374A;font-size:32px} .small{font-size:27px;fill:#687887}.tiny{font-size:23px;fill:#687887}.strong{font-weight:700}.label{font-size:30px}.outline{fill:none;stroke:#BCC7CF;stroke-width:3}.flow{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.arrowhead{stroke:none}</style><rect width="1920" height="1080" fill="white"/><text x="90" y="80" text-anchor="start" class="tiny"><tspan x="90" dy="0em">Conceptual power path · bond locations and protection are not shown</tspan></text><g data-start="0" ><g class="text-container" data-box="90,300,300,150"><rect x="90" y="300" width="300" height="150" rx="10" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><text x="240.0" y="386.22" text-anchor="middle" style="font-size:34px;"><tspan x="240.0" dy="0em">Facility input</tspan></text></g><line x1="390" y1="375" x2="502.0" y2="375.0" stroke="#28374A" stroke-width="6"/><polygon class="arrowhead" points="502.0,384.0 502.0,366.0 520,375" fill="#28374A"/><g class="text-container" data-box="520,260,360,250"><rect x="520" y="260" width="360" height="250" rx="10" fill="#F0F6E7" stroke="#76A931" stroke-width="3" /><text x="700.0" y="372.2" text-anchor="middle" style="font-size:40px;"><tspan x="700.0" dy="0em">Conversion</tspan><tspan x="700.0" dy="1.3em">power shelf</tspan></text></g></g><g data-start="0.18" ><line x1="880" y1="315" x2="1290" y2="315" stroke="#76A931" stroke-width="7"/><line x1="1290" y1="315" x2="1422.0" y2="315.0" stroke="#76A931" stroke-width="6"/><polygon class="arrowhead" points="1422.0,324.0 1422.0,306.0 1440,315" fill="#76A931"/><g class="text-container" data-box="1440,250,360,300"><rect x="1440" y="250" width="360" height="300" rx="10" fill="#FFFFFF" stroke="#28374A" stroke-width="3" /><text x="1620.0" y="413.86" text-anchor="middle" style="font-size:42px;"><tspan x="1620.0" dy="0em">IT load</tspan></text></g><text x="1090" y="260" text-anchor="middle" class="label"><tspan x="1090" dy="0em">DC supply</tspan></text></g><g data-start="0.33" ><line x1="1440" y1="490" x2="1060" y2="490" stroke="#168A9B" stroke-width="7"/><line x1="1060" y1="490" x2="898.0" y2="490.0" stroke="#168A9B" stroke-width="6"/><polygon class="arrowhead" points="898.0,481.0 898.0,499.0 880,490" fill="#168A9B"/><text x="1100" y="555" text-anchor="middle" class="label"><tspan x="1100" dy="0em">DC return</tspan></text></g><g data-start="0.35" ><text x="1090" y="390" text-anchor="middle" class="small"><tspan x="1090" dy="0em">Busbar distribution</tspan></text><g class="text-container" data-box="100,640,1700,100"><rect x="100" y="640" width="1700" height="100" rx="10" fill="#ECF7F9" stroke="none" stroke-width="3" /><text x="950.0" y="699.9" text-anchor="middle" style="font-size:30px;"><tspan x="950.0" dy="0em">Architecture label ≠ the actual nominal voltage or accepted input range</tspan></text></g></g><g data-start="0.62" ><g class="text-container" data-box="140,830,720,140"><rect x="140" y="830" width="720" height="140" rx="10" fill="#F0F6E7" stroke="none" stroke-width="3" /><text x="500.0" y="889.12" text-anchor="middle" style="font-size:34px;"><tspan x="500.0" dy="0em">Match the source output</tspan><tspan x="500.0" dy="1.3em">to the equipment input range</tspan></text></g><g class="text-container" data-box="1010,830,720,140"><rect x="1010" y="830" width="720" height="140" rx="10" fill="#FFF4E8" stroke="none" stroke-width="3" /><text x="1370.0" y="889.12" text-anchor="middle" style="font-size:34px;"><tspan x="1370.0" dy="0em">Check connections, busbars,</tspan><tspan x="1370.0" dy="1.3em">thermal and entry limits</tspan></text></g></g></svg><script>window.TEACHING_CUE_MAP=[[0,0],[0.18,0.13194290291758756],[0.33,0.24358689769400782],[0.35,0.27927368781315676],[0.62,0.658077505866876],[1,1]];
+
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+window.renderFraction=function(f){
+ f=clamp(Number(f)||0,0,1); window.currentTeachingFraction=f;
+ const cues=window.TEACHING_CUE_MAP;
+ if(Array.isArray(cues)&&cues.length>1){
+  let j=1;while(j<cues.length-1&&f>cues[j][1])j++;
+  const a=cues[j-1],b=cues[j];
+  f=a[0]+clamp((f-a[1])/(b[1]-a[1]),0,1)*(b[0]-a[0]);
+ }
+ for(const g of document.querySelectorAll('[data-start]')){
+  const a=Number(g.dataset.start), b=g.dataset.end?Number(g.dataset.end):2;
+  const enter=a===0?1:clamp((f-a)/.025,0,1);
+  const leave=b===2?1:1-clamp((f-b)/.025,0,1);
+  g.style.opacity=String(Math.min(enter,leave));
+ }
+ for(const g of document.querySelectorAll('[data-move]')){
+  const [a,b,dx,dy]=g.dataset.move.split(',').map(Number);
+  const t=clamp((f-a)/(b-a),0,1); const e=t*t*(3-2*t);
+  g.setAttribute('transform',`translate(${dx*(1-e)} ${dy*(1-e)})`);
+ }
+ for(const g of document.querySelectorAll('[data-draw]')){
+  const [a,b]=g.dataset.draw.split(',').map(Number); const t=clamp((f-a)/(b-a),0,1);
+  const length=g.getTotalLength(); g.style.strokeDasharray=String(length);g.style.strokeDashoffset=String(length*(1-t));
+ }
+ for(const g of document.querySelectorAll('[data-route]')){
+  const [a,b,c,d,start,mid]=g.dataset.route.split(',').map(Number);
+  const tween=(x)=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+  const dx=f<c?start+(mid-start)*tween((f-a)/(b-a)):mid*(1-tween((f-c)/(d-c)));
+  g.setAttribute('transform',`translate(${dx} 0)`);
+ }
+};
+window.setTeachingTime=function(ms){window.renderFraction(ms/Number(document.body.dataset.durationMs));};
+window.renderAt=function(seconds){window.setTeachingTime(seconds*1000);};
+window.setDuration=function(seconds){document.body.dataset.durationMs=String(seconds*1000);document.body.dataset.posterMs=String(seconds*1000*.92);};
+window.renderFraction(0);
+</script></body></html>

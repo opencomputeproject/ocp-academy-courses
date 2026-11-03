@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A01 editable teaching source</title><style>html,body{margin:0;width:100%;height:100%;background:white;overflow:hidden}svg{display:block;width:100%;height:100%;object-fit:contain}</style></head><body data-duration-ms="60138.412698413" data-poster-ms="55928.72380952409"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img"><style>text{font-family:Arial,Helvetica,sans-serif;fill:#28374A;font-size:32px} .small{font-size:27px;fill:#687887}.tiny{font-size:23px;fill:#687887}.strong{font-weight:700}.label{font-size:30px}.outline{fill:none;stroke:#BCC7CF;stroke-width:3}.flow{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.arrowhead{stroke:none}</style><rect width="1920" height="1080" fill="white"/><text x="90" y="80" text-anchor="start" class="tiny"><tspan x="90" dy="0em">Conceptual interface map · not a physical rack drawing</tspan></text><g data-start="0" ><rect x="760" y="210" width="400" height="470" rx="4" fill="#FFFFFF" stroke="#28374A" stroke-width="3" /><rect x="782" y="232" width="356" height="426" rx="0" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><rect x="804" y="280" width="288" height="44" rx="3" fill="#F4F6F8" stroke="#BCC7CF" stroke-width="3" /><rect x="804" y="350" width="288" height="44" rx="3" fill="#F4F6F8" stroke="#BCC7CF" stroke-width="3" /><rect x="804" y="420" width="288" height="44" rx="3" fill="#F4F6F8" stroke="#BCC7CF" stroke-width="3" /><rect x="804" y="490" width="288" height="44" rx="3" fill="#F4F6F8" stroke="#BCC7CF" stroke-width="3" /><rect x="804" y="560" width="288" height="44" rx="3" fill="#F4F6F8" stroke="#BCC7CF" stroke-width="3" /><rect x="1112" y="255" width="14" height="380" rx="0" fill="#76A931" stroke="#76A931" stroke-width="3" /></g><g data-start="0.05" ><g class="text-container" data-box="100,220,500,140"><rect x="100" y="220" width="500" height="140" rx="10" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><text x="350.0" y="278.8" text-anchor="middle" style="font-size:35px;"><tspan x="350.0" dy="0em">Mechanical</tspan><tspan x="350.0" dy="1.3em">location + support</tspan></text></g><line x1="600" y1="290" x2="760" y2="290" stroke="#28374A" stroke-width="5"/></g><g data-start="0.16" ><g class="text-container" data-box="100,480,500,140"><rect x="100" y="480" width="500" height="140" rx="10" fill="#F0F6E7" stroke="#76A931" stroke-width="3" /><text x="350.0" y="539.12" text-anchor="middle" style="font-size:34px;"><tspan x="350.0" dy="0em">Electrical</tspan><tspan x="350.0" dy="1.3em">delivery + entry behavior</tspan></text></g><line x1="600" y1="550" x2="760" y2="550" stroke="#76A931" stroke-width="6"/></g><g data-start="0.28" ><g class="text-container" data-box="1320,220,500,140"><rect x="1320" y="220" width="500" height="140" rx="10" fill="#ECF7F9" stroke="#168A9B" stroke-width="3" /><text x="1570.0" y="279.44" text-anchor="middle" style="font-size:33px;"><tspan x="1570.0" dy="0em">Thermal</tspan><tspan x="1570.0" dy="1.3em">conditions for heat removal</tspan></text></g><line x1="1160" y1="290" x2="1320" y2="290" stroke="#168A9B" stroke-width="6"/></g><g data-start="0.37" ><g class="text-container" data-box="1320,480,500,140"><rect x="1320" y="480" width="500" height="140" rx="10" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><text x="1570.0" y="539.12" text-anchor="middle" style="font-size:34px;"><tspan x="1570.0" dy="0em">Management</tspan><tspan x="1570.0" dy="1.3em">measurement + response</tspan></text></g><line x1="1160" y1="550" x2="1320" y2="550" stroke="#28374A" stroke-width="4" stroke-dasharray="10 8"/></g><g data-start="0.49" ><g class="text-container" data-box="590,755,740,120"><rect x="590" y="755" width="740" height="120" rx="10" fill="#FFF4E8" stroke="#A65D22" stroke-width="3" /><text x="960.0" y="826.22" text-anchor="middle" style="font-size:34px;"><tspan x="960.0" dy="0em">Service: access + permitted replacement</tspan></text></g><line x1="960" y1="680" x2="960" y2="755" stroke="#A65D22" stroke-width="5"/></g><g data-start="0.72" ><text x="960" y="975" text-anchor="middle" class="strong" style="font-size:34px;"><tspan x="960" dy="0em">What is provided?     What is required?     What evidence shows agreement?</tspan></text></g></svg><script>window.TEACHING_CUE_MAP=[[0,0],[0.05,0.04423129711353703],[0.16,0.14499883865791086],[0.28,0.26638548111235455],[0.37,0.3282427838425642],[0.49,0.4403175742731054],[0.72,0.7592485060917671],[1,1]];
+
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+window.renderFraction=function(f){
+ f=clamp(Number(f)||0,0,1); window.currentTeachingFraction=f;
+ const cues=window.TEACHING_CUE_MAP;
+ if(Array.isArray(cues)&&cues.length>1){
+  let j=1;while(j<cues.length-1&&f>cues[j][1])j++;
+  const a=cues[j-1],b=cues[j];
+  f=a[0]+clamp((f-a[1])/(b[1]-a[1]),0,1)*(b[0]-a[0]);
+ }
+ for(const g of document.querySelectorAll('[data-start]')){
+  const a=Number(g.dataset.start), b=g.dataset.end?Number(g.dataset.end):2;
+  const enter=a===0?1:clamp((f-a)/.025,0,1);
+  const leave=b===2?1:1-clamp((f-b)/.025,0,1);
+  g.style.opacity=String(Math.min(enter,leave));
+ }
+ for(const g of document.querySelectorAll('[data-move]')){
+  const [a,b,dx,dy]=g.dataset.move.split(',').map(Number);
+  const t=clamp((f-a)/(b-a),0,1); const e=t*t*(3-2*t);
+  g.setAttribute('transform',`translate(${dx*(1-e)} ${dy*(1-e)})`);
+ }
+ for(const g of document.querySelectorAll('[data-draw]')){
+  const [a,b]=g.dataset.draw.split(',').map(Number); const t=clamp((f-a)/(b-a),0,1);
+  const length=g.getTotalLength(); g.style.strokeDasharray=String(length);g.style.strokeDashoffset=String(length*(1-t));
+ }
+ for(const g of document.querySelectorAll('[data-route]')){
+  const [a,b,c,d,start,mid]=g.dataset.route.split(',').map(Number);
+  const tween=(x)=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+  const dx=f<c?start+(mid-start)*tween((f-a)/(b-a)):mid*(1-tween((f-c)/(d-c)));
+  g.setAttribute('transform',`translate(${dx} 0)`);
+ }
+};
+window.setTeachingTime=function(ms){window.renderFraction(ms/Number(document.body.dataset.durationMs));};
+window.renderAt=function(seconds){window.setTeachingTime(seconds*1000);};
+window.setDuration=function(seconds){document.body.dataset.durationMs=String(seconds*1000);document.body.dataset.posterMs=String(seconds*1000*.92);};
+window.renderFraction(0);
+</script></body></html>
