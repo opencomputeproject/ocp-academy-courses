@@ -95,7 +95,8 @@ def course_title(course_root: Path, canonical: dict) -> str:
     return title
 
 
-def repository_layout_series_folders(readme: str) -> set[str]:
+def repository_layout_series_folders(readme: str, repo_root: Path) -> set[str]:
+    """Use listed top-level folders, not README asset/subfolder indentation."""
     match = re.search(
         r"^## Repository layout\s*$\n(.*?)(?=^##\s|\Z)",
         readme,
@@ -103,17 +104,13 @@ def repository_layout_series_folders(readme: str) -> set[str]:
     )
     if not match:
         raise SystemExit("README.md must contain a Repository layout section.")
-    child_counts: dict[str, int] = {}
-    current_folder: str | None = None
-    for line in match.group(1).splitlines():
-        top_level = re.fullmatch(r"  ([A-Za-z0-9][A-Za-z0-9._-]*)/\s*", line)
-        if top_level:
-            current_folder = top_level.group(1)
-            child_counts.setdefault(current_folder, 0)
-            continue
-        if re.fullmatch(r"    [^/\s][^/]*/\s*", line) and current_folder:
-            child_counts[current_folder] += 1
-    return {folder for folder, count in child_counts.items() if count > 1}
+    folders = re.findall(r"^  ([A-Za-z0-9][A-Za-z0-9._-]*)/\s*$",
+                         match.group(1), flags=re.MULTILINE)
+    return {
+        folder for folder in folders
+        if not (repo_root / "courses" / folder / "course.json").is_file()
+        and len(list((repo_root / "courses" / folder).glob("*/course.json"))) > 1
+    }
 
 
 def title_from_slug(slug: str) -> str:
@@ -133,7 +130,7 @@ def title_from_slug(slug: str) -> str:
 
 def series_titles(repo_root: Path, translations: list[Translation]) -> dict[str, str]:
     readme = (repo_root / "README.md").read_text(encoding="utf-8")
-    layout_series = repository_layout_series_folders(readme)
+    layout_series = repository_layout_series_folders(readme, repo_root)
     represented_folders = set()
     for item in translations:
         parts = item.course_path.parts

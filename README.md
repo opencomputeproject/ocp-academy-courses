@@ -71,13 +71,6 @@ See [Course styles](docs/course-styles.md) for the authoring and fidelity contra
 
 ```text
 courses/
-  <slides-course>/
-    course.json
-    audio/
-    figures/
-    locales/
-      ko-KR/
-      fr-FR/
   ai-computing-continuum/
   build-your-brand-in-the-ocp-community/
   cooling-fluids-in-direct-liquid-cooling/
@@ -90,11 +83,6 @@ courses/
   high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
   intro-to-ocp/
-    animations/
-    audio/
-    figures/
-    resources/
-    thumbnail.png
   introduction-to-liquid-cooling/
   lvdc-power-distribution-for-data-centers/
   multipath-reliable-connection-mrc/
@@ -103,14 +91,7 @@ courses/
   ocp-lock-secure-key-management-for-self-encrypting-storage/
   ocp-mhs-modular-plug-and-play-m-pnp/
   ocp-nic-3-0-technical-overview/
-    animations/
-    thumbnail.png
   ocp-orientation/
-    understanding-and-procuring-open-technologies-and-products/
-    introduction-to-the-ocp-solution-provider-program/
-    ocp-volunteer-leadership-guide/
-    ocp-ready-data-center-recognition-program/
-    ocp-contribution-process/
   ocp-project-brazos-liquid-to-air-cooling/
   ocp-ready-requirements-for-energy-storage-systems/
   ocp-safe-product-security/
@@ -121,18 +102,13 @@ courses/
   open-rack-architecture-power-cooling-deployment/
   open-systems-for-ai/
   optics/
-    enhanced-telemetry-optics/
-    introduction-to-emerging-optical-technologies/
   project-deschutes-cdu-specification-v1-0/
   short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
   sue-t-ethernet-transport-for-xpu-scale-up-systems/
   thermal-boundaries-in-ai-infrastructure/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
 scripts/
-  build-course.sh
-  install-academy-wizard-skill.sh
 skills/
-  academy-wizard/
 ```
 
 ## LMS catalog metadata
