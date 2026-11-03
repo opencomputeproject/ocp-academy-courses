@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A16 editable teaching source</title><style>html,body{margin:0;width:100%;height:100%;background:white;overflow:hidden}svg{display:block;width:100%;height:100%;object-fit:contain}</style></head><body data-duration-ms="54507.800453515" data-poster-ms="50692.25442176896"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img"><style>text{font-family:Arial,Helvetica,sans-serif;fill:#28374A;font-size:32px} .small{font-size:27px;fill:#687887}.tiny{font-size:23px;fill:#687887}.strong{font-weight:700}.label{font-size:30px}.outline{fill:none;stroke:#BCC7CF;stroke-width:3}.flow{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.arrowhead{stroke:none}</style><rect width="1920" height="1080" fill="white"/><text x="90" y="80" text-anchor="start" class="tiny"><tspan x="90" dy="0em">Hypothetical deployment dossier · evidence statuses are scenario inputs</tspan></text><g data-start="0" ><text x="100" y="245" text-anchor="start" class="strong" style="font-size:37px;"><tspan x="100" dy="0em">Mechanical / logistics</tspan></text><text x="100" y="300" text-anchor="start" class="small"><tspan x="100" dy="0em">Configuration + route + handling</tspan></text><line x1="100" y1="345" x2="1800" y2="345" stroke="#BCC7CF" stroke-width="3"/></g><g data-start="0.66" ><g class="text-container" data-box="1120,180,680,140"><rect x="1120" y="180" width="680" height="140" rx="10" fill="#FFF4E8" stroke="#A65D22" stroke-width="3" /><text x="1460.0" y="239.12" text-anchor="middle" style="font-size:34px;"><tspan x="1460.0" dy="0em">OPEN: qualified</tspan><tspan x="1460.0" dy="1.3em">loaded-route acceptance</tspan></text></g></g><g data-start="0" ><text x="100" y="485" text-anchor="start" class="strong" style="font-size:37px;"><tspan x="100" dy="0em">Electrical / control</tspan></text><text x="100" y="540" text-anchor="start" class="small"><tspan x="100" dy="0em">Capacity + protection + operating state</tspan></text><line x1="100" y1="585" x2="1800" y2="585" stroke="#BCC7CF" stroke-width="3"/></g><g data-start="0.17" ><g class="text-container" data-box="1120,420,680,140"><rect x="1120" y="420" width="680" height="140" rx="10" fill="#F0F6E7" stroke="#76A931" stroke-width="3" /><text x="1460.0" y="479.12" text-anchor="middle" style="font-size:34px;"><tspan x="1460.0" dy="0em">Supplied: revision-matched</tspan><tspan x="1460.0" dy="1.3em">power-system evidence</tspan></text></g></g><g data-start="0" ><text x="100" y="725" text-anchor="start" class="strong" style="font-size:37px;"><tspan x="100" dy="0em">Thermal / fluid</tspan></text><text x="100" y="780" text-anchor="start" class="small"><tspan x="100" dy="0em">Compatibility + heat rejection + controls</tspan></text><line x1="100" y1="825" x2="1800" y2="825" stroke="#BCC7CF" stroke-width="3"/></g><g data-start="0.34" ><g class="text-container" data-box="1120,660,680,140"><rect x="1120" y="660" width="680" height="140" rx="10" fill="#ECF7F9" stroke="#168A9B" stroke-width="3" /><text x="1460.0" y="719.12" text-anchor="middle" style="font-size:34px;"><tspan x="1460.0" dy="0em">Supplied: thermal conditions</tspan><tspan x="1460.0" dy="1.3em">and commissioning records</tspan></text></g></g><g data-start="0.84" ><g class="text-container" data-box="220,940,1480,110"><rect x="220" y="940" width="1480" height="110" rx="10" fill="#FFF4E8" stroke="#A65D22" stroke-width="3" /><text x="960.0" y="1007.87" text-anchor="middle" style="font-size:39px;"><tspan x="960.0" dy="0em">HOLD — loaded-route acceptance remains unresolved</tspan></text></g></g></svg><script>window.TEACHING_CUE_MAP=[[0,0],[0.17,0.07446640602314508],[0.34,0.09466534985943055],[0.66,0.21648277681032568],[0.84,0.3566462017959942],[1,1]];
+
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+window.renderFraction=function(f){
+ f=clamp(Number(f)||0,0,1); window.currentTeachingFraction=f;
+ const cues=window.TEACHING_CUE_MAP;
+ if(Array.isArray(cues)&&cues.length>1){
+  let j=1;while(j<cues.length-1&&f>cues[j][1])j++;
+  const a=cues[j-1],b=cues[j];
+  f=a[0]+clamp((f-a[1])/(b[1]-a[1]),0,1)*(b[0]-a[0]);
+ }
+ for(const g of document.querySelectorAll('[data-start]')){
+  const a=Number(g.dataset.start), b=g.dataset.end?Number(g.dataset.end):2;
+  const enter=a===0?1:clamp((f-a)/.025,0,1);
+  const leave=b===2?1:1-clamp((f-b)/.025,0,1);
+  g.style.opacity=String(Math.min(enter,leave));
+ }
+ for(const g of document.querySelectorAll('[data-move]')){
+  const [a,b,dx,dy]=g.dataset.move.split(',').map(Number);
+  const t=clamp((f-a)/(b-a),0,1); const e=t*t*(3-2*t);
+  g.setAttribute('transform',`translate(${dx*(1-e)} ${dy*(1-e)})`);
+ }
+ for(const g of document.querySelectorAll('[data-draw]')){
+  const [a,b]=g.dataset.draw.split(',').map(Number); const t=clamp((f-a)/(b-a),0,1);
+  const length=g.getTotalLength(); g.style.strokeDasharray=String(length);g.style.strokeDashoffset=String(length*(1-t));
+ }
+ for(const g of document.querySelectorAll('[data-route]')){
+  const [a,b,c,d,start,mid]=g.dataset.route.split(',').map(Number);
+  const tween=(x)=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+  const dx=f<c?start+(mid-start)*tween((f-a)/(b-a)):mid*(1-tween((f-c)/(d-c)));
+  g.setAttribute('transform',`translate(${dx} 0)`);
+ }
+};
+window.setTeachingTime=function(ms){window.renderFraction(ms/Number(document.body.dataset.durationMs));};
+window.renderAt=function(seconds){window.setTeachingTime(seconds*1000);};
+window.setDuration=function(seconds){document.body.dataset.durationMs=String(seconds*1000);document.body.dataset.posterMs=String(seconds*1000*.92);};
+window.renderFraction(0);
+</script></body></html>

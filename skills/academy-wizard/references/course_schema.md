@@ -420,6 +420,23 @@ Every slide has:
 
 Plus type-specific fields. See `slide_design_patterns.md` for what each type needs.
 
+For an explicitly selected compressed narration delivery format, retain
+`audio.wav_file` as the paced lossless master and add `audio.delivery_file`,
+for example `audio/module1/slide_01_title.mp3`. The player and manifest prefer
+that delivery copy; omission preserves WAV playback. Record the approved
+codec settings under `narration.delivery`, for example
+`{"format":"mp3","approved":true,"bitrate_kbps":96,"sample_rate_hz":44100,"channels":1,"bitrate_mode":"CBR"}`.
+After synthesis/pacing and before rendering, run
+`scripts/encode_delivery_audio.py course.json --report /outside/runtime/audio-delivery.json`.
+The normal repository build runs this opt-in step automatically. Set
+`FFMPEG_BIN` or use `--ffmpeg` when needed. It preserves and hashes the WAV,
+fully decodes the MP3 and rejects timing differences above 5 ms. Keep native
+masters and delivery receipts outside the runtime manifest. Local encoding
+does not regenerate the performance or consume TTS credits; do not call it
+direct ElevenLabs compressed API output. Validate actual playback, seek, speed,
+animation synchronization and final hold before packaging. A local browser
+pass does not establish LMS or additional-browser acceptance.
+
 `knowledge_check` slides are always narrated. They must include the same `audio.script_file` and `audio.wav_file` fields as content slides, and the corresponding script/WAV must be generated before rendering a module. `course_complete` may remain silent unless the approved design says otherwise.
 
 Optional learner-aid fields accepted on slides:

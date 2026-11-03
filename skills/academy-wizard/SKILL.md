@@ -311,6 +311,7 @@ When you need detail on a topic, read the corresponding file. Don't load these i
 | `scripts/render_index.py` | Render index.html and imsmanifest.xml |
 | `scripts/render_scrolling.py` | Render a standalone lesson-based Scrolling course |
 | `scripts/gen_audio.py` | Turn approved script .txt files into .wav using TTS |
+| `scripts/encode_delivery_audio.py` | Encode explicitly approved MP3 delivery copies from paced WAV masters; no TTS calls |
 | `scripts/elevenlabs_model_support.py` | Block unsupported ElevenLabs model/language combinations before paid TTS |
 | `scripts/audio_tail_report.py` | Scan generated .wav files for sustained level loss, late-volume fade, or noisy tails |
 | `scripts/slides_course_qa.py` | Verify per-module teaching video coverage, media/posters, glossary references, and optional repository catalog assets |

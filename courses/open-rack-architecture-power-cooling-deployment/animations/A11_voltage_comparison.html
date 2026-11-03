@@ -1,0 +1,38 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A11 editable teaching source</title><style>html,body{margin:0;width:100%;height:100%;background:white;overflow:hidden}svg{display:block;width:100%;height:100%;object-fit:contain}</style></head><body data-duration-ms="60137.233560091" data-poster-ms="55927.62721088463"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img"><style>text{font-family:Arial,Helvetica,sans-serif;fill:#28374A;font-size:32px} .small{font-size:27px;fill:#687887}.tiny{font-size:23px;fill:#687887}.strong{font-weight:700}.label{font-size:30px}.outline{fill:none;stroke:#BCC7CF;stroke-width:3}.flow{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}.arrowhead{stroke:none}</style><rect width="1920" height="1080" fill="white"/><text x="90" y="80" text-anchor="start" class="tiny"><tspan x="90" dy="0em">Ideal DC segment · fixed 100 kW · losses ignored · not a sizing or safety approval</tspan></text><g data-start="0" ><text x="430" y="245" text-anchor="middle" class="strong" style="font-size:76px;"><tspan x="430" dy="0em">P = V × I</tspan></text></g><g data-start="0.09" ><g class="text-container" data-box="130,330,600,190"><rect x="130" y="330" width="600" height="190" rx="10" fill="#F0F6E7" stroke="#76A931" stroke-width="3" /><text x="430.0" y="410.28000000000003" text-anchor="middle" style="font-size:46px;"><tspan x="430.0" dy="0em">50 V</tspan><tspan x="430.0" dy="1.3em">2,000 A</tspan></text></g></g><g data-start="0.19" ><g class="text-container" data-box="130,600,600,190"><rect x="130" y="600" width="600" height="190" rx="10" fill="#ECF7F9" stroke="#168A9B" stroke-width="3" /><text x="430.0" y="680.28" text-anchor="middle" style="font-size:46px;"><tspan x="430.0" dy="0em">800 V</tspan><tspan x="430.0" dy="1.3em">125 A</tspan></text></g></g><g data-start="0.4" ><line x1="850" y1="170" x2="850" y2="840" stroke="#BCC7CF" stroke-width="3"/></g><g data-start="0.4" ><g class="text-container" data-box="980,210,760,125"><rect x="980" y="210" width="760" height="125" rx="10" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><text x="1360.0" y="284.05" text-anchor="middle" style="font-size:35px;"><tspan x="1360.0" dy="0em">Connector + insulation</tspan></text></g></g><g data-start="0.5" ><g class="text-container" data-box="980,390,760,125"><rect x="980" y="390" width="760" height="125" rx="10" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><text x="1360.0" y="464.05" text-anchor="middle" style="font-size:35px;"><tspan x="1360.0" dy="0em">Protection + isolation</tspan></text></g></g><g data-start="0.6000000000000001" ><g class="text-container" data-box="980,570,760,125"><rect x="980" y="570" width="760" height="125" rx="10" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><text x="1360.0" y="644.05" text-anchor="middle" style="font-size:35px;"><tspan x="1360.0" dy="0em">Conversion + compatibility</tspan></text></g></g><g data-start="0.7000000000000001" ><g class="text-container" data-box="980,750,760,125"><rect x="980" y="750" width="760" height="125" rx="10" fill="#FFFFFF" stroke="#BCC7CF" stroke-width="3" /><text x="1360.0" y="824.05" text-anchor="middle" style="font-size:35px;"><tspan x="1360.0" dy="0em">Service + qualification</tspan></text></g></g><g data-start="0.75" ><text x="960" y="980" text-anchor="middle" class="strong" style="font-size:37px;"><tspan x="960" dy="0em">An unchanged 50 V segment still carries its original current.</tspan></text></g></svg><script>window.TEACHING_CUE_MAP=[[0,0],[0.09,0.10043694467529293],[0.19,0.14865998102601305],[0.4,0.42403014722184934],[0.5,0.4542942596902323],[0.6,0.4672645936052536],[0.7,0.492207543441833],[0.75,0.6618196023305726],[1,1]];
+
+const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+window.renderFraction=function(f){
+ f=clamp(Number(f)||0,0,1); window.currentTeachingFraction=f;
+ const cues=window.TEACHING_CUE_MAP;
+ if(Array.isArray(cues)&&cues.length>1){
+  let j=1;while(j<cues.length-1&&f>cues[j][1])j++;
+  const a=cues[j-1],b=cues[j];
+  f=a[0]+clamp((f-a[1])/(b[1]-a[1]),0,1)*(b[0]-a[0]);
+ }
+ for(const g of document.querySelectorAll('[data-start]')){
+  const a=Number(g.dataset.start), b=g.dataset.end?Number(g.dataset.end):2;
+  const enter=a===0?1:clamp((f-a)/.025,0,1);
+  const leave=b===2?1:1-clamp((f-b)/.025,0,1);
+  g.style.opacity=String(Math.min(enter,leave));
+ }
+ for(const g of document.querySelectorAll('[data-move]')){
+  const [a,b,dx,dy]=g.dataset.move.split(',').map(Number);
+  const t=clamp((f-a)/(b-a),0,1); const e=t*t*(3-2*t);
+  g.setAttribute('transform',`translate(${dx*(1-e)} ${dy*(1-e)})`);
+ }
+ for(const g of document.querySelectorAll('[data-draw]')){
+  const [a,b]=g.dataset.draw.split(',').map(Number); const t=clamp((f-a)/(b-a),0,1);
+  const length=g.getTotalLength(); g.style.strokeDasharray=String(length);g.style.strokeDashoffset=String(length*(1-t));
+ }
+ for(const g of document.querySelectorAll('[data-route]')){
+  const [a,b,c,d,start,mid]=g.dataset.route.split(',').map(Number);
+  const tween=(x)=>{x=clamp(x,0,1);return x*x*(3-2*x)};
+  const dx=f<c?start+(mid-start)*tween((f-a)/(b-a)):mid*(1-tween((f-c)/(d-c)));
+  g.setAttribute('transform',`translate(${dx} 0)`);
+ }
+};
+window.setTeachingTime=function(ms){window.renderFraction(ms/Number(document.body.dataset.durationMs));};
+window.renderAt=function(seconds){window.setTeachingTime(seconds*1000);};
+window.setDuration=function(seconds){document.body.dataset.durationMs=String(seconds*1000);document.body.dataset.posterMs=String(seconds*1000*.92);};
+window.renderFraction(0);
+</script></body></html>

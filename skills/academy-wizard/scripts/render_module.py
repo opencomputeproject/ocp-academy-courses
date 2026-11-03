@@ -937,9 +937,9 @@ def render_module(course: dict, module_index: int) -> str:
             raise ValueError(f"Unknown slide type: {slide['type']}")
         slides_html.append(renderer(slide, course, module))
         audio = slide.get("audio") or {}
-        wav = audio.get("wav_file")
-        if wav and slide.get("narration_enabled", True) and (slide.get("figure") or {}).get("role") != "original_video":
-            audio_map_entries.append(f'    {slide["id"]}: {json.dumps(wav)},')
+        delivery = audio.get("delivery_file") or audio.get("wav_file")
+        if delivery and slide.get("narration_enabled", True) and (slide.get("figure") or {}).get("role") != "original_video":
+            audio_map_entries.append(f'    {slide["id"]}: {json.dumps(delivery)},')
 
     audio_map = "\n".join(audio_map_entries).rstrip(",")
     css = load_styles()
