@@ -46,6 +46,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [Open Data Center for AI](courses/open-data-center-for-ai/README.md) | Evaluate facility compatibility for AI infrastructure through structural loads, movement paths, row geometry, power, cooling, and compatibility with equipment from different suppliers. |
 | [Open Rack: Architecture, Power, Cooling and Deployment](courses/open-rack-architecture-power-cooling-deployment/README.md) | Connect ORv3, high-power racks, and Open Rack Wide to mechanical fit, power, cooling, resilience, serviceability, and deployment validation. |
 | [Open Systems for AI](courses/open-systems-for-ai/README.md) | Connect AI workload requirements to cluster architecture, physical infrastructure, modular IT building blocks, shared interfaces, and systems management. |
+| [Optical Circuit Switching for AI and Hyperscale Data Centers](courses/optical-circuit-switching-for-ai-and-hyperscale-data-centers/README.md) | Explore OCS mechanisms, deployment architectures, emerging AI uses and the open ecosystem behind optical networking. |
 | [Enhanced Telemetry Optics](courses/optics/enhanced-telemetry-optics/README.md) | Use optical metrics, link-health indicators, event logs, remote access, and firmware workflows to diagnose issues in AI fabrics and assess deployment readiness. |
 | [Introduction to Emerging Optical Technologies](courses/optics/introduction-to-emerging-optical-technologies/README.md) | Compare emerging optical approaches for AI infrastructure, including co-packaged optics, blind-mate connectivity, multicore fiber, hollow-core fiber, and quantum applications. |
 | [OCP Project Deschutes](courses/project-deschutes-cdu-specification-v1-0/README.md) | Explore coolant distribution unit architecture, facility and technology cooling loops, performance requirements, controls, serviceability, and deployment considerations. |
@@ -125,6 +126,7 @@ courses/
   open-data-center-for-ai/
   open-rack-architecture-power-cooling-deployment/
   open-systems-for-ai/
+  optical-circuit-switching-for-ai-and-hyperscale-data-centers/
   optics/
     enhanced-telemetry-optics/
     introduction-to-emerging-optical-technologies/

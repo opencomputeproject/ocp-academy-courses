@@ -1,0 +1,201 @@
+WEBVTT
+
+0
+00:00:03.430 --> 00:00:05.690
+As AI models grow more complex,
+
+1
+00:00:06.070 --> 00:00:10.090
+new training architectures like mixture of experts are emerging.
+
+2
+00:00:10.550 --> 00:00:11.310
+In these models,
+
+3
+00:00:11.399 --> 00:00:16.290
+a strategy called expert parallelism is central to distributed training.
+
+4
+00:00:16.750 --> 00:00:20.309
+Expert parallelism requires intense all to all
+
+5
+00:00:20.309 --> 00:00:23.770
+communication across a distributed group of GPUs.
+
+6
+00:00:24.149 --> 00:00:24.670
+In fact,
+
+7
+00:00:24.739 --> 00:00:30.090
+it has the highest communication volume of any major parallelism strategy.
+
+8
+00:00:30.579 --> 00:00:35.250
+The challenge is that the communicating GPUs and their traffic volumes
+
+9
+00:00:35.590 --> 00:00:37.869
+change from iteration to iteration.
+
+10
+00:00:38.150 --> 00:00:42.450
+The exact routing is not known until after the computation phase.
+
+11
+00:00:42.830 --> 00:00:45.549
+This unpredictability makes it very difficult
+
+12
+00:00:45.549 --> 00:00:48.209
+to reconfigure an optical switch in advance
+
+13
+00:00:48.509 --> 00:00:50.950
+without stalling the entire training pipeline.
+
+14
+00:00:51.770 --> 00:00:52.610
+To solve this,
+
+15
+00:00:53.020 --> 00:00:54.990
+researchers developed Mixnet,
+
+16
+00:00:55.259 --> 00:00:58.639
+a hybrid electrical and optical interconnect architecture.
+
+17
+00:00:59.139 --> 00:01:01.939
+Mixnet divides the network into three
+
+18
+00:01:01.939 --> 00:01:05.080
+distinct fabric layers to optimize performance.
+
+19
+00:01:05.660 --> 00:01:06.279
+First,
+
+20
+00:01:06.580 --> 00:01:10.400
+the local scale-up fabric uses electrical switches to connect
+
+21
+00:01:10.400 --> 00:01:13.919
+GPUs within the same server or high bandwidth domain.
+
+22
+00:01:14.500 --> 00:01:14.860
+Second,
+
+23
+00:01:15.010 --> 00:01:18.739
+the cluster-wide scale-out fabric uses traditional packet
+
+24
+00:01:18.739 --> 00:01:20.900
+switching to connect servers across the cluster.
+
+25
+00:01:21.550 --> 00:01:22.110
+Finally,
+
+26
+00:01:22.309 --> 00:01:25.569
+Mixnet introduces the regional OCS fabric.
+
+27
+00:01:25.949 --> 00:01:29.430
+This optical layer is entirely dedicated to handling
+
+28
+00:01:29.430 --> 00:01:33.349
+the massive dynamic communication patterns of expert parallelism.
+
+29
+00:01:34.699 --> 00:01:39.389
+But how does the system know when to reconfigure the optical switches?
+
+30
+00:01:39.870 --> 00:01:42.489
+Mixnet relies on two key insights.
+
+31
+00:01:42.910 --> 00:01:43.339
+First,
+
+32
+00:01:43.470 --> 00:01:46.980
+expert parallelism communication is highly localized.
+
+33
+00:01:47.470 --> 00:01:48.050
+Usually,
+
+34
+00:01:48.069 --> 00:01:53.930
+only a small group of 8 to 32 GPUs participate in an all to all communication phase.
+
+35
+00:01:54.709 --> 00:01:55.150
+Second,
+
+36
+00:01:55.309 --> 00:01:59.250
+these traffic patterns only change gradually between iterations.
+
+37
+00:01:59.779 --> 00:02:02.800
+Because consecutive iterations are so similar,
+
+38
+00:02:03.169 --> 00:02:08.639
+MixNet can accurately predict the next traffic pattern based on the previous one.
+
+39
+00:02:09.179 --> 00:02:12.869
+This predictability unlocks a massive performance gain.
+
+40
+00:02:13.220 --> 00:02:17.059
+MixNet dynamically reconfigures the optical circuit switches
+
+41
+00:02:17.059 --> 00:02:19.919
+during the computation portion of an iteration.
+
+42
+00:02:20.339 --> 00:02:24.460
+By the time the GPUs finish their calculations and are ready to talk,
+
+43
+00:02:24.740 --> 00:02:27.440
+the optical links are already set in place.
+
+44
+00:02:27.740 --> 00:02:28.660
+There is no waiting.
+
+45
+00:02:30.009 --> 00:02:32.929
+This hybrid approach perfectly aligns physical
+
+46
+00:02:32.929 --> 00:02:35.809
+interconnect resources with workload demands.
+
+47
+00:02:36.169 --> 00:02:37.289
+In simulations,
+
+48
+00:02:37.539 --> 00:02:40.929
+Nixnet reduced training time for large models by
+
+49
+00:02:40.929 --> 00:02:44.589
+1.6 times compared to a static packet network.

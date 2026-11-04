@@ -1,0 +1,66 @@
+[
+  {
+    "page": 1,
+    "text": "NETWORKING\nIwan Kartawira Network Specialist at iPronics (presenter)\nKazuaki Ueda Standardization Specialist at KDDI Corporation (presenter)\nKazuya Anazawa Researcher at NTT Inc.\nOptically-Accelerated AI Clusters Enabled \nby Interoperable Multi-Vendor OCSs: \nUse Cases and Opportunities\n"
+  },
+  {
+    "page": 2,
+    "text": "2\n1. Background & Challenges: Scaling AI Clusters\n2. The Solution: Emerging optics technology and its application to AI Clusters\n3. Optically-accelerated AI clusters (OAI) Architecture\n4. Emerging Use Cases of OAI\n1. SDN-based Failure Recovery\n2. Workload optimization\n5. Key Technical Challenges & Gaps\n6. Ongoing Initiatives\n1. Bridging the Gaps at OCP OCS Subproject\n2. Multi-vendor Interoperability Demo at OFC2027 (OCP & IOWN Global Forum)\n7. Call to Action\nTable of Contents\n\u203bA part of this presentation is based on results obtained from the project, \u201cResearch and Development Project of the Enhanced Infrastructures for Post-5G Information and Communication \nSystems\u201d (JPNP20017), subsidized by the New Energy and Industrial Technology Development Organization (NEDO)."
+  },
+  {
+    "page": 3,
+    "text": "3\nBackground & Challenges: Scaling AI Clusters\nExploding AI model sizes expose the critical limitations of traditional electrical interconnects\nXPU XPUXPU\nScale-up Domain #1\nElectrical Interconnects\nXPU XPUXPU\nScale-up Domain #M\nElectrical Interconnects\nEPS EPS\nEPS EPS\nScale-out Network\nChallenge 1 - The Bandwidth & Power Wall\nChallenge 2 - Resiliency Bottlenecks\nChallenge 3 - Vendor Lock-in\nProprietary scale-up systems \nLack of flexibility and drive up both CapEx and OpEx\nScale-up (Reach Limit)\nScale-out (Power/Density Limit)\nMean Time Between Failures (MTBF) drops \ndramatically as cluster scale grows.\n(In 131,072 GPU cluster, the MTBF = 15 minutes) \nReach limit\n1\n2\n3\n1\n2\n2\n3\n1\n"
+  },
+  {
+    "page": 4,
+    "text": "4\nPromising technologies: CPO / OCS\nCo-Packaged Optics (CPO) Optical Circuit Switch (OCS)\n\u2022 Longer reach\n\u2022 Increased radix with high port density\n\u2022 Reduced energy consumption\n\u2022 Ultra-low power consumption\n\u2022 L1 switching: Protocol- and rate-agnostic\n\u2022 Reconfigurable physical connectivity with SDN\nSDN-\nController\nCurrent implementation vs CPO EPS vs OCS"
+  },
+  {
+    "page": 5,
+    "text": "5\nThe Solution: Optically-accelerated AI clusters (OAI)\nThe Bandwidth & \nPower Wall\nResiliency\nVendor lock-in\nCurrent challenges Optically-accelerated AI cluster\nCPO\nOCS\nSDN + OCS\n\u2022 Longer reach\n\u2022 Increased radix with high port density\n\u2022 Reduced energy consumption\n\u2022 Ultra-low power consumption\n\u2022 Protocol- and rate-agnostic switching\n\u2022 Internal OCS software detecting failure and \ndecision making to switch\n\u2022 Dynamic resource pooling and instant \nfailure recovery with SDN-based \nreconfiguration\n\u2022 Multi-vendor interoperability with unified \ncontrol plane\nDesign the future AI cluster architecture with CPO + OCS + SDN\n1\n2\n3\n1\n1\n2\n2\n3"
+  },
+  {
+    "page": 6,
+    "text": "6\nOCS Layer\nOCS Layer\nOCS Layer\nThe Hybrid Foundation\nBy decoupling fine-grained logical routing (handled by Electrical \nPacket Switches) from coarse-grained physical layer connections \n(handled by OCS), unlocking unprecedented flexibility.\nThe Architecture of OAI\nEPS EPS\nEPS EPS\nXPU \n(CPO)\nSpine EPS\nLeaf EPS\nXPU Nodes XPU\n(CPO)\nEPS EPSScale-up EPS\nOCS\nOCS OCS\nOCS\nSDN-\nController\nDynamic Topology Reconfiguration via Programmable \nPhysical Wiring\nBy coupling the OCS layer with an SDN Controller, the static physical \nconnections become entirely programmable. This unlocks: \n\u2022 On-demand protection (Automated failure bypass)\n\u2022 Workload optimization (traffic-aware topology tuning)\nOCS OCS\nKey idea\nPlacement-Agnostic Flexibility\nThe core innovation functions regardless of where the OCS is \ndeployed within the architecture. OCS can be installed with the Leaf, \nSpine, and Scale-up.\n"
+  },
+  {
+    "page": 7,
+    "text": "7\nVersatile OCS Integration in the OAI Architecture\nScale-up (SU) domain #1\nOCS layer\nScale-Up\nInterconnect\nxPU xPUxPU\n(CPO)\nxPU\n(CPO)\nxPU\n(CPO)\nOCS layer\nScale-Out\nInterconnect\nSU domain #N\nxPU\n(CPO)\nOCS layer\nEPS\n(CPO)\nEPS\n(CPO)\nxPU\n(CPO)\nEPS\n(CPO)\nLeaf EPS\n(CPO)\nOCS layer\nSpine EPS\n(CPO)\nSpine EPS\n(CPO)\nSpare Spine \nEPS\nSpare Leaf \nEPS\nSpare\nSwitch\nSPINE \nEPS\nLeaf EPS\n(CPO)\nLeaf EPS\n(CPO)\nSpine EPS\n(CPO)\nLEAF\nEPS\nScale-up\nEPS\nUnlocking multiple network capabilities by strategically deploying OCS layers \nalongside CPO-based electrical packet switches.\nSDN-\nController\n1. On-demand protection\n2. Workload optimization\nDynamic topology reconfiguration\nEPS\n(CPO)"
+  },
+  {
+    "page": 8,
+    "text": "8\nUse Case 1: SDN-based Failure Recovery\n\u201cFrom 1:1 Protection to Global Spare Pooling\u201d\nXPUXPU XPU\nEPS\n(Rail-1)\nScale-Out\nScale-Up\nEPSEPSEPS\nEPS\n(Rail-2)\nEPS\n(Rail-3)\nXPUXPU XPU\nEPSEPSEPS\n2\nOCS layer\nOCS layer\nXPUXPU XPU\nSDN \nController\nMinimize the cluster downtime with dynamic reconfigurationat intermediate OCS layer\nMaximizing cluster reliability while minimizing CAPEX through globally sharable spare resources pool\nEPS\n(spare @Scale -out)1\nExample of failure: (1) @Leaf site (2) @XPU site\nDynamic reconfiguration\n1\nSpare resource pool\n2\nKey innovations\nOriginal approach = 1:1 protection \nSpare pooling = 1:N protection\nSDN controller can dynamically \nreroute optical paths around failed \nnodes to resume AI jobs\n1\n2 Spare pool"
+  },
+  {
+    "page": 9,
+    "text": "9\nScale-up (SU) domain #2Scale-up (SU) domain #1\nUse Case 2: Optimizing AI workload with EPS & OCS-\nbased direct connection\nxPU\n(CPO)\nxPU\n(CPO)\nxPU\n(CPO)\nEPS\n(CPO)\nEPS\n(CPO)\nSPINE \nEPS\nEPS\n(CPO)\nEPS\n(CPO)\nEPS\n(CPO)\nLEAF\nEPS\nReconfiguring physical connections on-demand to perfectly match specific AI workload \ncommunication patterns\nxPU\n(CPO)\nxPU\n(CPO)\nxPU\n(CPO)\ndomain #N\nxPU\n(CPO)\nxPU\n(CPO)\nEPS\n(CPO)\nOCS layer\nOCS layer\nProviding direct connectivity through OCS\n2\n1\n\u2022 AI job leverages specific collective communication, \nsuch as All-Reduce and All-to-All\n\u2022 The SDN + OCS dynamically reconfigures optical \nconnections to precisely match specific AI \nworkload communication patterns\n\u2022 Such topology adaptation minimizes latency and \nmaximizes throughput, significantly enhancing \noverall performance\nCoexistence of EPS & OCS communication2\nBypassing spine EPS\nKey innovations\n1\nBypassing leaf EPS\n3\n(3) requires tight collaboration with AI job orchestrator\n3"
+  },
+  {
+    "page": 10,
+    "text": "10\nKey Technical Challenges & Gaps\nSDN-based Failure Recovery\nOptimizing AI workload\n\u2022 Challenge: requires novel AI-OCS orchestration layer above the Unified Control Plane, built \nupon real-time AI traffic visibilityand hardware-software co-design\n\u2022 Current Gaps\n\u2022 AI traffic visibility: vital visibility into job phases and traffic patterns is lacking in standard deployments \n\u2022 HW/SW co-design for the optical switching gap: Optical reconfiguration introduces temporary physical \ndisconnections which may disrupts RoCEv2 traffic. We need tight integration with collective communication \nlibraries (e.g., NCCL) and SDN controller.\n\u2022 Challenge: Relies on an Unified Control Plane and real-time telemetry / health monitoring \ncapabilities.\n\u2022 Current Gaps: standardized control plane for OCSs"
+  },
+  {
+    "page": 11,
+    "text": "11\nOCP-IOWN Global Forum Interop Demo\n\uf071 Benefits of Generic OCP-OCS YANG Model\n\uf0d8 Open interface for Multi-Vendor Access Interoperability (Avoid Vendor Lock-In)\n\uf0d8 Much simpler SDN controller with direct access to any OCS Vendor without any SBI Translator (Converter for \nany specific Vendor\u2019s YANG model) \nGeneric OCP -OCS YANG Data store\nOCS #1\n(Vendor A)\nOCS #2\n(Vendor B)\nOCS #n\n(Vendor X)\nVendor\u2019s APIs\ngNMI Server\ngNMI Client\nMulti-Vendor SDN Controller with SBI Translator Multi-Vendor SDN Controller without SBI Translator\nAnazawa, Kazuya, et al. \"Experimental evaluation of an SDN controller for open optical-circuit-switched networks.\" Journal of Optical Communications and Networking 17.6 (2025): 498-513.\n"
+  },
+  {
+    "page": 12,
+    "text": "12\nOverview of demonstration\nPacket SW #1\n(Ex: 51.2T / TH5)\nxPU #1 xPU #2 xPU #3 xPU #4 xPU #5 xPU #6 xPU #7 xPU #8\nPacket SW #2\n(Ex: 51.2T / TH5)\nOCS\n(Vendor A)\nOCS\n(Vendor B)\nOCS\n(Vendor C)\nOCS\n(Vendor F)\nOCS\n(Vendor D)\nOCS\n(Vendor E)\nOCS\n(Vendor H)\nOCS\n(Vendor G)\ngNMI/YANG gNMI/YANG gNMI/YANG gNMI/YANG gNMI/YANG gNMI/YANG gNMI/YANG gNMI/YANG\nSDN Controller\nSpare xPUsActive xPUs\nRank 1 Rank 2 Rank 1 Rank 2 Rank 1 Rank 2\nSpare\nports\nSpare\nports\nOCS layer with Multi-vendor OCSs\nxPU layer with globally sharable\nspare resources\nPacket switching layer \nwith spare resources\nSDN controller with unified control \nplane\nThe First Demonstration of Failure Recovery in OAI with Interoperable Multi-Vendor OCSs\n1. Live demonstration of interoperable multi-vendor OCS environments via OCP standard YANG model\n2. Showcasing unified control plane capabilities in action through SDN controller provided by NTT\n3. Validating feasibility of failure recovery with spare resource pool use-case discussed in IOWN-GF & OCP\nApplicable for both Scale-up and Scale-out network"
+  },
+  {
+    "page": 13,
+    "text": "13\nOCP-OCS Subproject - Activities\n\uf071 Bi-Weekly Meeting on every other Wednesday\n(9-10AM PST)\n\uf0d8 Goal: Inform public about on going OCP-OCS Sub-\nGroup working activities\n\uf0d8 Participants: OCS Vendors, Hyperscaler, Chip \nVendors, Academia, etc..\n\uf0d8 Providing status update of three sub-group working \ncommittees  \n\uf0a7 OCS SW steering working committee\n\uf0a7 OCS White Paper working committee\n\uf0a7 OCP-IOWN Global Forum Collaboration working Committee\n\uf071 OCS SW Steering Working Committee\n\uf0d8 Goal: Standardized Open OCS \n\uf0d8 Participants: OCS Vendors and Hyperscaler \n\uf0d8 OCP-OCS Standard formation\n\uf0a7 OCP-OCS YANG Model R1.0 (Released)\n\uf0a7 OCP-OCS YANG Model R2.0 (Future Work)\n\uf0a7 Open-Source Centralize SDN Controller (Future Work)\n\uf071 OCS White Paper Working Committee\n\uf0d8 Goal: Help educate public about OCS technologies, benefits and \nits high-level use cases based on available published papers\n\uf0d8 Participants: OCS Vendors, Optical System Vendor, enabling \ntechnology supplier vendor and Academia\n\uf0d8 List of white paper topics:\n\uf0a7 Introduction to OCS Technologies & Benefits (Published and summarized in \nOCP Online Training Academy)\n\uf0a7 Fast switching OCS, Technology and use cases (Being presented at this OCP \nGlobal Summit 2026)\n\uf0a7 OCS Operations and Management (Future discussion)\n\uf071 OCP-IOWN Global Forum Collaboration Working Committee\n\uf0d8 Goal: Demonstrate OCP-OCS vision toward open OCS standard \nwith Open HW and SW capability. \n\uf0d8 Participants: OCS Vendors and Data Center Research Operator\n\uf0d8 OFC-2027 Demo \n\uf0a7 Showcase multi-vendor interop proof of concept (poc) using OCP-OCS Standard \nYANG being managed by centralize SDN controller without any custom vendor \nYANG translator for HW resiliency application. \n"
+  },
+  {
+    "page": 14,
+    "text": "\u2022 Join our OFC Demo!\n\u2022 Experience interoperable multi-vendor OCSs in action and see the real-world capabilities\n\u2022 Participate in Discussions at OCS subproject!\n\u2022 Engage in ongoing OCP and IOWN-GF use case discussions to shape the future of optical AI \ninterconnects\n\u2022 Further idea about future PoC or use-cases\n\u2022 Contribute your software! \n\u2022 Ongoing demo uses proprietary controller \u2192 Need for Open-Source OCS SDN Controller\n\u2022 Future topic: Integration with AI orchestrator and OCS SDN controller\nCall to Action\n\u2022 OCP OCS Subproject: https://www.opencompute.org/community/optical-circuit-switching\n\u2022 Mailing List: https://ocp-all.groups.io/g/ocp-optical-circuit-switching"
+  },
+  {
+    "page": 15,
+    "text": ""
+  },
+  {
+    "page": 16,
+    "text": "16\nAppendix: scaling challenges\nChallenge 1 - The Bandwidth & Power Wall Challenge 2 - Resiliency Bottlenecks\nMTBF vs. # of GPUs\nElectrical lanes  \n>200Gbps/ch\nOptical Pluggable TRx \n>200Gbps/ch\nDistance < 1.5m > 10m\nXPUs < 100 > 1,000\nEnergy Efficiency ~2 pJ/bit (DAC)\n2~5 pJ/bit (ACC, AEC)\n10~15 pJ/bit\nYear Switching Capacity Typical Power (per ASIC)\n2018 12.8 Tbps 350\u2013400 W\n2020 25.6 Tbps 450\u2013500 W\n2022 51.2 Tbps 700\u2013800 W\n2024 102.4 Tbps 900\u20131000 W\nElectrical Interconnect Scaling Limits\nEPS Power Scaling Toward 1 kW"
+  }
+]
