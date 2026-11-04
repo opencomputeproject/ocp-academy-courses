@@ -1,0 +1,197 @@
+[
+  {
+    "module": 1,
+    "id": "m1_dedicated_circuit",
+    "title": "A dedicated circuit has a specific job",
+    "video": "figures/m1_dedicated_circuit.mp4",
+    "poster": "figures/m1_dedicated_circuit_poster.png",
+    "animation_source": "animations/m1_dedicated_circuit.html",
+    "provisional_duration_seconds": 80,
+    "caption": "A circuit directs light between selected ports; traffic scheduling and packet services belong elsewhere in the system.",
+    "alt": "Four endpoints share an optical switch; a second connection request reveals the difference between circuit connectivity and packet services.",
+    "narration": "Start with four endpoints and one optical circuit switch. The controller selects a connection from endpoint A to endpoint B. Inside the switch, the optical signal follows that established path. The switch does not need to read each packet to decide where the signal goes. The electrical endpoints still generate and receive traffic. Packet inspection, buffering, and quality of service can exist in those surrounding systems. They are not functions supplied by the transparent optical path itself. Now endpoint C also needs to communicate with B. The optical switch does not magically combine two independent demands onto the same dedicated connection. The broader system must decide how to allocate its available connectivity and when to change it. This gives us two distinct activities: selecting a circuit, then transferring data through it. Bufferless operation removes packet queuing inside the optical switch. It does not promise that an entire network is free of contention. Keep that boundary in mind whenever you evaluate an OCS benefit.",
+    "scenes": [
+      {
+        "label": "Establish the path",
+        "text": "Start with four endpoints and one optical circuit switch. The controller selects a connection from endpoint A to endpoint B. Inside the switch, the optical signal follows that established path. The switch does not need to read each packet to decide where the signal goes.",
+        "start_fraction": 0.0,
+        "end_fraction": 0.25
+      },
+      {
+        "label": "Locate packet services",
+        "text": "The electrical endpoints still generate and receive traffic. Packet inspection, buffering, and quality of service can exist in those surrounding systems. They are not functions supplied by the transparent optical path itself.",
+        "start_fraction": 0.25,
+        "end_fraction": 0.5
+      },
+      {
+        "label": "Introduce competing demand",
+        "text": "Now endpoint C also needs to communicate with B. The optical switch does not magically combine two independent demands onto the same dedicated connection. The broader system must decide how to allocate its available connectivity and when to change it.",
+        "start_fraction": 0.5,
+        "end_fraction": 0.75
+      },
+      {
+        "label": "Separate setup from transfer",
+        "text": "This gives us two distinct activities: selecting a circuit, then transferring data through it. Bufferless operation removes packet queuing inside the optical switch. It does not promise that an entire network is free of contention. Keep that boundary in mind whenever you evaluate an OCS benefit.",
+        "start_fraction": 0.75,
+        "end_fraction": 1.0
+      }
+    ],
+    "status": "Final narration used by root; MP3 durations and forced-aligned scene cues recorded in timing-manifest.json"
+  },
+  {
+    "module": 2,
+    "id": "m2_switching_window",
+    "title": "Choose for the available switching window",
+    "video": "figures/m2_switching_window.mp4",
+    "poster": "figures/m2_switching_window_poster.png",
+    "animation_source": "animations/m2_switching_window.html",
+    "provisional_duration_seconds": 90,
+    "caption": "A useful technology choice balances reconfiguration time, useful transfer time, radix, optical loss and power.",
+    "alt": "Two workload timelines contrast a long stable communication phase with frequent reconfiguration, alongside four selection constraints.",
+    "narration": "A switching time becomes meaningful only when we compare it with the workload. Consider a cluster whose connections stay useful for a long communication phase. A relatively slow reconfiguration may be acceptable when the system can establish the circuits before that phase begins. Now consider a different workload that needs new connections much more frequently. If reconfiguration consumes most of the available interval, the useful transfer window shrinks. The same switching mechanism can therefore be a good fit for one workload and a poor fit for another. Robotic patching, mirror steering, polarization control, material deformation, on-chip routing, and phase steering provide different design options. Their actual timing depends on the implementation. Even within silicon photonics, electro-optic and thermo-optic actuation have different speed and power characteristics. Do not stop at the fastest number. Check the required port count, the end-to-end optical loss budget, the power used to change and maintain a state, and the maturity of the design. The best physical fit is the one that satisfies these constraints within the workload’s available switching window.",
+    "scenes": [
+      {
+        "label": "Long stable phase",
+        "text": "A switching time becomes meaningful only when we compare it with the workload. Consider a cluster whose connections stay useful for a long communication phase. A relatively slow reconfiguration may be acceptable when the system can establish the circuits before that phase begins.",
+        "start_fraction": 0.0,
+        "end_fraction": 0.25
+      },
+      {
+        "label": "Frequent change",
+        "text": "Now consider a different workload that needs new connections much more frequently. If reconfiguration consumes most of the available interval, the useful transfer window shrinks. The same switching mechanism can therefore be a good fit for one workload and a poor fit for another.",
+        "start_fraction": 0.25,
+        "end_fraction": 0.5
+      },
+      {
+        "label": "Select the mechanism",
+        "text": "Robotic patching, mirror steering, polarization control, material deformation, on-chip routing, and phase steering provide different design options. Their actual timing depends on the implementation. Even within silicon photonics, electro-optic and thermo-optic actuation have different speed and power characteristics.",
+        "start_fraction": 0.5,
+        "end_fraction": 0.75
+      },
+      {
+        "label": "Balance constraints",
+        "text": "Do not stop at the fastest number. Check the required port count, the end-to-end optical loss budget, the power used to change and maintain a state, and the maturity of the design. The best physical fit is the one that satisfies these constraints within the workload’s available switching window.",
+        "start_fraction": 0.75,
+        "end_fraction": 1.0
+      }
+    ],
+    "status": "Final narration used by root; MP3 durations and forced-aligned scene cues recorded in timing-manifest.json"
+  },
+  {
+    "module": 3,
+    "id": "m3_interconnect_transition",
+    "title": "Change the interconnect layer",
+    "video": "figures/m3_interconnect_transition.mp4",
+    "poster": "figures/m3_interconnect_transition_poster.png",
+    "animation_source": "animations/m3_interconnect_transition.html",
+    "provisional_duration_seconds": 85,
+    "caption": "Replacing an electrical interconnect stage changes where switching happens; endpoint and optical-budget constraints remain.",
+    "alt": "A schematic fabric transitions from an electrical interconnect stage to optical circuits while keeping electrical endpoints visible.",
+    "narration": "Begin with this simplified fabric. Electrical packet switches connect groups of endpoints through an electrical interconnect stage. Following one optical link through that stage requires optical-to-electrical conversion, packet processing, and conversion back to light. Now identify the layer that an optical circuit switching architecture changes. We replace the selected interconnect stage with a fabric of configurable optical paths. This is an architectural example, not a port-for-port drawing of a particular production network. The surrounding electrical switches remain important. They still handle packet functions while the optical fabric provides selected connectivity between them. A controller can revise those connections as the deployment requires. This does not mean that every endpoint has a permanently dedicated path to every other endpoint. Finally, consider an endpoint speed upgrade. The optical switching path does not interpret the bit rate, so it can avoid the electronic switching limits of the replaced stage. Engineers must still verify transceiver compatibility, optical bandwidth, insertion loss, and the complete link budget. Rate transparency is a valuable property, not a waiver of system engineering.",
+    "scenes": [
+      {
+        "label": "Read the starting fabric",
+        "text": "Begin with this simplified fabric. Electrical packet switches connect groups of endpoints through an electrical interconnect stage. Following one optical link through that stage requires optical-to-electrical conversion, packet processing, and conversion back to light.",
+        "start_fraction": 0.0,
+        "end_fraction": 0.25
+      },
+      {
+        "label": "Identify the changed layer",
+        "text": "Now identify the layer that an optical circuit switching architecture changes. We replace the selected interconnect stage with a fabric of configurable optical paths. This is an architectural example, not a port-for-port drawing of a particular production network.",
+        "start_fraction": 0.25,
+        "end_fraction": 0.5
+      },
+      {
+        "label": "Retain endpoint functions",
+        "text": "The surrounding electrical switches remain important. They still handle packet functions while the optical fabric provides selected connectivity between them. A controller can revise those connections as the deployment requires. This does not mean that every endpoint has a permanently dedicated path to every other endpoint.",
+        "start_fraction": 0.5,
+        "end_fraction": 0.75
+      },
+      {
+        "label": "Consider an upgrade",
+        "text": "Finally, consider an endpoint speed upgrade. The optical switching path does not interpret the bit rate, so it can avoid the electronic switching limits of the replaced stage. Engineers must still verify transceiver compatibility, optical bandwidth, insertion loss, and the complete link budget. Rate transparency is a valuable property, not a waiver of system engineering.",
+        "start_fraction": 0.75,
+        "end_fraction": 1.0
+      }
+    ],
+    "status": "Final narration used by root; MP3 durations and forced-aligned scene cues recorded in timing-manifest.json"
+  },
+  {
+    "module": 4,
+    "id": "m4_traffic_aware_allocation",
+    "title": "Allocate connectivity to changing demand",
+    "video": "figures/m4_traffic_aware_allocation.mp4",
+    "poster": "figures/m4_traffic_aware_allocation_poster.png",
+    "animation_source": "animations/m4_traffic_aware_allocation.html",
+    "provisional_duration_seconds": 95,
+    "caption": "Traffic-aware allocation changes which available optical connections serve the workload; it does not create unlimited physical connectivity.",
+    "alt": "Two illustrative training iterations show traffic demand, a control decision, and a revised allocation on a fixed conceptual optical topology.",
+    "narration": "ACTINA and OCS-BCube explore how optical connectivity can adapt to training workloads. Keep three things separate as you read this conceptual illustration: the physical connections that are available, the traffic that the workload needs to send, and the control decisions that allocate optical capacity. This is a research architecture, not a claim of a deployed production system. During one iteration, some communicating groups need more bandwidth than others. A traffic-aware controller uses that demand to choose an allocation supported by the architecture. In the source concept, wavelength-reconfigurable transceivers are part of the mechanism that changes this allocation. At the next iteration boundary, the demand changes. The controller revises the wavelength assignments and connectivity allocation. The physical topology still constrains which paths are possible; changing a wavelength does not create an arbitrary new fiber connection. The following communication phase uses the revised allocation. The teaching point is the relationship between demand, control, and available optical paths. Performance depends on prediction, reconfiguration overhead, the transceiver design, and the workload. Research results must retain their evaluation conditions rather than become universal production promises.",
+    "scenes": [
+      {
+        "label": "Distinguish three layers",
+        "text": "ACTINA and OCS-BCube explore how optical connectivity can adapt to training workloads. Keep three things separate as you read this conceptual illustration: the physical connections that are available, the traffic that the workload needs to send, and the control decisions that allocate optical capacity. This is a research architecture, not a claim of a deployed production system.",
+        "start_fraction": 0.0,
+        "end_fraction": 0.25
+      },
+      {
+        "label": "Observe the current demand",
+        "text": "During one iteration, some communicating groups need more bandwidth than others. A traffic-aware controller uses that demand to choose an allocation supported by the architecture. In the source concept, wavelength-reconfigurable transceivers are part of the mechanism that changes this allocation.",
+        "start_fraction": 0.25,
+        "end_fraction": 0.5
+      },
+      {
+        "label": "Reconfigure at the boundary",
+        "text": "At the next iteration boundary, the demand changes. The controller revises the wavelength assignments and connectivity allocation. The physical topology still constrains which paths are possible; changing a wavelength does not create an arbitrary new fiber connection.",
+        "start_fraction": 0.5,
+        "end_fraction": 0.75
+      },
+      {
+        "label": "Use the revised allocation",
+        "text": "The following communication phase uses the revised allocation. The teaching point is the relationship between demand, control, and available optical paths. Performance depends on prediction, reconfiguration overhead, the transceiver design, and the workload. Research results must retain their evaluation conditions rather than become universal production promises.",
+        "start_fraction": 0.75,
+        "end_fraction": 1.0
+      }
+    ],
+    "status": "Final narration used by root; MP3 durations and forced-aligned scene cues recorded in timing-manifest.json"
+  },
+  {
+    "module": 5,
+    "id": "m5_ecosystem_handoffs",
+    "title": "Make the handoffs interoperable",
+    "video": "figures/m5_ecosystem_handoffs.mp4",
+    "poster": "figures/m5_ecosystem_handoffs_poster.png",
+    "animation_source": "animations/m5_ecosystem_handoffs.html",
+    "provisional_duration_seconds": 75,
+    "caption": "Open specifications and shared control models connect optical components, integrated systems and operational requirements.",
+    "alt": "A supplier, integrator, operator and standards community exchange capability, connection-state and validation information.",
+    "narration": "An optical component becomes useful in a deployed system only when the surrounding ecosystem can understand and control it. Start with a technology supplier. The supplier describes the supported ports, optical behavior, and operating limits of the device. A systems integrator connects those capabilities to orchestration software. The software needs an unambiguous way to describe a requested circuit and to interpret the state that the device reports. Shared data models help both sides attach the same meaning to that information. An operator requests a connection and checks that the resulting physical state matches the intended service. Hardware capability, software control, and operational evidence must all agree. A working optical component alone does not establish interoperability across an entire system. Open specifications, reference architectures, and validation work make these handoffs easier to repeat across organizations. Experience from suppliers, integrators, operators, and researchers can then inform the next revision. This is an illustrative workflow, not a particular published OCP interface. The practical opportunity is to contribute clear requirements and evidence at the handoff your team understands best.",
+    "scenes": [
+      {
+        "label": "Expose capabilities",
+        "text": "An optical component becomes useful in a deployed system only when the surrounding ecosystem can understand and control it. Start with a technology supplier. The supplier describes the supported ports, optical behavior, and operating limits of the device.",
+        "start_fraction": 0.0,
+        "end_fraction": 0.25
+      },
+      {
+        "label": "Integrate control",
+        "text": "A systems integrator connects those capabilities to orchestration software. The software needs an unambiguous way to describe a requested circuit and to interpret the state that the device reports. Shared data models help both sides attach the same meaning to that information.",
+        "start_fraction": 0.25,
+        "end_fraction": 0.5
+      },
+      {
+        "label": "Operate and verify",
+        "text": "An operator requests a connection and checks that the resulting physical state matches the intended service. Hardware capability, software control, and operational evidence must all agree. A working optical component alone does not establish interoperability across an entire system.",
+        "start_fraction": 0.5,
+        "end_fraction": 0.75
+      },
+      {
+        "label": "Improve the shared contract",
+        "text": "Open specifications, reference architectures, and validation work make these handoffs easier to repeat across organizations. Experience from suppliers, integrators, operators, and researchers can then inform the next revision. This is an illustrative workflow, not a particular published OCP interface. The practical opportunity is to contribute clear requirements and evidence at the handoff your team understands best.",
+        "start_fraction": 0.75,
+        "end_fraction": 1.0
+      }
+    ],
+    "status": "Final narration used by root; MP3 durations and forced-aligned scene cues recorded in timing-manifest.json"
+  }
+]

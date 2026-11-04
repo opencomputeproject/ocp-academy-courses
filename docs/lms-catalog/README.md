@@ -47,6 +47,7 @@ every course so all three fields are available when preparing a catalog entry.
 | Open Data Center for AI: Applying Specification 0.7 | [Catalog fields](../../courses/open-data-center-for-ai/lms-catalog.md) | 99 characters | 45 |
 | Open Rack: Architecture, Power, Cooling and Deployment | [Catalog fields](../../courses/open-rack-architecture-power-cooling-deployment/lms-catalog.md) | 116 characters | 145 |
 | Open Systems for AI | [Catalog fields](../../courses/open-systems-for-ai/lms-catalog.md) | 105 characters | 99 |
+| Optical Circuit Switching for AI and Hyperscale Data Centers | [Catalog fields](../../courses/optical-circuit-switching-for-ai-and-hyperscale-data-centers/lms-catalog.md) | 116 characters | 75 |
 | Short-Reach Optical Interconnects for AI Scale-Up Fabrics | [Catalog fields](../../courses/short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/lms-catalog.md) | 129 characters | 53 |
 | SUE-T: Ethernet Transport for XPU Scale-Up Systems | [Catalog fields](../../courses/sue-t-ethernet-transport-for-xpu-scale-up-systems/lms-catalog.md) | 91 characters | 75 |
 | Thermal Boundaries in AI Infrastructure | [Catalog fields](../../courses/thermal-boundaries-in-ai-infrastructure/lms-catalog.md) | 98 characters | 54 |

@@ -1,0 +1,66 @@
+[
+  {
+    "page": 1,
+    "text": "NETWORKING\nRichard Yu Staff Software Engineer - Google\nBrian O\u2019Connor Staff Software Engineer - Google\nDeveloped in collaboration with the OCP OCS Working Group\nStandardizing OCS Interfaces for \nSeamless Integration\n"
+  },
+  {
+    "page": 2,
+    "text": "Optical Circuit Switching (OCS)\nWhat is an OCS?\nOptical switch that provides configurable pure optical paths between optical input and output ports.\nMultiple technologies available: Robotic, Beam Steering, Silicon Photonic\nWhy use OCS?\nTraffic-agnostic\n\u25cf Compatible with current and future link speeds\n\u25cf Compatible with any current and future protocols\n\u25cf No Optical-Electrical-Optical Conversions\n\u25cb No choke points, queues, or buffers to overflow \n\u25cb Security: No traffic snooping\nLow latency\n\u25cf Speed of light vs. ASIC switching latency\nCost-effective\n\u25cf No transceivers\n\u25cf Lower power consumption (less than 5% compared to traditional electric packet switches)\nFiber\nFiber Fiber\nFiber"
+  },
+  {
+    "page": 3,
+    "text": "Building Common Interfaces\nNetwork Device\nForwarding \nControl\nConfiguration\nMonitoring\nMaintenance\nSecurity \nManagement\nInstallation"
+  },
+  {
+    "page": 4,
+    "text": "Building Common Interfaces\nOCS\nForwarding \nControl\nConfiguration\nMonitoring\nMaintenance\nSecurity \nManagement\nInstallation\nModified for OCS Reused As-Is"
+  },
+  {
+    "page": 5,
+    "text": "Building Common Interfaces\nForwarding \nControl\nConfiguration\nMonitoring\nOpenConfig YANG Model\ncomponents/\ncomponent/\nstate/\noper-status\nempty\ninterfaces/\ninterface/\nstate/\nqos/\nstate/\nsystem/\nstate/\nOCS"
+  },
+  {
+    "page": 6,
+    "text": "Why OpenConfig YANG? OpenConfig YANG Model\ncomponents/\ncomponent/\nstate/\noper-status\nempty\ninterfaces/\ninterface/\nstate/\nqos/\nstate/\nsystem/\nstate/\n\u25cf Leverage existing support for non-OCS-\nspecific telemetry and configuration\n\u25cf Easier onboarding for operators\n\u25cf Existing tools and support for vendors\n\u25cf Established rules and guidelines\n\u25cf Supports configuration and  streaming \ntelemetry"
+  },
+  {
+    "page": 7,
+    "text": "Execution: gNMI gNMI Operations\ncomponents/\ncomponent[<name>]/\nconfig/\nadmin-state\nstate/\nadmin-state\noper-status\ngRPC Network Management Interface\n\u25cf Model-driven API that natively supports YANG-\nmodeled schemas.\n\u25cf Efficient RPC Operations: Get, Set, Subscribe\n\u25cf Combines config and monitoring (state) into \none API\nSet\nGet\nSubscribe"
+  },
+  {
+    "page": 8,
+    "text": "Forwarding Control\n\u2022 Establish port-port connections\nConfiguration\n\u2022 Configure connection restoration behavior\n\u2022 Discover device capabilities\nMonitoring\n\u2022 Monitor connection status\n\u2022 Monitor port health\nOCS Basic Operations\nFiber\nFiber Fiber\nFiber"
+  },
+  {
+    "page": 9,
+    "text": "\u2022 Establish port-port connections\n\u2022 Any-Any vs. Some-Some (E.g. A-B)\n\u2022 Monitor connection status\n\u2022 Fast switching (Beam steering, Si Photonics)\n\u2022 Slow technologies (Robotic)\n\u2022 Monitor port health\n\u2022 Actively maintained links (Beam steering, Si Photonics)\n\u2022 Passively maintained links (Robotic)\n\u2022 Configure connection restoration behavior\n\u2022 After reboot: Break, Recover, Maintain\nOCS Basic Operations - Variations\n Fibe r\nFibe r Fibe r\nFibe r\nNiche Features (Not fully covered)\n\u25cf Multicast\n\u25cf Unidirectional"
+  },
+  {
+    "page": 10,
+    "text": "\u2022 New Top-Level Module for OCS configuration and advertisement\nModule: ocp-oc-optical-switch\n+--rw oc-optical-switch \n+--rw config\n|  +-- rw bidirectional                     boolean\n|  +-- rw cold-boot-recovery                enumeration {MAINTAIN, REMAKE, REMOVE}\n+--ro state\n+-- ro bidirectional                     boolean\n+-- ro cold-boot-recovery                enumeration {MAINTAIN, REMAKE, REMOVE}\n+-- ro cold-boot-recovery-capability*    enumeration {MAINTAIN, REMAKE, REMOVE}\n+-- ro port-groups* [name]\n+-- ro name                       string\n+-- ro direction                  enumeration {INPUT, OUTPUT, ANY}\n+-- ro connection-groups* [peer-name]\n+-- ro peer-name              string\nWhat\u2019s New"
+  },
+  {
+    "page": 11,
+    "text": "\u2022 New ocs-port component\naugment .../oc-platform:component:\n+--rw ocp-ocs-port\n+--rw config\n|  +--rw enabled       boolean\n|  +--rw alias         string\n|  +--rw description   string\n+--ro state\n+--ro enabled       boolean\n+--ro alias         string\n+--ro description   string\n+--ro group         leafref\n-> /ocp-oc-optical-switch:optical-switch/state/port-groups/name\n+--ro index         uint32\n+--ro status        enumeration {OFF, BLOCKED, FAILED, TUNING, TUNED, UNKNOWN}\n+--ro input-optical-power-dbm     uint32\n+--ro output-optical-power-dbm    uint32\n+--ro connection   [see callout]\n+--ro counters     [see callout]\nWhat\u2019s New\n+--ro connection\n+--ro peer                         leafref\n+--ro connected                    boolean\n+--ro counters\n+--ro correctable-error-count   counter64\n+--ro total-error-count         counter64\n+--ro counters\n+--ro correctable-error-count      counter64\n+--ro total-error-count            counter64"
+  },
+  {
+    "page": 12,
+    "text": "\u2022 Connection Management\nModule: oc-optical-switch-connections\n+--rw connections\n+--ro last-change-time           yang:date -and-time\n+--rw port-connection* [name]\n+--ro name leafref -> ../config/name\n+--rw config\n|  +--rw name     string // arbitrary name selected by controller\n|  +--rw input-port-name leafref -> /oc-platform:components/component/name\n|  +--rw output-port-name     leafref -> /oc-platform:components/component/name\n+--ro state\n+--ro name                 string\n+--ro input-port-name leafref -> /oc-platform:components/component/name\n+--ro output-port-name leafref -> /oc-platform:components/component/name\n+--ro status               {CONNECTED, CONNECTING, DELETING, FAILED, INVALID}\n+--ro status-reason        string\n+--ro last-updated         yang:date -and-time\nWhat\u2019s New"
+  },
+  {
+    "page": 13,
+    "text": "\u2022 Free integration with extendable component hierarchies\n\u2022 Simultaneous visibility to:\n\u2022 Current active status [ocp-ocs-port] and\n\u2022 Intent [optical-switch-connections]\n\u2022 Leverage YANG modeling language constraints to enforce valid connection sets \nfrom gNMI front-end\n\u2022 Under investigation\nSchema Benefits\nchassis\ndriver\nport\nport\nport\nsensor A"
+  },
+  {
+    "page": 14,
+    "text": "OCS Interface Spec v0.8\nhttps://github.com/opencomputeproject/ocp-net-optical-circuit-switching\n\u2022 Draft presented to OCS working group \nin early September\n\u2022 Spec is available on GitHub\nCore Contributors\n\u2022 Alvaro Tellez (iPronics)\n\u2022 Brian O'Connor (Google)\n\u2022 Iwan Kartawira (iPronics)\n\u2022 Marwan Abdul-Nour (Lumentum)\n\u2022 Michael DeMerchant (Lumentum)\n\u2022 Michael Enrico (Huber+Suhner)\n\u2022 Ramiro Voicu (Telescent)\n\u2022 Richard Yu (Google)\nThanks for your contributions!"
+  },
+  {
+    "page": 15,
+    "text": "\u2022 Establish a common API that covers most OCS capabilities\n\u2022 Join the OCP OCS working group\n\u2022 Project Site: https://www.opencompute.org/projects/optical -circuit-switching\n\u2022 Project Wiki: https://www.opencompute.org/wiki/Networking/Optical -Circuit-Switching\n\u2022 Project Mailing List: https://ocp-all.groups.io/g/ocp-optical-circuit-switching\n\u2022 Project Meetings: Wednesday, 9am PT\n\u2022 OCS Software Models: https://github.com/opencomputeproject/ocp-net-optical-circuit-switching\n\u2022 YANG / OpenConfig experts wanted!\nCall to Action"
+  },
+  {
+    "page": 16,
+    "text": "Thank You!"
+  }
+]
