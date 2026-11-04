@@ -61,6 +61,36 @@ class CatalogTests(unittest.TestCase):
         self.assertIn('**Short Description**'+MARKDOWN_BREAK,markdown)
         self.assertLess(result['long_description'].index('An overview'),result['long_description'].index('Overall duration'))
 
+    def test_core_and_optional_learner_time_preserve_authored_scope(self):
+        course=fixture()
+        course['modules'].append({'id':33,'title':'Optional: Further practice','optional':True})
+        course['optional_duration_minutes']=15
+        course['lms_catalog']['optional_duration_minutes']=15
+        course['lms_catalog']['duration_note']='The core takes 30 minutes; optional practice adds 15 minutes, for 45 minutes in total.'
+        course['lms_catalog']['modules'].append({'id':33,'duration_minutes':15,'summary':'Apply the framework to another example.'})
+        result=catalog_metadata(course)
+        self.assertEqual(result['duration_minutes'],30)
+        self.assertEqual(result['optional_duration_minutes'],15)
+        self.assertEqual(result['duration_including_optional_minutes'],45)
+        self.assertTrue(result['modules'][-1]['optional'])
+        self.assertIn(course['lms_catalog']['duration_note'],result['long_description'])
+        self.assertIn(course['lms_catalog']['duration_note'],result['long_description_html'])
+        bad=copy.deepcopy(course);bad['modules'][-1]['optional']=False
+        with self.assertRaisesRegex(ValueError,'authored optional units'):catalog_metadata(bad)
+        bad=copy.deepcopy(course);bad['lms_catalog']['optional_duration_minutes']=14
+        with self.assertRaisesRegex(ValueError,'Optional unit durations'):catalog_metadata(bad)
+        bad=copy.deepcopy(course);bad['optional_duration_minutes']=14
+        with self.assertRaisesRegex(ValueError,'recorded course.optional_duration_minutes'):catalog_metadata(bad)
+        bad=copy.deepcopy(course);del bad['lms_catalog']['duration_note']
+        with self.assertRaisesRegex(ValueError,'duration_note'):catalog_metadata(bad)
+
+    def test_default_duration_still_includes_every_unit(self):
+        course=fixture();course['modules'][1]['optional']=True
+        result=catalog_metadata(course)
+        self.assertEqual(result['duration_minutes'],30)
+        self.assertNotIn('optional_duration_minutes',result)
+        self.assertNotIn('optional',result['modules'][1])
+
     def test_source_check_catches_stale_exports_without_changing_them(self):
         with tempfile.TemporaryDirectory() as temp:
             course=fixture();paths=write_catalog(course,temp)

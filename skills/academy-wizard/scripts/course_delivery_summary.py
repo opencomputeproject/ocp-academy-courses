@@ -106,7 +106,22 @@ def catalog_metadata(course):
         exported.append({'id': unit['id'], 'title': _text(unit.get('title'), f'{key} title'),
                          'duration_minutes': _minutes(row.get('duration_minutes'), f'{key} {unit["id"]} duration'),
                          'summary': _text(row.get('summary'), f'{key} {unit["id"]} summary')})
-    total = sum(row['duration_minutes'] for row in exported)
+    optional_duration = source.get('optional_duration_minutes')
+    if optional_duration is not None:
+        optional_duration = _minutes(optional_duration, 'lms_catalog.optional_duration_minutes')
+        authored_optional = {str(unit['id']) for unit in units if unit.get('optional') is True}
+        optional_total = sum(row['duration_minutes'] for row in exported if str(row['id']) in authored_optional)
+        if not authored_optional or abs(optional_total - optional_duration) > .01:
+            raise ValueError('Optional unit durations must match lms_catalog.optional_duration_minutes and authored optional units')
+        recorded_optional = course.get('optional_duration_minutes')
+        if recorded_optional is not None and abs(_minutes(recorded_optional, 'course.optional_duration_minutes') - optional_duration) > .01:
+            raise ValueError('lms_catalog.optional_duration_minutes must match the recorded course.optional_duration_minutes')
+        if not source.get('duration_note'):
+            raise ValueError('Optional learner time needs lms_catalog.duration_note explaining the core and optional paths')
+        for row in exported:
+            if str(row['id']) in authored_optional:
+                row['optional'] = True
+    total = sum(row['duration_minutes'] for row in exported if not row.get('optional'))
     if abs(total - duration) > .01:
         raise ValueError(f'Unit durations total {_number(total)} minutes, but overall duration is {_number(duration)}; reconcile the approved estimates')
     note = source.get('duration_note')
@@ -117,6 +132,9 @@ def catalog_metadata(course):
     overall = labels['overall_duration'].format(duration=_number(duration))
     long_md = [overview, f'**{overall}**']
     long_html = [f'<p>{html.escape(overview)}</p>', f'<p><strong>{html.escape(overall)}</strong></p>']
+    if optional_duration is not None:
+        long_md.append(note)
+        long_html.append(f'<p>{html.escape(note)}</p>')
     for index, row in enumerate(exported, 1):
         heading = labels['unit_heading'].format(number=index, title=row['title'], duration=_number(row['duration_minutes']))
         summary = ' '.join(row['summary'].split())
@@ -132,6 +150,9 @@ def catalog_metadata(course):
               'long_description_html': '\n'.join(long_html)}
     if note:
         result['duration_note'] = note
+    if optional_duration is not None:
+        result['optional_duration_minutes'] = optional_duration
+        result['duration_including_optional_minutes'] = duration + optional_duration
     return result
 
 
