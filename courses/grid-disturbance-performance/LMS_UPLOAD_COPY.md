@@ -1,5 +1,7 @@
 # Grid Disturbance Performance for Hyperscale Data Centers
 
+Use [lms-catalog.md](lms-catalog.md) and `lms-catalog.json` for the current formal LMS fields. The existing upload notes below remain as source context.
+
 **Short description (111 characters)**
 
 Interpret voltage ride-through, active-power recovery, and implementation commitments at the utility interface.

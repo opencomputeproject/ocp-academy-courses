@@ -1,5 +1,7 @@
 # LMS upload copy
 
+Use [lms-catalog.md](lms-catalog.md) and `lms-catalog.json` for the current formal LMS fields. The existing upload notes below remain as source context.
+
 ## Title
 
 Open Data Center for AI: Applying Specification 0.7

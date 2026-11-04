@@ -1,5 +1,7 @@
 # Course catalog metadata
 
+Use [lms-catalog.md](lms-catalog.md) and `lms-catalog.json` for the current formal LMS fields. The existing upload notes below remain as source context.
+
 Local review build completed September 29, 2026. Durations below are planned learner time; measured narration totals 32 minutes 54 seconds.
 
 **Title:** OCP Project Brazos: Liquid Cooling in Air-Cooled Data Centers

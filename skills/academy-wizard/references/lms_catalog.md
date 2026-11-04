@@ -58,6 +58,22 @@ Requirements:
 - Review LMS copy whenever scope, unit order, titles, or learner time changes.
   Keep editorial history and internal build information out of LMS descriptions.
 
+### Courses with a separately timed optional path
+
+Preserve an existing core-time estimate when an authored module or lesson has
+`optional: true`. Record its additional time in
+`lms_catalog.optional_duration_minutes`, matching the course-level
+`optional_duration_minutes` when present. Include a `duration_note` that states
+the core time, optional time, and combined time. Keep every unit in the catalog,
+including a positive duration and summary for the optional units.
+
+With this explicit field, required-unit durations must total `duration_minutes`
+and optional-unit durations must total `optional_duration_minutes`. The exporter
+includes the note in both long-description formats and exports the additional
+`duration_including_optional_minutes` total. It takes optional status from the
+authored units, not from metadata rows. Without the field, all unit durations
+continue to count toward the overall total.
+
 `course_delivery_summary.py` validates these constraints and derives the formal
 long description. Its output JSON contains explicit `title`, `short_description`,
 `long_description` (Markdown), and `long_description_html` fields, plus the unit
