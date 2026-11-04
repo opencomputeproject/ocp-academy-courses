@@ -16,7 +16,7 @@ Each course uses SCORM 1.2 with one tracked course activity, including Course Ho
 
 ## Editable sources
 
-Each course owns its `course.json`, current narration scripts, figures, animation sources, original media, captions, course mark, `thumbnail.png`, `poster.html`, poster assets and separate LMS catalog exports. Generated narration, rendered runtime pages and ZIPs remain outside Git under repository policy.
+Each course owns its `course.json`, current narration scripts, figures, animation sources, original media, captions, course mark, `thumbnail.png`, `poster.json`, poster assets and separate LMS catalog exports. Generated narration, rendered runtime pages and ZIPs remain outside Git under repository policy.
 
 Use `./scripts/build-course.sh ocp-orientation/<course-folder>` from the repository root. `EXISTING_AUDIO_DIR` reuses approved narration without paid regeneration. The Contribution Process cue generator preserves its authored caption windows and fails when a new phrase does not fit.
 

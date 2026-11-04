@@ -26,3 +26,13 @@ The course resource hook stages local fonts and branding. Reuse matching approve
 [Open Cluster Designs for AI](../open-cluster-designs-for-ai/README.md) is the four-module companion for Academy course 93. It builds on this course's system-level context with cluster hierarchy, equipment and connection records, fabric choices and deployment evidence. Its estimated learner time is 55 minutes. Historical planning snapshots under this course's authoring folder are superseded by the companion's canonical source.
 
 See [QA.md](QA.md) for checks and acceptance limits.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/open-systems-for-ai
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

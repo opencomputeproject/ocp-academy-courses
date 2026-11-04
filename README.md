@@ -54,6 +54,19 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [Thermal Boundaries in AI Infrastructure](courses/thermal-boundaries-in-ai-infrastructure/README.md) | Diagnose cooling limits, compare thermal architectures, and evaluate cost, reliability, and evidence for a supported cooling transition. |
 | [Two-Phase Direct Liquid Cooling Efficiencies and Fluids](courses/two-phase-direct-liquid-cooling-efficiencies-and-fluids/README.md) | Explain phase-change cooling and loop efficiency, then assess dielectric-fluid selection, material compatibility, deployment, monitoring, and lifecycle practices. |
 
+## Catalog posters
+
+Each course or series has exactly one English catalog poster, shared by all its translations, using the same 800 × 400 template. Do not create separate posters under `locales/`. Edit course-local `poster.json` for copy and artwork; the shared renderer fixes Lato Bold typography, gradients, logo/pill placement and the white emblem dimensions. Only long titles step down from 40px to 36px or 32px.
+
+Follow [the poster standard](skills/academy-wizard/references/lms_poster_style.md) for setup and review. From this repository root, rebuild all posters and then verify them:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root .
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --check
+```
+
+Full-size and reduced previews, a gallery and measured QA results are written to ignored `build/poster-qa/`. Previous per-course poster build scripts delegate to the shared renderer.
+
 ## Course styles
 
 AcademyWizard supports two explicit values for the top-level `style` property in `course.json`:

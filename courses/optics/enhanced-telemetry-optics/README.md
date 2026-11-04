@@ -19,7 +19,7 @@ The course contains 44.1 minutes of narration and is designed for about 50 minut
 
 Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Generated narration WAV files and rendered SCORM files are not checked in.
 
-The 800 x 400 LMS catalog poster is `thumbnail.png`. Its editable source and renderer are in `poster/`; it uses the shared Academy logo and Lato font assets. Re-render it from the repository root with `node courses/optics/enhanced-telemetry-optics/poster/render_thumbnail.cjs` (requires Playwright and Chrome).
+The 800 × 400 LMS catalog poster is `thumbnail.png`. Its editable copy and artwork selection are in `poster.json`; the shared Academy template supplies the layout. See the repository poster build instructions.
 
 ## Build
 
@@ -44,3 +44,13 @@ EXISTING_AUDIO_DIR=/path/to/audio \
 The course teaches the OCP Networking Project's Optics Reliability Workstream Enhanced Telemetry Optics Product Software Specification v1.0.0. The specification is authored by Chris Collins at Credo and acknowledges community feedback from Cisco, Credo, Marvell, and Oracle.
 
 - Enhanced Telemetry Optics Product Software Specification v1.0.0: https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/optics/enhanced-telemetry-optics
+```
+
+See [the poster standard](../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

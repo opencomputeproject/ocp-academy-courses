@@ -24,3 +24,13 @@ For a video narration change, edit the pronunciation-aware TXT and formal transc
 `authoring/media-integrity.json` binds the reviewed scripts, audio and media. After an intentional revision, review the result before updating hashes. Generated WAVs, rendered Home/module HTML, source research PDFs and ZIPs are excluded from Git. Rebuild from this course source rather than initial planning or staging generators.
 
 Pronunciation correction: the spoken scripts render Clos as `Kloh` (rhymes with go/slow; silent s). The conventional spelling remains in visible labels and display transcripts. M2S6 and M3S4 were re-recorded, and M3S4 was retimed to its new WAV.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/open-cluster-designs-for-ai
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

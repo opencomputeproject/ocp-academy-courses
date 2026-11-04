@@ -46,3 +46,13 @@ EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh high-bandwidth-flash
 - Sandisk HBF Fact Sheet - https://documents.sandisk.com/content/dam/asset-library/en_us/assets/public/sandisk/collateral/company/Sandisk-HBF-Fact-Sheet.pdf
 
 The Sandisk fact sheet is used only as background context and is not quoted directly in the course.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/high-bandwidth-flash
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

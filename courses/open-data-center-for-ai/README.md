@@ -89,3 +89,13 @@ OCP green/gray/white remain the main palette. Blue supply (`#2474C4`) and red re
 - [Call for collaboration](https://www.opencompute.org/about/a-call-for-collaboration-on-ai-data-center-infrastructure-standards).
 
 The published cover/authors and technical pages 7–9 were checked. Full published-PDF reconciliation remains open: the supplied physical-figure extracts are explicitly labeled as from the June 23 draft. Their Google/NVIDIA attribution is retained in the gallery; Appendix reuse terms need confirmation by the release owner. Engineering schematics are teaching models, not validated construction details. Expert review, headphone pronunciation/naturalness review, actual-LMS testing, and a learner/accessibility pilot remain distinct from local automated checks.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/open-data-center-for-ai
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

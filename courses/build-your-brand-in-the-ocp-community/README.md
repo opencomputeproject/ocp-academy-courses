@@ -87,3 +87,13 @@ EXISTING_AUDIO_DIR=/path/to/audio \
 - [OCP Academy](https://academy.opencompute.org/learn)
 - [OCP Orientation catalog](https://academy.opencompute.org/learn/public/catalog/view/5)
 - [Introduction to the OCP Solution Provider Program](https://academy.opencompute.org/learn/courses/14/introduction-to-the-ocp-solution-provider-program)
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/build-your-brand-in-the-ocp-community
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

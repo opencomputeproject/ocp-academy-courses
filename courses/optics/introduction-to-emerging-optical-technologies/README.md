@@ -21,7 +21,7 @@ Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editabl
 
 Module 1's course overview thanks the OCP community volunteers from VIAVI Solutions, SENKO Advanced Components, and Sumitomo Electric Lightwave. Their supplied, unmodified logos are stored in `resources/images/contributors/`; this visual acknowledgment does not change the narration.
 
-The 800 x 400 LMS catalog poster is `thumbnail.png`. Its editable source and renderer are in `poster/`, using the shared Academy logo and Lato font assets. Re-render it from the repository root with `node courses/optics/introduction-to-emerging-optical-technologies/poster/render_thumbnail.cjs` (requires Playwright and Chrome).
+The 800 × 400 LMS catalog poster is `thumbnail.png`. Its editable copy and artwork selection are in `poster.json`; the shared Academy template supplies the layout. See the repository poster build instructions.
 
 The English edition uses the maintained Slides player: centered responsive navigation, transcript and narration controls, per-slide bookmarks, restored quiz attempts, local glossary/resource pills, and icon-based media controls. Course Home uses informational module tiles and a first-module start action; the LMS Syllabus owns separate module launches and completion tracking. SCORM 1.2 and the existing five syllabus entries are preserved.
 
@@ -55,3 +55,13 @@ The original source deck is not included in this repository. Public references u
 - Microsoft hollow-core fiber announcement: https://blogs.microsoft.com/blog/2022/12/09/microsoft-acquires-lumenisity-an-innovator-in-hollow-core-fiber-hcf-cable/
 - Hollow-core fiber research in Nature Photonics: https://www.nature.com/articles/s41566-025-01747-5
 - OCP Academy course, Integrating Quantum Processing Units into Data Center Infrastructure: https://academy.opencompute.org/learn/courses/51/integrating-quantum-processing-units-into-data-center-infrastructure
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/optics/introduction-to-emerging-optical-technologies
+```
+
+See [the poster standard](../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

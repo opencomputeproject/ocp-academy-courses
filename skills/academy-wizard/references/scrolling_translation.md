@@ -113,3 +113,7 @@ unit IDs and approved learner-duration estimates consistent with the locale. Run
 `course_delivery_summary.py <locale-course.json> --write` and `--check`, and commit
 the locale's `lms-catalog.json`/`.md` with its source. The zipper exports matching
 LMS sidecars beside the locale ZIP. See [lms_catalog.md](lms_catalog.md).
+
+## Shared English LMS poster
+
+Use the canonical course’s English `thumbnail.png` for every language edition. Do not create locale-specific LMS catalog posters or copy `poster.json` into a locale. Learner-facing course images and video poster frames may still be localized.

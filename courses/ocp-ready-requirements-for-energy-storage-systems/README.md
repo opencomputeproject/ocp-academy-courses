@@ -42,3 +42,13 @@ The original research files are not included in this repository. Public learner/
 - OCP white paper: OCP Ready™ Requirements for Energy Storage Systems
 - OCP Energy project
 - 2026 OCP EMEA Summit presentation: ESS in Hyperscale & AI Data Centers: OCP Ready™ Requirements Update
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-ready-requirements-for-energy-storage-systems
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

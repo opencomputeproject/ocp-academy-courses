@@ -10,7 +10,7 @@ The course has one content module, 20 slides and 20 narrated sections. Narration
 - `audio/module1/*.txt` contains the current narration scripts. Generated MP3/WAV audio and SCORM ZIPs remain outside Git under repository policy.
 - `figures/` and `animations/` contain course-owned media and editable teaching-video sources. Teaching videos play once on the narration clock and hold the completed final scene.
 - `resources/` preserves original recordings, screenshots, captions and supporting documents. Screenshot galleries retain the original image bytes and can be updated as the OCP website changes.
-- `course-mark.svg` is the approved course mark. [Catalog poster](thumbnail.png) is exactly 800 × 400; [poster.html](poster.html) and `poster-assets/` retain its editable design and authoritative branding.
+- `course-mark.svg` is the approved course mark. [Catalog poster](thumbnail.png) is exactly 800 × 400; [poster.json](poster.json) and `poster-assets/` retain its editable design and authoritative branding.
 - [LMS catalog fields](lms-catalog.md) and [structured metadata](lms-catalog.json) are separate from the README and runtime ZIP.
 
 Narration uses full Eleven v4 (`eleven_v4`), Leo (`bbGtsRRKUfYO634UxSjz`), pitch-preserving 1.18 pacing, and 44.1 kHz, 96 kbps CBR mono MP3 delivery. The learner speed dial starts at 1.0.
@@ -32,3 +32,13 @@ Use the approved existing audio masters with `EXISTING_AUDIO_DIR` to avoid paid 
 Previous Scrolling translations were retired because they describe the superseded course. They remain recoverable in Git history. Replacement Slides translations must branch from this approved English source, preserving the one-module structure, media scope and authoritative links. The maintained voice choices are verified in [the live v4 compatibility record](../../../docs/orientation-v4-language-compatibility.json).
 
 The three originally silent demonstrations on slides 6, 10 and 12 use generated narration timed to 23 existing caption windows. Original video and VTT bytes are preserved. Regular video controls, narration pause/seek/speed and enlarged views remain synchronized. The course-owned `scripts/generate_demo_narration.py` hook and `scripts/narration-cue-plan.json` rebuild these three clips before ordinary slide narration; a phrase that overruns its caption window stops the build instead of changing the approved pace.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-orientation/ocp-contribution-process
+```
+
+See [the poster standard](../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

@@ -26,7 +26,7 @@ The course distinguishes efficiency, economic, and physics boundaries; the avoid
 - `audio/moduleN/*.txt`: thirty narration scripts. Generated WAV files remain outside source control.
 - `figures/`: six SVG diagrams, two cropped source charts, three H.264 teaching videos, and their posters. M1S5 uses equal illustrative x-axis intervals and a green/yellow/red operating point. M2S5 keeps its top text clear of the circles and protects the central label from outline collisions.
 - `animations/`: three finite HTML/CSS master timelines; see its README for re-export instructions.
-- `thermal_boundaries_mark.svg`, `thumbnail.png`, and `artwork/thumbnail.html`: course mark, exact 800×400 LMS poster, and editable poster artwork with its licensed Lato font.
+- `thermal_boundaries_mark.svg`, `thumbnail.png`, and `poster.json`: course mark, exact 800×400 LMS poster, and editable poster metadata for the shared template.
 - `scripts/build_resources.py`: generates the source-credit and license page in the staged build and copies the catalog poster.
 - `course.json.lms_catalog`, `lms-catalog.json`, and `lms-catalog.md`: formal LMS title, short description, and module-by-module overview with approximate learner durations. `LMS_METADATA.md` retains the delivery and upload notes.
 - `OUTLINE.md`, `SOURCE_FIGURES.json`, and `QA.md`: course structure, complete source-visual inventory, and verification record.
@@ -69,3 +69,13 @@ The adapted teaching content, scripts, and course-owned instructional media are 
 ## Next-module navigation
 
 The maintained Slides player keeps the authored green next-module button in both standalone and LMS playback. No course-specific navigation flag is needed. Course Home, the SCORM 1.2 multi-SCO structure, quiz gates, and saved progress retain their existing behavior.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/thermal-boundaries-in-ai-infrastructure
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

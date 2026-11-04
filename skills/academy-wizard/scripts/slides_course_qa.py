@@ -235,8 +235,15 @@ def check_course(
     if repo_root is not None:
         repo_root = repo_root.resolve()
         courses_root = repo_root / "courses"
+        # A language edition shares its canonical course's English catalog entry
+        # and poster. Learner media and the locale README are still checked locally.
+        catalog_root = root.parent.parent if root.parent.name == "locales" else root
+        if catalog_root != root:
+            if any((root / name).exists() for name in ("thumbnail.png", "poster.json")):
+                errors.append("locale must reuse the canonical English poster, without a local duplicate")
+            notes.append(f"shared English catalog poster: {catalog_root / 'thumbnail.png'}")
         try:
-            folder = root.resolve().relative_to(courses_root).as_posix()
+            folder = catalog_root.resolve().relative_to(courses_root).as_posix()
         except ValueError:
             errors.append(f"course folder is not beneath {courses_root}")
             folder = root.name
@@ -247,7 +254,7 @@ def check_course(
         elif str(course.get("course_title") or "") not in local_readme.read_text(encoding="utf-8"):
             errors.append("course-local README.md does not contain course_title")
 
-        thumbnail = root / "thumbnail.png"
+        thumbnail = catalog_root / "thumbnail.png"
         if not thumbnail.is_file():
             errors.append("thumbnail.png is missing")
         else:

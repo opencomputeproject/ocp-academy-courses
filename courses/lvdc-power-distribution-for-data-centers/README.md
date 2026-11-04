@@ -22,7 +22,7 @@ The primary paper is cited by page on teaching slides. The public 2026 OCP EMEA 
 - `course.json`: slides, assessment, transcripts, glossary, references and recorded approval decisions.
 - `audio/moduleN/*.txt`: the 100 narration scripts; generated WAVs are excluded from Git.
 - `figures/`: course-owned static figures, silent MP4s and posters.
-- `animations/` and [video production notes](animations/enhanced/README.md): deterministic diagrams, editable storyboards and an exporter. `animations/thumbnail.html` produces the 800 × 400 course poster.
+- `animations/` and [video production notes](animations/enhanced/README.md): deterministic diagrams, editable storyboards and an exporter. `poster.json` produces the 800 × 400 course poster.
 - `figure-plan.json` and [video enhancement plan](video-enhancement-plan.md): media intent and source mapping.
 - `resources/templates/*.html.template`: editable source templates for related learning, the review worksheet and attribution. The build stages these as runtime HTML; the home page lists only the external paper, related-learning guide and worksheet.
 - `assets/fonts/`: local Open Sans files and font licenses; Lato resource fonts reside under `resources/`.
@@ -50,3 +50,13 @@ The build writes a complete package and ZIP beneath `build/`. The paper's offici
 ## Validation and release
 
 See [QA.md](QA.md) for checks, reproduction commands and limits. Keep SCORM **1.2 multi-SCO**, separate Course Home/module syllabus activities and informational module tiles. The user-approved Start with MODULE 1 action sits above the tile grid. Target-LMS navigation, resume and completion require a separate deployment test; browser tests with mock SCORM do not establish LMS acceptance.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/lvdc-power-distribution-for-data-centers
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

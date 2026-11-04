@@ -39,8 +39,8 @@ refresh its inventory and hash before rerunning source QA and packaging.
 `verification.json` records representative encoded fidelity from the delivered
 build. It is evidence for those retained outputs, not for a future regeneration.
 
-`lms_poster.html` is editable source for the 800 × 400 catalog thumbnail and uses
-the local Open Sans stylesheet. Runtime course HTML is generated separately.
+`../poster.json` is editable metadata for the 800 × 400 catalog thumbnail.
+The shared Academy renderer uses bundled Lato Bold and fixed catalog geometry. Runtime course HTML is generated separately.
 
 ## Summit reference-design media
 

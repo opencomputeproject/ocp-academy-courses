@@ -63,3 +63,13 @@ Only the documents actually linked for learner use, the two schemas, and eleven 
 - DMTF FRU DSP0220 - https://www.dmtf.org/dsp/DSP0220
 - DMTF MMBI DSP0282 - https://www.dmtf.org/dsp/DSP0282
 - DMTF SPDM standards - https://www.dmtf.org/standards/SPDM
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-mhs-modular-plug-and-play-m-pnp
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

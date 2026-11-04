@@ -43,3 +43,13 @@ The original research files are not included in this repository. Public learner 
 - IOWN Global Forum, “AI Computing Continuum: Why It Matters and What We Discussed at OCP EMEA 2026”: https://iowngf.org/ai-computing-continuum-why-it-matters-and-what-we-discussed-at-ocp-emea-2026/
 - IOWN Global Forum and OCP collaboration announcement: https://iowngf.org/iown-global-forum-and-open-compute-project-join-forces-to-deliver-on-the-next-wave-of-ai/
 - AICC mailing list: https://ocp-all.groups.io/g/ocp-aicc
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ai-computing-continuum
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

@@ -254,9 +254,8 @@ def main() -> None:
     copy_tree_if_present(source_root, target_root, "scripts")
     copy_tree_if_present(source_root, target_root, "poster-assets")
     copy_root_assets(course, source_root, target_root)
-    for filename in ("poster.html", "thumbnail.png"):
-        if (source_root / filename).is_file():
-            shutil.copy2(source_root / filename, target_root / filename)
+    # All language editions share the canonical English LMS poster.
+    # Do not copy poster metadata, artwork documents or thumbnail.png to locales.
     cue_plan = target_root / "scripts/narration-cue-plan.json"
     if cue_plan.is_file():
         cue_source = json.loads(cue_plan.read_text(encoding="utf-8"))

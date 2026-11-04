@@ -29,7 +29,7 @@ The five-contributor latency example is illustrative, not a measured product. De
 
 `course.json` is the canonical source. Paired narration scripts live under `audio/`; pronunciation substitutions are documented in script comments while display transcripts retain normal spelling. Narration uses ElevenLabs Leo v2, `eleven_multilingual_v2`, at speed 1.18. M1S3 retains its volume repair, and M4S11 retains the `ree-tries` pronunciation cue.
 
-`figures/` contains course-owned media. `animations/` retains deterministic source scenes and exact narration chapter timings. `thumbnail.png` is the 800 × 400 Academy poster; `thumbnail.svg` is its editable source. The official Academy logo is embedded without modification, with its visible artwork aligned to the poster's 40-pixel left margin.
+`figures/` contains course-owned media. `animations/` retains deterministic source scenes and exact narration chapter timings. `thumbnail.png` is the 800 × 400 Academy poster; `poster.json` is its editable source. The official Academy logo is embedded without modification, with its visible artwork aligned to the poster's 42-pixel left margin.
 
 From the repository root:
 
@@ -46,3 +46,13 @@ The course retains SCORM 1.2 with separate Course Home and module activities. Co
 Source QA, glossary media evidence, PDF page citations, local package validation, and browser review are checked in the local authoring project. Repository builds should rerun these checks. OCS is introduced in Module 1 only; the user requested no CDR glossary entry.
 
 The October 22 reference-only rebuild preserved all 45 user-reviewed narration clips. The current audio checker additionally flags a pre-existing spoken-level decline in M4S7 (about 3.9 dB). Package/source validation passes; this automated level flag is recorded for a future listening review rather than changing the approved narration during a citation update.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

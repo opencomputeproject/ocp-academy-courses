@@ -53,3 +53,13 @@ The original research files, downloaded PDFs, generated audio, and captured paid
 - Meta: Meta's open AI hardware vision - https://engineering.fb.com/2024/10/15/data-infrastructure/metas-open-ai-hardware-vision/
 - OCP: Realizing the Open Data Center Ecosystem Vision - https://www.opencompute.org/blog/realizing-the-open-data-center-ecosystem-vision
 - SemiAnalysis: Inside the 800VDC Revolution - Part 1 - https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/diablo-400-disaggregated-power-for-high-density-ai-racks
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

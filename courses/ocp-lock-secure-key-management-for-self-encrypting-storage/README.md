@@ -52,3 +52,13 @@ node skills/academy-wizard/scripts/test_quiz_resume_browser.mjs build/ocp-lock-s
 - “An update on OCP L.O.C.K.”, 2026 OCP EMEA Summit — https://www.youtube.com/watch?v=a0ews3cKuQI
 - Caliptra — https://chipsalliance.github.io/caliptra-web/
 - OCP S.A.F.E.™ — https://www.opencompute.org/sp/about-ocp-safe
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/ocp-lock-secure-key-management-for-self-encrypting-storage
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

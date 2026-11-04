@@ -14,7 +14,7 @@ Japanese narrated Slides source for nine independently tracked SCORM 1.2 modules
 - `video_source/narration/`: approved full Japanese recording scripts.
 - `tools/academy_wizard/`: locale toolchain, including Japanese controls, offline CC and SCORM 1.2 generation.
 - `fonts/`: bundled Open Sans and [Noto Sans JP](https://github.com/google/fonts/tree/main/ofl/notosansjp), with OFL licenses.
-- `thumbnail.svg` / `thumbnail.png`: editable artwork and 800 × 400 LMS poster.
+- All language editions use the [canonical English LMS poster](../../thumbnail.png).
 
 ## Build
 
@@ -54,3 +54,7 @@ Source QA, audio-level/tail checks, caption and media validation, muted browser 
 ## Course Home and LMS order
 
 Course Home (`index.html`) is the first tracked syllabus item and completes on launch. The teaching modules follow in their existing order, with unchanged IDs and numbering. This package contains 10 SCOs in total. The approved content, audio/media, SCORM 1.2 version and green navigation are unchanged.
+
+## Catalog poster
+
+All translations share the [canonical English poster](../../thumbnail.png). Edit [the canonical poster metadata](../../poster.json) and rebuild the parent course; do not create a Japanese poster or a duplicate `thumbnail.png` here.

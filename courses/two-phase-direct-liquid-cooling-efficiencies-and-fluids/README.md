@@ -80,3 +80,13 @@ The original research files are not included in this repository. Public learner/
 - [OCP Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks](https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf)
 - [2026 OCP EMEA Summit panel recording: Revolutionizing AI Heat Management - The Superior Efficiency of Two-Phase Liquid Cooling](https://www.youtube.com/watch?v=0vxGneJ3yGo)
 - [OCP Educational Webinar Program past webinars index](https://www.opencompute.org/summit/ocp-educational-webinar-program/past-webinars)
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/two-phase-direct-liquid-cooling-efficiencies-and-fluids
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

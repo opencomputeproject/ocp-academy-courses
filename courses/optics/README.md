@@ -23,3 +23,13 @@ Additional optics courses can be added as sibling folders under `courses/optics/
 - Fusion Splicing Considerations
 - Fiber Panel Connectivity Considerations
 - Connector Hygiene
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/optics
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

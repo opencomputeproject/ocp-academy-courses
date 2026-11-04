@@ -62,3 +62,13 @@ These are isolated local/mock-SCORM checks, not target-LMS acceptance. The Home 
 - OCP Multipath Reliable Connection (MRC) Specification Revision 1.0: https://www.opencompute.org/documents/ocp-mrc-1-0-pdf
 - Resilient AI Supercomputer Networking using MRC and SRv6: https://cdn.openai.com/pdf/resilient-ai-supercomputer-networking-using-mrc-and-srv6.pdf
 - Supercomputer networking to accelerate large scale AI training: https://openai.com/index/mrc-supercomputer-networking/
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/multipath-reliable-connection-mrc
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

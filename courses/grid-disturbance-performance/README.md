@@ -27,7 +27,7 @@ The course preserves Table 1 boundaries, durations, computational-load scope and
 - `audio/moduleN/*.txt`: all 40 narration scripts, paired with the WAV paths declared in the course source. Keep scripts and authored transcripts synchronized.
 - `figures/`: twelve SVG diagrams, four silent H.264 teaching videos and their PNG posters.
 - `animations/`: editable finite HTML/SVG/CSS video masters with declared duration and poster time. Re-record using the shared `record_css_animation.mjs` workflow and renew visual review and inventory hashes after media changes.
-- `thumbnail.png`, `artwork/thumbnail.html`, `grid_disturbance_mark.svg`: approved 800×400 LMS poster, self-contained editable poster artwork and course mark. The poster artwork embeds the authoritative OCP logo and Lato Bold font; render its 800×400 browser canvas after fonts load.
+- `thumbnail.png`, `poster.json`, `grid_disturbance_mark.svg`: approved 800×400 LMS poster, self-contained editable poster metadata and course mark. The shared renderer embeds the authoritative OCP logo and Lato Bold font.
 - `LMS_UPLOAD_COPY.md`: title, short description and module-by-module LMS overview.
 
 Generated narration, rendered course pages, SCORM ZIPs, credentials and research documents are excluded from source control. The HTML files under `animations/` and `artwork/` are editable media masters, not generated learner pages.
@@ -74,3 +74,13 @@ node skills/academy-wizard/scripts/test_syllabus_home_browser.mjs build/grid-dis
 ```
 
 All narration passed acoustic checks, every video and diagram was visually reviewed, and desktop/mobile layouts and player interactions passed local browser checks. Target-LMS navigation, resume and separate completion/reporting still require acceptance testing. Local simulation does not establish Docebo tracking compatibility; this contribution does not upload or replace live LMS material.
+
+## Catalog poster
+
+Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
+
+```sh
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/grid-disturbance-performance
+```
+
+See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.
