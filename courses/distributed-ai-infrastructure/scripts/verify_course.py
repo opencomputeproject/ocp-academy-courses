@@ -15,11 +15,11 @@ for entry in integrity['generated_audio']:
     assert abs(duration-entry['duration_seconds'])<.001,entry['path']
 assert len(course['modules'])==5 and sum(len(m['slides']) for m in course['modules'])==57
 assert sum(len(s.get('questions',[])) for m in course['modules'] for s in m['slides'])==10
-assert [(m['id'],s['id']) for m in course['modules'] for s in m['slides'] if s.get('show_context_note') is True]==[(1,4)]
+assert [(m['id'],s['id']) for m in course['modules'] for s in m['slides'] if s.get('show_context_note') is True]==[(1,4),(2,4),(2,6),(3,4),(3,6),(4,4),(5,4),(5,8)]
 payloads=[];recordings=animations=0
 for m in course['modules']:
     html=(root/f"module{m['id']}.html").read_text()
-    assert html.count('class="slide-subtitle slide-context-note animate-in"')==(1 if m['id']==1 else 0)
+    assert html.count('class="slide-subtitle slide-context-note animate-in"')==sum((s.get('figure') or {}).get('role')=='original_video' for s in m['slides'])
     for s in m['slides']:
         f=s.get('figure') or {}
         if f.get('role')=='original_video':

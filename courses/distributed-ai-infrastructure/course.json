@@ -150,8 +150,68 @@
     "context_note_pilot": {
       "date": "2026-11-06",
       "slide": "M1S4",
-      "status": "Added for visual review; other original-video context notes remain pending approval.",
+      "status": "Superseded by user approval to show concise context notes on the original-video slides.",
       "origin": "New contextual teaching note from the Slides rebuild, not original Rise video captions."
+    },
+    "approved_original_video_context_notes": {
+      "date": "2026-11-06",
+      "authorization": "User approved placing concise contextual notes above the original videos, with a two-line length constraint.",
+      "scope": "All eight original recordings, including the five originally flagged.",
+      "notes": [
+        {
+          "slide": "M1S4",
+          "previous_note": "Focus: tightly coordinated workloads, especially synchronous training. Independent inference replicas can have different dependencies.",
+          "display_note": "Focus: coordinated training; inference needs may differ."
+        },
+        {
+          "slide": "M2S4",
+          "previous_note": "These examples focus on coordinated training. Waiting can reduce progress without proving incorrect state or failure of unrelated services.",
+          "display_note": "Training can wait without losing valid state."
+        },
+        {
+          "slide": "M2S6",
+          "previous_note": "Data-parallel replicas and model shards are different arrangements. Recovery scope and checkpoint rollback depend on the implementation.",
+          "display_note": "State layout and recovery depend on the design."
+        },
+        {
+          "slide": "M3S4",
+          "previous_note": "Finish order alone does not define causality. Reordered packet arrival is not itself proof of an incorrect model update.",
+          "display_note": "Arrival order does not establish valid update order."
+        },
+        {
+          "slide": "M3S6",
+          "previous_note": "Interpret the waiting within the declared participating group. Aggregate resource waiting time differs from elapsed group delay.",
+          "display_note": "Waiting is scoped to the participating group."
+        },
+        {
+          "slide": "M4S4",
+          "previous_note": "Independent regional inference can use controlled model-version rollouts and session policies; simultaneous worldwide replacement is not a universal requirement.",
+          "display_note": "Regional inference can use staged model rollouts."
+        },
+        {
+          "slide": "M5S4",
+          "previous_note": "The recovery pattern depends on the architecture. A restart of the affected training group does not automatically require rollback of independent jobs.",
+          "display_note": "Recovery can be scoped to the affected training group."
+        },
+        {
+          "slide": "M5S8",
+          "previous_note": "Use measurable objectives and tested recovery boundaries. Networking and consistency requirements depend on the workload.",
+          "display_note": "Match guardrails to the workload and its failure scope."
+        }
+      ],
+      "layout_validation": {
+        "status": "passed",
+        "cases": 40,
+        "viewport_widths": [
+          1440,
+          1280,
+          1024,
+          390,
+          320
+        ],
+        "maximum_lines": 2,
+        "target_cue_checks": 30
+      }
     }
   },
   "sources": [
@@ -1099,7 +1159,7 @@
               }
             ]
           },
-          "subtitle": "Focus: tightly coordinated workloads, especially synchronous training. Independent inference replicas can have different dependencies.",
+          "subtitle": "Focus: coordinated training; inference needs may differ.",
           "_recording_context": "Ankur introduces the coordination problem. A concise visible context line identifies tightly coordinated workloads as the focus; the next examples distinguish this from independent inference serving.",
           "section_label": "With Ankur Sharma",
           "media_focus": true,
@@ -2470,10 +2530,11 @@
               }
             ]
           },
-          "subtitle": "These examples focus on coordinated training. Waiting can reduce progress without proving incorrect state or failure of unrelated services.",
+          "subtitle": "Training can wait without losing valid state.",
           "_recording_context": "Ankur examines compute, independence and latency assumptions. Frame the examples as coordinated training and follow with the exact mechanisms rather than repeating a blanket rejection of cloud services.",
           "section_label": "By Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 5,
@@ -3185,10 +3246,11 @@
               }
             ]
           },
-          "subtitle": "Data-parallel replicas and model shards are different arrangements. Recovery scope and checkpoint rollback depend on the implementation.",
+          "subtitle": "State layout and recovery depend on the design.",
           "_recording_context": "Ankur explains coordination cost and stragglers. The preceding slide distinguishes gradient aggregation from model sharding; retain his conditional language about retries and checkpoint recovery.",
           "section_label": "By Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 7,
@@ -4126,10 +4188,11 @@
               }
             ]
           },
-          "subtitle": "Finish order alone does not define causality. Reordered packet arrival is not itself proof of an incorrect model update.",
+          "subtitle": "Arrival order does not establish valid update order.",
           "_recording_context": "Ankur introduces event sequencing. Context states that the runtime enforces operation dependencies; packets arriving in a different order do not by themselves prove incorrect model updates.",
           "section_label": "By Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 5,
@@ -4681,10 +4744,11 @@
               }
             ]
           },
-          "subtitle": "Interpret the waiting within the declared participating group. Aggregate resource waiting time differs from elapsed group delay.",
+          "subtitle": "Waiting is scoped to the participating group.",
           "_recording_context": "Ankur explains how variability creates waiting in synchronous training. The quantitative example supplies the boundary and units so learners can reason about scale without a universal microsecond threshold.",
           "section_label": "By Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 7,
@@ -5437,10 +5501,11 @@
               "basis": "User confirmed this recording is presented by an actor, with the credit By Ankur Sharma. M5S8 is a separate on-camera Ankur recording."
             }
           },
-          "subtitle": "Independent regional inference can use controlled model-version rollouts and session policies; simultaneous worldwide replacement is not a universal requirement.",
+          "subtitle": "Regional inference can use staged model rollouts.",
           "_recording_context": "Ankur discusses training input paths and regional inference. A visible contextual note and the following slides explain that model-version consistency is a service-policy decision; regional rollouts need not change everywhere simultaneously.",
           "section_label": "By Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 5,
@@ -6290,10 +6355,11 @@
               "basis": "User confirmed this recording is presented by an actor, with the credit By Ankur Sharma. M5S8 is a separate on-camera Ankur recording."
             }
           },
-          "subtitle": "The recovery pattern depends on the architecture. A restart of the affected training group does not automatically require rollback of independent jobs.",
+          "subtitle": "Recovery can be scoped to the affected training group.",
           "_recording_context": "Ankur explains workload-aware failover. Context identifies coordinated training; restoration scope and rollback depend on the framework, redundancy and the affected worker group.",
           "section_label": "By Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 5,
@@ -6811,10 +6877,11 @@
               "basis": "User correction on 2026-11-02: M5S8 is Ankur on camera, so this slide uses With Ankur Sharma."
             }
           },
-          "subtitle": "Use measurable objectives and tested recovery boundaries. Networking and consistency requirements depend on the workload.",
+          "subtitle": "Match guardrails to the workload and its failure scope.",
           "_recording_context": "Ankur closes with networking, predictability and failure-boundary principles. Present the recording as his engineering perspective, with workload-specific qualifications established earlier in this module.",
           "section_label": "With Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 9,
