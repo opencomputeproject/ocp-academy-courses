@@ -22,12 +22,14 @@ for m in course['modules']:
         f=s.get('figure') or {}
         if f.get('role')=='original_video':
             recordings+=1;assert s['audio'] is None and s['narration_enabled'] is False
+            assert f.get('captions') and all(t.get('language')=='en-US' and t.get('label')=='English (US)' for t in f['captions'])
             expected='With Ankur Sharma' if (m['id'],s['id']) in [(1,4),(5,8)] else 'By Ankur Sharma'
             assert s['section_label']==expected
         if f.get('sync_to_narration'):
             animations+=1;assert f['loop'] is False and f['autoplay'] is False and f['muted'] is True
     payloads.extend(json.loads(p) for p in re.findall(r'<script class="academy-video__caption-data" type="application/json">(.*?)</script>',html,re.S))
 assert recordings==8 and animations==5 and len(payloads)==8
+assert all(t['language']=='en-US' and t['label']=='English (US)' for p in payloads for t in p['tracks'])
 assert sum(len(t['cues']) for p in payloads for t in p['tracks'])==390
 manifest=ET.parse(root/'imsmanifest.xml')
 scos=[e for e in manifest.iter() if e.get('{http://www.adlnet.org/xsd/adlcp_rootv1p2}scormtype')=='sco']
