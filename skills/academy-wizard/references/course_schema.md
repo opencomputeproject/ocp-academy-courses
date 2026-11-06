@@ -659,6 +659,8 @@ Optional fields:
 
 ### `content_diagram`
 
+Set `show_context_note: true` to display the authored `subtitle` as a context note between the slide title and figure/video. This is separate from the figure caption and timed closed captions. It is opt-in so notes can be reviewed one slide at a time; unset/false preserves the existing layout.
+
 Optional `media_focus: true` enables the larger, scrollable teaching-media layout. Leave it unset to preserve the established diagram layout in existing courses. `transcript` may hold a conventional-spelling display version of the narration; the command-line renderer falls back to the current script body (excluding pronunciation comments) when that field is absent. Keep an explicitly authored transcript synchronized with its script.
 
 ```json

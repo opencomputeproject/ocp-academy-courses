@@ -93,6 +93,65 @@
       "recordings": 8,
       "authorization": "User requested English US for all original videos.",
       "scope": "Caption language metadata only; preserve all cue text/timing, transcripts, explanatory notes and media bytes."
+    },
+    "approved_caption_corrections": {
+      "date": "2026-11-06",
+      "authorization": "User approved the first, second, fourth and fifth caption corrections; explicitly requested no change to the Module 4 Region A caption.",
+      "files": [
+        {
+          "slide": "M3S4",
+          "path": "resources/captions/original-v4.en-us.vtt",
+          "edits": [
+            {
+              "from": "destination note",
+              "to": "destination node"
+            }
+          ],
+          "previous_sha256": "f72e3b085dbcb654295affbd1d112859d833198746197883a5e56e57ea06718b",
+          "sha256": "bb363f72aab97e2c3d11d088cbafe1f87a79a007b0865ad3911ee8d3d43e95e2",
+          "cue_count": 47,
+          "timing": "unchanged"
+        },
+        {
+          "slide": "M3S6",
+          "path": "resources/captions/original-v5.en-us.vtt",
+          "edits": [
+            {
+              "from": "GPUs 12,",
+              "to": "GPUs 1, 2,"
+            }
+          ],
+          "previous_sha256": "61d7066b35a8a6bad3989bbf6f1d90373fd1b59a8159d1b31ef275c406d38464",
+          "sha256": "2d45d599306b20b36aaa7f20559be8a3af8484e3e8db53c32d99c4e3d70081f2",
+          "cue_count": 44,
+          "timing": "unchanged"
+        },
+        {
+          "slide": "M5S8",
+          "path": "resources/captions/original-v8.en.vtt",
+          "edits": [
+            {
+              "from": "distributed air",
+              "to": "distributed AI"
+            },
+            {
+              "from": "Guard rule",
+              "to": "Guardrail"
+            }
+          ],
+          "previous_sha256": "cda13e8952f8be48fc9e39945a1cec5af45f48545ebcdf0556bbfa328dc7486d",
+          "sha256": "4676f196fcdc4bec334e6ee2925c5df416d381ebe3b78ccf0373ae6bb44f719e",
+          "cue_count": 32,
+          "timing": "unchanged"
+        }
+      ],
+      "scope": "Four transcript/caption typos only; preserve all cue timing and original recordings."
+    },
+    "context_note_pilot": {
+      "date": "2026-11-06",
+      "slide": "M1S4",
+      "status": "Added for visual review; other original-video context notes remain pending approval.",
+      "origin": "New contextual teaching note from the Slides rebuild, not original Rise video captions."
     }
   },
   "sources": [
@@ -1043,7 +1102,8 @@
           "subtitle": "Focus: tightly coordinated workloads, especially synchronous training. Independent inference replicas can have different dependencies.",
           "_recording_context": "Ankur introduces the coordination problem. A concise visible context line identifies tightly coordinated workloads as the focus; the next examples distinguish this from independent inference serving.",
           "section_label": "With Ankur Sharma",
-          "media_focus": true
+          "media_focus": true,
+          "show_context_note": true
         },
         {
           "id": 5,
@@ -3561,7 +3621,7 @@
           ],
           "audio": null,
           "narration_enabled": false,
-          "transcript": "Welcome back. On a single server, time is simple. Event A happens, then event B happens. But when you spread a single AI workload across a massive distributed cluster, assuming distributed systems share a perfectly consistent view of time, can quickly become problematic. In distributed AI event order is everything. We aren't just moving independent files, we are actively updating the interdependent weights of a massive neural network. If those updates happen out of sequence, the model doesn't just slow down. The training process can become unstable. Imagine you have 2 GPUs computing different parts of the same problem. GPU 1 finishes its calculation first, followed by GPU 2, but because of a temporary network delay, GPU 2's data arrives at the destination before GPU 1. If the destination note simply accepts the data in the order it physically arrived, the expected sequence of updates is disrupted. The model applies the 2nd step before the 1st step. The mathematical state of the entire neural network may diverge from the expected training state. This is why distributed AI systems place such heavy emphasis on coordination and consistency across nodes. They cannot depend entirely on physical arrival order because network behavior is inherently variable. Distributed systems don't just move data, they coordinate behavior. Every single node in the cluster must maintain a sufficiently consistent view of update ordering of events before any model weights are actually updated. The system forces nodes to wait, verify the sequence, and apply updates in a tightly coordinated sequence. We intentionally trade raw speed for system coordination and consistency. Because in AI doing things fast is far less valuable if you do them in the wrong order. In the next lesson, we'll look at the specific infrastructure cost of that trade-off as we compare network latency to synchronization overhead.",
+          "transcript": "Welcome back. On a single server, time is simple. Event A happens, then event B happens. But when you spread a single AI workload across a massive distributed cluster, assuming distributed systems share a perfectly consistent view of time, can quickly become problematic. In distributed AI event order is everything. We aren't just moving independent files, we are actively updating the interdependent weights of a massive neural network. If those updates happen out of sequence, the model doesn't just slow down. The training process can become unstable. Imagine you have 2 GPUs computing different parts of the same problem. GPU 1 finishes its calculation first, followed by GPU 2, but because of a temporary network delay, GPU 2's data arrives at the destination before GPU 1. If the destination node simply accepts the data in the order it physically arrived, the expected sequence of updates is disrupted. The model applies the 2nd step before the 1st step. The mathematical state of the entire neural network may diverge from the expected training state. This is why distributed AI systems place such heavy emphasis on coordination and consistency across nodes. They cannot depend entirely on physical arrival order because network behavior is inherently variable. Distributed systems don't just move data, they coordinate behavior. Every single node in the cluster must maintain a sufficiently consistent view of update ordering of events before any model weights are actually updated. The system forces nodes to wait, verify the sequence, and apply updates in a tightly coordinated sequence. We intentionally trade raw speed for system coordination and consistency. Because in AI doing things fast is far less valuable if you do them in the wrong order. In the next lesson, we'll look at the specific infrastructure cost of that trade-off as we compare network latency to synchronization overhead.",
           "figure": {
             "path": "resources/videos/original-v4.mp4",
             "poster": "resources/images/original-v4.jpg",
@@ -3578,7 +3638,7 @@
                 "path": "resources/captions/original-v4.en-us.vtt",
                 "language": "en-US",
                 "label": "English (US)",
-                "sha256": "f72e3b085dbcb654295affbd1d112859d833198746197883a5e56e57ea06718b",
+                "sha256": "bb363f72aab97e2c3d11d088cbafe1f87a79a007b0865ad3911ee8d3d43e95e2",
                 "_cues": [
                   {
                     "start": 3.66,
@@ -3688,7 +3748,7 @@
                   {
                     "start": 72.36,
                     "end": 77.48,
-                    "text": "If the destination note simply accepts the data in the order it physically arrived,"
+                    "text": "If the destination node simply accepts the data in the order it physically arrived,"
                   },
                   {
                     "start": 77.69,
@@ -3937,7 +3997,7 @@
               {
                 "start": 72.36,
                 "end": 77.48,
-                "text": "If the destination note simply accepts the data in the order it physically arrived,"
+                "text": "If the destination node simply accepts the data in the order it physically arrived,"
               },
               {
                 "start": 77.69,
@@ -4146,7 +4206,7 @@
           ],
           "audio": null,
           "narration_enabled": false,
-          "transcript": "When managing traditional networks, we obsess over bandwidth and average latency. If the average speed is fast, we assume the system is healthy. But in distributed AI, the average is often not enough. What matters is predictability. One of the biggest hidden challenges in AI infrastructure isn't consistent latency, it's micro variability. We call this jitter. At AI scale, small variability compounds quickly. Jitter refers to small variations in network timing and delivery behavior. It means your network packet delivery times are fluctuating. In a standard cloud app, a 5 millisecond fluctuation is invisible, but in a synchronous AI training cluster, a 5 millisecond delay on a single packet can ripple across coordinated workloads. Because AI nodes are tightly coupled, they can only proceed as fast as the slowest participating node in any given cycle. If GPU number 4 experiences a tiny network jitter, GPUs 12, and 3 may spend time waiting for coordination to catch up. Progress across the workload slows down. Now, scale that up. 2 milliseconds of idle time doesn't sound like much, but when you have 10,000 GPUs running thousands of coordination cycles every hour, that jitter creates compounding coordination overhead across your entire cluster. Suddenly, you aren't just losing milliseconds. You are accumulating significant compute inefficiency over time and consuming substantial infrastructure resources with reduced efficiency. In distributed AI performance instability becomes a system level problem. You must architect your networks to prioritize predictable coordination behavior over peak theoretical speed.",
+          "transcript": "When managing traditional networks, we obsess over bandwidth and average latency. If the average speed is fast, we assume the system is healthy. But in distributed AI, the average is often not enough. What matters is predictability. One of the biggest hidden challenges in AI infrastructure isn't consistent latency, it's micro variability. We call this jitter. At AI scale, small variability compounds quickly. Jitter refers to small variations in network timing and delivery behavior. It means your network packet delivery times are fluctuating. In a standard cloud app, a 5 millisecond fluctuation is invisible, but in a synchronous AI training cluster, a 5 millisecond delay on a single packet can ripple across coordinated workloads. Because AI nodes are tightly coupled, they can only proceed as fast as the slowest participating node in any given cycle. If GPU number 4 experiences a tiny network jitter, GPUs 1, 2, and 3 may spend time waiting for coordination to catch up. Progress across the workload slows down. Now, scale that up. 2 milliseconds of idle time doesn't sound like much, but when you have 10,000 GPUs running thousands of coordination cycles every hour, that jitter creates compounding coordination overhead across your entire cluster. Suddenly, you aren't just losing milliseconds. You are accumulating significant compute inefficiency over time and consuming substantial infrastructure resources with reduced efficiency. In distributed AI performance instability becomes a system level problem. You must architect your networks to prioritize predictable coordination behavior over peak theoretical speed.",
           "figure": {
             "path": "resources/videos/original-v5.mp4",
             "poster": "resources/images/original-v5.jpg",
@@ -4163,7 +4223,7 @@
                 "path": "resources/captions/original-v5.en-us.vtt",
                 "language": "en-US",
                 "label": "English (US)",
-                "sha256": "61d7066b35a8a6bad3989bbf6f1d90373fd1b59a8159d1b31ef275c406d38464",
+                "sha256": "2d45d599306b20b36aaa7f20559be8a3af8484e3e8db53c32d99c4e3d70081f2",
                 "_cues": [
                   {
                     "start": 3.769,
@@ -4288,7 +4348,7 @@
                   {
                     "start": 78.69,
                     "end": 80.209,
-                    "text": "GPUs 12,"
+                    "text": "GPUs 1, 2,"
                   },
                   {
                     "start": 80.29,
@@ -4522,7 +4582,7 @@
               {
                 "start": 78.69,
                 "end": 80.209,
-                "text": "GPUs 12,"
+                "text": "GPUs 1, 2,"
               },
               {
                 "start": 80.29,
@@ -6395,7 +6455,7 @@
           ],
           "audio": null,
           "narration_enabled": false,
-          "transcript": "We have spent this course tearing down traditional cloud assumptions. We have looked at why standard playbooks fail, how state is distributed, and the immense physical toll of the coordination tax. Now it's time to build. To keep distributed air reliable at massive scale, you must establish non-negotiable infrastructure guardrails. Guard rule number one, the network is the backplane. You can no longer treat networking as a flexible data pipe. It is the literal spine of your compute cluster. If your network design does not prioritise system coherence alongside bandwidth, you will encounter scaling and reliability limits. Guardrail number 2, consistency over theoretical speed. We have seen how jitter and latency propagate through a synchronous system. You must design for absolute predictability. A predictable network often delivers better system outcomes than a faster, but highly variable one. Guardrail number 3, strictly manage failure boundaries. You know that localised failures cascade rapidly. Your orchestration and automation layers must be designed to halt, isolate and recover stateful workloads without causing a cluster-wide disruption. Distributed AI forces us to return to the fundamentals of systems engineering. It is a demanding systems engineering work, but it is the only way to unlock the true potential of these massively scaled models. Take these principles, challenge your existing architectures, and build systems that are actually designed for the realities of AI. Thank you for watching.",
+          "transcript": "We have spent this course tearing down traditional cloud assumptions. We have looked at why standard playbooks fail, how state is distributed, and the immense physical toll of the coordination tax. Now it's time to build. To keep distributed AI reliable at massive scale, you must establish non-negotiable infrastructure guardrails. Guardrail number one, the network is the backplane. You can no longer treat networking as a flexible data pipe. It is the literal spine of your compute cluster. If your network design does not prioritise system coherence alongside bandwidth, you will encounter scaling and reliability limits. Guardrail number 2, consistency over theoretical speed. We have seen how jitter and latency propagate through a synchronous system. You must design for absolute predictability. A predictable network often delivers better system outcomes than a faster, but highly variable one. Guardrail number 3, strictly manage failure boundaries. You know that localised failures cascade rapidly. Your orchestration and automation layers must be designed to halt, isolate and recover stateful workloads without causing a cluster-wide disruption. Distributed AI forces us to return to the fundamentals of systems engineering. It is a demanding systems engineering work, but it is the only way to unlock the true potential of these massively scaled models. Take these principles, challenge your existing architectures, and build systems that are actually designed for the realities of AI. Thank you for watching.",
           "figure": {
             "path": "resources/videos/original-v8.mp4",
             "poster": "resources/images/original-v8.jpg",
@@ -6412,7 +6472,7 @@
                 "path": "resources/captions/original-v8.en.vtt",
                 "language": "en-US",
                 "label": "English (US)",
-                "sha256": "cda13e8952f8be48fc9e39945a1cec5af45f48545ebcdf0556bbfa328dc7486d",
+                "sha256": "4676f196fcdc4bec334e6ee2925c5df416d381ebe3b78ccf0373ae6bb44f719e",
                 "_cues": [
                   {
                     "start": 3.49,
@@ -6442,7 +6502,7 @@
                   {
                     "start": 16.87,
                     "end": 19.75,
-                    "text": "To keep distributed air reliable at massive scale,"
+                    "text": "To keep distributed AI reliable at massive scale,"
                   },
                   {
                     "start": 19.94,
@@ -6452,7 +6512,7 @@
                   {
                     "start": 24.879,
                     "end": 26.0,
-                    "text": "Guard rule number one,"
+                    "text": "Guardrail number one,"
                   },
                   {
                     "start": 26.36,
@@ -6611,7 +6671,7 @@
               {
                 "start": 16.87,
                 "end": 19.75,
-                "text": "To keep distributed air reliable at massive scale,"
+                "text": "To keep distributed AI reliable at massive scale,"
               },
               {
                 "start": 19.94,
@@ -6621,7 +6681,7 @@
               {
                 "start": 24.879,
                 "end": 26.0,
-                "text": "Guard rule number one,"
+                "text": "Guardrail number one,"
               },
               {
                 "start": 26.36,

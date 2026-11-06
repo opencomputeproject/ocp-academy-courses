@@ -606,11 +606,15 @@ def render_content_diagram(slide: dict, course: dict, module: dict) -> str:
     label = slide.get("section_label")
     video_attr = ' data-video-slide="true"' if _is_video_figure(slide.get("figure")) else ""
     media_class = ' slide--media-focus' if slide.get('media_focus') else ''
+    context_note = (
+        f'\n      <p class="slide-subtitle slide-context-note animate-in">{esc(slide.get("subtitle"))}</p>'
+        if slide.get("show_context_note") is True and slide.get("subtitle") else ""
+    )
     return f'''
   <div class="slide{media_class}" data-slide="{slide["id"]}"{video_attr}>
     <div class="slide-content">
       {f'<span class="section-label animate-in">{esc(label)}</span>' if label else ""}
-      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>
+      <h2 class="slide-title animate-in">{esc(_title_for_slide(slide, label, "", module))}</h2>{context_note}
       {_figure_html(slide.get("figure"), course)}
       {f'<p class="slide-main-text animate-in">{esc(slide.get("caption"))}</p>' if slide.get("caption") else ""}
       {_learner_aids_html(slide, course)}
