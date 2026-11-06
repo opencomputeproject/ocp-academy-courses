@@ -19,7 +19,7 @@ python3 courses/distributed-ai-infrastructure/scripts/verify_course.py build/dis
 
 The build stages resources, embeds caption cues, renders Home and all five modules, checks narration levels and the package, and produces the strict LMS ZIP plus separate LMS catalog exports. To synthesize changed narration, use the maintained `gen_audio.py` with an ElevenLabs credential supplied privately through the environment. Preserve full `eleven_v4`, Leo (`bbGtsRRKUfYO634UxSjz`), pitch-preserving tempo 1.18 and the learner dial at 1.0. Generated WAVs and native synthesis masters are not in Git.
 
-The supplied VTT files are the editable source for video captions. The Slides renderer loads them into per-track embedded cues so overlays work when opening files locally and when served through HTTP/LMS. All eight English tracks retain their original bytes and timing. See [QA](QA.md) for caption playback checks.
+The supplied VTT files are the editable source for video captions. The Slides renderer loads them into per-track embedded cues so overlays work when opening files locally and when served through HTTP/LMS. All eight tracks use English (US), `en-US`. Four approved transcription typos in M3S4, M3S6 and M5S8 are corrected in the VTT files, embedded cues and transcripts; all cue timing and recording bytes are preserved. See [QA](QA.md) for caption playback checks.
 
 ## Teaching video maintenance
 
