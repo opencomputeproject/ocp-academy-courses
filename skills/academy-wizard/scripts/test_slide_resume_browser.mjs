@@ -184,7 +184,7 @@ try {
   const hint = local.page.locator('.hero-start-hint span');
   const originalHint = await hint.innerText();
   await toggle.click();
-  check((await hint.innerText()).startsWith('Narration is off.'), true, 'Off hint appears');
+  check(await hint.innerText(), course.ui_labels?.narration_off_hint || 'Narration is off. Read the transcript or use Play for this slide.', 'Localized or default off hint appears');
   await local.page.reload();
   check(await toggle.getAttribute('aria-pressed'), 'false', 'Off preference survives reload');
   await toggle.click();
