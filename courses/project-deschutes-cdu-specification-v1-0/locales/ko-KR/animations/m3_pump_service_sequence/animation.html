@@ -7,30 +7,30 @@
   <style>
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f8fa;
       font-family: Arial, Helvetica, sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
-    .flow { stroke-dasharray: 17 15; animation: flow 1.05s linear infinite; }
-    .pump-b-rotor { transform-box: fill-box; transform-origin: center; animation: spin 1.8s linear infinite; }
-    .pump-a-rotor { transform-box: fill-box; transform-origin: center; animation: pumpAspin 12s linear infinite; }
-    .valve-a { transform-box: fill-box; transform-origin: center; animation: closeValve 12s ease-in-out infinite; }
-    .branch-fluid { animation: drainFluid 12s ease-in-out infinite; }
-    .drain-hose { animation: showDrain 12s ease-in-out infinite; }
-    .power-plug { animation: unplug 12s ease-in-out infinite; }
-    .break-point { animation: breakPoint 12s ease-in-out infinite; }
-    .pump-a-assembly { animation: removePump 12s ease-in-out infinite; }
-    .step-1 { animation: step1 12s ease-in-out infinite; }
-    .step-2 { animation: step2 12s ease-in-out infinite; }
-    .step-3 { animation: step3 12s ease-in-out infinite; }
-    .step-4 { animation: step4 12s ease-in-out infinite; }
-    .step-5 { animation: step5 12s ease-in-out infinite; }
-    .continuous { animation: continuous 2s ease-in-out infinite; }
+    .flow { stroke-dasharray: 17 15; animation: flow 1.05s linear 100; }
+    .pump-b-rotor { transform-box: fill-box; transform-origin: center; animation: spin 1.8s linear 100; }
+    .pump-a-rotor { transform-box: fill-box; transform-origin: center; animation: pumpAspin 12s linear 100; }
+    .valve-a { transform-box: fill-box; transform-origin: center; animation: closeValve 12s ease-in-out 100; }
+    .branch-fluid { animation: drainFluid 12s ease-in-out 100; }
+    .drain-hose { animation: showDrain 12s ease-in-out 100; }
+    .power-plug { animation: unplug 12s ease-in-out 100; }
+    .break-point { animation: breakPoint 12s ease-in-out 100; }
+    .pump-a-assembly { animation: removePump 12s ease-in-out 100; }
+    .step-1 { animation: step1 12s ease-in-out 100; }
+    .step-2 { animation: step2 12s ease-in-out 100; }
+    .step-3 { animation: step3 12s ease-in-out 100; }
+    .step-4 { animation: step4 12s ease-in-out 100; }
+    .step-5 { animation: step5 12s ease-in-out 100; }
+    .continuous { animation: continuous 2s ease-in-out 100; }
     @keyframes flow { to { stroke-dashoffset: -32; } }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes pumpAspin {
@@ -71,7 +71,7 @@
     @keyframes continuous { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
   </style>
 </head>
-<body>
+<body data-duration-ms="12000">
   <svg viewBox="0 0 1280 720" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
     <title id="title">펌프 서비스 순서 제한</title>
     <desc id="desc">무음 애니메이션에서는 중복 펌프가 냉각수 흐름을 유지하는 모습이 나오며, 서비스 분기가 격리되고, 배수되며, 무전압되고 분리되어 전면 서비스 구역을 통해 분리됩니다.</desc>
@@ -89,7 +89,7 @@
     <g transform="translate(956 23)">
       <rect id="redundant-flow-box" width="270" height="42" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
       <circle class="continuous" cx="22" cy="21" r="6" fill="#6fa030"/>
-      <text id="redundant-flow-text" x="40" y="26" font-size="14" font-weight="700" fill="#315018">중복 흐름은 여전히 활성 상태로 남아 있습니다</text>
+      <text id="redundant-flow-text" x="40" y="26" font-size="12" font-weight="700" fill="#315018">중복 흐름은 여전히 활성 상태로 남아 있습니다</text>
     </g>
 
     <g transform="translate(52 112)">
@@ -135,7 +135,7 @@
       <path class="flow" d="M128 314 H786" stroke="#c2e7ff" stroke-width="5" stroke-linecap="round"/>
       <text x="124" y="289" font-size="13" font-weight="700" fill="#2479b8">보조 공급 헤더</text>
       <path d="M122 552 H820" stroke="#d94a45" stroke-width="14" stroke-linecap="round"/>
-      <text x="124" y="583" font-size="13" font-weight="700" fill="#b3322f">보조 반환 헤더</text>
+      <text x="500" y="583" font-size="13" font-weight="700" fill="#b3322f">보조 반환 헤더</text>
 
       <g id="pump-a-section" transform="translate(202 330)">
         <path class="branch-fluid" d="M110 -16 V36 M110 158 V222" stroke="#2f8fd5" stroke-width="12" stroke-linecap="round"/>

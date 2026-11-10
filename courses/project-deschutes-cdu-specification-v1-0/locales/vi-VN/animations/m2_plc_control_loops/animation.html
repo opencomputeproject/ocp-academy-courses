@@ -7,15 +7,17 @@
   <style>
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f8fa;
       font-family: Arial, Helvetica, sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
+    svg * { animation-iteration-count: 100 !important; }
+    .signal-command, .signal-feedback { clip-path: url(#signal-header-clearance); }
     .signal-command { stroke-dasharray: 14 13; animation: commandFlow 1.15s linear infinite; }
     .signal-feedback { stroke-dasharray: 8 11; animation: feedbackFlow 1.35s linear infinite; }
     .water-flow { stroke-dasharray: 18 16; animation: waterFlow 1.1s linear infinite; }
@@ -46,11 +48,15 @@
     @keyframes status { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
   </style>
 </head>
-<body>
+<body data-duration-ms="12000">
   <svg viewBox="0 0 1280 720" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
     <title id="title">Project Deschutes vòng điều khiển đồng thời PLC</title>
     <desc id="desc">Một hoạt hình im lặng cho thấy phản hồi áp suất vi sai kiểm soát tốc độ bơm, phản hồi nhiệt độ tiếp cận kiểm soát van sơ cấp, và nguồn điện dự phòng duy trì khả năng kiểm soát.</desc>
     <defs>
+      <clipPath id="signal-header-clearance" clipPathUnits="userSpaceOnUse">
+        <rect width="1280" height="260"/>
+        <rect y="318" width="1280" height="402"/>
+      </clipPath>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1b2340" flood-opacity="0.12"/>
       </filter>
@@ -64,7 +70,7 @@
     <g transform="translate(980 23)">
       <rect id="status-box" width="246" height="42" rx="6" fill="#eef6e4" stroke="#8dc63f"/>
       <circle class="status-pulse" cx="22" cy="21" r="6" fill="#6fa030"/>
-      <text id="status-text" x="123" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="#315018">Cả hai điểm set đều được giữ nguyên</text>
+      <text id="status-text" x="134" y="26" text-anchor="middle" font-size="10" font-weight="700" fill="#315018">Cả hai điểm set đều được giữ nguyên</text>
     </g>
 
     <g filter="url(#shadow)">
@@ -72,7 +78,7 @@
       <rect x="488" y="106" width="304" height="52" rx="7" fill="#8dc63f"/>
       <text x="640" y="139" text-anchor="middle" font-size="21" font-weight="700" fill="#ffffff">PLC + HMI</text>
       <text x="640" y="182" text-anchor="middle" font-size="15" font-weight="700" fill="#19194d">Modbus/TCP · IPv4 + IPv6</text>
-      <text x="640" y="205" text-anchor="middle" font-size="12" fill="#5f6062">Đọc phản hồi · điều chỉnh bộ truyền động · Báo cáo cảnh báo</text>
+      <text x="640" y="205" text-anchor="middle" font-size="10" fill="#5f6062">Đọc phản hồi · điều chỉnh bộ truyền động · Báo cáo cảnh báo</text>
     </g>
 
     <g filter="url(#shadow)">
