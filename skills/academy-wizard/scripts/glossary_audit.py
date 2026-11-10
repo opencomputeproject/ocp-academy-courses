@@ -93,18 +93,23 @@ def match_term(term, text):
         # substring inside another Latin word (for example, core in score).
         if needle and re.fullmatch(r'[a-z0-9 -]+', needle):
             unspaced = r'[\u3400-\u9fff\u3040-\u30ff\uf900-\ufaff]'
+            if re.fullmatch(r'[A-Z][A-Z0-9]{1,7}', str(alias)):
+                unspaced = r'[\u3400-\u9fff\u3040-\u30ff\uf900-\ufaff\uac00-\ud7a3]'
+            def boundary(char):
+                return not char or not re.match(r'\w', char) or bool(re.match(unspaced, char))
             for occurrence in re.finditer(re.escape(needle), text):
                 before = text[occurrence.start()-1:occurrence.start()] if occurrence.start() else ''
                 after = text[occurrence.end():occurrence.end()+1]
-                def boundary(char):
-                    return not char or not re.match(r'\w', char) or bool(re.match(unspaced, char))
                 if boundary(before) and boundary(after):
                     return str(alias)
         # Pronunciation spelling of an actual acronym, e.g. S L A, not synonyms.
         if re.fullmatch(r'[A-Z]{2,8}', str(alias)):
             letters = r'[\s.]+'.join(re.escape(c.casefold()) for c in alias)
-            if re.search(r'(?<!\w)' + letters + r'(?!\w)', text):
-                return str(alias)
+            for occurrence in re.finditer(letters, text):
+                before = text[occurrence.start()-1:occurrence.start()] if occurrence.start() else ''
+                after = text[occurrence.end():occurrence.end()+1]
+                if boundary(before) and boundary(after):
+                    return str(alias)
     return None
 
 

@@ -51,6 +51,19 @@ class GlossaryAuditTests(unittest.TestCase):
     def test_pill_cannot_justify_itself(self):
         self.assertTrue(any('absent' in x for x in self.audit(self.slide())))
 
+    def test_latin_acronyms_touching_east_asian_text_are_real_usage(self):
+        for term, text in [('DLC', '两相DLC采用相变'), ('TCS', 'TCS循環を確認する'),
+                           ('ICP', '实验室ICP分析'), ('QA', '实验室QA和ICP分析'),
+                           ('PG25', 'PG25를사용합니다'), ('TCS', 'T C S循环')]:
+            with self.subTest(term=term, text=text):
+                self.assertEqual(match_term({'term': term}, text), term)
+
+    def test_acronym_boundary_still_rejects_longer_latin_identifiers(self):
+        for term, text in [('OAT', 'HOAT'), ('DLC', 'DLCC'), ('PG25', 'PG250'),
+                           ('DLC', 'DLCé'), ('TCS', 'éTCS'), ('TCS', 'AT C S')]:
+            with self.subTest(term=term, text=text):
+                self.assertIsNone(match_term({'term': term}, text))
+
     def test_visible_text_and_caption_are_evidence(self):
         self.assertEqual([], self.audit(self.slide(bullets=[{'text': 'Fungibility preserves choice.'}])))
         fig = self.media(text='A rack', video=False); fig['caption'] = 'Fungibility needs evidence.'

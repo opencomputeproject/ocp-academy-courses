@@ -5,15 +5,25 @@
     "engine": "elevenlabs",
     "voice_id": "PDoCXqBQFGsvfO0hNkEs",
     "voice_name": "Chris - Warm and clear",
-    "model_id": "eleven_multilingual_v2"
+    "model_id": "eleven_v4",
+    "speed": 1.18,
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR",
+      "migration_decision": "mp3"
+    }
   },
   "course_slug": "cooling_fluids_in_direct_liquid_cooling_ko_kr",
   "course_title": "직접 액체 냉각 (DLC)의 냉각 유체",
   "course_subtitle": "단상 TCS 칩 직접 냉각 배포에 대한 유연한 지침",
   "tagline": "Community-driven Hyperscale Innovation for All",
-  "spec_version_chip": "수성 열전달 유체 사용 지침",
+  "spec_version_chip": "OCP 기본 사양 + PG25 지침",
   "target_duration_minutes": 35,
-  "audience_level": "중급",
+  "audience_level": "intermediate",
   "brand": {
     "primary_color": "#8DC63F",
     "primary_color_dark": "#6FA030",
@@ -37,14 +47,29 @@
   },
   "sources": [
     {
+      "kind": "ocp_base_specification_pdf",
+      "title": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
+    },
+    {
+      "kind": "ocp_base_specification_pdf",
+      "title": "OCP Base Specification - PG25 - V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf"
+    },
+    {
       "kind": "ocp_contribution_pdf",
-      "title": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+      "title": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
       "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
     },
     {
       "kind": "ocp_contribution_pdf",
-      "title": "2상 냉각판 기반 액체 냉각 랙에서 유전체 열전달 유체 사용에 대한 지침",
+      "title": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
       "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_operating_guideline_pdf",
+      "title": "OCP PG25 Guidelines V1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf"
     }
   ],
   "term_glossary": [
@@ -53,42 +78,63 @@
       "term": "DLC",
       "tooltip": "직접 액체 냉각. 액체가 프로세서나 가속기와 같은 발열 구성 요소 근처에서 열을 제거하는 냉각 방식입니다.",
       "reference_label": "OCP 냉각 환경",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "직접 액체 냉각"
+      ]
     },
     {
       "id": "cdu",
       "term": "CDU",
       "tooltip": "냉각수 분배 장치. 냉각수를 펌핑 및 조절하고 TCS와 시설 시스템 간에 열을 전달하는 장비입니다.",
       "reference_label": "OCP 냉각 환경",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "냉각수 분배 장치"
+      ]
     },
     {
       "id": "tcs",
       "term": "TCS",
       "tooltip": "기술 냉각 시스템. CDU과 랙 또는 서버 냉각 하드웨어 사이의 닫힌 보조 루프입니다.",
       "reference_label": "ASHRAE/OCP 사용법",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "기술 냉각 시스템"
+      ]
     },
     {
       "id": "fws",
       "term": "FWS",
       "tooltip": "설비 용수 시스템. TCS 경계 외부의 시설 측 루프입니다.",
       "reference_label": "OCP 냉각 환경",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "설비 용수 시스템"
+      ]
     },
     {
       "id": "pg25",
       "term": "PG25",
-      "tooltip": "25% 프로필렌글리콜를 포함하는 열전달 유체, 일반적으로 단상 칩 직접 냉각 냉각에 사용됩니다.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "tooltip": "OCP 기본 사양 PG25 V1.0.0에 따라 25에서 28 퍼센트까지 프로필렌글리콜의 무게로 구성된 바로 사용할 수 있는 열전달 유체.",
+      "reference_label": "OCP 기본 사양 - PG25 - V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+      "aliases": [
+        "P G 이십오",
+        "PG 25"
+      ]
     },
     {
       "id": "qd",
       "term": "QD",
       "tooltip": "퀵 디스커넥트. 루프에서 유체 연결을 만들고 끊을 수 있는 서비스 커넥터입니다.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP 단상 작동 지침",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+      "aliases": [
+        "QDs",
+        "퀵 디스커넥트",
+        "빠른 연결 해제"
+      ]
     },
     {
       "id": "iat",
@@ -107,38 +153,53 @@
     },
     {
       "id": "azole",
-      "term": "아졸레",
+      "term": "아졸",
       "tooltip": "구리 및 황색 금속을 보호하는 데 사용되는 부식 억제제 제품군입니다.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP 단상 작동 지침",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+      "aliases": [
+        "아졸류"
+      ]
     },
     {
       "id": "tss",
       "term": "TSS",
       "tooltip": "총 부유 물질. 유체에 부유하는 입자.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP 물 기반 냉각수 베이스 사양 V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "tds",
       "term": "TDS",
       "tooltip": "총 용존 고형물. 전도성과 관련된 유체에 용해된 물질입니다.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP 물 기반 냉각수 베이스 사양 V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "cfu",
       "term": "CFU/ml",
       "tooltip": "액체 내 미생물 수에 사용되는 밀리리터당 집락 형성 단위입니다.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP 물 기반 냉각수 베이스 사양 V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+      "aliases": [
+        "CFU/ml",
+        "CFU",
+        "밀리리터당 콜로니 형성 단위"
+      ]
+    },
+    {
+      "id": "ntu",
+      "term": "NTU",
+      "tooltip": "네펠로미터 turbidity unit. 침전된 입자로 인한 유체 흐림의 측정값.",
+      "reference_label": "OCP 물 기반 냉각수 베이스 사양 V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "icp",
       "term": "ICP",
       "tooltip": "유도 결합 플라즈마 분석은 수용성 이온과 금속 오염을 식별하는 데 사용됩니다.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP 단상 작동 지침",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
     },
     {
       "id": "sds",
@@ -151,8 +212,8 @@
       "id": "coa",
       "term": "COA",
       "tooltip": "분석 증명서. 제조된 유체에 대한 제품 품질 또는 적합성을 보여주는 제조업체 문서입니다.",
-      "reference_label": "OCP 단상 지침 초안",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP 물 기반 냉각수 베이스 사양 V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "latent_heat",
@@ -196,6 +257,38 @@
       "tooltip": "개인 보호 장비. SDS 및 현지 안전 절차에서 선택한 장갑, 눈 보호구 및 기타 통제 장치.",
       "reference_label": "OSHA PPE 개요",
       "url": "https://www.osha.gov/personal-protective-equipment"
+    },
+    {
+      "id": "refractive_index",
+      "term": "굴절률",
+      "tooltip": "정확한 액체 공급업체의 보정 데이터를 사용하여 글리콜 농도를 추정하는 데 사용되는 광학적 특성입니다. 그것은 억제제 상태의 직접적인 측정은 아닙니다.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 지침 V1.0.0, 섹션 11.6"
+    },
+    {
+      "id": "reserve_alkalinity",
+      "term": "예비 알칼리도",
+      "tooltip": "억제제 배합에 따라 해석이 달라지며, 유기산 액체는 기존의 배합과 동일한 기준을 사용하지 않습니다.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 지침 V1.0.0, 표 14"
+    },
+    {
+      "id": "antifoam",
+      "term": "소포제",
+      "aliases": [
+        "소포제 첨가제",
+        "소포제 에이전트들"
+      ],
+      "tooltip": "폼을 제어하는 데 사용되는 첨가제입니다. 미세 여과 또는 호환되지 않는 필터 매체는 일부 글리콜 제형에서 이를 제거할 수 있습니다.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 지침 V1.0.0, 섹션 6.5 및 7.2"
+    },
+    {
+      "id": "biostatic",
+      "term": "미생물 증식 억제",
+      "tooltip": "적절한 조건에서 미생물 성장을 억제합니다. 이는 액체나 루프가 무균이라는 것을 의미하지는 않습니다.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 지침 V1.0.0, 섹션 3.1 및 11.1"
     }
   ],
   "modules": [
@@ -216,13 +309,15 @@
           "title": "직접 액체 냉각 (DLC)의 냉각 유체",
           "slug": "cooling_fluids_in_direct_liquid_cooling",
           "subtitle": "단상 TCS 유체 선택, 시운전, 모니터링 및 작동.",
-          "version_chip": "수성 열전달 유체 사용 지침",
+          "version_chip": "OCP 물 + PG25 기본 사양",
           "id": 1,
           "audio": {
             "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
             "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.mp3"
+          },
+          "transcript": "직접 액체 냉각의 냉각 유체에 오신 것을 환영합니다. 이 과정은 CDU와 콜드 플레이트 사이의 TCS 루프인 기술 냉각 시스템 내부의 유동적 결정에 관한 것입니다.\n\n우리는 단상 칩 직접 냉각 냉각: 처리된 물과 P G 25에 집중할 것입니다. 결국에는 유체가 값비싼 랙에 도달하기 전에 호환성, 화학, 여과, 모니터링 및 기록에 관해 더 나은 질문을 할 수 있어야 합니다."
         },
         {
           "type": "course_overview",
@@ -253,11 +348,10 @@
           "audio": {
             "script_file": "audio/module1/slide_02_course_roadmap.txt",
             "wav_file": "audio/module1/slide_02_course_roadmap.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_02_course_roadmap.mp3"
           },
-          "term_refs": [
-            "dlc"
-          ]
+          "transcript": "이 과정에는 4개의 모듈이 있습니다. 먼저 경계를 설정합니다. 유체가 어디에 살고 있는지, 왜 고밀도 AI가 결정을 내리는지, 그리고 왜 2상 냉매가 별도의 학습 경로에 속하는지.\n\n둘째, 처리된 물과 P G 25를 비교한 다음 유체 사양 뒤에 있는 특성 목표, 억제제 화학 및 호환성 증거를 풀어냅니다.\n\n셋째, 시운전: 서비스 가능한 설계, 누출 점검, 청소, 채우기, 시동 샘플링, 여과 및 미생물 제어로 이동합니다.\n\n마지막으로 정기적인 모니터링, 실험실 테스트, 추세 해석, 공급업체 안내 조정, 유체 혼합, 유효 수명, 폐기 및 인프라 교체 주기를 유지하는 기록 등 안정적인 상태의 운영을 다룹니다."
         },
         {
           "type": "content_grid",
@@ -292,26 +386,99 @@
           "audio": {
             "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
             "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.mp3"
           },
           "term_refs": [
-            "tdp",
-            "tcs"
-          ]
+            "tcs",
+            "tdp"
+          ],
+          "transcript": "이제 공기 냉각이 이를 따라잡기 힘든 곳에 열이 집중되기 때문에 A I 랙은 열 대화를 변화시켰습니다. 추세는 분명합니다. 가속기 전력이 상승하고, 더 작은 설치 공간에 더 많은 가속기가 들어가고, 랙 전력이 익숙한 수십 킬로와트에서 수백 킬로와트로 이동하고 있습니다.\n\n그렇다고 공기가 사라진다는 뜻은 아니다. 많은 칩 직접 냉각 배치에서 액체는 대부분의 열을 제거하는 반면 공기는 여전히 잔류 부하를 처리합니다. 그러나 이는 유체가 신뢰성 이야기의 일부가 된다는 것을 의미합니다. 유체가 오염되거나 부식되거나 생물학이 성장하거나 마이크로 채널을 막는 경우 컴퓨팅 비즈니스 사례는 매우 빠르게 유지 관리 문제가 될 수 있습니다."
         },
         {
           "type": "content_diagram",
           "title": "유체가 사는 곳",
           "slug": "where_the_fluid_lives",
           "section_label": "시스템 경계",
+          "reference_links": [
+            {
+              "label": "물 기반 유체 지침 · pp. 5–6",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=5"
+            }
+          ],
           "figure": {
             "path": "figures/tcs_loop.svg",
-            "alt": "기술 냉각 시스템 CDU와 콜드 플레이트 사이의 루프",
-            "caption": "이 과정은 CDU와 IT 장비 사이의 닫힌 TCS 루프에 중점을 둡니다."
+            "alt": "별도의 시설과 TCS 유체가 CDU에서 열을 교환합니다. TCS는 매니폴드와 콜드 플레이트를 통해 순환합니다.",
+            "caption": "열은 CDU 열교환기를 가로지릅니다. 시설과 TCS 유체는 분리되어 있습니다.",
+            "text_inventory": {
+              "sha256": "72696c053b8f1d06748e414a82778f26cfdd5e71a92e25f4c5ca2ab9a6e24303",
+              "entries": [
+                {
+                  "text": "기술 냉각 시스템 (TCS)"
+                },
+                {
+                  "text": "폐쇄된 보조 루프"
+                },
+                {
+                  "text": "시설용 물"
+                },
+                {
+                  "text": "시스템 (FWS)"
+                },
+                {
+                  "text": "이 범위 밖에서"
+                },
+                {
+                  "text": "CDU"
+                },
+                {
+                  "text": "열교환기"
+                },
+                {
+                  "text": "펌프 + 필터"
+                },
+                {
+                  "text": "선반"
+                },
+                {
+                  "text": "다양한"
+                },
+                {
+                  "text": "공급 / 반품"
+                },
+                {
+                  "text": "QDs + 호스"
+                },
+                {
+                  "text": "센서들"
+                },
+                {
+                  "text": "IT 장비"
+                },
+                {
+                  "text": "콜드 플레이트"
+                },
+                {
+                  "text": "공급"
+                },
+                {
+                  "text": "공급"
+                },
+                {
+                  "text": "돌아오다"
+                },
+                {
+                  "text": "돌아오다"
+                },
+                {
+                  "text": "열이 교환기를 가로지른다. 두 유체는 섞이지 않는다."
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "15-17"
             }
@@ -320,33 +487,89 @@
           "audio": {
             "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
             "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_04_where_the_fluid_lives.mp3"
           },
           "term_refs": [
             "cdu",
             "fws",
+            "qd",
             "ashrae"
-          ]
+          ],
+          "transcript": "첫 번째 경계는 간단하지만 중요합니다. 이 과정은 랙 장비에서 CDU로 열을 전달하는 보조 폐쇄 루프에 관한 것입니다. ASHRAE 언어에서 해당 루프는 기술 냉각 시스템 또는 TCS입니다.\n\n설비 용수 시스템은 CDU 열 교환기의 반대편에 있습니다. 전체 디자인에 중요하지만 동일한 유동적 환경은 아닙니다. TCS는 콜드 플레이트, 매니폴드, 신속 분리 장치, 호스, 펌프 씰, 필터, 저장소 및 센서에 닿습니다. 젖은 표면 하나하나가 유체 호환성 문제의 일부가 됩니다."
         },
         {
           "type": "content_diagram",
           "title": "단상 범위 내 유체 계열",
           "slug": "single_phase_fluid_families_in_scope",
           "section_label": "범위",
+          "reference_links": [
+            {
+              "label": "PG25 사양 · pp. 10–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            }
+          ],
           "figure": {
             "path": "figures/fluid_families.svg",
-            "alt": "처리된 물과 PG25는 범위에 포함되고 2상 냉매는 연기됩니다.",
-            "caption": "이 과정의 실행 가능한 지침은 처리된 물과 PG25 스타일 단상 루프에 대한 것입니다."
+            "alt": "처리된 물과 바로 사용할 수 있는 PG25는 단상 범위이며, 이중상 냉매는 별도의 제품군입니다.",
+            "caption": "처리된 물과 PG25는 열을 운반하는 동안 액체 상태로 유지되지만, 화학 성질과 작동 요구 사항이 다릅니다.",
+            "text_inventory": {
+              "sha256": "677d794179243b1a39e85ce16edfc8f7784ae9194d7d5e710ab6db1210731fea",
+              "entries": [
+                {
+                  "text": "단상 스펙트럼"
+                },
+                {
+                  "text": "처리된 물"
+                },
+                {
+                  "text": "높은 열용량"
+                },
+                {
+                  "text": "관리된 화학"
+                },
+                {
+                  "text": "PG"
+                },
+                {
+                  "text": "PG25"
+                },
+                {
+                  "text": "25-28% 무게당 PG"
+                },
+                {
+                  "text": "바로 사용할 수 있는 + 억제제"
+                },
+                {
+                  "text": "2상"
+                },
+                {
+                  "text": "냉매"
+                },
+                {
+                  "text": "별도의 과정"
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "pg25"
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "5.2-5.3"
+            }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
             "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.mp3"
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "transcript": "이 과정에서 주요 단상 유체 계열은 처리된 물과 P G 25입니다. 처리된 물은 탁월한 열 전달을 제공할 수 있지만 부식, 생물학적 성장, 전도성, 고형물, 경도 및 첨가제에 대한 적극적인 주의가 필요합니다.\n\n게시된 OCP PG25 사양은 무게 기준으로 25~28%의 프로필렌글리콜를 갖는 바로 사용할 수 있는 유체를 정의합니다. 물에 비해 일부 열 성능을 포기하므로 작동 범위에 대한 측정된 특성 데이터가 필요합니다. 사양에는 또한 염료인 부식 억제제, 제어 불순물, 제품 여과 및 배송 증거가 필요합니다.\n\n2상 유전체 냉매는 작동 논리가 다르기 때문에 대조용으로만 여기에 표시됩니다."
         },
         {
           "type": "content_grid",
@@ -381,12 +604,14 @@
           "audio": {
             "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
             "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_06_the_four_operator_questions.mp3"
+          },
+          "transcript": "운영자의 우려는 한 곳에 집중되지 않습니다. 운영자는 시스템과 호환되는 유체를 선택하는 것에 대해 걱정합니다. 그들은 값비싼 하드웨어 주변의 누출을 걱정합니다. 그들은 유체를 모니터링하고 샘플이 무엇을 의미하는지 아는 것에 대해 걱정합니다. 그리고 그들은 충분한 설계 및 운영 전문 지식을 갖추는 것에 대해 걱정합니다.\n\n이러한 질문이 이 과정의 핵심이 됩니다. 정답이 단일 제품 설명인 경우는 거의 없습니다. 이는 일련의 증거입니다: 유체 화학, 접액 재료, 설치 청결도, 여과, 모니터링, 동향, 공급업체 지원 및 문서화된 결정."
         },
         {
           "type": "content_two_column",
-          "title": "2상 수액은 다른 과정입니다",
+          "title": "2상 유체는 별도 과정에서 학습합니다",
           "slug": "two_phase_fluids_are_a_different_course",
           "section_label": "대비",
           "subtitle": "단상 물/PG25 규칙을 2상 냉매 규칙과 결합하지 마십시오.",
@@ -406,28 +631,55 @@
           ],
           "figure": {
             "path": "figures/single_vs_two_phase.svg",
-            "alt": "단상 유체는 현열를 사용하고 2상 냉매는 잠열를 사용합니다.",
-            "caption": "2상 유동적 교육은 2상 DLC 강좌에서 만나보실 수 있습니다."
+            "alt": "온도계는 현열를 나타내며, 위에 증기가 있는 액체 방울은 잠열를 나타냅니다.",
+            "caption": "2상 유동적 교육은 2상 DLC 강좌에서 만나보실 수 있습니다.",
+            "text_inventory": {
+              "sha256": "d035b6e724e0bdf12c048f46a6c13f4573b947c5360dda8f628f9c322f6065e8",
+              "entries": [
+                {
+                  "text": "단상"
+                },
+                {
+                  "text": "물 또는 PG25"
+                },
+                {
+                  "text": "현열"
+                },
+                {
+                  "text": "액체는 따뜻해집니다; 액체 상태로 유지됩니다."
+                },
+                {
+                  "text": "2상"
+                },
+                {
+                  "text": "절연 냉매"
+                },
+                {
+                  "text": "잠열"
+                },
+                {
+                  "text": "증발은 열을 옮긴다."
+                },
+                {
+                  "text": "냉매 예시: R-515B, R-1233zd(E), R-1336mzz(Z)"
+                }
+              ]
+            }
           },
           "reference_links": [
             {
-              "label": "OCP 2상 유체 지침",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+              "label": "OCP Academy: 2상 DLC",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids"
             }
-          ],
-          "term_refs": [
-            "latent_heat",
-            "sds",
-            "coa"
           ],
           "source_refs": [
             {
-              "source": "2상 냉각판 기반 액체 냉각 랙에서 유전체 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "slides": "6-13"
             },
             {
-              "source": "2상 냉각판 기반 액체 냉각 랙에서 유전체 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "timestamp": "03:12-09:15"
             }
@@ -436,8 +688,16 @@
           "audio": {
             "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
             "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.mp3"
+          },
+          "term_refs": [
+            "dlc",
+            "sds",
+            "coa",
+            "latent_heat"
+          ],
+          "transcript": "기술적인 중복이 제한되어 있기 때문에 이 슬라이드는 강좌의 2상 슬라이드입니다. 공유된 교훈은 거버넌스입니다. 유동성을 알고, 접액 재료을 알고, 기록을 유지하고, 올바른 사양을 사용합니다.\n\n유체 거동이 다릅니다. 2상 DLC는 R five 15 B, R 12 33 Z D E 및 R 13 36 M Z Z Z Z와 같은 저비등점 유전체 냉매를 사용합니다. 이들 냉매의 장점은 끓거나 증발하는 동안 잠열입니다. 단상 액체로서 이러한 유체는 비열 값이 낮습니다. 상 변화 없이 이를 실행하면 주요 이점이 낭비되고 훨씬 더 높은 유속이 필요하게 됩니다.\n\n2상 세부 내용은 링크된 OCP 지침과 별도의 2상 DLC 과정을 이용하세요."
         },
         {
           "type": "content_diagram",
@@ -446,12 +706,74 @@
           "section_label": "소스 분야",
           "figure": {
             "path": "figures/standards_map.svg",
-            "alt": "DLC 유체 안내에 대한 표준 및 소스 맵",
-            "caption": "유동적 지침은 커뮤니티 표준, 테스트 방법 및 제품별 치료 계획의 스택입니다."
+            "alt": "제품 기본 사양 및 PG25 수명주기 지침은 테스트 방법 및 시스템 컨텍스트에 의해 지원되는 공급업체 승인 계획을 안내합니다.",
+            "caption": "제품 요구 사항과 운영 권장 사항은 서로 다른 목적을 가지고 있으므로, 공급업체에서 승인한 시스템 계획과 함께 모두 사용하십시오.",
+            "text_inventory": {
+              "sha256": "12902af87601cbd9a71661b266dd14257f38b1b1cce681608465db0eb2875ca6",
+              "entries": [
+                {
+                  "text": "OCP 기본 사양"
+                },
+                {
+                  "text": "물 냉각수 V1.3 / PG25 V1.0.0"
+                },
+                {
+                  "text": "바로 사용할 수 있는 제품 요구 사항"
+                },
+                {
+                  "text": "PG25 지침 V1.0.0"
+                },
+                {
+                  "text": "수명 종료까지 호환성 유지"
+                },
+                {
+                  "text": "제품 한계가 아닌 권고사항"
+                },
+                {
+                  "text": "공급업체 승인 시스템 계획"
+                },
+                {
+                  "text": "정확한 액체 + 접액 재료"
+                },
+                {
+                  "text": "운전 범위 + 모니터링"
+                },
+                {
+                  "text": "현장 조치 기준 + 대응"
+                },
+                {
+                  "text": "ASTM"
+                },
+                {
+                  "text": "측정법"
+                },
+                {
+                  "text": "방법들"
+                },
+                {
+                  "text": "ASHRAE TC 9.9"
+                },
+                {
+                  "text": "시스템 컨텍스트"
+                }
+              ]
+            }
           },
           "reference_links": [
             {
-              "label": "OCP 냉각 환경",
+              "label": "물 냉각수 사양 · pp. 8–12",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=8"
+            },
+            {
+              "label": "PG25 사양 · pp. 7–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=7"
+            },
+            {
+              "label": "PG25 지침 · pp. 9–10",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=9"
+            },
+            {
+              "label": "냉각 환경",
               "url": "https://www.opencompute.org/wiki/Cooling_Environments"
             }
           ],
@@ -459,11 +781,26 @@
           "audio": {
             "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
             "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_08_standards_and_source_map.mp3"
           },
           "term_refs": [
             "astm"
-          ]
+          ],
+          "source_refs": [
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "1; 14",
+              "pages": [
+                9,
+                10,
+                85,
+                86
+              ]
+            }
+          ],
+          "transcript": "소스 맵에는 두 가지 종류의 OCP 문서가 있습니다. 물 기반 냉각제와 PG25 기본 사양은 바로 사용할 수 있는 제품의 요구 사항을 정의합니다. PG25 지침(버전 1.0.0)은 호환성, 시운전 여과, 테스트, 모니터링 및 유지 보수에 대한 수명주기 권장 사항을 추가합니다.\n\n운영 지침을 기본 사양 대체물로 취급하지 마십시오. 일반적인 특성 테이블과 예제 사용 범위는 작동 조건을 해석하는 데 도움이 됩니다. 이들은 보편적인 제품 승인 제한이 아닙니다. 정확한 유체 공급업체의 기술 지원 및 사이트의 승인된 계획과 함께 적용하십시오.\n\nASTM 테스트 방법은 공통적인 측정 언어를 제공하며, 시스템 공급업체는 실제 접액 재료 및 작동 범위를 설정합니다. 신뢰할 수 있는 결정은 개별적으로 하나의 숫자를 선택하는 대신 이러한 계층을 연결합니다."
         },
         {
           "type": "takeaways",
@@ -479,8 +816,10 @@
           "audio": {
             "script_file": "audio/module1/slide_09_module_1_summary.txt",
             "wav_file": "audio/module1/slide_09_module_1_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_09_module_1_summary.mp3"
+          },
+          "transcript": "모듈 1은 경계를 설정합니다. 이 과정은 시설 물 루프나 전체 2상 냉매 과정이 아닌 TCS 루프 내부의 단상 유체 결정에 관한 것입니다.\n\n이것이 중요한 이유는 간단합니다. 고밀도 AI 랙은 유체 상태을(를) 가용성 문제로 만듭니다. 유용한 질문은 실용적인 질문입니다. 유체가 호환됩니까? 어떻게 채워지나요? 어떻게 필터링되나요? 무엇이 모니터링되나요? 언제 조정할지는 누가 결정하나요?\n\n2상 시스템의 공통점은 대부분 거버넌스입니다. 운영 지침이 빠르게 분기되므로 나머지 코스는 처리수와 P G 25로 유지됩니다."
         },
         {
           "id": 10,
@@ -489,7 +828,8 @@
           "audio": {
             "script_file": "audio/module1/slide_10_knowledge_check.txt",
             "wav_file": "audio/module1/slide_10_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_10_knowledge_check.mp3"
           },
           "title": "유체 경계를 확인하세요",
           "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
@@ -552,7 +892,8 @@
               "feedback_correct": "맞습니다. 유체 선택, 화학 제어, 호환성, 여과 및 서비스 실습이 모두 프로그램에 속합니다.",
               "feedback_incorrect": "단상 프로그램은 유체 선택, 화학물질 한도, 접액 재료, 여과 및 서비스 관행을 중심으로 구축되었습니다."
             }
-          ]
+          ],
+          "transcript": "모듈 1의 유체 경계를 확인하려면 여기에서 잠시 멈추십시오.\n\n첫 번째 질문은 이 과정의 실제 내용이 무엇인지 묻습니다. 시설 수처리가 아닌 2상 냉매가 아닌 칩 직접 냉각 냉각의 수성 유체입니다. 두 번째 질문은 건강한 단상 유동 프로그램에 어떤 운영 질문이 속하는지 묻습니다.\n\n계속하려면 각 질문을 한 번 제출하세요. 피드백을 사용하여 답변을 조정하고 다른 패스를 원할 경우 다시 시도하세요."
         },
         {
           "type": "up_next",
@@ -564,8 +905,10 @@
           "audio": {
             "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
             "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.mp3"
+          },
+          "transcript": "잘했어요. 시스템 경계 모듈을 완료하셨습니다. 이제 이 과정이 적용되는 곳, 적용되는 단일 단계 유체 계열, 그리고 실제 결정을 지원하는 출판된 사양 및 운영 지침을 알 수 있습니다.\n\n다음으로 선택 및 사양으로 이동합니다. 우리는 물과 P G 25를 비교하고, 주요 속성 목표를 검토하고, 억제제 화학과 접액 재료을 충분히 자세히 살펴 더 나은 조달 및 설계 대화를 지원할 것입니다."
         }
       ],
       "next_module_title": "단상 유체 선택 및 지정"
@@ -591,8 +934,10 @@
           "audio": {
             "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
             "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.mp3"
+          },
+          "transcript": "모듈 2에서는 단상 유체를 선택하고 지정하는 방법에 대해 설명합니다. 우리는 처리된 물과 P G 25를 비교한 다음 유체 선택 뒤에 있어야 하는 화학적 특성 및 호환성 증거를 살펴볼 것입니다.\n\n이 모듈은 모든 사람을 화학자로 만들려는 것이 아닙니다. 목표는 더 실용적입니다. 유동적인 요구 사항을 읽고, 숫자가 무엇을 보호하는지 이해하고, 재료 또는 운영 변경으로 인해 새로운 호환성 대화가 필요한 시기를 알 수 있어야 합니다."
         },
         {
           "type": "objectives",
@@ -609,12 +954,10 @@
           "audio": {
             "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
             "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module2/slide_02_selection_decisions_you_will_classify.mp3"
           },
-          "term_refs": [
-            "tcs",
-            "pg25"
-          ]
+          "transcript": "이 모듈이 끝나면 열 성능만으로 결정을 내리지 않고도 처리된 물과 PG 25를 비교할 수 있게 됩니다.\n\n수성 냉각제 및 PG25에 대한 게시된 제품 요구 사항을 식별할 수 있으며, pH, 전도도, 경도, 불순도, 박테리아 및 억제제 수준과 같은 매개변수가 작동 신호로 남아 있는 이유를 설명할 수 있습니다.\n\n또한 높은 수준에서 I A T, O A T 및 H O A T 억제제 전략을 구별하고 호환성 증거를 접액 재료, 빠른 연결 해제, 콜드 플레이트, 펌프, 필터 및 씰에 다시 연결할 수 있습니다."
         },
         {
           "type": "content_diagram",
@@ -623,25 +966,124 @@
           "section_label": "유체 선택",
           "figure": {
             "path": "figures/water_pg25_tradeoff.svg",
-            "alt": "처리된 물과 PG25 절충점",
-            "caption": "물은 열 성능을 선호합니다. PG25은 농도가 유지될 때 생체정역학적 운영 마진을 추가합니다."
+            "alt": "질적 표는 물과 PG25 열 용량, 점도, 화학 제어 및 신제품 요구 사항을 비교합니다. 측정된 성능 비율은 암시되지 않습니다.",
+            "caption": "질적 비교만: 작동 온도에서 용제별 특성을 사용하고, 글리콜 농도가 무게로 측정되는지 부피로 측정되는지 기록하십시오.",
+            "text_inventory": {
+              "sha256": "5177d760db596fd4461734a660071ed2121b2cedfa6845378cfde1a1d3621153",
+              "entries": [
+                {
+                  "text": "처리된 물"
+                },
+                {
+                  "text": "PG25"
+                },
+                {
+                  "text": "열 용량"
+                },
+                {
+                  "text": "더 높은"
+                },
+                {
+                  "text": "물보다 낮다"
+                },
+                {
+                  "text": "점성률"
+                },
+                {
+                  "text": "낮추다"
+                },
+                {
+                  "text": "높음; 온도가 중요하다"
+                },
+                {
+                  "text": "화학 제어"
+                },
+                {
+                  "text": "식물성 침식 +"
+                },
+                {
+                  "text": "미생물 제어"
+                },
+                {
+                  "text": "글리콜 농도 +"
+                },
+                {
+                  "text": "억제제 균형"
+                },
+                {
+                  "text": "신제품 기준"
+                },
+                {
+                  "text": "물 냉각수 V1.3"
+                },
+                {
+                  "text": "25-28% 무게당 PG"
+                },
+                {
+                  "text": "질적만 해당합니다. 작동 온도에서 공급업체 특성 데이터를 사용하여 설계합니다."
+                },
+                {
+                  "text": "농도 기준을 기록하세요: 무게 %는 부피 %가 아닙니다."
+                }
+              ]
+            }
           },
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "5.2-5.3"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "3.1; 11.5",
+              "pages": [
+                13,
+                14,
+                67,
+                70
+              ]
+            }
+          ],
           "id": 3,
           "audio": {
             "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
             "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 사양 · pp. 10–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "PG25 지침 · pp. 13–16",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=13"
+            }
+          ],
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ],
+          "transcript": "물은 훌륭한 열전달 유체이지만 열용량은 유일한 설계 문제가 아닙니다. 데이터 센터 TCS 루프도 부식 보호, 생물학적 제어 및 입자, 용해 물질 및 첨가제 균형의 관리가 필요합니다.\n\nPG25 기본 사양은 무게 기준으로 25%에서 28%의 프로필렌글리콜를 함유한 바로 사용할 수 있는 제품을 정의합니다. 새로운 운영 지침은 부피로 인한 글리콜 농도를 설명합니다. 무게와 부피 비율은 상호 교환할 수 없습니다. 유체 공급업체의 제형별 데이터를 사용하고 각 레코드에서 측정 기준을 식별하십시오.\n\nPG25는 물과 다른 열적 특성을 가지고 있으므로 작동 범위 전반에 걸쳐 측정된 데이터를 사용하여 설계해야 합니다. 그 글리콜은 미생물 성장을 제한하는 데 도움이 되며, 억제제 패키지는 재료를 보호합니다. 제품 준수 여부는 다른 공급업체의 제형이 교체 가능하다는 것을 증명하지 않습니다."
         },
         {
           "type": "content_table",
-          "title": "바로 사용할 수 있는 유체 품질 목표",
+          "title": "발표된 수성 냉각제 목표",
           "slug": "ready_to_use_fluid_quality_targets",
           "section_label": "유체 타겟",
-          "subtitle": "수성 열전달 유체에 대해 선택된 초안 값.",
+          "reference_links": [
+            {
+              "label": "물 냉각수 사양 · pp. 11–12",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=11"
+            }
+          ],
+          "subtitle": "OCP 기본 사양에서 선택한 바로 사용할 수 있는 제품 요구 사항.",
           "columns": [
             "매개변수",
-            "초안 대상",
+            "게시한 제한",
             "왜 중요한가요?"
           ],
           "rows": [
@@ -652,12 +1094,12 @@
             ],
             [
               "TDS",
-              "처리 후 <1000ppm",
+              "<2000 ppm",
               "용존 고형물 및 오염 추세"
             ],
             [
               "전도도",
-              "25°C에서 <2000uS/cm",
+              "<2000 미국/센티미터",
               "용해된 물질에 대한 간편한 현장 신호"
             ],
             [
@@ -672,111 +1114,248 @@
             ],
             [
               "박테리아",
-              "채우기 <1 CFU/ml; 작업 <100 CFU/ml",
-              "생물 오염 제어"
+              "<1 CFU/ml",
+              "신선한 제품 미생물 제어"
             ],
             [
-              "아졸레스",
-              ">100ppm 또는 치료 계획당",
-              "구리 및 황색 금속 보호"
+              "탁도",
+              "<5 NTU",
+              "명확도와 입자 제어"
             ]
-          ],
-          "term_refs": [
-            "tss",
-            "tds",
-            "cfu",
-            "azole"
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "table": 1
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "sections": "5.4.1-5.4.7"
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
             "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.mp3"
+          },
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "ntu"
+          ],
+          "transcript": "게시된 수성 냉각수 베이스 사양은 신선제품 품질을 측정 가능한 수용 가능 한 한계로 변환합니다. 화면에 표시된 선택된 값은 서비스에 투입되기 전에 바로 사용할 수 있는 냉각수에 적용됩니다. 이들은 백만 분의 5 이하로 총 침전성 입자, 백만 분의 2 이하로 총 용해성 입자, 센티미터당 마이크로시emens 이하로 전기 전도도, pH 8에서 10 점 5 사이, 탄산칼슘으로 인한 백만 분의 30 이하로 경도, 5 N T U 이하로 불순도, 밀리리터당 한 개균주 형성 단위 이하로 박테리아를 포함합니다.\n\n이것은 완전한 운영 처리 계획이 아니라 제품 요구 사항입니다. 냉각수가 서비스에 들어가면 전도율과 T D S는 용해 물질과 오염의 추세 신호가 됩니다. 경도는 보충수 품질이나 침출 소스를 가리킬 수 있습니다. 불순도와 T S S는 필터를 로드하거나 미세 채널을 위협하는 입자를 드러낼 수 있습니다. 박테리아 수치는 생물학적 위험을 드러내지만 억제제 표적은 제품에 따라 달라집니다.\n\n오늘은 모든 임계값을 외우지 않아도 됩니다. 중요한 습관은 제품 수신 시 분석 인증서와 비교한 다음 운영 루프를 기준선 및 치료 계획과 비교하는 것입니다."
         },
         {
           "type": "content_bullets",
           "title": "작동 온도 및 화학성 창",
           "slug": "operating_temperature_and_chemistry_window",
-          "section_label": "작동 봉투",
-          "subtitle": "온도는 호환성 요구 사항의 일부입니다.",
+          "section_label": "운전 범위",
+          "subtitle": "Water(물)와 PG25 지침은 일반적인 운영 범위가 다릅니다.",
           "bullets": [
             {
-              "bold_lead": "일반적인 범위",
-              "text": "TCS 루프는 지침 초안에서 49°C 이하로 설명됩니다."
+              "bold_lead": "물 안내",
+              "text": "49도씨 이하에서 일반적인 TCS 작동을 설명합니다."
             },
             {
-              "bold_lead": "예상한도",
-              "text": "추가 검토 없이 작동 온도가 66°C를 초과하지 않을 것으로 예상됩니다."
+              "bold_lead": "PG25 지침",
+              "text": "17-66 도 C의 전형적인 폐쇄 루프 범위를 설명합니다."
             },
             {
-              "bold_lead": "호환성 트리거",
-              "text": "온도가 높을수록 접액 재료 및 처리 화학에 대한 검토가 필요합니다."
+              "bold_lead": "범위 너머",
+              "text": "접액 재료, 특히 플라스틱 및 엘라스토머를 재검토합니다."
             },
             {
               "bold_lead": "현지 상황",
-              "text": "IT 및 콜드 플레이트 공급업체에 최대 표면 정체 온도를 확인하십시오."
+              "text": "공급업체와 함께 부피용 액체와 냉각판 표면 온도를 확인하세요."
             }
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "52-54"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.6",
+              "pages": [
+                25
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
             "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "물 기반 유체 지침 · p. 12",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=12"
+            },
+            {
+              "label": "PG25 지침 · p. 25",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=25"
+            }
+          ],
+          "transcript": "온도는 화학적 특성과 호환성에 영향을 주며, 두 운용 지침은 서로 다른 일반적인 온도 범위를 제시합니다. 물 기반 냉각수 지침은 일반적인 TCS 운전 온도를 섭씨 49도 미만으로 설명하고, 섭씨 66도를 초과하면 추가 검토가 필요하다고 합니다. PG25 지침의 일반적인 폐쇄 루프 운전 범위는 섭씨 17도에서 66도입니다.\n\n이것은 응용 가이드라인이며, 해당 범위의 모든 냉각수 또는 구성요소를 작동할 수 있는 권한이 아닙니다. 실제 유체 및 장비 공급업체의 승인된 운전 범위를 사용하십시오. PG25 가이드라인의 일반적인 범위 이상에서, 특히 탄성체 및 플라스틱에 대해 접액 재료를 검토하십시오.\n\n로컬 콜드 플레이트 표면 온도 및 정체된 영역은 전체 유체보다 더 가혹할 수 있습니다. 호환성 및 억제제 성능을 검증할 때 이러한 조건을 포함하십시오."
         },
         {
           "type": "content_diagram",
           "title": "부식 억제제: IAT, OAT 및 HOAT",
           "slug": "corrosion_inhibitors_iat_oat_and_hoat",
           "section_label": "억제제 화학",
+          "reference_links": [
+            {
+              "label": "PG25 사양 · p. 10",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "PG25 지침 · p. 16",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=16"
+            }
+          ],
           "figure": {
             "path": "figures/inhibitor_timeline.svg",
-            "alt": "물에서 IAT OAT 및 HOAT까지의 냉각수 억제제 화학 타임라인",
-            "caption": "억제제 전략은 부식 방지, 서비스 수명 및 오염 물질 민감도에 영향을 미칩니다."
+            "alt": "IAT, OAT, 그리고 HOAT 억제제 계열은 타임라인이나 순위표가 아닌 병렬 접근법으로 표시됩니다.",
+            "caption": "순위를 매기지 않고 화학 계열을 비교하세요. 정확한 제형을 확인하세요; OCP에 준수하는 PG25는 실리콘 기반 첨가제를 금지합니다.",
+            "text_inventory": {
+              "sha256": "cf3ba5cd616a39b75370e4e574b37b1dcef9c78b4ddf1fe44d436bc5d07deac9",
+              "entries": [
+                {
+                  "text": "IAT"
+                },
+                {
+                  "text": "비유기적 첨가제 기술"
+                },
+                {
+                  "text": "비유기성 첨가제"
+                },
+                {
+                  "text": "빠른 필름 보호"
+                },
+                {
+                  "text": "OAT"
+                },
+                {
+                  "text": "유기산 기술"
+                },
+                {
+                  "text": "유기산 억제제"
+                },
+                {
+                  "text": "장수 접근 방식"
+                },
+                {
+                  "text": "HOAT"
+                },
+                {
+                  "text": "하이브리드 유기산 기술"
+                },
+                {
+                  "text": "+"
+                },
+                {
+                  "text": "통합 접근 방식"
+                },
+                {
+                  "text": "유기+무기 화학"
+                },
+                {
+                  "text": "보호, 호환성, 수명 및 모니터링은 제형에 따라 달라집니다."
+                },
+                {
+                  "text": "OCP-준수 PG25: 실리콘 기반 첨가제는 없습니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.2"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.mp3"
           },
           "term_refs": [
             "iat",
             "oat",
             "hoat"
           ],
-          "id": 6,
-          "audio": {
-            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
-            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
-            "approved": true
-          }
+          "transcript": "부식 억제제는 냉각수가 단지 파이프 안의 물이 아닌 이유 중 하나입니다. 무기 첨가 기술(I A T)은 인산염, 규산염, 붕산염과 같은 화학 물질을 사용하여 보호막을 빠르게 형성합니다. 단점은 억제제 수명이 짧고 일부 불순물에 대한 민감도가 높다는 것입니다.\n\n유기산 기술(O A T)은 보호 수명을 연장하기 위해 개발되었습니다. Hybrid O A T는 보다 빠른 보호를 위해 수명이 긴 유기산 접근 방식과 소량의 무기 화학을 결합합니다.\n\n데이터 센터 운영자에게는 이 교훈은 하나의 약어가 항상 승리한다는 것이 아닙니다. 교훈은 어떤 억제제 시스템을 사용하고 있는지, 어떤 재료를 보호하는지, 오염 물질에 대한 안정성, 그리고 공급업체가 귀하가 이를 어떻게 모니터링하기를 기대하는지 아는 것입니다. 한 가지 공표된 요구 사항은 구체적입니다: OCP에 준하는 PG25는 잔류물과 막힘 위험이 있기 때문에 실리카 기반 첨가제를 금지합니다. 일반적인 화학 가족 라벨은 절대 정확한 제품 사양을 대체하지 않습니다."
         },
         {
           "type": "content_diagram",
           "title": "경수, 규모 및 예금 위험",
           "slug": "hard_water_scale_and_deposit_risk",
           "section_label": "예금",
+          "reference_links": [
+            {
+              "label": "물 냉각수 사양 · p. 11",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=11"
+            }
+          ],
           "figure": {
             "path": "figures/hard_water_scale.svg",
-            "alt": "경수 이온은 스케일을 형성하고 마이크로채널을 위협할 수 있습니다.",
-            "caption": "칼슘과 마그네슘은 가동 시간에 큰 영향을 미치는 작은 화학 신호입니다."
+            "alt": "칼슘과 마그네슘은 부적절한 화학적으로 결정하여 좁은 냉각판 통로에서 침전물을 형성할 수 있다.",
+            "caption": "수질, 물질 침출, 억제제 화학은 용해된 이온을 침전물, 필터 로드, 제한된 통로로 바꿀 수 있다.",
+            "text_inventory": {
+              "sha256": "879ded03f40d48a6c6d8caf35b601cf644e9e24ee5d1612bee2a370997bb58f1",
+              "entries": [
+                {
+                  "text": "칼슘 + 마그네"
+                },
+                {
+                  "text": "암"
+                },
+                {
+                  "text": "Mg"
+                },
+                {
+                  "text": "물 품질 또는"
+                },
+                {
+                  "text": "물질 침출"
+                },
+                {
+                  "text": "결정될 수 있음"
+                },
+                {
+                  "text": "화학 상호 작용"
+                },
+                {
+                  "text": "스케일 / 침전 형성"
+                },
+                {
+                  "text": "좁은 통로"
+                },
+                {
+                  "text": "차단 + 필터 로드"
+                },
+                {
+                  "text": "열 전달 감소"
+                }
+              ]
+            }
           },
           "id": 7,
           "audio": {
             "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
             "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.mp3"
+          },
+          "transcript": "칼슘 및 마그네슘과 같은 경수 이온은 수질이 좋지 않거나 호스 필러와 같은 재료에서 침출되어 루프에 유입될 수 있습니다. 일단 존재하면 억제제 화학과 상호작용하여 침전물을 형성할 수 있습니다. 잘못된 위치에서 이러한 침전물은 스케일, 필터 로딩, 열 전달 감소 또는 마이크로채널 막힘이 됩니다.\n\n경수 안정성 사례는 실험실 관찰과 운영 위험을 연결하기 때문에 유용합니다. 요점은 학습자를 시험 화학자로 만드는 것이 아닙니다. 요점은 호환성, 수질, 억제제 화학 및 여과가 동일한 대화에 속하는 이유를 보여주는 것입니다."
         },
         {
           "type": "content_diagram",
@@ -785,36 +1364,127 @@
           "section_label": "호환성",
           "figure": {
             "path": "figures/wetted_materials.svg",
-            "alt": "접액 재료 호환성 맵",
-            "caption": "재료 변경도 유체 호환성 이벤트입니다."
+            "alt": "호환성 지도에는 정확한 냉각수 조성, 금속, 표면 처리, 열교환기, 콜드 플레이트, 탄성체, 필터, 밀봉, 펌프 및 어셈블리가 포함됩니다.",
+            "caption": "정확한 조성, 온도 및 노출 조건으로 전체 적재된 재료 재고를 확인합니다.",
+            "text_inventory": {
+              "sha256": "4fdf414d75210b4de080aeb22d779f9bd1c8e75601b935f2c79d381419d13080",
+              "entries": [
+                {
+                  "text": "금속 + 표면"
+                },
+                {
+                  "text": "등급, 도금, 브레이징,"
+                },
+                {
+                  "text": "나사 밀봉제"
+                },
+                {
+                  "text": "콜드 플레이트"
+                },
+                {
+                  "text": "열교환기"
+                },
+                {
+                  "text": "채널 + 가입한 자료들"
+                },
+                {
+                  "text": "엘라스토머"
+                },
+                {
+                  "text": "호스, 밀봉, 꽂힘"
+                },
+                {
+                  "text": "정확한 복합물이 중요하다"
+                },
+                {
+                  "text": "TCS 액체"
+                },
+                {
+                  "text": "정확한 포뮬레이션"
+                },
+                {
+                  "text": "+ 운영 조건"
+                },
+                {
+                  "text": "펌프 + 필터"
+                },
+                {
+                  "text": "매체, 밀봉, 베어링"
+                },
+                {
+                  "text": "첨가제 보유 여부를 확인하세요."
+                },
+                {
+                  "text": "QDs + 밸브들"
+                },
+                {
+                  "text": "부속품, 밀봉, 저장 용기"
+                },
+                {
+                  "text": "모든 축축한 부분을 포함합니다."
+                },
+                {
+                  "text": "제조 방법, 재료 등급, 온도 및 노출 기간을 함께 확인하세요."
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "qd"
-          ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "46-51"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.2-6.5; 8-9",
+              "pages": [
+                19,
+                24,
+                30,
+                40
+              ]
             }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
             "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_08_wetted_materials_and_compatibility.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · pp. 18–24",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=18"
+            }
+          ],
+          "term_refs": [
+            "qd"
+          ],
+          "transcript": "호환성은 유체가 닿는 모든 표면에서 따릅니다: 콜드 플레이트, 열교환기, 펌프 밀봉, 빠른 분리, 호스, 필터 매체, 저장 용기, 나사 밀봉제, 용접 재료 및 도금 표면.\n\nPG25 지침의 자료 목록은 포괄적인 승인 목록이 아니라 대표적 목록입니다. 예상 온도, 노출 시간 및 작동 조건에서 정확한 재료 등급 및 유체 공정을 확인합니다. 제조업체 데이터 및 공급업체 권장 사항을 검토하고 증거가 불충분할 경우 통제된 테스트를 계획합니다.\n\n필터 카트리지와 하우징 꽂힘 고무는 해당 검토에 속합니다. 필터는 화학적 안정성이 있을 수 있지만 여전히 첨가제를 영향을 미칠 수 있으며 호환되는 금속은 호환되는 밀봉을 보장하지 않습니다. 축적된 물질 재고에 대한 변경 사항은 전체 유체 및 시스템 조합의 재평가에 대한 트리거가 되어야 합니다."
         },
         {
           "type": "content_bullets",
           "title": "자격 및 공급업체 증거",
           "slug": "qualification_and_supplier_evidence",
           "section_label": "증거",
+          "reference_links": [
+            {
+              "label": "물 냉각수 사양 · pp. 12–13",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=12"
+            },
+            {
+              "label": "PG25 사양 · pp. 14–16, 19–21",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=14"
+            }
+          ],
           "subtitle": "구매 주문이 완료된 후 사양을 감사할 수 있어야 합니다.",
           "bullets": [
             {
               "bold_lead": "COA",
-              "text": "제조된 제품의 품질과 적합성을 확인합니다."
+              "text": "각 배송을 확인합니다. PG25는 농도를 보고하고, 굴절률 및 pH는 보고합니다."
             },
             {
               "bold_lead": "SDS",
@@ -826,21 +1496,26 @@
             },
             {
               "bold_lead": "호환성 확인",
-              "text": "유체를 접액 재료 및 작동 조건에 연결합니다."
+              "text": "표준화된 접액 재료 및 조건에 대한 부식 테스트 결과를 연결합니다."
             },
             {
               "bold_lead": "기록",
-              "text": "하드웨어 갱신 주기를 통해 결정을 보존합니다."
+              "text": "새로 고침 주기로 배치 추적 가능성, 분석 및 결정을 보존합니다."
             }
-          ],
-          "term_refs": [
-            "coa",
-            "sds",
-            "ppe"
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "sections": "5.5, 5.7"
+            },
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "3.2, 6.2, 8.2-8.6"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "31-36"
             }
@@ -849,8 +1524,16 @@
           "audio": {
             "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
             "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_09_qualification_and_supplier_evidence.mp3"
+          },
+          "term_refs": [
+            "sds",
+            "coa",
+            "ppe",
+            "refractive_index"
+          ],
+          "transcript": "유체 선택은 증거를 남길 수 있어야 합니다. 출판된 기본 사양 모두 각 배송에 대한 분석 증명서를 요구합니다. PG25의 경우, 해당 증명서는 농도 또는 측정 온도를 포함한 굴절률 및 최소한 pH를 포함해야 합니다. 기술 데이터 시트는 예상되는 작동 범위 전반에 걸쳐 측정된 점도, 열 용량, 밀도 및 열 전도율을 보고해야 합니다. 소유자는 또한 안전 데이터 시트, 처리 계획, 호환성 증거, 배치 식별 및 공급업체 권장 사항을 보관해야 합니다.\n\n공개된 부식 테스트는 중요한 증거를 제공하지만, 모든 플라스틱, 엘라스토머, 접착제, 커넥터 또는 작동 조건을 완벽하게 검증하지는 않습니다. 유체 공급업체, I T 공급업체, 계약자 및 서비스 제공업체는 정확한 접액 재료 및 작동 조건에 대해 합의해야 합니다. 이는 특히 멀티 벤더 랙 환경에서 특히 중요합니다. 재사용 가능한 액체 냉각 인프라스트럭처는 여러 갱신 사이클 동안 서로 다른 하드웨어를 보유할 수 있습니다. 배송 증거, 제품 데이터 및 추적 가능한 기록이 없으면 각 갱신은 불확실성을 다시 생성합니다."
         },
         {
           "type": "takeaways",
@@ -867,8 +1550,10 @@
           "audio": {
             "script_file": "audio/module2/slide_10_module_2_summary.txt",
             "wav_file": "audio/module2/slide_10_module_2_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_10_module_2_summary.mp3"
+          },
+          "transcript": "모듈 2는 제품 이름에서 사양 사고로 이동했습니다. 처리된 물과 PG25 모두 장점이 있지만 서로 다른 열 특성 및 작동 부담을 지닙니다. 출판된 PG25는 바로 사용할 수 있는로 무게 기준으로 25~28%의 프로필렌글리콜이며, 제품별 억제제와 호환성 증거가 있습니다.\n\n수성 냉각수 테이블은 고체, 용해 물질, 전도성, pH, 경도, 불순도 및 박테리아에 대한 측정 가능한 신선제품 제한을 제공합니다. 시운전 이후, 이러한 특성은 더 광범위한 기준선 및 처리 계획의 일부가 됩니다. 억제제 화학은 부식 보호 및 침전 위험을 형성하기 때문에 중요합니다. 호환성은 중요합니다. 왜냐하면 유체가 콜드 플레이트보다 더 많이 닿기 때문입니다.\n\n좋은 단상 유체 사양은 증거를 바탕으로 하며 시스템별로 작동하도록 설계되었습니다."
         },
         {
           "id": 11,
@@ -877,39 +1562,40 @@
           "audio": {
             "script_file": "audio/module2/slide_11_knowledge_check.txt",
             "wav_file": "audio/module2/slide_11_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module2/slide_11_knowledge_check.mp3"
           },
           "title": "유체 선택을 확인하십시오",
           "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
           "questions": [
             {
               "id": "m2q1",
-              "prompt": "처리된 물 대신 PG25을 선택할 때의 주요 장단점은 무엇입니까?",
+              "prompt": "다음 중 게시된 OCP PG25 기본 사양과 일치하는 문구는 무엇입니까?",
               "multiple": false,
               "choices": [
                 {
                   "id": "B",
-                  "text": "PG25는 항상 동일한 유량에서 물보다 더 많은 열을 제거합니다.",
+                  "text": "모든 준수된 PG25 유체는 모든 다른 준수된 PG25 유체와 교환할 수 있습니다.",
                   "correct": false
                 },
                 {
                   "id": "D",
-                  "text": "PG25 호환성 증거가 필요하지 않습니다.",
+                  "text": "PG25는 현장 현장에서 운영자가 선택한 농도로 희석됩니다.",
                   "correct": false
                 },
                 {
                   "id": "A",
-                  "text": "PG25은 동결 방지 및 억제제 패키지 이점을 추가할 수 있지만 물에 비해 열 용량이 감소합니다.",
+                  "text": "PG25는 바로 사용할 수 있는에서 25에서 28 퍼센트 프로필렌글리콜의 무게로 공급됩니다.",
                   "correct": true
                 },
                 {
                   "id": "C",
-                  "text": "PG25는 루프를 2상 냉매 시스템으로 전환합니다.",
+                  "text": "규격에 맞는 PG25 제품에는 실리카 기반 첨가제가 필요합니다.",
                   "correct": false
                 }
               ],
-              "feedback_correct": "맞습니다. PG25가 유용할 수 있지만 낮은 열용량과 유체 특성 변화를 고려해야 합니다.",
-              "feedback_incorrect": "절충점은 PG25이 자동으로 더 좋다는 것이 아닙니다. 이는 물 대비 열용량을 줄이면서 동결 및 억제제 요구 사항을 충족하는 데 도움이 될 수 있습니다."
+              "feedback_correct": "맞습니다. 게시된 OCP 사양에서는 PG25를 바로 사용할 수 있는 제품으로 정의하며, 이 제품은 무게 기준으로 25~28%의 프로필렌글리콜를 포함하고 있습니다.",
+              "feedback_incorrect": "발표된 PG25는 바로 사용할 수 있는이 25에서 28 퍼센트 프로필렌글리콜의 무게로 25에 게시되었습니다. 규정 준수에는 상호 교환성이 보장되지 않으며, 실리콘 기반 첨가제는 금지됩니다."
             },
             {
               "id": "m2q2",
@@ -923,7 +1609,7 @@
                 },
                 {
                   "id": "A",
-                  "text": "바로 사용할 수 있는 농도, pH, 전도도 및 억제제 한계와 같은 화학 값.",
+                  "text": "농도 또는 굴절률, pH 및 최종 액체 특성을 다루는 COA 및 제품 데이터.",
                   "correct": true
                 },
                 {
@@ -937,10 +1623,11 @@
                   "correct": true
                 }
               ],
-              "feedback_correct": "맞습니다. 자격을 얻으려면 화학, 재료 호환성 및 공급업체 운영 지침이 필요합니다.",
-              "feedback_incorrect": "일반적인 유체 이름으로는 충분하지 않습니다. 패키지에는 화학 목표, 정확한 재료 및 공급업체 지침이 필요합니다."
+              "feedback_correct": "맞습니다. 자격 증명은 배송 증거, 제품 데이터, 재료 호환성 및 공급업체 운영 지침이 필요합니다.",
+              "feedback_incorrect": "일반적인 유체 이름은 충분하지 않습니다. 패키지는 배송 증거, 제품 데이터, 정확한 재료 및 공급업체 지침이 필요합니다."
             }
-          ]
+          ],
+          "transcript": "시운전로 이동하기 전에 유체 선택 모델을 확인하세요.\n\n첫 번째 질문은 PG25에 대한 게시된 제품 정의를 확인합니다. 두 번째 질문은 유체가 루프에 수용되기 전에 자격 패키지에 어떤 증거가 포함되어야 하는지 묻습니다.\n\n신중하게 선택하고 한 번 제출한 후 피드백을 검토하세요. 다시 시도할 수 있으며 시도 후 계속할 수 있습니다."
         },
         {
           "type": "up_next",
@@ -952,8 +1639,10 @@
           "audio": {
             "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
             "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.mp3"
+          },
+          "transcript": "잘했어요. 선택 모듈을 완료했습니다. 이제 처리된 물과 P G 25를 비교하고, 주요 유체 목표를 설명하고, 억제제 화학을 호환성 및 작동에 연결할 수 있습니다.\n\n다음으로 사양데스크에서 현장으로 이동합니다. 서비스 가능한 설계, 누출 검사, 청소 및 세척, 시작 샘플링, 여과, 프로젝트 데슈츠 필터 컨텍스트 및 미생물 제어을 살펴보겠습니다."
         }
       ],
       "next_module_title": "시운전, 루프 채우기 및 보호"
@@ -979,8 +1668,10 @@
           "audio": {
             "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
             "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.mp3"
+          },
+          "transcript": "모듈 3은 유체가 지정된 후 루프를 보호하는 현장 사례에 관한 것입니다. 시스템이 더럽거나, 세척이 부주의하거나, 누출 점검 유체가 호환되지 않거나, 첫 번째 샘플이 전혀 캡처되지 않으면 강력한 유체 선택이 여전히 실패할 수 있습니다.\n\n메시지는 실용적이다. 서비스가 가능하도록 루프를 설계하십시오. 깨끗하게 채워주세요. 서비스 팀이 작업할 수 있는 위치를 필터링합니다. 미생물 위험을 통제합니다. 그런 다음 시작 기준선을 유지합니다. 그 이유는 기준선가 나중에 모니터링하는 데 의미가 있기 때문입니다."
         },
         {
           "type": "objectives",
@@ -997,14 +1688,22 @@
           "audio": {
             "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
             "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.mp3"
+          },
+          "transcript": "이 모듈을 마치면 정비 매뉴얼뿐만 아니라 기계 설계에도 서비스 가능성이 속하는 이유를 설명할 수 있게 됩니다.\n\n누출 점검 유체 자체가 시스템과 호환되어야 하는 이유와 초기 세척 과정에서 콜드 플레이트이 격리되는 이유를 설명할 수 있습니다.\n\n또한 루프에 도입하지 말아야 하는 것을 식별할 수 있으며, 시작 시 기준선 기록이 중요한지, 호환되는 사이드스트림 여과를 선택하는 방법, 그리고 생물학적 성장이 콜드 플레이트 마이크로채널에 어떻게 위협을 가할 수 있는지 파악할 수 있습니다."
         },
         {
           "type": "content_bullets",
-          "title": "서비스 용이성을 위한 기계 설계",
+          "title": "정비성을 고려한 기계 설계",
           "slug": "mechanical_design_for_serviceability",
           "section_label": "디자인",
+          "reference_links": [
+            {
+              "label": "물 기반 유체 지침 · pp. 12–13",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=12"
+            }
+          ],
           "subtitle": "유체 프로그램에는 샘플링, 추가, 배수 및 분리를 위한 물리적 접근이 필요합니다.",
           "bullets": [
             {
@@ -1030,7 +1729,7 @@
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "60-68"
             }
@@ -1039,8 +1738,13 @@
           "audio": {
             "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
             "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_03_mechanical_design_for_serviceability.mp3"
+          },
+          "term_refs": [
+            "tcs"
+          ],
+          "transcript": "서비스성이 설계되어 있을 때 유체 유지 보수는 훨씬 더 쉽습니다. 단위파 운영 지침에서는 포트가 열전달 유체를 배출하고 채우며 TCS 루프가 작동하는 동안 화학 물질을 주입해야 한다고 명시합니다. 또한 동일한 호환성 기대치를 충족하는 물기가 있는 공급장치 또는 저장고 및 주입 펌프 배치를 나타냅니다.\n\n막힘 현상으로 인해 오염 물질이나 미생물 개체군이 갇힐 수 있으므로 완벽한 배수가 중요합니다. 저장소, 밸브, 통풍구, 게이지 및 격리 지점에도 동일한 논리가 적용됩니다. 그들은 엑스트라가 아닙니다. 이들은 일상적인 유지 관리를 가동 중지 시간으로 전환하지 않고 팀이 제어된 수정을 수행할 수 있는지 여부를 결정합니다."
         },
         {
           "type": "content_diagram",
@@ -1051,109 +1755,279 @@
             "path": "figures/commissioning_sequence.mp4",
             "media_type": "video",
             "poster": "figures/commissioning_sequence_poster.png",
-            "alt": "새로운 기술 냉각 시스템가 격리된 콜드 플레이트로 플러시되고 연결된 콜드 플레이트로 다시 플러시된 다음 기준선을 샘플링하고 기록하기 전에 최종 유체로 채워지는 것을 보여주는 무성 애니메이션입니다.",
-            "caption": "단계적 플러시는 최종 유체 채우기 및 기준선 샘플 전에 콜드 플레이트 마이크로채널에서 건축 잔해를 멀리합니다.",
+            "alt": "무음으로 스테이지된 잔해 펌프링 애니메이션: 분리된 콜드 플레이트를 우회하고 연결된 병렬 판 경로를 펌프링한 다음 최종 유체를 샘플링하고 청결성이 확인되고 더러운 물질이 제거된 후 기준선를 기록합니다.",
+            "caption": "완전한 청소 또는 부동태화 절차가 아닌, 가상의 잔해 헹구기 예제입니다. 기준선를 기록하는 것은 수락을 확정하는 것이 아닙니다.",
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "27a17ba87c7064ea27d634b3aff99d0c310bc4464ff21b471c43fcf2a16e5a37",
+              "entries": [
+                {
+                  "text": "격리 + 플러싱",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "건설 폐기물을 포착하다",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "연결 + 재실시",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "냉각판 경로를 포함합니다.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "최종 충전 + 채취",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "기준값 기록 및 보관",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "콜드 플레이트 격리 - 바이패스 열림",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "콜드 플레이트 - 병렬 경로",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "CDU / 펌프",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "돌아오다",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "인라인 필터",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "폐기물 포착",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "바이패스 사용 중",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "잔해 제거용 플러싱의 예입니다. 화학 세정, 부동태화, 세정제 제거는 별도로 검증해야 합니다.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "콜드 플레이트 연결 - 필요에 따라 플러싱 반복",
+                  "at_seconds": 6.1
+                },
+                {
+                  "text": "바이패스 닫힘",
+                  "at_seconds": 6.1
+                },
+                {
+                  "text": "청정도 확인 - 최종 냉각수 충전, 시료 채취, 기준값 기록",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "필터들을 필요에 따라 교체하세요.",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "샘플",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "기준값",
+                  "at_seconds": 15.5
+                },
+                {
+                  "text": "기록·보관",
+                  "at_seconds": 15.5
+                }
+              ]
+            }
           },
+          "caption": "오염 기록에서 청소 및 펌프 유체를 선택합니다. 바로 사용할 수 있는 PG25를 채우기 전에 청결 및 화학 물질 제거 여부를 확인합니다.",
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.3"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "paragraphs": "85-98"
+              "section": "5.2-5.3"
+            },
+            {
+              "source": "ASHRAE Handbook - Water Treatment: Deposition, Corrosion, and Biological Control",
+              "url": "https://handbook.ashrae.org/Handbooks/A19/IP/a19_ch50/a19_ch50_ip.aspx",
+              "section": "Closed Recirculating Systems"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.3-10.10",
+              "pages": [
+                47,
+                48,
+                51,
+                54,
+                56,
+                57,
+                59
+              ]
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
             "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · pp. 47–59",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=47"
+            }
+          ],
+          "term_refs": [
+            "cdu",
+            "pg25"
+          ],
+          "media_focus": true,
+          "transcript": "제조 역사, 예상 오염 물질, 금속 공학 및 공급업체 지침에 따라 문서화된 청소 계획을 시작하십시오. 물은 느슨한 잔해를 이동시킬 수 있지만 오일, 그리스, 플럭스, 용접 잔류물 또는 부식 제품이 제거되었는지 확인하지는 않습니다. 자격이 있는 전문가는 탈지, 화학 청소 또는 부동태화가 필요한지 여부를 결정해야 합니다.\n\nPG25 지침에는 특정 청소 절차가 명시되어 있지 않습니다. 적절한 호환성 있는 청소 솔루션인 열전달 유체 또는 물을 선택합니다. 고정된 시간 또는 통과 횟수 대신 필터 동작, 검사 및 대표 테스트를 통해 청결이 입증될 때까지 계속 헹굽니다.\n\n애니메이션은 스테이지된 잔해만 헹구는 것을 보여줍니다. 청소기 제거를 확인하고, 잔류 세척액을 배출하고, 필요에 따라 필터를 교체하고, 승인된 바로 사용할 수 있는 PG25를 채우십시오. 잔류 물은 글리콜과 억제제를 모두 희석할 수 있으므로 최종 농도를 확인해야 합니다."
         },
         {
           "type": "content_bullets",
           "title": "루프에 넣지 말아야 할 것",
           "slug": "what_not_to_put_in_the_loop",
           "section_label": "회피",
-          "subtitle": "통제되지 않은 세척제와 첨가제는 부식, 잔류물 또는 침전 위험을 초래할 수 있습니다.",
+          "subtitle": "청소 화학물은 호환되어야 하며 작동용 충전을 하기 전에 제거되어야 합니다.",
           "bullets": [
             {
-              "bold_lead": "감독되지 않은 청소부 피하기",
-              "text": "세제 및 화학 세척제에는 공급업체 지침이 필요합니다."
+              "bold_lead": "자격 있는 청소",
+              "text": "실제 오일, 그리스, 잔류물 및 접액 재료에 대한 세척제를 선택합니다."
             },
             {
-              "bold_lead": "잔류 규산염을 피하십시오",
-              "text": "규산염은 마이크로채널에 침전 및 침전될 수 있습니다."
+              "bold_lead": "계속된 금액을 제거합니다.",
+              "text": "면활성제는 거품이 생길 수 있으며, 잔류 생물학적 살충제는 PG25 억제제에 영향을 미칠 수 있습니다."
             },
             {
-              "bold_lead": "현지 배출 규칙을 존중하세요.",
-              "text": "배수하기 전에 지방자치단체나 규제 요건에 문의하세요."
+              "bold_lead": "최종 펌프",
+              "text": "PG25 지침에서는 세정제와 생물학적 살균제를 충전을 하기 전에 최종 세척에서 제외합니다."
             },
             {
-              "bold_lead": "최종 유체를 보호하세요",
-              "text": "승인된 치료 계획 이외의 첨가물을 도입하지 마십시오."
+              "bold_lead": "실리카를 피하세요",
+              "text": "침전물은 억제제 보호를 손상시키고 냉각판 통로를 차단할 수 있습니다."
+            },
+            {
+              "bold_lead": "제거 확인하기",
+              "text": "대표적인 세척 샘플을 비교하세요; 단 하나의 고정된 시간에 의존하지 마세요."
             }
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "106-110"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.5; 10.8",
+              "pages": [
+                51,
+                52,
+                53,
+                57
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
             "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 사양 · p. 10",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "PG25 지침 · pp. 51–58",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=51"
+            }
+          ],
+          "transcript": "시운전 화학 물질은 실제 오염 물질과 모든 접액 재료에 적합해야 합니다. PG25 지침은 필요 시 적합한 청소 솔루션을 허용하지만, 그 청소력은 물론 그 청소 솔루션의 완전한 제거도 중요합니다.\n\n잔류성 세정제는 거품이 생길 수 있으며, 세척용 생물학적 살균제는 최종 액체의 부식 보호에 영향을 미칠 수 있습니다. 지침에 따르면 PG25 채우기 전에 최종 헹구는 과정에서 세정제나 생물학적 살균제가 포함되어서는 안 됩니다. 대표 위치에서 세척 품질을 확인하고 공급업체에서 승인한 계획을 사용하여 여류물이 제거되었음을 입증해야 합니다.\n\n불용성 침전물이 부식 보호를 손상시키고 콜드 플레이트 통로를 제한할 수 있으므로 실리콘 기반 세정 첨가제를 피하십시오. 세정제나 용량을 즉흥적으로 만들지 마십시오. 선택, 호환성, 제거 및 최종 액체 확인은 하나의 제어된 프로세스입니다."
         },
         {
           "type": "content_bullets",
           "title": "시작 샘플링 및 기준선 기록",
           "slug": "startup_sampling_and_baseline_records",
           "section_label": "기준선",
-          "subtitle": "첫 번째 깨끗한 샘플은 향후 추세 해석을 위한 기준점입니다.",
+          "subtitle": "PG25 시동 샘플링은 정체된 주머니가 아닌 잘 혼합된 액체를 잘 나타내야 합니다.",
           "bullets": [
             {
-              "bold_lead": "순환하다",
-              "text": "루프를 실행하고 최종 시작 중에 누출이 있는지 확인하십시오."
+              "bold_lead": "시작 점검",
+              "text": "PG25 지침: 필요에 따라 공기 배출을 하고 최소 30 분 동안 순환하는 동안 누출 여부를 확인합니다."
             },
             {
-              "bold_lead": "블리드 에어",
-              "text": "기준선 샘플링 전에 필요한 곳에 갇힌 공기를 제거하십시오."
+              "bold_lead": "샘플은 1-3일 후에 제공됩니다.",
+              "text": "대표적인 작동 샘플과 신선하고 노출되지 않은 액체 샘플을 보관하십시오."
             },
             {
-              "bold_lead": "각 루프 샘플링",
-              "text": "각 TCS 루프에서 대표적인 유체를 캡처합니다."
+              "bold_lead": "흐르는 액체를 사용하세요",
+              "text": "샘플링 포트를 헹구고, 저수지, 저점 배수구 및 막힌 파이프를 피하십시오."
             },
             {
-              "bold_lead": "명확하게 라벨을 붙이세요",
-              "text": "기록 단위, 유체 ID, 날짜 및 시작 조건."
+              "bold_lead": "농도를 확인하다",
+              "text": "충분히 혼합한 후에 공급업체별 굴절계 데이터를 사용하십시오."
             },
             {
-              "bold_lead": "기록을 유지하세요",
-              "text": "유체 수명에 대한 기준선 증거를 유지합니다."
+              "bold_lead": "라벨을 붙이고 보관하세요.",
+              "text": "루프, 유체, 날짜 및 상태를 식별합니다. 유체의 수명 동안 시작 샘플을 보존합니다."
             }
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "111-113"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.10-10.11; 11.2-11.4",
+              "pages": [
+                59,
+                60,
+                62,
+                65
+              ]
             }
           ],
           "id": 6,
           "audio": {
             "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
             "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.mp3"
           },
-          "term_refs": [
-            "tcs"
-          ]
+          "reference_links": [
+            {
+              "label": "PG25 지침 · pp. 59–66",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=59"
+            }
+          ],
+          "transcript": "시동 시에는 나중에 운영 결정에 사용할 기준선를 생성합니다. PG25의 경우, 새로운 지침에서는 필요한 경우 공기 배출을 권장하고 최종 시동 시 최소 30분 동안 순환하는 동안 누출 여부를 확인하는 것이 좋습니다. 이 시동 점검은 완전한 청소 절차나 보편적인 혼합 시간으로 간주되지 않습니다.\n\n첫째에서 셋째일 이내에 각 시스템의 대표 운영 샘플을 채취하고 유체의 수명 동안 보관하십시오. 또한 노출되지 않은 신선한 유체 샘플도 보관하십시오. 둘 다 루프 또는 단위, 유체 식별 및 날짜로 라벨을 붙이십시오.\n\n잘 혼합된 순환액을 수집하고, 샘플링 포트에서 정체된 액체를 배출하고, 저수지 모서리, 저점 배수구, 죽은 다리를 피하십시오. 충분한 순환이 완료된 후, 공급업체의 굴절계 상관관계로 글리콜 농도를 확인합니다. 향후 변경 사항에 대한 신뢰할 수 있는 참조를 위해 기준선 샘플을 분석용으로 보내십시오."
         },
         {
           "type": "content_diagram",
@@ -1162,67 +2036,180 @@
           "section_label": "입자 및 생물오염물질",
           "figure": {
             "path": "figures/filtration_strategy.svg",
-            "alt": "인라인 및 부류 여과 전략",
-            "caption": "필터는 콜드 플레이트 마이크로채널보다 서비스하기가 더 쉽습니다."
+            "alt": "메인 회로 흐름은 구멍이 뚫린 인라인 스트레너를 통과합니다. 필터링 후 명확한 부분 흐름 사이드 스트림 브랜치가 회귀에 다시 합류합니다.",
+            "caption": "측면 흐름 여과는 두 번째 연속 여과기가 아닌 하위 분야입니다. 소포제를 제거하지 않고 냉각수에 매칭 미디어, 등급, 효율성 및 흐름을 일치시킵니다.",
+            "text_inventory": {
+              "sha256": "1b18ca1c35a3167d9fd6530c89aa43db1220a17e51b6249d987a9f116459f08d",
+              "entries": [
+                {
+                  "text": "인라인 체인"
+                },
+                {
+                  "text": "모든 메인 회로 흐름"
+                },
+                {
+                  "text": "주요 냉각 경로"
+                },
+                {
+                  "text": "펌프"
+                },
+                {
+                  "text": "콜드 플레이트"
+                },
+                {
+                  "text": "민감한 구절들"
+                },
+                {
+                  "text": "타고 있는 담배에서 나오는 연기"
+                },
+                {
+                  "text": "부분 흐름 분기"
+                },
+                {
+                  "text": "공급업체에서 검증된 미디어"
+                },
+                {
+                  "text": "소포제 첨가제를 보호하기"
+                },
+                {
+                  "text": "함께 선택하세요"
+                },
+                {
+                  "text": "등급 + 캡처 효율성"
+                },
+                {
+                  "text": "냉각수 + 매체 호환성"
+                },
+                {
+                  "text": "플로우 + 서비스 가능성"
+                },
+                {
+                  "text": "시작도만. 필터링 채우기 예시는 보편적인 사이드 스트림 요구 사항이 아닙니다."
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "61-66"
+            },
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.2"
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities",
+              "url": "https://ocpprodweb3.opencompute.org/documents/ocp-specification-deschutes-final-2025-09-05-pdf",
+              "section": "Filtration"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.5; 7.1-7.4; 10.10",
+              "pages": [
+                24,
+                25,
+                26,
+                27,
+                28,
+                59
+              ]
             }
           ],
           "id": 7,
           "audio": {
             "script_file": "audio/module3/slide_07_filtration_strategy.txt",
             "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_07_filtration_strategy.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · pp. 23–28",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=23"
+            }
+          ],
+          "term_refs": [
+            "antifoam"
+          ],
+          "transcript": "필터 선택은 가장 작은 미크론 수를 선택하는 것 이상입니다. PG25 지침에서는 필터가 메인 냉각 경로에 필터 막힘을 일으킬 수 있는 역압을 발생시키지 않기 때문에 사이드 스트림 필터를 고려하는 것이 좋습니다. 가장 민감한 경로와 실제 냉각제를 위한 등급, 효율성, 흐름 및 매체를 선택하십시오.\n\n너무 세세한 여과는 소포제 첨가제를 제거할 수 있습니다. 지침에는 또한 폴리에틸렌 프로필렌 매질이 실리콘아연 소포제를 흡착할 수 있다고 경고합니다. 동일한 명시된 미크론 크기의 명칭 및 절대 필터는 동일한 포착 효율을 가지지 않습니다. 유체, 필터, CDU 및 콜드 플레이트 공급업체와 함께 성능을 확인하세요.\n\n충전 중 5~10마이크론 절대 여과의 예는 보편적인 사이드스트림 요구 사항이 아닙니다. 마찬가지로, Deschutes 프로젝트 필터 등급은 한 가지 디자인을 설명합니다. 첨가제를 제거하거나 흐름을 제한하거나 작동할 수 없는 장비를 만들지 않고 청결을 유지하십시오."
         },
         {
           "type": "content_bullets",
           "title": "미생물 제어 및 생물 오염",
           "slug": "microbial_control_and_biofouling",
           "section_label": "생물학",
-          "subtitle": "미생물 제어은 열 전달을 보호하지만 살생물제 사용은 통제되어야 합니다.",
+          "subtitle": "물 미생물 작용 수준은 자동적인 PG25 용량 제법법이 아닙니다.",
           "bullets": [
             {
-              "bold_lead": "대상",
-              "text": "작동 가능한 총 생존 박테리아를 100CFU/ml 미만으로 유지하십시오."
+              "bold_lead": "처리된 물",
+              "text": "운영 지침 목표 <100 CFU/ml; 1000 CFU/ml보다 위의 조치를 권장합니다."
             },
             {
-              "bold_lead": "행동 수준",
-              "text": "살생물제 처리는 1000CFU/ml 이상에서 적극 권장됩니다."
+              "bold_lead": "PG25 보호",
+              "text": "공급업체 승인된 글리콜 및 억제제 수준을 유지합니다. 희석하면 생물학적 성장 위험이 증가합니다."
             },
             {
-              "bold_lead": "살생물제 유형",
-              "text": "필요한 경우에만 라벨에 따라 비산화 살생물제를 사용하십시오."
+              "bold_lead": "소독되지 않은",
+              "text": "PG25의 미생물 증식 억제 특성은 청결, 테스트 또는 조사를 대체하지 않습니다."
             },
             {
-              "bold_lead": "할로겐을 피하세요",
-              "text": "염소 및 유사한 화학 물질은 부식 위험을 유발할 수 있습니다."
+              "bold_lead": "제어된 치료",
+              "text": "비소제를 액체별, 공급업체 승인된 계획만을 통해만 사용하십시오."
             },
             {
-              "bold_lead": "시계 상승",
-              "text": "자주 첨가하면 유기물이나 오염물질이 축적될 수 있습니다."
+              "bold_lead": "계산을 미루지 마세요.",
+              "text": "PG25 채우기 전에 청소용 생물학적 살충제를 제거하십시오. 지속적인 용량을 즉흥적으로 조정하지 마십시오."
             }
-          ],
-          "term_refs": [
-            "cfu"
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "paragraphs": "116-118"
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "section": "5.4.7"
+            },
+            {
+              "source": "Guideline for Using Water-Based Coolants (supplied Rev-draft 110925.docx)",
+              "paragraphs": "116-118",
+              "note": "The 1000 CFU/ml action threshold is draft-only. Published water guidelines page 8 supports the below-100 CFU/ml target and investigation of increases from baseline, not this numerical action threshold."
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "3.1; 10.5; 10.8; 11.1",
+              "pages": [
+                13,
+                52,
+                57,
+                60
+              ]
             }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
             "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_08_microbial_control_and_biofouling.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "물 기반 유체 지침 · p. 8",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=8"
+            },
+            {
+              "label": "PG25 지침 · pp. 13–14, 52–58, 60",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=13"
+            }
+          ],
+          "term_refs": [
+            "cfu",
+            "biostatic"
+          ],
+          "transcript": "미생물 지침은 액체에 일치해야 합니다. 처리된 물 작동의 경우, 이전의 물 기반 지침은 밀리리터당 100개 이하로 총 생존 가능한 박테리아를 권장하고 1,000개 이상으로 조치를 권장합니다. 이러한 작동 임계값은 물 냉각제 기본 사양의 신선 제품 제한과 다릅니다.\n\nPG25에는 미생물 증식 억제 문자가 있지만, 이는 루프를 무균화시키지는 않습니다. 잔류 물이나 통제되지 않은 추가 주입은 글리콜과 억제제를 희석하고 생물학적 성장 위험을 증가시킬 수 있습니다. 정확한 공급업체 승인 농도와 화학을 유지하고, 시운전를 깨끗하게 유지하고, 이상한 액체 상태를 조사하십시오.\n\n수처리 용량제어 레시피를 PG25로 전송하지 마십시오. 모든 생물학적 살균제 또는 교정 처리는 용량제어에 따른 공급업체 승인을 받아야 합니다. 최종 충전 전에 청소 생물학적 살균제를 제거해야 합니다. 그렇지 않으면 작동 유체의 부식 보호에 영향을 미칠 수 있습니다."
         },
         {
           "type": "takeaways",
@@ -1239,8 +2226,10 @@
           "audio": {
             "script_file": "audio/module3/slide_09_module_3_summary.txt",
             "wav_file": "audio/module3/slide_09_module_3_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_09_module_3_summary.mp3"
+          },
+          "transcript": "모듈 3은 유체와 하드웨어를 보호하는 현장 사례에 중점을 두었습니다. 서비스 가능성은 기계 설계에서 시작됩니다. 루프에는 시스템의 나머지 부분과 동일한 접액 물질 규칙과 호환되는 배수, 충전, 샘플링, 격리 및 화학 물질 추가 경로가 필요합니다.\n\n콜드 플레이트 마이크로 채널은 건축 잔해를 발견하기에 좋은 장소가 아니기 때문에 깨끗한 시작이 중요합니다. 누출 점검, 플러시, 최종 채우기 및 기준선 샘플링에는 모두 문서화된 절차가 필요합니다. 그런 다음 필터링과 미생물 제어이 지속적인 방어 수단이 됩니다.\n\n간단한 요점은 이후의 많은 유체 문제가 실제로 시운전 또는 지연된 증상을 동반한 청결 문제라는 것입니다."
         },
         {
           "id": 10,
@@ -1249,7 +2238,8 @@
           "audio": {
             "script_file": "audio/module3/slide_10_knowledge_check.txt",
             "wav_file": "audio/module3/slide_10_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module3/slide_10_knowledge_check.mp3"
           },
           "title": "시운전 규율을 확인하세요",
           "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
@@ -1312,7 +2302,8 @@
               "feedback_correct": "맞습니다. 서비스 용이성, 기록, 여과 및 통제된 처리로 유체와 하드웨어를 보호합니다.",
               "feedback_incorrect": "아무렇게나 마무리하지 마십시오. 호환 가능한 필터링, 기록, 공급업체 기반 처리 결정을 통해 루프를 보호하세요."
             }
-          ]
+          ],
+          "transcript": "모듈 3의 시운전 규정을 확인하려면 여기에서 잠시 멈추세요.\n\n첫 번째 질문은 어떤 시작 순서가 새 루프를 가장 잘 보호하는지 묻습니다. 두 번째는 시간이 지남에 따라 루프를 깨끗하고, 호환 가능하며, 추적 가능하게 유지하는 데 도움이 되는 서비스 관행을 묻습니다.\n\n피드백을 빠른 작동 점검으로 활용하십시오. 다시 시도할 수 있으며 시도 후 계속할 수 있습니다."
         },
         {
           "type": "up_next",
@@ -1324,8 +2315,10 @@
           "audio": {
             "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
             "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.mp3"
+          },
+          "transcript": "잘했어요. 시운전 모듈을 완료했습니다. 이제 현장 순서가 있습니다. 서비스 용이성을 위한 설계, 호환 가능한 방법으로 누출 테스트, 깨끗하게 세척, 제어되지 않는 세척제 사용 금지, 최종 채우기 샘플링, 잔해물이 콜드 플레이트 문제가 되기 전에 필터링합니다.\n\n다음으로 작전에 들어갑니다. 일상적인 테스트, 실험실 분석, 추세 해석, 조정, 혼합, 유효 수명, 폐기 및 문서화에 대해 다룹니다."
         }
       ],
       "next_module_title": "모니터링, 유지 관리 및 운영 판단"
@@ -1334,7 +2327,7 @@
       "id": 4,
       "slug": "monitoring_maintenance_operational_judgment",
       "title": "모니터링, 유지 관리 및 운영 판단",
-      "subtitle": "정기 테스트, 실험실QA, 추세 해석, 조정, 혼합, 유효 수명 및 문서화.",
+      "subtitle": "액체별 테스트, 위험 기반 샘플링, 추세 해석, 공급업체 가이드된 수정 및 문서화.",
       "module_badge_text": "모듈 4",
       "motion_intro": {
         "eyebrow": "모듈 4",
@@ -1351,8 +2344,10 @@
           "audio": {
             "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
             "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.mp3"
+          },
+          "transcript": "모듈 4는 시운전 이후 루프를 정상 상태로 유지하는 방법에 관한 것입니다. 좋은 유체 프로그램은 실패를 기다리지 않습니다. 추세를 관찰하고 이를 기준선와 비교하며 화학 신호가 중단되기 전에 제어된 조정을 수행합니다.\n\n우리는 실험실 품질 보증에서 현장 테스트를 분리하고, 자동화된 모니터링을 살펴보고, 추세를 해석하고, 공급업체 안내 투약에 대해 논의하고, 유체 혼합의 지저분한 현실을 처리할 것입니다. 내용 연수, 폐기 및 다음 새로 고침이 맹목적으로 시작되지 않도록 하는 기록으로 마감하겠습니다."
         },
         {
           "type": "objectives",
@@ -1370,127 +2365,179 @@
           "audio": {
             "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
             "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_02_operating_judgments_you_will_make.mp3"
+          },
+          "transcript": "이 모듈을 마치면 일상적인 모니터링 일정을 설명하고 어떤 검사가 현장에 속하는지, 아니면 독립 실험실에 속하는지 식별할 수 있게 됩니다.\n\n하나의 고립된 숫자에 반응하는 대신 추세를 해석할 수 있습니다. 여기에는 전도도 상승, 금속 이온 드리프트, 경도, 박테리아, 탁도, 필터 로딩 및 억제제 고갈이 포함됩니다.\n\n또한 공급업체 지침에 따라 조정해야 하는 이유, 유체 혼합으로 인해 모니터링이 복잡한 이유, 향후 운영자가 상속받은 루프를 이해할 수 있도록 유지해야 하는 기록을 설명할 수 있습니다."
         },
         {
           "type": "content_grid",
-          "title": "정기 모니터링 일정",
+          "title": "액체별 모니터링 일정",
           "slug": "routine_monitoring_schedule",
           "section_label": "케이던스",
-          "subtitle": "매개변수가 사양을 벗어나면 모니터링 계획이 더욱 강화되어야 합니다.",
+          "subtitle": "PG25 지침은 위험에 기반합니다. 시운전 보증 조건 및 이벤트가 계획을 설정합니다.",
           "grid_cols": 4,
           "cards": [
             {
-              "title": "시작",
-              "body": "초기 충전 및 순환 후 즉시 테스트하십시오.",
+              "title": "기준선",
+              "body": "시운전에서 테스트합니다. 대표자가 시작한 증거를 보관합니다.",
               "icon": "1"
             },
             {
-              "title": "분기별",
-              "body": "정상 작동 중에 정기적인 현장 점검을 수행합니다.",
+              "title": "낮은 위험 PG25",
+              "body": "연간 자격 있는 실험실; 첫 해에 선택적으로 6개월 체크인.",
               "icon": "2"
             },
             {
-              "title": "사양을 벗어나는 경우 매주",
-              "body": "매개변수가 범위로 돌아올 때까지 주파수를 늘립니다.",
+              "title": "중간 위험 PG25",
+              "body": "초기 1.5년 동안 6개월마다 적격 시험기관에서 분석합니다.",
               "icon": "3"
             },
             {
-              "title": "연구실 QA",
-              "body": "1년 동안 분기별로 실시하고, 안정적이면 6개월 간격으로 실시합니다.",
+              "title": "높은 위험 PG25",
+              "body": "첫 번째 1.5년 동안 자격이 있는 실험실 분기별 검사; 이상 사항을 조사합니다.",
               "icon": "4"
             }
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "120-125"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2, Table 13; 12.5",
+              "pages": [
+                61,
+                63,
+                64,
+                84
+              ]
             }
           ],
           "id": 3,
           "audio": {
             "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
             "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module4/slide_03_routine_monitoring_schedule.mp3"
           },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · 표 13 · pp. 63–64",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=63"
+            }
+          ],
           "term_refs": [
-            "qa"
-          ]
+            "pg25"
+          ],
+          "transcript": "감시 빈도는 체액과 시스템의 위험과 일치해야 합니다. 물 기반 운영 지침은 분기별 정기 점검, 결과가 이상할 때 더 자주 점검하고, 첫해에는 분기별로 실험실 검토를 실시한 다음 안정되면 6개월마다 검토합니다.\n\n새로운 PG25 지침은 다른 위험 기반 사례를 사용합니다. 낮은 위험은 인라인 모니터링, 허용되는 재료 및 경험이 풍부한 사용자를 결합합니다. 시운전 분석 및 연간 실험실 테스트입니다. 중간 위험은 인라인 모니터링이 없지만 허용되는 재료와 익숙하지 않은 사용자를 가지고 있습니다. 처음 1년 반 동안은 6개월마다 실험실 테스트를 실시합니다. 높은 위험은 덜 확실한 재료 호환성을 추가합니다. 해당 기간 동안 분기별 실험실 테스트를 실시합니다.\n\n이것은 보편적인 일정과 같은 것이 아니라 계획 예시입니다. 보증 및 공급업체 요구 사항을 준수하고 서비스 이벤트나 설명할 수 없는 이상 사항이 발생한 후 테스트를 늘리십시오. 인라인 모니터링에도 불구하고, 지침은 연간 실험실 확인을 권장합니다."
         },
         {
           "type": "content_table",
-          "title": "현장 테스트 세트",
+          "title": "일상 모니터링 세트",
           "slug": "on_site_test_set",
-          "section_label": "현장 점검",
-          "subtitle": "정기 테스트는 에스컬레이션 및 실험실 후속 조치를 안내하는 빠른 신호입니다.",
+          "section_label": "현장 및 실험실 신호",
+          "subtitle": "액체 조성물에 대한 테스트를 선택하세요: PG25 필드 검사는 예약된 실험실 분석을 보완합니다.",
           "columns": [
-            "현장 확인",
+            "감시 체크",
             "신호",
             "일반적인 조치"
           ],
           "rows": [
             [
-              "전도도",
-              "용해된 물질 또는 오염",
-              "기준선와 상승률 비교"
-            ],
-            [
               "pH",
-              "화학 창",
-              "치료 계획 내에서 확인"
+              "유체별 화학 창",
+              "보정하기; 공급업체 확인하기 운전 한계"
             ],
             [
-              "경도",
-              "보충수 또는 침출 위험",
-              "Ca/Mg의 출처 조사"
+              "PG25 굴절률",
+              "글리콜 농도 / 희석",
+              "공급업체별 변환 및 온도 사용"
             ],
             [
-              "총 생존 박테리아",
-              "미생물 활동",
-              "공급업체 지침에 따라 재테스트 또는 처리"
-            ],
-            [
-              "아졸레스",
-              "구리 보호",
-              "추세 고갈 및 조치 임계값"
-            ],
-            [
-              "탁도/외관",
-              "입자 또는 선명도 변화",
-              "필터 및 샘플 기록 검사"
+              "외관 / 불투명도",
+              "입자, 흐림, 거품",
+              "검토한 다음 지원 데이터를 사용하여 조사합니다."
             ],
             [
               "필터 로딩",
-              "입자 또는 생물오염물질 부담",
-              "높은 경우 교체하거나 조사하십시오."
+              "오염 부담 / 압력 강하",
+              "서비스 필터를 적용하고 소스를 조사합니다."
+            ],
+            [
+              "전도성(지원)",
+              "온도 의존성 이온적 경향",
+              "PG25 트렌드에 유용하지만 억제제-건강에 대한 증거는 없습니다."
+            ],
+            [
+              "박테리아(액체 특정)",
+              "미생물 활동",
+              "냉각수별 치료 계획을 따르세요."
+            ],
+            [
+              "억제제 / 예비 알칼리도",
+              "응축 보호(실험실)",
+              "실제 억제제 화학 반응을 평가하다"
+            ],
+            [
+              "해결된 금속(실험실 ICP)",
+              "식물성 제품 / 물질 유출",
+              "트렌드 Cu, Fe, Al 및 기타 습한 금속들"
             ]
-          ],
-          "term_refs": [
-            "azole",
-            "cfu"
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "table": 4
+            },
+            {
+              "source": "Base Specification for Single-Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "section": "5.4.8"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2; 11.5-11.6, Tables 14-15",
+              "pages": [
+                61,
+                67,
+                69,
+                71,
+                74
+              ]
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module4/slide_04_on_site_test_set.txt",
             "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_04_on_site_test_set.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · 표 14–15 · pp. 67–74",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=67"
+            }
+          ],
+          "term_refs": [
+            "icp",
+            "refractive_index",
+            "reserve_alkalinity"
+          ],
+          "transcript": "일상적인 점검은 제형에 맞아야 합니다. PG25의 경우, 글리콜 농도와 외관에 대해 pH, 굴절률를 우선시해야 합니다. 굴절률를 공급업체의 특정 유체 데이터를 사용하여 해석해야 합니다. 이는 억제제 상태의 직접적인 측정은 아닙니다. 로드 및 불투명도는 청결에 대한 증거를 제공합니다.\n\n전도도는 억제된 글리콜의 보조 추세 신호이며, 일반적으로는 주요 건강 검사가 아닙니다. 첨가제와 온도가 판독에 영향을 미치며, 안정적인 값은 부식 보호가 손상되지 않았음을 증명하는 것은 아닙니다. 세균 검사 및 치료도 냉각수 특정 계획에 따라 수행됩니다.\n\n예정된 실험실 분석은 해당되는 경우 억제제 수준, 예비 알칼리도 및 ICP에 의해 측정된 용해 금속과 함께 이러한 검사를 보완합니다. 습한 재료 재고에서 구리, 철, 알루미늄 및 기타 원소를 선택합니다. 기준선과 추세를 비교합니다. 단 하나의 감지 가능한 결과만으로는 활성 부식을 확립할 수 없습니다."
         },
         {
           "type": "content_table",
           "title": "실험실 QA 및 ICP 분석",
           "slug": "laboratory_qa_and_icp_analysis",
           "section_label": "실험실 보기",
-          "subtitle": "독립적인 분석을 통해 유체 드리프트, 오염 및 부식 부산물을 구별하는 데 도움이 됩니다.",
+          "subtitle": "PG25 분석에는 글리콜, 억제제, 분해 화학뿐만 아니라 금속 공학도 필요합니다.",
           "columns": [
             "실험실 점검",
             "그것이 밝혀내는 데 도움이 되는 것",
@@ -1498,59 +2545,77 @@
           ],
           "rows": [
             [
-              "TSS 및 TDS",
-              "입자 및 용해된 물질",
-              "청결도 및 오염도 추적"
+              "글리콜 농도 / pH",
+              "농축과 화학 미끄러짐",
+              "공급업체의 사용 제한을 확인합니다."
             ],
             [
-              "여과된/비여과된 금속",
-              "구리, 철, 아연, 크롬, 니켈",
-              "부식 또는 물질 방출을 나타냅니다."
+              "억제제 / 예비 알칼리도",
+              "보호 및 버퍼링",
+              "예비 알칼리도는 억제제 기술에 따라 다릅니다."
             ],
             [
-              "ICP 분석",
-              "원소 프로필",
-              "시간에 따른 수질 변화를 문서화합니다."
+              "클로라이드 / 수산화물 / 경도",
+              "오염과 저품질 물",
+              "원인과 잠재적인 부식을 조사하다"
             ],
             [
-              "탁도",
-              "유체 선명도 및 입자",
-              "필터 및 예금 결정 지원"
+              "분해산",
+              "글리콜 분해",
+              "pH, 기록 및 온도 등과 함께 평가합니다."
             ],
             [
-              "부식 쿠폰 사용 시",
-              "보충 부식 증거",
-              "콜드 플레이트 기하학을 완전히 표현하지 못할 수 있음"
+              "해결된 금속(ICP)",
+              "Cu, Fe, Al 및 기타 습한 금속들",
+              "신규 유체 및 신규 시작 기준에 대한 추세"
             ],
             [
-              "서면평가",
-              "기술적 해석",
-              "데이터를 행동 지침으로 전환"
+              "서면 공급업체 평가",
+              "제조 공정별 해석",
+              "확인된 결과를 개선 조치로 변환합니다."
             ]
-          ],
-          "term_refs": [
-            "tss",
-            "tds",
-            "icp"
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "table": 5
             },
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraph": "126"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2-11.5",
+              "pages": [
+                61,
+                65,
+                67,
+                69,
+                70
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
             "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · pp. 65–70",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=65"
+            }
+          ],
+          "term_refs": [
+            "qa"
+          ],
+          "transcript": "PG25 실험실 패널은 물 청결도를 넘어서는 사항을 다루고 있습니다. 지침에서는 글리콜 농도, pH, 예비 알칼리도, 외관, 억제제 농도, 염화물, 수산화물, 경도, 분해산 및 용해 금속을 확인하는 것이 권장됩니다.\n\n예비 알칼리도는 억제제 기술에 따라 다릅니다. 기존의 제형과 유기산 제형은 상호 교환 가능한 해석을 사용하지 않으므로 낮은 숫자가 자동으로 용량 조절의 이유가 되는 것은 아닙니다. 공급업체는 실제 제형을 해석해야 합니다.\n\n액체 공급업체에서 관리하거나 권장하는 실험실 및 포괄적인 분석 및 기술 지원을 수행할 수 있는 실험실을 사용하십시오. 시스템의 금속 공정에 관련된 트렌드 금속과 보고서를 신선한 액체 및 시동 증거와 비교하십시오. 현장 pH 및 굴절계 점검, 인라인 센서 및 실험실 화학은 상호 보완적이지만 전체 모니터링 계획을 대체하는 것은 아닙니다."
         },
         {
           "type": "content_diagram",
@@ -1559,64 +2624,178 @@
           "section_label": "추세 논리",
           "figure": {
             "path": "figures/monitoring_framework.svg",
-            "alt": "유체 상태 시스템 상태와 유체 상태를 분리하는 모니터링 프레임워크",
-            "caption": "기준선 및 추세 방향을 사용하여 시스템 상태를 유체 상태와 구별합니다."
+            "alt": "명백하게 설명되는 상승 추세는 사이트 작업 제한을 밑돌고 있습니다. 기준선, 보정된 측정값 및 실험실 확인을 비교해 보십시오.",
+            "caption": "시스템과 유체 증거로 추세를 조사하십시오. 이는 보편적인 제한이 아니라 설명적인 데이터입니다. 신제품 요구 사항과 사용 중인 지침은 여전히 명확하게 구분됩니다.",
+            "text_inventory": {
+              "sha256": "c0226b136c3c6a27691bcae4468357f5905fe588eccdf7e3bdd5532a7c7e0f6a",
+              "entries": [
+                {
+                  "text": "예시적인 추세 - 측정되지 않은 데이터"
+                },
+                {
+                  "text": "상대적 신호"
+                },
+                {
+                  "text": "사이트 행동 제한"
+                },
+                {
+                  "text": "기준선"
+                },
+                {
+                  "text": "시간에 따른 샘플"
+                },
+                {
+                  "text": "변경 확인하기"
+                },
+                {
+                  "text": "보정 + 대표 샘플 + 실험실 비교"
+                },
+                {
+                  "text": "시스템 증거"
+                },
+                {
+                  "text": "금속 + 입자"
+                },
+                {
+                  "text": "필터 로드 + 열적 편향"
+                },
+                {
+                  "text": "유체 증거"
+                },
+                {
+                  "text": "pH + 집중력"
+                },
+                {
+                  "text": "억제제 수준 + 아졸"
+                },
+                {
+                  "text": "글리콜 분해 제품들"
+                },
+                {
+                  "text": "전도성만으로는 그렇지 않다"
+                },
+                {
+                  "text": "PG25가 억제된 것으로 진단합니다."
+                },
+                {
+                  "text": "신제품 요구 사항"
+                },
+                {
+                  "text": "기본 사양 승인"
+                },
+                {
+                  "text": "사용 중 / 공급업체 제한"
+                },
+                {
+                  "text": "운영 해석"
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "121-128"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.5-11.7; 12.3-12.5",
+              "pages": [
+                67,
+                70,
+                75,
+                81,
+                83,
+                84
+              ]
             }
           ],
           "id": 6,
           "audio": {
             "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
             "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · pp. 67–70, 81–84",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=67"
+            }
+          ],
+          "term_refs": [
+            "azole"
+          ],
+          "transcript": "트렌드는 측정값에 방향과 맥락을 추가합니다. pH, 농도, 전도도, 금속, 외관 및 필터 충전을 기준선, 기기 상태, 온도 및 최근 서비스 이벤트에 비교합니다.\n\n새로운 유체 사양 제한을 운영 지침과 구별하십시오. PG25 지침에는 공정에 따른 pH 범위를 포함하여 사용 중인 예제 범위가 포함되어 있습니다. 이러한 범위는 기본 사양의 신제품 요구 사항이나 공급업체의 운전 한계를 자동으로 확장하는 권한을 부여하지 않습니다.\n\n투여하기 전에 보정된 현장 측정이나 실험실 분석으로 갑작스러운 변화를 확인하세요. 억제된 글리콜에서는 전도율만으로는 진단 가치가 제한적입니다. 구리나 철의 상승 추세가 작용 한도가 도달하기 전에 조사할 가치가 있을 수 있습니다.\n\n센서를 대표적인 유동성 액체에 배치하고, 보정 상태를 유지하며, 실험실 결과와 비교합니다. 주요 시스템이나 유체 변경 후 제한 사항을 검토합니다."
         },
         {
           "type": "content_bullets",
           "title": "조정 및 공급업체별 투여량",
           "slug": "adjustments_and_supplier_guided_dosing",
           "section_label": "시정 조치",
-          "subtitle": "조절된 투여량에는 알려진 용량, 공급업체 지침, 순환, 재시험 및 기록이 필요합니다.",
+          "subtitle": "공급업체 승인 조정 전에 이상적인 결과를 검증하고, 그 다음 혼합 및 결과를 확인합니다.",
           "bullets": [
             {
+              "bold_lead": "먼저 확인하세요",
+              "text": "기기의 보정치를 확인하고 이상적인 결과를 확인합니다."
+            },
+            {
               "bold_lead": "알려진 볼륨",
-              "text": "루프 용량 없이는 투여량을 안전하게 계산할 수 없습니다."
+              "text": "공급업체 승인된 농도 또는 억제제 교정을 계산합니다."
             },
             {
-              "bold_lead": "공급업체 지침",
-              "text": "치료 계획 및 기술 지원에 따라서만 조정하십시오."
+              "bold_lead": "호환 가능한 수정",
+              "text": "승인된 농축액을 사용하십시오; 필요한 경우에만 희석수를 사용하십시오."
             },
             {
-              "bold_lead": "순환하다",
-              "text": "후속 샘플링 전에 30분 동안 혼합합니다."
-            },
-            {
-              "bold_lead": "재테스트",
-              "text": "조정 결과가 범위 안으로 이동했음을 확인합니다."
+              "bold_lead": "혼합하고 다시 테스트하세요.",
+              "text": "범용 타이머가 아닌 검증된 순환 및 대표 샘플을 사용하십시오."
             },
             {
               "bold_lead": "문서",
-              "text": "날짜, 시스템, 첨가제 유형, 금액 및 보고서를 기록합니다."
+              "text": "기록된 용량, 이유, 배치, 검사 결과 및 새로운 기준선를 기록합니다."
             }
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "9"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "129-134"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.10; 11.7; 12.3",
+              "pages": [
+                59,
+                75,
+                76,
+                81,
+                82
+              ]
             }
           ],
           "id": 7,
           "audio": {
             "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
             "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 지침 · pp. 75–76, 81–83",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=75"
+            }
+          ],
+          "transcript": "화학 검사를 조정하기 전에 이상한 결과를 검증합니다. 보정 여부를 확인하고 적절한 테스트를 통해 확인한 다음 유체 공급업체에 문의합니다. PG25 지침에 따르면 현장 테스트에서 제한 범위를 벗어난 결과가 나타난 후 일주일 이내에 유체를 적합한 실험실에 보내야 합니다.\n\n용량을 계산하기 전에 시스템 부피를 알아야 합니다. 글리콜이나 억제제를 복원하려면 호환되는 공급업체 승인 제품만 사용하십시오. 농축된 제형은 과다 희석을 수정할 수 있습니다. 승인된 고순도 물은 과도한 농도에 대한 예외적인 수정이며, 바로 사용할 수 있는 제품을 희석할 수 있는 일반적인 허가 사항이 아닙니다.\n\n혼합이 충분하고 후속 샘플이 대표적일 때까지 순환합니다. 보편적인 타이머 대신 검증된 루프 순환 및 공급업체 지침을 사용합니다. 이유, 양, 배치 및 전후 결과를 기록합니다. 수정이 검증되면 적절한 새로운 기준선를 설정합니다."
         },
         {
           "type": "content_diagram",
@@ -1624,20 +2803,99 @@
           "slug": "fluid_mixing_and_interoperability",
           "section_label": "상호 운용성",
           "figure": {
-            "path": "figures/mixing_decision.svg",
-            "alt": "유체 혼합 결정 논리",
-            "caption": "혼합은 유체별 증거가 필요한 통제된 사건으로 가장 잘 처리됩니다."
+            "path": "figures/mixing_decision_v2.svg",
+            "alt": "잔류액 혼합을 방지하고 정확한 제형과 공급업체 증거를 확인한 다음 운영 변경 사항을 샘플링하고 문서화합니다.",
+            "caption": "다른 액체를 포함하는 장비를 연결하기 전에 공급업체에서 승인한 플러싱 및 채우기 방법을 사용하고 안정성이 확인될 때까지 상당한 변화를 모니터링하십시오.",
+            "text_inventory": {
+              "sha256": "b2e25847d463e4629af64ba2106a00b0059402ce9b640a21f9e45f54b7daa7f1",
+              "entries": [
+                {
+                  "text": "입고 장비 / 재충전 / 서비스 이벤트"
+                },
+                {
+                  "text": "혼동을 방지하다"
+                },
+                {
+                  "text": "잔류 액체를 식별하다"
+                },
+                {
+                  "text": "공급업체 승인 누출 방지"
+                },
+                {
+                  "text": "운영 유체로 채우세요"
+                },
+                {
+                  "text": "연결하기 전에"
+                },
+                {
+                  "text": "정확한 액체를 확인하세요"
+                },
+                {
+                  "text": "제조 공정별 증거"
+                },
+                {
+                  "text": "재료 + 조건"
+                },
+                {
+                  "text": "공급업체 승인된 계획"
+                },
+                {
+                  "text": "가족 수준에 대한 가정 없음"
+                },
+                {
+                  "text": "변화를 모니터링합니다."
+                },
+                {
+                  "text": "이벤트 기반 샘플링"
+                },
+                {
+                  "text": "억제제 기준선 검토하기"
+                },
+                {
+                  "text": "모든 변경 사항을 기록합니다."
+                },
+                {
+                  "text": "안정성이 확인될 때까지"
+                },
+                {
+                  "text": "PG25 규정 준수는 다른 공급업체의 유체를 상호 교환할 수 있게 하는 것은 아닙니다."
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "iat",
-            "oat"
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "3.2"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2",
+              "pages": [
+                62
+              ]
+            }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
             "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 사양 · p. 8",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=8"
+            },
+            {
+              "label": "PG25 지침 · p. 62",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=62"
+            }
+          ],
+          "transcript": "모든 유기산 냉각제가 안전하게 혼합되거나 모든 무기 및 유기 조합이 호환되지 않는다는 것을 가정하지 마십시오. PG25 기본 사양에 따르면, 다른 공급업체에서 제조한 제품도 반드시 상호 교환 가능한 것은 아닙니다. 정확한 액체, 재료 및 작동 조건을 평가하십시오.\n\n새로운 지침에는 실용적인 장비 소개 단계가 추가되었습니다. 새로운 장비가 물이나 다른 조성물을 포함하고 있는 경우, 공급업체에서 승인한 펌프링 프로토콜을 사용하고 연결하기 전에 작동 유체로 채우십시오. 제조, 테스트 및 작동 과정에서 동일한 유체를 사용하면 의도하지 않은 화학 반응 변화를 줄일 수 있습니다.\n\n액체 안정성이 확인될 때까지 상당한 서비스 또는 장비 추가 후 샘플링을 늘립니다. 테스트된 혼합물이라도 억제제 기준선과 교정 조치가 더 이상 명확하지 않을 수 있으므로 해석이 복잡해질 수 있습니다. 승인되지 않은 추가 충전을 피하고 의도적인 변경 사항은 모든 것을 문서화하십시오."
         },
         {
           "type": "content_bullets",
@@ -1665,25 +2923,60 @@
             {
               "bold_lead": "치료 계획",
               "text": "작동 매개변수, 테스트 일정 및 제품 문서."
+            },
+            {
+              "bold_lead": "센서 기록",
+              "text": "보정, 유지 보수, 교체 및 수정된 기준선."
             }
-          ],
-          "term_refs": [
-            "coa",
-            "sds"
           ],
           "source_refs": [
             {
-              "source": "단상 냉각판 기반 액체 냉각 랙에서 수성 열전달 유체 사용에 대한 지침",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "8.2-8.6"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "143-151"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "5.1; 10.2; 11.4; 12.4-12.5; 13.4-13.5",
+              "pages": [
+                17,
+                46,
+                65,
+                66,
+                83,
+                84,
+                85
+              ]
             }
           ],
           "id": 9,
           "audio": {
             "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
             "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_09_documentation_and_submittals.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 사양 · pp. 19–21",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=19"
+            },
+            {
+              "label": "PG25 지침 · pp. 17–18, 83",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=17"
+            }
+          ],
+          "term_refs": [
+            "sds",
+            "coa"
+          ],
+          "transcript": "각 냉각 루프에 대한 추적 가능한 파일을 보관합니다. 유체 식별, 배송 및 배치 정보, 분석 증명서, 안전 데이터 시트, 시스템 볼륨, 접액 재료, 청소 및 부동태화 기록, 그리고 부품 교체 기록을 기록합니다.\n\nPG25 지침은 또한 일관된 샘플 라벨과 제출 서류 작업이 보고서를 신뢰할 수 있게 추세를 파악할 수 있도록 강조합니다. 분석 보고서, 용량 기록 및 시동 증거를 보존합니다. 보정 결과, 청소, 유지 보수, 교체 및 기준선 변경 사항이 포함된 센서 로그북을 유지 관리합니다.\n\n계획에 처리 및 폐품 처리 결정을 포함하십시오. 공급업체 지침에 따라 호환되는 보호된 용기에 유체를 보관하십시오. 사용한 냉각수를 배수구, 토양 또는 지표수에 배출하지 마십시오. 현지 규칙 및 승인된 재활용 또는 폐기 처리 절차를 따르십시오.\n\n문서는 다음 작업자가 무엇이 변경되었는지, 왜 변경되었는지, 그리고 결정에 대한 정당성을 입증하는 증거를 이해할 수 있도록 해야 합니다."
         },
         {
           "type": "takeaways",
@@ -1700,8 +2993,13 @@
           "audio": {
             "script_file": "audio/module4/slide_10_module_4_summary.txt",
             "wav_file": "audio/module4/slide_10_module_4_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_10_module_4_summary.mp3"
+          },
+          "term_refs": [
+            "dlc"
+          ],
+          "transcript": "모듈 4는 유체 상태를 운영 모델로 전환했습니다. 일상적인 점검을 통해 빠른 가시성을 확보할 수 있습니다. 실험실 분석은 더 깊은 증거를 제공합니다. 자동화된 모니터링은 더 크거나 더 중요한 시스템이 드리프트를 더 일찍 포착하는 데 도움이 될 수 있습니다. 그러나 진정한 힘은 깔끔한 기준선에 대한 추세 해석입니다.\n\n조정은 공급업체 지침에 따라, 볼륨 기반으로, 혼합되고, 재테스트되고, 문서화되어야 합니다. 가능하면 유체 혼합을 피해야 하며, 혼합이 발생하는 경우 유체를 유체별로 평가해야 합니다. 유효 수명, 폐기 및 갱신 주기는 모두 기록에 따라 달라집니다.\n\n마지막 핵심은 간단합니다. 신뢰할 수 있는 단상 DLC는 설치해 둔 채 잊어도 되는 시스템이 아닙니다. 지속적으로 모니터링하고, 해석하고, 시정하고, 기록해야 합니다."
         },
         {
           "id": 11,
@@ -1710,7 +3008,8 @@
           "audio": {
             "script_file": "audio/module4/slide_11_knowledge_check.txt",
             "wav_file": "audio/module4/slide_11_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module4/slide_11_knowledge_check.mp3"
           },
           "title": "귀하의 운영 판단을 확인하십시오",
           "subtitle": "계속하려면 한 번만 대답하세요. 정확성은 필요하지 않으며 다시 시도할 수 있습니다.",
@@ -1773,38 +3072,133 @@
               "feedback_correct": "맞습니다. 혼합 및 투여에는 공급업체 지침, 문서화 및 후속 검증이 필요합니다.",
               "feedback_incorrect": "호환성을 가정하지 마십시오. 호환성을 확인하고, 조치를 문서화하고, 결과를 확인하십시오."
             }
-          ]
+          ],
+          "transcript": "이 최종 지식 점검은 운영 판단에 중점을 둡니다.\n\n첫 번째 질문은 일상적인 체액 건강 결과를 어떻게 해석해야 하는지 묻습니다. 두 번째는 유체가 혼합되거나 화학적 성질이 조정되기 전에 어떤 일이 일어나야 하는지 묻습니다.\n\n각 질문을 한 번 제출한 후 피드백을 사용하여 유지 관리 플레이북을 확인하세요. 다시 시도할 수 있으며 시도 후 계속할 수 있습니다."
         },
         {
           "type": "course_complete",
           "title": "직접 액체 냉각 (DLC)의 냉각 유체",
           "slug": "cooling_fluids_in_direct_liquid_cooling",
           "course_title": "직접 액체 냉각 (DLC)의 냉각 유체",
-          "cert_message": "귀하는 단상 DLC 유체 과정을 완료했습니다. 이러한 개념을 적용할 때 OCP 지침, 공급업체 처리 계획 및 현지 운영 기록을 함께 사용하십시오.",
-          "thank_you_message": "모듈 4: 모니터링, 유지 관리 및 운영 판단을 완료해 주셔서 감사합니다.",
+          "cert_message": "OCP 기본 사양을 운영 지침, 공급업체 계획 및 현지 기록과 함께 적용합니다.",
+          "thank_you_message": "4 모듈을 완료해 주셔서 감사합니다.",
           "id": 12,
           "audio": {
             "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
             "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "물 기반 냉각수 기본 사양",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
+            },
+            {
+              "label": "PG25 기본 사양",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf"
+            },
+            {
+              "label": "물 기반 전열 유체 지침",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            },
+            {
+              "label": "PG25 운전 지침",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf"
+            }
+          ],
+          "transcript": "이상으로 모듈 4와 과정을 마무리했습니다. 직접 액체 냉각의 냉각액에 대해 작업해 주셔서 감사합니다.\n\n단상 TCS 경계, 처리된 물과 P G 25 사이의 차이, 주요 유체 목표, 억제제 화학, 습식 물질 호환성, 시운전, 여과, 모니터링, 조정, 혼합, 유효 수명 및 문서화를 다루었습니다.\n\n다음 단계는 현지 적용입니다. 이 과정을 게시된 OCP 수성 냉각제 및 PG25 기본 사양, 단상 작동 지침, 치료 계획, 공급업체 지침, CDU 설계 및 현지 기록과 비교합니다. 증거가 좋고 질문이 좋은수록 배포가 더 강력합니다."
         }
       ]
     }
   ],
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 5
+  },
+  "index_module_links": false,
+  "index_navigation_instruction": "왼쪽 사이드바의 강좌 개요를 사용하여 모듈을 원하는 순서로 탐색합니다.",
+  "index_start": {
+    "enabled": true,
+    "label": "MODULE 1로 시작하세요.",
+    "navigation": "direct"
+  },
+  "learner_reference_policy": {
+    "reviewed_at": "2026-10-09",
+    "style": "Grid Disturbance-style compact resource pills with explicit page/range labels and #page= links.",
+    "numbering": "One-based PDF viewer pages including the cover, matching #page=. The PG25 base specification's printed footer is one lower than its PDF viewer page.",
+    "scope": "English single-phase course only. Teaching-slide PDF resource pills must be page-specific. Closing resources, authoring sources, and glossary metadata retain canonical whole-document URLs.",
+    "closing_resources": "M4S12 links to each complete canonical document without page fragments or page/range labels, per the maintained AcademyWizard closing-resource exception.",
+    "content_preservation": "Narration, quiz content, figures, video, SCORM version, and module tracking are unchanged by this reference-only update.",
+    "source_caveat": "M3S8's 1000 CFU/ml treated-water action value comes from the supplied draft guideline, not the published PDF. The water PDF p. 8 supports the <100 CFU/ml operating target and baseline-triggered investigation; no published-PDF support is claimed for the draft-only value. The course owner confirmed on 2026-10-09 that the draft remains unpublished; resolve the claim in issue #84 before promoting it to published guidance.",
+    "follow_up_issues": {
+      "language_editions": "https://github.com/opencomputeproject/ocp-academy-courses/issues/83",
+      "draft_microbial_threshold": "https://github.com/opencomputeproject/ocp-academy-courses/issues/84"
+    }
+  },
+  "lms_catalog": {
+    "title": "직접 액체 냉각 (DLC)의 냉각 유체",
+    "short_description": "물과 PG25 냉각수의 특성을 비교하고, 호환성·시운전·모니터링·유지관리 원칙을 학습합니다.",
+    "overview": "직접 액체 냉각용 단상 기술 냉각 시스템 유체의 실용적인 이해를 구축합니다. 처리된 물과 PG25를 비교하고 냉각제 화학을 젖은 재료 호환성에 연결하고 공급업체 자격증 및 시운전부터 모니터링, 제어된 수정 및 운영 기록에 이르기까지 유체의 수명주기를 따르십시오. 지식 확인은 학습자가 지침을 현실적인 유체 관리 결정에 적용하는 데 도움이 됩니다.",
+    "duration_minutes": 35,
+    "duration_basis": "estimated_learner_time",
+    "duration_note": "추정된 학습 시간은 내레이션, 다이어그램, 지식 확인 및 검토를 포함합니다. 선택 사항인 외부 참조 학습, 재생 및 재시도는 시간을 추가합니다.",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 7,
+        "summary": "냉각 시스템 내의 유체를 찾아내고, 단위계 및 이중계 접근 방식을 구분하고, 반복되는 호환성, 모니터링 및 문서화 결정을 식별하십시오."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 10,
+        "summary": "성능 및 유지 보수 요구 사항에 따라 물과 PG25를 비교합니다. 냉각제 품질, 억제제 화학, 작동 조건, 접액 재료 및 공급업체 자격 증명 증거를 검토합니다."
+      },
+      {
+        "id": 3,
+        "duration_minutes": 9,
+        "summary": "작동 가능한 루프 디자인을 호환되는 청소, 펌프질, 채우기, 여과 및 미생물 제어에 연결합니다. 나중에 작동할 수 있도록 시동 샘플링 및 기준선 기록을 작성합니다."
+      },
+      {
+        "id": 4,
+        "duration_minutes": 9,
+        "summary": "일상적인 점검과 실험실 분석을 결합하여 유체 추세를 해석합니다. 공급업체 가이드의 조정 적용, 혼합 및 수명주기 문제 평가, 유용한 운영 문서 유지 관리."
+      }
+    ],
+    "labels": {
+      "title": "제목",
+      "short_description": "간단한 설명",
+      "long_description": "상세 설명",
+      "overall_duration": "총 학습 시간: {duration}분",
+      "unit_heading": "모듈 {number}: {title} - {duration}분"
+    }
+  },
   "metadata_language_name": "Korean",
   "localization": {
     "source_course": "../../course.json",
     "source_language": "en-US",
     "target_language": "ko-KR",
-    "source_course_sha256": "085233653e612c3ab97b2e834f2fbcf2562a736cc7ec71a13539cd84175559cb"
+    "source_course_sha256": "85a74a0d2effc141c2e8e27ffca70554334a7192fda286022575f033069dc85f",
+    "refreshed_at": "2026-11-10",
+    "translation_provider": "Apple on-device installed model with existing approved translation memory and technical-token protection",
+    "draft_threshold_issue": "https://github.com/opencomputeproject/ocp-academy-courses/issues/84"
   },
   "ui_labels": {
-    "not_started": "시작 전",
-    "completed": "완료",
-    "module": "모듈",
-    "module_complete": "모듈 {module} 완료",
-    "course_complete": "과정 완료",
+    "slide_transcript": "슬라이드 대본",
+    "close_transcript": "녹음을 닫다",
+    "transcript": "성적 증명서",
+    "no_narration": "이 슬라이드에 내레이션이 없습니다.",
+    "narration_on_hint": "내레이션 - 끄려면 클릭하세요",
+    "narration_off_hint": "내레이션 끄기 - 켜기 위해 클릭하기",
+    "narration_off_message": "내레이션이 꺼져 있습니다. 대본이나 이 슬라이드에 대한 재생을 사용하여 읽어보십시오.",
+    "lms_navigation_note": "LMS 코스 탐색을 사용하여 다른 모듈을 열어 완료 여부를 올바르게 기록합니다.",
+    "play_narrated_video": "내레이션이 있는 비디오 재생하기",
+    "pause_narrated_video": "내레이션이 포함된 비디오 일시 정지",
+    "show_transcript": "녹화 내용을 표시",
+    "toggle_narration": "내레이션 켜기/끄기",
+    "narration_hint": "내레이션은 자동으로 시작됩니다. → 키 또는 스페이스바를 눌러 다음으로 이동하세요.",
     "course_overview": "과정 개요",
     "learning_objectives": "학습 목표",
     "key_takeaways": "핵심 요약",
@@ -1813,41 +3207,60 @@
     "retry": "다시 시도",
     "quiz_gate_note": "계속하려면 각 문항을 한 번씩 제출하세요. 정답 여부와 관계없이 진행할 수 있으며 다시 시도할 수 있습니다.",
     "quiz_gate_warning": "다음으로 이동하기 전에 각 문항을 한 번씩 제출하세요.",
-    "select_answer": "답을 하나 이상 선택한 후 제출하세요.",
-    "correct": "정답입니다.",
-    "review_feedback": "피드백을 확인한 후 다시 시도하세요.",
-    "narration_hint": "내레이션은 자동으로 시작됩니다. → 키 또는 스페이스바를 눌러 다음으로 이동하세요.",
+    "module": "모듈",
+    "up_next": "다음 과정",
+    "course_complete": "과정 완료",
     "theme": "테마",
     "toggle_dark_mode": "다크 모드 전환",
     "previous_slide": "이전 슬라이드",
     "next_slide": "다음 슬라이드",
+    "previous_slide_hint": "이전 슬라이드(← 왼쪽 화살표). 홈: 이 모듈의 슬라이드 1로 이동합니다.",
+    "next_slide_hint": "다음 슬라이드(→ 오른쪽 화살표). 홈: 이 모듈의 슬라이드 1로 이동합니다.",
+    "slide_counter_hint": "← / → 화살표 키를 사용하여 슬라이드 사이를 이동합니다. 홈: 이 모듈의 슬라이드 1로 이동합니다.",
     "play_pause_narration": "내레이션 재생 또는 일시 정지",
     "playback_speed": "재생 속도",
     "playback_speed_slider": "재생 속도 조절",
     "speed": "속도",
     "toggle_fullscreen": "전체 화면 전환",
     "fullscreen": "전체 화면",
-    "video_controls": "동영상 컨트롤",
+    "select_answer": "답을 하나 이상 선택한 후 제출하세요.",
     "play_video": "동영상 재생",
     "pause_video": "동영상 일시 정지",
-    "zoom_video": "동영상 확대",
-    "video_figure": "동영상 그림",
-    "zoom_figure": "그림 확대",
     "enlarged_figure": "확대된 그림",
     "lightbox_close_hint": "바깥쪽을 클릭하거나 Esc 키를 눌러 닫으세요.",
-    "opens_new_tab": "새 탭에서 열림",
-    "learner_resource": "학습 자료",
-    "open": "열기",
-    "learn_more": "자세히 보기",
-    "reference": "참고 자료",
-    "course_intro": "OCP Academy 과정 인트로",
-    "skip_intro": "인트로 건너뛰기",
+    "video_figure": "동영상 그림",
+    "zoom_figure": "그림 확대",
     "share_feedback": "의견 보내기",
-    "survey_body": "몇 분만 시간을 내어 개선에 도움을 주시겠어요? 개발팀에 의견을 보내 주시면 이 과정과 향후 과정을 발전시키는 데 활용하겠습니다. 응답자 가운데 일부를 무작위로 선정해 기념품을 드립니다.",
+    "course_home": "코스 홈",
+    "reference": "참고 자료",
+    "opens_new_tab": "새 탭에서 열림",
+    "module_complete": "모듈 {module} 완료",
+    "go_to_module": "모듈 {module}로 이동",
+    "learn_more": "자세히 보기",
     "default_module_thanks": "모듈 {module}을 완료해 주셔서 감사합니다: {title}",
     "default_course_wrap": "{course}의 모든 모듈을 완료했습니다. 이 과정에서 배운 내용을 현업에 적용하는 데 도움이 되기를 바랍니다.",
-    "up_next": "다음 과정",
-    "go_to_module": "모듈 {module}로 이동"
-  },
-  "index_footer_line": "OCP ESUN · 사양 v1.0 · 한국어판"
+    "lightbox_pan_hint": "검사하려면 드래그하세요. 외부에 탭하여 닫으세요.",
+    "learner_resource": "학습 자료",
+    "video_controls": "동영상 컨트롤",
+    "zoom_video": "동영상 확대",
+    "open": "열기",
+    "correct": "정답입니다.",
+    "incorrect": "틀렸습니다.",
+    "review_feedback": "피드백을 확인한 후 다시 시도하세요.",
+    "not_started": "시작 전",
+    "completed": "완료",
+    "syllabus_instruction": "LMS 커리큘럼을 사용하여 원하는 순서로 코스 모듈을 진행합니다.",
+    "start_with_module": "MODULE {module}로 시작하세요.",
+    "captions": "자막",
+    "play": "놀다",
+    "seek": "찾다",
+    "playback_rate": "재생 속도",
+    "picture_in_picture": "내장형 화면 캡처",
+    "mute": "벙어리",
+    "volume": "음량",
+    "captions_off": "자막 꺼짐",
+    "course_intro": "OCP Academy 과정 인트로",
+    "skip_intro": "인트로 건너뛰기",
+    "survey_body": "몇 분만 시간을 내어 개선에 도움을 주시겠어요? 개발팀에 의견을 보내 주시면 이 과정과 향후 과정을 발전시키는 데 활용하겠습니다. 응답자 가운데 일부를 무작위로 선정해 기념품을 드립니다."
+  }
 }

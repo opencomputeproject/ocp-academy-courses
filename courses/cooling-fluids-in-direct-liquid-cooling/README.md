@@ -53,9 +53,23 @@ correctness, and reference URLs while localizing learner-facing text, narration
 scripts, figures, the commissioning animation, controls, and accessibility
 labels. Locale metadata records the approved ElevenLabs voice and model.
 
-These translated editions retain the prior approved English baseline. The October 2026 PG25-guideline additions and visual refresh are currently English-only and have not yet been propagated into the seven locales.
+The November 2026 rebuild reconciles all seven editions with the current English
+baseline, including the October PG25-guideline additions, refreshed figures,
+commissioning animation, page-specific teaching references, and current home and
+player controls. English teaching content is unchanged. All eight editions use
+fresh full ElevenLabs `eleven_v4` narration with their existing approved voices,
+pitch-preserving 1.18 pacing, and 96 kbps CBR mono MP3 delivery. Authoring WAVs,
+native provider recordings, and synthesis receipts remain outside the runtime
+ZIPs. See [the rebuild report](V4_MULTILINGUAL_REBUILD.md) for scope, validation,
+measured narration durations, and the remaining human review.
 
-Tracked follow-ups: [refresh all seven language editions (#83)](https://github.com/opencomputeproject/ocp-academy-courses/issues/83) and [resolve M3S8's unpublished-draft microbial action threshold (#84)](https://github.com/opencomputeproject/ocp-academy-courses/issues/84). The course owner confirmed on 9 October 2026 that the original water guideline draft remains unpublished; the approved narration is retained pending the workstream's decision.
+Translation refresh tracking: [#83](https://github.com/opencomputeproject/ocp-academy-courses/issues/83).
+The separate follow-up to [resolve M3S8's unpublished-draft microbial action
+threshold (#84)](https://github.com/opencomputeproject/ocp-academy-courses/issues/84)
+remains open. The course owner confirmed on 9 October 2026 that the original
+water guideline draft remains unpublished; the approved claim and its explicit
+draft-only provenance are retained in every edition pending the workstream's
+decision. The published-PDF resource is not evidence for the 1000 CFU/ml trigger.
 
 ## Build
 

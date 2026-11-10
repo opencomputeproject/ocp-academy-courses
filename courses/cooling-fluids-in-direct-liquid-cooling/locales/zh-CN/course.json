@@ -5,15 +5,25 @@
     "engine": "elevenlabs",
     "voice_id": "bZtjnyJAFD0Cp3lfNG5g",
     "voice_name": "Lan Chen",
-    "model_id": "eleven_multilingual_v2"
+    "model_id": "eleven_v4",
+    "speed": 1.18,
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR",
+      "migration_decision": "mp3"
+    }
   },
   "course_slug": "cooling_fluids_in_direct_liquid_cooling_zh_cn",
   "course_title": "直接液冷(DLC) 中的冷却液",
   "course_subtitle": "单相TCS芯片直冷部署的流畅指导",
   "tagline": "Community-driven Hyperscale Innovation for All",
-  "spec_version_chip": "水基使用指南传热流体",
+  "spec_version_chip": "OCP 基本规格 + PG25 准则",
   "target_duration_minutes": 35,
-  "audience_level": "中间",
+  "audience_level": "intermediate",
   "brand": {
     "primary_color": "#8DC63F",
     "primary_color_dark": "#6FA030",
@@ -37,14 +47,29 @@
   },
   "sources": [
     {
+      "kind": "ocp_base_specification_pdf",
+      "title": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
+    },
+    {
+      "kind": "ocp_base_specification_pdf",
+      "title": "OCP Base Specification - PG25 - V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf"
+    },
+    {
       "kind": "ocp_contribution_pdf",
-      "title": "在单相冷板液冷机架中使用水基传热流体的指南",
+      "title": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
       "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
     },
     {
       "kind": "ocp_contribution_pdf",
-      "title": "在两相冷板液冷机架中使用电介质传热流体的指南",
+      "title": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
       "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_operating_guideline_pdf",
+      "title": "OCP PG25 Guidelines V1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf"
     }
   ],
   "term_glossary": [
@@ -53,42 +78,63 @@
       "term": "DLC",
       "tooltip": "直接液冷。一种冷却方法，其中液体消除处理器或加速器等发热组件附近的热量。",
       "reference_label": "OCP 冷却环境",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "直接液冷"
+      ]
     },
     {
       "id": "cdu",
       "term": "CDU",
       "tooltip": "冷却液分配单元。泵送和调节冷却剂以及在 TCS 和设施系统之间传递热量的设备。",
       "reference_label": "OCP 冷却环境",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "冷却液分配单元"
+      ]
     },
     {
       "id": "tcs",
       "term": "TCS",
       "tooltip": "技术冷却系统。 CDU 和机架或服务器冷却硬件之间的闭合辅助回路。",
       "reference_label": "ASHRAE/OCP 用法",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "技术冷却系统"
+      ]
     },
     {
       "id": "fws",
       "term": "FWS",
       "tooltip": "设施水系统。 TCS 边界之外的设施侧环路。",
       "reference_label": "OCP 冷却环境",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "设施水系统"
+      ]
     },
     {
       "id": "pg25",
       "term": "PG25",
-      "tooltip": "具有 25%丙二醇的传热流体，常用于单相芯片直冷冷却。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "tooltip": "根据OCP基准规格PG25 V1.0.0，包含25至28%丙二醇的即用型 传热流体。",
+      "reference_label": "OCP 基本规格 - PG25 - V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+      "aliases": [
+        "P G二十五",
+        "PG二十五"
+      ]
     },
     {
       "id": "qd",
       "term": "QD",
       "tooltip": "快速接头。一种服务连接器，允许在回路中建立和断开流体连接。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP单相运行指南",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+      "aliases": [
+        "QDs",
+        "快速接头",
+        "快速断开连接"
+      ]
     },
     {
       "id": "iat",
@@ -98,7 +144,7 @@
     {
       "id": "oat",
       "term": "OAT",
-      "tooltip": "有机酸技术，一种与更长寿命的腐蚀保护相关的冷却剂抑制剂方法。"
+      "tooltip": "有机酸技术，一种与更长寿命的腐蚀保护相关的冷却剂缓蚀剂方法。"
     },
     {
       "id": "hoat",
@@ -109,36 +155,51 @@
       "id": "azole",
       "term": "唑类",
       "tooltip": "用于保护铜和黄色金属的缓蚀剂系列。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP单相运行指南",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+      "aliases": [
+        "唑类"
+      ]
     },
     {
       "id": "tss",
       "term": "TSS",
       "tooltip": "总悬浮固体。悬浮在流体中的颗粒。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP水基冷却剂基质规格V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "tds",
       "term": "TDS",
       "tooltip": "总溶解固体。流体中溶解的物质，与电导率有关。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP水基冷却剂基质规格V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "cfu",
       "term": "CFU/ml",
       "tooltip": "每毫升菌落形成单位，用于液体中的微生物计数。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP水基冷却剂基质规格V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+      "aliases": [
+        "CFU/ml",
+        "CFU",
+        "每毫升的菌落形成单位"
+      ]
+    },
+    {
+      "id": "ntu",
+      "term": "NTU",
+      "tooltip": "云量浑浊度单位。衡量悬浮颗粒引起的流体云度的一种指标。",
+      "reference_label": "OCP水基冷却剂基质规格V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "icp",
       "term": "ICP",
       "tooltip": "电感耦合等离子体分析，用于识别可溶性离子和金属污染物。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP单相运行指南",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
     },
     {
       "id": "sds",
@@ -151,8 +212,8 @@
       "id": "coa",
       "term": "COA",
       "tooltip": "分析证书。显示所制造流体的产品质量或合规性的制造商文件。",
-      "reference_label": "OCP单相指导草案",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP水基冷却剂基质规格V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "latent_heat",
@@ -196,6 +257,38 @@
       "tooltip": "个人防护装备。手套、护目镜和从 SDS 和当地安全程序中选择的其他控制措施。",
       "reference_label": "OSHA PPE 概述",
       "url": "https://www.osha.gov/personal-protective-equipment"
+    },
+    {
+      "id": "refractive_index",
+      "term": "折射率",
+      "tooltip": "一种光学特性，用于使用确切的液体供应商校准数据来估计丙二醇浓度。它不是对缓蚀剂健康状态的直接测量。",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 准则 V1.0.0，第 11.6 节"
+    },
+    {
+      "id": "reserve_alkalinity",
+      "term": "储备碱度",
+      "tooltip": "缓冲能力的滴定测量。其解释取决于缓蚀剂配方；有机酸液体不使用与常规配方相同的标准。",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 指南 V1.0.0，表格 14"
+    },
+    {
+      "id": "antifoam",
+      "term": "消泡剂",
+      "aliases": [
+        "消泡剂添加剂",
+        "消泡剂代理"
+      ],
+      "tooltip": "一种用于控制泡沫的添加剂。细过滤或不相容的过滤介质可以从某些丙二醇配方中去除泡沫。",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 准则 V1.0.0，部分 6.5 和 7.2"
+    },
+    {
+      "id": "biostatic",
+      "term": "抑制微生物生长",
+      "tooltip": "在适宜条件下抑制微生物生长；这并不意味着液体或循环是无菌的。",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 准则 V1.0.0，部分 3.1 和 11.1"
     }
   ],
   "modules": [
@@ -216,13 +309,15 @@
           "title": "直接液冷(DLC) 中的冷却液",
           "slug": "cooling_fluids_in_direct_liquid_cooling",
           "subtitle": "单相TCS 流体选择、调试投运、监控和操作。",
-          "version_chip": "水基使用指南传热流体",
+          "version_chip": "OCP 水 + PG25 基本规格",
           "id": 1,
           "audio": {
             "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
             "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.mp3"
+          },
+          "transcript": "欢迎来到直接液冷中的冷却液。本课程是关于技术冷却系统内的流体决策：CDU 和冷板之间的 TCS 循环。\n\n我们将继续关注单相芯片直冷冷却：处理过的水和 P G 25。最后，您应该能够在流体到达昂贵的机架之前就兼容性、化学、过滤、监控和记录提出更好的问题。"
         },
         {
           "type": "course_overview",
@@ -253,11 +348,10 @@
           "audio": {
             "script_file": "audio/module1/slide_02_course_roadmap.txt",
             "wav_file": "audio/module1/slide_02_course_roadmap.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_02_course_roadmap.mp3"
           },
-          "term_refs": [
-            "dlc"
-          ]
+          "transcript": "本课程有四个模块。首先，我们设定边界：流体存在的位置、为什么高密度 A I 做出决定很重要，以及为什么两相制冷剂属于单独的学习路径。\n\n其次，我们比较处理过的水和 P G 25，然后解开流体规格背后的特性目标、缓蚀剂化学和兼容性证据。\n\n第三，我们进入调试投运：可用设计、泄漏检查、清洁、填充、启动采样、过滤和微生物控制。\n\n最后，我们介绍稳态操作：常规监控、实验室测试、趋势解释、供应商指导的调整、流体混合、使用寿命、处置以及让基础设施在更新周期中生存的记录。"
         },
         {
           "type": "content_grid",
@@ -292,61 +386,190 @@
           "audio": {
             "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
             "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.mp3"
           },
           "term_refs": [
-            "tdp",
-            "tcs"
-          ]
+            "tcs",
+            "tdp"
+          ],
+          "transcript": "I 机架改变了热对话，因为热量现在集中在空气冷却难以跟上的地方。趋势很明显：加速器功率不断提高，更多加速器被装入更小的占地面积，机架功率从熟悉的数十千瓦变为数百千瓦。\n\n这并不意味着空气消失。在许多芯片直冷部署中，液体带走大部分热量，而空气仍然处理残余负载。但这确实意味着流体成为可靠性故事的一部分。如果流体结垢、腐蚀、生物生长或堵塞微通道，计算业务案例很快就会成为维护问题。"
         },
         {
           "type": "content_diagram",
           "title": "液体存在的地方",
           "slug": "where_the_fluid_lives",
           "section_label": "系统边界",
+          "reference_links": [
+            {
+              "label": "水基流体指南 · pp. 5–6",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=5"
+            }
+          ],
           "figure": {
             "path": "figures/tcs_loop.svg",
-            "alt": "技术冷却系统在 CDU 和冷板之间循环",
-            "caption": "本课程重点关注 CDU 和 IT 设备之间的闭环 TCS。"
+            "alt": "分开的设备和TCS液体在CDU处交换热量；TCS通过歧管和冷板循环。",
+            "caption": "热量穿过CDU换热器；设施和TCS液体保持分离。",
+            "text_inventory": {
+              "sha256": "493eac3992db77c6ecaaf23cffce25587b4460fc37f5ebad3c0f462b2daa0578",
+              "entries": [
+                {
+                  "text": "技术冷却系统 (TCS)"
+                },
+                {
+                  "text": "闭合的次级环路"
+                },
+                {
+                  "text": "设施用水"
+                },
+                {
+                  "text": "系统（FWS）"
+                },
+                {
+                  "text": "在这个范围之外"
+                },
+                {
+                  "text": "CDU"
+                },
+                {
+                  "text": "热交换器"
+                },
+                {
+                  "text": "泵+过滤器"
+                },
+                {
+                  "text": "支架"
+                },
+                {
+                  "text": "流形"
+                },
+                {
+                  "text": "供应/退货"
+                },
+                {
+                  "text": "QDs + 软管"
+                },
+                {
+                  "text": "传感器"
+                },
+                {
+                  "text": "IT设备"
+                },
+                {
+                  "text": "冷板"
+                },
+                {
+                  "text": "供应"
+                },
+                {
+                  "text": "供应"
+                },
+                {
+                  "text": "返回"
+                },
+                {
+                  "text": "返回"
+                },
+                {
+                  "text": "热量穿过交换器。两种液体不会混合。"
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "paragraphs": "15-17日"
+              "paragraphs": "15-17"
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
             "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_04_where_the_fluid_lives.mp3"
           },
           "term_refs": [
             "cdu",
             "fws",
+            "qd",
             "ashrae"
-          ]
+          ],
+          "transcript": "第一个边界很简单但很重要。本课程是关于将热量从机架设备传送到 CDU 的辅助闭环。在 ASHRAE 语言中，该环路是技术冷却系统或 TCS。\n\n设施水系统位于 CDU 热交换器的另一侧。它对整体设计很重要，但它不是相同的流体环境。 TCS 接触冷板、歧管、快速断开装置、软管、泵密封件、过滤器、储液器和传感器。每一个润湿表面都成为流体相容性问题的一部分。"
         },
         {
           "type": "content_diagram",
           "title": "单相范围内的流体族",
           "slug": "single_phase_fluid_families_in_scope",
           "section_label": "适用范围",
+          "reference_links": [
+            {
+              "label": "PG25 规范 · pp. 10–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            }
+          ],
           "figure": {
             "path": "figures/fluid_families.svg",
-            "alt": "处理过的水和 PG25 在范围内，而两相制冷剂则被推迟",
-            "caption": "本课程中的可行指导适用于处理过的水和PG25型单相循环。"
+            "alt": "经过处理的水和即用型 PG25是单相范围；双相制冷剂是另一个独立的系列。",
+            "caption": "经过处理的水和PG25在运输热量时仍然是液体；它们的化学性质和操作要求不同。",
+            "text_inventory": {
+              "sha256": "d0e55e54a943b23fcd27c27d68818a6125394640d3aae04df4feced28ffb08dd",
+              "entries": [
+                {
+                  "text": "单相范围"
+                },
+                {
+                  "text": "经过处理的水"
+                },
+                {
+                  "text": "高热容"
+                },
+                {
+                  "text": "管理的化学"
+                },
+                {
+                  "text": "PG"
+                },
+                {
+                  "text": "PG25"
+                },
+                {
+                  "text": "25-28%按重量计算的PG"
+                },
+                {
+                  "text": "即用型 + 缓蚀剂"
+                },
+                {
+                  "text": "两相"
+                },
+                {
+                  "text": "制冷剂"
+                },
+                {
+                  "text": "单独课程"
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "pg25"
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "5.2-5.3"
+            }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
             "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.mp3"
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "transcript": "对于本课程，主要的单相流体系列是经过处理的水和 P G 25。经过处理的水可以提供出色的传热性能，但需要积极关注腐蚀、生物生长、电导率、固体、硬度和添加剂。\n\n已发布的OCP PG25规格定义了一种即用型液体，其重量为25%至28%丙二醇。与水相比，它放弃了一些热性能，因此需要测量操作范围的特性数据。该规格还要求缓蚀剂，一种染料，受控杂质，产品过滤和运输证明。\n\n两相介电制冷剂在此仅作为对比出现，因为它们的操作逻辑不同。"
         },
         {
           "type": "content_grid",
@@ -381,12 +604,14 @@
           "audio": {
             "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
             "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_06_the_four_operator_questions.mp3"
+          },
+          "transcript": "运营商的关注点并不集中在一处。操作员担心选择与他们的系统兼容的流体。他们担心昂贵硬件周围的泄漏。他们担心监测液体并了解样本的含义。他们担心是否有足够的设计和操作专业知识。\n\n这些问题成为本课程的支柱。正确的答案很少是单一的产品声明。这是一系列证据：流体化学、接液材料、安装清洁度、过滤、监控、趋势、供应商支持和记录的决策。"
         },
         {
           "type": "content_two_column",
-          "title": "两相液体是不同的课程",
+          "title": "两相流体另有专门课程",
           "slug": "two_phase_fluids_are_a_different_course",
           "section_label": "对比",
           "subtitle": "请勿将单相水/PG25 规则与两相制冷剂规则结合起来。",
@@ -406,28 +631,55 @@
           ],
           "figure": {
             "path": "figures/single_vs_two_phase.svg",
-            "alt": "单相流体使用显热，而两相制冷剂使用潜热",
-            "caption": "两相流体教育可以在两相DLC课程中找到。"
+            "alt": "温度计表示显热；上面有蒸汽的液体滴表示潜热。",
+            "caption": "两相流体教育可以在两相DLC课程中找到。",
+            "text_inventory": {
+              "sha256": "fc1998e542789d9a30273c364f71bae6cb13d80a1592a685d3f6cff47611c71c",
+              "entries": [
+                {
+                  "text": "单相"
+                },
+                {
+                  "text": "水或PG25"
+                },
+                {
+                  "text": "显热"
+                },
+                {
+                  "text": "液体变热；它保持液体状态。"
+                },
+                {
+                  "text": "两相"
+                },
+                {
+                  "text": "介电制冷剂"
+                },
+                {
+                  "text": "潜热"
+                },
+                {
+                  "text": "蒸发会带走热量。"
+                },
+                {
+                  "text": "制冷剂示例：R-515B、R-1233zd(E)、R-1336mzz(Z)"
+                }
+              ]
+            }
           },
           "reference_links": [
             {
-              "label": "OCP两相液体指南",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+              "label": "OCP Academy：两相 DLC",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids"
             }
-          ],
-          "term_refs": [
-            "latent_heat",
-            "sds",
-            "coa"
           ],
           "source_refs": [
             {
-              "source": "在两相冷板液冷机架中使用电介质传热流体的指南",
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "slides": "6-13"
             },
             {
-              "source": "在两相冷板液冷机架中使用电介质传热流体的指南",
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "timestamp": "03:12-09:15"
             }
@@ -436,8 +688,16 @@
           "audio": {
             "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
             "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.mp3"
+          },
+          "term_refs": [
+            "dlc",
+            "sds",
+            "coa",
+            "latent_heat"
+          ],
+          "transcript": "这是课程中的一张两相幻灯片，因为技术重叠有限。共同的教训是治理：了解流体、了解接液材料、保留记录并使用正确的规格。\n\n流体行为不同。两相DLC 使用低沸点介电制冷剂，例如 R 5 15 B、R 12 33 Z D E 和 R 13 36 M Z Z Z。它们的优点是在沸腾或蒸发时潜热。作为单相液体，这些液体具有较低的比热容。在没有相变的情况下运行它们会浪费它们的主要优势并且需要更高的流速。\n\n有关两相详细信息，请使用链接的 OCP 指南和单独的两相DLC 课程。"
         },
         {
           "type": "content_diagram",
@@ -446,12 +706,74 @@
           "section_label": "来源学科",
           "figure": {
             "path": "figures/standards_map.svg",
-            "alt": "DLC 流体引导的标准和源图",
-            "caption": "液体指导是一系列社区标准、测试方法和产品特定的治疗计划。"
+            "alt": "产品基础规格和PG25生命周期准则为供应商批准的计划提供了依据，该计划由测试方法和系统上下文支持。",
+            "caption": "产品要求和操作建议具有不同的目的；请在供应商批准的系统计划中同时使用这两个建议。",
+            "text_inventory": {
+              "sha256": "cac8c7ad26bc0b40a6ac41ab456e152b25a71e807361609299777a7f3d2db98b",
+              "entries": [
+                {
+                  "text": "OCP基本规格"
+                },
+                {
+                  "text": "水冷却剂 V1.3 / PG25 V1.0.0"
+                },
+                {
+                  "text": "即用型 产品要求"
+                },
+                {
+                  "text": "PG25 指南 V1.0.0"
+                },
+                {
+                  "text": "在使用寿命结束前兼容性"
+                },
+                {
+                  "text": "建议，非产品限值"
+                },
+                {
+                  "text": "供应商批准的系统计划"
+                },
+                {
+                  "text": "确切的液体+接液材料"
+                },
+                {
+                  "text": "操作范围+监控"
+                },
+                {
+                  "text": "现场处置阈值 + 响应"
+                },
+                {
+                  "text": "ASTM"
+                },
+                {
+                  "text": "测量"
+                },
+                {
+                  "text": "方法"
+                },
+                {
+                  "text": "ASHRAE TC 9.9"
+                },
+                {
+                  "text": "系统上下文"
+                }
+              ]
+            }
           },
           "reference_links": [
             {
-              "label": "OCP 冷却环境",
+              "label": "水基冷却液规范 · pp. 8–12",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=8"
+            },
+            {
+              "label": "PG25 规范 · pp. 7–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=7"
+            },
+            {
+              "label": "PG25 指南 · pp. 9–10",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=9"
+            },
+            {
+              "label": "冷却环境",
               "url": "https://www.opencompute.org/wiki/Cooling_Environments"
             }
           ],
@@ -459,11 +781,26 @@
           "audio": {
             "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
             "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_08_standards_and_source_map.mp3"
           },
           "term_refs": [
             "astm"
-          ]
+          ],
+          "source_refs": [
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "1; 14",
+              "pages": [
+                9,
+                10,
+                85,
+                86
+              ]
+            }
+          ],
+          "transcript": "源地图有两种不同的OCP文档。基于水的冷却剂和PG25基本规格定义了即用型产品的要求。PG25指南，版本一零点零，增加了兼容性、调试投运过滤、测试、监控和维护的整个生命周期建议。\n\n不要将操作指南视为取代基本规格的替代品。其典型属性表和示例使用范围有助于解释操作条件；它们不是通用产品合格限值。请在与准确的液体供应商的技术支持和现场批准的计划一起应用它们。\n\nASTM测试方法提供了一种共同的测量语言，而系统供应商则确定实际的接液材料和操作范围。可靠的决策将这些层连接起来，而不是单独选择一个数字。"
         },
         {
           "type": "takeaways",
@@ -479,8 +816,10 @@
           "audio": {
             "script_file": "audio/module1/slide_09_module_1_summary.txt",
             "wav_file": "audio/module1/slide_09_module_1_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_09_module_1_summary.mp3"
+          },
+          "transcript": "模块一设定边界。本课程是关于 TCS 回路内的单相流体决策，而不是设施水回路，也不是完整的两相制冷剂课程。\n\n这很重要的原因很简单：更高密度的 AI 机架将流体健康状况变成可用性问题。有用的问题是实际的问题。流体相容吗？它是如何填充的？它是如何过滤的？监控什么？谁决定何时调整？\n\n两相系统的共同点主要是治理。操作指南很快就会出现分歧，因此剩下的课程仍然使用经过处理的水和 P G 25。"
         },
         {
           "id": 10,
@@ -489,7 +828,8 @@
           "audio": {
             "script_file": "audio/module1/slide_10_knowledge_check.txt",
             "wav_file": "audio/module1/slide_10_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_10_knowledge_check.mp3"
           },
           "title": "检查你的流体边界",
           "subtitle": "回答一次即可继续。不要求正确性，您可以重试。",
@@ -552,7 +892,8 @@
               "feedback_correct": "正确。流体选择、化学控制、兼容性、过滤和维修实践都属于该计划。",
               "feedback_incorrect": "单相计划围绕流体选择、化学限制、接液材料、过滤和维修实践而构建。"
             }
-          ]
+          ],
+          "transcript": "在此暂停以检查模块一的流体边界。\n\n第一个问题询问本课程的真正内容：单相冷却中的单相水基流体，而不是设施水处理，而不是两相制冷剂。第二个问题询问哪些操作问题属于健康的单相液体计划。\n\n每个问题提交一次即可继续。使用反馈来调整您的答案，如果您想要另一次通过，请重试。"
         },
         {
           "type": "up_next",
@@ -564,8 +905,10 @@
           "audio": {
             "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
             "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.mp3"
+          },
+          "transcript": "干得好。您已经完成了系统边界模块。您现在知道本课程适用于哪里，哪些单相流体系列适用范围，以及哪些已发布的规范和操作指南支持实际决策。\n\n接下来，我们进入选择和规范。我们将比较水和 PG 25，审查关键性能目标，并详细研究缓蚀剂化学和接液材料，以支持更好的采购和设计对话。"
         }
       ],
       "next_module_title": "选择和指定单相流体"
@@ -574,25 +917,27 @@
       "id": 2,
       "slug": "choosing_single_phase_fluids",
       "title": "选择和指定单相流体",
-      "subtitle": "水、PG25、化学窗口、抑制剂和兼容性证据。",
+      "subtitle": "水、PG25、化学窗口、缓蚀剂和兼容性证据。",
       "module_badge_text": "模块2",
       "motion_intro": {
         "eyebrow": "模块2",
         "title": "选择和指定单相流体",
-        "subtitle": "水、PG25、化学窗口、抑制剂和兼容性证据。"
+        "subtitle": "水、PG25、化学窗口、缓蚀剂和兼容性证据。"
       },
       "slides": [
         {
           "type": "title",
           "title": "选择和指定单相流体",
           "slug": "choosing_and_specifying_single_phase_fluids",
-          "subtitle": "水、PG25、化学窗口、抑制剂和接液材料兼容性。",
+          "subtitle": "水、PG25、化学窗口、缓蚀剂和接液材料兼容性。",
           "id": 1,
           "audio": {
             "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
             "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.mp3"
+          },
+          "transcript": "第二单元是关于选择和指定单相流体。我们将比较处理过的水和 P G 25，然后查看流体选择背后应有的化学和兼容性证据。\n\n本模块并不是想让每个人都成为化学家。目标更实际。您应该能够阅读流体要求，了解数字所保护的内容，并知道何时材料或操作变更需要重新进行兼容性对话。"
         },
         {
           "type": "objectives",
@@ -602,19 +947,17 @@
           "objectives": [
             "使用性能和维护权衡来比较处理过的水和PG25。",
             "确定保护单相TCS 回路的流体质量目标。",
-            "解释为什么抑制剂化学对于腐蚀控制和沉积物很重要。",
+            "解释为什么缓蚀剂化学对于腐蚀控制和沉积物很重要。",
             "将流体选择连接到接液材料和供应商证据。"
           ],
           "id": 2,
           "audio": {
             "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
             "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module2/slide_02_selection_decisions_you_will_classify.mp3"
           },
-          "term_refs": [
-            "tcs",
-            "pg25"
-          ]
+          "transcript": "在本模块结束时，您将能够比较处理过的水和 PG 25，而不会单独减少对热性能的决定。\n\n您将能够识别已发布的基于水冷却剂的产品要求和PG25，然后解释为什么像pH、电导率、硬度、浑浊度、细菌和缓蚀剂水平等参数仍然是操作信号。\n\n您还能够在高层次上区分 I A T、O A T 和 H O A T 缓蚀剂策略，并将兼容性证据连接回接液材料、快速断开、冷板、泵、过滤器和密封件。"
         },
         {
           "type": "content_diagram",
@@ -623,25 +966,124 @@
           "section_label": "流体选择",
           "figure": {
             "path": "figures/water_pg25_tradeoff.svg",
-            "alt": "处理过的水和 PG25 的权衡",
-            "caption": "水有利于热性能。 PG25 在浓度保持不变时增加生物静态操作裕度。"
+            "alt": "一张定性表比较了水和PG25的热容、粘度、化学控制和新产品要求；不暗示任何测量性能比。",
+            "caption": "仅限定性比较：在操作温度下使用配方特定的特性，并记录丙二醇浓度是按重量还是按体积记录的。",
+            "text_inventory": {
+              "sha256": "772dc08b2801f0ab261941352cfa386e2fd8bcb1a84c59f844dd4ad62a8bcfe2",
+              "entries": [
+                {
+                  "text": "经过处理的水"
+                },
+                {
+                  "text": "PG25"
+                },
+                {
+                  "text": "热容量"
+                },
+                {
+                  "text": "教育高级证书"
+                },
+                {
+                  "text": "低于水位"
+                },
+                {
+                  "text": "黏滞性"
+                },
+                {
+                  "text": "较低的"
+                },
+                {
+                  "text": "更高；温度很重要"
+                },
+                {
+                  "text": "化学控制"
+                },
+                {
+                  "text": "腐蚀+"
+                },
+                {
+                  "text": "微生物控制"
+                },
+                {
+                  "text": "丙二醇浓度+"
+                },
+                {
+                  "text": "缓蚀剂平衡"
+                },
+                {
+                  "text": "新产品基础"
+                },
+                {
+                  "text": "水冷却剂 V1.3"
+                },
+                {
+                  "text": "25-28%按重量计算的PG"
+                },
+                {
+                  "text": "仅定性。在工作温度下使用供应商属性数据进行设计。"
+                },
+                {
+                  "text": "记录浓度基准：重量百分比不是体积百分比。"
+                }
+              ]
+            }
           },
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "5.2-5.3"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "3.1; 11.5",
+              "pages": [
+                13,
+                14,
+                67,
+                70
+              ]
+            }
+          ],
           "id": 3,
           "audio": {
             "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
             "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 规范 · pp. 10–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "PG25 指南 · pp. 13–16",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=13"
+            }
+          ],
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ],
+          "transcript": "水是一种优秀的传热流体，但热容并不是唯一的设计考虑因素。数据中心TCS循环也需要防腐保护、生物控制以及颗粒、溶解物质和添加剂平衡的管理。\n\nPG25基准规格定义了一个即用型产品，其重量中包含25%至28%的丙二醇。新的操作指南按体积描述丙二醇浓度。重量和体积百分比不可互换。使用液体供应商的配方特定数据，并在每个记录中确定测量基准。\n\nPG25的热特性与水不同，因此在整个工作范围内使用测量数据进行设计。其丙二醇有助于限制微生物生长，而其缓蚀剂包则保护材料。产品合规性并不证明不同供应商的配方是可以互换的。"
         },
         {
           "type": "content_table",
-          "title": "即用型流体质量目标",
+          "title": "已发布的水基冷却剂目标",
           "slug": "ready_to_use_fluid_quality_targets",
           "section_label": "流体目标",
-          "subtitle": "水基的选定吃水值传热流体。",
+          "reference_links": [
+            {
+              "label": "水基冷却液规范 · pp. 11–12",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=11"
+            }
+          ],
+          "subtitle": "从 OCP 基本规格中选择 即用型 产品要求。",
           "columns": [
             "参数",
-            "草案目标",
+            "已发布的限制",
             "为什么这很重要"
           ],
           "rows": [
@@ -652,12 +1094,12 @@
             ],
             [
               "TDS",
-              "处理后<1000 ppm",
+              "<2000 ppm",
               "溶解固体和污染趋势"
             ],
             [
               "电导率",
-              "25 摄氏度时 <2000 uS/cm",
+              "<2000 美国/厘米",
               "溶解物质的简易现场信号"
             ],
             [
@@ -672,111 +1114,248 @@
             ],
             [
               "细菌",
-              "填充<1 CFU/ml;操作 <100 CFU/ml",
-              "生物污损控制"
+              "<1 CFU/ml",
+              "新鲜产品微生物控制"
             ],
             [
-              "唑类",
-              ">100 ppm 或按照治疗计划",
-              "铜和黄色金属保护"
+              "浊度",
+              "<5 NTU",
+              "清晰度和颗粒控制"
             ]
-          ],
-          "term_refs": [
-            "tss",
-            "tds",
-            "cfu",
-            "azole"
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "table": 1
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "sections": "5.4.1-5.4.7"
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
             "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.mp3"
+          },
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "ntu"
+          ],
+          "transcript": "已发布的水基冷却剂基质规格将新鲜产品质量转化为可衡量的合格限值。屏幕上的选定值适用于即用型冷却剂在进入使用前。它们包括悬浮固体总量低于百万分之五，溶解固体总量低于两千，电导率低于每厘米两千微赛姆，pH从八到十点五，硬度低于碳酸钙三十百万分之五，浑浊度低于五N T U，细菌低于每毫升一个菌落形成单位。\n\n这些是产品要求，而不是完整的操作处理计划。一旦冷却剂投入使用，电导率和T D S就会成为溶解物质和污染物的趋势信号。硬度可以表明补水水质或浸出源。浑浊度和T S S可以揭示加载过滤器的颗粒或威胁微通道的颗粒。细菌计数揭示了生物风险，而缓蚀剂靶点仍然是产品特定的。\n\n学员今天不需要记住每个阈值。重要的是养成验证 incoming 产品与分析证书的习惯，然后将操作循环与 基线 和处理计划进行比较。"
         },
         {
           "type": "content_bullets",
           "title": "工作温度和化学窗口",
           "slug": "operating_temperature_and_chemistry_window",
           "section_label": "操作范围",
-          "subtitle": "温度是兼容性要求的一部分。",
+          "subtitle": "水和PG25指导具有不同的典型工作范围。",
           "bullets": [
             {
-              "bold_lead": "典型范围",
-              "text": "TCS循环在草案指南中被描述为低于49摄氏度。"
+              "bold_lead": "水导向",
+              "text": "描述了在 49 摄氏度以下的典型 TCS 操作。"
             },
             {
-              "bold_lead": "预期上限",
-              "text": "未经额外审查，预计运行温度不会超过 66 摄氏度。"
+              "bold_lead": "PG25指导",
+              "text": "描述了一个典型的闭环范围，范围为17-66度C。"
             },
             {
-              "bold_lead": "兼容性触发",
-              "text": "更高的温度需要审查接液材料和处理化学。"
+              "bold_lead": "超出范围",
+              "text": "重新验证接液材料，特别是塑料和弹性体。"
             },
             {
               "bold_lead": "当地情况",
-              "text": "与 IT 和冷板供应商确认最大表面停滞温度。"
+              "text": "与供应商一起检查散装液体和冷板表面的温度。"
             }
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "52-54"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.6",
+              "pages": [
+                25
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
             "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "水基流体指南 · p. 12",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=12"
+            },
+            {
+              "label": "PG25 指南 · p. 25",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=25"
+            }
+          ],
+          "transcript": "温度会改变化学和兼容性，两个操作文件描述了不同的典型范围。基于水的操作指南描述了低于49摄氏度的典型TCS操作，并要求在66摄氏度以上进行额外的审查。PG25指南描述了典型闭环范围为17至66摄氏度。\n\n这些是应用指南，而不是允许在该范围内任何地方操作任何冷却剂或组件的许可证。使用实际的液体和设备供应商批准的信封。在PG25指南的典型范围内上方，请查看接液材料，特别是弹性体和塑料。\n\n局部冷板表面温度和静止区域可能比整流体更恶劣。在验证兼容性和缓蚀剂性能时，请包括这些条件。"
         },
         {
           "type": "content_diagram",
           "title": "缓蚀剂：IAT、OAT 和 HOAT",
           "slug": "corrosion_inhibitors_iat_oat_and_hoat",
-          "section_label": "抑制剂化学",
+          "section_label": "缓蚀剂化学",
+          "reference_links": [
+            {
+              "label": "PG25 规范 · p. 10",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "PG25 指南 · p. 16",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=16"
+            }
+          ],
           "figure": {
             "path": "figures/inhibitor_timeline.svg",
-            "alt": "从水到 IAT OAT 和 HOAT 的冷却剂抑制剂化学时间表",
-            "caption": "抑制剂策略影响腐蚀防护、使用寿命和污染物敏感性。"
+            "alt": "IAT、OAT和HOAT缓蚀剂家族显示为并行方法，而不是时间线或排名。",
+            "caption": "比较化学家族，无需对其进行排名。验证确切的配方；符合OCP的PG25禁止硅酸盐类添加剂。",
+            "text_inventory": {
+              "sha256": "8f5785a5c39feee720b8c7f3db070dad94be01e7d57c62edc1118a4036ffbb1f",
+              "entries": [
+                {
+                  "text": "IAT"
+                },
+                {
+                  "text": "无机添加剂技术"
+                },
+                {
+                  "text": "无机添加剂"
+                },
+                {
+                  "text": "快速保护薄膜"
+                },
+                {
+                  "text": "OAT"
+                },
+                {
+                  "text": "有机酸技术"
+                },
+                {
+                  "text": "有机酸缓蚀剂"
+                },
+                {
+                  "text": "长寿命方法"
+                },
+                {
+                  "text": "HOAT"
+                },
+                {
+                  "text": "混合有机酸技术"
+                },
+                {
+                  "text": "+"
+                },
+                {
+                  "text": "综合方法"
+                },
+                {
+                  "text": "有机+无机化学"
+                },
+                {
+                  "text": "保护、兼容性、寿命和监控取决于配方。"
+                },
+                {
+                  "text": "OCP-符合的PG25：不含硅酸盐基添加剂。"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.2"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.mp3"
           },
           "term_refs": [
             "iat",
             "oat",
             "hoat"
           ],
-          "id": 6,
-          "audio": {
-            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
-            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
-            "approved": true
-          }
+          "transcript": "缓蚀剂是冷却剂不仅仅是管道中的水的原因之一。无机添加剂技术（I A T）利用磷酸盐、硅酸盐和硼酸盐等化学物质快速形成保护膜。其代价是缓蚀剂寿命较短和对某些杂质的敏感性较高。\n\n有机酸技术（O A T）是为了提供更长寿命的保护而开发的。 Hybrid O A T 将寿命较长的有机酸方法与少量无机化学物质相结合，以实现更快的保护。\n\n对于数据中心运营商来说，教训并不是一个缩写总是获胜。教训是了解您正在使用哪种缓蚀剂系统，它保护哪些材料，它在污染物中有多稳定，以及供应商期望您如何监控它。一个已发布的要求是具体的：符合OCP的PG25禁止硅酸盐类添加剂，因为存在残留物和堵塞风险。一般化学家族标签永远不会取代确切的产品规格。"
         },
         {
           "type": "content_diagram",
           "title": "硬水、水垢和沉积物风险",
           "slug": "hard_water_scale_and_deposit_risk",
           "section_label": "存款",
+          "reference_links": [
+            {
+              "label": "水基冷却液规范 · p. 11",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=11"
+            }
+          ],
           "figure": {
             "path": "figures/hard_water_scale.svg",
-            "alt": "硬水离子会形成水垢并威胁微通道",
-            "caption": "钙和镁是微小的化学信号，会对正常运行时间产生很大的影响。"
+            "alt": "钙和镁可能与不合适的化学反应沉淀，并在狭窄的冷板通道中形成沉积物。",
+            "caption": "水质、材料浸出和缓蚀剂化学可以将溶解的离子变成沉积物、过滤负载和受限通道。",
+            "text_inventory": {
+              "sha256": "93bd718d0199359334262d08ff2aef3904a115000ba1e5f5d234817375a8c99b",
+              "entries": [
+                {
+                  "text": "钙+镁"
+                },
+                {
+                  "text": "加利福尼亚州"
+                },
+                {
+                  "text": "毫克"
+                },
+                {
+                  "text": "水质或"
+                },
+                {
+                  "text": "材料浸出"
+                },
+                {
+                  "text": "可能会沉淀"
+                },
+                {
+                  "text": "化学相互作用"
+                },
+                {
+                  "text": "结垢/沉积形成"
+                },
+                {
+                  "text": "狭窄的通道"
+                },
+                {
+                  "text": "堵塞+过滤器加载"
+                },
+                {
+                  "text": "减少热传递"
+                }
+              ]
+            }
           },
           "id": 7,
           "audio": {
             "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
             "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.mp3"
+          },
+          "transcript": "钙和镁等硬水离子可能会因水质不佳或从软管填料等材料中浸出而进入回路。一旦存在，它们可以与缓蚀剂化学反应并形成沉淀物。在错误的地方，这些沉淀物会变成水垢、过滤器负载、传热减少或微通道堵塞。\n\n硬水稳定性示例很有用，因为它们将实验室观察与操作风险联系起来。重点不是要把学习者变成测试化学家。重点是要说明为什么兼容性、水质、缓蚀剂化学和过滤属于同一话题。"
         },
         {
           "type": "content_diagram",
@@ -785,36 +1364,127 @@
           "section_label": "兼容性",
           "figure": {
             "path": "figures/wetted_materials.svg",
-            "alt": "接液材料兼容性图",
-            "caption": "材料变化也是流体兼容性事件。"
+            "alt": "兼容性地图包括精确的冷却剂配方、金属、表面处理、换热器、冷板、弹性体、过滤器、密封件、泵和配件。",
+            "caption": "根据确切的配方、温度和暴露条件，验证完整的湿润材料库存。",
+            "text_inventory": {
+              "sha256": "8eabd45f70cb6c09cf1489b8549adffea8868a7a2f8a2adc9a9360a783bd5ae3",
+              "entries": [
+                {
+                  "text": "金属+表面"
+                },
+                {
+                  "text": "牌号、镀层、钎焊、"
+                },
+                {
+                  "text": "螺纹密封剂"
+                },
+                {
+                  "text": "冷板"
+                },
+                {
+                  "text": "热交换器"
+                },
+                {
+                  "text": "频道+加入的材料"
+                },
+                {
+                  "text": "弹性体"
+                },
+                {
+                  "text": "软管、密封圈、垫圈"
+                },
+                {
+                  "text": "确切的复合因素很重要"
+                },
+                {
+                  "text": "TCS液体"
+                },
+                {
+                  "text": "确切的配方"
+                },
+                {
+                  "text": "+运营条件"
+                },
+                {
+                  "text": "泵+过滤器"
+                },
+                {
+                  "text": "介质、密封件、轴承"
+                },
+                {
+                  "text": "检查添加剂保留率"
+                },
+                {
+                  "text": "QDs + 阀门"
+                },
+                {
+                  "text": "配件、密封件、水箱"
+                },
+                {
+                  "text": "包括所有湿润的部件"
+                },
+                {
+                  "text": "一起验证配方、材料等级、温度和暴露时间。"
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "qd"
-          ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "46-51"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.2-6.5; 8-9",
+              "pages": [
+                19,
+                24,
+                30,
+                40
+              ]
             }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
             "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_08_wetted_materials_and_compatibility.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · pp. 18–24",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=18"
+            }
+          ],
+          "term_refs": [
+            "qd"
+          ],
+          "transcript": "兼容性遵循液体接触的每个表面：冷板、换热器、泵密封件、快速断开连接、软管、过滤介质、水箱、螺纹密封剂、焊接材料和电镀表面。\n\nPG25指南的材料清单是代表性的，不是一个详尽的批准清单。在预期温度、暴露时间和操作条件下，验证确切的材料等级和液体配方。审查制造商数据和供应商建议，并在证据不足时安排受控测试。\n\n过滤器墨盒和外壳垫圈应归入该审查中。过滤器可以具有化学稳定性，但仍然会影响添加剂，兼容金属并不能保证兼容密封。对接液材料库存的任何更改都应触发重新评估整个液体和系统组合。"
         },
         {
           "type": "content_bullets",
           "title": "资质和供应商证据",
           "slug": "qualification_and_supplier_evidence",
           "section_label": "证据",
+          "reference_links": [
+            {
+              "label": "水基冷却液规范 · pp. 12–13",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=12"
+            },
+            {
+              "label": "PG25 规范 · pp. 14–16, 19–21",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=14"
+            }
+          ],
           "subtitle": "采购订单消失后，规范应该可以审核。",
           "bullets": [
             {
               "bold_lead": "COA",
-              "text": "确认制造的产品质量和一致性。"
+              "text": "确认每批货物；PG25报告浓度或折射率和pH。"
             },
             {
               "bold_lead": "SDS",
@@ -826,21 +1496,26 @@
             },
             {
               "bold_lead": "兼容性确认",
-              "text": "将流体与接液材料和操作条件联系起来。"
+              "text": "将发布的腐蚀测试与确切的接液材料和条件联系起来。"
             },
             {
               "bold_lead": "记录",
-              "text": "通过硬件刷新周期保留决策。"
+              "text": "通过刷新周期保留批次可追溯性、分析和决策。"
             }
-          ],
-          "term_refs": [
-            "coa",
-            "sds",
-            "ppe"
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "sections": "5.5, 5.7"
+            },
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "3.2, 6.2, 8.2-8.6"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "31-36"
             }
@@ -849,8 +1524,16 @@
           "audio": {
             "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
             "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_09_qualification_and_supplier_evidence.mp3"
+          },
+          "term_refs": [
+            "sds",
+            "coa",
+            "ppe",
+            "refractive_index"
+          ],
+          "transcript": "液体选择应留下证据。已发布的基本规格都要求每个发货都提供分析证书。对于PG25，该证书至少包括浓度，或折射率和测量温度，以及pH。技术数据表应报告预期工作范围内的测量粘度、热容、密度和导热性。所有者还应保留安全数据表、处理计划、兼容性证据、批次身份和供应商建议。\n\n已发表的腐蚀测试提供了重要的证据，但它们并不能全面合格于每种塑料、弹性体、粘合剂、连接器或运行条件。液体供应商、I T供应商、承包商和服务提供商应就确切的接液材料和运行条件达成一致。在多供应商机架环境中，这一点尤其重要。可重复使用的液体冷却基础设施在多个刷新周期中可能会放置不同的硬件。如果没有发货证据、产品数据和可追溯的记录，每次刷新都会重新产生不确定性。"
         },
         {
           "type": "takeaways",
@@ -859,7 +1542,7 @@
           "items": [
             "不要仅根据热性能来选择流体。",
             "流动目标是操作信号，而不是文书工作。",
-            "抑制剂化学会影响腐蚀、沉积物和监测。",
+            "缓蚀剂化学会影响腐蚀、沉积物和监测。",
             "接液材料列表和工作温度定义兼容性。",
             "COA、SDS、治疗计划和记录使决策可审计。"
           ],
@@ -867,8 +1550,10 @@
           "audio": {
             "script_file": "audio/module2/slide_10_module_2_summary.txt",
             "wav_file": "audio/module2/slide_10_module_2_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_10_module_2_summary.mp3"
+          },
+          "transcript": "第二模块从产品名称转向了规格思维。处理后的水和PG25都有用处，但它们具有不同的热特性和操作负担。已发布的PG25是即用型，重量为25%至28%丙二醇，并具有特定产品的缓蚀剂和兼容性证据。\n\n基于水的冷却剂表为固体、溶解物质、电导率、pH、硬度、浑浊度和细菌提供了可测量的新鲜产品限值。在调试投运之后，这些特性成为更广泛的基线和处理计划的一部分。缓蚀剂化学很重要，因为它影响了腐蚀保护和沉积风险。兼容性很重要，因为液体接触到比冷板更多的东西。\n\n良好的单相流体规格是有证据支持的、特定于系统的并且是为操作而设计的。"
         },
         {
           "id": 11,
@@ -877,39 +1562,40 @@
           "audio": {
             "script_file": "audio/module2/slide_11_knowledge_check.txt",
             "wav_file": "audio/module2/slide_11_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module2/slide_11_knowledge_check.mp3"
           },
           "title": "检查您的流体选择",
           "subtitle": "回答一次即可继续。不要求正确性，您可以重试。",
           "questions": [
             {
               "id": "m2q1",
-              "prompt": "选择 PG25 而不是处理过的水时，主要的权衡是什么？",
+              "prompt": "哪个陈述与已发布的 OCP PG25 基本规格相符？",
               "multiple": false,
               "choices": [
                 {
                   "id": "B",
-                  "text": "在相同的流量下，PG25 总是比水带走更多的热量。",
+                  "text": "每种符合规范的PG25液体都可以与其他每种符合规范的PG25液体互换。",
                   "correct": false
                 },
                 {
                   "id": "D",
-                  "text": "PG25 消除了兼容性证据的需要。",
+                  "text": "PG25在现场稀释至操作员选择的任何浓度。",
                   "correct": false
                 },
                 {
                   "id": "A",
-                  "text": "PG25 可以增加防冻保护和抑制剂包的优点，但与水相比，它会降低热容量。",
+                  "text": "PG25以即用型在25供应给28百分比丙二醇的重量。",
                   "correct": true
                 },
                 {
                   "id": "C",
-                  "text": "PG25 将回路变成两相制冷剂系统。",
+                  "text": "符合规范的PG25产品需要含有硅酸盐类添加剂。",
                   "correct": false
                 }
               ],
-              "feedback_correct": "正确。 PG25 可能有用，但必须考虑较低的热容量和流体性质的变化。",
-              "feedback_incorrect": "权衡并不是 PG25 就自动变得更好。它可以帮助满足冷冻和抑制剂的需求，同时降低与水相比的热容量。"
+              "feedback_correct": "正确。已发布的 OCP 规格将 PG25 定义为一种 即用型 产品，其中 25 至 28 百分比以重量计为 丙二醇。",
+              "feedback_incorrect": "已发布的PG25是即用型在25以28百分比丙二醇的重量发布。合规性不建立互换性，禁止使用硅酸盐类添加剂。"
             },
             {
               "id": "m2q2",
@@ -923,7 +1609,7 @@
                 },
                 {
                   "id": "A",
-                  "text": "即用型化学值，例如浓度、pH、电导率和抑制剂限值。",
+                  "text": "一个包含浓度或折射率、pH和最终液体特性的COA和产品数据。",
                   "correct": true
                 },
                 {
@@ -937,10 +1623,11 @@
                   "correct": true
                 }
               ],
-              "feedback_correct": "正确。资格需要化学、材料兼容性和供应商操作指导。",
-              "feedback_incorrect": "通用的流体名称是不够的。该包装需要化学目标、精确的材料和供应商指导。"
+              "feedback_correct": "正确。资格需要发货证明、产品数据、材料兼容性和供应商操作指南。",
+              "feedback_incorrect": "通用液体名称是不够的。该包裹需要发货证明、产品数据、确切材料和供应商指导。"
             }
-          ]
+          ],
+          "transcript": "在进入调试投运之前，请检查您的流体选择模型。\n\n第一个问题检查了针对 PG25 的已发布产品定义。第二个问题询问在将流体接受加入循环之前，哪些证据应包含在合格性包中。\n\n仔细选择，提交一次，然后查看反馈。您可以重试，尝试后可以继续。"
         },
         {
           "type": "up_next",
@@ -952,8 +1639,10 @@
           "audio": {
             "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
             "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.mp3"
+          },
+          "transcript": "干得好。您已完成选择模块。您现在可以比较处理过的水和 PG 25，解释关键的流体目标，并将缓蚀剂化学与兼容性和操作联系起来。\n\n接下来，我们从规范台转移到现场。我们将研究可维护设计、泄漏检查、清洁和冲洗、启动采样、过滤、Project Deschutes 过滤器环境和微生物控制。"
         }
       ],
       "next_module_title": "调试投运，填充和保护循环"
@@ -979,8 +1668,10 @@
           "audio": {
             "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
             "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.mp3"
+          },
+          "transcript": "模块三是关于在指定流体后保护回路的现场实践。如果系统脏、冲洗不小心、检漏液不兼容或从未捕获第一个样品，选择强效流体仍然可能会失败。\n\n这个消息很实用。设计回路以便对其进行维修。填得干干净净。过滤服务团队可以采取行动的地方。控制微生物风险。然后保留启动基线，因为基线使以后的监视变得有意义。"
         },
         {
           "type": "objectives",
@@ -997,14 +1688,22 @@
           "audio": {
             "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
             "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.mp3"
+          },
+          "transcript": "在本模块结束时，您将能够描述为什么可维护性属于机械设计，而不仅仅是维护手册。\n\n您将能够解释为什么泄漏检查液本身必须与系统兼容，以及为什么冷板在初始冲洗过程中被隔离。\n\n您还将能够识别哪些内容不应引入循环中，哪些 基线 记录在启动时至关重要，如何选择兼容的旁流过滤，以及生物生长如何威胁到 冷板 微通道。"
         },
         {
           "type": "content_bullets",
-          "title": "适用性的机械设计",
+          "title": "面向可维护性的机械设计",
           "slug": "mechanical_design_for_serviceability",
           "section_label": "设计",
+          "reference_links": [
+            {
+              "label": "水基流体指南 · pp. 12–13",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=12"
+            }
+          ],
           "subtitle": "流体程序需要物理访问来采样、添加、排出和隔离。",
           "bullets": [
             {
@@ -1030,7 +1729,7 @@
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "60-68"
             }
@@ -1039,8 +1738,13 @@
           "audio": {
             "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
             "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_03_mechanical_design_for_serviceability.mp3"
+          },
+          "term_refs": [
+            "tcs"
+          ],
+          "transcript": "当可维护性被设计在内时，液体维护要容易得多。单相操作指南要求端口排水并填充传热流体，并在TCS循环保持运行时注入化学品。它还指出供水器或储液池和注入泵配置，并要求润湿供水器材料符合相同的兼容性预期。\n\n完整的排水很重要，因为死角可能会滞留污染物或微生物群。同样的逻辑适用于储液器、阀门、通风口、仪表和隔离点。这些并非可有可无的附加项。他们确定团队是否可以进行受控修正，而不会导致日常维护陷入停机。"
         },
         {
           "type": "content_diagram",
@@ -1051,109 +1755,279 @@
             "path": "figures/commissioning_sequence.mp4",
             "media_type": "video",
             "poster": "figures/commissioning_sequence_poster.png",
-            "alt": "无声动画显示新的技术冷却系统与隔离的冷板一起冲洗，再次与连接的冷板冲洗，然后在采样和记录基线之前填充最终液体。",
-            "caption": "在最终液体填充和基线样品之前，分阶段冲洗可以使建筑碎片远离冷板微通道。",
+            "alt": "无声的阶段性碎片冲洗动画：绕过孤立的冷板，冲洗连接的平行板路径，然后采样最终液体，并在验证清洁度和清洁剂去除后记录基线。",
+            "caption": "这是一个阶段性的碎片冲洗示例，而不是完整的清洁或 钝化 规程。记录 基线 并不意味着已接受。",
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "23a509f8e9d6d38f9f1150101c130f0da2bf353d2cfcdd1e79e06422522adcc7",
+              "entries": [
+                {
+                  "text": "隔离 + 冲洗",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "捕获建筑垃圾",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "连接 + 再次冲洗",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "纳入冷板流路",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "最终加注 + 采样",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "记录并保留基线",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "冷板已隔离 - 旁路开启",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "冷板 - 并联流路",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "CDU / 泵",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "返回",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "内置过滤器",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "碎片捕获",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "旁路运行中",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "仅演示杂质冲洗。化学清洗、钝化和清洗剂去除须另行验证。",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "接通冷板流路 - 按需重复冲洗",
+                  "at_seconds": 6.1
+                },
+                {
+                  "text": "旁路关闭",
+                  "at_seconds": 6.1
+                },
+                {
+                  "text": "确认洁净度 - 最终加注、采样与基线记录",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "根据需要更换过滤器",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "样品",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "基线",
+                  "at_seconds": 15.5
+                },
+                {
+                  "text": "记录并保留",
+                  "at_seconds": 15.5
+                }
+              ]
+            }
           },
+          "caption": "从污染记录中选择清洁和冲洗液体；在即用型 PG25 填充前，验证清洁度和化学物质去除情况。",
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.3"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "paragraphs": "85-98"
+              "section": "5.2-5.3"
+            },
+            {
+              "source": "ASHRAE Handbook - Water Treatment: Deposition, Corrosion, and Biological Control",
+              "url": "https://handbook.ashrae.org/Handbooks/A19/IP/a19_ch50/a19_ch50_ip.aspx",
+              "section": "Closed Recirculating Systems"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.3-10.10",
+              "pages": [
+                47,
+                48,
+                51,
+                54,
+                56,
+                57,
+                59
+              ]
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
             "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · pp. 47–59",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=47"
+            }
+          ],
+          "term_refs": [
+            "cdu",
+            "pg25"
+          ],
+          "media_focus": true,
+          "transcript": "首先根据制造历史、预期污染物、冶金学和供应商指导，制定一份有记录的清洁计划。水可以移动松散的碎片，但不能证明油、润滑脂、熔剂、焊接残留物或腐蚀产物已被去除。合格的专家应确定是否需要去脂、化学清洁或钝化。\n\nPG25指南不规定一个清洁程序。选择兼容的清洁溶液传热流体或适当的水。继续冲洗，直到通过过滤器行为、检查和代表性测试表明清洁度，而不是固定时间或通过次数。\n\n动画只说明了阶段性碎片冲洗。验证清洁剂的去除，排水残留冲洗液，根据需要更换过滤器，并填充经过批准的即用型 PG25。残留水会稀释丙二醇和缓蚀剂，因此请验证最终浓度。"
         },
         {
           "type": "content_bullets",
           "title": "什么不应该放入循环中",
           "slug": "what_not_to_put_in_the_loop",
           "section_label": "回避",
-          "subtitle": "不受控制的清洁剂和添加剂可能会导致腐蚀、残留或沉积风险。",
+          "subtitle": "清洁化学必须兼容，并在操作填充之前去除。",
           "bullets": [
             {
-              "bold_lead": "避免使用无人监督的清洁工",
-              "text": "洗涤剂和化学清洁剂需要供应商指导。"
+              "bold_lead": "合格的清洁",
+              "text": "为实际的油、润滑脂、残留物和接液材料选择清洁剂。"
             },
             {
-              "bold_lead": "避免残留硅酸盐",
-              "text": "硅酸盐可以在微通道中沉淀和沉积。"
+              "bold_lead": "删除余额",
+              "text": "表面活性剂会导致起泡；残留的生物杀菌剂会干扰PG25缓蚀剂。"
             },
             {
-              "bold_lead": "遵守当地排放规定",
-              "text": "排水前请咨询市政或监管要求。"
+              "bold_lead": "最后的冲洗",
+              "text": "PG25指导规定，在填充前，最终冲洗过程中不包括表面活性剂和杀菌剂。"
             },
             {
-              "bold_lead": "保护最终流体",
-              "text": "不要在批准的治疗计划之外引入添加剂。"
+              "bold_lead": "避免硅酸盐",
+              "text": "沉积物会损害缓蚀剂保护并阻碍冷板通道。"
+            },
+            {
+              "bold_lead": "验证删除",
+              "text": "比较代表性冲洗样品；不要仅仅依靠固定时间。"
             }
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "106-110"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.5; 10.8",
+              "pages": [
+                51,
+                52,
+                53,
+                57
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
             "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 规范 · p. 10",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "PG25 指南 · pp. 51–58",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=51"
+            }
+          ],
+          "transcript": "调试投运化学必须适合实际污染物和每个接液材料。PG25指南允许在需要时使用合格的清洁溶液，但它们的完全去除与它们的清洁力一样重要。\n\n残留的表面活性剂会导致起泡，清洁生物杀菌剂会干扰最终液体的腐蚀保护。该指南说，在PG25填充前进行的最终冲洗不应含有表面活性剂或生物杀菌剂。在代表性地点验证冲洗质量，并使用供应商批准的计划来证明殘留物已消失。\n\n避免使用硅酸盐基的清洁添加剂，因为不溶性沉积物可能会损害防腐保护并限制冷板通道。不要临时制作清洁剂或剂量。选择、兼容性、去除和最终液体验证是一个受控的过程。"
         },
         {
           "type": "content_bullets",
           "title": "启动采样和基线记录",
           "slug": "startup_sampling_and_baseline_records",
           "section_label": "基线",
-          "subtitle": "第一个干净样本是未来趋势解读的参考点。",
+          "subtitle": "PG25启动采样必须代表混合均匀的液体，而不是静止的积水。",
           "bullets": [
             {
-              "bold_lead": "流通",
-              "text": "运行循环并在最终启动期间检查是否有泄漏。"
+              "bold_lead": "启动检查",
+              "text": "PG25 指导：根据需要排出空气泄漏，并在至少 30 分钟的循环期间进行泄漏检查。"
             },
             {
-              "bold_lead": "排气",
-              "text": "在基线采样之前根据需要除去残留的空气。"
+              "bold_lead": "在1-3天内取样",
+              "text": "保留一个代表性的操作样本和一个新鲜、未暴露的液体样本。"
             },
             {
-              "bold_lead": "对每个循环进行采样",
-              "text": "从每个 TCS 环路中捕获代表性流体。"
+              "bold_lead": "使用流动液体",
+              "text": "冲洗 取样口；避免水箱、低点排水管和死路。"
             },
             {
-              "bold_lead": "标签清晰",
-              "text": "记录单位、流体身份、日期和启动条件。"
+              "bold_lead": "验证浓度",
+              "text": "充分混合后使用供应商特定的折射率计数据。"
             },
             {
-              "bold_lead": "保留记录",
-              "text": "保留基线流体寿命的证据。"
+              "bold_lead": "标记并保留",
+              "text": "识别循环、液体、日期和条件；为液体的寿命保留启动样本。"
             }
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "111-113"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.10-10.11; 11.2-11.4",
+              "pages": [
+                59,
+                60,
+                62,
+                65
+              ]
             }
           ],
           "id": 6,
           "audio": {
             "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
             "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.mp3"
           },
-          "term_refs": [
-            "tcs"
-          ]
+          "reference_links": [
+            {
+              "label": "PG25 指南 · pp. 59–66",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=59"
+            }
+          ],
+          "transcript": "启动创建基线，以便以后做出操作决定。对于PG25，新指南建议在必要时排出空气，并在最终启动期间循环至少三十分钟时检查是否有泄漏。启动检查不是完整的清洁程序或通用混合时间。\n\n在前一到三天内从每个系统中取一个代表性的操作样本，并在液体使用寿命内保留该样本。还应保留一个未暴露的新鲜液体样本。在两者上都标有循环或单元、液体身份和日期。\n\n收集混合均匀的循环液体，从取样口中冲洗停滞的液体，并避免储罐角落、低点排水管和死腿。在充分循环后，使用供应商的折射仪相关性验证丙二醇浓度。发送基线样品进行分析，以便未来变化有一个可信赖的参考。"
         },
         {
           "type": "content_diagram",
@@ -1162,67 +2036,180 @@
           "section_label": "颗粒和生物污垢",
           "figure": {
             "path": "figures/filtration_strategy.svg",
-            "alt": "在线和侧流过滤策略",
-            "caption": "过滤器应该比冷板微通道更容易维护。"
+            "alt": "主电路流量通过一个穿孔的串行拦截器；在过滤后，一个明显的部分流量侧流分支重新连接到回流。",
+            "caption": "侧流过滤是一种分支，而不是第二个串行过滤器。在不剥离消泡剂的情况下，将匹配介质、额定值、效率和流量与冷却剂匹配。",
+            "text_inventory": {
+              "sha256": "92d1bccac61ee57c911069edb90e6c900ee4b104897110e41037722cfb07f667",
+              "entries": [
+                {
+                  "text": "内置过滤器"
+                },
+                {
+                  "text": "所有主电路流量"
+                },
+                {
+                  "text": "主要冷却路径"
+                },
+                {
+                  "text": "泵"
+                },
+                {
+                  "text": "冷板"
+                },
+                {
+                  "text": "敏感段落"
+                },
+                {
+                  "text": "旁流"
+                },
+                {
+                  "text": "部分流量分支"
+                },
+                {
+                  "text": "供应商验证的媒体"
+                },
+                {
+                  "text": "保护消泡剂添加剂"
+                },
+                {
+                  "text": "一起选择"
+                },
+                {
+                  "text": "评分+捕捉效率"
+                },
+                {
+                  "text": "冷却剂+介质兼容性"
+                },
+                {
+                  "text": "流程+可用性"
+                },
+                {
+                  "text": "仅示意图。填充过滤示例不是普遍的侧流要求。"
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "61-66"
+            },
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.2"
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities",
+              "url": "https://ocpprodweb3.opencompute.org/documents/ocp-specification-deschutes-final-2025-09-05-pdf",
+              "section": "Filtration"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.5; 7.1-7.4; 10.10",
+              "pages": [
+                24,
+                25,
+                26,
+                27,
+                28,
+                59
+              ]
             }
           ],
           "id": 7,
           "audio": {
             "script_file": "audio/module3/slide_07_filtration_strategy.txt",
             "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_07_filtration_strategy.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · pp. 23–28",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=23"
+            }
+          ],
+          "term_refs": [
+            "antifoam"
+          ],
+          "transcript": "过滤器选择不仅仅是选择最小微米数。PG25指南建议考虑侧流过滤，因为它可以避免将过滤器堵塞的回压放在主冷却路径中。选择最小的敏感通道和实际冷却剂的额定值、效率、流量和介质。\n\n过细的过滤可以去除消泡剂添加剂。该指南还警告说，聚丙烯介质可能会吸附硅氧烷消泡剂。标称微米尺寸相同的标称和绝对过滤器捕获效率不同。请与液体、过滤器、CDU和冷板供应商确认性能。\n\n它在填充过程中进行五至十微米绝对过滤的例子不是普遍的旁流要求。同样，Deschutes项目过滤品级描述了一个设计。在不剥离添加剂、限制流量或造成无法使用的设备的情况下，保持清洁。"
         },
         {
           "type": "content_bullets",
           "title": "微生物控制和生物污损",
           "slug": "microbial_control_and_biofouling",
           "section_label": "生物学",
-          "subtitle": "微生物控制保护热传递，但必须控制杀菌剂的使用。",
+          "subtitle": "水微生物作用水平不是一个自动的PG25剂量配方。",
           "bullets": [
             {
-              "bold_lead": "目标",
-              "text": "将可运行的活细菌总数保持在 100 以下 CFU/ml。"
+              "bold_lead": "经过处理的水",
+              "text": "运营指导目标 <100 CFU/ml; 建议在 1000 CFU/ml 之上采取上述行动。"
             },
             {
-              "bold_lead": "行动级别",
-              "text": "强烈建议使用 1000 以上的杀菌剂处理 CFU/ml。"
+              "bold_lead": "PG25保护",
+              "text": "保持供应商批准的丙二醇和缓蚀剂水平；稀释会增加生物生长风险。"
             },
             {
-              "bold_lead": "杀菌剂类型",
-              "text": "仅在需要时并按照标签使用非氧化性杀菌剂。"
+              "bold_lead": "不无菌的",
+              "text": "PG25的抑制微生物生长性质不能取代清洁、测试或调查。"
             },
             {
-              "bold_lead": "避免卤素",
-              "text": "氯和类似的化学物质会产生腐蚀风险。"
+              "bold_lead": "受控治疗",
+              "text": "仅通过特定于流体的、供应商批准的计划使用杀菌剂。"
             },
             {
-              "bold_lead": "观察累积情况",
-              "text": "频繁添加会造成有机物或污染物积累。"
+              "bold_lead": "避免挪用",
+              "text": "在PG25填充之前，请移除清洁生物杀虫剂；不要临时进行持续剂量。"
             }
-          ],
-          "term_refs": [
-            "cfu"
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "paragraphs": "116-118"
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "section": "5.4.7"
+            },
+            {
+              "source": "Guideline for Using Water-Based Coolants (supplied Rev-draft 110925.docx)",
+              "paragraphs": "116-118",
+              "note": "The 1000 CFU/ml action threshold is draft-only. Published water guidelines page 8 supports the below-100 CFU/ml target and investigation of increases from baseline, not this numerical action threshold."
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "3.1; 10.5; 10.8; 11.1",
+              "pages": [
+                13,
+                52,
+                57,
+                60
+              ]
             }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
             "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_08_microbial_control_and_biofouling.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "水基流体指南 · p. 8",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=8"
+            },
+            {
+              "label": "PG25 指南 · pp. 13–14, 52–58, 60",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=13"
+            }
+          ],
+          "term_refs": [
+            "cfu",
+            "biostatic"
+          ],
+          "transcript": "微生物指导必须与液体相匹配。对于经过处理的水的操作，早期的基于水的指导建议，每毫升的活菌总数低于一百个菌落形成单位，而行动高于一千个。这些操作阈值与水冷却剂基准规格的新鲜产品限值不同。\n\nPG25有一个抑制微生物生长字符，但这并不意味着循环是无菌的。残留的水或不受控制的补充可能会稀释丙二醇和缓蚀剂，并增加生物生长的风险。保持供应商批准的精确浓度和化学成分，保持调试投运清洁，并调查异常的液体状况。\n\n请勿将水处理剂量配方转移到PG25。任何杀菌剂或纠正处理都需要配方特定供应商的批准。在最终填充之前必须去除清洁杀菌剂，以免干扰运行流体的防腐保护。"
         },
         {
           "type": "takeaways",
@@ -1239,8 +2226,10 @@
           "audio": {
             "script_file": "audio/module3/slide_09_module_3_summary.txt",
             "wav_file": "audio/module3/slide_09_module_3_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_09_module_3_summary.mp3"
+          },
+          "transcript": "第三单元重点关注保护流体和硬件的现场实践。可维护性始于机械设计。该回路需要排水、填充、采样、隔离和化学添加路径，这些路径与系统其余部分的相同接液材料规则兼容。\n\n清洁启动很重要，因为冷板微通道不是发现建筑垃圾的好地方。泄漏检查、冲洗、最终填充和基线取样都需要记录程序。过滤和微生物控制然后成为持续的防御。\n\n简单的结论是，许多后来的液体问题实际上是调试投运或带有延迟症状的清洁问题。"
         },
         {
           "id": 10,
@@ -1249,7 +2238,8 @@
           "audio": {
             "script_file": "audio/module3/slide_10_knowledge_check.txt",
             "wav_file": "audio/module3/slide_10_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module3/slide_10_knowledge_check.mp3"
           },
           "title": "检查你的调试投运纪律",
           "subtitle": "回答一次即可继续。不要求正确性，您可以重试。",
@@ -1312,7 +2302,8 @@
               "feedback_correct": "正确。可维护性、记录、过滤和受控处理可保护流体和硬件。",
               "feedback_incorrect": "不要随意加满。通过兼容的过滤、记录和供应商指导的处理决策来保护回路。"
             }
-          ]
+          ],
+          "transcript": "在此暂停以检查第三模块中的调试投运规则。\n\n第一个问题询问哪种启动顺序可以最好地保护新循环。第二个问题询问哪些服务实践有助于随着时间的推移保持循环清洁、兼容和可追溯。\n\n使用反馈作为快速操作检查。您可以重试，尝试后可以继续。"
         },
         {
           "type": "up_next",
@@ -1324,8 +2315,10 @@
           "audio": {
             "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
             "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.mp3"
+          },
+          "transcript": "干得好。您已完成调试投运模块。您现在已经掌握了现场顺序：可维护性设计、使用兼容方法进行泄漏测试、冲洗干净、避免使用不受控制的清洁剂、对最终填充物进行取样，并在碎片成为冷板问题之前进行过滤。\n\n接下来，我们进入运营阶段。我们将涵盖常规测试、实验室分析、趋势解释、调整、混合、使用寿命、处置和记录。"
         }
       ],
       "next_module_title": "监控、维护和操作判断"
@@ -1334,7 +2327,7 @@
       "id": 4,
       "slug": "monitoring_maintenance_operational_judgment",
       "title": "监控、维护和操作判断",
-      "subtitle": "常规测试、实验室质量保证、趋势解释、调整、混合、使用寿命和文档。",
+      "subtitle": "液体特异性测试、基于风险的抽样、趋势解释、供应商引导的校正和文档。",
       "module_badge_text": "模块 4",
       "motion_intro": {
         "eyebrow": "模块 4",
@@ -1351,8 +2344,10 @@
           "audio": {
             "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
             "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.mp3"
+          },
+          "transcript": "第四单元是关于在调试投运之后保持循环健康。良好的流畅计划不会等待失败。它观察趋势，将其与基线进行比较，并在化学信号停机之前进行受控调整。\n\n我们将现场测试与实验室质量保证分开，研究自动监控，解释趋势，讨论供应商指导的剂量，并处理流体混合的混乱现实。我们将结束使用年限、处置和记录，以防止下次刷新盲目开始。"
         },
         {
           "type": "objectives",
@@ -1370,127 +2365,179 @@
           "audio": {
             "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
             "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_02_operating_judgments_you_will_make.mp3"
+          },
+          "transcript": "在本模块结束时，您将能够描述例行监测计划，并确定哪些检查属于现场检查，哪些检查属于独立实验室。\n\n您将能够解读趋势，而不是对一个孤立的数字做出反应。其中包括电导率上升、金属离子漂移、硬度、细菌、浊度、过滤器负载和缓蚀剂消耗。\n\n您还可以解释为什么调整应该由供应商指导，为什么流体混合使监控变得复杂，以及必须维护哪些记录，以便未来的操作员能够了解他们继承的循环。"
         },
         {
           "type": "content_grid",
-          "title": "日常监测时间表",
+          "title": "液体特定监测时间表",
           "slug": "routine_monitoring_schedule",
           "section_label": "节奏",
-          "subtitle": "当参数偏离规范时，监控计划应该变得更加严格。",
+          "subtitle": "PG25 指导是基于风险的；调试投运、保修条件和事件则决定了计划。",
           "grid_cols": 4,
           "cards": [
             {
-              "title": "启动",
-              "body": "初次填充和循环后立即进行测试。",
+              "title": "基线",
+              "body": "在 调试投运 进行测试；保留代表性的启动证据。",
               "icon": "1"
             },
             {
-              "title": "季刊",
-              "body": "在正常运行期间进行例行现场检查。",
+              "title": "低风险PG25",
+              "body": "每年合格实验室；第一年可选择六个月的检查。",
               "icon": "2"
             },
             {
-              "title": "超出规格时每周一次",
-              "body": "增加频率直至参数返回范围。",
+              "title": "中等风险 PG25",
+              "body": "前1.5年每6个月由合格实验室分析一次。",
               "icon": "3"
             },
             {
-              "title": "实验室 QA",
-              "body": "一年每季度一次，如果稳定则每六个月一次。",
+              "title": "高风险PG25",
+              "body": "合格实验室连续 1.5 年每季度进行检查；调查异常情况。",
               "icon": "4"
             }
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "120-125"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2, Table 13; 12.5",
+              "pages": [
+                61,
+                63,
+                64,
+                84
+              ]
             }
           ],
           "id": 3,
           "audio": {
             "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
             "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module4/slide_03_routine_monitoring_schedule.mp3"
           },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · 表 13 · pp. 63–64",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=63"
+            }
+          ],
           "term_refs": [
-            "qa"
-          ]
+            "pg25"
+          ],
+          "transcript": "监测频率应与液体和系统的风险相匹配。基于水的操作指南提供了每季度的常规检查，当结果异常时，则进行更频繁的检查，在第一年每季度进行实验室审查，然后如果稳定，则每半年进行一次。\n\n新的PG25指南使用不同的基于风险的示例。低风险结合了在线监控、可接受的材料和经验丰富的用户：调试投运分析和年度实验室测试。中风险没有在线监控，但有可接受的材料和不熟悉的用户：前一年半内每六个月进行一次实验室测试。高风险增加了不太确定的材料兼容性：在此期间每季度进行一次实验室测试。\n\n这些是规划示例，而不是一个通用时间表。遵循保修和供应商的要求，并在服务事件或无法解释的异常后增加测试。即使采用内置监控，该指南也建议每年进行实验室确认。"
         },
         {
           "type": "content_table",
-          "title": "现场测试装置",
+          "title": "常规监测套件",
           "slug": "on_site_test_set",
-          "section_label": "现场检查",
-          "subtitle": "常规测试是指导升级和实验室后续行动的快速信号。",
+          "section_label": "现场和实验室信号",
+          "subtitle": "选择用于液体配方的测试：PG25 领域检查补充了预定的实验室分析。",
           "columns": [
-            "现场检查",
+            "监控检查",
             "信号",
             "典型动作"
           ],
           "rows": [
             [
-              "电导率",
-              "溶解的物质或污染物",
-              "与基线比较和上升率"
-            ],
-            [
               "酸碱度",
-              "化学之窗",
-              "在治疗计划内确认"
+              "液体特异性化学窗口",
+              "校准；确认供应商 运行限值"
             ],
             [
-              "硬度",
-              "补给水或浸出风险",
-              "研究 Ca/Mg 的来源"
+              "PG25 折射率",
+              "丙二醇浓度/稀释",
+              "使用供应商特定的转换和温度"
             ],
             [
-              "活菌总数",
-              "微生物活性",
-              "根据供应商指南重新测试或处理"
-            ],
-            [
-              "唑类",
-              "铜保护",
-              "趋势消耗和行动阈值"
-            ],
-            [
-              "浊度/外观",
-              "颗粒或透明度变化",
-              "检查过滤器和样本历史记录"
+              "外观/浑浊度",
+              "颗粒、云雾、气泡",
+              "检查，然后用支持数据进行调查"
             ],
             [
               "过滤器装载",
-              "颗粒或生物污垢负荷",
-              "更换或调查是否高"
+              "污染负担/压降",
+              "服务过滤器并调查来源"
+            ],
+            [
+              "导电性（支持）",
+              "温度依赖的离子趋势",
+              "对PG25趋势有用，但不适用于缓蚀剂-健康证明"
+            ],
+            [
+              "细菌（液体特异性）",
+              "微生物活性",
+              "遵循冷却剂特定的治疗计划"
+            ],
+            [
+              "缓蚀剂/储备碱度",
+              "防腐保护（实验室）",
+              "评估实际的缓蚀剂化学反应"
+            ],
+            [
+              "溶解金属（实验室ICP）",
+              "腐蚀产品/材料释放",
+              "趋势Cu、Fe、Al和其他接液金属"
             ]
-          ],
-          "term_refs": [
-            "azole",
-            "cfu"
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "table": 4
+            },
+            {
+              "source": "Base Specification for Single-Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "section": "5.4.8"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2; 11.5-11.6, Tables 14-15",
+              "pages": [
+                61,
+                67,
+                69,
+                71,
+                74
+              ]
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module4/slide_04_on_site_test_set.txt",
             "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_04_on_site_test_set.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · 表 14–15 · pp. 67–74",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=67"
+            }
+          ],
+          "term_refs": [
+            "icp",
+            "refractive_index",
+            "reserve_alkalinity"
+          ],
+          "transcript": "常规检查必须符合配方。对于PG25，优先考虑pH、折射率的丙二醇浓度和外观。使用供应商的具体液体数据解释折射率；这不是对缓蚀剂健康的直接测量。过滤负载和浑浊度增加了关于清洁度的证据。\n\n电导率是含缓蚀剂的丙二醇的支撑趋势信号，而不是其正常的主要健康测试。添加剂和温度会影响读数，稳定的值并不证明腐蚀保护完好无损。细菌测试和治疗也遵循冷却剂特定的计划。\n\n预定的实验室分析补充了这些检查，在适当的情况下，通过储备碱度测定缓蚀剂水平，并通过ICP测定溶解金属。从接液材料库存中选择铜、铁、铝和其他元素。比较基线和趋势；仅一个可检测的结果并不能确定活性腐蚀。"
         },
         {
           "type": "content_table",
           "title": "实验室QA和ICP分析",
           "slug": "laboratory_qa_and_icp_analysis",
           "section_label": "实验室视图",
-          "subtitle": "独立分析有助于区分流体漂移、污染和腐蚀副产品。",
+          "subtitle": "PG25分析需要丙二醇、缓蚀剂和降解化学以及冶金学。",
           "columns": [
             "实验室检查",
             "它有助于揭示什么",
@@ -1498,59 +2545,77 @@
           ],
           "rows": [
             [
-              "TSS 和 TDS",
-              "颗粒和溶解物质",
-              "跟踪清洁度和污染情况"
+              "丙二醇浓度/pH",
+              "稀释和化学漂移",
+              "确认供应商的在用限制"
             ],
             [
-              "过滤/未过滤的金属",
-              "铜、铁、锌、铬、镍",
-              "表明腐蚀或材料释放"
+              "缓蚀剂/储备碱度",
+              "保护和缓冲",
+              "储备碱度取决于缓蚀剂技术"
             ],
             [
-              "ICP分析",
-              "元素概况",
-              "记录水质随时间的变化"
+              "氯化物/硫酸盐/硬度",
+              "污染和劣质水",
+              "调查来源和潜在腐蚀"
             ],
             [
-              "浊度",
-              "流体透明度和颗粒",
-              "支持过滤和存款决策"
+              "降解酸",
+              "丙二醇分解",
+              "与 pH、历史记录和温度一起进行评估。"
             ],
             [
-              "腐蚀优惠券（如果使用）",
-              "补充腐蚀证据",
-              "可能无法完全代表冷板几何形状"
+              "溶解金属 (ICP)",
+              "铜、铁、铝和其他接液金属",
+              "与新鲜液体和启动基线相反的趋势"
             ],
             [
-              "书面评价",
-              "技术解读",
-              "将数据转化为行动指导"
+              "书面供应商评估",
+              "配方特定的解释",
+              "将经过验证的结果转化为纠正措施"
             ]
-          ],
-          "term_refs": [
-            "tss",
-            "tds",
-            "icp"
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "table": 5
             },
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraph": "126"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2-11.5",
+              "pages": [
+                61,
+                65,
+                67,
+                69,
+                70
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
             "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · pp. 65–70",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=65"
+            }
+          ],
+          "term_refs": [
+            "qa"
+          ],
+          "transcript": "PG25实验室面板不仅涵盖了水的清洁度。该指南建议检查丙二醇浓度、pH、储备碱度、外观、缓蚀剂浓度、氯化物、硫酸盐、硬度、降解酸和溶解金属。\n\n储备碱度取决于缓蚀剂技术。常规配方和有机酸配方不使用一种可互换的解释，因此低数值并不自动成为剂量分配的理由。供应商必须解释实际配方。\n\n使用液体供应商管理的或推荐的实验室，并能够进行全面分析和技术支持。与系统冶金相关的趋势金属，并与新鲜液体和启动证据进行比较。现场pH和折射仪检查、线性传感器和实验室化学是互补的；没有一个可以取代整个监测计划。"
         },
         {
           "type": "content_diagram",
@@ -1559,64 +2624,178 @@
           "section_label": "趋势逻辑",
           "figure": {
             "path": "figures/monitoring_framework.svg",
-            "alt": "流体健康状况监控框架将系统健康状况与流体健康状况分开",
-            "caption": "使用基线和趋势方向区分系统运行状况与流体健康状况。"
+            "alt": "明确说明的上升趋势仍然低于现场动作限制；比较基线、校准测量和实验室确认。",
+            "caption": "用系统和流体证据调查趋势。这些是示例数据，不是普遍的限制；新产品要求和在使用中的指导仍然是不同的。",
+            "text_inventory": {
+              "sha256": "1197b5a56d735a150eea6fabd8998b2d9be7e099753dde053691fd99bcd41e41",
+              "entries": [
+                {
+                  "text": "说明性趋势-未测量数据"
+                },
+                {
+                  "text": "相对信号"
+                },
+                {
+                  "text": "站点操作限制"
+                },
+                {
+                  "text": "基线"
+                },
+                {
+                  "text": "时间随机的样本"
+                },
+                {
+                  "text": "确认更改"
+                },
+                {
+                  "text": "校准+代表性样品+实验室比较"
+                },
+                {
+                  "text": "系统证据"
+                },
+                {
+                  "text": "金属+颗粒"
+                },
+                {
+                  "text": "过滤器加载+热漂移"
+                },
+                {
+                  "text": "流动的证据"
+                },
+                {
+                  "text": "pH + 浓度"
+                },
+                {
+                  "text": "缓蚀剂水平+唑类药物"
+                },
+                {
+                  "text": "丙二醇降解产物"
+                },
+                {
+                  "text": "仅凭电导率是不够的"
+                },
+                {
+                  "text": "诊断受抑制的 PG25。"
+                },
+                {
+                  "text": "新产品要求"
+                },
+                {
+                  "text": "基本规格的接受"
+                },
+                {
+                  "text": "在使用中/供应商限制"
+                },
+                {
+                  "text": "操作解释"
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "121-128"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.5-11.7; 12.3-12.5",
+              "pages": [
+                67,
+                70,
+                75,
+                81,
+                83,
+                84
+              ]
             }
           ],
           "id": 6,
           "audio": {
             "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
             "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · pp. 67–70, 81–84",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=67"
+            }
+          ],
+          "term_refs": [
+            "azole"
+          ],
+          "transcript": "趋势为测量添加方向和背景。将pH、浓度、电导率、金属、外观和过滤器装载与基线、仪器状况、温度和最近的维修事件进行比较。\n\n区分新液体规格限制与操作指南。PG25指南提供了在使用中的示例范围，包括与配方相关的pH范围。这些不取代基本规格的新产品要求，也不自动授权扩大供应商的运行限值。\n\n在给药前，请使用校准的现场测量或实验室分析来确认突然的变化。在抑制性丙二醇中，仅电导率的诊断价值有限。即使在达到作用限值之前，铜或铁的上升趋势也可能需要进行调查。\n\n将传感器放置在代表性流动流体中，保持校准，并与实验室结果进行比较。在重大系统或流体发生变化后，回顾限制。"
         },
         {
           "type": "content_bullets",
           "title": "调整和供应商指导的剂量",
           "slug": "adjustments_and_supplier_guided_dosing",
           "section_label": "纠正措施",
-          "subtitle": "受控剂量需要已知的体积、供应商指导、循环、重新测试和记录。",
+          "subtitle": "在供应商批准的调整之前验证异常结果；然后验证混合和结果。",
           "bullets": [
             {
+              "bold_lead": "先验证",
+              "text": "检查仪器校准，并确认异常结果。"
+            },
+            {
               "bold_lead": "已知体积",
-              "text": "没有环体积就无法安全地计算剂量。"
+              "text": "计算供应商批准的浓度或缓蚀剂校正。"
             },
             {
-              "bold_lead": "供应商指导",
-              "text": "仅根据治疗方案和技术支持进行调整。"
+              "bold_lead": "兼容校正",
+              "text": "使用经过批准的浓缩液；只有在有保障和符合要求的情况下才使用稀释水。"
             },
             {
-              "bold_lead": "流通",
-              "text": "后续取样前混合 30 分钟。"
-            },
-            {
-              "bold_lead": "重新测试",
-              "text": "确认调整将结果移至范围内。"
+              "bold_lead": "混合并重新测试",
+              "text": "使用经过验证的循环和代表性样品，而不是通用计时器。"
             },
             {
               "bold_lead": "文件",
-              "text": "记录日期、系统、添加剂类型、数量和报告。"
+              "text": "记录剂量、原因、批次、测试结果以及新的基线。"
             }
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "9"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "129-134"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.10; 11.7; 12.3",
+              "pages": [
+                59,
+                75,
+                76,
+                81,
+                82
+              ]
             }
           ],
           "id": 7,
           "audio": {
             "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
             "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 指南 · pp. 75–76, 81–83",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=75"
+            }
+          ],
+          "transcript": "在调整化学分析之前，请验证异常结果。检查校准，通过适当的测试进行确认，并咨询液体供应商。PG25指南建议在现场测试显示结果超出限值后一周内将样品发送给合格的实验室。\n\n在计算剂量之前必须知道系统体积。仅使用兼容供应商批准的产品才能恢复丙二醇或缓蚀剂。浓缩配方可以纠正过度稀释；经过批准的高纯度水是纠正过高浓度的特殊方法，而不是常规稀释即用型产品的许可。\n\n循环至混合充分，随访样品具有代表性。使用经过验证的循环循环和供应商指导，而不是通用计时器。记录原因、数量、批次和前后结果。一旦校正得到验证，建立适当的新基线。"
         },
         {
           "type": "content_diagram",
@@ -1624,20 +2803,99 @@
           "slug": "fluid_mixing_and_interoperability",
           "section_label": "互操作性",
           "figure": {
-            "path": "figures/mixing_decision.svg",
-            "alt": "流体混合决策逻辑",
-            "caption": "混合最好被视为需要特定液体证据的受控事件。"
+            "path": "figures/mixing_decision_v2.svg",
+            "alt": "防止残留液体混合，验证确切配方和供应商证据，然后取样并记录操作变化。",
+            "caption": "在连接包含其他流体的设备之前，请使用供应商批准的冲洗和填充，并监控重大变化，直到确认稳定性。",
+            "text_inventory": {
+              "sha256": "9b51e4d7b323e8703a1644a38711ee95e58e24aaaca24d20daa9dd8b96809600",
+              "entries": [
+                {
+                  "text": "进货设备/补货/服务活动"
+                },
+                {
+                  "text": "防止混合"
+                },
+                {
+                  "text": "识别残留液体"
+                },
+                {
+                  "text": "供应商批准的冲洗"
+                },
+                {
+                  "text": "填充操作液"
+                },
+                {
+                  "text": "连接前"
+                },
+                {
+                  "text": "验证确切的液体"
+                },
+                {
+                  "text": "配方特定的证据"
+                },
+                {
+                  "text": "材料+条件"
+                },
+                {
+                  "text": "供应商批准的计划"
+                },
+                {
+                  "text": "没有家庭层面的假设"
+                },
+                {
+                  "text": "监控变化"
+                },
+                {
+                  "text": "事件驱动采样"
+                },
+                {
+                  "text": "审查缓蚀剂基线"
+                },
+                {
+                  "text": "记录每次更改"
+                },
+                {
+                  "text": "直到稳定性得到确认"
+                },
+                {
+                  "text": "PG25合规性并不意味着不同供应商的液体可以互换。"
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "iat",
-            "oat"
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "3.2"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2",
+              "pages": [
+                62
+              ]
+            }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
             "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 规范 · p. 8",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=8"
+            },
+            {
+              "label": "PG25 指南 · p. 62",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=62"
+            }
+          ],
+          "transcript": "不要假设所有有机酸冷却剂都能安全混合，或者所有无机和有机组合都不可兼容。PG25基本规格规定，不同供应商的符合要求的产品不一定可以互换。评估确切的液体、材料和运行条件。\n\n新的准则增加了一个实用的设备介绍步骤。如果新设备含有水或其他配方，请使用供应商批准的冲洗协议，并在连接前将其填充到操作液中。通过制造、测试和操作使用相同的液体可以减少意外的化学变化。\n\n在增加大量服务或设备后增加采样次数，直到确认流体稳定性。即使是经过测试的混合物也会使解释变得复杂，因为缓蚀剂基线和纠正措施可能不再清晰。避免未经批准的补加，并记录每次故意更改。"
         },
         {
           "type": "content_bullets",
@@ -1652,7 +2910,7 @@
             },
             {
               "bold_lead": "系统体积",
-              "text": "计算抑制剂或添加剂剂量所需的。"
+              "text": "计算缓蚀剂或添加剂剂量所需的。"
             },
             {
               "bold_lead": "调整历史",
@@ -1665,25 +2923,60 @@
             {
               "bold_lead": "治疗方案",
               "text": "操作参数、测试计划和产品文档。"
+            },
+            {
+              "bold_lead": "传感器历史记录",
+              "text": "校准、维护、更换和修订基线。"
             }
-          ],
-          "term_refs": [
-            "coa",
-            "sds"
           ],
           "source_refs": [
             {
-              "source": "在单相冷板液冷机架中使用水基传热流体的指南",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "8.2-8.6"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "143-151"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "5.1; 10.2; 11.4; 12.4-12.5; 13.4-13.5",
+              "pages": [
+                17,
+                46,
+                65,
+                66,
+                83,
+                84,
+                85
+              ]
             }
           ],
           "id": 9,
           "audio": {
             "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
             "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_09_documentation_and_submittals.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "PG25 规范 · pp. 19–21",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=19"
+            },
+            {
+              "label": "PG25 指南 · pp. 17–18, 83",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=17"
+            }
+          ],
+          "term_refs": [
+            "sds",
+            "coa"
+          ],
+          "transcript": "为每个冷却循环保留可追溯的文件。记录液体身份、交付和批次信息、分析证书、安全数据表、系统体积、接液材料、清洁和钝化历史记录以及组件更换记录。\n\nPG25指南还强调一致的样品标签和提交文书工作，以便能够可靠地跟踪报告的趋势。保留分析报告、剂量记录和启动证据。维护一个传感器日志，其中包括校准结果、清洁、维护、更换和基线更改。\n\n在计划中包括处理和生命周期结束决策。在供应商指导下，将液体存放在兼容、受保护的容器中。不要将使用过的冷却剂排放到排水沟、土壤或表层水中；遵循当地规则和批准的回收或处置安排。\n\n文档应该让下一个操作员了解发生了什么变化，为什么会发生变化，以及哪些证据证明了这一决定是合理的。"
         },
         {
           "type": "takeaways",
@@ -1700,8 +2993,13 @@
           "audio": {
             "script_file": "audio/module4/slide_10_module_4_summary.txt",
             "wav_file": "audio/module4/slide_10_module_4_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_10_module_4_summary.mp3"
+          },
+          "term_refs": [
+            "dlc"
+          ],
+          "transcript": "模块四将流体健康状况转变为运营模型。例行检查可提供快速可见性。实验室分析提供了更深入的证据。自动监控可以帮助更大或更关键的系统更早地发现偏差。但真正的力量是针对干净的趋势解释基线。\n\n调整应由供应商指导、基于数量、混合、重新测试并记录。应尽可能避免流体混合，并在发生混合时对流体进行评估。使用寿命、处置和更新周期都取决于记录。\n\n最后的要点很简单：可靠的单相DLC不能在设置后就不再管理。应持续监测、解读、纠正并记录。"
         },
         {
           "id": 11,
@@ -1710,7 +3008,8 @@
           "audio": {
             "script_file": "audio/module4/slide_11_knowledge_check.txt",
             "wav_file": "audio/module4/slide_11_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module4/slide_11_knowledge_check.mp3"
           },
           "title": "检查你的操作判断",
           "subtitle": "回答一次即可继续。不要求正确性，您可以重试。",
@@ -1773,38 +3072,133 @@
               "feedback_correct": "正确。混合和剂量需要供应商的指导、文件和后续验证。",
               "feedback_incorrect": "不要假设可互换性。确认兼容性、记录操作并验证结果。"
             }
-          ]
+          ],
+          "transcript": "最后的知识检查侧重于操作判断。\n\n第一个问题是如何解释常规液体健康结果。第二个问题询问在混合液体或调整化学成分之前应该发生什么。\n\n每个问题提交一次，然后使用反馈来检查您的维护手册。您可以重试，尝试后可以继续。"
         },
         {
           "type": "course_complete",
           "title": "直接液冷(DLC) 中的冷却液",
           "slug": "cooling_fluids_in_direct_liquid_cooling",
           "course_title": "直接液冷(DLC) 中的冷却液",
-          "cert_message": "您已完成单相DLC 液体课程。应用这些概念时，请结合使用 OCP 指南、供应商处理计划和本地操作记录。",
-          "thank_you_message": "感谢您完成第 4 单元：监控、维护和操作判断。",
+          "cert_message": "根据操作指南、供应商计划和当地记录，应用 OCP 基本规格。",
+          "thank_you_message": "感谢您完成模块4。",
           "id": 12,
           "audio": {
             "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
             "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "水基冷却液基础规范",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
+            },
+            {
+              "label": "PG25 基础规范",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf"
+            },
+            {
+              "label": "水基传热流体指南",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            },
+            {
+              "label": "PG25 运行指南",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf"
+            }
+          ],
+          "transcript": "这是第四单元和课程的总结。感谢您使用直接液冷中的冷却液。\n\n您已经涵盖了单相TCS 边界、处理水和 P G 25 之间的差异、关键流体目标、缓蚀剂化学、接液材料兼容性、调试投运、过滤、监控、调整、混合、使用寿命和文档。\n\n下一步是本地应用：将本课程与已发布的OCP水基冷却剂和PG25基准规格、单相运行指南、您的处理计划、供应商指南、CDU设计和本地记录进行比较。证据越好，问题越好，部署就越强。"
         }
       ]
     }
   ],
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 5
+  },
+  "index_module_links": false,
+  "index_navigation_instruction": "使用左侧边栏中的课程大纲以任意顺序导航模块。",
+  "index_start": {
+    "enabled": true,
+    "label": "从模块1开始",
+    "navigation": "direct"
+  },
+  "learner_reference_policy": {
+    "reviewed_at": "2026-10-09",
+    "style": "Grid Disturbance-style compact resource pills with explicit page/range labels and #page= links.",
+    "numbering": "One-based PDF viewer pages including the cover, matching #page=. The PG25 base specification's printed footer is one lower than its PDF viewer page.",
+    "scope": "English single-phase course only. Teaching-slide PDF resource pills must be page-specific. Closing resources, authoring sources, and glossary metadata retain canonical whole-document URLs.",
+    "closing_resources": "M4S12 links to each complete canonical document without page fragments or page/range labels, per the maintained AcademyWizard closing-resource exception.",
+    "content_preservation": "Narration, quiz content, figures, video, SCORM version, and module tracking are unchanged by this reference-only update.",
+    "source_caveat": "M3S8's 1000 CFU/ml treated-water action value comes from the supplied draft guideline, not the published PDF. The water PDF p. 8 supports the <100 CFU/ml operating target and baseline-triggered investigation; no published-PDF support is claimed for the draft-only value. The course owner confirmed on 2026-10-09 that the draft remains unpublished; resolve the claim in issue #84 before promoting it to published guidance.",
+    "follow_up_issues": {
+      "language_editions": "https://github.com/opencomputeproject/ocp-academy-courses/issues/83",
+      "draft_microbial_threshold": "https://github.com/opencomputeproject/ocp-academy-courses/issues/84"
+    }
+  },
+  "lms_catalog": {
+    "title": "直接液冷(DLC) 中的冷却液",
+    "short_description": "比较水基冷却液与PG25，掌握材料兼容性、调试、监测和维护的实用指导。",
+    "overview": "对直接液冷的单相技术冷却系统流体建立实际理解。比较处理后的水和PG25，将冷却剂化学与接液材料兼容性联系起来，并通过供应商资格和调试投运的监测、受控校正和操作记录跟踪流体的生命周期。知识检查帮助学习者将指导应用于现实的流体管理决策。",
+    "duration_minutes": 35,
+    "duration_basis": "estimated_learner_time",
+    "duration_note": "估计的学员时间包括叙述、图表、知识检查和复习。可选的外部参考学习、重播和重试会增加时间。",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 7,
+        "summary": "查找冷却系统内的液体，区分单相和双相方法，并确定反复出现的兼容性、监控和文档决策。"
+      },
+      {
+        "id": 2,
+        "duration_minutes": 10,
+        "summary": "根据性能和维护需求比较水和PG25。审查冷却剂质量、缓蚀剂化学、运行条件、接液材料和供应商资格证明。"
+      },
+      {
+        "id": 3,
+        "duration_minutes": 9,
+        "summary": "将可维修的循环设计连接到兼容的清洁、冲洗、填充、过滤和微生物控制。建立启动采样和基线记录，以便以后操作。"
+      },
+      {
+        "id": 4,
+        "duration_minutes": 9,
+        "summary": "结合常规检查和实验室分析来解释液体趋势。应用供应商引导的调整，评估混合和生命周期问题，并维护有用的操作文档。"
+      }
+    ],
+    "labels": {
+      "title": "标题",
+      "short_description": "简短说明",
+      "long_description": "详细说明",
+      "overall_duration": "总学习时间：{duration}分钟",
+      "unit_heading": "模块{number}：{title} - {duration}分钟"
+    }
+  },
   "metadata_language_name": "Chinese (Simplified)",
   "localization": {
     "source_course": "../../course.json",
     "source_language": "en-US",
     "target_language": "zh-CN",
-    "source_course_sha256": "085233653e612c3ab97b2e834f2fbcf2562a736cc7ec71a13539cd84175559cb"
+    "source_course_sha256": "85a74a0d2effc141c2e8e27ffca70554334a7192fda286022575f033069dc85f",
+    "refreshed_at": "2026-11-10",
+    "translation_provider": "Apple on-device installed model with existing approved translation memory and technical-token protection",
+    "draft_threshold_issue": "https://github.com/opencomputeproject/ocp-academy-courses/issues/84"
   },
   "ui_labels": {
-    "not_started": "未开始",
-    "completed": "已完成",
-    "module": "模块",
-    "module_complete": "模块 {module} 已完成",
-    "course_complete": "课程完成",
+    "slide_transcript": "幻灯片转录",
+    "close_transcript": "关闭转录",
+    "transcript": "文字记录",
+    "no_narration": "此幻灯片上没有旁白。",
+    "narration_on_hint": "旁白-点击关闭",
+    "narration_off_hint": "旁白关闭-点击打开",
+    "narration_off_message": "旁白已关闭。请阅读字幕或使用“播放”来播放此幻灯片。",
+    "lms_navigation_note": "使用 LMS 课程导航打开另一个模块，以便正确记录其完成情况。",
+    "play_narrated_video": "播放有旁白的视频",
+    "pause_narrated_video": "暂停旁白视频",
+    "show_transcript": "显示转录",
+    "toggle_narration": "打开/关闭叙述",
+    "narration_hint": "旁白会自动开始。按右箭头键或空格键进入下一页。",
     "course_overview": "课程概览",
     "learning_objectives": "学习目标",
     "key_takeaways": "要点",
@@ -1813,41 +3207,60 @@
     "retry": "重试",
     "quiz_gate_note": "要继续，请至少提交每道题一次。无论答案是否正确都可以继续，并可重试。",
     "quiz_gate_warning": "请先提交每道题一次，再进入下一页。",
-    "select_answer": "请至少选择一个答案后再提交。",
-    "correct": "回答正确。",
-    "review_feedback": "请查看反馈后重试。",
-    "narration_hint": "旁白会自动开始。按右箭头键或空格键进入下一页。",
+    "module": "模块",
+    "up_next": "下一门课程",
+    "course_complete": "课程完成",
     "theme": "主题",
     "toggle_dark_mode": "切换深色模式",
     "previous_slide": "上一页",
     "next_slide": "下一页",
+    "previous_slide_hint": "上一张幻灯片（←左箭头）。主页：转到本模块的幻灯片1。",
+    "next_slide_hint": "下一张幻灯片（→右箭头）。主页：转到本模块的幻灯片1。",
+    "slide_counter_hint": "使用← / →箭头键在幻灯片之间移动。主页：转到本模块的幻灯片1。",
     "play_pause_narration": "播放或暂停旁白",
     "playback_speed": "播放速度",
     "playback_speed_slider": "调整播放速度",
     "speed": "速度",
     "toggle_fullscreen": "切换全屏",
     "fullscreen": "全屏",
-    "video_controls": "视频控制",
+    "select_answer": "请至少选择一个答案后再提交。",
     "play_video": "播放视频",
     "pause_video": "暂停视频",
-    "zoom_video": "放大视频",
-    "video_figure": "视频图示",
-    "zoom_figure": "放大图示",
     "enlarged_figure": "放大的图示",
     "lightbox_close_hint": "单击外部区域或按 Esc 键关闭。",
-    "opens_new_tab": "在新标签页中打开",
-    "learner_resource": "学习资源",
-    "open": "打开",
-    "learn_more": "了解更多",
-    "reference": "参考资料",
-    "course_intro": "OCP Academy 课程介绍",
-    "skip_intro": "跳过介绍",
+    "video_figure": "视频图示",
+    "zoom_figure": "放大图示",
     "share_feedback": "提交反馈",
-    "survey_body": "您愿意花几分钟帮助我们改进吗？您提供给开发团队的反馈将用于改进本课程和未来课程。我们会从参与者中随机抽取获奖者并赠送纪念品。",
+    "course_home": "课程主页",
+    "reference": "参考资料",
+    "opens_new_tab": "在新标签页中打开",
+    "module_complete": "模块 {module} 已完成",
+    "go_to_module": "前往模块 {module}",
+    "learn_more": "了解更多",
     "default_module_thanks": "感谢您完成模块 {module}“{title}”。",
     "default_course_wrap": "您已完成 {course} 的所有模块。希望本课程内容能帮助您开展实际工作。",
-    "up_next": "下一门课程",
-    "go_to_module": "前往模块 {module}"
-  },
-  "index_footer_line": "OCP ESUN · 规范 v1.0 · 中文版"
+    "lightbox_pan_hint": "拖动以查看。点击外侧关闭。",
+    "learner_resource": "学习资源",
+    "video_controls": "视频控制",
+    "zoom_video": "放大视频",
+    "open": "打开",
+    "correct": "回答正确。",
+    "incorrect": "错误。",
+    "review_feedback": "请查看反馈后重试。",
+    "not_started": "未开始",
+    "completed": "已完成",
+    "syllabus_instruction": "使用 LMS 课程大纲以任意顺序完成课程模块。",
+    "start_with_module": "从模块{module}开始",
+    "captions": "字幕",
+    "play": "容易干的事情",
+    "seek": "寻找",
+    "playback_rate": "播放速度",
+    "picture_in_picture": "图片在图片中",
+    "mute": "哑巴",
+    "volume": "体积",
+    "captions_off": "关闭字幕",
+    "course_intro": "OCP Academy 课程介绍",
+    "skip_intro": "跳过介绍",
+    "survey_body": "您愿意花几分钟帮助我们改进吗？您提供给开发团队的反馈将用于改进本课程和未来课程。我们会从参与者中随机抽取获奖者并赠送纪念品。"
+  }
 }
