@@ -1,0 +1,187 @@
+# SCORM version selection and packaging
+
+AcademyWizard supports these package organizations:
+
+- **Slides:** multi-SCO package with Course Home plus one SCO per narrated module.
+- **Slides, explicitly selected single-SCO:** one `launch.html` SCO hosts the same course home and module pages, retaining one SCORM 1.2 session throughout navigation. Module progress and quiz attempts are saved inside that course; the LMS records overall completion.
+- **Scrolling:** single-SCO package where `index.html` contains the course cover and every lesson. Lesson progress and Continue-gate state live in `cmi.suspend_data`; the SCO completes after all lessons complete.
+
+## Course Home is a separate syllabus entry
+
+For multi-SCO Slides, N content modules normally produce N + 1 tracked syllabus entries. Five modules produce six: Course Home (`index.html`) first, then `module1.html` through `module5.html`. Record `include_home_sco: true` and `expected_sco_count: 6` for that case. The homepage must be both an organization item and a resource with `adlcp:scormtype="sco"`; shipping index.html only as an asset does not make it appear in the LMS syllabus.
+
+A requested module/SCO count alone never authorizes removal of Home. An intentional exception requires `include_home_sco: false` plus `home_sco_omission: {"approved": true, "user_instruction": "<actual Home/index-specific instruction>"}` under `scorm`. Do not fabricate that record from a generic count. Existing opt-outs must have their actual Home-related authorization recorded before rebuilding; do not silently change their deployed structure. The scaffold checks the configuration, while package validation and strict zipping check the exact ordered syllabus and tracked-resource set.
+
+## New courses versus existing deployments
+
+SCORM 2004 3rd Edition is allowed for new courses without requiring an exception to a universal 1.2 default. Prefer it when the target LMS supports the features the course needs: it provides more saved-state capacity and defines content-to-LMS navigation requests. Do not call it universally better, select 4th Edition for a 3rd-Edition-only LMS, or equate accepting an uploaded version with implementing its sequencing. Announce and record the selected version. Keep 1.2 where compatibility, the selected single-SCO design or an existing deployment calls for it.
+
+The maintained `new_course.py`, `render_index.py` and `assets/scorm_api.js` currently build SCORM 1.2. Before delivering a 2004 course, implement and verify the corresponding runtime adapter, manifest namespaces/organization, interaction data and validator support. Merely changing `<schemaversion>` or adding course metadata does not convert a package. Existing source without explicit version metadata retains 1.2 behavior; a fresh build directory is not a new-course migration authorization.
+
+For an existing course, inspect its source and delivered manifest and preserve that version unless the user explicitly approves changing it after hearing the migration consequences. Warn **before** conversion, and repeat at delivery:
+
+> This changes the SCORM version. The LMS may require retiring/deleting the old material and uploading a new item rather than an overwrite. Existing bookmarks, attempts and completion history may not transfer. Export any needed reports and test a separate upload before retiring the old material.
+
+For Docebo, make the warning definite: **a 1.2 material cannot be overwritten with 2004**. A new upload is required; replacing the old material means retiring/removing that item separately. **Deleting a SCORM package deletes its tracking, which Docebo says is not recoverable.** Building or delivering a ZIP does not authorize deletion, reset or upload in the live LMS.
+
+## Docebo navigation limitations
+
+For current Docebo-targeted Slides courses, preserve SCORM 1.2 with Course Home
+and one syllabus SCO per module. The upload **Sequence** checkbox enforces
+linear prerequisites; it is distinct from honoring a targeted navigation
+request. Open DC's 2004 probe accepted `choice` requests but launched the wrong
+SCO in Docebo with Sequence unchecked, while the same probe worked in SCORM
+Cloud. Do not use forced ordering or an unverified version conversion as the
+fix for unrestricted home navigation.
+
+Docebo accepts SCORM 1.2 and 2004 3rd Edition, but its documentation explicitly says sequencing is not supported. It can convert simple sequencing/linear navigation to platform prerequisites at upload; that is not proof that arbitrary in-course choice requests work. Do not promise that changing to 2004 fixes home-page cards or next-module buttons. Require target-LMS verification of those actions and their tracking before calling a multi-SCO package release-ready.
+
+Keep the authored green next-module buttons in both local and LMS playback. The LMS Syllabus remains available for arbitrary module selection; it must not replace the course's next-module buttons automatically. Test their destination and tracking in the target LMS and preserve the user's verified deployment behavior. Any change to SCORM version, syllabus organization, or completion reporting remains a separate migration decision.
+
+Primary reference: [Docebo — Uploading and managing SCORM as training material](https://help.docebo.com/hc/en-us/articles/360020128479-Uploading-and-managing-SCORM-as-training-material), especially Introduction, Updating SCORM content and Tracking the progress of SCORM content. Recheck the target LMS documentation when selecting a format; support can change.
+
+## Current SCORM 1.2 build contract
+
+The following describes the current 1.2 implementation, not a substitute for a verified 2004 implementation.
+
+### Opt-in single-SCO Slides
+
+Open DC does **not** use this organization. It uses the standard multi-SCO
+Slides player with per-slide resume and five syllabus entries. Its former
+module-only profile was explicitly retired by the user on September 24, 2026.
+
+Record the choice in `course.json`:
+
+```json
+"scorm": { "version": "1.2", "organization": "single-sco" }
+```
+
+Omission preserves the existing multi-SCO Slides default. This option does not convert Slides into Scrolling. `render_index.py` emits the persistent `launch.html` shell, shared session runtime and one-SCO manifest; the course's own index and module pages remain assets. The course mark becomes a Course home link. Only the shell initializes and finishes the LMS session; changing a module page commits progress without ending it. Every module keeps its bookmark and quiz attempts in course-level suspend data. Home never marks the course complete; all modules and their authored quiz gates are required. The state budget is checked before building and again when saving against SCORM 1.2's 4096-character limit. Never silently drop progress or switch SCORM versions to fit that limit.
+
+This mode uses ordinary in-course links, not SCORM 2004 navigation or private Docebo APIs. Keep the visible slide controls, media and narration unchanged. Preview the complete session through `launch.html` over HTTP(S); direct module `?review=1` links remain useful for file-based editorial review without tracking. An iframe must retain its accessible title and fullscreen/autoplay permissions. Validate at the actual LMS player size; Docebo recommends testing new-window playback for nested-frame content.
+
+Run `test_single_sco.py` and the muted `test_single_sco_browser.mjs <built-package> [qa-output-folder]` regression checks. The browser test requires Playwright and Chrome and exercises the Open DC four-module fixture. It verifies navigation, quiz gates, bookmarks, one session, delayed completion, save-error visibility, review isolation and mobile layout, but is not actual Docebo acceptance. Test an LMS upload before learner release.
+
+Changing an existing multi-SCO course to single-SCO **still changes its LMS structure even when the version stays 1.2**. Warn that separate syllabus entries become one activity and existing attempts/bookmarks may not transfer. Recommend a test copy and exporting needed reports before any replacement. This is not the cross-version overwrite restriction, but it must not be described as a guaranteed progress-preserving update. Never delete/reset LMS content as part of building the ZIP.
+
+## Required files at the package root
+
+### Approved legacy module-only compatibility profile
+
+This is not the current Open DC configuration or the standard Slides behavior.
+Use it only to reproduce a deployment that still explicitly requires it; do not
+retain it when a user has requested the maintained Slides player and per-slide resume.
+
+To reproduce a specifically approved HBF-style Slides deployment, record:
+
+```json
+"scorm": {
+  "version": "1.2",
+  "organization": "multi-sco",
+  "navigation": "direct",
+  "compatibility_profile": "hbf-module-only"
+}
+```
+
+This preserves the original HBF API wrapper (`assets/scorm_api_hbf.js`) and
+the reviewed module runtime (`templates/learner_features_hbf.js`). The scaffold
+copies that wrapper to the ordinary `scorm_api.js` package path. Modules save
+only their module identifier, start at slide 1 on re-entry, retain the course
+home link and existing next-module links, and carry `review=1` through local
+review links. No deployment IDs, private LMS APIs or slide bookmark reads are
+introduced. Informational home tiles still use the shared index renderer.
+
+This is **preservation of approved compatibility behavior**, not a new default
+or a portable target-SCO API. Obtain explicit approval for the direct-link and
+no-slide-resume tradeoffs before selecting it. Separate tracking depends on
+LMS launches; use the Syllabus for arbitrary module selection and test direct
+Start/Next/Home actions in the target LMS. The profile rejects single-SCO,
+Scrolling, other versions, deployment mappings and diagnostic configuration.
+Other courses retain their existing runtime and bookmark behavior. Do not
+copy an installed skill wholesale into a contribution to reproduce this course;
+carry only the relevant changes and preserve unrelated project work.
+
+Run `test_legacy_multi_sco.py`, `test_index_home.py` and the quiet
+`test_syllabus_home_browser.mjs <built-package>` checks. An archive byte-parity
+check against the approved delivery distinguishes rebuild fidelity from LMS
+acceptance; local browser tests do not establish the latter.
+
+### File layout
+
+- `imsmanifest.xml` — the package descriptor.
+- `index.html` — the launcher (the SCO that runs first).
+- Slides only: one or more `moduleN.html` additional SCOs.
+- Scrolling only: learner media under `resources/`; no `moduleN.html` files.
+- `scorm_api.js` — wrapper that finds the LMS API and shims it. Copied verbatim from `assets/scorm_api.js`.
+- All audio under `audio/moduleN/`.
+- All figures under `figures/`.
+- Brand assets at the root (logos).
+
+## Manifest essentials
+
+The manifest declares:
+
+- One `<organization>` with one `<item>` per page (home + each module).
+- One `<resource>` per page, listing every file that page needs (HTML + JS + every image and audio file referenced by the slide markup).
+
+The XML uses three namespaces (IMS content packaging, ADL SCORM, XSI). Copy them from the reference manifest verbatim — they're not optional. Mis-declaring a namespace causes silent LMS failures.
+
+`adlcp:scormtype="sco"` is set on every resource. `"asset"` is also valid but `"sco"` is what the reference uses and what most LMSes expect.
+
+## What the LMS sees
+
+- The LMS can expose `index.html` and each `moduleN.html` as separate SCO syllabus items. Each SCO must manage its own completion status.
+- The Course Home launcher calls `SCORM.init()` and immediately sets its own `cmi.core.lesson_status` to `completed`. Multi-SCO home tiles neither read `suspend_data` nor show inferred module completion. Use informational tiles and the syllabus instruction unless an explicitly approved navigation override exists. The first-module start control is enabled by default even when `index_start` is omitted; an explicit user opt-out may disable it. It is documented in `course_schema.md` and does not provide a general SCORM 1.2 target-SCO API or change tracking context.
+- Each module page calls `SCORM.init()`, preserves a prior `completed` or `passed` status on revisit, otherwise marks itself `incomplete`, and sets its `lesson_location`.
+- When the learner reaches that module's final slide, the module updates `suspend_data.modules` for visual state and immediately sets its own `cmi.core.lesson_status` to `completed`. Do not wait for all modules before completing the current SCO.
+
+Keep the slide count and `audioMap` accurate per module. SCORM 1.2 tracking is attached to the SCO the LMS launched. Direct hyperlinks between separately tracked module HTML files cannot replace LMS-controlled launches. Never claim separate module completion based only on a mock API or a shared local browser bookmark.
+
+## Common pitfalls
+
+- **Missing files in the manifest.** Every file referenced from HTML (every audio .wav, every figure .png) MUST appear in that module's `<resource>` block. The validator script enforces this.
+- **Path mismatches.** All paths are relative to the package root, forward-slash style. No leading `./`. No `../`.
+- **Spaces in filenames.** Don't. Use `slide_03_form_factors.wav`, not `slide 03 form factors.wav`.
+- **Case sensitivity.** Some LMSes run on case-sensitive filesystems. `Module1.html` and `module1.html` are different files. Use lowercase consistently.
+- **Audio file format.** New narration delivery defaults to 44.1 kHz, 96 kbps CBR mono MP3. Retain WAV authoring masters outside the manifest and ZIP. Existing WAV courses require the user's MP3 migration agreement before changing delivery; see `mp3_narration.md`. Preserve an explicit choice to keep WAV.
+
+## Packaging for upload
+
+Most LMSes accept the package as a `.zip` of the folder. **Use `scripts/zip_for_lms.py` to build a strict zip** containing only the files listed in `imsmanifest.xml`:
+
+```
+python scripts/zip_for_lms.py <package-folder>
+```
+
+This excludes working files (`course.json`, `.txt` narration scripts, `_outline.md`, `_figure_plan.md`, `gen_audio_standalone.py`, `.DS_Store`) which strict LMSes reject because they aren't declared in the manifest. The script also verifies every referenced file exists on disk before writing the zip — if anything is missing, it fails loudly rather than silently producing a broken package.
+
+The wizard does **not** zip automatically — it delivers the folder. Run the script when the user is ready to upload.
+
+### Why strict zipping matters
+
+Some LMSes (and SCORM Cloud) scan the zip and reject any file not declared in `imsmanifest.xml`'s resource blocks. A `zip -r ... <folder>` or right-click → Compress picks up every working file. This is the single most common reason a SCORM zip is rejected after a clean validator run. Always use the strict zipper for delivery zips.
+
+If you must zip manually for some reason, the equivalent shell command is:
+
+```
+cd <output-folder>/..
+zip -r <TopicSlug>_OCP_Academy_SCORM.zip <TopicSlug>_OCP_Academy_SCORM \
+    -x '*/.DS_Store' '*/course.json' '*/_*.md' '*/_*.py' \
+       '*/audio/*/slide_*.txt' '*/gen_audio_standalone.py'
+```
+
+
+### No inline JavaScript event handlers
+
+Strict LMS content scanners reject HTML containing inline JS event handlers — `onmouseover="..."`, `onclick="..."`, `onload="..."`, etc. The error often surfaces as a generic "file may not be formatted correctly" message with no detail. Always use `addEventListener` or CSS pseudo-classes (`:hover`, `:focus`) instead. The `survey-btn` hover state in `render_course_complete` is implemented as `.slide .survey-btn:hover` in `module_styles.css` for this reason. If you add new interactive elements, follow the same pattern.
+
+## LMS catalog metadata delivered beside the ZIP
+
+Formal LMS Title, Short Description (≤130 characters), and Long Description are
+source-tracked metadata, separate from the course README and runtime. Follow
+[lms_catalog.md](lms_catalog.md). The strict zipper requires valid approved
+`course.json.lms_catalog`; pass `--course-json` when the source is outside the
+runtime folder or its parent. It refreshes source `lms-catalog.json`/`.md` and
+emits `<zip-stem>.lms-catalog.json`, `.md`, and `.html` beside the archive. These
+files are never manifest entries or extra ZIP members. Learner-duration estimates
+remain distinct from narration runtime and unit estimates reconcile to the total.

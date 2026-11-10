@@ -60,3 +60,25 @@ node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course
 ```
 
 See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.
+
+## Translated editions
+
+Seven independently editable Slides editions preserve the English course's four modules, 78 slides, 13 questions and five-SCO SCORM 1.2 structure. Each has translated learner text, native narration scripts, localized teaching media, subtitles/transcripts for the ten original recordings, and formal LMS catalog copy.
+
+| Language | Editable source | LMS information |
+|---|---|---|
+| Chinese (Simplified) | [zh-CN](locales/zh-CN/README.md) | [LMS copy](locales/zh-CN/lms-catalog.md) |
+| Chinese (Traditional) | [zh-TW](locales/zh-TW/README.md) | [LMS copy](locales/zh-TW/lms-catalog.md) |
+| Japanese | [ja-JP](locales/ja-JP/README.md) | [LMS copy](locales/ja-JP/lms-catalog.md) |
+| Korean | [ko-KR](locales/ko-KR/README.md) | [LMS copy](locales/ko-KR/lms-catalog.md) |
+| Portuguese (Brazil) | [pt-BR](locales/pt-BR/README.md) | [LMS copy](locales/pt-BR/lms-catalog.md) |
+| Spanish (Latin America) | [es-419](locales/es-419/README.md) | [LMS copy](locales/es-419/lms-catalog.md) |
+| Vietnamese | [vi-VN](locales/vi-VN/README.md) | [LMS copy](locales/vi-VN/lms-catalog.md) |
+
+Use the course-specific [translation rebuild command](authoring/build_translation.py) with a locale's extracted delivery MP3s; it verifies the recorded hashes and reuses the pinned locale renderer without TTS or recompression. For example, from the repository root:
+
+```sh
+python3 courses/data-center-basics/authoring/build_translation.py ko-KR --audio-dir /path/to/ko-KR/audio
+```
+
+Build output stays under ignored `build/`; add `--zip` for an LMS package. Generated narration, masters and ZIPs are not source-controlled. All editions share the English catalog poster. See [translation QA and review limits](TRANSLATION_QA.md).

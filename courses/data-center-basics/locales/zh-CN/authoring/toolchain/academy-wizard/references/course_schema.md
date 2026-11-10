@@ -1,0 +1,888 @@
+# course.json schema
+
+The wizard maintains a single `course.json` in the working area. It's the source of truth for everything — outline, scripts, figures, manifest. Every render script consumes it.
+
+For a long Slides home heading, `index_title_soft_breaks` may list words containing discretionary U+00AD soft hyphens, such as `["Infra\u00adstructure"]`. Removing the soft hyphens must yield an exact word in `course_title`; the field cannot retitle the course. Breaks affect only the visible home heading, preserving the canonical document and LMS titles. The default is an empty list. Shared home styles allow long words to wrap within narrow viewports without reducing the maintained typography.
+
+## LMS catalog fields
+
+`lms_catalog` stores approved formal LMS catalog copy separately from README.md.
+See [Formal LMS catalog metadata](lms_catalog.md) for its schema, learner-duration
+validation, bold module headings followed by a line break, source tracking, and
+ZIP-sidecar exports. It is authoring metadata and must not enter the manifest.
+
+## Top-level shape
+
+Repository source may set `authoring_toolchain` to a validated, course-relative
+toolchain directory such as `tools/academy_wizard`. `scripts/build-course.sh`
+uses that snapshot by default for this course; an explicit
+`ACADEMY_WIZARD_SKILL_DIR` overrides it. The path must stay inside the course
+source folder. Keep the snapshot and its provenance with the editable source,
+and validate runtime and tracking behavior before changing the pin. This is build
+metadata, separate from learner-facing content and LMS catalog fields.
+
+```json
+{
+  "style": "Slides",
+  "course_slug": "ocp_academy_nic_3_0",
+  "course_title": "OCP Academy: NIC 3.0",
+  "language": "en-US",
+  "scorm_title": "Optional exact manifest-only title override",
+  "metadata_language_name": "Optional language label for the manifest suffix",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "Course-specific ElevenLabs voice ID",
+    "voice_name": "Human-readable voice name",
+    "model_id": "eleven_v4",
+    "model_policy": "stable",
+    "speed": 1.18
+  },
+  "course_subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification",
+  "tagline": "Community-driven Hyperscale Innovation for All",     // FIXED phrase — never invent; CSS renders all caps
+  "spec_version_chip": "Specification v1.6.0 · March 2025",
+  "index_footer_line": "Optional exact footer line for the course home page.",
+  "index_show_module_status": false,
+  "index_module_links": false,
+  "index_navigation_instruction": "Optional exact instruction below the module tiles.",
+  "index_start": {"enabled": true, "label": "Start with MODULE 1", "navigation": "direct"},
+  "target_duration_minutes": 35,
+  "audience_level": "intermediate",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "OCP-Open-compute-NIC-3-v2-3x-v1-42a.png",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "NIC"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {"path": "/Users/.../OCP_NIC_3.0_v1.6.0.pdf", "kind": "spec"},
+    {"path": "/Users/.../summit_2024_nic_overview.pptx", "kind": "summit_slides"}
+  ],
+  "modules": [ /* see below */ ]
+}
+```
+
+`course_title` is learner-facing and appears inside the rendered course.
+An optional `authoring_renderer` names a trusted course-owned Python file at
+the course root, for example `render_course.py`. The repository build script
+stages it and runs it with `course.json --all` for Slides instead of the standard
+module renderer, passing the selected skill folder as
+`ACADEMY_WIZARD_SKILL_DIR`. Courses without this field keep the standard build.
+Use it for recorded course-specific layout overrides while retaining the
+maintained player and controls; include the renderer and its configuration in
+source control.
+
+Slides home tiles omit status labels (including “Not Started” and “Completed”),
+completion coloring and progress reads by default. Record
+`index_show_module_status: false` in new and refreshed course sources; the
+index is an overview rather than a progress display. This only hides the home
+UI and does not disable module bookmarks, quiz attempts or LMS completion.
+Multi-SCO home tiles never infer progress across separately tracked activities.
+An explicitly approved single-SCO progress display may opt in with
+`index_show_module_status: true` when shared tracking has been verified.
+Scrolling is unaffected.
+
+All Slides index cards are informational articles, with no links, click
+handlers, pointer cursor, hover lift or keyboard tab stop. This applies to
+single-SCO and multi-SCO courses. Record `index_module_links: false` in new
+and refreshed sources. A stale true value or `scorm.navigation: "direct"`
+does not make cards clickable. Keep navigation in the separate first-module
+action and module-end controls.
+
+`index_navigation_instruction` places the exact supplied text directly below
+the tiles. For the approved unrestricted Docebo layout use:
+`Navigate modules in any order using the Syllabus in the left sidebar.`
+Match the normal tile body-text size (0.85rem).
+For other LMSs confirm the location and permitted order; the informational-tile
+fallback says `Use the LMS syllabus to advance through the course modules in any order.`
+Supply an accurate course-specific instruction when order is restricted.
+Single-SCO homes omit this note by default. Set
+`index_navigation_instruction: ""` to omit it explicitly in either mode;
+an empty string must not cause replacement guidance to appear. Do not add
+editorial-review directions or completion/quiz implementation details here.
+
+Every new or refreshed Slides home includes a first-module action by default
+below that instruction:
+
+```json
+"index_start": {
+  "enabled": true,
+  "label": "Start with MODULE 1",
+  "navigation": "direct"
+}
+```
+
+The label uses OCP indigo (#343895) and sits left of the canonical 46px circular next-module double-chevron
+control, with the same SVG, colors and pulse. It links only to the first
+authored module. `label` defaults to the localized `start_with_module` UI label;
+the accessible name/title uses `go_to_module`. Omission of `index_start`,
+`enabled`, or `navigation` defaults to the enabled direct first-module action;
+no separate user request or compatibility approval is needed for this maintained
+home default. Record the above fields in new/refreshed sources for reproducibility.
+An explicit user opt-out may set `enabled: false`. This action targets the
+first authored module, not a hardcoded filename, and does not enable links on
+the other tiles. In multi-SCO courses it remains a page link, not a target-SCO
+request, and cannot change LMS tracking context. Retain the syllabus instruction
+and verify actual LMS launch/completion; local review alone does not prove that
+handoff. In review mode the destination keeps `review=1` and starts at slide 1
+without narration or LMS writes. These fields do not alter the SCORM version,
+organization, module completion, next-module policy, or bookmark policy.
+
+Slides next-module navigation is part of the maintained learner UI: every
+non-final module keeps its green double-chevron link in standalone, review, and
+LMS playback. No course-specific opt-in is required. Detecting a SCORM API must
+not remove or replace this button. Browser QA compares the same authored button
+and destination with and without an LMS API.
+
+`scorm.navigation: "direct"` remains a compatibility setting for additional
+legacy page links and Course Home behavior. It is not needed for next-module
+buttons and does not change the manifest's version or organization. Keep
+tracking verification separate from learner-visible navigation.
+
+`language` is a BCP 47 tag. English packages use `course_title` unchanged in
+`imsmanifest.xml`; non-English packages append the English language name in
+parentheses, such as `OCP ESUN (Korean)`. Use `scorm_title` only for an exact
+manifest-only override. Use `metadata_language_name` to override the automatic
+language label without changing course content.
+
+For narrated Slides courses, record top-level `narration` with engine
+`elevenlabs`, model `eleven_v4`, the approved voice ID and `speed: 1.18`.
+Full v4 is required for every generation job; retired models are rejected rather
+than used as fallbacks. Maintained locale scaffolds retain their approved voice
+IDs and select full v4. Validate live language/voice support before synthesis.
+
+`speed` is the pitch-preserving multiplier applied to the native v4 master after
+generation; it is not sent as an API speed field. The learner dial remains 1.0
+and retains saved preferences. Native masters and timing receipts stay outside
+the runtime package. No secondary-model reference is synthesized or reused.
+
+A module may override the approved voice or pacing fields when the user has
+explicitly authorized that change. Its model must still be full v4. Re-record
+existing files before identifying them as v4; during staged review, record which
+modules are complete and which still await re-recording. Do not change duration
+estimates or SCORM organization to accommodate narration. See
+[Full v4 pacing](elevenlabs_v4_pacing.md).
+
+### Optional untracked Slides Home
+
+For an explicitly requested modules-only multi-SCO organization, set
+`scorm.include_home_sco: false`. The default remains `true`: Home is a SCO and
+completes on launch. The explicit false value removes Home from the syllabus,
+registers its resource as an asset, and suppresses Home LMS lifecycle writes.
+It does not change module tracking or authorize an organization migration.
+The value must be a JSON boolean. This setting applies to Slides multi-SCO
+output; single-SCO and Scrolling retain their own lifecycle.
+
+## Multi-SCO syllabus count
+
+Content-module count excludes Course Home. Five Slides modules normally have six tracked syllabus entries, with Home first:
+
+```json
+"scorm": {
+  "version": "1.2",
+  "organization": "multi-sco",
+  "include_home_sco": true,
+  "expected_sco_count": 6
+}
+```
+
+`expected_sco_count` is the total tracked syllabus count, not the number of content modules. Validation rejects a stale count or a missing/reordered Home item. A deliberate untracked Home requires `home_sco_omission` with `approved: true` and the actual user instruction explicitly mentioning Home/index. A generic request for a number of modules or SCOs is insufficient. Single-SCO Slides and Scrolling organizations are unaffected by this multi-SCO rule.
+
+## Presentation style
+
+`style` accepts exactly `"Slides"` or `"Scrolling"`. If omitted, renderers assume Slides so existing courses remain compatible.
+
+- Slides uses `modules[].slides[]`, narration, and multiple SCO pages.
+- Scrolling uses top-level `lessons[].blocks[]`, a persistent left table of contents, progressive Continue gates, and one `index.html` SCO. Narration is false by default.
+
+### Scrolling top-level shape
+
+```json
+{
+  "schema_version": "2.0",
+  "style": "Scrolling",
+  "course_slug": "module-1-the-ocp-origins",
+  "course_title": "Module 1: The OCP Origins",
+  "course_subtitle": "A concise plain-text description.",
+  "course_description_html": "<p>The full learner-facing description.</p>",
+  "target_duration_minutes": null,
+  "audience_level": "introductory",
+  "brand": {
+    "primary_color": "#8cc53f",
+    "primary_color_dark": "#6fa030",
+    "course_logo": "resources/images/module-banner.png"
+  },
+  "theme": {
+    "source_theme": "classic",
+    "accent_color": "#8cc53f",
+    "sidebar_style": "Light",
+    "corner_style": "Rounded",
+    "cover_image": "resources/images/cover.jpg",
+    "cover_width": 1680,
+    "cover_height": 737,
+    "cover_overlay": 0,
+    "cover_page_type": "full",
+    "navigation_type": "sidebar",
+    "lesson_header_style": "accent",
+    "lesson_header_size": "medium",
+    "lesson_header_color": "#8cc53f",
+    "lesson_header_hidden": false,
+    "button_scheme": "accent",
+    "block_padding": 30,
+    "animate_block_entrance": true,
+    "font_families": {
+      "heading": "Be Vietnam",
+      "body": "Be Vietnam",
+      "ui": "Lato",
+      "cover_lesson": "Lato"
+    },
+    "font_faces": [
+      {
+        "family": "Be Vietnam",
+        "weight": 400,
+        "style": "normal",
+        "path": "resources/fonts/be-vietnam-regular.woff2"
+      }
+    ]
+  },
+  "scrolling": {
+    "toc_position": "left",
+    "toc_initially_open": true,
+    "show_search": true,
+    "show_lesson_count": true,
+    "show_cover_lesson_list": true,
+    "lesson_transition": "directional_vertical",
+    "continue_gates": true,
+    "narration": false
+  },
+  "lessons": []
+}
+```
+
+Each lesson has sequential `id`, stable `slug`, learner-facing `title`, optional `description_html`, optional `optional`, and ordered `blocks`. Set `optional: true` only when that lesson may be bypassed without blocking course completion or restricted navigation.
+
+Supported block types are `text`, `impact`, `list`, `image`, `gallery`, `video`, `embed`, `attachment`, `divider`, `continue`, `quote`, `buttons`, `accordion`, `tabs`, `process`, `timeline`, `labeled_graphic`, `flashcards`, and `knowledge_check`.
+
+- A Scrolling `process` block is rendered as a one-step-at-a-time carousel. Each item may include a title, `description_html`, media, and optional `media_frame: "project_icon"` for a centered project mark inside the maintained circular frame. The `storyline_selector` variant omits numbered Step badges.
+- A `timeline` stores ordered `items[]` with `description_html` and an optional compact `icon`. Use it for a responsive stepped process whose small markers and vertical connector must not be flattened into a screenshot.
+- A `gallery` stores ordered media items and renders as an accessible previous/next carousel with position controls.
+- An `embed` stores a trusted `embed.src` plus optional `original_url`, `title`, `provider`, and `description`.
+- A `flashcards` block may set `style.flashcard_size` to `small`, `large`, or `paired_large`. The large classic variant uses one centered 460px logical square per row; `paired_large` preserves a two-card desktop row and collapses to one responsive column on narrow screens.
+- A `buttons` block may set measured `style.button_width_px` and `style.button_row_gap_px`. A lesson button uses `type: "lesson"` and numeric `lesson_target`.
+- A `continue` block may set `style.continue_radius` to preserve a recovered rectangular or rounded control.
+
+Store course-owned binary media under `resources/images`, `resources/videos`, `resources/captions`, or `resources/documents` and reference those paths from block `media` objects. Blocks may set `style.entrance_animation`; false keeps that block static even when `theme.animate_block_entrance` is enabled.
+
+Classic medium-width text blocks are responsive on desktop rather than permanently fixed to the width measured in a narrow lesson pane. With the sidebar open, grow the inner text width using `min(calc(83.333333% - 105px), 761.667px)`; with the sidebar closed, cap it at 760px. This keeps wide-screen paragraphs aligned with medium list content while retaining the narrower source geometry at smaller desktop widths.
+
+Every ordinary `image` block may declare `image_role` as `content` or `decorative`; omitted values default to `content` for backward compatibility. A `text_aside` block may declare `style.image_position` as `left` or `right`, naming the image column. Honor that side without inversion. When the value is absent, use the classic Rise default of `left` and render the corresponding `block--image-left` layout class so DOM child order cannot silently put the image on the right. A content image may use `style.zoom_on_click`. A decorative image is edge-to-edge presentation artwork rather than learner content: the renderer must suppress zoom regardless of that style flag, emit empty alternative text, and remove the image from the accessibility reading order. A recovered `custom_canvas` image retains its authored intrinsic dimensions on desktop and scales down only when the lesson pane is narrower.
+
+Quote blocks may include structured `avatar` media. Classic quote variant `d` renders that image as an 80px circle beside transparent quote content on the block's own background; retain its responsive width and authored typography instead of substituting a generic callout card. Scrolling videos use the maintained custom player: transparent letterboxing, a centered 98px play circle, no browser-native controls before activation, and the shared persistent control bar—play/pause, seek/loaded progress, remaining time, seven-choice speed menu, caption-language menu, picture-in-picture, fullscreen, and volume. Keep every applicable control exposed before and during playback, wrapping on phones rather than hiding functions. Use the canonical Video.js-compatible glyph outlines rather than substitute art. Scrolling accordions use right-aligned plus/minus controls rather than native disclosure triangles; light block surfaces render adjoining bordered white cards, dark surfaces retain the configured borderless card treatment, and every expanded item shows a continuous 4px accent rule along its header and content.
+
+Labeled-graphic callout bodies must wrap long unbroken text and URLs within the callout, and every callout link must use the same authored link treatment regardless of inline source markup or visited state. Reset white knowledge-check cards to a dark foreground color when their containing block uses a dark background so question and answer text remain readable.
+
+A captioned video declares editable VTT resources in `media.captions[]`:
+
+```json
+{
+  "type": "video",
+  "media": {
+    "path": "resources/videos/origin-story.mp4",
+    "poster": "resources/images/origin-story.jpg",
+    "captions": [
+      {"path": "resources/captions/origin-story.en-US.vtt", "language": "en-US", "label": "English (US)"},
+      {"path": "resources/captions/origin-story.fr.vtt", "language": "fr", "label": "Français"}
+    ]
+  }
+}
+```
+
+The renderer parses those files into generated cue fallback data so CC works from `file://` as well as an LMS, but `course.json` retains only the VTT paths and language metadata. Add translated subtitle tracks as additional VTT entries; never duplicate or hard-code cues in course authoring data.
+
+Every `continue` block has a `label` and optional `complete_hint`. It reveals following blocks until the next Continue gate. A nearby `knowledge_check` does not disable Continue; progression may happen before or after answering it. The final gate completes that lesson and immediately opens the next lesson. Revisiting a completed lesson hides its Continue controls and shows a full-pane 61px gray bar linking to the next lesson; do not add a separate generic Next Lesson button. A final `buttons` item with `type: "exit-course"` completes its zero-gate lesson only when the learner clicks Exit; entering that lesson must not mark it complete or expose a completion message. Completing every lesson completes the single SCO.
+
+`show_cover_lesson_list` defaults to true and renders the ordered lesson overview below the cover's lesson count. `theme.navigation_restricted` defaults to false; in that unrestricted mode every lesson is immediately available and must use the normal, non-disabled treatment in the cover lesson plan, sidebar table of contents, and search results. When `navigation_restricted` is true, only lesson 1 is initially available and each later lesson unlocks after its predecessor is complete; cover, sidebar, search-result, and direct lesson-opening paths must all enforce that sequence. Preserve the recovered value by default, but an explicit course or series authoring policy supersedes the source setting and must be applied consistently to every sibling course. The classic centered cover title uses responsive sizes: 32px/38px by default, 45px/52px from 480px, 60px/70px from 992px, and 80px/90px from 1440px. `lesson_transition` accepts `"directional_vertical"` (default) or `"none"`; the default brings later lessons in from below and earlier lessons in from above while respecting reduced-motion preferences. The desktop lesson pane is a viewport-height scrolling region. Each lesson includes a 61px gray previous-navigation strip above its hero (`Home` for lesson 1), and lesson entry starts at a 62px pane offset so scrolling upward reveals that strip. Preserve the configured lesson-header grid, including its 160px by 5px post-title rule, two-pixel white separation before the first body block, and wide-screen 950px-grid cap; at a 1440px viewport its inner header is 761.667px rather than a percentage that keeps growing. The desktop TOC is 280px wide; lesson rows use bold 13px/16px text, 18px 41px 18px 43px padding, 52px height for one-line titles, natural 68px height for two-line titles, and a `#f3f3f3` active fill. A completed row uses the canonical 30px status wrapper with an inset 20px, 16-unit progress-circle SVG and check path. Scrolling block backgrounds span the lesson pane, but their inner content widths are type-specific: do not apply one global side margin to text, lists, media, interactions, and Continue controls. Full-width cropped images have a 200px minimum height and retain enough intrinsic height to avoid clipping an image taller than that threshold. Text-aside blocks use the maintained content width, medium videos cap at 1100px on wide screens, and dividers retain the 920px content-box cap, responsive padding, and negative 8.333% line margins on wide panes.
+
+When `theme.animate_block_entrance` is true, observe eligible blocks as they enter the viewport. Text-aside media fades and moves 50px from its outside edge over 1 second after a 0.12-second delay. List items use the same horizontal entrance staggered by 0.25 seconds. Full media, videos, and Continue controls fade without translation. Honor reduced motion. `show_search` provides submit-on-Enter full-course content search with lesson-grouped occurrence counts, not live title filtering.
+
+The `theme` object is authoritative learner-facing source. Preserve the configured cover (including dimensions and overlay), typography through local `font_faces`, navigation and lesson-header treatment, button scheme, block padding, and animation preference. `theme.font_families.cover_lesson` optionally assigns a distinct family to the lesson list on the course cover; when omitted it inherits `theme.font_families.ui`. The renderer must reproduce that presentation using readable AcademyWizard HTML/CSS rather than replacing the authored design with generic defaults. Omitted values use the maintained Scrolling defaults.
+
+Render classic Scrolling heading and heading-paragraph blocks with a bold 32px/40px heading line box and 8px vertical padding. If `heading_html` contains an author-sized `font-size: 2rem` span, retain bold inheritance but give that span a 20px/25px line box; do not style it as regular body text.
+
+Classic Scrolling interactions retain their authored geometry. Numbered lists use 40px accent-green number circles and a 100px gap to the text column; at a 1440px viewport the item and text widths are 760px and 660px. Description-style flashcards omit placeholder media, render as 252px white cards, use the canonical 36px top-right control and SVG icon, and flip to a `#fafafa` text back. A three-card group stays in one row with 28px gaps on wide screens. Accordion headers use the maintained 715.828px medium width and expand to the 761.667px wide-grid cap, with 30px padding, 18px/25.2px bold type, and 87px header height. Process interactions use an 830px card at 1440px, horizontal 0.5-second directional transitions, and 56px circular chevrons. Description button blocks use a 450px description column with 80px right padding plus a pill action column. Store a recovered pixel width in `style.button_width_px` when known (classic wide resource buttons are 300px by 40px); otherwise derive a safe width from the longest label. Keep labels on one line and widen the centered row rather than wrapping text. Knowledge checks use a 760px white card with 64px/56px padding, 646px answer rows, a 20px radio ring with centered 6px selected dot, and configured submitted feedback. Submission disables the choices and hides Submit; every choice row reveals its correct-answer check or incorrect-answer X. A selected correct row has a separate accent outline, while a selected incorrect row uses `#707070`; inset both outlines 5px vertically so neighboring rows never overlap. Feedback fades from scale 1.1 after the configured delay, incorrect feedback offers Take Again, and correct feedback does not.
+
+Knowledge checks support `question_type` values `multiple_choice`, `multiple_response`, `fill_in_the_blank`, and `matching`. Multiple response uses checkbox choices and requires an exact correct set. Fill-in uses `accepted_answers[]` and a text input; after every submission, whether correct or incorrect, reveal all accepted answers in an `Acceptable responses:` line, then hide that line on retry. Matching uses `pairs[]`, each with `prompt_html` and `match_html`. Render `prompt_html` as shuffled draggable source puzzle pieces in a left `<ul>` with draggable `<li>` wrappers, the canonical full-height translucent accent strip, centered black six-dot grip, and a right-edge socket cut with the source radial mask; render `match_html` as fixed target puzzle pieces in authored order in a right `<ul>` with drop-zone `<li>` wrappers. Normalize all live pieces to the tallest content-derived height, as Rise does, so corresponding list rows share a baseline even when one target wraps. Drag/drop is primary and must work through real mouse and touch pointer gestures in embedded course browsers. Match Rise's interaction constants: an 8px movement tolerance and a 0.015 source-area overlap threshold for activating a drop zone. Do not combine this pointer model with native HTML `draggable`, because competing drag lifecycles make valid grip-origin drops fail. Retain click and keyboard pairing as fallbacks and persist learner-created pairings. On pairing, keep the targets fixed, reorder the chosen source list item into that target's row, move both list items inward by half the column gap plus 2px so their contours overlap by 4px, and change both accent strips to solid accent green. On retry, restore the original shuffled source order. On submission, replace the interaction with result rows ordered by fixed target. Each row shows the learner's source plus that target and a `Correct.` or `Incorrect.` status; an incorrect row also shows `Correct: <source prompt>` for the source key that belongs to the fixed target. An `impact` block uses `body_html` in the classic centered 760px, 32px/48px statement treatment. A divider with `variant: "numbered_divider"` stores its sequential per-lesson `number` and renders a centered 50px accent circle over the classic 1px accent rule. The rule spans the 920px wrap and uses the source negative 8.333% side margins so it extends toward the lesson margins.
+
+For OCP branded text, render `OCP Ready` with a superscript `TM` in learner-facing HTML. Use the `™` glyph in metadata, manifest titles, image alt text, and other plain-text fields where HTML tags are not valid. Do not change source filenames or local source paths to add trademarks.
+
+The optional `brand.badge_text` sets the small label shown under the course logo in each module's top-left badge. Set it to the course's short slug — "NIC", "CDU", "RDMA", etc. — when that's a useful abbreviation. If it is omitted or blank, the renderer leaves the small label out; it does not invent one from the course title.
+
+`brand.course_logo` is required for a polished OCP Academy course. It appears to the right of the OCP Academy logo on `index.html`, above `badge_text` in each module's top-left badge, and as the floating/glowing hero icon on every module title slide. If the user does not provide an asset, generate a simple course-specific SVG mark and place it at the package root. Keep the SVG mark graphical; do not embed acronym text in the logo itself.
+
+## Motion intro shape
+
+The OCP Academy motion intro is **default-on** for both `index.html` and every `moduleN.html`.
+It is rendered as a CSS animation overlay, not a pre-rendered MP4, so it adds only one SVG logo
+asset and no video-rendering dependency. The default background sweeps diagonally from OCP blue
+`#343895` to OCP green `#8DC63F`, using the white OCP Academy SVG lockup.
+
+For the course home, the renderer defaults to:
+
+- eyebrow: `"OCP Academy"`
+- title: `course_title`
+- subtitle: `course_subtitle`, falling back to the fixed tagline
+
+For module pages, the renderer defaults to:
+
+- eyebrow: `module_badge_text`, falling back to `"Module N"`
+- title: `module.title`
+- subtitle: `module.subtitle`, falling back to `course_subtitle`
+
+Override only when needed:
+
+```json
+{
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "title": "OCP Academy: NIC 3.0",
+      "subtitle": "A Comprehensive Course on the OCP NIC 3.0 Design Specification"
+    },
+    "modules": {
+      "enabled": true
+    }
+  }
+}
+```
+
+Disable globally with `"motion_intro": {"enabled": false}`. Disable only the course-home intro
+with `"motion_intro": {"index": {"enabled": false}}`. Disable module intros with
+`"motion_intro": {"modules": {"enabled": false}}`.
+
+For narrated Slides modules, slide 1 audio starts during module-page initialization and runs independently of this overlay. Do not delay narration until the motion intro ends. When browser autoplay policy blocks audible playback, retain the loaded clip and retry on the learner's first pointer, touch, or keyboard interaction while pulsing the play control as the fallback cue.
+
+## Module shape
+
+```json
+{
+  "id": 1,
+  "slug": "introduction",
+  "title": "Introduction to OCP NIC 3.0",
+  "subtitle": "Overview, tenets, form factors, capabilities, and the multi-vendor ecosystem.",
+  "module_badge_text": "Module 1",
+  "motion_intro": {
+    "eyebrow": "Module 1",
+    "title": "Introduction to OCP NIC 3.0",
+    "subtitle": "Overview, tenets, form factors, capabilities, and the multi-vendor ecosystem."
+  },
+  "next_module_title": "Form Factors & Mechanical Design",
+  "slides": [ /* see below */ ]
+}
+```
+
+The final module's last slide should be `course_complete` instead of `up_next`, and `next_module_title` can be omitted.
+
+## Slide shape
+
+Every slide has:
+
+```json
+{
+  "id": 1,
+  "type": "title|course_overview|objectives|content_bullets|content_two_column|content_grid|content_table|content_diagram|full_slide_image|takeaways|knowledge_check|up_next|course_complete",
+  "slug": "title",
+  "audio": {
+    "script_file": "audio/module1/slide_01_title.txt",
+    "wav_file":   "audio/module1/slide_01_title.wav",
+    "approved": false
+  },
+  "source_refs": [
+    {"source": "OCP_NIC_3.0_v1.6.0.pdf", "page": 12}
+  ]
+}
+```
+
+Plus type-specific fields. See `slide_design_patterns.md` for what each type needs.
+
+For new and refreshed Slides courses, use MP3 narration delivery by default. Retain
+`audio.wav_file` as the paced authoring master and add `audio.delivery_file`,
+for example `audio/module1/slide_01_title.mp3`. The player and manifest prefer
+that delivery copy. A legacy course with no delivery field retains WAV playback.
+Before rebuilding it, ask for MP3 migration consent; scaffolding and delivery
+encoding stop until an explicit MP3 or keep-WAV decision is recorded. Generic
+rebuild permission is not migration consent. See `mp3_narration.md`. Preserve
+other explicit course-level delivery overrides. Record the
+codec settings under `narration.delivery`, for example
+`{"format":"mp3","approved":true,"bitrate_kbps":96,"sample_rate_hz":44100,"channels":1,"bitrate_mode":"CBR"}`.
+After synthesis/pacing and before rendering, run
+`scripts/encode_delivery_audio.py course.json --report /outside/runtime/audio-delivery.json`.
+The normal repository build runs this step automatically. Set
+`FFMPEG_BIN` or use `--ffmpeg` when needed. It preserves and hashes the WAV,
+fully decodes the MP3 and rejects timing differences above 5 ms. Keep native
+masters and delivery receipts outside the runtime manifest. Local encoding
+does not regenerate the performance or consume TTS credits. New ElevenLabs
+synthesis requests `mp3_44100_96` directly and retains those provider bytes, then
+decodes to WAV for pitch-preserving pacing. That WAV is not a lossless original.
+The paced learner MP3 requires re-encoding and is not byte-identical to the
+provider MP3. See [MP3 narration](mp3_narration.md). Validate actual playback, seek, speed,
+animation synchronization and final hold before packaging. A local browser
+pass does not establish LMS or additional-browser acceptance.
+
+`knowledge_check` slides are always narrated. They must include the same `audio.script_file` and `audio.wav_file` fields as content slides, and the corresponding script/WAV must be generated before rendering a module. `course_complete` may remain silent unless the approved design says otherwise.
+
+Optional learner-aid fields accepted on slides:
+
+PDF links on teaching slides are page-specific by default, including
+`resource_callout` buttons. Use a short document name, optional section/table,
+and `p.` or `pp.` plus the supporting page/range in the visible label:
+`Spec · Table 1 · pp. 15–17`. Append `#page=15` to open the first cited page.
+Multiple ranges may be shown, for example `pp. 13–14, 52–58, 60`, opening page 13.
+Localize document and section names while retaining the `p.`/`pp.` notation and numeric page ranges.
+Use one-based PDF viewer pages including the cover, not printed footers when
+they differ. Verify both source support and range bounds in the actual PDF;
+never attach an unverified page number just to satisfy the style check.
+
+The closing resource/`course_complete` slide links to the entire canonical
+document instead: a recognizable document label without `p.`/`pp.`, and a URL
+without a page or contents-page fragment. For example,
+`{"label": "PG25 base specification", "url": "https://example.org/pg25.pdf"}`.
+Canonical `sources`, hidden `source_refs`, and glossary audit URLs may retain
+whole-document links. Identify an opaque PDF endpoint with `kind: "pdf"` in
+the link or corresponding source metadata so source QA can check it too.
+These are maintained defaults for new builds and refreshed courses, not
+optional upgrades that require a separate user request. The PDF-reference
+audit in `slides_course_qa.py` checks visible notation, positive page anchors,
+matching first pages, and whole-document closing links; it cannot establish
+source accuracy or PDF-viewer behavior inside the target LMS.
+
+When the user explicitly requests a whole-document link on the course's opening
+slide, record `whole_document: true` on that PDF reference. This narrow exception
+applies only to the first authored slide of the first module, which must be a
+`title` or `course_overview`; it is not a teaching-slide bypass or a new default.
+Use no page fragment or page/range label there. Closing references remain
+whole-document links by default. Record the user approval in course metadata.
+
+```json
+{
+  "reference_links": [
+    {"label": "Spec · Table 1 · pp. 15–17", "url": "https://example.org/spec.pdf#page=15"},
+    {"label": "OCP Rack & Power project", "url": "https://www.opencompute.org/community/rack-and-power"}
+  ],
+  "resource_callout": {
+    "title": "Implementation comparison",
+    "text": "Short learner-facing context for why this link is useful.",
+    "button_text": "Watch from 12:17",
+    "url": "https://youtu.be/example?t=737"
+  },
+  "term_refs": ["ride_through", "arc_flash"]
+}
+```
+
+Use `reference_links` for small bottom-of-slide link pills. Every resource pill opens in a new tab and includes the inline external-page icon on its right edge. Use `resource_callout` for a larger learner resource box when the resource deserves more context. Use `term_refs` for tooltip-only glossary pills; they include the inline terminology/book icon on the right and never become links, even when the glossary metadata retains a source URL for authoring or audit purposes. These learner aids render inside `.slide-content`, left-aligned, below the slide's last text/table/image element. The final module's final `course_complete` slide must not define `term_refs` or show glossary chips; its continuing-resource strip is centered. Do not place learner aids in a separate floating "Terms" region, fixed footer, or control-adjacent panel. Use `term_refs` with a top-level `term_glossary`:
+
+```json
+{
+  "term_glossary": [
+    {
+      "id": "arc_flash",
+      "term": "Arc flash",
+      "tooltip": "Hazard from release of energy caused by an electric arc; it can injure people and damage equipment.",
+      "reference_label": "NFPA 70E definition source",
+      "url": "https://..."
+    }
+  ]
+}
+```
+
+Attach a term only to its first substantive use in each module's spoken script, rendered slide text, or legible figure/video text. Never define `term_refs` or display glossary pills on a quiz/`knowledge_check` slide or on the first or last slide of any module, regardless of layout type or ID. Determine boundaries by position in `modules[].slides[]`, not by assuming IDs start at 1 or that the last slide is `up_next`/`course_complete`. Intro/title, roadmap/overview, objectives and next-module/completion slides are excluded even at interior positions. All these excluded slides also do not count toward first substantive use. Use the first eligible teaching occurrence, or omit the pill when none exists. Resource links are not glossary pills and remain independently permitted. Keep image-only `full_slide_image` layouts free of pills; do not change their layout without approval. Put learner aids after the last text/table/figure in the slide content flow.
+
+### Glossary usage evidence
+
+`term_glossary[].aliases` may list verified variants of the same term: spelling, plural, acronym expansion, pronunciation spelling, or equivalent unit notation. For example, `SLA` may use `["SLAs", "service-level agreement", "service-level agreements"]`. Do not use conceptual synonyms such as "compatibility" as an alias for "fungibility" just to obtain a match. Acronyms spoken as separated letters are supported. Case, whitespace and hyphen variations are normalized; word boundaries prevent substring matches.
+
+Count only the learner's actual teaching content. Ignore the glossary label/tooltip, term IDs, filenames/slugs, author notes, source metadata, reference links, alt text, script comments, non-rendered legacy fields and hidden markup. A visible caption can count; an unlabeled object does not establish that its name was used. Use the current script body when available, not an out-of-date transcript. Do not add or rewrite teaching content merely to retain an unsupported pill.
+
+Before auditing a module with glossary pills, inspect every attached figure and every video state for legible text. Record the reviewed text under `figure.text_inventory`, including media with no visible words (`entries: []`), so earlier media-only occurrences cannot be missed:
+
+```json
+{
+  "figure": {
+    "path": "figures/cooling.mp4",
+    "text_inventory": {
+      "sha256": "SHA-256 of the exact reviewed media file",
+      "entries": [
+        {"text": "CDU", "at_seconds": 12.0},
+        {"text": "Supply and return", "at_seconds": 18.5}
+      ]
+    }
+  }
+}
+```
+
+For static images omit `at_seconds`; for videos give a time where the text is legible. Review the final encoded asset, not just a prompt, alt description, poster, hidden SVG label or animation source. Source text extraction/OCR can help, but is not visual verification. Keep each distinct visible phrase; repeated identical labels need only one entry. Include later states and captions burned into the media. A changed asset invalidates its old inventory: re-review the text, then update the digest. Never auto-refresh the digest during a rebuild without reviewing the new asset.
+
+Run `scripts/slides_course_qa.py course.json --fail-on-flags` after scripts/media are finalized and again after any content revision. Its glossary checker uses the maintained renderer (excluding the pills themselves), script bodies, and current hash-bound media inventories. It rejects absent terms, placements after first substantive use, excluded baseline vocabulary, and missing/stale media inventories; structural checks also reject undefined/repeated refs and unused entries. The checker cannot prove that a manually transcribed media inventory is correct or that an alias is semantically equivalent; visually review those evidence sources. Remove unsupported pills or move them to their real first-use slide, then drop entries that have no remaining use. Preserve approved narration and media unless the user separately requested content edits.
+
+Both `slides_course_qa.py` and `render_module.py` reject glossary refs on quizzes, excluded slide types, and positional first/last slides. Rendering must fail with an actionable error rather than silently stripping authored refs or allowing a direct render to bypass the rule. Retain regression cases for ordinary content layouts at module boundaries, single-slide modules, arbitrary slide IDs, and quiz wording that must not claim first-use eligibility.
+
+### `title`
+
+```json
+{ "type": "title", "title": "Introduction to OCP NIC 3.0", "subtitle": "...", "version_chip": "v1.6.0 · March 2025" }
+```
+
+### `course_overview`
+
+```json
+{
+  "type": "course_overview",
+  "title": "Six Modules, One Complete Picture",
+  "subtitle": "...",
+  "modules_listed": ["Introduction to OCP NIC 3.0", "Form Factors & Mechanical Design", "..."],
+  "chips": [
+    {"icon": "⏱", "text": "30-40 min total duration"},
+    {"icon": "🎓", "text": "Broad OCP community audience"},
+    {"icon": "📄", "text": "Based on Spec v1.6.0", "url": "https://www.opencompute.org/documents/..."}
+  ]
+}
+```
+
+Each chip can take an optional `url` — when present, the chip renders as a clickable `<a>` opening in a new tab. Useful for pointing the "Based on Spec vX.Y.Z" chip at the canonical specification PDF.
+
+The optional `media_embed` field accepts either a raw HTML string OR a dict to embed a YouTube teaser below the chips:
+
+```json
+{
+  "type": "course_overview",
+  "...": "...",
+  "media_embed": {
+    "type": "youtube",
+    "id": "bIePDFht0uU",
+    "title": "OCP Academy: Liquid Cooling primer (teaser)",
+    "label": "Optional Primer Teaser"
+  }
+}
+```
+
+Useful for adding a brief preview video alongside the module roadmap. Falls back gracefully if the LMS blocks iframes — the equivalent chip in `chips[]` should still link to the same URL as a backup.
+
+### `objectives`
+
+```json
+{
+  "type": "objectives",
+  "title": "What You Will Learn",
+  "subtitle": "By the end of this module you will…",
+  "objectives": [
+    "Identify the four OCP NIC 3.0 active form factors and their pin counts.",
+    "Explain how the common connector enables a multi-vendor ecosystem.",
+    "..."
+  ]
+}
+```
+
+### `content_bullets`
+
+```json
+{
+  "type": "content_bullets",
+  "section_label": "Definition",
+  "title": "What is OCP NIC 3.0?",
+  "subtitle": "Optional one-line intro.",
+  "mobile_scroll": true,
+  "bullets": [
+    {"bold_lead": "Open, standardized", "text": "NIC specification purpose-built for hyperscale data centers."},
+    {"bold_lead": "Hot-swappable", "text": "field-replaceable unit (FRU) enabling a multi-vendor ecosystem."}
+  ]
+}
+```
+
+Set `mobile_scroll` only when a content-heavy slide cannot fit above the fixed
+controls on a narrow viewport. It keeps desktop layout unchanged and top-aligns
+the slide below the module badge with vertical scrolling on mobile.
+
+### `content_two_column`
+
+```json
+{
+  "type": "content_two_column",
+  "section_label": "Airflow",
+  "title": "Cold and Hot Aisle Cooling",
+  "bullets": [ /* same shape as content_bullets */ ],
+  "compact_table": {
+    "title": "Optional compact comparison",
+    "columns": ["Material", "Index", "Speed"],
+    "rows": [["Air", "1.00", "3.0 x 10^8 m/s"]]
+  },
+  "figure": { "path": "figures/cold_aisle_airflow.png", "alt": "Cold aisle airflow", "caption": "Cool air enters the front…" }
+}
+```
+
+`compact_table` is optional. Use it below the bullet list when a short source table
+fills otherwise unused space in the text column and directly supports the figure.
+Keep it to a few columns and rows; the renderer makes these slides vertically
+scrollable on small screens so the table and figure remain accessible.
+
+### `content_grid`
+
+```json
+{
+  "type": "content_grid",
+  "section_label": "Form Factors",
+  "title": "Four Active Form Factors",
+  "grid_cols": 4,
+  "cards": [
+    {"title": "SFF",  "body": "16 PCIe lanes, 80W envelope, 76mm.",  "icon": "🔲"},
+    {"title": "TSFF", "body": "16 PCIe lanes, 80W envelope, tall.",  "icon": "🔲"},
+    {"title": "Baseline", "body": "Current operating model.", "tone": "blue"},
+    {"title": "Constraint", "body": "Design limit or risk to manage.", "tone": "amber"},
+    {"title": "OCP MRC 1.0", "body": "Open RDMA transport spec.", "icon": "📄",
+     "url": "https://www.opencompute.org/documents/ocp-mrc-1-0-pdf",
+     "link_text": "opencompute.org/documents/ocp-mrc-1-0-pdf"}
+  ]
+}
+```
+
+Optional fields:
+
+- `grid_cols` — pin the column count explicitly. Without it the renderer auto-picks `min(5, card_count)`, which puts a 6-card grid into 5+1. Common values: 3 (for 6-card grids), 2, or 4.
+- `cards[].tone` — optional visual tone for a card. Use it when cards intentionally contrast distinct ideas, sides, states, risks, priorities, or categories. Leave it out for a normal collection of related concepts. Supported tones and aliases: `blue`/`baseline`/`traditional`, `green`/`accent`/`positive`/`ai`, `slate`/`neutral`/`context`, `amber`/`warning`/`tradeoff`, and `red`/`risk`/`constraint`. Tones are theme-aware in the renderer; do not hard-code tone colors in slide content.
+- `cards[].url` — makes a card a clickable `<a>` opening in a new tab.
+- `cards[].link_text` — when set together with `url`, renders a short visible URL line in OCP-green underneath the card body. If only `url` is set, the URL itself is shown.
+
+### `content_table`
+
+```json
+{
+  "type": "content_table",
+  "section_label": "Pinout",
+  "title": "Primary Connector Pin Allocation",
+  "columns": ["Pin range", "Function", "Lanes"],
+  "rows": [
+    ["A1-A8",   "Power",        "—"],
+    ["A9-B16",  "PCIe lanes",   "8"]
+  ]
+}
+```
+
+### `content_diagram`
+
+Optional `media_focus: true` enables the larger, scrollable teaching-media layout. Leave it unset to preserve the established diagram layout in existing courses. `transcript` may hold a conventional-spelling display version of the narration; the command-line renderer falls back to the current script body (excluding pronunciation comments) when that field is absent. Keep an explicitly authored transcript synchronized with its script.
+
+```json
+{
+  "type": "content_diagram",
+  "section_label": "Mechanical",
+  "title": "DSFF Card Assembly",
+  "figure": { "path": "figures/dsff_exploded.png", "alt": "DSFF exploded view", "caption": "..." }
+}
+```
+
+### `full_slide_image`
+
+Use this for a narrated source image that should occupy the slide without an added title, caption, section label, or learner-facing text.
+
+```json
+{
+  "type": "full_slide_image",
+  "slug": "source_image_context",
+  "figure": {
+    "path": "figures/source_slide_09.png",
+    "alt": "Source slide image showing fiber-count growth across front-end and back-end network generations."
+  },
+  "audio": {
+    "script_file": "audio/module1/slide_06_source_image_context.txt",
+    "wav_file": "audio/module1/slide_06_source_image_context.wav"
+  }
+}
+```
+
+### `takeaways`
+
+```json
+{
+  "type": "takeaways",
+  "title": "Module Summary",
+  "items": [
+    "The spec defines mechanical, electrical, thermal, and management in one document.",
+    "..."
+  ]
+}
+```
+
+### `knowledge_check`
+
+Place one `knowledge_check` slide before the final `up_next` or `course_complete` slide in each module unless the user opts out. Treat it as a narrated interaction slide, not a silent quiz: add a concise orientation script and the matching `audio` block. Each knowledge check must contain exactly two questions: question 1 is a single-answer radio question that checks the core concept, and question 2 is a multi-select checkbox question that asks learners to apply, classify, or compare that concept. The learner must submit both questions once before advancing, but correct answers are not required; retry remains available after feedback. Choice order is deterministically shuffled by default so authored answer order does not leak into the learner view. For multi-select questions, the renderer also avoids placing every correct answer as a single obvious block at the front or back. Set `"shuffle_choices": false` on a question only when the displayed order is meaningful.
+
+For the single-answer radio question, put `feedback_incorrect` on each incorrect choice when possible. The rendered feedback should explain why that selected answer is wrong compared with the correct concept. Keep the question-level `feedback_incorrect` as a fallback for older renderers or unspecified choices. For the multi-select question, use the question-level `feedback_incorrect`; do not try to author separate feedback for every possible wrong combination.
+
+```json
+{
+  "type": "knowledge_check",
+  "title": "Check Your Loop Mental Model",
+  "subtitle": "Answer once to continue. Correctness is not required, and you can retry.",
+  "audio": {
+    "script_file": "audio/module2/slide_09_knowledge_check.txt",
+    "wav_file": "audio/module2/slide_09_knowledge_check.wav",
+    "approved": true
+  },
+  "questions": [
+    {
+      "id": "m2_q1",
+      "prompt": "Which signal most directly indicates whether purging may be required?",
+      "shuffle_choices": true,
+      "choices": [
+        {"id": "a", "text": "Actual vapor pressure versus theoretical vapor pressure", "correct": true},
+        {
+          "id": "b",
+          "text": "The rack nameplate power",
+          "correct": false,
+          "feedback_incorrect": "Rack power may shape cooling demand, but it does not reveal whether vapor pressure is drifting from the expected value."
+        },
+        {
+          "id": "c",
+          "text": "The outside-air temperature alone",
+          "correct": false,
+          "feedback_incorrect": "Outside-air temperature is too indirect. The monitoring signal is the actual vapor pressure compared with the theoretical value."
+        }
+      ],
+      "feedback_correct": "Correct. Pressure behavior can indicate non-condensables or another anomaly.",
+      "feedback_incorrect": "Review the monitoring threshold. The key comparison is actual vapor pressure against the theoretical value for the boiling temperature."
+    },
+    {
+      "id": "m2_q2",
+      "multiple": true,
+      "prompt": "Which items belong in a fluid compatibility review?",
+      "choices": [
+        {"id": "a", "text": "Seals and quick disconnects", "correct": true},
+        {"id": "b", "text": "Cold plate wetted metals", "correct": true},
+        {"id": "c", "text": "Only the fluid brand name", "correct": false}
+      ],
+      "feedback_correct": "Correct. Compatibility is a system material decision.",
+      "feedback_incorrect": "Include the exact fluid and the exact wetted materials, not only a generic fluid label."
+    }
+  ]
+}
+```
+
+### `up_next`
+
+The end-of-module slide on every module *except* the final one. Carries the "Module N Complete" badge, a per-module thank-you line, and the next-module teaser. The renderer places a pulsing round double-arrow link beside the visible "Module N" heading, pointing to `moduleN.html` for the next module. The `thank_you_message` is optional — if omitted, the renderer auto-generates "Thank you for completing Module N: <module title>."
+
+```json
+{
+  "type": "up_next",
+  "next_module_number": 2,
+  "next_module_title": "Form Factors & Mechanical Design",
+  "thank_you_message": "Nice work — you've finished Module 1: Introduction to OCP NIC 3.0."
+}
+```
+
+### `course_complete`
+
+The end-of-final-module slide. Two beats: thanks the learner for finishing the final module AND wraps up the whole course. Both messages have sensible auto-defaults if omitted. Add useful `reference_links` as the learner's continuing resources; the renderer centers that resource strip with the rest of the completion content. Do not add a redundant "All Modules Complete" badge below the course-complete message.
+
+PDF continuing resources here always open the whole document: omit page
+fragments, contents-page anchors, and page/range labels. This is the explicit
+exception to the page-specific teaching-slide PDF default.
+
+Optionally add a `survey` object to attach a feedback CTA card below the centered resources. The card has a body paragraph and a button that opens the survey URL in a new tab. Omit `survey` entirely to render the slide without any CTA. `button_text` defaults to "Share Feedback".
+
+```json
+{
+  "type": "course_complete",
+  "course_title": "OCP Academy: NIC 3.0",
+  "thank_you_message": "Thank you for completing Module 6: Compliance, Ecosystem & Future.",
+  "cert_message": "You've completed every module of the OCP Academy NIC 3.0 course. We hope this course leaves you ready to put what you've learned into practice.",
+  "survey": {
+    "body": "Got a couple minutes to help us improve? Help us shape improvements and our future courses by sharing your feedback with the course development team. We periodically select submitters at random for great giveaways!",
+    "button_text": "Share Feedback",
+    "url": "https://forms.gle/..."
+  }
+}
+```
+
+## Figure shape (when referenced by a slide)
+
+```json
+{
+  "path": "figures/airflow.png",       // relative to package root
+  "alt": "Airflow diagram",
+  "caption": "Cool air enters the front…",
+  "source": "reuse" | "ai_generated" | "svg_inline",
+  "extract_from": { "source": "summit_2024.pdf", "page": 17 },   // if reuse
+  "generate_prompt": "A clean, flat vector illustration…"        // if ai_generated
+}
+```
+
+For local video or animation clips, use the same `figure` field and set the media path to an
+MP4, WebM, MOV, or M4V file:
+
+```json
+{
+  "path": "figures/expanded_beam_dust_compare.mp4",
+  "media_type": "video",
+  "poster": "figures/expanded_beam_dust_compare_frame.png",
+  "alt": "Silent animation comparing dust impact on physical-contact and expanded-beam connectors.",
+  "caption": "Expanded beam spreads the optical spot so the same contaminant blocks less of the path.",
+  "source": "custom",
+  "sync_to_narration": true,
+  "autoplay": false,
+  "loop": false,
+  "muted": true
+}
+```
+
+Prefer this narration-master sequence for newly authored narrated Slides. Record
+`narration.teaching_video_mode: "narration-synchronized"` at course level to reject
+accidental loops during source QA. Configure every paired teaching figure with
+`"sync_to_narration": true`, `"autoplay": false`, `"loop": false`, and
+`"muted": true`. These settings are required when the video is timed to narration:
+play once and hold the final picture in both embedded and enlarged views until
+the learner requests replay or seeks. Matching media durations alone does not
+select this behavior. It requires paired slide narration. This is a boolean; strings
+such as `"false"` must not activate it. Omission or `false` retains the historical
+player, including modulo seeking for loops and its existing pause/end behavior.
+This omission behavior exists for compatibility with approved legacy media; it
+is not the authoring recommendation for a new narrated teaching sequence.
+Production, exception and regression requirements are in
+[narration_synced_video.md](narration_synced_video.md).
+
+`extract_figures.py` reads `extract_from`. The image-gen step reads `generate_prompt`.
+The renderer embeds image figures as zoomable images, generated teaching videos with standard figure controls, and imported recordings with the shared black player described below. `render_index.py` lists both the video and `poster` in the SCORM manifest.
+
+### Video playback standard
+
+Imported Slides recordings and Scrolling videos share the black Chiplet-style player markup, icons, behavior and responsive styles in `scripts/video_player.py` and `templates/video_player.{js,css}`. Always expose Play/Pause, seek, remaining time, speed, captions when present, picture-in-picture when supported, fullscreen and volume. Keep the bar visible and place it below the media. Wrap on narrow screens; do not hide controls in native browser overflow menus or remove speed/volume on phones. Unsupported capabilities remain visibly disabled with an explanation.
+
+For an imported recording with its own audio, set `figure.role` to `original_video`, `audio` to `null` and `narration_enabled` to `false`. Put editable caption tracks in `figure.captions`; `caption_cues` may embed their timed text for reliable `file://` review. Keep `video_transcript` and set the slide's `transcript` to that recording transcript. The slide narration Play button is disabled, its source is cleared, and later narrated slides restore the controls. Existing narration can be archived under authoring, excluded from the runtime manifest.
+
+Generated Slides teaching clips retain the standard figure player with compact overlaid Play/Pause and Enlarge buttons. They do not use the black imported-recording control bar. Keep the approved loop/single-pass and narration settings. For `sync_to_narration: true`, Play/Pause in the figure and enlargement controls the narration clock; the fixed slide controls provide narration seek, speed and volume. Enlargement shares that clock. This presentation standard does not authorize changing SCORM tracking or a course's approved media mode.
+
+## Local font delivery for Slides
+
+`local_font_stylesheet` optionally names a package-relative CSS file, such as
+`assets/fonts/open-sans.css`. The home and module renderers use that file instead
+of their Google Fonts links. Register the CSS, font binaries and licenses in
+`resource_assets`; a resource builder can stage them. Omission retains the
+existing font delivery.
+
+`index_start.position` optionally accepts `above_modules` or `below_modules`.
+The default is `below_modules`; placement does not change the approved start
+link, informational tile behavior or SCORM organization.
