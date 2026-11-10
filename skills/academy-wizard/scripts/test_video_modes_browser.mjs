@@ -33,7 +33,10 @@ try {
  await page.evaluate(()=>{testNarration.playbackRate=1.5;testNarration.currentTime=Math.min(31,testNarration.duration*.6)});await page.waitForTimeout(300);s=await state();check(s.video.rate===1.5,'Video follows narration speed');check(close(s.video.time,synced?s.audio.time:s.audio.time%s.video.duration),'Seek uses finite or modulo time');
  await page.locator('.slide.active [data-video-zoom]').click();await page.waitForTimeout(250);s=await state();check(s.clones.length===1,'Enlarged video exists');check(s.clones[0].rate===(synced?1.5:1),'Enlarged speed preserves the mode policy');
  await page.evaluate(synced=>{const v=document.querySelector('.slide.active video'),clone=document.querySelector('.lightbox-overlay video');if(!synced)clone.pause();testNarration.currentTime=synced?Math.min(45,testNarration.duration*.8):(clone.currentTime+v.duration/2)%v.duration},synced);await page.waitForTimeout(250);
- if(synced) await page.waitForFunction(()=>{const a=window.testNarration,c=document.querySelector('.lightbox-overlay video');return c&&!a.seeking&&!c.seeking&&Math.abs(a.currentTime-c.currentTime)<.3;},{},{timeout:3000}); // compressed-audio seeks can settle after the first 250 ms
+ // Full-resolution 4K clips can need several seconds to decode a distant GOP
+ // in headless/software playback. Keep the same drift limit, but observe a
+ // genuinely decoded frame rather than treating a short fixed wait as proof.
+ if(synced) await page.waitForFunction(()=>{const a=window.testNarration,c=document.querySelector('.lightbox-overlay video');return c&&!a.seeking&&!c.seeking&&c.readyState>=2&&Math.abs(a.currentTime-c.currentTime)<.3;},{},{timeout:8000});
  s=await state();check(synced?close(s.audio.time,s.clones[0].time):!close(s.audio.time%s.video.duration,s.clones[0].time),'Enlarged seek follows only the opted-in video');
  if(synced){await page.locator('.lightbox-overlay .academy-video__controls [data-video-action="toggle"], .lightbox-overlay [data-video-toggle]:visible, .lightbox-overlay [data-lightbox-play]:visible').first().click();await page.waitForTimeout(100);s=await state();check(s.audio.paused&&s.video.paused&&s.clones[0].paused,'Enlarged pause controls both');}
  await page.keyboard.press('Escape');
@@ -45,6 +48,7 @@ try {
  // Compressed-audio seeks can buffer before the last 350 ms plays. Observe
  // the real ending instead of assuming the seek settles inside a fixed delay.
  await page.waitForFunction(()=>testNarration.ended&&testNarration.paused,{},{timeout:5000});
+ if(synced) await page.waitForFunction(()=>{const v=document.querySelector('.slide.active video');return v&&!v.seeking&&v.readyState>=2;},{},{timeout:8000});
  s=await state();check(s.audio.paused,'Audio completes');check(synced?s.video.paused:!s.video.paused,'Old loop continues at audio end; synced video holds');
  if(synced){
   check(s.video.time>s.video.duration-.2,'Synced final state');

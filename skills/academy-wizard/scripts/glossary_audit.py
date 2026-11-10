@@ -91,7 +91,7 @@ def match_term(term, text):
                 return str(alias)
         # A Latin acronym may touch Han/kana prose, but must not match a
         # substring inside another Latin word (for example, core in score).
-        if needle and re.fullmatch(r'[a-z0-9 -]+', needle):
+        if needle and re.fullmatch(r'[a-z0-9 +\-]+', needle):
             unspaced = r'[\u3400-\u9fff\u3040-\u30ff\uf900-\ufaff]'
             for occurrence in re.finditer(re.escape(needle), text):
                 before = text[occurrence.start()-1:occurrence.start()] if occurrence.start() else ''
