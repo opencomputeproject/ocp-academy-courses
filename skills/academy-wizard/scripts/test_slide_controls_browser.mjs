@@ -39,6 +39,17 @@ try {
       input: JSON.stringify(course), encoding: 'utf8'
     });
     await fs.writeFile(path.join(tmp, mode + '.html'), html);
+    if (mode === 'direct') {
+      const localized = structuredClone(course);
+      localized.ui_labels = {...localized.ui_labels,
+        transcript: 'Transcripción', slide_transcript: 'Texto de la diapositiva',
+        close_transcript: 'Cerrar <transcripción>', no_narration: 'Sin narración.',
+        automatic_narration: 'Narración automática', narration_on: 'Activada',
+        narration_off: 'Desactivada', narration_off_hint: 'Lee el texto o reproduce esta diapositiva.'};
+      localized.modules[0].slides[0].transcript = 'Una explicación traducida.';
+      await fs.writeFile(path.join(tmp, 'localized.html'), execFileSync(process.env.PYTHON || 'python3',
+        ['-c', render, scripts], {input: JSON.stringify(localized), encoding: 'utf8'}));
+    }
   }
   const videoCourse = {
     style: 'Slides', course_slug: 'video-seek-test', course_title: 'Video seek test',
@@ -94,6 +105,23 @@ try {
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
   const url = name => pathToFileURL(path.join(tmp, name + '.html')).href;
+  await page.goto(url('localized'));
+  await page.evaluate(() => localStorage.clear()); await page.reload();
+  check(await page.locator('#transcriptBtn').getAttribute('aria-label'), 'Transcripción', 'Transcript trigger is localized');
+  check(await page.locator('#narrationModeBtn').getAttribute('aria-label'), 'Narración automática', 'Narration trigger is localized');
+  await page.locator('#transcriptBtn').click();
+  check(await page.locator('#transcriptPanel').getAttribute('aria-label'), 'Texto de la diapositiva', 'Transcript region is localized');
+  check(await page.locator('#transcriptClose').innerText(), 'Cerrar <transcripción>', 'Localized close text remains literal safe text');
+  check(await page.locator('#transcriptText').innerText(), 'Una explicación traducida.', 'Transcript body remains translated');
+  await page.locator('#transcriptClose').click();
+  await page.locator('#narrationModeBtn').click();
+  check(await page.locator('#narrationModeBtn').getAttribute('title'), 'Desactivada', 'Off title is localized');
+  check(await page.locator('.hero-start-hint span').innerText(), 'Lee el texto o reproduce esta diapositiva.', 'Off hint is localized');
+  await page.reload();
+  check(await page.locator('#narrationModeBtn').getAttribute('title'), 'Desactivada', 'Saved-off title stays localized after reload');
+  await page.locator('#narrationModeBtn').click();
+  check(await page.locator('.hero-start-hint span').innerText(), hint, 'Re-enabling restores authored localized hint');
+  check(await page.locator('#narrationModeBtn').getAttribute('title'), 'Activada', 'On title is localized');
   const navigation = page => page.locator('.slide.active .next-module-link').evaluate(link => ({
     href: link.getAttribute('href'), label: link.getAttribute('aria-label'),
     color: getComputedStyle(link).backgroundColor,
