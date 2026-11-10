@@ -17,7 +17,7 @@ Designed for about **50 minutes of learner time**, including narration, diagrams
 
 ## Media
 
-Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Delivery narration is 96 kbps CBR mono MP3 at 44.1 kHz, approved for this rebuild. WAV authoring masters are retained outside Git and outside the LMS package. No narration or rendered SCORM files are checked in. Per-slide `audio.generation_provenance` records reused recordings without inventing unknown legacy model IDs.
+Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Delivery narration is 96 kbps CBR mono MP3 at 44.1 kHz, approved for this rebuild. WAV authoring masters are retained outside Git and outside the LMS package. No narration or rendered SCORM files are checked in. All narration uses full ElevenLabs `eleven_v4` with the approved voice and pitch-preserving 1.18 pacing. Per-slide `audio.generation_provenance` records the model, script and master hashes, and passed objective audio checks. Verified v4 recordings are retained when their script, voice and audio hashes match.
 
 The 800 × 400 LMS catalog poster is `thumbnail.png`. Its editable copy and artwork selection are in `poster.json`; the shared Academy template supplies the layout. See the repository poster build instructions.
 

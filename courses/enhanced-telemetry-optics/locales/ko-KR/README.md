@@ -23,7 +23,7 @@ SCORM 1.2, multi-SCO: Course Home first, followed by four independently tracked 
 
 Edit `course.json` for learner text, interactions, glossary and resource links. Narration scripts remain in `audio/moduleN/*.txt`; editable teaching animations are in `animations/`. The text-free expanded-beam comparison video is shared unchanged with English.
 
-Delivery narration is 96 kbps CBR mono MP3 at 44.1 kHz, approved for this rebuild. Approved recordings are reused where the script and voice match; WAV authoring masters are retained outside Git and outside the LMS package. Revised narration uses ElevenLabs `eleven_v4` with the maintained pitch-preserving pacing. Per-slide `audio.generation_provenance` distinguishes reused legacy recordings from new recordings; unknown legacy model IDs remain unknown.
+Delivery narration is 96 kbps CBR mono MP3 at 44.1 kHz. All recordings use full ElevenLabs `eleven_v4` with the approved course voice and pitch-preserving 1.18 pacing. Verified v4 masters are retained when the script, voice and audio hashes match. WAV authoring masters and provider MP3s remain outside Git and outside the LMS package. Per-slide `audio.generation_provenance` records the model, hashes and passed objective audio checks.
 
 From the repository root, use `./scripts/build-course.sh enhanced-telemetry-optics/locales/ko-KR` with the retained narration available through the maintained build workflow. Do not commit narration, generated runtime pages, package ZIPs, API credentials or temporary review artifacts.
 
