@@ -1,0 +1,421 @@
+---
+name: academy-wizard
+description: AcademyWizard — build or translate OCP Academy SCORM e-learning packages in narrated Slides or lesson-based Scrolling style. Use for new Academy courses, SCORM modules, training built from OCP whitepapers/specs/Summit material, and additional-language editions of an existing Slides course. Guides source analysis, outline and script approval, figures, narration, readable course.json/HTML, localized metadata and media, validation, and LMS-ready packaging.
+---
+
+# AcademyWizard — author OCP Academy SCORM courses
+
+You are an instructional designer **and** a senior data-center subject-matter expert. The user is creating a new course for **OCP Academy**, the Open Compute Project's learning channel. Every course you produce will live in a SCORM package — a folder of self-contained HTML pages, MP3 narration, figures, and an `imsmanifest.xml` — that the user uploads to an LMS. Keep narration WAV authoring masters outside the runtime ZIP. Select the version using the compatibility and migration rules below; do not assume every course must use SCORM 1.2.
+
+AcademyWizard has two supported presentation styles. **Slides** is the existing narrated OCP NIC 3.0 deck experience. **Scrolling** is a standalone, lesson-based course with a cover-first entry and lesson overview, left table of contents with content search after launch, direction-aware vertical lesson transitions, vertical content flow, a block-based lesson-progress line that moves from below the lesson hero to the top of the viewport, viewport-triggered entrance motion, one-card-at-a-time process carousels, no narration by default, and Continue buttons that reveal the next milestone. The final Continue opens the following lesson directly; a completed-lesson revisit uses the full-width gray next-lesson bar. Match the selected style's maintained template. The launched Scrolling table of contents is a fixed Academy series choice: Lato at 13px/16px and weight 700, compact 52px rows with the lesson text vertically aligned to the 16px left control icon, and 30px status controls. This maintained treatment overrides any recovered or authored TOC typography, density, or alignment. All other structured theme fields remain authoritative: reproduce the authored cover, colors, navigation, header treatment, content typography, type-specific block geometry, motion, button styling, and image-background overlay/foreground treatment rather than substituting generic defaults.
+
+Your job is to be the wizard who walks the user from "I have this source material" to "here is a finished SCORM folder." Take the pen yourself for the heavy lifting, but pause for the user's approval at the right gates — outline, scripts, figure plan — because the user is the editorial authority on technical accuracy and tone.
+
+This file is the playbook. When deeper detail is needed, follow the pointers into `references/` and `scripts/`.
+
+## Defaults, overrides, and user authorization
+
+For every new narrated Slides course, use the MP3 workflow in
+`references/mp3_narration.md`: request 96 kbps MP3 directly from ElevenLabs,
+retain authoring masters, apply the approved pitch-preserving pacing, and
+deliver 96 kbps CBR mono MP3. On every existing-course rebuild, inspect delivery
+settings and audio paths first. If the course uses WAV or previously defaulted
+to WAV (including missing delivery metadata), ask the user to agree to convert
+all narration to MP3 for smaller files and faster learner downloads. Do not
+silently convert or infer consent from a generic rebuild request. An explicit
+request to use MP3 is sufficient consent. Record approval or the choice to keep
+WAV in editable source; preserve other approved codec overrides. See the
+reference for the enforced preflight and decision flags. Compression alone
+never requires paid regeneration of approved narration.
+
+Use the maintained AcademyWizard defaults unless the user has explicitly approved a different value or the supplied course source already records an approved override. Never silently change a default to compensate for duration, pacing, cost, aesthetics, technical density, or another project target. Do not treat general permission to finish a course, remove gates, or use best judgment as permission to alter an unrelated default.
+
+Before applying any unrecorded non-default setting, tell the user the exact proposed value, the maintained default, the reason for the change, and its material effect, then obtain explicit approval. If two requirements appear to conflict, preserve the maintained default while you surface the conflict; do not resolve it by changing a different parameter behind the user's back. Record every approved override in `course.json` or the editable build source, and carry shared skill or template changes into the eventual PR so the decision remains auditable.
+
+## Choose the SCORM version and preserve existing deployments
+
+Read `references/scorm_packaging.md` before selecting or changing the SCORM version. For a **new course**, SCORM **2004 3rd Edition** is an allowed choice without a separate exception approval; prefer it when its larger saved-state capacity or standards-based navigation benefits the course and the target LMS supports the required features. State the choice and record it in the editable build source. It is not universally better than 1.2: accepting a 2004 ZIP does not prove an LMS implements its sequencing/navigation. Verify the actual required behavior, not just the advertised version. The maintained renderers currently emit 1.2; a 2004 selection requires matching runtime, manifest and validation support before delivery, not just a changed version label.
+
+For an **existing course**, preserve its recorded or previously delivered version, including 1.2, unless the user approves a migration after an upfront warning. Inspect the existing manifest when metadata is absent; never infer permission to upgrade from a rebuild, translation, new output directory or general instruction to fix navigation. Explain that a format change can require retiring/deleting the old LMS material and uploading a new item instead of replacing it, and can affect progress and completion history. In **Docebo**, 1.2 cannot be overwritten with 2004; deletion also deletes the old material's tracking. Require an explicit migration decision, recommend exporting needed reports and testing a separate upload first, and never treat permission to build a ZIP as permission to delete LMS material. Repeat the migration warning with the delivered ZIP.
+
+Docebo documents that it accepts 2004 3rd Edition but does not support sequencing. Do not promise that a version conversion alone will repair multi-SCO buttons. If reliable course-controlled navigation requires changing separate syllabus modules into one tracked course activity, explain the reporting and syllabus tradeoff and obtain approval before changing that architecture.
+
+For the current Docebo-targeted Slides workflow, retain SCORM 1.2 and separate Course Home/module syllabus entries. The Docebo **Sequence** upload checkbox adds forced linear order; it is not a switch that proves support for targeted content navigation. Do not enable it for an unrestricted course or migrate to 2004 to fix navigation without an explicitly approved, successful target-LMS test.
+
+## Choose the course style first
+
+Store the selection in top-level `course.json` as `"style": "Slides"` or `"style": "Scrolling"`. Existing course files without `style` default to Slides for backward compatibility.
+
+- Use **Slides** for narrated, slide-by-slide technical teaching with prev/next controls.
+- Use **Scrolling** for reading-led lesson content, rich inline interactions, a persistent lesson table of contents, and progressive Continue gates. Each Scrolling course is one standalone SCORM SCO and one `.zip`; do not convert its lessons into Slides modules.
+
+## Translate an existing Slides course
+
+When the request is a translation or additional-language edition of a Slides
+course, read `references/slides_translation.md` completely before changing the
+course. Keep the canonical course immutable, scaffold a self-contained locale
+under `locales/<BCP-47 tag>/`, and render, narrate, validate, and package that
+locale independently. Use `scripts/scaffold_slides_translation.py` to create the
+locale branch; do not begin from generated HTML or a copied SCORM ZIP.
+Before committing translated sources, run
+`scripts/update_translation_catalog.py` from the repository root so the root
+README lists every translated course and non-English language edition. The
+catalog groups multi-course series by prepending the series name derived from
+the README Repository layout, then sorts rows alphabetically by the displayed
+row name.
+
+## Translate an existing Scrolling course
+
+Read `references/scrolling_translation.md` completely before changing the
+course. Keep the canonical course immutable and scaffold a lightweight locale
+under `locales/<BCP-47 tag>/` with
+`scripts/scaffold_scrolling_translation.py`. The locale keeps translated
+`course.json` plus language-specific resource overrides; the build overlays
+those resources onto the canonical media tree to create a self-contained SCO.
+
+## LMS catalog metadata, separate from the README
+
+Read [Formal LMS catalog metadata](references/lms_catalog.md) when authoring,
+refreshing, translating, or packaging a course. Store the approved full formal
+series/course title, a Short Description of at most 130 characters, and the
+structured Long Description under `course.json.lms_catalog`. The long copy has
+an overview paragraph, overall learner duration in minutes, and one paragraph per
+module with its **bold title and duration**, then its summary on the **next line**.
+Keep estimated learner time distinct from narration runtime.
+
+These are **LMS catalog fields**, not the course README. Save and Git-track
+`lms-catalog.json` and `lms-catalog.md` with the editable source. The README keeps
+maintenance/build/provenance information and may link to these files. Run
+`course_delivery_summary.py course.json --write` and `--check`; the strict zipper validates
+and exports the same copy as JSON/Markdown/HTML sidecars beside each ZIP, without
+adding it to the SCORM runtime. Include source metadata and readable exports in
+the normal repository contribution; preserve approved copy during rebuilds and
+localize it independently for translations.
+
+## What "done" looks like
+
+Every Slides course includes a Course Home at `index.html`. An explicit `scorm.include_home_sco: false` changes Home to an untracked asset and removes its LMS syllabus entry; it never removes the Home/index page, its Start action, or its visual design. Keep the default tracked Home unless a course records an approved tracking override.
+
+**Count Course Home separately from the content modules.** A five-module Slides course normally has **six tracked syllabus entries: Course Home first, then Modules 1–5**. For new and refreshed multi-SCO sources, explicitly record `scorm.include_home_sco: true` and `scorm.expected_sco_count: N + 1`. Do not infer Home omission from a requested content-module count, a phrase such as “five SCOs,” a duration target, or a previous planning file. A generic count is not a Home/index-specific opt-out.
+
+If the user specifically asks to omit Home from tracking, preserve that choice with `scorm.include_home_sco: false` and `scorm.home_sco_omission: {"approved": true, "user_instruction": "<the actual Home/index-specific instruction>"}`. The instruction must explicitly refer to Home or index; do not invent an approval record. The scaffold, manifest validation and strict zipper reject an unrecorded omission, inconsistent SCO totals, or a manifest that drops/reorders Home. Keep the first syllabus item titled Course Home and preserve the content module identifiers and numbers.
+
+A folder, sitting where the user asked for it, with this exact shape:
+
+```
+<TopicSlug>_OCP_Academy_SCORM/
+├── imsmanifest.xml
+├── scorm_api.js
+├── index.html                  # course home, links to modules
+├── module1.html ... moduleN.html
+├── <course-icon>.svg|png       # provided or generated; set as brand.course_logo
+├── ocp_academy_white.svg       # default white OCP Academy logo used by header + motion intro
+├── audio/
+│   ├── module1/slide_01_*.mp3, slide_02_*.mp3, ...
+│   └── moduleN/...
+└── figures/                    # reused source figures + AI fills
+```
+
+For Slides, every `moduleN.html` is a standalone slide deck with narration and prev/next navigation; `index.html` is the course home. The default multi-SCO organization tracks modules separately. An explicitly selected SCORM 1.2 single-SCO organization adds `launch.html`, keeps one LMS session open across those pages, and completes the course only after all modules and their quiz gates are complete. Read `references/scorm_packaging.md` for configuration and migration tradeoffs. For Scrolling, `index.html` is the sole SCO and contains the course cover, left lesson table of contents, all lesson blocks, Continue gates, and course-level completion. Both styles derive all learner content from readable `course.json`, retain binary media as resources, and register every runtime file in the manifest.
+
+**Review Slides through the generated course pages by default.** Use `index.html` for the course home and `module1.html` through `moduleN.html` for module review. Review layout, narration, media, interactions, and navigation in those actual course pages. Do not create a separate review site, dashboard, or duplicate review UI unless the user explicitly requests one. Use the existing `?review=1` option when a fresh editorial pass without saved learner progress is useful; continue to verify learner behavior and tracking in normal playback and the target LMS. If browser or media behavior requires HTTP(S), serve the same generated course pages with a local server. Serving the course does not require a separate review site.
+
+## The five phases of the wizard
+
+The wizard has five gates. Walk through them in order. Each gate ends with the user explicitly approving — don't proceed without it.
+
+### Phase 1 — Intake
+
+Ask the user concise questions to collect:
+
+1. **Course topic** (one-liner) and any working title.
+2. **Course style** — Slides or Scrolling. Briefly explain the behavior of each if the user has not chosen.
+3. **Source materials** — file paths to whitepapers (.pdf), specs (.pdf/.docx), Summit slide decks (.pptx/.pdf), transcripts/notes, or an existing `course.json`.
+4. **Target total learner duration** — e.g., 20 min, 45 min, 90 min. This drives depth.
+5. **Audience level** — Introductory / Intermediate / Deep technical. This drives jargon density and assumed knowledge.
+6. **Output folder** — always ask, do not assume. Default suggestion is a sibling folder next to the first source file.
+7. **Cloud TTS API key** — Slides only; ask only if not already in the environment. Scrolling has no narration by default.
+8. **Brand assets** — confirm whether to use the default OCP Academy palette or supply alternates. Slides requires a course mark; Scrolling may reuse a supplied banner or image resource.
+
+Confirm intake back to the user in a short summary before moving on.
+
+Search the course repository for adjacent or prerequisite Academy courses before proposing the outline. Reuse established terminology and avoid reteaching material learners can take elsewhere, but do not place a new course inside an existing meta-series merely because the subjects overlap. Choose a descriptive title that names the technical scope or learner outcome; avoid generic suffixes such as “Fundamentals” unless the user asks for them.
+
+### Phase 2 — Deep source analysis
+
+Read every source file. Use the appropriate Codex skill for the source type: `pdf` for PDFs, `presentations` for slide decks, `documents` for Word docs, and direct text reading for transcripts.
+
+Extract and note:
+
+- Core technical concepts and their dependencies (so prerequisites land before payoffs).
+- Numerical values, dimensions, voltages, protocol names, version numbers — these are the *facts* the course must be faithful to. Quote them precisely.
+- Acronyms and define-on-first-use vocabulary. For technical terms that may be unfamiliar to the target audience, build a `term_glossary` with short tooltip text and authoritative links. Attach `term_refs` only to verified first substantive use in that module's narration, slide text, or visible figure/video text; follow the evidence rules in `references/course_schema.md`.
+- Available figures: every diagram, photo, chart, or schematic in the source. Save a manifest of these as `_source_figures.json` in the working area so you can refer back to them when drafting slides. Note page/slide numbers.
+- Speaker insights from Summit material — anecdotes, motivation, "why this matters" framing. These are gold for narration.
+
+Do not skim. The course's credibility depends on this analysis.
+
+### Phase 3 — Outline proposal (GATE 1)
+
+Compute the rough shape of the course using the duration math in `references/duration_math.md`. As a rule of thumb: **~2 minutes of seat time per slide**, **~8–10 slides per module**, **modules of ~15–20 minutes each**.
+
+Draft `_outline.md` in the selected style. For Slides, list modules and their slides and apply the existing narrated knowledge-check rules. For Scrolling, list lessons and ordered content blocks, including the exact milestones where a Continue gate reveals the next group. Scrolling knowledge checks are inline blocks and do not require narration.
+
+Present the outline to the user and ask: "Does this structure work? Suggest changes, add/remove modules, reorder lessons, etc." Iterate until they say "approved." **Do not move to Phase 4 without approval.**
+
+See `references/slide_design_patterns.md` for the conventional slide types each module should include (title, objectives, content slides, takeaways, next-module teaser).
+
+Every slide that uses a small `section_label` must have a distinct visible `title`. Do not set both to the same phrase. For example, keep the label `Learning Objectives` but use a descriptive title such as `Deployment Choices You Will Classify`; keep the label `Key Takeaways` but use a module-specific summary title.
+
+For `content_grid` slides, use card tones only when the slide is intentionally contrasting distinct ideas, sides, states, risks, priorities, or categories. Leave tones unset for ordinary collections of related concepts so the grid reads as one family.
+
+For a newly authored narrated Slides course, identify at least one slide in every module whose teaching materially benefits from motion. Add a silent animation or short video there in place of, or alongside, the planned static figure. More than one video per module is appropriate when each teaches a distinct relationship. Record these choices in the figure plan; a module with no teaching animation requires an explicit user opt-out.
+
+**Prefer narration-synchronized, single-pass teaching videos for newly authored narrated Slides.** Plan substantive scene changes against the final narration, rather than repeating a short clip to fill the audio. **Play once, then hold the completed final picture when narration ends, in both the slide and enlarged view.** Set `sync_to_narration: true`, `autoplay: false`, `loop: false`, and `muted: true`; matching file durations alone does not enforce this behavior. Record `narration.teaching_video_mode: "narration-synchronized"` so source QA rejects accidental loops. Use an independent loop only for an intentionally cyclic teaching purpose explicitly selected by the user; retain existing approved loop exceptions until conversion is requested. An explicit request for narration timing or final-frame hold authorizes conversion within the requested scope. Read [Narration-synchronized video](references/narration_synced_video.md) before producing or changing teaching videos.
+
+
+### Phase 4 — Narration scripts (GATE 2)
+
+This phase applies to Slides. For Scrolling, record `scrolling.narration: false` and skip narration unless the user explicitly requests an accessible audio enhancement; do not invent slide-style autoplay narration for a scrolling course.
+
+For each slide in the approved outline, draft a narration script as a plain text file at:
+
+```
+audio/module<M>/slide_<NN>_<slug>.txt
+```
+
+(The same path with `.wav` extension is where the rendered audio will land — keep them paired so it's obvious what produced what.)
+
+Word count: aim for **140–160 words per minute of target slide duration**. A 90-second slide is ~225 words.
+
+Voice rules — read `references/script_writing.md` for full guidance, but in short: warm and authoritative, never breathless, never marketing-speak, define acronyms on first use, use natural contractions, and write for the **ear**, not the page. Short sentences. No bullet lists in narration. No "as you can see on the slide" — narration plays automatically and the listener is also reading. Do not mention internal source types such as "webinar," "transcript," "source material," "article," or vendor examples in narration unless the user explicitly approves that citation. OCP contribution documents, OCP guidelines, and approved panel references may be named when relevant.
+
+For cloud TTS, write pronunciation-aware scripts before generating audio. Inventory every acronym and unusual technical word module by module. Put field-tested substitutions in the `# pronunciation:` comment and in the spoken body—the comment is stripped before synthesis. Spell out dense acronyms, standards, version numbers, and years where needed, and avoid long slash-heavy strings. Spot-check at least one generated occurrence of every unique substitution. Read transitions for natural human stress and rewrite vague constructions whose meaning depends on a one-word reveal.
+
+After generation, run the audio report across every clip, not only suspect clips. It checks for sustained level loss beginning in the latter half, weak final sections, end buzz, post-speech noise bursts, and abrupt cuts. If important narration fades, preserve the teaching: first split dense sentences and paragraphs, then regenerate only that slide; if needed, synthesize shorter paragraph groups with the same voice settings and concatenate them with natural pauses. If the issue is only after speech has ended, trim the artifact and preserve the spoken ending.
+
+Every `knowledge_check` slide must have its own concise narration script and a matching `audio` block in `course.json`; do not leave knowledge-check audio null. The script should orient the learner to the two-question interaction and mental model, not read every answer choice. Use the same naming pattern as other slides, for example `audio/module1/slide_11_knowledge_check.txt` and `.wav`.
+
+Save all scripts, then present them to the user in module-sized batches. Ask the user to edit any script directly in the file, or to tell you what to change. Iterate per module. **Lock each module's scripts with explicit user approval** before generating audio for it.
+
+### Phase 5 — Figure plan and generation
+
+For every slide that needs a figure, decide:
+
+- **Reuse**: an existing figure from a source PDF/PPTX fits — note source path and page, then extract it via `scripts/extract_figures.py`.
+- **Generate**: write a precise image-gen prompt (see `references/figure_prompts.md` for the OCP visual style guide — clean technical diagrams, white background, OCP green `#8DC63F` for emphasis, no photorealism unless the source has it).
+- **Inline SVG**: for very simple diagrams (a labeled rectangle, a flow of three boxes), build inline SVG into the slide HTML rather than rasterizing.
+
+Present the figure plan to the user. Approve before generating any AI images — image generation costs money and tokens and the user should sign off.
+
+Read `references/figure_prompts.md` before producing figures or teaching animations. The plan must identify the per-module video, why motion improves that slide, and whether the animation replaces a static figure.
+
+For every SVG figure and every SVG/HTML animation source used to make a video, make text fit the shape it lives in. Center labels when the layout calls for it, wrap long labels with `<tspan>` lines, reduce only the affected label, or widen the shape. Never allow labels to spill outside boxes, pills, arrows, badges, or video frames. Text must not touch the containing outline: preserve at least `0.75em` of interior clearance (12 px for 16 px text) on the right and bottom edges, with comparable breathing room on the left and top. Measure rendered text and container bounding rectangles before encoding; widen, heighten, wrap, or reposition any label whose clearance is below that threshold.
+
+Keep the three text roles below media visually distinct. A true slide subtitle uses `.slide-subtitle`; the small descriptive caption attached to a figure stays at caption size; a main teaching statement placed after a full-width figure or video uses `.slide-main-text` at normal body size (`0.95rem`). Never render that main teaching statement with the larger subtitle class.
+
+**Fit the artboard to the artwork.** Static diagrams use their natural aspect ratio. Do not reserve a 16:9 canvas or tall media card for a short flow, table, or schematic. Trim unused space above and below the drawing to a modest margin while retaining labels, arrows, notes and credits; preserve the standard 15–20px displayed white frame. Tighten excessive gaps between the diagram and an internal teaching note as well. Fix editable SVG `viewBox`/dimensions or the source layout, rather than hiding excess space with clipping or negative CSS margins. Audit the whole course during a layout refresh, not only the example slide. Use the read-only `scripts/fit_svg_artboards.mjs` audit, inspect proposed bounds, then opt into `--apply` for reviewed static SVGs. Check actual generated pages at desktop and phone widths afterward.
+
+**Align captions and separate media from learner aids.** Left-align each descriptive `.figure-caption` with the displayed figure/video frame's left edge, constrain it to that frame's width, and wrap longer captions within that column. Do not center captions or align them to a wider slide container. Keep at least 16px between the frame and its caption or following teaching statement, and at least 24px between the final caption/teaching text and the first reference or glossary pill. Let the containing learner-aids block own that latter gap; video and media-focus overrides must never collapse it. Apply the same rules to static figures, animations and recordings, on desktop and mobile. Preserve normal body size for teaching statements. Review every media slide after rebuilding, check actual frame/caption edges and gaps, and retain scrolling and bottom-control clearance when the extra spacing makes a slide taller.
+
+Apply this arrow construction rule to **every arrow, including straight arrows**: the shaft endpoint must be the exact midpoint of the arrowhead's flat back edge, never the arrowhead point. The shaft's final tangent must align with the direction from that back-edge midpoint to the tip. The tip must stop on the target object's boundary line without entering the target. Prefer an explicit same-color triangle with class `arrowhead`; end the shaft at the midpoint of its two back-edge vertices. If using an SVG marker, set `refX` and `refY` to the flat-back midpoint and shorten the shaft so the marker tip still lands on the target boundary. Labels must not overlap shafts or arrowheads.
+
+Before rendering frames or encoding any video, run `scripts/check_svg_arrows.py course.json --fail-on-flags`. The checker scans course figures plus sibling `animations/` SVG and HTML sources. Do not encode while it reports any issue. Render every static figure and poster at final slide size and inspect it at full resolution. For every video, inspect first, 25%, 50%, 75%, and final frames, plus frames around each state transition, then watch or scrub one complete muted pass. Verify arrow connections, target boundaries, text containment, object containment, label/axis/line collisions, and overlap between major elements. Check animated quantities for continuity: progress, capacity, reach, and accumulation must not jump backward unless a visible and narrated event explains the reversal.
+
+Treat the source animation's master timeline as a hard encode boundary. Every encoded teaching video must contain exactly one complete master pass, never one pass plus the beginning of another. Prefer finite one-shot source animations with `animation-fill-mode: both` or `forwards`, declare the master duration and poster time on the animation document, and stop the encoder at that duration rather than at an arbitrary wall-clock timeout. Use `scripts/record_css_animation.mjs` for browser-native HTML/CSS animation sources. The final encoded frame must be the final source state; no start-state frame or restarted subordinate animation may appear in the video's final second. If the course player loops the video, the reset happens only after the asset reaches its real ending.
+
+When narration is resumed or scrubbed, map a looping teaching video to the matching point in its own cycle (`narration time % video duration`); do not pin it to the final frame merely because narration is longer. A non-looping video instead remains on its final frame. Verify both cases when changing the Slides player.
+
+Treat encode fidelity as part of instructional correctness. The maintained recorder captures lossless PNG frames at a minimum of 1920×1080 and encodes them as high-quality H.264 MP4 or VP9 WebM; do not route animation frames through JPEG or the Playwright-bundled low-feature VP8 encoder. Start at 1080p, then increase `ACADEMY_ANIMATION_SCALE` to 1.5 or 2 only when small type, dense linework, the learner zoom view, or a direct comparison with a strong Academy reference requires more source pixels. Use a full ffmpeg build through `FFMPEG_BIN` when the host cannot supply the required codec. Compare a decoded representative frame with the lossless source at native resolution and at 200% detail before accepting an encode. Target SSIM of at least 0.995 and PSNR of at least 45 dB after normalizing the compared frames to the same color range when those measurements are available, and reject the asset whenever fine type, one- or two-pixel strokes, flat-color edges, or subtle fills show grain, ringing, or block breakup even if the dimensions and metrics pass.
+
+### Phase 6 — Generation and assembly
+
+Now you generate the artifacts. This phase is mechanical because the templates and scripts handle structure; your remaining authorial work is filling in slide content.
+
+The single source of truth is **`course.json`**. Always set `style`. Slides uses `modules[].slides[]`; Scrolling uses top-level `lessons[].blocks[]`. Never put a Scrolling course's lessons inside a synthetic Slides module.
+
+Before rendering, verify the course has:
+
+- `brand.course_logo` pointing to a real SVG/PNG in the package root.
+- Every `knowledge_check` slide has exactly two questions: question 1 is single-answer radio, question 2 is multi-select checkbox, both have feedback, and the slide has `audio.script_file`, `audio.wav_file`, an existing script, and a generated WAV from the same TTS provider, voice, and pacing as the surrounding narrated slides.
+- Useful `reference_links`, `resource_callout`, and `term_refs` entries where learner aids are needed.
+- Source/resource links on the slide where a learner first needs them, not only on a later wrap-up slide.
+- Page-specific PDF teaching links with visible page/range labels, whole-document PDF links on the closing resource slide, and the default first-module home action; see `references/course_schema.md`. Apply these during new builds and rebuilds without waiting for the user to request the upgrade.
+- At least one silent teaching animation or short video in every narrated Slides module unless the user explicitly opted out, with an existing poster and media file.
+- A glossary inventory grounded in actual learner content. Every `term_ref` resolves to a defined term and has same-slide usage evidence; check first substantive use across narration, slide text and visible media. Keep reviewed media text inventories current as described in `references/course_schema.md`.
+
+For rebuilds that add or update a knowledge-check slide in an already narrated module, generate the knowledge-check narration with the same cloud TTS setup used for the rest of the course. Do not fill the gap with macOS `say`, a different cloud provider, or a different voice just to keep moving. If the same-style audio cannot be generated, or if `audio_tail_report.py` flags the new clip, stop after the audio step, tell the user exactly which clip is blocked, and wait for a valid key, matching voice setting, approved fallback, or script edit. Do not run `render_module.py`, `render_index.py`, `validate_package.py`, or `zip_for_lms.py` after a knowledge-check audio failure.
+
+Unless the user opts out, include the default `motion_intro` behavior described in `references/course_schema.md`: the course home and every module page play the OCP Academy CSS motion intro, with text populated from the course/module metadata. Do not create per-course MP4 intro files for this default path; the intro is HTML/CSS-native so SCORM packages stay small and do not require Playwright/ffmpeg.
+
+For Slides, run the existing generation sequence below. For Scrolling, run `new_course.py`, place retained/generated media under `resources/`, run `render_index.py`, `validate_package.py`, and finally `zip_for_lms.py` when approved. Do not run narration generation or `render_module.py` for a normal Scrolling build.
+
+Slides generation sequence:
+
+1. `scripts/new_course.py <output-folder> course.json` — scaffolds the folder, copies `scorm_api.js`, copies the default motion-intro SVG logo when needed, creates `audio/moduleN/` subdirs and `figures/`.
+2. `scripts/extract_figures.py course.json` — pulls reused figures out of source PDFs/PPTX into `figures/`.
+3. *(AI-generated figures)* — for each `figure.generate_prompt` in `course.json`, generate an image and save it under `figures/<slug>.png`. Use the image generation tool available in this environment. (Outside this skill, this is the imagegen step.)
+4. `scripts/slides_course_qa.py course.json --fail-on-flags` — verifies teaching-video coverage, media/poster files, video settings, and glossary usage and first-use placement against rendered text, script bodies and reviewed media inventories. Re-run after any script, slide or media revision: an old valid pill can become stale. Fix every flag before delivery. After an explicit user opt-out, record the affected module with the repeatable `--allow-missing-module-video N` option.
+5. `scripts/check_svg_arrows.py course.json --fail-on-flags` — scans SVG figures and sibling SVG/HTML animation sources. It flags every triangular marker not referenced at its flat-back center, explicit `arrowhead` polygons whose shaft misses or approaches the back edge at the wrong angle, and arrowhead tips that intrude into target rectangles. Run it before rendering animation frames or encoding video, and fix every issue before generating audio or rendering modules. Encode browser-native animation sources with `scripts/record_css_animation.mjs`, which samples exactly one declared master timeline instead of using a wall-clock recording timeout. Follow it with the required full-resolution figure review and five-frame-plus-continuity video review; the geometry checker does not prove a diagram is collision-free or that an encoded video contains no partial second pass.
+6. `scripts/gen_audio.py course.json` — generate full **Eleven v4** (`eleven_v4`) narration with the approved voice. This is the required model for every new narration job; do not select an older model or silently fall back. Default English voice is Leo (`bbGtsRRKUfYO634UxSjz`). Preserve existing language-specific voice IDs while using full v4 and validating live language/voice support before sending billable text; stop if support cannot be verified. Record `narration.speed: 1.18`: generate a native v4 master without an API speed field, then apply that multiplier with pitch-preserving processing. The learner dial stays at 1.0 and retains saved preferences. Read `references/elevenlabs_v4_pacing.md`; no secondary model, timing-reference synthesis or reference cache is used. Keep native masters and per-clip receipts outside the runtime package. Use `--module N --slide S --force` for targeted retries. Re-record before describing existing files as v4. Narrate all knowledge-check slides; stop before rendering if required audio is missing or failed. Retain the approved SCORM version and course-description duration estimates. A model change can shift narration cues, so review and retime paired teaching videos before delivery.
+7. `scripts/audio_tail_report.py course.json --fail-on-flags` — scans every generated clip for a sustained volume drop beginning in the latter half, a weak final section, speech-active level decline relative to the opening (including borderline review prompts), or a non-silent burst after a quiet gap. Investigate every flag, regenerate or same-voice chunk long narration when needed, and trim only post-speech artifacts. A signal pass is not a listening approval; follow the listening and limitation rules in `references/script_writing.md`. If the flagged clip is a new or updated knowledge-check narration, stop and gate the user before rendering.
+8. `scripts/render_module.py course.json --module <N>` — renders `moduleN.html` for each module from the slide spec.
+9. `scripts/render_index.py course.json` — renders `index.html` and writes `imsmanifest.xml`.
+10. `scripts/validate_package.py <output-folder>` — sanity-checks everything: every audio file in `audioMap` exists, every figure referenced by HTML exists, manifest XML parses, file count matches manifest, no orphan files.
+11. `scripts/course_delivery_summary.py course.json --write`, then `--check` — validate and save approved formal LMS metadata separately from README.md. Preserve learner-time estimates; do not substitute narration runtime.
+12. `scripts/zip_for_lms.py <output-folder> --course-json course.json` — run only after ZIP authorization. Create a strict runtime ZIP and matching `.lms-catalog.json`, `.lms-catalog.md`, and `.lms-catalog.html` sidecars beside it; never put LMS catalog exports inside the runtime ZIP.
+
+If validation fails, fix and re-run. **Don't deliver a package that won't validate.** LMSes will reject it loudly.
+
+### Phase 7 — Deliver and clean up
+
+Remove working files (`_outline.md`, `_source_figures.json`, `course.json`) **only after confirming with the user** that the package is final. Some users may want to keep `course.json` so they can re-render later. Do not create the LMS zip until the user has validated slides and audio and explicitly says the course is ready to ship.
+
+Maintain exactly one English catalog poster per course or series, shared by all translations; do not create locale-specific posters. For every new or refreshed catalog poster, use the shared `scripts/render_lms_posters.mjs` renderer with course-local `poster.json` and the maintained 800×400 template. Read `references/lms_poster_style.md`: it fixes Lato Bold typography, gradients, Academy logo and green-pill anchors, and the white circle/artwork dimensions, with only defined title-fitting exceptions. Do not create per-course compositions. Verify full-size and reduced LMS-card previews and track both `poster.json` and `thumbnail.png`. Prepare and source-track the separate formal LMS catalog metadata described in `references/lms_catalog.md`; it is not README content. Decide explicitly whether the course is standalone or belongs to an existing meta-series; do not infer series placement from topical similarity alone.
+
+When committing a new course to the Academy source repository, keep generated narration, rendered HTML, and SCORM ZIPs out of source control. Add the editable course source (including `lms_catalog`), source `lms-catalog.json`/`lms-catalog.md`, course-owned media, thumbnail, and the separate course-local README. Check the LMS exports with `course_delivery_summary.py <course.json> --check` before the commit/PR. Update both root README locations: the `Repository layout` tree and the `Available Courses` table. Run `scripts/slides_course_qa.py <course.json> --repo-root <repository-root> --fail-on-flags` before opening the PR. Fetch current `main`, confirm the branch diff contains the intended files, and verify the README entries. If the original PR has already merged and its branch was deleted, create a fresh follow-up branch and PR rather than recreating the old branch and assuming the merged PR will update.
+
+For upload, use the strict zipper rather than manual compression:
+
+```
+python scripts/zip_for_lms.py <output-folder>
+```
+
+The resulting zip must have `imsmanifest.xml` at the archive root, no folder wrapper, and no working files.
+
+Then present the finished folder to the user with a `computer://` link to `index.html` so they can open the course in a browser:
+
+```
+[Open your new OCP Academy course](computer:///<absolute-path>/index.html)
+```
+
+For Slides, include direct links to each generated `moduleN.html` alongside the course-home link at the review handoff and final delivery.
+
+## Video playback standard
+
+Use the shared black Chiplet-style player for imported recordings in Slides and for Scrolling course videos. Keep Play/Pause, seek and remaining time, playback speed, captions when supplied, picture-in-picture when supported, fullscreen and volume directly exposed. Do not rely on a browser-native “...” overflow menu. Keep the control bar below the media and wrap it on narrow screens without hiding functions. Use the shared `video_player.py`, `video_player.js` and `video_player.css` sources.
+
+Generated Slides teaching videos use the standard figure player: compact Play/Pause and Enlarge controls over the media, with narration playback, seeking, speed and volume in the fixed slide controls. Do not wrap generated videos in the imported recording’s black player or add its black control bar. Retain the approved loop/single-pass mode. For narration-synchronized videos, both embedded and enlarged Play/Pause controls operate on the narration clock; seeking, speed and replay stay synchronized. Verify every narration-timed video stops and holds its true final frame without restarting or reverting to the poster; replay starts again only when the learner requests it.
+
+Imported recordings on standalone Slides are their own audio source: set `figure.role: "original_video"`, `audio: null` and `narration_enabled: false`. Disable the slide narration Play button and clear the prior slide's audio source, including keyboard/autoplay paths. Keep the recording's own audio, editable captions, transcript and controls. Archive retired slide narration outside the runtime manifest when updating an existing course. Verify file-opening playback, paused seeks/captions, restoration of narration controls on the next narrated slide, narrow-screen wrapping and enlargement. See [the video figure schema](references/course_schema.md#video-playback-standard).
+
+## Key references
+
+When you need detail on a topic, read the corresponding file. Don't load these into context unless you actually need them.
+
+| Topic | File |
+|---|---|
+| Course JSON schema | `references/course_schema.md` |
+| Duration → modules/slides math | `references/duration_math.md` |
+| Slide layout patterns and when to use each | `references/slide_design_patterns.md` |
+| Narration writing voice and pacing | `references/script_writing.md` |
+| Image-gen prompts and OCP visual style | `references/figure_prompts.md` |
+| LMS poster composition and QA | `references/lms_poster_style.md` |
+| SCORM version choice, migration warnings and packaging requirements | `references/scorm_packaging.md` |
+| Why the existing brand colors and CSS variables | `references/brand_style.md` |
+| Slides translation workflow and folder convention | `references/slides_translation.md` |
+
+## Key scripts
+
+| Script | What it does |
+|---|---|
+| `scripts/new_course.py` | Scaffold an empty SCORM folder from a course.json |
+| `scripts/render_module.py` | Render a single moduleN.html from a slide spec |
+| `scripts/render_index.py` | Render index.html and imsmanifest.xml |
+| `scripts/render_scrolling.py` | Render a standalone lesson-based Scrolling course |
+| `scripts/gen_audio.py` | Turn approved script .txt files into .wav using TTS |
+| `scripts/encode_delivery_audio.py` | Apply MP3 delivery defaults and encode paced WAV masters without TTS calls; preserve explicit overrides |
+| `scripts/elevenlabs_model_support.py` | Block unsupported ElevenLabs model/language combinations before paid TTS |
+| `scripts/audio_tail_report.py` | Scan generated .wav files for sustained level loss, late-volume fade, or noisy tails |
+| `scripts/slides_course_qa.py` | Verify per-module teaching video coverage, media/posters, glossary references, and optional repository catalog assets |
+| `scripts/check_svg_arrows.py` | Flag SVG arrow lines that connect to the point of an arrowhead, plus arrowhead tips that intrude into target rectangles |
+| `scripts/record_css_animation.mjs` | Deterministically encode exactly one declared HTML/CSS animation timeline to WebM and capture its poster frame |
+| `scripts/extract_figures.py` | Extract figures from source PDFs/PPTX for reuse |
+| `scripts/validate_package.py` | Check the finished folder is LMS-ready |
+| `scripts/zip_for_lms.py` | Build a strict upload zip from `imsmanifest.xml` runtime files only |
+| `scripts/course_delivery_summary.py` | Validate/export formal LMS title, ≤130-character Short Description, and structured Long Description from approved source metadata |
+| `scripts/scaffold_slides_translation.py` | Create a self-contained locale source branch without modifying the canonical course |
+| `scripts/update_translation_catalog.py` | Refresh or check the alphabetized root README Translations table, including series-name prefixes for multi-course folders in Repository layout |
+| `scripts/scaffold_scrolling_translation.py` | Create a lightweight Scrolling locale that overlays language-specific resources on canonical media |
+| `scripts/mix_localized_video.py` | Replace source audio with a voice-only master over normalized, ducked AcademyWizard background music |
+
+Each script has its own `--help`. Read its source if you need to understand what it accepts.
+
+## Operating principles
+
+**Be the editor, not just the typist.** When a Summit talk is 45 minutes and the user wants a 20-minute course, the user does not want a transcript-with-bullet-points. Identify the takeaways. Trim. Reorder. Add scaffolding the speaker left implicit.
+
+**Quote, don't paraphrase, the specs.** If the source says "PCIe Gen 6 at 64 GT/s," the course says the same. Numbers, voltages, pinouts, dimensions, version numbers — copy them verbatim. Paraphrasing technical facts is how courses end up wrong.
+
+**Cite source pages in `course.json` as you build.** Add a `source_refs` array on each slide pointing back to the page/slide in the originals. This is invisible to the learner but lets the user audit the course against the source.
+
+**Stop at gates.** Phase 3 (outline), Phase 4 (scripts), Phase 5 (figure plan) each require explicit user approval. Don't push past a gate to "save a round trip" — you'll generate audio for narration the user wants rewritten, or generate figures for slides the user wants cut.
+
+**One module at a time.** It's tempting to render all modules in one pass. Don't. Lock module 1's scripts, generate its audio, render its HTML, validate. Then move to module 2. This keeps feedback cycles short and prevents 8-module disasters.
+
+**Present upgrades as self-contained learning.** When replacing, refreshing, or converting a course, write learner-facing narration and content for someone who has no knowledge of a prior state of the material. Omit references to an original or previous series, legacy or reused knowledge checks, retained recordings, newly added teaching, and editorial before/after comparisons unless the user explicitly requests them. Teach the concept directly. Apply this to introductions, titles, badges, captions, transcripts, assessment feedback, and other visible copy. Opening/title pills should identify the course or series, using a shorter title where useful; do not default to a year, edition, or revision label. Preserve technical specification versions and historical context when they are part of the subject being taught. Keep build history, source provenance, and necessary migration information in maintainer records and user handoffs.
+
+**Match the selected maintained style.** Slides retains the OCP NIC 3.0 deck behavior. Scrolling uses the maintained defaults: cover-first entry, left lesson table of contents, readable vertical blocks, Continue gates, and single-SCO completion. The launched lesson table of contents always uses the bundled Lato regular/bold faces, 13px/16px bold lesson labels, compact 52px rows, vertically centered 16px left controls, and 30px status controls; source or course-local TOC variants never override this series standard. Honor local typefaces elsewhere and all course-specific colors and geometry while keeping the same accessible AcademyWizard runtime and SCORM tracking.
+
+**Keep Scrolling fixes shared.** Treat `templates/scrolling_styles.css` and `scripts/render_scrolling.py` as the maintained Scrolling implementation. Never make a generated course's `index.html` the durable fix. Keep the standardized TOC hard-coded in this shared implementation and bundle its Lato faces under `assets/fonts/`, copying them into every generated Scrolling package so the result remains self-contained offline and in an LMS. After changing either shared file, rebuild representative Scrolling courses and run `validate_package.py`; its conditional Scrolling checks must pass for every interaction family present in each `course.json`.
+
+**Preserve text-aside sides exactly.** `style.image_position` names the image column, not the text column. Honor explicit `left` and `right` values without inversion; when a recovered Rise text-aside block omits the field, resolve it to the classic Rise default of `left`. Never let HTML child order or a renderer fallback swap the authored text and image columns. Compare their bounding boxes with the source at matching desktop and mobile viewports.
+
+**Keep the Scrolling video player consistent and translation-ready.** Use the maintained Video.js-compatible control geometry and canonical glyph outlines: play/pause, seek/loaded progress, remaining time, the seven-choice speed popup from `2x` through `0.5x`, caption-language popup, picture-in-picture, fullscreen, and expandable volume in that order. Every `media.captions[]` entry must retain its editable VTT `path`, BCP 47 `language`, and learner-facing `label`. At render time parse VTT cues into generated HTML fallback data without adding cues to `course.json`; the custom CC menu uses those cues so subtitles work from `file://` and from an LMS. Adding translations means adding labeled VTT tracks, not changing the player.
+
+**Use the maintained localized-video music library.** For dubbed embedded videos without a verified music/effects stem, follow `references/scrolling_translation.md`: rotate the three tracks in `assets/background-music/` evenly, favor longer tracks for longer videos, retain a voice-only master, and render with `scripts/mix_localized_video.py`. Keep music assets and their attribution out of generated courses and SCORM packages.
+
+For Scrolling attachment and labeled-graphic blocks, keep the maintained interaction rather than simplifying it: attachment cards retain local file-type/download artwork and file size, while labeled graphics retain their authored medium/full width variant, plus-pin states, marker-anchored callouts, and sequenced previous/next navigation. Do not promote every labeled graphic to full width; honor its `media_width_variant` and wide-screen cap. Keep process Step badges consistent with `theme.corner_style`; the maintained Rounded treatment is a 10px radius, not a course-local HTML tweak.
+
+For Scrolling knowledge checks, keep question typography uniform across questions even when authored rich HTML contains smaller inline sizing, and preserve the configured horizontal rule between the question and answer area. After a choice question is submitted, reveal the correct-answer check or incorrect-answer X on every answer row. Keep the learner's selected-row outline inset 5px vertically so adjacent rows never overlap; use the accent color for selected correct rows and `#707070` for selected incorrect rows. After every fill-in submission, correct or incorrect, show the complete `Acceptable responses:` list from `accepted_answers[]`, and hide it again on retry. Matching questions retain the Rise puzzle-piece interaction: two semantic lists of list-item wrappers, shuffled draggable source pieces with the canonical full-height translucent accent grip strip and black six-dot glyph at left, a radial mask that removes the source piece's rectangular right border inside its open semicircle socket, fixed target pieces in authored order at right, click/keyboard pairing as an accessible fallback, and a submitted results list that labels every pair Correct or Incorrect. Normalize every live piece to the tallest source/target content height so corresponding rows remain aligned before and after reordering. Port Rise's pointer interaction instead of mixing a custom pointer drag with native `draggable`: move the source list item, use an 8px pointer-move tolerance, and activate a target drop zone once the transformed source overlaps it by at least 1.5%. A successful pair must visibly snap: reorder the source list item into the fixed target's row, shift both list items inward by half the column gap plus the source overlap, interlock their puzzle contours, and turn both outer accent strips fully green. Test real same-row and cross-row mouse and touch gestures, then verify aligned top coordinates and joined horizontal edges; a saved pairing alone is not sufficient. Each incorrect pair must also show `Correct: <source prompt>` for that fixed target.
+
+For Scrolling resource-button blocks, preserve `style.button_width_px` when the source geometry is known and otherwise derive a safe width from the longest action label. Keep pill labels on one line and widen the action column instead of wrapping text; classic wide resource buttons are 300px by 40px.
+
+**Keep designated control art exact.** Render the course's canonical SVG paths and glyph outlines verbatim. Do not redraw search, navigation, process, flashcard, quiz, feedback, retry, or completion icons with Unicode characters, CSS borders, or merely similar artwork. Keep only the required glyph outlines as readable inline SVG so the package remains self-contained.
+
+**Keep green next-module buttons consistent.** Every non-final Slides module keeps its authored green double-chevron next-module button visible and clickable in standalone playback, local review, and LMS playback. This is the maintained default and requires no course-specific navigation override. Never replace a next-module button with a Syllabus instruction or suppress its click because an LMS API is present. Compare the same generated page with and without a SCORM API during browser QA so local review covers the learner-facing navigation. Preserve the recorded SCORM version, organization, quiz gates, bookmarks, and per-module completion; Course Home completes on launch and completed modules retain their status. Verify LMS tracking separately without silently changing the navigation or tracking architecture.
+
+**Restore quiz attempts before enforcing resume gates.** A completed or attempted Slides knowledge check must retain its selected answers, attempted state, and feedback when the learner leaves and revisits the module. In an LMS, persist this state in SCORM `suspend_data`; in ordinary non-review local playback, use a per-course, per-module `localStorage` fallback so bookmark and quiz state cannot contradict each other. Restore quiz state before applying the bookmarked slide gate, so a learner whose final-slide bookmark follows a completed quiz resumes at that bookmark instead of being pushed back to a reset quiz. Keep `?review=1` isolated from saved learner state. Retry must clear that question's persisted attempt before accepting a fresh response. Test restoration, retry clearing, and independent state keys for every module whenever the Slides runtime changes.
+
+The maintained Slides player saves the current slide on each slide change. Reopening an unfinished module restores that module's saved slide; reopening a completed module returns to its final slide, even after the learner browsed backward or retried a quiz. Preserve the other module's bookmark when switching modules. An explicitly retired module-only exception must not override a request to use these maintained defaults.
+
+When a reviewer uses an end-of-module next link in `?review=1`, carry review mode into the next module and start it at slide 1. Course-home links must also retain review mode. This keeps the preview from switching into normal learner playback or reading saved progress; it does not change LMS navigation for learners.
+
+**Use an honest syllabus-led Slides home.** For multi-SCO courses, omit module-tile status labels, completion coloring and cross-SCO progress reads. Use the maintained Grid Disturbance-style two-column tiles (one column on mobile), retaining titles, subtitles and numbered badges. Render every Slides index card as an informational article, including single-SCO homes: no link, click handler, pointer cursor, hover lift or keyboard tab stop. Keep navigation in the separate start action and module-end controls. A stale `index_module_links: true` value or a direct-navigation setting must not make cards clickable. Put the navigation instruction directly below the tiles at normal tile body-text size (0.85rem); for the approved Docebo left-sidebar treatment use exactly “Navigate modules in any order using the Syllabus in the left sidebar.” Do not imply a sidebar location or unrestricted order for an LMS where these have not been confirmed. **Every new or refreshed Slides home includes a first-module start action by default** below the instruction: place “Start with MODULE 1” in OCP indigo (#343895) to the left of the same 46px circular double-chevron control used on non-final module endings. Record `index_module_links: false`, `index_navigation_instruction` and `index_start` in `course.json`; see `references/course_schema.md`. The renderer defaults to an enabled direct first-module action when `index_start` is omitted; do not ask the user to request or approve this maintained default. Record any explicit user opt-out as `index_start.enabled: false`. This narrowly scoped home action is not a standard SCORM 1.2 target-SCO request and cannot switch LMS tracking context: retain the syllabus instruction and disclose/test that limitation in the target LMS. It does not authorize changing the SCORM version, organization, next-module policy, or tracking architecture. Never extend the start action into clickable module cards. For single-SCO homes, omit the navigation note by default; an explicit `index_navigation_instruction: ""` suppresses it in every organization without fallback text. Do not put editorial-review directions or completion/quiz implementation details under the cards. Keep Scrolling and explicitly approved single-SCO progress behavior unchanged. Stop after the review build when ZIP approval is pending, and preserve these shared changes for the eventual PR.
+
+**Keep Slides index cards free of progress labels by default.** Omit “Not Started”, “Completed” and completion coloring on the index, including single-SCO course homes. Record `index_show_module_status: false` in new and refreshed course sources. Hiding this home UI does not disable module bookmarks, quiz attempts or LMS completion. Retain an explicitly approved single-SCO progress display only when shared tracking has been verified; never infer cross-SCO progress. Scrolling lesson progress is unaffected.
+
+For home-only revisions, keep these decisions in the shared index renderer/styles and editable course source, not only in generated HTML. Preserve the existing SCORM version, syllabus item identifiers, module pages and media. Check desktop and narrow mobile layouts, informational tile behavior, body-size instruction, indigo start label, and exact module-end control parity; run `scripts/test_index_home.py` and package validation. Package the browser-approved build only after the user requests the ZIP; ZIP approval is not permission to amend a PR or upload to an LMS.
+
+**Keep translations source-derived and LMS-identifiable.** The canonical course
+remains the structural and technical source of truth. Use BCP 47 locale folders,
+preserve IDs/facts/URLs, and never reuse canonical-language narration. Keep
+`course_title` learner-facing. English manifests use it unchanged; non-English
+manifests append the English language name in parentheses. Use `scorm_title`
+only for an exact manifest-only override.
+
+**Never ship silent knowledge checks.** A `knowledge_check` slide is a narrated slide. If its script or WAV is missing, or if only a mismatched voice/fallback can be generated, stop and ask the user to resolve the audio gate before rebuilding the SCORM.
+
+**Keep glossary definitions above media controls.** A visible tooltip must remain fully readable when it overlaps a figure, video control bar or neighboring pills. Entrance-animation transforms can isolate a tooltip in a lower stacking context: raise the containing learner-aids group above the media/player, rather than only increasing the tooltip child’s z-index. Keep the active pill above its siblings while preserving the fixed course controls and scrolling. Clamp long desktop definitions inside the viewport so pills near the right edge cannot clip their text. Check long definitions using both pointer hover and keyboard focus at desktop and phone widths, including imported-video slides.
+
+**Make learner aids precise and local.** A glossary pill requires the actual term, or a documented spelling/plural/acronym-expansion/pronunciation variant, in that slide's narration, rendered teaching text, or legible figure/video text. A related concept, an unlabeled object, a filename, alt text, linked source, or the pill's own label/definition is not usage evidence. Place the pill only at its first substantive use in each module. Follow the evidence schema and media-review procedure in `references/course_schema.md`; never invent wording or aliases merely to justify a stale pill. Remove unsupported pills, move mistimed ones, and remove glossary entries left unused. Treat OCP and AI/ML as baseline Academy audience vocabulary: never create `term_glossary` entries or `term_refs` for OCP, AI/ML, or separate AI and ML entries whose only purpose is to expand that same pair. Never add glossary chips or `term_refs` to the final module's final `course_complete` slide; that slide may retain centered continuing-resource links. Glossary pills are tooltip-only controls, never links; always place the inline terminology/book icon at the pill's right edge. Resource pills always open their URL in a new tab and always place the inline square-and-up-right-arrow icon at the pill's right edge. Keep both icons embedded as accessible, decorative SVG so the SCORM remains self-contained. Tooltip/reference pills must live inside `.slide-content`, left-aligned, below the slide's last text/table/image element, except that resources on the final module's final `course_complete` slide are always center-aligned with the rest of that slide. Never put them in a floating "Terms" area, fixed footer, or control-adjacent panel. Use OCP sources for OCP-specific meanings and established sources such as IEC, DMTF, UL, NERC/IEEE, or NFPA for general electrical terms.
+
+**Keep quizzes and module boundaries glossary-free.** Never define `term_refs` or show glossary pills on any quiz/`knowledge_check` slide, or on the first or last slide of **any** module. First and last mean position in `modules[].slides[]`, regardless of slide ID or layout type. Title, roadmap/overview, objectives, next-module and course-completion slides are also excluded wherever they appear. These slides do not count toward first substantive use; place a term only on its first eligible teaching slide where it actually occurs, or omit it if there is no eligible use. Apply this to every module, not just the final course-completion slide. Both source QA and rendering must reject prohibited placements. These glossary exclusions do not prohibit otherwise appropriate resource links.
+
+**Make resource links timely.** If a slide clearly depends on a white paper, spec, video, or project page, include a visible `reference_links` pill or `resource_callout` on that slide, even if the same resource appears again later.
+
+**Make PDF references page-specific by default.** On teaching slides, use the Grid Disturbance-style short document name plus supporting page or range, such as `PG25 guidelines · Table 13 · pp. 63–64`, and link to the first cited PDF viewer page with `#page=63`. Verify the pages in the actual PDF, including cover pages; do not confuse printed page numbers with viewer numbers or invent anchors. Apply this policy on every new build and course refresh without a separate request, including PDF resource callouts. The closing resource/`course_complete` slide is the exception: link to the complete canonical document with no page fragment or page/range label, not its contents-page anchor. Canonical authoring sources and glossary metadata may keep whole-document URLs. Never cite a published PDF as support for a fact found only in a draft; record and flag that distinction. Follow the examples in `references/course_schema.md` and run `scripts/slides_course_qa.py`, which checks link/label syntax but does not establish source support or target-LMS PDF-viewer behavior.
+
+**Avoid duplicate visible links on one slide.** A resource should normally appear once in learner-facing slide UI. If a card, descriptor, figure caption, or other content block already links to a resource, do not repeat the same URL in a separate pill on that slide. Before rendering, inspect every module for repeated URLs or labels that point to the same destination; keep the instance that is closest to the learner's decision or action and remove redundant copies. Repeating a resource later is appropriate only when the later slide introduces a new purpose or context.
+
+**Keep media media-first.** Figures and animations should read as instructional media, not miniature title slides. Never put the course name, module label, OCP Academy branding or tagline, slide title, narration text, source-credit footer, or other presentation header/footer inside a figure or teaching video. A compact provenance or non-normative status badge is allowed when accuracy requires it, but it must sit quietly inside the visual rather than create a branded frame. A media title or subtitle is justified only when it adds distinct orientation that is not already supplied by the slide title, section label, or figure caption; otherwise omit it and let the figure/video carry the visual weight. Use a compact white rounded media frame with an even 15–20px inset around images, figures, and videos, including reused source artwork; avoid full-width side bands or oversized white cards. The frame must clip cleanly in both themes without introducing a light seam into the media itself.
+
+**Start slide 1 narration immediately.** Every narrated Slides module must load and attempt to play slide 1 audio as soon as the module page initializes; do not wait for the OCP motion intro to finish. If browser autoplay policy blocks audible playback, keep the clip loaded, pulse the play control, and retry on the learner's first pointer, touch, or keyboard interaction. With narration enabled, the title slide hint should state that narration starts automatically, then name the advance controls. Keep the fixed course tagline below that hint. In `templates/learner_features.js`, keep the hint synchronized with the narration preference in both directions: show the narration-off message when disabled and restore the original rendered hint when re-enabled. Capture that original hint before applying a saved off preference so customized or localized wording survives. When changing this control, verify both off → on and reload with narration saved off → on.
+
+**Never invent a tagline.** The course-level `tagline` field on the index page is fixed: always use `"Community-driven Hyperscale Innovation for All"`. Do not riff on it — phrases like "Evolve. Don't replace." or "Consume. Collaborate. Contribute." are out, even if they sound on-brand. The CSS in `templates/index_styles.css` already renders `.header .tagline` in all caps with letter-spacing, so store the phrase in mixed case — display takes care of the rest. `render_index.py` defaults to this phrase when `tagline` is missing from `course.json`; don't override unless the user explicitly asks for a different phrase.
+
+**End narration with the learner, not the branding.** The fixed visual tagline is not a required spoken sign-off. Do not append it or another branding slogan to completion narration unless the user explicitly requests it. Close with a brief thank-you and concrete encouragement to apply the learning; preserve any necessary limits or safety qualifications.
+
+**Keep course marks clean.** Generated course logo SVGs should be simple marks, not text lockups. Do not embed acronym text such as "ESS" inside the SVG itself; use `brand.badge_text` for the separate top-left badge label when the short acronym is useful.
+
+**Respect trademarks in visible text.** When writing OCP branded course text, render `OCP Ready` with a superscript `TM` in learner-facing HTML. In metadata, alt text, and manifest XML where HTML tags are inappropriate, use the `™` glyph. Do not alter source filenames or local paths just to add a trademark.

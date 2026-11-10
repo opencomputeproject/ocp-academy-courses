@@ -1,0 +1,254 @@
+// Disposable browser regression checks; no live LMS, TTS or audible playback.
+// Requires Python 3 and Playwright. Run from any directory with Node.js.
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+import {fileURLToPath, pathToFileURL} from 'node:url';
+import {chromium} from 'playwright';
+
+const scripts = path.dirname(fileURLToPath(import.meta.url));
+const skill = path.dirname(scripts);
+const tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'academy-slide-controls-'));
+const hint = 'La narración comienza automáticamente. Avanza con la flecha.';
+const reference = 'https://example.org/spec#page=15';
+const render = `import json,sys
+sys.path.insert(0,sys.argv[1])
+from render_module import render_module
+print(render_module(json.load(sys.stdin),0))`;
+let checks = 0;
+const check = (actual, expected, message) => {
+  assert.deepEqual(actual, expected, message); checks++;
+};
+let browser;
+try {
+  await fs.copyFile(path.join(skill, 'assets/scorm_api.js'), path.join(tmp, 'scorm_api.js'));
+  await fs.writeFile(path.join(tmp, 'module2.html'), '<!doctype html><title>Destination</title>');
+  for (const mode of ['default', 'direct']) {
+    const course = {
+      style: 'Slides', course_slug: 'controls-test', course_title: 'Controls test',
+      motion_intro: {enabled: false}, ui_labels: {narration_hint: hint},
+      scorm: {version: '1.2', organization: 'multi-sco', ...(mode === 'direct' ? {navigation: 'direct'} : {})},
+      modules: [{id: 1, title: 'Read and Apply the Voltage Ride-Through Envelope', slides: [
+        {id: 1, type: 'title', reference_links: [{label: 'Spec · Table 1 · p. 15', url: reference}]},
+        {id: 2, type: 'up_next', next_module_number: 2, next_module_title: 'Destination'}
+      ]}]
+    };
+    const html = execFileSync(process.env.PYTHON || 'python3', ['-c', render, scripts], {
+      input: JSON.stringify(course), encoding: 'utf8'
+    });
+    await fs.writeFile(path.join(tmp, mode + '.html'), html);
+  }
+  const videoCourse = {
+    style: 'Slides', course_slug: 'video-seek-test', course_title: 'Video seek test',
+    motion_intro: {enabled: false},
+    modules: [{id: 1, title: 'Video timing', slides: [
+      {id: 1, type: 'title'},
+      {id: 2, type: 'content_two_column', title: 'Looping visual',
+        figure: {path: 'loop.mp4', media_type: 'video', alt: 'Timing test', loop: true}}
+    ]}]
+  };
+  await fs.writeFile(path.join(tmp, 'video.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(videoCourse), encoding: 'utf8'}));
+  const mobileTitle = structuredClone(videoCourse);
+  mobileTitle.modules[0].title = 'The Facility Compatibility Envelope';
+  mobileTitle.modules[0].slides[0].subtitle = 'Coordinate what the facility must carry, clear, connect, and adapt.';
+  await fs.writeFile(path.join(tmp, 'mobile-title.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(mobileTitle), encoding: 'utf8'}));
+  const mobileTeaching = {
+    style: 'Slides', course_slug: 'mobile-teaching-test', course_title: 'Teaching layout',
+    motion_intro: {enabled: false},
+    term_glossary: [{id: 'fungibility', term: 'Fungibility', tooltip: 'Equivalent components can be substituted without changing the required function.'}],
+    modules: [{id: 1, title: 'Teaching layout', slides: [
+      {id: 1, type: 'title'},
+      {id: 2, type: 'content_bullets', title: 'Choose interchangeable components', mobile_scroll: true,
+        bullets: [{bold_lead: 'Fungibility', text: 'Check the required function before making a substitution.'}],
+        term_refs: ['fungibility']},
+      {id: 3, type: 'course_complete'}
+    ]}]
+  };
+  await fs.writeFile(path.join(tmp, 'mobile-teaching.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(mobileTeaching), encoding: 'utf8'}));
+  const longWord = structuredClone(mobileTeaching);
+  longWord.language = 'en-US';
+  longWord.modules[0].slides[1].title = 'Infrastructure';
+  await fs.writeFile(path.join(tmp, 'long-word.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(longWord), encoding: 'utf8'}));
+  const cjkTitle = structuredClone(longWord);
+  cjkTitle.language = 'zh-CN';
+  cjkTitle.modules[0].slides[1].title = '\u5149\u5b66\u8fde\u63a5\u4e0e\u57fa\u7840\u8bbe\u65bd';
+  await fs.writeFile(path.join(tmp, 'cjk-title.html'), execFileSync(process.env.PYTHON || 'python3',
+    ['-c', render, scripts], {input: JSON.stringify(cjkTitle), encoding: 'utf8'}));
+  browser = await chromium.launch({headless: true, args: ['--mute-audio']});
+  const context = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
+  await context.route(/^https?:/, route => route.abort());
+  await context.addInitScript(() => {
+    HTMLMediaElement.prototype.play = function() { return Promise.resolve(); };
+    window.API = {
+      LMSInitialize: () => 'true', LMSFinish: () => 'true', LMSCommit: () => 'true',
+      LMSSetValue: () => 'true', LMSGetValue: () => ''
+    };
+  });
+  const page = await context.newPage();
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  const url = name => pathToFileURL(path.join(tmp, name + '.html')).href;
+  const navigation = page => page.locator('.slide.active .next-module-link').evaluate(link => ({
+    href: link.getAttribute('href'), label: link.getAttribute('aria-label'),
+    color: getComputedStyle(link).backgroundColor,
+    paths: Array.from(link.querySelectorAll('path'), p => p.getAttribute('d'))
+  }));
+  const localContext = await browser.newContext({viewport: {width: 1440, height: 960}, reducedMotion: 'reduce'});
+  await localContext.route(/^https?:/, route => route.abort());
+  const localPage = await localContext.newPage();
+  await localPage.goto(url('default'));
+  await localPage.locator('#nextBtn').click();
+  const localNavigation = await navigation(localPage);
+  check(localNavigation.color, 'rgb(141, 198, 63)', 'Standalone default shows the green next-module button');
+  await localContext.close();
+  for (const name of ['default', 'direct']) {
+    await page.goto(url(name));
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
+    const toggle = page.locator('#narrationModeBtn');
+    const text = page.locator('.hero-start-hint span');
+    check(await text.innerText(), hint, 'Authored localized hint is initially retained');
+    for (let n = 0; n < 2; n++) {
+      await toggle.click();
+      check((await text.innerText()).startsWith('Narration is off.'), true, 'Disabling narration updates hint');
+      await toggle.click();
+      check(await text.innerText(), hint, 'Enabling restores the exact authored hint');
+    }
+    await toggle.click();
+    await page.reload();
+    check(await toggle.getAttribute('aria-pressed'), 'false', 'Saved off preference survives reload');
+    await toggle.click();
+    check(await text.innerText(), hint, 'Saved-off reload preserves original hint for re-enabling');
+    await page.locator('#nextBtn').click();
+    await toggle.click();
+    await toggle.click();
+    await page.locator('#prevBtn').click();
+    check(await text.innerText(), hint, 'Toggling away from title keeps title hint synchronized');
+    const pill = page.locator('.slide-hero .reference-pill');
+    check(await pill.getAttribute('href'), reference, 'Title resource retains page-specific URL');
+    check(await pill.getAttribute('target'), '_blank', 'Resource opens a separate tab');
+    check(await page.locator('.slide-hero .term-pill').count(), 0, 'Title remains glossary-free');
+    await page.setViewportSize({width: 320, height: 640});
+    await pill.scrollIntoViewIfNeeded();
+    const box = await pill.boundingBox();
+    check(box.x >= 0 && box.x + box.width <= 320 && box.y >= 0 && box.y + box.height <= 640,
+      true, 'Title resource remains reachable on a narrow screen');
+    check(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No horizontal overflow');
+    await page.setViewportSize({width: 1440, height: 960});
+    await page.locator('#nextBtn').click();
+    check(await navigation(page), localNavigation, `${name}: LMS next-module button matches standalone playback`);
+    check(await page.locator('.slide.active .lms-module-handoff').count(), 0,
+      'LMS playback does not substitute Syllabus text for the next-module button');
+    if (name === 'default') {
+      check(await page.getByRole('link', {name: 'Course home', exact: true}).count(), 0,
+        'Default next-module navigation preserves the separate Course Home policy');
+    }
+    await page.locator('.slide.active .next-module-link').click();
+    await page.waitForURL('**/module2.html');
+    check(page.url(), url('module2'), 'Next-module button navigates in LMS playback without an opt-in');
+    await page.goto(url(name) + '?review=1&slide=2');
+    await page.locator('.slide.active .next-module-link').click();
+    await page.waitForURL('**/module2.html?review=1&slide=1');
+    check(page.url(), url('module2') + '?review=1&slide=1',
+      'Next-module link retains quiet local review mode');
+  }
+  await page.setViewportSize({width:320,height:640});
+  await page.goto(url('mobile-title') + '?review=1');
+  const titleLayout = await page.evaluate(() => {
+    const hero = document.querySelector('.hero-content');
+    const box = hero.getBoundingClientRect();
+    const badge = document.querySelector('.module-badge').getBoundingClientRect();
+    const slide = document.querySelector('.slide.active');
+    slide.scrollTop = slide.scrollHeight;
+    return {inside: box.left >= 24 && box.right <= innerWidth - 24,
+      belowBadge: box.top >= badge.bottom,
+      scrollableEnd: hero.getBoundingClientRect().bottom <= document.querySelector('.controls').getBoundingClientRect().top};
+  });
+  check(titleLayout, {inside:true,belowBadge:true,scrollableEnd:true},
+    'Long mobile title without resources fits, clears badge and scrolls above controls');
+  for (const width of [320, 390, 768]) {
+    await page.setViewportSize({width, height: 800});
+    await page.goto(url('mobile-teaching') + '?review=1&slide=2');
+    const teachingLayout = await page.evaluate(() => {
+      const slide = document.querySelector('.slide.active');
+      const badge = document.querySelector('.module-badge').getBoundingClientRect();
+      const title = slide.querySelector('.slide-title').getBoundingClientRect();
+      return {slideTop: slide.getBoundingClientRect().top, titleClearsBadge: title.top >= badge.bottom};
+    });
+    check(teachingLayout, {slideTop:80, titleClearsBadge:true},
+      `Teaching content clears the fixed badge at ${width}px`);
+    if (width <= 700) {
+      const chip = page.locator('.slide.active .glossary-chip');
+      await chip.focus();
+      check(await chip.evaluate(el => getComputedStyle(el, '::after').bottom), '128px',
+        'Mobile glossary definition sits above the 112px control bar');
+    }
+  }
+  await page.setViewportSize({width:320,height:640});
+  await page.goto(url('long-word') + '?review=1&slide=2');
+  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => document.getAnimations().forEach(animation => {
+    if (Number.isFinite(animation.effect.getTiming().iterations)) {
+      try { animation.finish(); } catch (_) {}
+    }
+  }));
+  check(await page.locator('.slide.active .slide-title').evaluate(heading => {
+    const range = document.createRange(); range.selectNodeContents(heading);
+    return Array.from(range.getClientRects()).every(box => box.left >= 24 && box.right <= innerWidth - 24);
+  }), true, 'A long heading word fits a narrow screen without breaking mid-word');
+  await page.setViewportSize({width:1440,height:960});
+  await page.waitForFunction(() => document.querySelector('.slide.active .slide-title').style.fontSize === '');
+  check(await page.locator('.slide.active .slide-title').evaluate(heading => heading.style.fontSize), '',
+    'Widening restores the authored heading size');
+  await page.setViewportSize({width:320,height:640});
+  await page.goto(url('cjk-title') + '?review=1&slide=2');
+  await page.evaluate(() => document.fonts.ready);
+  check(await page.locator('.slide.active .slide-title').evaluate(heading => heading.style.fontSize), '',
+    'CJK word segmentation preserves naturally wrapping title typography');
+  await page.setViewportSize({width:1440,height:960});
+  await page.addInitScript(() => {
+    window.Audio = function() {
+      const audio = document.createElement('audio');
+      window.__testAudio = audio;
+      return audio;
+    };
+  });
+  await page.goto(url('video'));
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.locator('#nextBtn').click();
+  await page.locator('.slide.active video.figure-video').waitFor();
+  check(await page.locator('.slide.active video.figure-video').count(), 1,
+    'Video test reaches its looping visual slide');
+  check(await page.evaluate(() => Boolean(window.__testAudio)), true,
+    'Video test captures the narration player');
+  const videoTimes = await page.evaluate(() => {
+    const audio = window.__testAudio;
+    const video = document.querySelector('.slide.active video.figure-video');
+    Object.defineProperty(audio, 'currentTime', {configurable: true, get: () => 22.5});
+    Object.defineProperty(video, 'duration', {configurable: true, get: () => 8});
+    let currentTime = 0;
+    Object.defineProperty(video, 'currentTime', {
+      configurable: true, get: () => currentTime, set: value => { currentTime = value; }
+    });
+    audio.dispatchEvent(new Event('seeking'));
+    const looped = video.currentTime;
+    video.loop = false;
+    audio.dispatchEvent(new Event('seeking'));
+    return {looped, finite: video.currentTime};
+  });
+  check(videoTimes.looped, 6.5, 'Seeking a short looping video wraps to the corresponding visual frame');
+  check(Math.abs(videoTimes.finite - (8 - 1 / 60)) < 0.001, true,
+    'Seeking a finite video stops at its final frame');
+  check(errors, [], 'No JavaScript errors in navigation or video timing checks');
+  console.log(`PASS: ${checks} slide-control browser assertions; no live LMS or audio playback.`);
+} finally {
+  if (browser) await browser.close();
+  await fs.rm(tmp, {recursive: true, force: true});
+}
