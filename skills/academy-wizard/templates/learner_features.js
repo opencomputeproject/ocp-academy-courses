@@ -1,5 +1,7 @@
 // This template runs inside the module closure. Controls do not modify defaults.
 
+const learnerUiLabel = (key, fallback) => videoUiLabels[key] || fallback;
+
 // Keep desktop glossary bubbles inside the viewport, including rightmost pills.
 function fitGlossaryTooltip(chip) {
   if (!chip) return;
@@ -52,12 +54,13 @@ document.fonts?.ready.then(fitHeadingWords);
 window.addEventListener('resize', fitHeadingWords);
 const transcriptPanel = document.createElement('aside');
 transcriptPanel.id = 'transcriptPanel'; transcriptPanel.className = 'transcript-panel';
-transcriptPanel.setAttribute('aria-label', 'Slide transcript'); transcriptPanel.hidden = true;
+transcriptPanel.setAttribute('aria-label', learnerUiLabel('slide_transcript', 'Slide transcript')); transcriptPanel.hidden = true;
 transcriptPanel.innerHTML = '<button id="transcriptClose" class="learner-control">Close transcript</button><h2 id="transcriptTitle" tabindex="-1"></h2><div id="transcriptText"></div>';
+transcriptPanel.querySelector('#transcriptClose').textContent = learnerUiLabel('close_transcript', 'Close transcript');
 document.body.appendChild(transcriptPanel);
 const lmsNote = document.createElement('div');
 lmsNote.className = 'lms-navigation-note'; lmsNote.hidden = true; lmsNote.setAttribute('role','status');
-lmsNote.textContent = 'Use the LMS course navigation to open another module so its completion is recorded correctly.';
+lmsNote.textContent = learnerUiLabel('lms_navigation_note', 'Use the LMS course navigation to open another module so its completion is recorded correctly.');
 document.body.appendChild(lmsNote);
 const transcriptBtn = document.getElementById('transcriptBtn');
 const narrationModeBtn = document.getElementById('narrationModeBtn');
@@ -65,9 +68,9 @@ const narrationHint = document.querySelector('.hero-start-hint span');
 const narrationEnabledHint = narrationHint ? narrationHint.textContent : '';
 function updateTranscript() {
   const entry = transcriptMap[String(currentSlide)] || {};
-  document.getElementById('transcriptTitle').textContent = entry.title || 'Transcript';
+  document.getElementById('transcriptTitle').textContent = entry.title || learnerUiLabel('transcript', 'Transcript');
   const body = document.getElementById('transcriptText'); body.replaceChildren();
-  for (const paragraph of (entry.text || 'No narration on this slide.').split(/\n\s*\n/)) {
+  for (const paragraph of (entry.text || learnerUiLabel('no_narration', 'No narration on this slide.')).split(/\n\s*\n/)) {
     const p = document.createElement('p'); p.textContent = paragraph; body.appendChild(p);
   }
 }
@@ -85,10 +88,12 @@ document.addEventListener('keydown', e => {
 });
 function updateNarrationMode() {
   narrationModeBtn.setAttribute('aria-pressed', String(autoPlayAudio));
-  narrationModeBtn.title = autoPlayAudio ? 'Narration on — click to turn off' : 'Narration off — click to turn on';
+  narrationModeBtn.title = autoPlayAudio
+    ? learnerUiLabel('narration_on_hint', 'Narration on — click to turn off')
+    : learnerUiLabel('narration_off_hint', 'Narration off — click to turn on');
   if (narrationHint) narrationHint.textContent = autoPlayAudio
     ? narrationEnabledHint
-    : 'Narration is off. Read the transcript or use Play for this slide.';
+    : learnerUiLabel('narration_off_message', 'Narration is off. Read the transcript or use Play for this slide.');
 }
 narrationModeBtn.addEventListener('click', () => {
   autoPlayAudio = !autoPlayAudio;
@@ -201,8 +206,10 @@ function updateTeachingVideoControls() {
     if (!button) return;
     const paused = audioPlayer.paused || !motionEnabled();
     button.innerHTML = paused ? '<span class="video-icon video-icon-play" aria-hidden="true"></span>' : '<span class="video-icon video-icon-pause" aria-hidden="true"></span>';
-    button.setAttribute('aria-label', paused ? 'Play narrated video' : 'Pause narrated video');
-    button.title = paused ? 'Play narrated video' : 'Pause narrated video';
+    const label = paused ? learnerUiLabel('play_narrated_video', 'Play narrated video')
+      : learnerUiLabel('pause_narrated_video', 'Pause narrated video');
+    button.setAttribute('aria-label', label);
+    button.title = label;
   });
 }
 function playSyncedVideos() {
