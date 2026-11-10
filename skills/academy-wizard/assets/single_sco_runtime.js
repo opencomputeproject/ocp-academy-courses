@@ -3,6 +3,7 @@
 (function () {
   'use strict';
   const config = JSON.parse(document.getElementById('singleSCOConfig').textContent);
+  const uiText = (key, fallback) => String((config.labels || {})[key] ?? fallback);
   const frame = document.getElementById('courseFrame');
   const warning = document.getElementById('saveWarning');
   const pageModules = new Map(config.modules.map(m => [m.file, m]));
@@ -31,7 +32,7 @@
   if (!reviewMode) {
     try { inLMS = SCORM.init(); connectionFailed = !inLMS && SCORM.isAvailable(); }
     catch (_) { connectionFailed = true; }
-    if (connectionFailed) report('The LMS connection could not be opened. Progress cannot be saved. Please reopen the course from the LMS.');
+    if (connectionFailed) report(uiText('lms_connection_failed', 'The LMS connection could not be opened. Progress cannot be saved. Please reopen the course from the LMS.'));
     let saved;
     if (inLMS) saved = parse(SCORM.getSuspendData());
     else if (!connectionFailed) { try { saved = parse(localStorage.getItem(storageKey)); } catch (_) {} }
@@ -49,12 +50,12 @@
     if (connectionFailed) return false;
     const serialized = JSON.stringify(state);
     if (serialized.length > 4096) {
-      report('Progress exceeds the SCORM 1.2 storage limit and could not be saved. Please contact the course administrator.');
+      report(uiText('lms_storage_limit', 'Progress exceeds the SCORM 1.2 storage limit and could not be saved. Please contact the course administrator.'));
       return false;
     }
     if (!inLMS) {
       try { localStorage.setItem(storageKey, serialized); return true; }
-      catch (_) { report('This browser is blocking local progress storage. Your place may not be saved.'); return false; }
+      catch (_) { report(uiText('browser_storage_blocked', 'This browser is blocking local progress storage. Your place may not be saved.')); return false; }
     }
     try {
       const saved = SCORM.setValue('cmi.suspend_data', serialized);
@@ -70,7 +71,7 @@
       report('');
       return true;
     } catch (_) {
-      report('The LMS could not save your progress. Keep this course open and check your connection before exiting.');
+      report(uiText('lms_save_failed', 'The LMS could not save your progress. Keep this course open and check your connection before exiting.'));
       return false;
     }
   }

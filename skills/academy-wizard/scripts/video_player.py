@@ -133,7 +133,7 @@ def academy_video_html(
         f'<button class="academy-video__big-play" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play_video", "Play video"))}">'
         f'{scrolling_video_icon("play")}'
         '</button>'
-        '</div><div class="academy-video__controls" role="group" aria-label="Video controls">'
+        f'</div><div class="academy-video__controls" role="group" aria-label="{esc(ui(ui_labels, "video_controls", "Video controls"))}">'
         f'<button class="academy-video__button academy-video__toggle" type="button" data-video-action="toggle" aria-label="{esc(ui(ui_labels, "play", "Play"))}">'
         f'{scrolling_video_icon("play", "academy-video__play-icon")}{scrolling_video_icon("pause", "academy-video__pause-icon")}'
         '</button>'
