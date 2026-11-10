@@ -18,12 +18,14 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [Data Centers: From Digital Services to Physical Infrastructure](courses/data-center-basics/README.md) | Connect digital services to facility types, power and cooling paths, racks, operational responsibilities, and resource efficiency measures. |
 | [OCP Diablo 400: Disaggregated Power for High-Density AI Racks](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/README.md) | Examine Diablo 400 sidecar power architecture, electrical interfaces, protection, telemetry, and its relationship to facility LVDC distribution. |
 | [Distributed AI Infrastructure](courses/distributed-ai-infrastructure/README.md) | Connect AI workload coordination to distributed state, timing, geographic placement, scaling, and controlled recovery. |
+| [Enhanced Telemetry Optics](courses/enhanced-telemetry-optics/README.md) | Use optical metrics, link-health indicators, event logs, remote access, and firmware workflows to diagnose issues in AI fabrics and assess deployment readiness. |
 | [FCSA: Architecting Interoperable Chiplet Systems](courses/fcsa-architecting-interoperable-chiplet-systems/README.md) | Apply Foundation Chiplet System Architecture to chiplet roles, interfaces, boot coordination, security, and the evidence needed for interoperable integration. |
 | [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md) | Evaluate optical circuit switching against AI workload timing, complete reconfiguration delays, switching mechanisms, and deployment constraints. |
 | [Grid Disturbance Performance for Hyperscale Data Centers](courses/grid-disturbance-performance/README.md) | Interpret voltage ride-through and active-power recovery requirements, coordinate facility responses, and assess mitigations at the utility interface. |
 | [High Bandwidth Flash: Bridging SSD Capacity and HBM Performance](courses/high-bandwidth-flash/README.md) | Explore where high-bandwidth flash fits between SSDs and HBM, including interconnect architecture, memory mapping, reliability, and AI serving workloads. |
 | [Integrating Quantum Processing Units into Data Center Infrastructure](courses/integrating-quantum-processing-units-into-data-center-infrastructure/README.md) | Connect hybrid quantum-classical architectures to QPU facility requirements, environmental controls, shared services, and operational readiness. |
 | [Introduction to the Open Compute Project](courses/intro-to-ocp/README.md) | Discover the OCP Community, governance and contribution process, connect Open Rack and cooling to infrastructure decisions, and plan a practical next step. |
+| [Introduction to Emerging Optical Technologies](courses/introduction-to-emerging-optical-technologies/README.md) | Compare emerging optical approaches for AI infrastructure, including co-packaged optics, blind-mate connectivity, multicore fiber, hollow-core fiber, and quantum applications. |
 | [Introduction to Liquid Cooling](courses/introduction-to-liquid-cooling/README.md) | Compare direct and immersion cooling, trace complete heat paths, and assess fluid compatibility, equipment interfaces, and deployment readiness. |
 | [LVDC Power Distribution for Data Centers](courses/lvdc-power-distribution-for-data-centers/README.md) | Review facility-to-rack DC power architectures, voltage compatibility, grounding, protection, conversion, controls, and installation verification. |
 | [OCP Academy - MRC Technical Overview](courses/multipath-reliable-connection-mrc/README.md) | Examine the MRC RDMA transport, including multipath routing, reliability, congestion control, failure recovery, and AI training fabric deployment. |
@@ -47,8 +49,6 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [Open Rack: Architecture, Power, Cooling and Deployment](courses/open-rack-architecture-power-cooling-deployment/README.md) | Connect ORv3, high-power racks, and Open Rack Wide to mechanical fit, power, cooling, resilience, serviceability, and deployment validation. |
 | [Open Systems for AI](courses/open-systems-for-ai/README.md) | Connect AI workload requirements to cluster architecture, physical infrastructure, modular IT building blocks, shared interfaces, and systems management. |
 | [Optical Circuit Switching for AI and Hyperscale Data Centers](courses/optical-circuit-switching-for-ai-and-hyperscale-data-centers/README.md) | Explore OCS mechanisms, deployment architectures, emerging AI uses and the open ecosystem behind optical networking. |
-| [Enhanced Telemetry Optics](courses/optics/enhanced-telemetry-optics/README.md) | Use optical metrics, link-health indicators, event logs, remote access, and firmware workflows to diagnose issues in AI fabrics and assess deployment readiness. |
-| [Introduction to Emerging Optical Technologies](courses/optics/introduction-to-emerging-optical-technologies/README.md) | Compare emerging optical approaches for AI infrastructure, including co-packaged optics, blind-mate connectivity, multicore fiber, hollow-core fiber, and quantum applications. |
 | [OCP Project Deschutes](courses/project-deschutes-cdu-specification-v1-0/README.md) | Explore coolant distribution unit architecture, facility and technology cooling loops, performance requirements, controls, serviceability, and deployment considerations. |
 | [Short-Reach Optical Interconnects for AI Scale-Up Fabrics](courses/short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/README.md) | Evaluate the copper-to-optics crossover for scale-up fabrics, including reach, optical placement, reliability, diagnostics, and architecture tradeoffs. |
 | [SUE-T: Ethernet Transport for XPU Scale-Up Systems](courses/sue-t-ethernet-transport-for-xpu-scale-up-systems/README.md) | Trace XPU transactions across Ethernet transport, including packet handling, reliable delivery, ordering, interface mapping, and completion semantics. |
@@ -98,12 +98,14 @@ courses/
   data-center-basics/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
   distributed-ai-infrastructure/
+  enhanced-telemetry-optics/
   fcsa-architecting-interoperable-chiplet-systems/
   fast-optical-circuit-switching-for-dynamic-ai-fabrics/
   grid-disturbance-performance/
   high-bandwidth-flash/
   integrating-quantum-processing-units-into-data-center-infrastructure/
   intro-to-ocp/
+  introduction-to-emerging-optical-technologies/
   introduction-to-liquid-cooling/
   lvdc-power-distribution-for-data-centers/
   multipath-reliable-connection-mrc/
@@ -127,14 +129,18 @@ courses/
   open-rack-architecture-power-cooling-deployment/
   open-systems-for-ai/
   optical-circuit-switching-for-ai-and-hyperscale-data-centers/
-  optics/
-    enhanced-telemetry-optics/   # optics/enhanced-telemetry-optics
-    introduction-to-emerging-optical-technologies/   # optics/introduction-to-emerging-optical-technologies
   project-deschutes-cdu-specification-v1-0/
   short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
   sue-t-ethernet-transport-for-xpu-scale-up-systems/
   thermal-boundaries-in-ai-infrastructure/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
+series/
+  optics/
+    README.md
+    lms-series-catalog.json
+    lms-series-catalog.md
+    poster.json
+    thumbnail.png
 scripts/
   build-course.sh
   install-academy-wizard-skill.sh
@@ -152,6 +158,10 @@ Packaging exports matching JSON, Markdown, and HTML files beside the SCORM ZIP.
 See the [metadata contract](skills/academy-wizard/references/lms_catalog.md) and
 [LMS catalog index](docs/lms-catalog/README.md). Each course maintains its own
 approved metadata and exports with its complete source.
+
+Shared optics learning-plan descriptions and the series poster are maintained
+separately in [series/optics](series/optics/README.md); both optics course folders
+live directly under `courses/`.
 
 ## Install the AcademyWizard skill
 
@@ -242,10 +252,10 @@ page.
 | [AI Computing Continuum: Extending AI Beyond the Hyperscale Data Center](courses/ai-computing-continuum/) | — | — | [`ja-JP`](courses/ai-computing-continuum/locales/ja-JP/) | — | — | — | — |
 | [Cooling Fluids in Direct Liquid Cooling (DLC)](courses/cooling-fluids-in-direct-liquid-cooling/) | [`zh-CN`](courses/cooling-fluids-in-direct-liquid-cooling/locales/zh-CN/) | [`zh-TW`](courses/cooling-fluids-in-direct-liquid-cooling/locales/zh-TW/) | [`ja-JP`](courses/cooling-fluids-in-direct-liquid-cooling/locales/ja-JP/) | [`ko-KR`](courses/cooling-fluids-in-direct-liquid-cooling/locales/ko-KR/) | [`pt-BR`](courses/cooling-fluids-in-direct-liquid-cooling/locales/pt-BR/) | [`es-419`](courses/cooling-fluids-in-direct-liquid-cooling/locales/es-419/) | [`vi-VN`](courses/cooling-fluids-in-direct-liquid-cooling/locales/vi-VN/) |
 | [Data Centers: From Digital Services to Physical Infrastructure](courses/data-center-basics/) | [`zh-CN`](courses/data-center-basics/locales/zh-CN/) | [`zh-TW`](courses/data-center-basics/locales/zh-TW/) | [`ja-JP`](courses/data-center-basics/locales/ja-JP/) | [`ko-KR`](courses/data-center-basics/locales/ko-KR/) | [`pt-BR`](courses/data-center-basics/locales/pt-BR/) | [`es-419`](courses/data-center-basics/locales/es-419/) | [`vi-VN`](courses/data-center-basics/locales/vi-VN/) |
-| [Enhanced Telemetry Optics](courses/optics/enhanced-telemetry-optics/) | [`zh-CN`](courses/optics/enhanced-telemetry-optics/locales/zh-CN/) | [`zh-TW`](courses/optics/enhanced-telemetry-optics/locales/zh-TW/) | [`ja-JP`](courses/optics/enhanced-telemetry-optics/locales/ja-JP/) | [`ko-KR`](courses/optics/enhanced-telemetry-optics/locales/ko-KR/) | [`pt-BR`](courses/optics/enhanced-telemetry-optics/locales/pt-BR/) | [`es-419`](courses/optics/enhanced-telemetry-optics/locales/es-419/) | [`vi-VN`](courses/optics/enhanced-telemetry-optics/locales/vi-VN/) |
+| [Enhanced Telemetry Optics](courses/enhanced-telemetry-optics/) | [`zh-CN`](courses/enhanced-telemetry-optics/locales/zh-CN/) | [`zh-TW`](courses/enhanced-telemetry-optics/locales/zh-TW/) | [`ja-JP`](courses/enhanced-telemetry-optics/locales/ja-JP/) | [`ko-KR`](courses/enhanced-telemetry-optics/locales/ko-KR/) | [`pt-BR`](courses/enhanced-telemetry-optics/locales/pt-BR/) | [`es-419`](courses/enhanced-telemetry-optics/locales/es-419/) | [`vi-VN`](courses/enhanced-telemetry-optics/locales/vi-VN/) |
 | [High Bandwidth Flash: Bridging SSD Capacity and HBM Performance](courses/high-bandwidth-flash/) | — | — | — | [`ko-KR`](courses/high-bandwidth-flash/locales/ko-KR/) | — | — | — |
 | [How to Build Your Brand in the OCP Community](courses/build-your-brand-in-the-ocp-community/) | [`zh-CN`](courses/build-your-brand-in-the-ocp-community/locales/zh-CN/) | [`zh-TW`](courses/build-your-brand-in-the-ocp-community/locales/zh-TW/) | [`ja-JP`](courses/build-your-brand-in-the-ocp-community/locales/ja-JP/) | [`ko-KR`](courses/build-your-brand-in-the-ocp-community/locales/ko-KR/) | [`pt-BR`](courses/build-your-brand-in-the-ocp-community/locales/pt-BR/) | [`es-419`](courses/build-your-brand-in-the-ocp-community/locales/es-419/) | [`vi-VN`](courses/build-your-brand-in-the-ocp-community/locales/vi-VN/) |
-| [Introduction to Emerging Optical Technologies](courses/optics/introduction-to-emerging-optical-technologies/) | [`zh-CN`](courses/optics/introduction-to-emerging-optical-technologies/locales/zh-CN/) | [`zh-TW`](courses/optics/introduction-to-emerging-optical-technologies/locales/zh-TW/) | [`ja-JP`](courses/optics/introduction-to-emerging-optical-technologies/locales/ja-JP/) | [`ko-KR`](courses/optics/introduction-to-emerging-optical-technologies/locales/ko-KR/) | [`pt-BR`](courses/optics/introduction-to-emerging-optical-technologies/locales/pt-BR/) | [`es-419`](courses/optics/introduction-to-emerging-optical-technologies/locales/es-419/) | [`vi-VN`](courses/optics/introduction-to-emerging-optical-technologies/locales/vi-VN/) |
+| [Introduction to Emerging Optical Technologies](courses/introduction-to-emerging-optical-technologies/) | [`zh-CN`](courses/introduction-to-emerging-optical-technologies/locales/zh-CN/) | [`zh-TW`](courses/introduction-to-emerging-optical-technologies/locales/zh-TW/) | [`ja-JP`](courses/introduction-to-emerging-optical-technologies/locales/ja-JP/) | [`ko-KR`](courses/introduction-to-emerging-optical-technologies/locales/ko-KR/) | [`pt-BR`](courses/introduction-to-emerging-optical-technologies/locales/pt-BR/) | [`es-419`](courses/introduction-to-emerging-optical-technologies/locales/es-419/) | [`vi-VN`](courses/introduction-to-emerging-optical-technologies/locales/vi-VN/) |
 | [Introduction to the OCP Solution Provider Program](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/) | [`zh-CN`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/zh-TW/) | [`ja-JP`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/ja-JP/) | [`ko-KR`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/ko-KR/) | [`pt-BR`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/pt-BR/) | [`es-419`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/es-419/) | [`vi-VN`](courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/locales/vi-VN/) |
 | [Introduction to the Open Compute Project](courses/intro-to-ocp/) | [`zh-CN`](courses/intro-to-ocp/locales/zh-CN/) | [`zh-TW`](courses/intro-to-ocp/locales/zh-TW/) | [`ja-JP`](courses/intro-to-ocp/locales/ja-JP/) | [`ko-KR`](courses/intro-to-ocp/locales/ko-KR/) | [`pt-BR`](courses/intro-to-ocp/locales/pt-BR/) | [`es-419`](courses/intro-to-ocp/locales/es-419/) | [`vi-VN`](courses/intro-to-ocp/locales/vi-VN/) |
 | [OCP Contribution Process](courses/ocp-orientation/ocp-contribution-process/) | [`zh-CN`](courses/ocp-orientation/ocp-contribution-process/locales/zh-CN/) | [`zh-TW`](courses/ocp-orientation/ocp-contribution-process/locales/zh-TW/) | [`ja-JP`](courses/ocp-orientation/ocp-contribution-process/locales/ja-JP/) | [`ko-KR`](courses/ocp-orientation/ocp-contribution-process/locales/ko-KR/) | [`pt-BR`](courses/ocp-orientation/ocp-contribution-process/locales/pt-BR/) | [`es-419`](courses/ocp-orientation/ocp-contribution-process/locales/es-419/) | [`vi-VN`](courses/ocp-orientation/ocp-contribution-process/locales/vi-VN/) |

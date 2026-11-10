@@ -15,14 +15,14 @@ every course so all three fields are available when preparing a catalog entry.
 | Cooling Fluids in Direct Liquid Cooling (DLC) | [Catalog fields](../../courses/cooling-fluids-in-direct-liquid-cooling/lms-catalog.md) | 118 characters | 35 |
 | Data Centers: From Digital Services to Physical Infrastructure | [Catalog fields](../../courses/data-center-basics/lms-catalog.md) | 113 characters | 95 |
 | Distributed AI Infrastructure | [Catalog fields](../../courses/distributed-ai-infrastructure/lms-catalog.md) | 104 characters | 80 |
-| Enhanced Telemetry Optics | [Catalog fields](../../courses/optics/enhanced-telemetry-optics/lms-catalog.md) | 121 characters | 50 |
+| Enhanced Telemetry Optics | [Catalog fields](../../courses/enhanced-telemetry-optics/lms-catalog.md) | 121 characters | 50 |
 | Fast Optical Circuit Switching for Dynamic AI Fabrics | [Catalog fields](../../courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/lms-catalog.md) | 118 characters | 60 |
 | FCSA: Architecting Interoperable Chiplet Systems | [Catalog fields](../../courses/fcsa-architecting-interoperable-chiplet-systems/lms-catalog.md) | 114 characters | 85 |
 | Grid Disturbance Performance for Hyperscale Data Centers | [Catalog fields](../../courses/grid-disturbance-performance/lms-catalog.md) | 111 characters | 64 |
 | High Bandwidth Flash: Bridging SSD Capacity and HBM Performance | [Catalog fields](../../courses/high-bandwidth-flash/lms-catalog.md) | 109 characters | 37 |
 | How to Build Your Brand in the OCP Community | [Catalog fields](../../courses/build-your-brand-in-the-ocp-community/lms-catalog.md) | 87 characters | 26 |
 | Integrating Quantum Processing Units into Data Center Infrastructure | [Catalog fields](../../courses/integrating-quantum-processing-units-into-data-center-infrastructure/lms-catalog.md) | 113 characters | 45 |
-| Introduction to Emerging Optical Technologies | [Catalog fields](../../courses/optics/introduction-to-emerging-optical-technologies/lms-catalog.md) | 115 characters | 60 |
+| Introduction to Emerging Optical Technologies | [Catalog fields](../../courses/introduction-to-emerging-optical-technologies/lms-catalog.md) | 115 characters | 60 |
 | Introduction to Liquid Cooling | [Catalog fields](../../courses/introduction-to-liquid-cooling/lms-catalog.md) | 110 characters | 68 |
 | Introduction to the OCP Solution Provider Program | [Catalog fields](../../courses/ocp-orientation/introduction-to-the-ocp-solution-provider-program/lms-catalog.md) | 115 characters | 7 |
 | Introduction to the Open Compute Project | [Catalog fields](../../courses/intro-to-ocp/lms-catalog.md) | 110 characters | 45 |

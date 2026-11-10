@@ -18,7 +18,7 @@ for(let i=0;i<args.length;i++){
 const check = args.includes('--check');
 const value = flag => {const i=args.indexOf(flag);return i<0?null:args[i+1];};
 if(args.includes('--help')){
-  console.log('node render_lms_posters.mjs --repo-root <repo> [--course <course-folder>] [--check] [--qa-dir <folder>]\nWithout --course, discovers canonical courses/**/thumbnail.png (excluding locales) and requires poster.json. --check renders and compares without writing source assets.');
+  console.log('node render_lms_posters.mjs --repo-root <repo> [--course <course-folder>] [--check] [--qa-dir <folder>]\nWithout --course, discovers canonical courses/**/ and series/**/ posters (excluding locales) and requires poster.json. --check renders and compares without writing source assets.');
   process.exit(0);
 }
 const root = path.resolve(value('--repo-root') || process.cwd());
@@ -39,7 +39,13 @@ async function discover(dir){
   }
   return [...new Set(result)].sort();
 }
-const dirs=value('--course')?[path.resolve(root,value('--course'))]:await discover(path.join(root,'courses'));
+async function discoverCatalog(){
+  const dirs=await discover(path.join(root,'courses'));
+  const series=path.join(root,'series');
+  try{await fs.access(series);}catch(error){if(error.code==='ENOENT')return dirs;throw error;}
+  return [...dirs,...await discover(series)].sort();
+}
+const dirs=value('--course')?[path.resolve(root,value('--course'))]:await discoverCatalog();
 assert.ok(dirs.length,'No posters found');
 for(const dir of dirs)assert.ok(!dir.split(path.sep).includes('locales'),'Use the canonical English poster; translations do not have separate posters');
 await fs.mkdir(qa,{recursive:true});
