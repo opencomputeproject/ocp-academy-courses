@@ -64,13 +64,51 @@ Review `index.html` and `module1.html` through `module4.html` in the generated
 folder. `?review=1` isolates editorial review from saved learner progress.
 Knowledge checks require an attempt on both questions, not a perfect score.
 
+## Translated Slides editions
+
+All seven editions below contain the same four modules and 52 slides as the
+English course, with translated learner text, narration scripts, LMS catalog
+copy, captions, teaching-animation labels and membership reading copies.
+Each locale is a self-contained editable source under `locales/`.
+
+| Language | Source | LMS information | Narration voice |
+|---|---|---|---|
+| Chinese (Simplified) | [zh-CN](locales/zh-CN/) | [Catalog copy](locales/zh-CN/lms-catalog.md) | Lan Chen |
+| Chinese (Traditional) | [zh-TW](locales/zh-TW/) | [Catalog copy](locales/zh-TW/lms-catalog.md) | Tiffy |
+| Japanese | [ja-JP](locales/ja-JP/) | [Catalog copy](locales/ja-JP/lms-catalog.md) | Kenzo |
+| Korean | [ko-KR](locales/ko-KR/) | [Catalog copy](locales/ko-KR/lms-catalog.md) | Chris |
+| Portuguese (Brazil) | [pt-BR](locales/pt-BR/) | [Catalog copy](locales/pt-BR/lms-catalog.md) | Carla |
+| Spanish (Latin America) | [es-419](locales/es-419/) | [Catalog copy](locales/es-419/lms-catalog.md) | Ninoska |
+| Vietnamese | [vi-VN](locales/vi-VN/) | [Catalog copy](locales/vi-VN/lms-catalog.md) | Nhu |
+
+All locales use their approved voice with full Eleven v4, 1.18 pitch-preserving
+authoring pacing and 96 kbps CBR mono MP3 delivery. Rebuild one with its existing
+approved locale audio to avoid paid re-synthesis:
+
+```bash
+EXISTING_AUDIO_DIR=/path/to/locale/audio ./scripts/build-course.sh intro-to-ocp/locales/vi-VN
+```
+
+Five Matty recordings have newly generated localized soundtracks and timed
+captions; their original pictures, including baked-in English text, remain
+unchanged. The approved `building-the-future.mp4` live recording on Module 1,
+slide 9 remains in English with a translated notice. The four teaching
+animations have localized labels and narration-aligned timelines. All language
+editions share the English LMS poster; there are no localized catalog posters.
+
+The translations are machine-assisted with contextual technical corrections
+and automated language, waveform, layout and runtime checks. Native-speaker
+editorial and human-listening approval is not claimed. See the
+[translation validation record](TRANSLATION_QA.md) before publishing.
+
 ## Replacement and LMS deployment
 
 This English course replaces the four independent Scrolling courses previously
 stored beneath this folder. Their English and seven translated editions were
 retired from the active source tree on 2026-11-03 at the user's request. They
 remain recoverable from Git history at commit `6e3e5a2` and earlier. No new
-language edition of this Slides replacement is claimed or generated.
+editions of those retired Scrolling courses are included here; the seven
+locales above translate the consolidated Slides replacement instead.
 
 The format remains **SCORM 1.2**, with **five tracked syllabus entries**:
 Course Home, then Modules 1–4. This is one course ZIP, not four independent
