@@ -86,9 +86,20 @@ def match_term(term, text):
             return str(alias)
         # Korean spacing separates stems, but case/topic particles attach to them.
         if needle and re.search(r'[\uac00-\ud7a3]', needle):
-            particles = r'(?:들)?(?:은|는|이|가|을|를|의|에|에서|으로|로|와|과|도|만|등)?'
+            particles = r'(?:들)?(?:은|는|이|가|을|를|의|에|에서|으로|로|와|과|도|만|등|부터|까지)?'
             if re.search(r'(?<!\w)' + re.escape(needle) + particles + r'(?!\w)', text):
                 return str(alias)
+        # A Latin acronym may touch Han/kana prose, but must not match a
+        # substring inside another Latin word (for example, core in score).
+        if needle and re.fullmatch(r'[a-z0-9 -]+', needle):
+            unspaced = r'[\u3400-\u9fff\u3040-\u30ff\uf900-\ufaff]'
+            for occurrence in re.finditer(re.escape(needle), text):
+                before = text[occurrence.start()-1:occurrence.start()] if occurrence.start() else ''
+                after = text[occurrence.end():occurrence.end()+1]
+                def boundary(char):
+                    return not char or not re.match(r'\w', char) or bool(re.match(unspaced, char))
+                if boundary(before) and boundary(after):
+                    return str(alias)
         # Pronunciation spelling of an actual acronym, e.g. S L A, not synonyms.
         if re.fullmatch(r'[A-Z]{2,8}', str(alias)):
             letters = r'[\s.]+'.join(re.escape(c.casefold()) for c in alias)

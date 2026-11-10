@@ -7,6 +7,13 @@ from glossary_audit import audit_glossary, match_term
 
 
 class GlossaryAuditTests(unittest.TestCase):
+    def test_acronyms_next_to_cjk_and_korean_range_particles(self):
+        self.assertEqual(match_term({'term':'CPU'}, 'CPUを接続します。'), 'CPU')
+        self.assertEqual(match_term({'term':'CPU'}, '使用CPU運算。'), 'CPU')
+        self.assertIsNone(match_term({'term':'core'}, 'The score is recorded.'))
+        self.assertEqual(match_term({'term':'자체 평가'}, '자체 평가부터 시작합니다.'), '자체 평가')
+        self.assertIsNone(match_term({'term':'인정'}, '개인정보를 보호합니다.'))
+
     def test_terms_in_unspaced_chinese_and_japanese(self):
         self.assertEqual(match_term({'term':'开放硬件'},'开放硬件可以帮助团队。'),'开放硬件')
         self.assertEqual(match_term({'term':'相互運用性'},'相互運用性を検証します。'),'相互運用性')

@@ -164,6 +164,19 @@ Classify every visual:
 - rebuild animations or videos when visible text changes; and
 - retain technical symbols, dimensions, and acronym spelling exactly.
 
+Bundle glyph-checked fonts for offline playback, including captions and runtime
+warnings. Static SVGs displayed through an HTML image must embed their font data
+(or use reviewed outlines): external font URLs inside an SVG image are not a
+portable substitute. Keep editable text and reviewed media inventories in source.
+Localize the persistent single-SCO host's saving/connection warnings as well as
+the module controls; validate those messages with a mock LMS.
+
+When publishing existing editions with previously prepared native-language
+posters, `slides_course_qa.py --allow-localized-poster` validates and retains that
+artwork explicitly. This does not change the shared English poster default for
+new work. Repository QA checks each locale's translation-matrix link beneath its
+canonical course's catalog entry.
+
 Run the SVG arrow check before encoding localized animation video.
 
 ## Metadata and final resources

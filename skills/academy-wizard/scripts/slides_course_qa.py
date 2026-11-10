@@ -31,6 +31,12 @@ PDF_PAGE_LABEL = re.compile(
     r"\bpp?\.\s*(\d+(?:\s*[-\u2013]\s*\d+)?(?:\s*,\s*\d+(?:\s*[-\u2013]\s*\d+)?)*)",
     re.IGNORECASE,
 )
+PAGE_RANGE = r"\d+(?:\s*[-\u2013~\u301c\uff5e]\s*\d+)?(?:\s*,\s*\d+(?:\s*[-\u2013~\u301c\uff5e]\s*\d+)?)*"
+LOCALIZED_PAGE_LABELS = [re.compile(pattern, re.IGNORECASE) for pattern in (
+    r"第\s*(" + PAGE_RANGE + r")\s*[頁页]",
+    r"(" + PAGE_RANGE + r")\s*(?:ページ|쪽)",
+    r"\b(?:p[áa]gs?\.|trang|tr\.)\s*(" + PAGE_RANGE + r")",
+)]
 
 
 def pdf_url(url: str) -> bool:
@@ -68,7 +74,8 @@ def audit_pdf_references(course: dict) -> tuple[list[str], int]:
                 count += 1
                 label = str(ref.get("label") or "")
                 location = f"M{module.get('id')}S{slide.get('id')}: PDF resource {label!r}"
-                label_pages = PDF_PAGE_LABEL.search(label)
+                label_pages = PDF_PAGE_LABEL.search(label) or next(
+                    (match for pattern in LOCALIZED_PAGE_LABELS if (match := pattern.search(label))), None)
                 fragment = urlsplit(url).fragment
                 opening_document = ref.get("whole_document") is True
                 if opening_document and not (
@@ -85,12 +92,12 @@ def audit_pdf_references(course: dict) -> tuple[list[str], int]:
                     errors.append(f"{location} needs a one-based #page= anchor")
                     continue
                 if not label_pages:
-                    errors.append(f"{location} must display p. or pp. and the supporting page/range")
+                    errors.append(f"{location} must display a page label and the supporting page/range")
                     continue
                 ranges = label_pages[1].split(",")
                 starts = []
                 for item in ranges:
-                    bounds = [int(value) for value in re.split(r"\s*[-\u2013]\s*", item.strip())]
+                    bounds = [int(value) for value in re.split(r"\s*[-\u2013~\u301c\uff5e]\s*", item.strip())]
                     starts.append(bounds[0])
                     if bounds[0] < 1 or bounds[-1] < bounds[0]:
                         errors.append(f"{location} has an invalid page range")
@@ -126,6 +133,7 @@ def check_course(
     course_json: Path,
     repo_root: Path | None,
     allowed_video_opt_outs: set[int],
+    allow_localized_poster: bool = False,
 ) -> tuple[list[str], list[str]]:
     root = course_json.parent
     course = json.loads(course_json.read_text(encoding="utf-8"))
@@ -239,9 +247,12 @@ def check_course(
         # and poster. Learner media and the locale README are still checked locally.
         catalog_root = root.parent.parent if root.parent.name == "locales" else root
         if catalog_root != root:
-            if any((root / name).exists() for name in ("thumbnail.png", "poster.json")):
+            if not allow_localized_poster and any((root / name).exists() for name in ("thumbnail.png", "poster.json")):
                 errors.append("locale must reuse the canonical English poster, without a local duplicate")
-            notes.append(f"shared English catalog poster: {catalog_root / 'thumbnail.png'}")
+            if allow_localized_poster:
+                notes.append(f"retained previously prepared locale poster: {root / 'thumbnail.png'}")
+            else:
+                notes.append(f"shared English catalog poster: {catalog_root / 'thumbnail.png'}")
         try:
             folder = catalog_root.resolve().relative_to(courses_root).as_posix()
         except ValueError:
@@ -254,7 +265,7 @@ def check_course(
         elif str(course.get("course_title") or "") not in local_readme.read_text(encoding="utf-8"):
             errors.append("course-local README.md does not contain course_title")
 
-        thumbnail = catalog_root / "thumbnail.png"
+        thumbnail = (root if allow_localized_poster else catalog_root) / "thumbnail.png"
         if not thumbnail.is_file():
             errors.append("thumbnail.png is missing")
         else:
@@ -272,6 +283,12 @@ def check_course(
             markdown = root_readme.read_text(encoding="utf-8")
             layout = section(markdown, "Repository layout")
             available = section(markdown, "Available Courses")
+            if catalog_root != root and course.get("localization"):
+                if root.name != course.get("language"):
+                    errors.append("locale folder does not match course.language")
+                locale_folder = root.resolve().relative_to(courses_root).as_posix()
+                if f"](courses/{locale_folder}/)" not in markdown:
+                    errors.append(f"root README Translations table is missing {locale_folder}")
             if folder not in layout:
                 errors.append(f"root README Repository layout is missing {folder}")
             if (f"`{folder}`" not in available
@@ -285,6 +302,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("course_json", type=Path)
     parser.add_argument("--repo-root", type=Path)
+    parser.add_argument("--allow-localized-poster", action="store_true",
+                        help="Retain an already prepared locale poster when publishing existing editions; new posters remain shared English by default")
     parser.add_argument(
         "--allow-missing-module-video",
         type=int,
@@ -297,7 +316,8 @@ def main() -> int:
     args = parser.parse_args()
 
     course_json = args.course_json.resolve()
-    errors, notes = check_course(course_json, args.repo_root, set(args.allow_missing_module_video))
+    errors, notes = check_course(course_json, args.repo_root, set(args.allow_missing_module_video),
+                                allow_localized_poster=args.allow_localized_poster)
     for note in notes:
         print(f"OK: {note}")
     for error in errors:

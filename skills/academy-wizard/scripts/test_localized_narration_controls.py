@@ -25,16 +25,16 @@ class LocalizedNarrationControls(unittest.TestCase):
             "no_narration", "narration_on_hint", "narration_off_hint",
             "narration_off_message", "play_narrated_video", "pause_narrated_video"])}
         result = render_module(self.course(labels), 0)
-        self.assertIn("const learnerUiLabel = (key, fallback) => videoUiLabels[key] || fallback;", result)
+        self.assertIn("function learnerText(key, fallback)", result)
         self.assertIn(json.dumps(labels, ensure_ascii=False), result)
         for key in labels:
-            self.assertIn("learnerUiLabel('" + key + "'", result)
+            self.assertIn("learnerText('" + key + "'", result)
 
     def test_english_fallbacks_and_default_narration_state_survive(self):
         result = render_module(self.course(), 0)
         self.assertIn('id="transcriptBtn" aria-label="Transcript" title="Transcript"', result)
         self.assertIn('id="narrationModeBtn" aria-label="Automatic narration" aria-pressed="true"', result)
-        self.assertIn("learnerUiLabel('close_transcript', 'Close transcript')", result)
+        self.assertIn("learnerText('close_transcript', 'Close transcript')", result)
 
 
 if __name__ == "__main__":

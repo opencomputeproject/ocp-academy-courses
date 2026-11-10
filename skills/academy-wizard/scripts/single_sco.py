@@ -50,28 +50,36 @@ def configuration(course):
         raise ValueError("Single-SCO quiz question IDs must be unique across all modules")
     if len(json.dumps(worst_state, separators=(",", ":"))) > 4096:
         raise ValueError("Single-SCO progress could exceed SCORM 1.2's 4096-character limit; compact the state design before building")
-    return {"slug": course["course_slug"], "modules": modules}
+    keys = ('lms_connection_failed', 'lms_storage_limit', 'browser_storage_blocked', 'lms_save_failed')
+    labels = {key: course.get('ui_labels', {})[key] for key in keys if key in course.get('ui_labels', {})}
+    return {"slug": course["course_slug"], "modules": modules, "labels": labels}
 
 
 def render_launch(course):
     config = json.dumps(configuration(course), ensure_ascii=True).replace("<", "\\u003c")
     title = html.escape(course["course_title"], quote=True)
     language = html.escape(course.get("language", "en"), quote=True)
+    javascript_required = html.escape(course.get('ui_labels', {}).get('javascript_required',
+        'This course requires JavaScript for navigation and progress tracking.'))
+    font_link = (f'<link rel="stylesheet" href="{html.escape(course["local_font_stylesheet"], quote=True)}">'
+                 if course.get('local_font_stylesheet') else '')
+    warning_font = "'Open Sans',sans-serif" if font_link else 'sans-serif'
     return f'''<!doctype html>
 <html lang="{language}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{title}</title>
+{font_link}
 <style>
 html,body{{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}}
 body{{display:flex;flex-direction:column}}
 #courseFrame{{width:100%;flex:1;min-height:0;border:0;display:block}}
 #saveWarning{{flex:0 0 auto;padding:14px;
-background:#fff;color:#333;border-bottom:3px solid #8DC63F;font:16px/1.4 sans-serif}}
+background:#fff;color:#333;border-bottom:3px solid #8DC63F;font:16px/1.4 {warning_font}}}
 </style>
 <script src="scorm_api.js"></script></head><body>
 <div id="saveWarning" role="alert" hidden></div>
 <iframe id="courseFrame" title="{title}" allow="autoplay; fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
-<noscript>This course requires JavaScript for navigation and progress tracking.</noscript>
+<noscript>{javascript_required}</noscript>
 <script id="singleSCOConfig" type="application/json">{config}</script>
 <script src="single_sco_runtime.js"></script>
 </body></html>

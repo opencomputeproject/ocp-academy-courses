@@ -1114,7 +1114,7 @@ def render_module(course: dict, module_index: int) -> str:
       <button class="btn-audio-speed btn-script-audio" id="transcriptBtn" aria-label="{esc(ui(course, 'transcript', 'Transcript'))}" title="{esc(ui(course, 'transcript', 'Transcript'))}" aria-controls="transcriptPanel" aria-expanded="false">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h8l4 4v14H5V3h2zM14 3v5h5M8 12h8M8 16h8"/></svg>
       </button>
-      <button class="btn-audio-speed btn-script-audio" id="narrationModeBtn" aria-label="{esc(ui(course, 'toggle_narration', 'Automatic narration'))}" aria-pressed="true" title="{esc(ui(course, 'narration_on_hint', 'Narration on — click to turn off'))}">
+      <button class="btn-audio-speed btn-script-audio" id="narrationModeBtn" aria-label="{esc(ui(course, 'automatic_narration', ui(course, 'toggle_narration', 'Automatic narration')))}" aria-pressed="true" title="{esc(ui(course, 'narration_on', ui(course, 'narration_on_hint', 'Narration on — click to turn off')))}">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path class="narration-on-icon" d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14"/><path class="narration-off-icon" d="m16 9 5 6m0-6-5 6"/></svg>
       </button>
     </div>

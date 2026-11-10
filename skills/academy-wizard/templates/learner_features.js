@@ -1,6 +1,8 @@
 // This template runs inside the module closure. Controls do not modify defaults.
+function learnerText(key, fallback) {
+  return String(videoUiLabels[key] ?? fallback);
+}
 
-const learnerUiLabel = (key, fallback) => videoUiLabels[key] || fallback;
 
 // Keep desktop glossary bubbles inside the viewport, including rightmost pills.
 function fitGlossaryTooltip(chip) {
@@ -54,13 +56,13 @@ document.fonts?.ready.then(fitHeadingWords);
 window.addEventListener('resize', fitHeadingWords);
 const transcriptPanel = document.createElement('aside');
 transcriptPanel.id = 'transcriptPanel'; transcriptPanel.className = 'transcript-panel';
-transcriptPanel.setAttribute('aria-label', learnerUiLabel('slide_transcript', 'Slide transcript')); transcriptPanel.hidden = true;
+transcriptPanel.setAttribute('aria-label', learnerText('slide_transcript', 'Slide transcript')); transcriptPanel.hidden = true;
 transcriptPanel.innerHTML = '<button id="transcriptClose" class="learner-control">Close transcript</button><h2 id="transcriptTitle" tabindex="-1"></h2><div id="transcriptText"></div>';
-transcriptPanel.querySelector('#transcriptClose').textContent = learnerUiLabel('close_transcript', 'Close transcript');
+transcriptPanel.querySelector('#transcriptClose').textContent = learnerText('close_transcript', 'Close transcript');
 document.body.appendChild(transcriptPanel);
 const lmsNote = document.createElement('div');
 lmsNote.className = 'lms-navigation-note'; lmsNote.hidden = true; lmsNote.setAttribute('role','status');
-lmsNote.textContent = learnerUiLabel('lms_navigation_note', 'Use the LMS course navigation to open another module so its completion is recorded correctly.');
+lmsNote.textContent = learnerText('lms_navigation_note', 'Use the LMS course navigation to open another module so its completion is recorded correctly.');
 document.body.appendChild(lmsNote);
 const transcriptBtn = document.getElementById('transcriptBtn');
 const narrationModeBtn = document.getElementById('narrationModeBtn');
@@ -68,9 +70,9 @@ const narrationHint = document.querySelector('.hero-start-hint span');
 const narrationEnabledHint = narrationHint ? narrationHint.textContent : '';
 function updateTranscript() {
   const entry = transcriptMap[String(currentSlide)] || {};
-  document.getElementById('transcriptTitle').textContent = entry.title || learnerUiLabel('transcript', 'Transcript');
+  document.getElementById('transcriptTitle').textContent = entry.title || learnerText('transcript', 'Transcript');
   const body = document.getElementById('transcriptText'); body.replaceChildren();
-  for (const paragraph of (entry.text || learnerUiLabel('no_narration', 'No narration on this slide.')).split(/\n\s*\n/)) {
+  for (const paragraph of (entry.text || learnerText('no_narration', 'No narration on this slide.')).split(/\n\s*\n/)) {
     const p = document.createElement('p'); p.textContent = paragraph; body.appendChild(p);
   }
 }
@@ -89,11 +91,11 @@ document.addEventListener('keydown', e => {
 function updateNarrationMode() {
   narrationModeBtn.setAttribute('aria-pressed', String(autoPlayAudio));
   narrationModeBtn.title = autoPlayAudio
-    ? learnerUiLabel('narration_on_hint', 'Narration on — click to turn off')
-    : learnerUiLabel('narration_off_hint', 'Narration off — click to turn on');
+    ? learnerText('narration_on', learnerText('narration_on_hint', 'Narration on — click to turn off'))
+    : learnerText('narration_off', learnerText('narration_off_hint', 'Narration off — click to turn on'));
   if (narrationHint) narrationHint.textContent = autoPlayAudio
     ? narrationEnabledHint
-    : learnerUiLabel('narration_off_message', 'Narration is off. Read the transcript or use Play for this slide.');
+    : learnerText('narration_off_message', learnerText('narration_off_hint', 'Narration is off. Read the transcript or use Play for this slide.'));
 }
 narrationModeBtn.addEventListener('click', () => {
   autoPlayAudio = !autoPlayAudio;
@@ -148,7 +150,7 @@ if (inLMS && !reviewMode && !SCORM.isSingleSCO && !directModuleLinks) {
     if (url.origin === location.origin && /\/index\.html$/.test(url.pathname)) {
       const note = document.createElement('p');
       note.className = 'lms-module-handoff';
-      note.textContent = 'Open Course Home using the Syllabus in the left sidebar.';
+      note.textContent = learnerText('home_syllabus_note', 'Open Course Home using the Syllabus in the left sidebar.');
       note.style.cssText = 'margin:16px 0;font-size:1rem;line-height:1.6;color:var(--text-secondary);';
       link.replaceWith(note);
     }
@@ -206,10 +208,8 @@ function updateTeachingVideoControls() {
     if (!button) return;
     const paused = audioPlayer.paused || !motionEnabled();
     button.innerHTML = paused ? '<span class="video-icon video-icon-play" aria-hidden="true"></span>' : '<span class="video-icon video-icon-pause" aria-hidden="true"></span>';
-    const label = paused ? learnerUiLabel('play_narrated_video', 'Play narrated video')
-      : learnerUiLabel('pause_narrated_video', 'Pause narrated video');
-    button.setAttribute('aria-label', label);
-    button.title = label;
+    button.setAttribute('aria-label', paused ? learnerText('play_narrated_video', 'Play narrated video') : learnerText('pause_narrated_video', 'Pause narrated video'));
+    button.title = button.getAttribute('aria-label');
   });
 }
 function playSyncedVideos() {
