@@ -90,9 +90,13 @@ document.addEventListener('keydown', e => {
 });
 function updateNarrationMode() {
   narrationModeBtn.setAttribute('aria-pressed', String(autoPlayAudio));
+  // Earlier translations use off_hint for the tooltip and off_message for copy.
+  const legacyOffTitle = videoUiLabels.narration_off_message != null
+    ? learnerText('narration_off_hint', 'Narration off — click to turn on')
+    : 'Narration off — click to turn on';
   narrationModeBtn.title = autoPlayAudio
     ? learnerText('narration_on', learnerText('narration_on_hint', 'Narration on — click to turn off'))
-    : learnerText('narration_off', learnerText('narration_off_hint', 'Narration off — click to turn on'));
+    : learnerText('narration_off', legacyOffTitle);
   if (narrationHint) narrationHint.textContent = autoPlayAudio
     ? narrationEnabledHint
     : learnerText('narration_off_message', learnerText('narration_off_hint', 'Narration is off. Read the transcript or use Play for this slide.'));

@@ -1,248 +1,144 @@
-<!doctype html>
-<html lang="ko">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>새로운 시스템 시운전 시퀀스</title>
-  <style>
-    * { box-sizing: border-box; }
-    html, body {
-      width: 1280px;
-      height: 720px;
-      margin: 0;
-      overflow: hidden;
-      background: #f7f9fc;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-    svg { display: block; width: 1280px; height: 720px; }
-    text { letter-spacing: 0; }
-    .stage-title { font-size: 17.2px; font-weight: 800; }
-    .stage-note { font-size: 12.0px; font-weight: 700; }
-    .equipment-title { font-size: 18.9px; font-weight: 800; fill: #343895; }
-    .equipment-note { font-size: 12.9px; font-weight: 700; fill: #5f6062; }
-    .micro-label { font-size: 11.2px; font-weight: 800; fill: #5f6062; }
-    .status { font-size: 18.9px; font-weight: 800; fill: #1f2937; }
-  </style>
+<!DOCTYPE html><html lang="ko-KR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단계별 파편 헹구기 예시</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}
+svg{display:block;width:100vw;height:100vh}
+text{font-family:Arial,Helvetica,sans-serif;letter-spacing:0}
+.stage-title{font-size:27px;font-weight:700;fill:#292b30}.stage-note{font-size:21px;fill:#5f6062}
+.h{font-size:27px;font-weight:700;fill:#292b30}.b{font-size:23px;fill:#5f6062}.s{font-size:19px;fill:#5f6062}
+.pipe{fill:none;stroke:#d9dee3;stroke-width:12;stroke-linejoin:round;stroke-linecap:round}
+.active{fill:none;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+</style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="새로운 기술 냉각 시스템가 격리된 콜드 플레이트로 플러시되고 연결된 콜드 플레이트로 다시 플러시된 다음 기준선을 샘플링하고 기록하기 전에 최종 유체로 채워지는 것을 보여주는 무성 애니메이션입니다.">
-  <defs>
-    <clipPath id="vial-clip"><rect x="927" y="546" width="42" height="54" rx="8"/></clipPath>
-  </defs>
-
-  <rect width="1280" height="720" fill="#f7f9fc"/>
-  <rect x="30" y="24" width="1220" height="672" rx="24" fill="#ffffff" stroke="#d7dde8" stroke-width="2"/>
-
-  <g id="stage-0" transform="translate(74 54)">
-    <rect id="stage-bg-0" width="344" height="74" rx="14" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
-    <circle id="stage-dot-0" cx="35" cy="37" r="20" fill="#343895"/>
-    <text x="35" y="44" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff">1</text>
-    <text id="stage-title-0" x="67" y="31" class="stage-title" fill="#343895">분리 + 플러시</text>
-    <text id="stage-note-0" x="67" y="54" class="stage-note" fill="#5f6062">건설 잔해를 잡아라</text>
-  </g>
-  <g id="stage-1" transform="translate(468 54)">
-    <rect id="stage-bg-1" width="344" height="74" rx="14" fill="#f8fafc" stroke="#cbd2dc" stroke-width="3"/>
-    <circle id="stage-dot-1" cx="35" cy="37" r="20" fill="#a6b0bf"/>
-    <text x="35" y="44" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff">2</text>
-    <text id="stage-title-1" x="67" y="31" class="stage-title" fill="#7a8492">연결 + 반복</text>
-    <text id="stage-note-1" x="67" y="54" class="stage-note" fill="#7a8492">콜드 플레이트 경로 포함</text>
-  </g>
-  <g id="stage-2" transform="translate(862 54)">
-    <rect id="stage-bg-2" width="344" height="74" rx="14" fill="#f8fafc" stroke="#cbd2dc" stroke-width="3"/>
-    <circle id="stage-dot-2" cx="35" cy="37" r="20" fill="#a6b0bf"/>
-    <text x="35" y="44" text-anchor="middle" font-size="20" font-weight="800" fill="#ffffff">3</text>
-    <text id="stage-title-2" x="67" y="31" class="stage-title" fill="#7a8492">최종 채우기 + 샘플</text>
-    <text id="stage-note-2" x="67" y="54" class="stage-note" fill="#7a8492">기준선 레코드 확립</text>
-  </g>
-
-  <g id="system" transform="translate(0 8)">
-    <path d="M226 357 H342 M484 357 H620 M620 357 H756 M1092 357 V512 H226 V425" fill="none" stroke="#d8dee7" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M620 357 V512" fill="none" stroke="#d8dee7" stroke-width="20" stroke-linecap="round"/>
-
-    <g transform="translate(82 278)">
-      <rect width="144" height="147" rx="18" fill="#eef0fb" stroke="#343895" stroke-width="4"/>
-      <text x="72" y="36" text-anchor="middle" class="equipment-title">CDU / 펌프</text>
-      <circle cx="72" cy="88" r="31" fill="#ffffff" stroke="#343895" stroke-width="5"/>
-      <path id="pump-rotor" d="M72 61 L82 82 L105 88 L82 96 L72 119 L62 96 L39 88 L62 82 Z" fill="#343895"/>
-      <text x="72" y="136" text-anchor="middle" class="equipment-note">순환하다</text>
-    </g>
-
-    <g transform="translate(342 289)">
-      <rect x="0" y="16" width="142" height="104" rx="20" fill="#ffffff" stroke="#5f6062" stroke-width="4"/>
-      <ellipse cx="71" cy="17" rx="53" ry="16" fill="#f8fafc" stroke="#5f6062" stroke-width="4"/>
-      <ellipse cx="71" cy="119" rx="53" ry="16" fill="#f8fafc" stroke="#5f6062" stroke-width="4"/>
-      <g id="filter-dots" fill="#8b95a2">
-        <circle cx="48" cy="42" r="3"/><circle cx="69" cy="40" r="3"/><circle cx="91" cy="43" r="3"/>
-        <circle cx="39" cy="61" r="3"/><circle cx="60" cy="60" r="3"/><circle cx="82" cy="61" r="3"/><circle cx="103" cy="59" r="3"/>
-        <circle cx="48" cy="80" r="3"/><circle cx="70" cy="80" r="3"/><circle cx="92" cy="81" r="3"/>
-        <circle cx="39" cy="99" r="3"/><circle cx="60" cy="99" r="3"/><circle cx="82" cy="100" r="3"/><circle cx="103" cy="98" r="3"/>
-      </g>
-      <text x="71" y="151" text-anchor="middle" class="equipment-title">인라인 필터</text>
-    </g>
-
-    <g id="junction" transform="translate(620 357)">
-      <circle r="25" fill="#ffffff" stroke="#5f6062" stroke-width="4"/>
-      <path id="valve-arm" d="M-13 -13 L13 13" fill="none" stroke="#343895" stroke-width="7" stroke-linecap="round"/>
-    </g>
-    <text x="620" y="320" text-anchor="middle" class="micro-label">흐름 경로</text>
-    <text id="bypass-label" x="678" y="456" text-anchor="middle" class="micro-label">바이패스 활성</text>
-
-    <g id="cold-plates" transform="translate(756 245)" opacity="0.34">
-      <rect width="336" height="218" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="4"/>
-      <text x="168" y="35" text-anchor="middle" class="equipment-title">콜드 플레이트 경로</text>
-      <g transform="translate(26 57)">
-        <rect width="82" height="124" rx="12" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
-        <path d="M18 20 V104 M32 20 V104 M46 20 V104 M60 20 V104" stroke="#8dc63f" stroke-width="4" stroke-linecap="round"/>
-      </g>
-      <g transform="translate(127 57)">
-        <rect width="82" height="124" rx="12" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
-        <path d="M18 20 V104 M32 20 V104 M46 20 V104 M60 20 V104" stroke="#8dc63f" stroke-width="4" stroke-linecap="round"/>
-      </g>
-      <g transform="translate(228 57)">
-        <rect width="82" height="124" rx="12" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
-        <path d="M18 20 V104 M32 20 V104 M46 20 V104 M60 20 V104" stroke="#8dc63f" stroke-width="4" stroke-linecap="round"/>
-      </g>
-      <g id="isolation-mark" transform="translate(-9 109)">
-        <circle r="25" fill="#fff7e8" stroke="#d88911" stroke-width="4"/>
-        <path d="M-11 -11 L11 11 M11 -11 L-11 11" stroke="#d88911" stroke-width="6" stroke-linecap="round"/>
-      </g>
-    </g>
-
-    <path id="active-path" d="M226 357 H342 H484 H620 V512 H226 V425" fill="none" stroke="#343895" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
-    <g id="flow-particles"></g>
-
-    <path id="debris-path" d="M226 357 H342" fill="none" stroke="none"/>
-    <g id="debris-particles"></g>
-
-    <g id="sample" opacity="0" transform="translate(0 8)">
-      <path d="M948 504 V548" stroke="#8dc63f" stroke-width="7" stroke-linecap="round"/>
-      <rect x="920" y="540" width="56" height="70" rx="10" fill="#ffffff" stroke="#5f6062" stroke-width="4"/>
-      <rect id="sample-fill" x="927" y="595" width="42" height="0" fill="#8dc63f" clip-path="url(#vial-clip)"/>
-      <text x="948" y="635" text-anchor="middle" class="micro-label">샘플</text>
-      <g id="record" transform="translate(980 503)">
-        <rect width="210" height="112" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
-        <path d="M25 55 L40 70 L69 37" fill="none" stroke="#8dc63f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-        <text x="140" y="47" text-anchor="middle" class="equipment-title">기준선</text>
-        <text x="140" y="72" text-anchor="middle" class="equipment-note">기록이 승인됨</text>
-      </g>
-    </g>
-  </g>
-
-  <g>
-    <rect id="status-bg" x="90" y="632" width="1100" height="46" rx="23" fill="#eef0fb" stroke="#343895" stroke-width="2"/>
-    <text id="status" x="640" y="662" text-anchor="middle" class="status">콜드 플레이트이 격리된 상태에서 구성 루프를 플러시합니다.</text>
-  </g>
+<body data-duration-ms="18000" data-poster-ms="16500">
+<svg viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">이차 분리, 잔해 포착, 연결된 경로 펌핑 및 최종 액체 기준선 기록</title>
+<desc id="desc">이것은 완전한 화학 청소 또는 부동태화 절차가 아닌, 가상의 잔해 헹구기 예제입니다. 닫힌 보조 루프는 분리된 콜드 플레이트를 우회하고, 그런 다음 세 개의 연결된 평행판 경로로 순환합니다. 청결도와 화학 물질 제거가 확인된 후, 최종 유체를 샘플링하고 기준선를 기록합니다.</desc>
+<defs><clipPath id="vial-clip"><rect x="945" y="488" width="30" height="47" rx="4"></rect></clipPath></defs>
+<rect width="1200" height="675" fill="#fff"></rect>
+<g id="stage-0" data-text-box="true"><rect id="stage-bg-0" x="24" y="24" width="368" height="110" rx="8" fill="#f5faee" stroke="#8dc63f" stroke-width="2"></rect>
+<text x="48" y="70" class="stage-title">격리 + 플러싱</text><text x="48" y="108" class="stage-note">건설 폐기물을 포착하다</text></g>
+<g id="stage-1" data-text-box="true"><rect id="stage-bg-1" x="416" y="24" width="368" height="110" rx="8" fill="#f5faee" stroke="#8dc63f" stroke-width="2"></rect>
+<text x="440" y="70" class="stage-title">연결 + 재실시</text><text x="440" y="108" class="stage-note">냉각판 경로를 포함합니다.</text></g>
+<g id="stage-2" data-text-box="true"><rect id="stage-bg-2" x="808" y="24" width="368" height="110" rx="8" fill="#f5faee" stroke="#74a82d" stroke-width="3"></rect>
+<text x="832" y="70" class="stage-title">최종 충전 + 채취</text><text x="832" y="108" class="stage-note">기준값 기록 및 보관</text></g>
+<text id="state-label" x="600" y="192" text-anchor="middle" class="h">청정도 확인 - 최종 냉각수 충전, 시료 채취, 기준값 기록</text>
+<path d="M158 350 H550 V255 H960 M550 350 V440 M960 440 H110 V398" class="pipe"></path>
+<g id="plate-pipes" class="pipe">
+<path d="M740 255 V308 H720 V336 H760 V362 H720 V390 H740 V440"></path>
+<path d="M850 255 V308 H830 V336 H870 V362 H830 V390 H850 V440"></path>
+<path d="M960 255 V308 H940 V336 H980 V362 H940 V390 H960 V440"></path>
+</g>
+<path id="bypass-active" d="M158 350 H550 V440 H110 V398" class="active" stroke="#343895" opacity="0"></path>
+<path id="plate-feed" d="M158 350 H550 V255 H960" class="active" stroke="#74a82d" opacity="1"></path>
+<path id="plate-return" d="M960 440 H110 V398" class="active" stroke="#74a82d" opacity="1"></path>
+<g id="plates" opacity="1">
+<text x="850" y="237" text-anchor="middle" class="h">콜드 플레이트 - 병렬 경로</text>
+<g fill="#fff" stroke="#343895" stroke-width="2"><rect x="700" y="290" width="80" height="117" rx="6"></rect><rect x="810" y="290" width="80" height="117" rx="6"></rect><rect x="920" y="290" width="80" height="117" rx="6"></rect></g>
+<g id="plate-active" class="active" stroke="#74a82d" opacity="1">
+<path d="M740 255 V308 H720 V336 H760 V362 H720 V390 H740 V440"></path>
+<path d="M850 255 V308 H830 V336 H870 V362 H830 V390 H850 V440"></path>
+<path d="M960 255 V308 H940 V336 H980 V362 H940 V390 H960 V440"></path>
+</g>
+</g>
+<g id="flow-particles"><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="740" cy="405.74200439453125"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="854.30908203125" cy="362"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="942.8046875" cy="308"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="735.0753173828125" cy="255"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="720.3575439453125" cy="255"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="681.1953125" cy="255"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="550" cy="345.5913391113281"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="503.02423095703125" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="427.1953430175781" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="278.74200439453125" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="190.69088745117188" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="147.8046875" cy="440"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="222.9246826171875" cy="440"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="347.6424560546875" cy="440.0000305175781"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="496.8046875" cy="440.0000305175781"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="498.59130859375" cy="440.0000305175781"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="659.975830078125" cy="440.00006103515625"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="845.8046875" cy="440.00006103515625"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="740" cy="405.74200439453125"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="854.30908203125" cy="362"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="942.8046875" cy="308"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="735.0753173828125" cy="255"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="720.3575439453125" cy="255"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="681.1953125" cy="255"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="550" cy="345.5913391113281"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="503.02423095703125" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="427.1953430175781" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="278.74200439453125" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="190.69088745117188" cy="350"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="147.8046875" cy="440"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="222.9246826171875" cy="440"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="347.6424560546875" cy="440.0000305175781"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="496.8046875" cy="440.0000305175781"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="498.59130859375" cy="440.0000305175781"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="659.975830078125" cy="440.00006103515625"></circle><circle r="4" fill="#74a82d" stroke="#ffffff" stroke-width="1.5" cx="845.8046875" cy="440.00006103515625"></circle></g>
+<circle cx="110" cy="350" r="48" fill="#f1f2fb" stroke="#343895" stroke-width="3"></circle>
+<g id="pump-rotor" fill="#343895" transform="rotate(786.5 110 350)"><path d="M110 321 L120 340 L139 350 L120 360 L110 379 L100 360 L81 350 L100 340Z"></path></g>
+<text x="110" y="272" text-anchor="middle" class="h">CDU / 펌프</text>
+<text x="110" y="515" text-anchor="middle" class="s">돌아오다</text>
+<g id="filter">
+<rect x="292" y="313" width="116" height="74" fill="#fff" stroke="#5f6062" stroke-width="2"></rect>
+<ellipse cx="292" cy="350" rx="14" ry="37" fill="#fff" stroke="#5f6062" stroke-width="2"></ellipse>
+<ellipse cx="408" cy="350" rx="14" ry="37" fill="#f5faee" stroke="#5f6062" stroke-width="2"></ellipse>
+<g fill="#a5adb6"><circle cx="315" cy="332" r="3"></circle><circle cx="338" cy="332" r="3"></circle><circle cx="361" cy="332" r="3"></circle><circle cx="384" cy="332" r="3"></circle><circle cx="315" cy="368" r="3"></circle><circle cx="338" cy="368" r="3"></circle><circle cx="361" cy="368" r="3"></circle><circle cx="384" cy="368" r="3"></circle></g>
+<g id="captured-debris"><circle r="3.5" fill="#5f6062" cx="316" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="338" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="360" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="382" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="316" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="338" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="360" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="382" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="316" cy="361" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="338" cy="361" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="360" cy="361" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="382" cy="361" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="316" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="338" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="360" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="382" cy="343" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="316" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="338" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="360" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="382" cy="352" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="316" cy="361" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="338" cy="361" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="360" cy="361" opacity="0"></circle><circle r="3.5" fill="#5f6062" cx="382" cy="361" opacity="0"></circle></g>
+</g>
+<g id="moving-debris"><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="342" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="350" opacity="0"></circle><circle r="4" fill="#5f6062" cx="287" cy="358" opacity="0"></circle></g>
+<text x="350" y="272" text-anchor="middle" class="h">인라인 필터</text>
+<text id="filter-label" x="350" y="423" text-anchor="middle" class="s">필터들을 필요에 따라 교체하세요.</text>
+<circle cx="550" cy="350" r="18" fill="#fff" stroke="#5f6062" stroke-width="2"></circle>
+<path id="valve" d="M540 340 L560 360" stroke="#74a82d" stroke-width="5" stroke-linecap="round" transform="rotate(90 550 350)"></path>
+<g id="isolation" transform="translate(620 255)" opacity="0"><circle r="19" fill="#fff" stroke="#343895" stroke-width="3"></circle><path d="M610 245 L630 265 M630 245 L610 265" transform="translate(-620 -255)" stroke="#343895" stroke-width="3" stroke-linecap="round"></path></g>
+<text id="path-label" x="550" y="483" text-anchor="middle" class="s">바이패스 닫힘</text>
+<g id="sample" opacity="1">
+<path d="M960 440 V480" stroke="#74a82d" stroke-width="4"></path>
+<rect x="939" y="480" width="42" height="60" rx="6" fill="#fff" stroke="#5f6062" stroke-width="2"></rect>
+<rect id="sample-fill" x="945" y="535" width="30" height="0" fill="#8dc63f" clip-path="url(#vial-clip)"></rect>
+<text x="960" y="573" text-anchor="middle" class="s">샘플</text>
+</g>
+<g id="record" opacity="0" data-text-box="true">
+<rect x="1016" y="474" width="160" height="98" rx="8" fill="#f5faee" stroke="#8dc63f" stroke-width="2"></rect>
+<text x="1096" y="513" text-anchor="middle" class="b" style="font-weight:700;fill:#292b30">기준값</text>
+<text x="1096" y="548" text-anchor="middle" class="s">기록·보관</text>
+</g>
+<path d="M24 602 H1176" stroke="#d6dbe0" stroke-width="1.5"></path>
+<text x="600" y="639" text-anchor="middle" class="s">잔해 제거용 플러싱의 예입니다. 화학 세정, 부동태화, 세정제 제거는 별도로 검증해야 합니다.</text>
+<path id="route-bypass" d="M158 350 H550 V440 H110 V398" fill="none" stroke="none"></path>
+<path id="route-0" d="M158 350 H550 V255 H740 V308 H720 V336 H760 V362 H720 V390 H740 V440 H110 V398" fill="none" stroke="none"></path>
+<path id="route-1" d="M158 350 H550 V255 H850 V308 H830 V336 H870 V362 H830 V390 H850 V440 H110 V398" fill="none" stroke="none"></path>
+<path id="route-2" d="M158 350 H550 V255 H960 V308 H940 V336 H980 V362 H940 V390 H960 V440 H110 V398" fill="none" stroke="none"></path>
 </svg>
-
 <script>
-  const duration = 15;
-  const bypassPath = 'M226 357 H342 H484 H620 V512 H226 V425';
-  const coldPath = 'M226 357 H342 H484 H620 H756 C790 357 792 318 822 318 H1026 C1064 318 1068 357 1092 357 V512 H226 V425';
-  const colors = ['#343895', '#00a7c4', '#8dc63f'];
-  const paleColors = ['#eef0fb', '#eef7f9', '#f4faef'];
-  const titles = ['분리 + 플러시', '연결 + 반복', '최종 채우기 + 샘플'];
-
-  function clamp(value, min = 0, max = 1) { return Math.min(max, Math.max(min, value)); }
-  function smooth(value) { const x = clamp(value); return x * x * (3 - 2 * x); }
-
-  function makeParticles(groupId, count, radius, fill) {
-    const group = document.getElementById(groupId);
-    const nodes = [];
-    for (let index = 0; index < count; index += 1) {
-      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('r', String(radius));
-      circle.setAttribute('fill', fill);
-      circle.setAttribute('stroke', '#ffffff');
-      circle.setAttribute('stroke-width', '2');
-      group.appendChild(circle);
-      nodes.push(circle);
-    }
-    return nodes;
+const DURATION=18;
+const colors=['#343895','#00a0b5','#74a82d'];
+const pale=['#eef0fb','#eef8fa','#f5faee'];
+const ns='http://www.w3.org/2000/svg';
+const clamp=x=>Math.max(0,Math.min(1,x));
+const smooth=x=>{x=clamp(x);return x*x*(3-2*x)};
+const make=(id,n,r,color)=>Array.from({length:n},()=>{const c=document.createElementNS(ns,'circle');c.setAttribute('r',r);c.setAttribute('fill',color);document.getElementById(id).append(c);return c});
+const flow=make('flow-particles',18,4,'#343895');
+flow.forEach(p=>{p.setAttribute('stroke','#ffffff');p.setAttribute('stroke-width','1.5')});
+const debris=make('moving-debris',12,4,'#5f6062');
+const captured=make('captured-debris',12,3.5,'#5f6062');
+const routes=['route-bypass','route-0','route-1','route-2'].map(id=>document.getElementById(id));
+window.renderAt=function(rawTime){
+  // Clamp the master timeline so an encoded final frame never restarts the first stage.
+  const t=Math.max(0,Math.min(DURATION,rawTime));
+  const stage=t<6?0:t<12?1:2;
+  for(let i=0;i<3;i++){
+    const done=i<stage,active=i===stage;
+    document.getElementById('stage-bg-'+i).setAttribute('fill',active?pale[i]:done?'#f5faee':'#fafbfc');
+    document.getElementById('stage-bg-'+i).setAttribute('stroke',active?colors[i]:done?'#8dc63f':'#c4c9d0');
+    document.getElementById('stage-bg-'+i).setAttribute('stroke-width',active?3:2);
   }
-
-  const flowParticles = makeParticles('flow-particles', 14, 7, colors[0]);
-  const debrisParticles = makeParticles('debris-particles', 6, 5, '#5f6062');
-  const activePath = document.getElementById('active-path');
-  const debrisPath = document.getElementById('debris-path');
-
-  function stageAt(t) {
-    if (t < 5) return 0;
-    if (t < 10) return 1;
-    return 2;
+  document.getElementById('state-label').textContent=["콜드 플레이트 격리 - 바이패스 열림","콜드 플레이트 연결 - 필요에 따라 플러싱 반복","청정도 확인 - 최종 냉각수 충전, 시료 채취, 기준값 기록"][stage];
+  document.getElementById('bypass-active').setAttribute('opacity',stage===0?1:0);
+  for(const id of ['plate-feed','plate-return','plate-active']){
+    document.getElementById(id).setAttribute('opacity',stage===0?0:1);
+    document.getElementById(id).setAttribute('stroke',colors[stage]);
   }
-
-  function setStages(stage) {
-    for (let index = 0; index < 3; index += 1) {
-      const active = index === stage;
-      document.getElementById(`stage-bg-${index}`).setAttribute('fill', active ? paleColors[index] : '#f8fafc');
-      document.getElementById(`stage-bg-${index}`).setAttribute('stroke', active ? colors[index] : '#cbd2dc');
-      document.getElementById(`stage-bg-${index}`).setAttribute('stroke-width', active ? '5' : '3');
-      document.getElementById(`stage-dot-${index}`).setAttribute('fill', active ? colors[index] : '#a6b0bf');
-      document.getElementById(`stage-title-${index}`).setAttribute('fill', active ? colors[index] : '#7a8492');
-      document.getElementById(`stage-note-${index}`).setAttribute('fill', active ? '#5f6062' : '#8b95a2');
-    }
-  }
-
-  function animateFlow(t, stage) {
-    activePath.setAttribute('d', stage === 0 ? bypassPath : coldPath);
-    activePath.setAttribute('stroke', colors[stage]);
-    const length = activePath.getTotalLength();
-    flowParticles.forEach((particle, index) => {
-      const progress = (t * 0.18 - index / flowParticles.length + 2) % 1;
-      const point = activePath.getPointAtLength(progress * length);
-      particle.setAttribute('cx', String(point.x));
-      particle.setAttribute('cy', String(point.y));
-      particle.setAttribute('fill', colors[stage]);
-    });
-  }
-
-  function animateDebris(t, stage) {
-    const local = t % 5;
-    const amount = stage === 0 ? 1 : stage === 1 ? 0.45 : 0;
-    const length = debrisPath.getTotalLength();
-    debrisParticles.forEach((particle, index) => {
-      const progress = (local * 0.25 - index * 0.17 + 2) % 1;
-      const point = debrisPath.getPointAtLength(progress * length);
-      particle.setAttribute('cx', String(point.x));
-      particle.setAttribute('cy', String(point.y + ((index % 3) - 1) * 8));
-      particle.setAttribute('opacity', String(amount * (1 - smooth((progress - 0.76) / 0.24))));
-    });
-    document.getElementById('filter-dots').setAttribute('opacity', String(0.4 + amount * 0.6));
-  }
-
-  window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
-    const stage = stageAt(t);
-    const local = t % 5;
-    setStages(stage);
-    animateFlow(t, stage);
-    animateDebris(t, stage);
-
-    document.getElementById('pump-rotor').setAttribute('transform', `rotate(${t * 150} 72 88)`);
-    document.getElementById('cold-plates').setAttribute('opacity', stage === 0 ? '0.34' : '1');
-    document.getElementById('isolation-mark').setAttribute('opacity', stage === 0 ? '1' : '0');
-    document.getElementById('valve-arm').setAttribute('transform', stage === 0 ? 'rotate(0)' : 'rotate(45)');
-    document.getElementById('valve-arm').setAttribute('stroke', colors[stage]);
-    document.getElementById('bypass-label').textContent = stage === 0 ? '바이패스 활성' : '활성 플레이트';
-    document.getElementById('bypass-label').setAttribute('fill', colors[stage]);
-
-    const sampleProgress = stage === 2 ? smooth((local - 0.6) / 2.4) : 0;
-    document.getElementById('sample').setAttribute('opacity', String(sampleProgress));
-    document.getElementById('sample-fill').setAttribute('y', String(595 - 47 * sampleProgress));
-    document.getElementById('sample-fill').setAttribute('height', String(47 * sampleProgress));
-    document.getElementById('record').setAttribute('opacity', String(smooth((sampleProgress - 0.5) / 0.5)));
-
-    const statuses = [
-      '콜드 플레이트이 격리된 상태에서 구성 루프를 플러시합니다.',
-      '필요한 경우 필터를 교체하고 콜드 플레이트를 연결한 후 플러시를 반복합니다.',
-      '최종 열전달 유체를 채우고 기준선을 샘플링하고 기록합니다.'
-    ];
-    document.getElementById('status').textContent = statuses[stage];
-    document.getElementById('status-bg').setAttribute('fill', paleColors[stage]);
-    document.getElementById('status-bg').setAttribute('stroke', colors[stage]);
-  };
-
-  window.renderAt(0);
+  document.getElementById('plates').setAttribute('opacity',stage===0?0.32:1);
+  document.getElementById('isolation').setAttribute('opacity',stage===0?1:0);
+  document.getElementById('valve').setAttribute('transform',stage===0?'':'rotate(90 550 350)');
+  document.getElementById('valve').setAttribute('stroke',colors[stage]);
+  document.getElementById('path-label').textContent=stage===0?"바이패스 사용 중":"바이패스 닫힘";
+  document.getElementById('pump-rotor').setAttribute('transform','rotate('+t*65+' 110 350)');
+  flow.forEach((p,i)=>{
+    const route=stage===0?routes[0]:routes[1+i%3];
+    const travel=((t*0.13-i/flow.length)%1+1)%1;
+    const pt=route.getPointAtLength(travel*route.getTotalLength());
+    p.setAttribute('cx',pt.x);p.setAttribute('cy',pt.y);p.setAttribute('fill',colors[stage]);
+  });
+  // Debris travels to the filter once; captured material does not repeatedly disappear.
+  debris.forEach((p,i)=>{
+    const start=i<8?0.4+i*0.5:6.4+(i-8)*0.65;
+    const progress=clamp((t-start)/1.0);
+    p.setAttribute('cx',175+progress*112);p.setAttribute('cy',350+(i%3-1)*8);
+    p.setAttribute('opacity',t>=start&&progress<1&&stage!==2?1:0);
+    captured[i].setAttribute('cx',316+(i%4)*22);captured[i].setAttribute('cy',343+Math.floor(i/4)*9);
+    captured[i].setAttribute('opacity',progress===1&&stage!==2?1:0);
+  });
+  document.getElementById('filter-label').textContent=stage===2?"필터들을 필요에 따라 교체하세요.":"폐기물 포착";
+  const fill=stage===2?smooth((t-12.7)/2.5):0;
+  document.getElementById('sample').setAttribute('opacity',stage===2?1:0);
+  document.getElementById('sample-fill').setAttribute('y',535-43*fill);
+  document.getElementById('sample-fill').setAttribute('height',43*fill);
+  document.getElementById('record').setAttribute('opacity',stage===2?smooth((t-15.2)/1.2):0);
+};
+window.setTeachingTime = ms => window.renderAt(ms / 1000);
+window.renderAt(0);
 </script>
-</body>
-</html>
+
+
+</body></html>
