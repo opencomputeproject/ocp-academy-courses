@@ -7,6 +7,16 @@ from glossary_audit import audit_glossary, match_term
 
 
 class GlossaryAuditTests(unittest.TestCase):
+    def test_terms_in_unspaced_chinese_and_japanese(self):
+        self.assertEqual(match_term({'term':'开放硬件'},'开放硬件可以帮助团队。'),'开放硬件')
+        self.assertEqual(match_term({'term':'相互運用性'},'相互運用性を検証します。'),'相互運用性')
+
+    def test_korean_particles_without_latin_substring_matches(self):
+        self.assertEqual(match_term({'term':'상호 운용성'},'상호 운용성은 검증해야 합니다.'),'상호 운용성')
+        self.assertEqual(match_term({'term':'버스바'},'버스바를 확인하세요.'),'버스바')
+        self.assertIsNone(match_term({'term':'기여'},'기여자에 관한 설명입니다.'))
+        self.assertIsNone(match_term({'term':'CPU'},'CPUsuffix'))
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

@@ -81,6 +81,14 @@ def match_term(term, text):
         needle = normalize(alias)
         if needle and re.search(r'(?<!\w)' + re.escape(needle) + r'(?!\w)', text):
             return str(alias)
+        # Chinese/Japanese phrases are not delimited by ASCII-style word gaps.
+        if needle and re.search(r'[\u3040-\u30ff\u3400-\u9fff]', needle) and needle in text:
+            return str(alias)
+        # Korean spacing separates stems, but case/topic particles attach to them.
+        if needle and re.search(r'[\uac00-\ud7a3]', needle):
+            particles = r'(?:들)?(?:은|는|이|가|을|를|의|에|에서|으로|로|와|과|도|만|등)?'
+            if re.search(r'(?<!\w)' + re.escape(needle) + particles + r'(?!\w)', text):
+                return str(alias)
         # Pronunciation spelling of an actual acronym, e.g. S L A, not synonyms.
         if re.fullmatch(r'[A-Z]{2,8}', str(alias)):
             letters = r'[\s.]+'.join(re.escape(c.casefold()) for c in alias)
