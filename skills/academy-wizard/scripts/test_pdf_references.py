@@ -5,6 +5,14 @@ from slides_course_qa import audit_pdf_references
 
 
 class PdfReferenceTests(unittest.TestCase):
+    def test_native_page_notation_preserves_anchor_checks(self):
+        for label in ('生態系評估 · 第 1–2 頁','生态系评估 · 第 1–2 页',
+                      '評価 · 1–2ページ','評価 · 1～2ページ','평가 · 1~2쪽',
+                      'Guía · págs. 1–2','Hướng dẫn · trang 1–2','Hướng dẫn · tr. 1–2'):
+            with self.subTest(label=label):
+                self.assertEqual(self.audit(label,'guide.pdf#page=1'),([],1))
+                self.assertTrue(self.audit(label,'guide.pdf#page=2')[0])
+
     def audit(self, label, url, **slide_fields):
         slide = dict(id=3, type="content_bullets",
                      reference_links=[{"label": label, "url": url}], **slide_fields)

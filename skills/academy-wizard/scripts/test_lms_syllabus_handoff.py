@@ -14,15 +14,18 @@ class SyllabusHandoffTests(unittest.TestCase):
         template = (Path(__file__).resolve().parent.parent/'templates/learner_features.js').read_text()
         start = template.index('if (inLMS && !reviewMode && !SCORM.isSingleSCO')
         end = template.index("if (reviewMode) document.addEventListener('click'", start)
+        helper_start = template.index('function learnerText(')
+        helper_end = template.index('\n}', helper_start) + 2
         result = subprocess.run([node, '-e', r'''
 const fs = require('fs'), vm = require('vm'), assert = require('assert/strict');
 const code = fs.readFileSync(0, 'utf8');
 for (const inLMS of [false,true]) for (const reviewMode of [false,true])
-for (const isSingleSCO of [false,true]) for (const directModuleLinks of [false,true]) {
+for (const isSingleSCO of [false,true]) for (const directModuleLinks of [false,true])
+for (const videoUiLabels of [{}, {home_syllabus_note:'左のシラバスからホームを開いてください。'}]) {
   const links = ['module3.html?review=1','index.html','resources/guide.pdf','https://example.org/module3.html']
     .map(href => ({getAttribute: () => href, replaceWith(note) {this.note=note;}}));
   const document = {querySelectorAll: () => links, createElement: () => ({style:{}})};
-  vm.runInNewContext(code, {inLMS,reviewMode,SCORM:{isSingleSCO},directModuleLinks,document,URL,
+  vm.runInNewContext(code, {inLMS,reviewMode,SCORM:{isSingleSCO},directModuleLinks,document,URL,videoUiLabels,
     location:{origin:'https://lms.test',href:'https://lms.test/module2.html'}});
   const shouldReplace = inLMS && !reviewMode && !isSingleSCO && !directModuleLinks;
   assert.equal(links[0].note,undefined);
@@ -30,10 +33,10 @@ for (const isSingleSCO of [false,true]) for (const directModuleLinks of [false,t
   assert.equal(links[2].note,undefined);
   assert.equal(links[3].note,undefined);
   if(shouldReplace) {
-    assert.equal(links[1].note.textContent,'Open Course Home using the Syllabus in the left sidebar.');
+    assert.equal(links[1].note.textContent,videoUiLabels.home_syllabus_note || 'Open Course Home using the Syllabus in the left sidebar.');
   }
 }
-'''],input=template[start:end],text=True,capture_output=True)
+'''],input=template[helper_start:helper_end]+'\n'+template[start:end],text=True,capture_output=True)
         self.assertEqual(result.returncode,0,result.stderr)
         self.assertNotIn('preventDefault',template[start:end])
 

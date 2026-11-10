@@ -274,7 +274,7 @@ def render_index_html(course: dict, resource_root: Path | None = None) -> str:
 {start_html if start_position == "below_modules" else ""}
 
 <div class="footer">
-  <nav aria-label="Course resources" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
+  <nav aria-label="{esc(ui(course, 'learner_resource', 'Course resources'))}" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
     {''.join('<a href="'+esc(r['url'])+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">'+esc(r['label'])+'</a>' for r in course.get('resources',[]))}
   </nav>
   {esc(footer_line)}

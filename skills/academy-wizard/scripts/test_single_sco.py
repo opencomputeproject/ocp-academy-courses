@@ -65,6 +65,30 @@ class SingleSCOTests(unittest.TestCase):
     def test_quiz_requirements_are_preserved(self):
         self.assertEqual(single_sco.configuration(self.single())['modules'][1]['quizzes'], ['m2_q1', 'm2_q2'])
 
+    def test_native_host_warnings_and_offline_font_are_preserved(self):
+        course = self.single()
+        course['language'] = 'ja-JP'
+        course['local_font_stylesheet'] = 'fonts/locale.css'
+        course['ui_labels'] = {'lms_save_failed': '進行状況を保存できません。',
+                               'javascript_required': 'JavaScriptを有効にしてください。',
+                               'unrelated_label': 'not a host warning'}
+        self.assertEqual(single_sco.configuration(course)['labels'],
+                         {'lms_save_failed': '進行状況を保存できません。'})
+        launch = single_sco.render_launch(course)
+        self.assertIn('lang="ja-JP"', launch)
+        self.assertIn('href="fonts/locale.css"', launch)
+        self.assertIn('<noscript>JavaScriptを有効にしてください。</noscript>', launch)
+
+    def test_host_defaults_and_translated_html_escaping(self):
+        self.assertEqual(single_sco.configuration(self.single())['labels'], {})
+        self.assertIn('This course requires JavaScript', single_sco.render_launch(self.single()))
+        course = self.single()
+        course['ui_labels'] = {'javascript_required': '<script>unsafe</script>',
+                               'lms_save_failed': '</script><script>unsafe</script>'}
+        launch = single_sco.render_launch(course)
+        self.assertNotIn('<script>unsafe</script>', launch)
+        self.assertIn('&lt;script&gt;unsafe&lt;/script&gt;', launch)
+
     def test_storage_overflow_is_rejected_before_build(self):
         course = self.single()
         course['modules'][0]['slides'][1]['questions'][0]['id'] = 'q' * 4096

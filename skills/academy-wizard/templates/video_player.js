@@ -215,7 +215,7 @@
       player.classList.toggle('is-fullscreen', active);
       if (fullscreen) fullscreen.setAttribute('aria-label', active ? uiText('exit_fullscreen', 'Exit fullscreen') : uiText('fullscreen', 'Fullscreen'));
     });
-    if (pictureInPicture && (!video.requestPictureInPicture || document.pictureInPictureEnabled === false)) {pictureInPicture.disabled=true; pictureInPicture.title='Picture-in-picture unavailable in this browser';}
+    if (pictureInPicture && (!video.requestPictureInPicture || document.pictureInPictureEnabled === false)) {pictureInPicture.disabled=true; pictureInPicture.title=uiText('picture_in_picture_unavailable', 'Picture-in-picture unavailable in this browser');}
     if (pictureInPicture) pictureInPicture.addEventListener('click', function() {
       if (document.pictureInPictureElement && document.exitPictureInPicture) {
         document.exitPictureInPicture().catch(function() {});
