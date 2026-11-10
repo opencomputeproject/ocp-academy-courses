@@ -1,9 +1,12 @@
 # pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-O atual telemetria mostra como o link está agora. Registros de eventos ajudam a explicar como ele chegou lá.
+A telemetria atual mostra como o link está agora. Registros persistentes de eventos ajudam a explicar como ele chegou a esse estado.
 
-A especificação descreve o registro de eventos em memória não volátil. Também descreve entradas log de eventos de 32 bytes com um valor de sequência único, campos de carimbo de tempo, identificador de evento e campos de detalhe. O menor valor de sequência indica o registro mais antigo, e a sequência pode ser enrolada.
+Cada entrada de evento tem trinta e dois bytes. Contém um identificador de sequência de dezesseis bits, um carimbo de tempo de sessenta e quatro bits expresso em nanossegundos, um identificador de evento, quatro campos de detalhes e espaço reservado. Os campos usam a ordem de bytes little-endian.
 
-Essa estrutura é importante quando um módulo é movido, reiniciado ou inspecionado posteriormente. Se o registro preservar a ordem, o horário, o tipo de evento e detalhes relevantes, o operador pode reconstruir a história da falha em vez de depender do primeiro alarme que chegou ao painel.
+O identificador de evento determina como decodificar os detalhes. Um evento de temperatura contém informações de temperatura. Um evento de receptor pode conter bitmaps de lanes. Um evento de desligamento registra lado, porta, categoria que o acionou e valor da métrica.
 
-A conclusão é simples: o histórico de eventos transforma sintomas transitórios em evidência.
-Registros de eventos também são úteis durante conversas entre fornecedores e operadores. Em vez de debater quando um problema pode ter ocorrido, as equipes podem comparar registros ordenados, carimbos de data e detalhes com logs host e janelas de manutenção.
+O buffer circular deve preservar os registros existentes após energização, remoção e reinserção. Os identificadores de sequência podem retornar ao início da faixa; por isso, o software deve preservar o contexto cronológico em vez de ordenar cegamente apenas pelo valor numérico do identificador.
+
+O horário também precisa de contexto. Um formato de carimbo de tempo em nanossegundos não promete precisão de relógio de nanossegundos. Estabeleça o horário do módulo e reconheça registros criados antes de uma referência de tempo válida.
+
+O comando 8010h recupera o histórico local ou remoto. Outra opção desse mesmo comando o limpa. Leia e exporte as evidências antes de limpar, pois os registros persistentes frequentemente são o único relato de uma falha transitória.

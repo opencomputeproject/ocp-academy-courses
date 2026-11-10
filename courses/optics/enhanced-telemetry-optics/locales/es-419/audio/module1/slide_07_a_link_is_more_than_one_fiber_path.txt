@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Un cambio clave es dejar de pensar en un enlace solo como el camino de la fibra. La figura punto a punto divide la conexión en segmentos monitorizados. Por un lado, el interruptor se comunica eléctricamente con su módulo local. En el centro, los dos módulos se comunican ópticamente. En el lado opuesto, el módulo remoto se comunica eléctricamente con el host.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+Un enlace es más que la fibra entre dos módulos. Hay tres regiones de interfaz: la conexión eléctrica entre el switch y el módulo, la conexión óptica entre los módulos y la conexión eléctrica entre el módulo y el servidor.
 
-Esa segmentación importa durante la depuración. Una señal óptica deficiente no significa lo mismo que un problema con un receptor eléctrico host. Una alarma local puede estar informando de un síntoma cuya causa es en un segmento remoto.
+El tráfico circula en ambas direcciones, por lo que la especificación describe seis segmentos direccionales. Cada receptor observa una señal entrante concreta. Un mal resultado en un receptor no identifica automáticamente al transmisor, la fibra o la interfaz eléctrica como causa.
 
-El modelo de telemetría le da al software del host una forma de pedir pruebas a lo largo de todo el camino. Una vez que cada segmento puede medirse y reportarse de forma consistente, los operadores pueden razonar sobre dónde reside la degradación en lugar de intercambiar piezas por instinto.
-Esta vista de segmentos también es útil cuando los síntomas no coinciden. Un host puede ver un comportamiento, un módulo puede registrar otro, y el compañero remoto puede mostrar un tercero. El modelo te da lugares para comparar, no solo a los que culpar.
+Esta distinción explica por qué la telemetría del módulo y las mediciones del receptor del host deben utilizarse juntas. El switch también registra su propia B E R previa a F E C y las palabras de código no corregibles. La telemetría remota permite examinar el módulo del otro extremo, incluso cuando el operador no puede acceder directamente al servidor.
+
+La animación agrupa las seis direcciones en las tres regiones de interfaz. Use esta vista para organizar la investigación y compare las mediciones de los receptores pertinentes.
+
+Si los síntomas no coinciden, conserve esa discrepancia como evidencia. Una alarma local, un evento remoto y un patrón de errores del host pueden describir partes distintas de la misma falla. La identidad del segmento hace útiles esas observaciones.

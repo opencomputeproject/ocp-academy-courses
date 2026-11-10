@@ -1,9 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-La telemetría actual te dice cómo es el enlace ahora. Los registros de eventos ayudan a explicar cómo llegó allí.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+La telemetría actual muestra cómo está el enlace ahora. Los registros persistentes de eventos ayudan a explicar cómo llegó a ese estado.
 
-La especificación describe el registro de eventos en memoria no volátil. También describe entradas registro de eventos de 32 bytes con un valor de secuencia único, campos de marca de tiempo, identificador de evento y campos de detalle. El valor de secuencia más pequeño indica el registro más antiguo, y la secuencia puede envolverse.
+Cada entrada de evento ocupa treinta y dos bytes. Contiene un identificador de secuencia de dieciséis bits, una marca temporal de sesenta y cuatro bits expresada en nanosegundos, un identificador de evento, cuatro campos de detalle y espacio reservado. Los campos utilizan orden de bytes little-endian.
 
-Esta estructura importa cuando un módulo se mueve, se reinicia o se inspecciona a posteriori. Si el registro conserva el orden, la hora, el tipo de evento y los detalles relevantes, el operador puede reconstruir la historia de fallo en lugar de depender de la primera alarma que llegó a un panel de control.
+El identificador de evento determina cómo se decodifican los detalles. Un evento de temperatura contiene información térmica. Un evento de receptor puede contener mapas de bits de carriles. Un evento de apagado registra el lado, el puerto, la categoría que lo activó y el valor de la métrica.
 
-La conclusión es sencilla: la historia de eventos convierte síntomas transitorios en evidencia.
-Los registros de eventos también son útiles durante las conversaciones entre proveedores y operadores. En lugar de debatir cuándo pudo haber ocurrido un problema, los equipos pueden comparar registros de pedidos, marcas de tiempo y detalles con los registros host y ventanas de mantenimiento.
+El búfer circular debe conservar los registros existentes tras el encendido, la extracción y la reinserción. Los identificadores de secuencia pueden desbordarse, por lo que el software debe conservar el contexto cronológico y no ordenar ciegamente solo por el valor numérico.
+
+El tiempo también necesita contexto. Un formato de marca temporal en nanosegundos no garantiza precisión de reloj de nanosegundos. Establezca la hora del módulo y reconozca los registros creados antes de disponer de una referencia temporal válida.
+
+El comando ocho mil diez hexadecimal recupera el historial local o remoto. Otra opción del mismo comando lo borra. Lea y exporte la evidencia antes de borrarla, porque los registros persistentes suelen ser el único testimonio de una falla transitoria.

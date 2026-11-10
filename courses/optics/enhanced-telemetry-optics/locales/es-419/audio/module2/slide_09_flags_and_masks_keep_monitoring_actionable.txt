@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Las banderas y las máscaras son la forma en que el modelo se mantiene accionable. Las señales de resumen ayudan al software y a los operadores a ver que un grupo de métricas ha superado un umbral o ha entrado en una condición digna de atención.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+Los indicadores y las máscaras resuelven problemas distintos. Los indicadores muestran dónde una advertencia o alarma requiere atención. Las máscaras determinan si ciertos contadores acumulados participan en la puntuación del estado del enlace.
 
-Las mascarillas proporcionan la afinación. Un despliegue puede decidir que un contador particular no debe influir en el cálculo de la estado del enlace en un determinado modo operativo, fase de calificación o contexto de integración. La máscara permite que el despliegue incluya o excluya campos manteniendo intacta la estructura general.
+El flujo recomendado comienza con la interrupción de software. Después se lee el resumen que distingue los indicadores de puertos locales y remotos, y se recuperan los indicadores detallados del módulo, la potencia óptica y la polarización del láser en la respuesta de telemetría. Estos indicadores quedan retenidos y se borran cuando se leen sus registros; por eso, el software de recopilación debe conservar lo observado.
 
-El equilibrio es importante. Demasiados contadores crudos hacen ruido. Demasiada resumen oculta la causa. Las banderas y las mascarillas se sitúan en el centro: una visión concisa de la salud con suficiente control para mantener la señal de monitorización significativa.
-Las mascarillas deben usarse con cuidado. Excluir un contador puede reducir las falsas alarmas, pero también puede eliminar una señal útil. El despliegue debe documentar por qué un campo está enmascarado y cuándo debe revisarse esa elección.
+Las máscaras definidas se aplican al contador F E C y al contador de caídas del enlace. Ambos se excluyen de la puntuación al encenderse el módulo. Un bit de máscara de uno excluye su contador; cero lo incluye. El comando ocho mil tres hexadecimal controla esas máscaras.
+
+Aplicar una máscara no elimina evidencia. Los datos del contador siguen siendo recuperables y el historial de eventos es independiente. Reiniciar los contadores acumulados utiliza otro comando.
+
+Registre las máscaras efectivas al comparar puntuaciones entre módulos o a lo largo del tiempo. Si dos herramientas aplican configuraciones de participación distintas, una puntuación que parece idéntica puede no describir la misma condición operativa.

@@ -1,7 +1,11 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Truy cập C M I S từ xa mở rộng mô hình tương tự đến đầu xa. Máy chủ không mở đường dẫn quản lý trực tiếp riêng vào mô-đun từ xa. Nó yêu cầu mô-đun tuân thủ cục bộ và mô-đun cục bộ truy xuất dữ liệu từ xa trong băng tần.
+Truy cập CMIS từ xa hỗ trợ cả đọc và ghi. Host gửi yêu cầu đến mô-đun tuân thủ cục bộ; mô-đun đó tiếp cận đối tác từ xa được chọn qua giao tiếp trong băng.
 
-Về mặt khái niệm, có hai chế độ truy cập hữu ích. Truy cập byte được nhắm mục tiêu. Nó phù hợp khi phần mềm cần một lĩnh vực nhỏ hoặc phạm vi hẹp. Truy cập trang rộng hơn. Nó truy xuất một ảnh chụp nhanh hướng trang lớn hơn.
+Truy cập byte dùng CMD 8020h. Nó chọn cổng từ xa, bank, trang, địa chỉ, thao tác và độ dài. Cách này hữu ích cho một dải thanh ghi hẹp được truyền qua dữ liệu tải cục bộ.
 
-Điều này rất hữu ích cho các hoạt động vì nó cung cấp cho máy chủ chuyển mạch một cách để kiểm tra cả hai đầu của liên kết quang. Người vận hành có thể so sánh bằng chứng cục bộ và từ xa mà không cần truy cập vật lý vào điểm cuối từ xa trước.
-Truy cập từ xa cũng hữu ích khi truy cập vật lý chậm hoặc không khả dụng. Trước khi cử ai đó đến rack hoặc thay thế mô-đun, người vận hành có thể thu thập bằng chứng từ xa và quyết định xem hành động đó có hợp lý hay không.
+Truy cập trang dùng CMD 8021h và dữ liệu tải mở rộng. Cách này hữu ích khi phần mềm cần đọc hoặc ghi toàn bộ trang từ xa thay vì nhiều dải nhỏ.
+
+Trong chẩn đoán, thao tác đọc truy xuất bằng chứng. Thao tác ghi thay đổi trạng thái từ xa, vì vậy công cụ phải làm rõ thao tác và đích, đồng thời tuân theo các biện pháp kiểm soát bảo trì của hệ thống.
+
+Ở cả hai chế độ, hãy kiểm tra trạng thái hoàn thành và lỗi của lệnh trước khi tin kết quả. Giữ danh tính đối tác được chọn và bối cảnh bank/trang trong đầu ra.
+
+Điều này cho người vận hành khả năng quan sát đầu xa qua một giao diện quản lý cục bộ. Nó cũng khiến việc chọn đích cẩn thận trở nên thiết yếu, nhất là trong cấu hình breakout, nơi yêu cầu hợp lệ vẫn có thể nhắm nhầm đối tác.

@@ -1,7 +1,9 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Cờ trạng thái và mask là cách mô hình có thể hoạt động được. Cờ tóm tắt giúp phần mềm và người vận hành biết rằng nhóm số liệu đã vượt qua ngưỡng hoặc chuyển sang điều kiện đáng chú ý.
+Cờ và mặt nạ giải quyết hai vấn đề khác nhau. Cờ cho phần mềm biết nơi có cảnh báo cần chú ý. Mặt nạ quyết định một số bộ đếm tích lũy có tham gia điểm tình trạng hay không.
 
-Mặt nạ cung cấp điều chỉnh. Quá trình triển khai có thể quyết định rằng một bộ đếm cụ thể sẽ không ảnh hưởng đến việc tính toán tình trạng liên kết trong một chế độ vận hành, giai đoạn xác định hoặc bối cảnh tích hợp nhất định. Mặt nạ cho phép triển khai bao gồm hoặc loại trừ các trường trong khi vẫn giữ nguyên cấu trúc rộng hơn.
+Quy trình cờ được khuyến nghị bắt đầu từ ngắt phần mềm. Sau đó, phần mềm đọc tóm tắt để phân biệt cờ cổng cục bộ với cổng từ xa, rồi truy xuất các cờ chi tiết về mô-đun, công suất quang và dòng phân cực laser trong phản hồi đo từ xa. Các cờ này được chốt và xóa khi đọc thanh ghi của chúng, vì vậy phần mềm thu thập phải lưu giữ những gì đã quan sát.
 
-Sự cân bằng là quan trọng. Quá nhiều quầy thô tạo ra tiếng ồn. Quá nhiều tóm tắt che giấu nguyên nhân. Cờ trạng thái và mask nằm ở giữa: chế độ xem sức khỏe ngắn gọn với đủ khả năng kiểm soát để giữ cho tín hiệu theo dõi có ý nghĩa.
-Nên sử dụng mặt nạ một cách cẩn thận. Việc loại trừ bộ đếm có thể làm giảm cảnh báo sai nhưng cũng có thể loại bỏ tín hiệu hữu ích. Việc triển khai phải ghi lại lý do tại sao một trường bị ẩn và khi nào nên xem lại lựa chọn đó.
+Mặt nạ điểm được định nghĩa áp dụng cho bộ đếm FEC và bộ đếm mất liên kết. Cả hai mặc định không tham gia tính điểm khi mô-đun được cấp nguồn. Bit mặt nạ bằng 1 loại trừ bộ đếm; bằng 0 đưa bộ đếm vào phép tính. CMD 8003h điều khiển các mặt nạ đó.
+
+Đặt mặt nạ không phải là xóa bằng chứng. Dữ liệu bộ đếm vẫn truy xuất được, và lịch sử sự kiện là phần riêng. Đặt lại bộ đếm tích lũy sử dụng một lệnh khác.
+
+Hãy ghi nhận mặt nạ có hiệu lực khi so sánh điểm giữa các mô-đun hoặc giữa các thời điểm. Nếu hai công cụ dùng cấu hình tham gia khác nhau, điểm nhìn giống nhau có thể không mô tả cùng một điều kiện vận hành.

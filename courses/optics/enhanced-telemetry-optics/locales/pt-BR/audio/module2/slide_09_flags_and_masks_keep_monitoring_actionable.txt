@@ -1,7 +1,10 @@
 # pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Bandeiras e máscaras são como o modelo se mantém acionável. Sinais de resumo ajudam softwares e operadores a perceberem que um grupo de métricas ultrapassou um limite ou entrou em uma condição que merece atenção.
+Sinalizadores e máscaras resolvem problemas diferentes. Os sinalizadores indicam ao software onde um aviso ou alarme relatado precisa de atenção. As máscaras determinam se determinados contadores acumulados participam da pontuação de integridade.
 
-Máscaras fornecem afinação. Uma implantação pode decidir que um contador específico não deve influenciar o cálculo da integridade do link em determinado modo operacional, fase de qualificação ou contexto de integração. A máscara permite que o implante inclua ou exclua campos, mantendo a estrutura mais ampla intacta.
+O fluxo recomendado começa pela interrupção de software. Em seguida, o software lê o resumo que distingue os sinalizadores das portas locais e remotas e recupera os sinalizadores detalhados do módulo, da potência óptica e da polarização do laser na resposta de telemetria. Esses sinalizadores ficam retidos e são limpos quando seus registradores são lidos; por isso, o software de coleta deve preservar o que observar.
 
-O equilíbrio é importante. Contadores brutos demais geram barulho. Muita resumibilidade esconde a causa. Bandeiras e máscaras ficam no meio: uma visão de saúde concisa com controle suficiente para manter o sinal de monitoramento significativo.
-Máscaras devem ser usadas com cuidado. Excluir um contador pode reduzir alarmes falsos, mas também pode remover um sinal útil. A implantação deve documentar por que um campo está mascarado e quando essa escolha deve ser revisada.
+As máscaras de pontuação definidas se aplicam ao contador FEC e ao contador de quedas do link. Ambos são excluídos da pontuação ao ligar o módulo. Um bit de máscara um exclui seu contador; zero o inclui. O comando 8003h controla essas máscaras.
+
+Mascarar não é apagar evidências. Os dados dos contadores continuam disponíveis, e o histórico de eventos é separado. Zerar contadores acumulados usa outro comando.
+
+Registre as máscaras efetivas ao comparar pontuações entre módulos ou ao longo do tempo. Se duas ferramentas usam configurações de participação diferentes, pontuações aparentemente idênticas podem não descrever a mesma condição operacional.

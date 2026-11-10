@@ -1,7 +1,11 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Tính trung bình có thể an ủi và nguy hiểm. Nếu năm hạng mục có vẻ xuất sắc và một hạng mục không đạt thì mức trung bình vẫn có thể chấp nhận được. Điều đó không hữu ích cho hoạt động vì danh mục bị lỗi vẫn có thể khiến liên kết bị hỏng.
+Điểm tình trạng phải giữ lại phép đo cho thấy cần hành động. Lấy trung bình các trường tốt với một trường lỗi có thể che giấu vấn đề.
 
-Thông số kỹ thuật xử lý vấn đề này bằng cách chọn danh mục điểm tối thiểu để xếp hạng tình trạng liên kết. Nói một cách đơn giản, danh mục yếu nhất sẽ quyết định tình trạng sức khỏe được báo cáo. Điều đó không có nghĩa là mọi số liệu đều có ý nghĩa như nhau trong mỗi lần triển khai. Nó có nghĩa là bản tóm tắt không được che giấu một danh mục đáng được chú ý.
+Trước tiên, đặc tả đánh giá từng hạng mục được hỗ trợ theo các ngưỡng của nó. Các điểm hạng mục được định nghĩa là 80, 60 và 40. Sau đó, giá trị nhỏ nhất được dùng làm điểm cho phía host hoặc phía môi trường truyền được chọn.
 
-Đây là một nguyên tắc đáng tin cậy tốt. Điểm tình trạng chỉ nên nén thông tin khi nó bảo toàn tín hiệu hành động. Nếu tính năng nén che đi trường lỗi thì điểm số sẽ trở thành vật trang trí trên bảng thông tin thay vì công cụ khắc phục sự cố.
-Đây là lý do tại sao điểm tình trạng phải được giải thích. Người điều hành phải có khả năng đi sâu từ điểm số đến hạng mục và từ hạng mục đến bằng chứng. Một điểm mà không có con đường đó là không đủ.
+Các hạng mục phía host gồm chất lượng tín hiệu điện, BER trước FEC, cờ mô-đun và các bộ đếm được định nghĩa khi bật tham gia tính điểm. Phía môi trường truyền còn có bằng chứng riêng về quang, như MPI, cờ công suất quang và cờ dòng phân cực laser. Hai phía không dùng danh sách hạng mục hoàn toàn giống nhau.
+
+Hoạt ảnh minh họa một số hạng mục phía môi trường truyền. Khi hạng mục BER giảm xuống 40, giá trị nhỏ nhất cũng giảm theo. Giá trị trung bình vẫn có vẻ tốt hơn; đó chính là sự mất thông tin mà đặc tả tránh.
+
+Phản hồi đo từ xa cũng mang bitmap hạng mục có điểm thấp nhất. Nhiều bit có thể được đặt khi nhiều hạng mục cùng đạt giá trị nhỏ nhất. Hãy đọc bitmap đó và các giá trị gốc, thay vì chỉ chọn một nguyên nhân giả định.
+
+Cuối cùng, hãy diễn giải kết quả theo mặt nạ bộ đếm và ngưỡng đang có hiệu lực. Điểm chỉ có ý nghĩa khi đi cùng cấu hình và bối cảnh điểm cuối.

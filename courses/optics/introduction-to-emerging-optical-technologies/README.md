@@ -6,18 +6,18 @@ This standalone SCORM course belongs to the **Optical Connectivity & Reliability
 
 ## Modules
 
-| Module | Title | Narrated Duration | Summary |
+| Module | Title | Estimated Learner Time | Summary |
 |---|---|---:|---|
-| 1 | Why AI Infrastructure Is Changing Optics | 12 min | Accelerator fabrics, rising fiber counts, and the different pressures created by scale-up, scale-out, and scale-across. |
-| 2 | Power, Thermal, and Serviceability Shifts | 15 min | Co-packaged optics, expanded beam optics, rear blind mating, and the operational constraints they address. |
-| 3 | Density and Testability in the Optical Plant | 11 min | Multicore fiber, fan-in and fan-out connectivity, compact harnesses, and emerging testing considerations. |
-| 4 | Latency, Quantum, and the Adoption Horizon | 14 min | Hollow-core fiber, latency-sensitive infrastructure, hybrid quantum-classical systems, and technology maturity. |
+| 1 | Why AI Infrastructure Is Changing Optics | 13 min | Explain how AI workload and rack architecture change optical demands. Connect networking domains, bandwidth growth, and fiber density to infrastructure-level constraints. |
+| 2 | Power, Thermal, and Serviceability Shifts | 17 min | Compare pluggable, near-packaged, and co-packaged optics. Examine expanded-beam and rear blind-mate connectivity through electrical reach, power, cooling, and maintenance tradeoffs. |
+| 3 | Density and Testability in the Optical Plant | 15 min | Connect physical fiber-density limits to multicore fiber and space-division multiplexing. Review fan-in/fan-out transitions and testing implications for emerging fiber systems. |
+| 4 | Latency, Quantum, and the Adoption Horizon | 15 min | Explore hollow-core propagation latency and hybrid quantum-classical systems. Compare use cases, adoption horizons, and ecosystem readiness across the emerging optical approaches. |
 
-The course contains 52.8 minutes of narration and is designed for about 60 minutes of learner time including knowledge checks and interaction.
+Designed for about **60 minutes of learner time**, including narration, diagrams, knowledge checks and review. Estimated learner time is distinct from narration runtime.
 
 ## Media
 
-Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Generated narration WAV files and rendered SCORM files are not checked in.
+Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Delivery narration is 96 kbps CBR mono MP3 at 44.1 kHz, approved for this rebuild. WAV authoring masters are retained outside Git and outside the LMS package. No narration or rendered SCORM files are checked in. Per-slide `audio.generation_provenance` records reused recordings without inventing unknown legacy model IDs.
 
 Module 1's course overview thanks the OCP community volunteers from VIAVI Solutions, SENKO Advanced Components, and Sumitomo Electric Lightwave. Their supplied, unmodified logos are stored in `resources/images/contributors/`; this visual acknowledgment does not change the narration.
 
@@ -65,3 +65,7 @@ node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course
 ```
 
 See [the poster standard](../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.
+
+## LMS Catalog Metadata
+
+Formal learner-facing LMS copy is maintained separately in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json). The course is available in English and seven self-contained language editions under `locales/`.

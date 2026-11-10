@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-actualización sin interrupciones no es un solo comando. Es un ciclo de vida con puntos de control. La especificación incluye comportamiento de descarga de bloques, estado del comando, completación y pasos de activación. Esos detalles importan en la implementación, pero el patrón operativo es la parte que hay que recordar.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+El mantenimiento del firmware sin interrupción depende de un ciclo de vida controlado, no de un solo comando exitoso.
 
-Una actualización segura comienza con la información de capacidades e imagen. Se mueve a través del comportamiento de inicio, transferencia, finalización, ejecución y compromiso. En cada fase, el software necesita retroalimentación de estado, manejo de errores y una comprensión clara de qué imagen está activa ahora y cuál se activa tras futuros reinicios.
+Inspeccione la información de las imágenes remotas y después inicie la descarga. Transfiera el firmware por bloques y compruebe cada resultado. Si falla un bloque, aborte la descarga y realice la limpieza necesaria en vez de continuar con una imagen incompleta.
 
-La actualización remota añade una capa más: el módulo local ayuda a gestionar el extremo lejano. Eso hace que la disciplina de mando y los informes de estado sean aún más importantes.
-La expresión 'sin impacto' debe tratarse como un requisito operativo, no como una promesa casual. Depende de la calidad de la implementación, la retroalimentación de estado, la gestión de errores y la política de despliegue que decide cuándo se permite una actualización.
+Cuando hayan llegado todos los bloques, el comando de finalización valida esa etapa. Una falla, como una suma de comprobación incorrecta, significa que la descarga no tuvo éxito. No avance a la activación.
+
+Una vez finalizada correctamente, ejecute la nueva imagen y verifique su comportamiento. Solo entonces confirme la imagen en ejecución como predeterminada para los siguientes reinicios. Distinguir entre ejecutar y confirmar es fundamental para saber qué hará el módulo ahora y después de un reinicio.
+
+El módulo local transmite estas operaciones al extremo remoto elegido mediante la interfaz en banda. Mantenga la identidad de ese extremo durante toda la secuencia.
+
+La capacidad sin interrupción también exige verificación en el despliegue. Compruebe la continuidad real del tráfico, el estado de los comandos, el comportamiento de recuperación y la política de mantenimiento antes de confiar en el flujo durante el servicio.

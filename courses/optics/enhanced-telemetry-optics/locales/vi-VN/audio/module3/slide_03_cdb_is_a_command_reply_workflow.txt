@@ -1,7 +1,9 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-C D B cung cấp cho máy chủ và mô-đun một mẫu lệnh-phản hồi. Thông số kỹ thuật mô tả một trình tự điển hình theo bốn bước.
+CDB cung cấp mẫu lệnh-phản hồi có cấu trúc cho host và mô-đun. Đây là tùy chọn trong CMIS nói chung, nhưng mô-đun quang tuân thủ đo từ xa nâng cao phải sử dụng nó để thu thập dữ liệu đo từ xa và truyền cho host.
 
-Đầu tiên, máy chủ chuẩn bị thông báo lệnh bằng cách điền vào các trường tiêu đề và dữ liệu tải bắt buộc. Thứ hai, nó kích hoạt lệnh bằng cách viết tin nhắn vào vị trí thích hợp. Thứ ba, nó thăm dò các thanh ghi trạng thái C D B để theo dõi tiến trình. Thứ tư, khi lệnh hoàn tất, nó sẽ lấy tiêu đề và dữ liệu tải trả lời.
+Trình tự có bốn bước chính. Chuẩn bị phần đầu lệnh và dữ liệu tải bắt buộc. Kích hoạt lệnh. Thăm dò các thanh ghi trạng thái. Sau đó truy xuất phản hồi khi lệnh đã thực thi thành công.
 
-Mô hình đó là xương sống cho mô-đun này. Cho dù máy chủ đang truy xuất dữ liệu đo từ xa, yêu cầu bản ghi nhật ký sự kiện hay sử dụng vùng dữ liệu tải lớn hơn thì nguyên tắc vận hành đều giống nhau: viết yêu cầu, kích hoạt yêu cầu, kiểm tra trạng thái rồi đọc phản hồi.
-Bốn bước cũng giúp khắc phục sự cố dễ dàng hơn khi phần mềm hoạt động sai. Bạn có thể hỏi liệu lệnh có được định dạng chính xác hay không, liệu nó có được kích hoạt hay không, trạng thái đã được đọc hay chưa và liệu phản hồi có khớp với việc hoàn thành hay không.
+Mỗi giai đoạn là một phần của quy ước giao tiếp. Phản hồi không được trở thành bằng chứng vận hành chỉ vì phần mềm tìm thấy byte trong vùng phản hồi. Những byte đó phải thuộc về yêu cầu thực sự đã hoàn thành.
+
+Nguyên tắc này cũng áp dụng khi truy xuất phép đo, thu thập bản ghi sự kiện, truy cập thanh ghi từ xa hoặc truyền firmware. Hãy kiểm tra lệnh được hỗ trợ, điểm cuối được chọn, các trường đầu vào và trạng thái cuối cùng.
+
+Đây cũng là mô hình hữu ích để gỡ lỗi phần mềm. Yêu cầu có được tạo đúng không? Đã được kích hoạt chưa? Mô-đun đã hoàn thành thành công chưa? Phần mềm có truy xuất và xác thực phản hồi tương ứng không? Bốn câu hỏi rõ ràng hữu ích hơn công cụ chỉ in dữ liệu mà không giải thích cách lấy dữ liệu.

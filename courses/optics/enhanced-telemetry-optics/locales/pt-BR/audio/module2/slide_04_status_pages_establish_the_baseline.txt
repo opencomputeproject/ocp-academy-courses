@@ -1,7 +1,10 @@
 # pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Antes de falarmos sobre os scores de saúde, o módulo precisa de status de referência. A especificação aponta para páginas comuns de C M I S Bank zero, páginas de configuração e status, páginas de V D M, páginas de comandos C D B, C D B carga útil e páginas personalizadas de fornecedores.
+A descoberta de capacidades vem antes da interpretação da telemetria. Um campo não suportado ou um parceiro remoto inacessível não deve aparecer como um zero saudável.
 
-Para este curso, o ponto importante não é o número exato da página para cada área. O ponto importante é que a telemetria aprimorada está sobre uma interface de gerenciamento estruturada. O host pode recuperar informações padrão de identidade e status, então usar as definições aprimoradas telemetria para fazer perguntas mais profundas sobre confiabilidade.
+A especificação versão um ponto zero ponto zero define o comportamento anunciado como Telemetry Version dois. Esse identificador de protocolo é informado na página 01h, byte 191. Ele não é o número da versão do documento.
 
-Essa sobreposição mantém o curso prático. Você deve saber onde os mapas detalhados estão, mas seu primeiro modelo mental deve ser: identidade e estado primeiro, depois medições, depois interpretação de saúde.
-Páginas de referência também são como o software evita interpretar mal o contexto. Informações de identidade, capacidade e estado devem ser verificadas antes que uma ferramenta assuma que um campa telemetria está disponível, está atual ou é relevante para o módulo em teste.
+O software também verifica o suporte ao recurso em banda e se a lane de comunicação está estabelecida. São perguntas diferentes. Alguns módulos oferecem detecção automática de lane em banda, permitindo um link básico com um parceiro sem telemetria avançada. Portanto, o simples estabelecimento do link não comprova a visibilidade remota.
+
+O comando de anúncio de capacidades, 8000h, retorna bitmaps dos grupos de comandos suportados ou listas de métricas suportadas para um módulo local ou parceiro remoto selecionado. O software usa esses resultados antes de emitir operações ou interpretar medições.
+
+As páginas padrão de identidade e status C M I S, as páginas V D M e as áreas de comando e payload C D B fornecem o contexto de gerenciamento. A sequência prática é identidade, capacidades, estado, medições e, depois, interpretação da integridade.

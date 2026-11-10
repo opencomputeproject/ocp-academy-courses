@@ -1,7 +1,11 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Việc truy xuất từ xa sẽ dễ hiểu hơn khi mẫu C D B rõ ràng. Máy chủ đưa ra yêu cầu. Mô-đun cục bộ thu thập hoặc truy xuất các trường có liên quan. Máy chủ kiểm tra trạng thái lệnh. Sau đó nó đọc câu trả lời.
+Một yêu cầu đo từ xa cần ba thành phần bối cảnh: đích, phía và cổng.
 
-Câu trả lời có thể bao gồm điểm tình trạng, nhận dạng mô-đun, bộ đếm liên kết, thời gian hoạt động, cờ, số liệu chất lượng, nhiệt độ, điện áp, nguồn điện nhận được, hành vi lỗi và thông tin lỗi. Bản đồ trường chính xác thuộc về thông số kỹ thuật, nhưng mô hình vận hành thuộc về đầu bạn.
+Đích chọn mô-đun cục bộ hoặc một đối tác từ xa. Phía chọn giao diện điện hướng host hoặc giao diện quang hướng môi trường truyền. Cổng xác định datapath liên quan, điều quan trọng khi một mô-đun nối với nhiều đối tác.
 
-Một cách hữu ích để nghĩ về vấn đề này là: lệnh tập hợp một ảnh chụp nhanh mạch lạc cho người vận hành. Thay vì cử người đi theo đuổi các lĩnh vực rải rác, quy trình sẽ gói gọn bằng chứng cần thiết để trả lời các câu hỏi về tình trạng liên kết.
-Đối với người học, điều quan trọng là khả năng lặp lại. Sau khi hiểu mẫu, bạn có thể nhận ra cấu trúc tương tự đằng sau các lệnh của người vận hành khác nhau, ngay cả khi tên lệnh và trường dữ liệu tải thay đổi.
+CMD 8001h trả về dữ liệu đo từ xa cho lựa chọn đó. Phần mềm chuẩn bị yêu cầu, kích hoạt, thăm dò trạng thái và đọc phản hồi thành công.
+
+Phản hồi xác định đích có trực tuyến và truy cập được hay không. Nó gồm điểm và bitmap hạng mục thấp nhất, số sê-ri mô-đun, bộ đếm mất liên kết, thời gian hoạt động, cờ, phép đo chất lượng tín hiệu, giá trị môi trường và thông tin FEC.
+
+Một số trường phản hồi tổng hợp làn kém nhất thay vì liệt kê độc lập từng làn. Công suất quang gồm giá trị nhỏ nhất và lớn nhất. Hãy giữ bối cảnh tổng hợp đó khi chuyển từ tóm tắt cấp cổng sang điều tra chi tiết.
+
+Đích ngoại tuyến không phải là đích tốt có các chỉ số bằng không. Hãy báo cáo khả năng truy cập một cách rõ ràng. Quy trình chung vẫn giống nhau cho yêu cầu cục bộ và từ xa, nhưng bối cảnh điểm cuối và giao diện phải luôn đi cùng bằng chứng.

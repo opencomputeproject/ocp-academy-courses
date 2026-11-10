@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Los registros de eventos necesitan suficiente detalle para ser útiles, pero también necesitan control. Un enlace ruidoso puede cruzar un umbral repetidamente. Sin histéresis, el registro puede llenarse de entradas duplicadas que ocultan la secuencia real de los eventos.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+Un registro útil de eventos necesita detalle y moderación. Un enlace con ruido puede repetir la misma condición hasta llenar el búfer circular de duplicados y sobrescribirlo.
 
-La especificación incluye eventos impulsados por umbrales como conexión de enlace, enlace hacia abajo, pérdida de señal, pérdida de enlace, umbral M P I, umbral S N R, umbral pre-feck B E R, umbral de histograma feck, feck no corregible, temperatura del módulo y potencia recibida. También indica soporte para API del host para leer y escribir histéresis de eventos, con un valor por defecto de 10 segundos en la especificación.
+La especificación utiliza histéresis programable con un valor predeterminado de diez segundos. Esto limita el registro de duplicados dentro del intervalo configurado y conserva los eventos distintos.
 
-Para la versión final, ese valor debe comprobarse con la especificación publicada. El concepto es estable: ajustar el comportamiento de los eventos para que los registros conserven la señal en lugar del ruido.
-La histéresis no consiste en ocultar fracasos. Se trata de preservar una historia de fracaso legible. Un log que registra la misma oscilación demasiadas veces puede dificultar la causa raíz, no hacerlo más fácil.
+Las definiciones abarcan temperatura y voltaje del módulo, alarmas de potencia óptica, reinicios, condiciones de señal o sincronización del receptor, umbrales de error, cambios de firmware y apagado autónomo. Decodifique el identificador y los campos de detalle en lugar de tratar todos los registros como alarmas genéricas del enlace.
+
+Los umbrales de puntuación y las condiciones de registro de eventos tienen propósitos diferentes. No suponga que cambiar un límite de puntuación modifica todos los umbrales de eventos, ni que un contador enmascarado deja de ser evidencia útil.
+
+Las A P I del host exponen la recuperación de eventos y el control de histéresis para extremos locales y remotos. Utilice esos controles deliberadamente y conserve la validez de la hora del módulo y el contexto de secuencia al correlacionar.
+
+La histéresis debe hacer legible la historia de la falla. Antes de borrar un registro o reiniciar contadores, recupere los eventos que explican el incidente y consérvelos junto con la línea temporal del host.

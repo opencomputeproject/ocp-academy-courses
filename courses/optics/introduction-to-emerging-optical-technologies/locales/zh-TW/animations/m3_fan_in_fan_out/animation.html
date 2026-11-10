@@ -5,17 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>扇入與扇出纖芯對映</title>
   <style>
+@font-face{font-family:AcademyZhTW;src:url("../../assets/fonts/NotoSansTC-zh-TW.woff2") format("woff2");font-weight:100 900;font-display:block;}
+
+
+
+
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
-      font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", Arial, sans-serif;
+      font-family:AcademyZhTW,"PingFang TC","Microsoft JhengHei",sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
-    text { letter-spacing: 0; }.stage-label {
+    svg { display: block; width: 100vw; height: 100vh; }
+    text { letter-spacing: 0; }
+    .stage-label {
       font-size: 20px;
       font-weight: 700;
       fill: #343895;
@@ -23,7 +29,8 @@
       stroke: #ffffff;
       stroke-width: 5px;
       stroke-linejoin: round;
-    }.stage-note {
+    }
+    .stage-note {
       font-size: 15px;
       font-weight: 600;
       fill: #5f6062;
@@ -31,11 +38,15 @@
       stroke: #ffffff;
       stroke-width: 4px;
       stroke-linejoin: round;
-    }.lane-label { font-size: 16px; font-weight: 800; fill: #ffffff; }.callout-title { font-size: 21px; font-weight: 800; fill: #343895; }.callout-note { font-size: 16px; font-weight: 600; fill: #5f6062; }.status { font-size: 25px; font-weight: 800; fill: #1f2937; }
+    }
+    .lane-label { font-size: 16px; font-weight: 800; fill: #ffffff; }
+    .callout-title { font-size: 21px; font-weight: 800; fill: #343895; }
+    .callout-note { font-size: 16px; font-weight: 600; fill: #5f6062; }
+    .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
   </style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="四條單芯光路經扇入進入四芯多芯光纖主幹，再透過扇出恢復為四條單芯光路。">
+<body data-duration-ms="16000" data-poster-ms="12000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="四條單芯光路經扇入進入 4 芯多芯主幹，再經扇出還原為四條單芯光路。">
   <defs>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
@@ -81,7 +92,7 @@
     <circle id="core-ring-3" cx="-25" cy="25" r="18" fill="none" stroke="#00a7c4" stroke-width="4" opacity="0"/>
     <circle id="core-ring-4" cx="25" cy="25" r="18" fill="none" stroke="#d88911" stroke-width="4" opacity="0"/>
   </g>
-  <text x="744" y="128" class="callout-title">共享包層</text>
+  <text x="744" y="128" class="callout-title">共用包覆層</text>
   <text x="744" y="154" class="callout-note">四個獨立纖芯</text>
   <path d="M708 185 C760 205 788 232 808 282" fill="none" stroke="#8dc63f" stroke-width="3" stroke-dasharray="7 7"/>
 
@@ -92,28 +103,28 @@
 
     <rect x="1000" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
     <text x="1110" y="254" text-anchor="middle" class="stage-label">單芯埠</text>
-    <text x="1110" y="280" text-anchor="middle" class="stage-note">恢復原始對映</text>
+    <text x="1110" y="280" text-anchor="middle" class="stage-note">恢復原有對映</text>
   </g>
 
   <g id="fan-in-device">
     <path d="M280 276 L410 322 L410 430 L280 476 Z" fill="#eef0fb" stroke="#343895" stroke-width="4"/>
-    <text x="345" y="363" text-anchor="middle" class="stage-label">扇入</text>
-    <text x="345" y="389" text-anchor="middle" class="stage-note">對映光路</text>
-    <text x="345" y="412" text-anchor="middle" class="stage-note">到 MCF 纖芯</text>
+    <text x="345" y="502" text-anchor="middle" class="stage-label">扇入</text>
+    <text x="345" y="528" text-anchor="middle" class="stage-note">將光路對映</text>
+    <text x="345" y="551" text-anchor="middle" class="stage-note">至 MCF 纖芯</text>
   </g>
 
   <g id="mcf-trunk">
     <rect x="400" y="318" width="480" height="116" rx="54" fill="#edf6e6" stroke="#8dc63f" stroke-width="5"/>
     <rect x="420" y="335" width="440" height="82" rx="38" fill="#ffffff" stroke="#bcc6d3" stroke-width="2"/>
-    <text x="640" y="468" text-anchor="middle" class="stage-label">四芯 MCF 主幹</text>
+    <text x="640" y="468" text-anchor="middle" class="stage-label">4 芯 MCF 主幹</text>
     <text x="640" y="494" text-anchor="middle" class="stage-note">一條緊湊路徑</text>
   </g>
 
   <g id="fan-out-device">
     <path d="M870 322 L1000 276 L1000 476 L870 430 Z" fill="#eef7f9" stroke="#00a7c4" stroke-width="4"/>
-    <text x="935" y="363" text-anchor="middle" class="stage-label">扇出</text>
-    <text x="935" y="389" text-anchor="middle" class="stage-note">恢復纖芯對映</text>
-    <text x="935" y="412" text-anchor="middle" class="stage-note">到獨立光路</text>
+    <text x="935" y="502" text-anchor="middle" class="stage-label">扇出</text>
+    <text x="935" y="528" text-anchor="middle" class="stage-note">將纖芯還原</text>
+    <text x="935" y="551" text-anchor="middle" class="stage-note">為獨立光路</text>
   </g>
 
   <g id="base-paths" fill="none" stroke-linecap="round">
@@ -161,7 +172,7 @@
     const trail = [];
     for (let i = 0; i < 8; i += 1) {
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('r', i === 0? '10': String(Math.max(3, 8 - i * 0.65)));
+      circle.setAttribute('r', i === 0 ? '10' : String(Math.max(3, 8 - i * 0.65)));
       circle.setAttribute('fill', color);
       circle.setAttribute('filter', filters[lane]);
       circle.setAttribute('opacity', '0');
@@ -193,9 +204,9 @@
     fanIn.setAttribute('opacity', '1');
     trunk.setAttribute('opacity', '1');
     fanOut.setAttribute('opacity', '1');
-    fanIn.style.filter = fanInStrength > 0.25? 'url(#shadow)': '';
-    trunk.style.filter = trunkStrength > 0.25? 'url(#shadow)': '';
-    fanOut.style.filter = fanOutStrength > 0.25? 'url(#shadow)': '';
+    fanIn.style.filter = fanInStrength > 0.25 ? 'url(#shadow)' : '';
+    trunk.style.filter = trunkStrength > 0.25 ? 'url(#shadow)' : '';
+    fanOut.style.filter = fanOutStrength > 0.25 ? 'url(#shadow)' : '';
 
     const ringStrength = trunkStrength * (0.55 + 0.45 * Math.sin(progress * Math.PI * 18) ** 2);
     coreRings.forEach((ring, index) => {
@@ -206,20 +217,20 @@
 
   function setStatus(t, progress) {
     let message = '四條光路，一條緊湊路徑';
-    if (t >= 1.2 && t < 4.6) message = '四條單芯光路以獨立標識進入';
-    else if (t >= 4.6 && t < 7.2) message = '扇入將每條光路對映到指定 MCF 纖芯';
-    else if (t >= 7.2 && t < 10.9) message = '四個獨立纖芯在共享包層內傳輸';
-    else if (t >= 10.9 && t < 14.6) message = '扇出恢復原有的四條對映光路';
+    if (t >= 1.2 && t < 4.6) message = '四條單芯光路保留各自身分進入';
+    else if (t >= 4.6 && t < 7.2) message = '扇入將各光路對映至特定 MCF 纖芯';
+    else if (t >= 7.2 && t < 10.9) message = '四個獨立纖芯位於同一包覆層中';
+    else if (t >= 10.9) message = '扇出還原相同的四條對映光路';
     statusText.textContent = message;
 
-    const dynamicStrength = t < 1.2 || t > 14.8? 0: Math.sin(Math.PI * clamp((t - 1.2) / 13.6));
+    const dynamicStrength = t < 1.2 || t > 14.8 ? 0 : Math.sin(Math.PI * clamp((t - 1.2) / 13.6));
     const green = Math.round(244 - 10 * dynamicStrength);
     statusBand.querySelector('rect').setAttribute('fill', `rgb(${green}, 250, ${green - 5})`);
     setStageEmphasis(progress);
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = Math.max(0, Math.min(rawTime, duration));
     const movement = clamp((t - 1.2) / 12.9);
     const progress = smoothstep(movement);
     let opacity = smoothstep((t - 0.8) / 0.6);

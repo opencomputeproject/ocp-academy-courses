@@ -203,6 +203,13 @@
     across: document.getElementById('across-label'),
   };
   const campusLabel = document.getElementById('campus-label');
+  const contextFrame = world.ownerSVGElement.querySelector('rect[x="24"][y="18"]');
+  const contextStageBand = document.getElementById('stage-band');
+  const contextFooterBand = document.getElementById('constraint-band');
+  const contextLabels = Array.from(world.querySelectorAll('text'), node => ({
+    node,
+    visibility: node.style.visibility,
+  }));
 
   const cameras = {
     up: { scale: 2.25, cx: 228, cy: 340 },
@@ -304,6 +311,40 @@
     setOpacity(campusLabel, stage === 'across' || stage === 'all' ? 1 : 0);
   }
 
+  // Measure after camera/stage updates; visibility keeps hidden labels measurable.
+  function updateContextLabelVisibility() {
+    const svg = world.ownerSVGElement;
+    const matrix = svg.getScreenCTM();
+    if (!matrix) return;
+    const gap = 4 * Math.max(Math.hypot(matrix.a, matrix.b), Math.hypot(matrix.c, matrix.d));
+    const viewport = svg.getBoundingClientRect();
+    const frame = contextFrame.getBoundingClientRect();
+    const stage = contextStageBand.getBoundingClientRect();
+    const footer = contextFooterBand.getBoundingClientRect();
+    const safe = {
+      left: Math.max(viewport.left, frame.left) + gap,
+      right: Math.min(viewport.right, frame.right) - gap,
+      top: Math.max(viewport.top, frame.top, stage.bottom) + gap,
+      bottom: Math.min(viewport.bottom, frame.bottom, footer.top) - gap,
+    };
+    for (const { node, visibility } of contextLabels) {
+      const box = node.getBBox();
+      const bounds = node.getBoundingClientRect();
+      const textMatrix = node.getScreenCTM();
+      const style = getComputedStyle(node);
+      const stroke = style.stroke === 'none' ? 0 : parseFloat(style.strokeWidth) || 0;
+      const strokePadding = textMatrix ? stroke * 0.5 * Math.max(
+        Math.hypot(textMatrix.a, textMatrix.b), Math.hypot(textMatrix.c, textMatrix.d)
+      ) : 0;
+      const fullyVisible = box.width > 0 && box.height > 0
+        && bounds.left - strokePadding >= safe.left
+        && bounds.right + strokePadding <= safe.right
+        && bounds.top - strokePadding >= safe.top
+        && bounds.bottom + strokePadding <= safe.bottom;
+      node.style.visibility = fullyVisible ? visibility : 'hidden';
+    }
+  }
+
   function makePulses(pathIds, groupId, color, filterId, particlesPerPath) {
     const group = document.getElementById(groupId);
     return pathIds.map((pathId) => {
@@ -347,6 +388,7 @@
     const stage = stageAt(t);
     setCamera(cameraAt(t));
     setStage(stage, t);
+    updateContextLabelVisibility();
 
     const upVisible = stage === 'up' || stage === 'all' ? 1 : stage === 'out' ? 0.42 : 0.18;
     const outVisible = stage === 'out' || stage === 'all' ? 1 : stage === 'across' ? 0.46 : 0.10;
@@ -357,6 +399,8 @@
   };
 
   window.renderAt(0);
+  document.fonts?.ready.then(updateContextLabelVisibility);
+  window.addEventListener('resize', updateContextLabelVisibility);
 </script>
 </body>
 </html>

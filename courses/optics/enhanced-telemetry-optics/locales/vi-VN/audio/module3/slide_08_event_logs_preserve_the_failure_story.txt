@@ -1,9 +1,11 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Đo từ xa hiện tại cho bạn biết liên kết hiện tại trông như thế nào. Nhật ký sự kiện giúp giải thích làm thế nào nó đạt được điều đó.
+Dữ liệu đo từ xa hiện tại cho biết trạng thái liên kết lúc này. Bản ghi sự kiện bền vững giúp giải thích diễn biến dẫn đến trạng thái đó.
 
-Thông số kỹ thuật mô tả việc ghi nhật ký sự kiện trong bộ nhớ không mất dữ liệu. Nó cũng mô tả các mục nhật ký sự kiện 32 byte với giá trị chuỗi duy nhất, trường dấu thời gian, mã nhận dạng sự kiện và trường chi tiết. Giá trị chuỗi nhỏ nhất cho biết bản ghi cũ nhất và chuỗi có thể bao bọc.
+Mỗi mục sự kiện dài 32 byte. Nó chứa mã chuỗi 16 bit, dấu thời gian 64 bit tính bằng nano giây, mã sự kiện, bốn trường chi tiết và vùng dự phòng. Các trường dùng thứ tự byte little-endian.
 
-Cấu trúc này quan trọng khi mô-đun được di chuyển, đặt lại hoặc kiểm tra sau thực tế. Nếu nhật ký duy trì thứ tự, thời gian, loại sự kiện và các chi tiết liên quan thì người vận hành có thể xây dựng lại câu chuyện lỗi thay vì dựa vào cảnh báo đầu tiên xảy ra trên bảng thông tin.
+Mã sự kiện quyết định cách giải mã chi tiết. Sự kiện nhiệt độ mang thông tin nhiệt độ. Sự kiện bộ thu có thể mang bitmap làn. Sự kiện tự động ngắt ghi phía, cổng, hạng mục kích hoạt và giá trị chỉ số.
 
-Bài học rút ra rất đơn giản: lịch sử sự kiện biến các triệu chứng thoáng qua thành bằng chứng.
-Bản ghi sự kiện cũng hữu ích trong các cuộc trò chuyện giữa nhà cung cấp và nhân viên vận hành. Thay vì tranh luận về thời điểm sự cố có thể xảy ra, các nhóm có thể so sánh các bản ghi, dấu thời gian và chi tiết theo thứ tự với nhật ký máy chủ và thời gian bảo trì.
+Bộ đệm vòng phải giữ các bản ghi hiện có qua các lần cấp nguồn, tháo và lắp lại. Mã chuỗi có thể quay vòng, vì vậy phần mềm phải bảo toàn bối cảnh thời gian thay vì chỉ sắp xếp máy móc theo giá trị mã.
+
+Thời gian cũng cần bối cảnh. Định dạng dấu thời gian nano giây không bảo đảm đồng hồ chính xác đến nano giây. Hãy thiết lập thời gian mô-đun và nhận biết bản ghi được tạo trước khi có tham chiếu thời gian hợp lệ.
+
+CMD 8010h truy xuất lịch sử cục bộ hoặc từ xa. Một tùy chọn khác của cùng lệnh xóa lịch sử. Hãy đọc và xuất bằng chứng trước khi xóa, vì bản ghi bền vững thường là thông tin duy nhất về một sự cố thoáng qua.

@@ -1,7 +1,12 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-El acceso remoto C M I S extiende el mismo modelo hasta el extremo lejano. El host no abre una ruta de gestión directa separada hacia el módulo remoto. Solicita el módulo local compatible, y el módulo local recupera los datos remotos en la banda.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+El acceso remoto C M I S permite leer y escribir. El host envía la solicitud al módulo local conforme, que alcanza al extremo remoto seleccionado mediante la interfaz en banda.
 
-Conceptualmente, hay dos modos de acceso útiles. El acceso a bytes está dirigido. Es adecuado cuando el software necesita un campo pequeño o un rango estrecho. El acceso a las páginas es más amplio. Recupera una instantánea orientada a páginas más grande.
+El acceso por bytes utiliza el comando ocho mil veinte hexadecimal. Selecciona un puerto remoto, banco, página, dirección, operación y longitud. Es útil para un intervalo reducido de registros transferido mediante la carga útil local.
 
-Esto es potente para operaciones porque proporciona al switch host una forma de inspeccionar ambos extremos del enlace óptico. El operador puede comparar evidencia local y remota sin acceder físicamente primero a la extremo remoto.
-El acceso remoto también ayuda cuando el acceso físico es lento o no está disponible. Antes de enviar a alguien a un rack o reemplazar un módulo, el operador puede recopilar pruebas de fondo y decidir si la acción está justificada.
+El acceso por páginas utiliza el comando ocho mil veintiuno hexadecimal y la carga útil extendida. Es útil cuando el software necesita leer o escribir una página remota completa en vez de varios intervalos pequeños.
+
+Para el diagnóstico, una lectura recupera evidencia. Una escritura cambia el estado remoto, por lo que la herramienta debe dejar claros la operación y el destino, y seguir los controles de mantenimiento del despliegue.
+
+En ambos modos, compruebe el estado de finalización y de falla del comando antes de confiar en el resultado. Conserve en la salida el extremo seleccionado y el contexto de banco y página.
+
+Esto ofrece visibilidad del extremo remoto mediante una sola interfaz local de gestión. También exige seleccionar cuidadosamente el destino, sobre todo en configuraciones breakout, donde una solicitud válida podría apuntar al extremo equivocado.

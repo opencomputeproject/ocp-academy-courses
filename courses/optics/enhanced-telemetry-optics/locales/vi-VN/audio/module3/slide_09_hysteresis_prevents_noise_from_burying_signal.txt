@@ -1,7 +1,11 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Nhật ký sự kiện cần có đủ chi tiết để trở nên hữu ích nhưng chúng cũng cần được kiểm soát. Một liên kết ồn ào có thể vượt qua ngưỡng nhiều lần. Nếu không có độ trễ, nhật ký có thể chứa đầy các mục trùng lặp làm che khuất chuỗi sự kiện thực tế.
+Nhật ký sự kiện hữu ích cần vừa chi tiết vừa có kiểm soát. Liên kết có nhiễu có thể lặp lại cùng một trạng thái đủ nhiều để các bản sao ghi đè bộ đệm vòng.
 
-Thông số kỹ thuật bao gồm các sự kiện dựa trên ngưỡng như liên kết lên, liên kết xuống, mất tín hiệu, mất liên kết, ngưỡng M P I, ngưỡng S N R, ngưỡng B E R trước feck, ngưỡng biểu đồ feck, feck không thể sửa được, nhiệt độ mô-đun và nguồn điện nhận được. Nó cũng liệt kê hỗ trợ máy chủ API để đọc và ghi độ trễ sự kiện, với giá trị mặc định là 10 giây trong thông số kỹ thuật.
+Đặc tả sử dụng hysteresis có thể lập trình, mặc định 10 giây. Nó hạn chế ghi trùng lặp trong khoảng thời gian được cấu hình mà vẫn giữ các sự kiện khác nhau.
 
-Đối với bản phát hành cuối cùng, giá trị đó phải được kiểm tra theo thông số kỹ thuật đã công bố. Khái niệm này ổn định: điều chỉnh hành vi sự kiện để ghi lại tín hiệu thay vì nhiễu.
-Độ trễ không phải là che giấu thất bại. Đó là về việc bảo tồn một câu chuyện thất bại có thể đọc được. Một nhật ký ghi lại cùng một dao động quá nhiều lần có thể khiến việc tìm gốc trở nên khó khăn hơn chứ không phải dễ dàng hơn.
+Định nghĩa sự kiện bao gồm nhiệt độ và điện áp mô-đun, cảnh báo công suất quang, đặt lại, trạng thái tín hiệu hoặc khóa của bộ thu, ngưỡng lỗi, thay đổi firmware và tự động ngắt. Hãy giải mã mã sự kiện và các trường chi tiết thay vì xem mọi bản ghi là cảnh báo liên kết chung.
+
+Ngưỡng điểm và điều kiện ghi sự kiện có mục đích khác nhau. Không được cho rằng thay đổi một ranh giới điểm sẽ thay đổi mọi ngưỡng sự kiện, hoặc bộ đếm bị loại khỏi điểm sẽ không còn hữu ích làm bằng chứng.
+
+API host cung cấp truy xuất sự kiện và điều khiển hysteresis cho các điểm cuối cục bộ và từ xa. Hãy dùng các cơ chế đó có chủ đích, đồng thời giữ tính hợp lệ thời gian mô-đun và bối cảnh chuỗi khi đối chiếu.
+
+Hysteresis phải giúp diễn biến sự cố dễ đọc. Trước khi xóa nhật ký hoặc đặt lại bộ đếm, hãy truy xuất các bản ghi giải thích sự cố và giữ chúng cùng dòng thời gian host.

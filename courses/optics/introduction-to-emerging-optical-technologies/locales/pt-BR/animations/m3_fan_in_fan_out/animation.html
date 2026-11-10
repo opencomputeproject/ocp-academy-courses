@@ -1,20 +1,19 @@
 <!doctype html>
-<html lang="pt-BR">
-<head>
+<html lang="pt-BR"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mapeamento Principal Fan-In e Fan-Out</title>
+  <title>Mapeamento de núcleos por fan-in e fan-out</title>
   <style>
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
-      font-family: Arial, "Helvetica Neue", sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
     .stage-label {
       font-size: 20px;
@@ -40,112 +39,112 @@
     .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
   </style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="Quatro caminhos ópticos de núcleo único passam pelo fan-in para um tronco multicore de quatro núcleos e retornam pelo fan-out para quatro caminhos de núcleo único.">
+<body data-duration-ms="16000" data-poster-ms="12000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="Animação silenciosa de quatro caminhos ópticos de núcleo único identificados por cores, mapeados por fan-in para núcleos separados em um tronco multicore e restaurados por fan-out.">
   <defs>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
-      <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
+      <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"></feDropShadow>
     </filter>
     <filter id="glow-green" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="7" result="blur"/>
-      <feFlood flood-color="#8dc63f" flood-opacity="0.7"/>
-      <feComposite in2="blur" operator="in"/>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="7" result="blur"></feGaussianBlur>
+      <feFlood flood-color="#8dc63f" flood-opacity="0.7"></feFlood>
+      <feComposite in2="blur" operator="in"></feComposite>
+      <feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
     </filter>
     <filter id="glow-blue" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="7" result="blur"/>
-      <feFlood flood-color="#343895" flood-opacity="0.7"/>
-      <feComposite in2="blur" operator="in"/>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="7" result="blur"></feGaussianBlur>
+      <feFlood flood-color="#343895" flood-opacity="0.7"></feFlood>
+      <feComposite in2="blur" operator="in"></feComposite>
+      <feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
     </filter>
     <filter id="glow-cyan" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="7" result="blur"/>
-      <feFlood flood-color="#00a7c4" flood-opacity="0.7"/>
-      <feComposite in2="blur" operator="in"/>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="7" result="blur"></feGaussianBlur>
+      <feFlood flood-color="#00a7c4" flood-opacity="0.7"></feFlood>
+      <feComposite in2="blur" operator="in"></feComposite>
+      <feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
     </filter>
     <filter id="glow-amber" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="7" result="blur"/>
-      <feFlood flood-color="#d88911" flood-opacity="0.7"/>
-      <feComposite in2="blur" operator="in"/>
-      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feGaussianBlur stdDeviation="7" result="blur"></feGaussianBlur>
+      <feFlood flood-color="#d88911" flood-opacity="0.7"></feFlood>
+      <feComposite in2="blur" operator="in"></feComposite>
+      <feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
     </filter>
   </defs>
 
-  <rect width="1280" height="720" fill="#f7f9fc"/>
-  <rect x="34" y="28" width="1212" height="664" rx="22" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"/>
+  <rect width="1280" height="720" fill="#f7f9fc"></rect>
+  <rect x="34" y="28" width="1212" height="664" rx="22" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"></rect>
 
   <g id="cross-section" transform="translate(640 145)">
-    <circle r="82" fill="#f4faef" stroke="#8dc63f" stroke-width="4"/>
-    <circle r="62" fill="#ffffff" stroke="#a6b0bf" stroke-width="3"/>
-    <circle cx="-25" cy="-25" r="13" fill="#8dc63f" stroke="#577b27" stroke-width="3"/>
-    <circle cx="25" cy="-25" r="13" fill="#343895" stroke="#24276e" stroke-width="3"/>
-    <circle cx="-25" cy="25" r="13" fill="#00a7c4" stroke="#007c91" stroke-width="3"/>
-    <circle cx="25" cy="25" r="13" fill="#d88911" stroke="#9b620c" stroke-width="3"/>
-    <circle id="core-ring-1" cx="-25" cy="-25" r="18" fill="none" stroke="#8dc63f" stroke-width="4" opacity="0"/>
-    <circle id="core-ring-2" cx="25" cy="-25" r="18" fill="none" stroke="#343895" stroke-width="4" opacity="0"/>
-    <circle id="core-ring-3" cx="-25" cy="25" r="18" fill="none" stroke="#00a7c4" stroke-width="4" opacity="0"/>
-    <circle id="core-ring-4" cx="25" cy="25" r="18" fill="none" stroke="#d88911" stroke-width="4" opacity="0"/>
+    <circle r="82" fill="#f4faef" stroke="#8dc63f" stroke-width="4"></circle>
+    <circle r="62" fill="#ffffff" stroke="#a6b0bf" stroke-width="3"></circle>
+    <circle cx="-25" cy="-25" r="13" fill="#8dc63f" stroke="#577b27" stroke-width="3"></circle>
+    <circle cx="25" cy="-25" r="13" fill="#343895" stroke="#24276e" stroke-width="3"></circle>
+    <circle cx="-25" cy="25" r="13" fill="#00a7c4" stroke="#007c91" stroke-width="3"></circle>
+    <circle cx="25" cy="25" r="13" fill="#d88911" stroke="#9b620c" stroke-width="3"></circle>
+    <circle id="core-ring-1" cx="-25" cy="-25" r="18" fill="none" stroke="#8dc63f" stroke-width="4" opacity="0"></circle>
+    <circle id="core-ring-2" cx="25" cy="-25" r="18" fill="none" stroke="#343895" stroke-width="4" opacity="0"></circle>
+    <circle id="core-ring-3" cx="-25" cy="25" r="18" fill="none" stroke="#00a7c4" stroke-width="4" opacity="0"></circle>
+    <circle id="core-ring-4" cx="25" cy="25" r="18" fill="none" stroke="#d88911" stroke-width="4" opacity="0"></circle>
   </g>
-  <text x="744" y="128" class="callout-title">Revestimento compartilhado</text>
+  <text x="744" y="128" class="callout-title">Casca compartilhada</text>
   <text x="744" y="154" class="callout-note">Quatro núcleos independentes</text>
-  <path d="M708 185 C760 205 788 232 808 282" fill="none" stroke="#8dc63f" stroke-width="3" stroke-dasharray="7 7"/>
+  <path d="M708 185 C760 205 788 232 808 282" fill="none" stroke="#8dc63f" stroke-width="3" stroke-dasharray="7 7"></path>
 
   <g>
-    <rect x="60" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
-    <text x="170" y="254" text-anchor="middle" class="stage-label">Portas de núcleo único</text>
+    <rect x="60" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"></rect>
+    <text x="170" y="254" text-anchor="middle" class="stage-label" font-size="18.3" style="font-size: 18.3px;">Portas de núcleo único</text>
     <text x="170" y="280" text-anchor="middle" class="stage-note">Quatro fibras separadas</text>
 
-    <rect x="1000" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
-    <text x="1110" y="254" text-anchor="middle" class="stage-label">Portas de núcleo único</text>
-    <text x="1110" y="280" text-anchor="middle" class="stage-note">Mapeamento original restaurado</text>
+    <rect x="1000" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"></rect>
+    <text x="1110" y="254" text-anchor="middle" class="stage-label" font-size="18.3" style="font-size: 18.3px;">Portas de núcleo único</text>
+    <text x="1110" y="280" text-anchor="middle" class="stage-note" font-size="13.03" style="font-size: 13.03px;">Mapeamento original restaurado</text>
   </g>
 
   <g id="fan-in-device">
-    <path d="M280 276 L410 322 L410 430 L280 476 Z" fill="#eef0fb" stroke="#343895" stroke-width="4"/>
-    <text x="345" y="363" text-anchor="middle" class="stage-label">Fan-in</text>
-    <text x="345" y="389" text-anchor="middle" class="stage-note">Caminhos de mapas</text>
-    <text x="345" y="412" text-anchor="middle" class="stage-note">para núcleos MCF</text>
+    <path d="M280 276 L410 322 L410 430 L280 476 Z" fill="#eef0fb" stroke="#343895" stroke-width="4"></path>
+    <text x="345" y="502" text-anchor="middle" class="stage-label">Fan-in</text>
+    <text x="345" y="528" text-anchor="middle" class="stage-note">Mapear caminhos</text>
+    <text x="345" y="551" text-anchor="middle" class="stage-note">aos núcleos MCF</text>
   </g>
 
   <g id="mcf-trunk">
-    <rect x="400" y="318" width="480" height="116" rx="54" fill="#edf6e6" stroke="#8dc63f" stroke-width="5"/>
-    <rect x="420" y="335" width="440" height="82" rx="38" fill="#ffffff" stroke="#bcc6d3" stroke-width="2"/>
-    <text x="640" y="468" text-anchor="middle" class="stage-label">Tronco de 4 núcleos MCF</text>
+    <rect x="400" y="318" width="480" height="116" rx="54" fill="#edf6e6" stroke="#8dc63f" stroke-width="5"></rect>
+    <rect x="420" y="335" width="440" height="82" rx="38" fill="#ffffff" stroke="#bcc6d3" stroke-width="2"></rect>
+    <text x="640" y="468" text-anchor="middle" class="stage-label">Tronco MCF de 4 núcleos</text>
     <text x="640" y="494" text-anchor="middle" class="stage-note">Uma rota compacta</text>
   </g>
 
   <g id="fan-out-device">
-    <path d="M870 322 L1000 276 L1000 476 L870 430 Z" fill="#eef7f9" stroke="#00a7c4" stroke-width="4"/>
-    <text x="935" y="363" text-anchor="middle" class="stage-label">Espalhe-se</text>
-    <text x="935" y="389" text-anchor="middle" class="stage-note">Núcleos de retorno</text>
-    <text x="935" y="412" text-anchor="middle" class="stage-note">para separar caminhos</text>
+    <path d="M870 322 L1000 276 L1000 476 L870 430 Z" fill="#eef7f9" stroke="#00a7c4" stroke-width="4"></path>
+    <text x="935" y="502" text-anchor="middle" class="stage-label">Fan-out</text>
+    <text x="935" y="528" text-anchor="middle" class="stage-note">Retornar núcleos</text>
+    <text x="935" y="551" text-anchor="middle" class="stage-note">a caminhos separados</text>
   </g>
 
   <g id="base-paths" fill="none" stroke-linecap="round">
-    <path id="lane-path-1" d="M92 318 H240 C325 318 342 342 430 350 H850 C938 342 955 318 1188 318" stroke="#8dc63f" stroke-width="9" opacity="0.42"/>
-    <path id="lane-path-2" d="M92 356 H240 C325 356 342 360 430 368 H850 C938 360 955 356 1188 356" stroke="#343895" stroke-width="9" opacity="0.42"/>
-    <path id="lane-path-3" d="M92 396 H240 C325 396 342 392 430 384 H850 C938 392 955 396 1188 396" stroke="#00a7c4" stroke-width="9" opacity="0.42"/>
-    <path id="lane-path-4" d="M92 434 H240 C325 434 342 410 430 402 H850 C938 410 955 434 1188 434" stroke="#d88911" stroke-width="9" opacity="0.42"/>
+    <path id="lane-path-1" d="M92 318 H240 C325 318 342 342 430 350 H850 C938 342 955 318 1188 318" stroke="#8dc63f" stroke-width="9" opacity="0.42"></path>
+    <path id="lane-path-2" d="M92 356 H240 C325 356 342 360 430 368 H850 C938 360 955 356 1188 356" stroke="#343895" stroke-width="9" opacity="0.42"></path>
+    <path id="lane-path-3" d="M92 396 H240 C325 396 342 392 430 384 H850 C938 392 955 396 1188 396" stroke="#00a7c4" stroke-width="9" opacity="0.42"></path>
+    <path id="lane-path-4" d="M92 434 H240 C325 434 342 410 430 402 H850 C938 410 955 434 1188 434" stroke="#d88911" stroke-width="9" opacity="0.42"></path>
   </g>
 
   <g id="port-labels">
-    <g><circle cx="92" cy="318" r="17" fill="#6fa030"/><text x="92" y="324" text-anchor="middle" class="lane-label">1</text></g>
-    <g><circle cx="92" cy="356" r="17" fill="#343895"/><text x="92" y="362" text-anchor="middle" class="lane-label">2</text></g>
-    <g><circle cx="92" cy="396" r="17" fill="#008aa2"/><text x="92" y="402" text-anchor="middle" class="lane-label">3</text></g>
-    <g><circle cx="92" cy="434" r="17" fill="#b8730e"/><text x="92" y="440" text-anchor="middle" class="lane-label">4</text></g>
-    <g><circle cx="1188" cy="318" r="17" fill="#6fa030"/><text x="1188" y="324" text-anchor="middle" class="lane-label">1</text></g>
-    <g><circle cx="1188" cy="356" r="17" fill="#343895"/><text x="1188" y="362" text-anchor="middle" class="lane-label">2</text></g>
-    <g><circle cx="1188" cy="396" r="17" fill="#008aa2"/><text x="1188" y="402" text-anchor="middle" class="lane-label">3</text></g>
-    <g><circle cx="1188" cy="434" r="17" fill="#b8730e"/><text x="1188" y="440" text-anchor="middle" class="lane-label">4</text></g>
+    <g><circle cx="92" cy="318" r="17" fill="#6fa030"></circle><text x="92" y="324" text-anchor="middle" class="lane-label">1</text></g>
+    <g><circle cx="92" cy="356" r="17" fill="#343895"></circle><text x="92" y="362" text-anchor="middle" class="lane-label">2</text></g>
+    <g><circle cx="92" cy="396" r="17" fill="#008aa2"></circle><text x="92" y="402" text-anchor="middle" class="lane-label">3</text></g>
+    <g><circle cx="92" cy="434" r="17" fill="#b8730e"></circle><text x="92" y="440" text-anchor="middle" class="lane-label">4</text></g>
+    <g><circle cx="1188" cy="318" r="17" fill="#6fa030"></circle><text x="1188" y="324" text-anchor="middle" class="lane-label">1</text></g>
+    <g><circle cx="1188" cy="356" r="17" fill="#343895"></circle><text x="1188" y="362" text-anchor="middle" class="lane-label">2</text></g>
+    <g><circle cx="1188" cy="396" r="17" fill="#008aa2"></circle><text x="1188" y="402" text-anchor="middle" class="lane-label">3</text></g>
+    <g><circle cx="1188" cy="434" r="17" fill="#b8730e"></circle><text x="1188" y="440" text-anchor="middle" class="lane-label">4</text></g>
   </g>
 
   <g id="pulses"></g>
 
   <g id="status-band">
-    <rect x="212" y="575" width="856" height="76" rx="18" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
-    <circle cx="260" cy="613" r="13" fill="#8dc63f"/>
-    <text id="status-text" x="640" y="622" text-anchor="middle" class="status">Quatro caminhos, uma rota compacta</text>
+    <rect x="128" y="575" width="1024" height="76" rx="18" fill="#f4faef" stroke="#8dc63f" stroke-width="3"></rect>
+    <circle cx="172" cy="613" r="13" fill="#8dc63f"></circle>
+    <text id="status-text" x="212" y="622" class="status">Quatro caminhos, uma rota compacta</text>
   </g>
 </svg>
 
@@ -211,11 +210,11 @@
   }
 
   function setStatus(t, progress) {
-    let message = 'Quatro caminhos, uma rota compacta';
-    if (t >= 1.2 && t < 4.6) message = 'Quatro caminhos de núcleo único entram com identidades distintas';
-    else if (t >= 4.6 && t < 7.2) message = 'Fan-in mapeia cada caminho para um núcleo específico MCF';
-    else if (t >= 7.2 && t < 10.9) message = 'Quatro núcleos independentes viajam dentro de revestimentos compartilhados';
-    else if (t >= 10.9 && t < 14.6) message = 'O Espalhe-se restaura os mesmos quatro caminhos mapeados';
+    let message = "Quatro caminhos, uma rota compacta";
+    if (t >= 1.2 && t < 4.6) message = "Quatro caminhos de núcleo único entram com identidades distintas";
+    else if (t >= 4.6 && t < 7.2) message = "Fan-in mapeia cada caminho a um núcleo MCF específico";
+    else if (t >= 7.2 && t < 10.9) message = "Quatro núcleos independentes percorrem uma casca compartilhada";
+    else if (t >= 10.9) message = "Fan-out restaura os mesmos quatro caminhos mapeados";
     statusText.textContent = message;
 
     const dynamicStrength = t < 1.2 || t > 14.8 ? 0 : Math.sin(Math.PI * clamp((t - 1.2) / 13.6));
@@ -225,7 +224,7 @@
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = Math.max(0, Math.min(rawTime, duration));
     const movement = clamp((t - 1.2) / 12.9);
     const progress = smoothstep(movement);
     let opacity = smoothstep((t - 0.8) / 0.6);
@@ -251,5 +250,8 @@
 
   window.renderAt(0);
 </script>
-</body>
-</html>
+
+
+
+
+</body></html>

@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CDB 命令-应答工作流</title>
+  <title>CDB 命令回复工作流</title>
   <style>
+@font-face{font-family:AcademyZhCN;src:url("../../assets/fonts/NotoSansSC-zh-CN.woff2") format("woff2")}
+
+
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
-      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+      font-family:AcademyZhCN,"PingFang SC","Microsoft YaHei",sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
     .title { font-size: 34px; font-weight: 800; fill: #343895; }
     .subtitle { font-size: 20px; font-weight: 700; fill: #5f6062; }
@@ -28,8 +31,8 @@
     .pill { font-size: 20px; font-weight: 800; fill: #ffffff; }
   </style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="动画展示 CDB 的准备、触发、轮询和检索工作流。">
+<body data-duration-ms="16000" data-poster-ms="14000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="无声动画展示 CDB 的准备、触发、轮询与获取流程。">
   <defs>
     <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
       <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
@@ -56,13 +59,13 @@
 
   <rect width="1280" height="720" fill="#f7f9fc"/>
   <rect x="34" y="28" width="1212" height="664" rx="24" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"/>
-  <text x="640" y="82" text-anchor="middle" class="title">CDB 是命令-应答工作流</text>
-  <text x="640" y="114" text-anchor="middle" class="subtitle">写入请求、触发执行、检查状态、读取应答。</text>
+  <text x="640" y="82" text-anchor="middle" class="title">CDB 是命令-回复工作流</text>
+  <text x="640" y="114" text-anchor="middle" class="subtitle">写入请求、触发执行、检查状态、读取回复。</text>
 
   <g id="host" transform="translate(82 230)">
     <rect width="240" height="152" rx="22" fill="#343895" filter="url(#shadow)"/>
     <text x="120" y="62" text-anchor="middle" class="node-label">主机软件</text>
-    <text x="120" y="94" text-anchor="middle" class="node-note">构建请求</text>
+    <text x="120" y="94" text-anchor="middle" class="node-note">构造请求</text>
     <rect x="60" y="112" width="120" height="18" rx="9" fill="#eef0fb" opacity="0.95"/>
   </g>
 
@@ -75,7 +78,7 @@
 
   <g id="page" transform="translate(456 182)">
     <rect width="368" height="260" rx="24" fill="#eef0fb" stroke="#343895" stroke-width="5" filter="url(#shadow)"/>
-    <text x="184" y="44" text-anchor="middle" class="page-label">9Fh 页</text>
+    <text x="184" y="44" text-anchor="middle" class="page-label">Page 9Fh</text>
     <g id="cmd-fields">
       <rect id="cmd-header" x="42" y="72" width="284" height="44" rx="10" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
       <text x="184" y="100" text-anchor="middle" class="field-label">命令头</text>
@@ -84,9 +87,9 @@
     </g>
     <g id="reply-fields">
       <rect id="reply-header" x="42" y="176" width="284" height="34" rx="10" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="184" y="199" text-anchor="middle" class="field-label">应答头</text>
+      <text x="184" y="199" text-anchor="middle" class="field-label">回复头</text>
       <rect id="reply-payload" x="42" y="218" width="284" height="34" rx="10" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="184" y="241" text-anchor="middle" class="field-label">应答有效载荷</text>
+      <text x="184" y="241" text-anchor="middle" class="field-label">回复有效载荷</text>
     </g>
   </g>
 
@@ -104,22 +107,22 @@
     <g id="step-0" transform="translate(0 0)">
       <rect id="step-bg-0" width="252" height="86" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
       <text x="20" y="32" class="step-title">1. 准备</text>
-      <text x="20" y="60" class="step-note">头部与有效载荷</text>
+      <text x="20" y="60" class="step-note">命令头与有效载荷</text>
     </g>
     <g id="step-1" transform="translate(300 0)">
       <rect id="step-bg-1" width="252" height="86" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
       <text x="20" y="32" class="step-title">2. 触发</text>
-      <text x="20" y="60" class="step-note">执行命令</text>
+      <text x="20" y="60" class="step-note">命令执行</text>
     </g>
     <g id="step-2" transform="translate(600 0)">
       <rect id="step-bg-2" width="252" height="86" rx="16" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
       <text x="20" y="32" class="step-title">3. 轮询</text>
-      <text x="20" y="60" class="step-note">忙碌到完成</text>
+      <text x="20" y="60" class="step-note">忙碌后完成</text>
     </g>
     <g id="step-3" transform="translate(900 0)">
       <rect id="step-bg-3" width="252" height="86" rx="16" fill="#eef7f9" stroke="#00a7c4" stroke-width="3"/>
-      <text x="20" y="32" class="step-title">4. 检索</text>
-      <text x="20" y="60" class="step-note">应答头与数据</text>
+      <text x="20" y="32" class="step-title">4. 获取</text>
+      <text x="20" y="60" class="step-note">回复头与数据</text>
     </g>
   </g>
 
@@ -129,7 +132,7 @@
   </g>
   <g>
     <rect x="184" y="132" width="912" height="46" rx="23" fill="#f8fafc" stroke="#d6dce7" stroke-width="2"/>
-    <text id="status" x="640" y="163" text-anchor="middle" class="status">CDB 让主机与模块的交互保持结构化且可观测。</text>
+    <text id="status" x="640" y="163" text-anchor="middle" class="status">CDB 使主机与模块的交互结构清晰、可观察。</text>
   </g>
 </svg>
 
@@ -164,7 +167,7 @@
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = clamp(rawTime, 0, duration);
     const prepare = windowValue(t, 0.8, 4.2, 0.7);
     const trigger = windowValue(t, 3.6, 7.0, 0.7);
     const poll = windowValue(t, 6.3, 10.9, 0.7);
@@ -219,12 +222,12 @@
       pill.setAttribute('width', '118');
     }
 
-    let status = 'CDB 让主机与模块的交互保持结构化且可观测。';
-    if (t >= 0.8 && t < 3.8) status = '主机准备命令头和有效载荷。';
+    let status = 'CDB 使主机与模块的交互结构清晰、可观察。';
+    if (t >= 0.8 && t < 3.8) status = '主机准备命令头与有效载荷。';
     else if (t >= 3.8 && t < 6.7) status = '触发操作将请求交给模块。';
-    else if (t >= 6.7 && t < 10.3) status = '轮询显示执行仍在进行还是已经完成。';
-    else if (t >= 10.3 && t < 14.6) status = '完成后返回应答头和有效载荷。';
-    else if (t >= 14.6) status = '同一模式支持遥测、日志和更大的有效载荷。';
+    else if (t >= 6.7 && t < 10.3) status = '轮询判断执行仍在进行，还是已经完成。';
+    else if (t >= 10.3 && t < 14.6) status = '完成后返回回复头与有效载荷。';
+    else if (t >= 14.6) status = '相同模式支持遥测、日志和更大有效载荷。';
     document.getElementById('status').textContent = status;
   };
 

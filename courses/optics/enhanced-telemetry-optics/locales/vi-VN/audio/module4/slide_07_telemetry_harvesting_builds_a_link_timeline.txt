@@ -1,7 +1,11 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Phần phần mềm host mô tả một mục đích quan trọng: máy chủ liên tục thu thập trạng thái liên kết hiện tại để tạo dòng thời gian hiệu suất liên kết có thể được truyền trực tuyến đến máy chủ thu thập dữ liệu đo từ xa để tổng hợp thành bản đồ mạng toàn diện.
+Thu thập liên tục biến các phép đo riêng lẻ thành dòng thời gian hiệu suất liên kết. Host có thể truyền dòng thời gian đó đến máy chủ đo từ xa, nơi người vận hành xây dựng góc nhìn toàn mạng.
 
-Câu đó kết nối toàn bộ khóa học. Một truy vấn duy nhất là hữu ích. Một dòng thời gian là tốt hơn. Bản đồ mạng vẫn tốt hơn vì nó cho phép người vận hành so sánh các triệu chứng trên các thiết bị chuyển mạch, mô-đun, làn đường, điểm cuối từ xa và thời gian.
+Đồng bộ thời gian là một phần của đường bằng chứng. Get Module Time và Set Module Time dùng các lệnh 0005h và 0006h. Chúng dùng biểu diễn 64 bit theo nano giây tính từ mốc POSIX, tức đầu năm 1970 theo giờ phối hợp quốc tế UTC.
 
-Dòng thời gian phải bao gồm các số liệu hiện tại, bản ghi nhật ký sự kiện, kiểm tra đầu xa và các phép đo phía máy chủ chẳng hạn như B E R trước và các từ mã không thể sửa được ở bộ thu serdes chuyển mạch. Khi các giá trị đó căn chỉnh, việc khắc phục sự cố sẽ chuyển từ cảnh báo riêng biệt sang hoạt động dựa trên bằng chứng.
-Dòng thời gian có thể tiết lộ các mẫu mà ảnh chụp nhanh bỏ sót. Ví dụ: nhiệt độ tăng trước khi liên kết lại hoặc sự kiện điểm cuối từ xa trước cảnh báo cục bộ có thể thay đổi việc điều tra từ phỏng đoán sang phân tích trình tự.
+Các định nghĩa đo từ xa nâng cao mở rộng những lệnh này cho thao tác từ xa. Host có thể truy vấn thời gian của đối tác từ xa được chọn. Lệnh đặt thời gian có thể nhắm mô-đun cục bộ hoặc các cổng cục bộ và từ xa theo định nghĩa của trường đích.
+
+Đơn vị dấu thời gian không xác lập độ chính xác đồng hồ. Phần mềm vẫn phải thiết lập và xác minh tham chiếu thời gian trước khi so sánh sự kiện giữa mô-đun và host.
+
+Dòng thời gian cũng gồm phép đo bộ thu của chính switch: BER trước FEC và từ mã không thể sửa. Chỉ dữ liệu mô-đun không bao phủ mọi đoạn thu.
+
+Khi kết hợp danh tính điểm cuối, thời gian hợp lệ, chỉ số hiện tại và bản ghi sự kiện bền vững, người vận hành có thể phân biệt nhiệt độ tăng trước khi tái lập liên kết với lỗi từ xa xảy ra trước cảnh báo cục bộ.

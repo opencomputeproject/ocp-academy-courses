@@ -5,21 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>從鏈路抖動到根本原因</title>
   <style>
+@font-face{font-family:AcademyZhTW;src:url("../../assets/fonts/NotoSansTC-zh-TW.woff2") format("woff2");font-weight:100 900;font-display:block;}
+
+
+
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
-      font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", Arial, sans-serif;
+      font-family:AcademyZhTW,"PingFang TC","Microsoft JhengHei",sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
-    text { letter-spacing: 0; }.title { font-size: 34px; font-weight: 800; fill: #343895; }.subtitle { font-size: 20px; font-weight: 700; fill: #5f6062; }.flow-title { font-size: 18px; font-weight: 800; fill: #343895; }.flow-note { font-size: 13px; font-weight: 700; fill: #5f6062; }.bundle-title { font-size: 25px; font-weight: 800; fill: #343895; }.tile-title { font-size: 17px; font-weight: 800; fill: #343895; }.tile-note { font-size: 13px; font-weight: 700; fill: #5f6062; }.action-title { font-size: 23px; font-weight: 800; fill: #343895; }.action-note { font-size: 16px; font-weight: 700; fill: #5f6062; }.status { font-size: 25px; font-weight: 800; fill: #1f2937; }.icon { font-size: 30px; font-weight: 900; fill: #ffffff; }
+    svg { display: block; width: 100vw; height: 100vh; }
+    text { letter-spacing: 0; }
+    .title { font-size: 34px; font-weight: 800; fill: #343895; }
+    .subtitle { font-size: 20px; font-weight: 700; fill: #5f6062; }
+    .flow-title { font-size: 18px; font-weight: 800; fill: #343895; }
+    .flow-note { font-size: 13px; font-weight: 700; fill: #5f6062; }
+    .bundle-title { font-size: 25px; font-weight: 800; fill: #343895; }
+    .tile-title { font-size: 17px; font-weight: 800; fill: #343895; }
+    .tile-note { font-size: 13px; font-weight: 700; fill: #5f6062; }
+    .action-title { font-size: 23px; font-weight: 800; fill: #343895; }
+    .action-note { font-size: 16px; font-weight: 700; fill: #5f6062; }
+    .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
+    .icon { font-size: 30px; font-weight: 900; fill: #ffffff; }
   </style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="動畫展示從鏈路抖動告警到基於證據採取行動的調查過程。">
+<body data-duration-ms="18000" data-poster-ms="14000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="無聲動畫展示從抖動告警到基於證據行動的排查流程。">
   <defs>
     <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
       <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
@@ -48,17 +63,22 @@
 
   <path id="flow-path" d="M130 260 H324 H518 H712 H906 H1018" fill="none" stroke="#343895" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow-blue)" opacity="0.18"/>
 
+  <g id="pulse">
+    <circle id="pulse-glow" r="20" fill="#8dc63f" opacity="0.24" filter="url(#glow-green)"/>
+    <circle id="pulse-dot" r="10" fill="#8dc63f" filter="url(#glow-green)"/>
+  </g>
+
   <g id="flow-card-0" transform="translate(58 180)">
     <rect id="flow-bg-0" width="144" height="150" rx="16" fill="#fff7e8" stroke="#d88911" stroke-width="3"/>
     <circle cx="72" cy="42" r="22" fill="#d88911"/>
     <text x="72" y="53" text-anchor="middle" class="icon">!</text>
     <text x="72" y="87" text-anchor="middle" class="flow-title">抖動告警</text>
-    <text x="72" y="116" text-anchor="middle" class="flow-note">出現症狀</text>
+    <text x="72" y="116" text-anchor="middle" class="flow-note">發現症狀</text>
   </g>
   <g id="flow-card-1" transform="translate(252 180)">
     <rect id="flow-bg-1" width="144" height="150" rx="16" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
     <circle cx="72" cy="42" r="22" fill="#343895"/>
-    <text x="72" y="53" text-anchor="middle" class="icon">42</text>
+    <text x="72" y="53" text-anchor="middle" class="icon">40</text>
     <text x="72" y="87" text-anchor="middle" class="flow-title">健康評分</text>
     <text x="72" y="116" text-anchor="middle" class="flow-note">薄弱類別</text>
   </g>
@@ -74,7 +94,7 @@
     <circle cx="72" cy="42" r="22" fill="#5f6062"/>
     <text x="72" y="53" text-anchor="middle" class="icon">L</text>
     <text x="72" y="87" text-anchor="middle" class="flow-title">事件日誌</text>
-    <text x="72" y="116" text-anchor="middle" class="flow-note">有序記錄</text>
+    <text x="72" y="116" text-anchor="middle" class="flow-note">有序經過</text>
   </g>
   <g id="flow-card-4" transform="translate(834 180)">
     <rect id="flow-bg-4" width="144" height="150" rx="16" fill="#eef7f9" stroke="#00a7c4" stroke-width="3"/>
@@ -91,18 +111,13 @@
     <text x="72" y="116" text-anchor="middle" class="flow-note">系統檢視</text>
   </g>
 
-  <g id="pulse">
-    <circle id="pulse-glow" r="20" fill="#8dc63f" opacity="0.24" filter="url(#glow-green)"/>
-    <circle id="pulse-dot" r="10" fill="#8dc63f" filter="url(#glow-green)"/>
-  </g>
-
   <g id="bundle" transform="translate(88 400)">
     <rect width="664" height="210" rx="22" fill="#f8fafc" stroke="#d6dce7" stroke-width="2" filter="url(#shadow)"/>
     <text x="332" y="42" text-anchor="middle" class="bundle-title">證據集合</text>
     <g id="tile-0" transform="translate(34 70)" opacity="0">
       <rect width="178" height="56" rx="12" fill="#fff7e8" stroke="#d88911" stroke-width="2"/>
       <text x="18" y="24" class="tile-title">健康評分</text>
-      <text x="18" y="44" class="tile-note">光學類別薄弱</text>
+      <text x="18" y="44" class="tile-note">光學類別偏弱</text>
     </g>
     <g id="tile-1" transform="translate(244 70)" opacity="0">
       <rect width="178" height="56" rx="12" fill="#f4faef" stroke="#8dc63f" stroke-width="2"/>
@@ -127,7 +142,7 @@
     <g id="tile-5" transform="translate(454 142)" opacity="0">
       <rect width="178" height="56" rx="12" fill="#f4faef" stroke="#8dc63f" stroke-width="2"/>
       <text x="18" y="24" class="tile-title">行動記錄</text>
-      <text x="18" y="44" class="tile-note">決策可審計</text>
+      <text x="18" y="44" class="tile-note">決策可稽核</text>
     </g>
   </g>
 
@@ -136,7 +151,7 @@
     <text x="192" y="42" text-anchor="middle" class="action-title">基於證據的行動</text>
     <g id="action-choice-0" transform="translate(36 72)">
       <rect width="142" height="44" rx="12" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="71" y="29" text-anchor="middle" class="action-note">清潔 / 重插</text>
+      <text x="71" y="29" text-anchor="middle" class="action-note">清潔／重新插接</text>
     </g>
     <g id="action-choice-1" transform="translate(206 72)">
       <rect width="142" height="44" rx="12" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
@@ -144,17 +159,17 @@
     </g>
     <g id="action-choice-2" transform="translate(36 132)">
       <rect width="142" height="44" rx="12" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="71" y="29" text-anchor="middle" class="action-note">更新韌體</text>
+      <text x="71" y="29" text-anchor="middle" class="action-note">韌體更新</text>
     </g>
     <g id="action-choice-3" transform="translate(206 132)">
       <rect id="selected-action" width="142" height="44" rx="12" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="71" y="29" text-anchor="middle" class="action-note">廠商支援</text>
+      <text x="71" y="29" text-anchor="middle" class="action-note">廠商支援請求</text>
     </g>
   </g>
 
   <g>
     <rect x="180" y="632" width="920" height="46" rx="23" fill="#eef0fb" stroke="#d6dce7" stroke-width="2"/>
-    <text id="status" x="640" y="663" text-anchor="middle" class="status">從鏈路抖動開始，收集證據後再選擇行動。</text>
+    <text id="status" x="640" y="663" text-anchor="middle" class="status">從鏈路抖動出發，先收集證據，再選擇行動。</text>
   </g>
 </svg>
 
@@ -174,24 +189,24 @@
     const colors = ['#d88911', '#343895', '#8dc63f', '#5f6062', '#00a7c4', '#343895'];
     bg.setAttribute('stroke-width', String(3 + strength * 5));
     bg.setAttribute('stroke', colors[index]);
-    bg.style.filter = strength > 0.2? (index === 0? 'url(#glow-amber)': 'url(#shadow)'): '';
+    bg.style.filter = strength > 0.2 ? (index === 0 ? 'url(#glow-amber)' : 'url(#shadow)') : '';
   }
   function setTile(index, strength) {
     const tile = document.getElementById(`tile-${index}`);
     tile.setAttribute('opacity', String(clamp(strength)));
-    tile.setAttribute('transform', `translate(${index % 3 === 0? 34: index % 3 === 1? 244: 454} ${index < 3? 70: 142 + (1 - smooth(strength)) * 18})`);
+    tile.setAttribute('transform', `translate(${index % 3 === 0 ? 34 : index % 3 === 1 ? 244 : 454} ${index < 3 ? 70 : 142 + (1 - smooth(strength)) * 18})`);
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = clamp(rawTime, 0, duration);
     const stage = clamp((t - 1.0) / 12.8);
     const p = flowPath.getPointAtLength(flowPath.getTotalLength() * stage);
     pulse.setAttribute('cx', p.x);
     pulse.setAttribute('cy', p.y);
     pulseGlow.setAttribute('cx', p.x);
     pulseGlow.setAttribute('cy', p.y);
-    pulse.setAttribute('fill', t < 2.8? '#d88911': '#8dc63f');
-    pulseGlow.setAttribute('fill', t < 2.8? '#d88911': '#8dc63f');
+    pulse.setAttribute('fill', t < 2.8 ? '#d88911' : '#8dc63f');
+    pulseGlow.setAttribute('fill', t < 2.8 ? '#d88911' : '#8dc63f');
 
     const cardWindows = [
       windowValue(t, 0.7, 3.2, 0.55),
@@ -206,20 +221,20 @@
       setTile(index, smooth((t - start) / 0.8));
     });
 
-    const actionStrength = smooth((t - 13.4) / 2.0) * (1 - smooth((t - 17.0) / 0.9));
+    const actionStrength = smooth((t - 13.4) / 2.0);
     const selected = document.getElementById('selected-action');
-    selected.setAttribute('fill', actionStrength > 0.15? '#f4faef': '#ffffff');
-    selected.setAttribute('stroke', actionStrength > 0.15? '#8dc63f': '#d6dce7');
+    selected.setAttribute('fill', actionStrength > 0.15 ? '#f4faef' : '#ffffff');
+    selected.setAttribute('stroke', actionStrength > 0.15 ? '#8dc63f' : '#d6dce7');
     selected.setAttribute('stroke-width', String(2 + actionStrength * 4));
     document.getElementById('action-bg').setAttribute('stroke-width', String(3 + actionStrength * 3));
 
-    let status = '從鏈路抖動開始，收集證據後再選擇行動。';
-    if (t >= 1.0 && t < 3.2) status = '抖動告警只是症狀，不是答案。';
+    let status = '從鏈路抖動出發，先收集證據，再選擇行動。';
+    if (t >= 1.0 && t < 3.2) status = '抖動告警是症狀，不是答案。';
     else if (t >= 3.2 && t < 5.4) status = '健康評分指向最弱類別。';
-    else if (t >= 5.4 && t < 8.6) status = '當前指標和事件順序說明故障如何發展。';
-    else if (t >= 8.6 && t < 12.6) status = '遠端資料和主機時間線縮小調查範圍。';
-    else if (t >= 12.6 && t < 16.4) status = '此時的行動已有證據支撐。';
-    else if (t >= 16.4) status = '記錄行動，為下一次故障保留上下文。';
+    else if (t >= 5.4 && t < 8.6) status = '當前指標與事件順序揭示故障如何發展。';
+    else if (t >= 8.6 && t < 12.6) status = '遠端資料與主機時間線縮小排查範圍。';
+    else if (t >= 12.6 && t < 16.4) status = '此時，行動已有證據支援。';
+    else if (t >= 16.4) status = '記錄行動，為後續故障保留脈絡。';
     document.getElementById('status').textContent = status;
   };
 

@@ -1,7 +1,9 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Trước khi nói về điểm số tình trạng, mô-đun cần có trạng thái cơ bản. Thông số kỹ thuật trỏ đến các trang không chung của Ngân hàng C M I S, các trang trạng thái và cấu hình, các trang V D M, các trang lệnh C D B, các trang dữ liệu tải C D B và các trang nhà cung cấp tùy chỉnh.
+Khám phá khả năng hỗ trợ phải diễn ra trước khi diễn giải dữ liệu đo từ xa. Một trường không được hỗ trợ hoặc một đối tác từ xa không thể truy cập không được hiển thị như giá trị không cho thấy tình trạng tốt.
 
-Đối với khóa học này, điểm quan trọng không phải là số trang chính xác cho mọi trường. Điểm quan trọng là khả năng đo từ xa nâng cao nằm trên giao diện quản lý có cấu trúc. Máy chủ có thể truy xuất thông tin trạng thái và danh tính tiêu chuẩn, sau đó sử dụng các định nghĩa đo từ xa nâng cao để đặt câu hỏi sâu hơn về độ tin cậy.
+Đặc tả phiên bản 1.0.0 định nghĩa hành vi được công bố là Telemetry Version 2. Mã định danh giao thức đó được báo cáo tại trang 01h, byte 191. Nó không phải là số phiên bản phát hành tài liệu.
 
-Việc phân lớp đó giúp cho khóa học trở nên thiết thực. Bạn nên biết vị trí của các bản đồ chi tiết, nhưng mô hình tư duy đầu tiên của bạn phải là: danh tính và trạng thái trước tiên, sau đó là các phép đo, sau đó là diễn giải sức khỏe.
-Các trang cơ sở cũng là cách phần mềm tránh hiểu sai ngữ cảnh. Thông tin nhận dạng, khả năng và trạng thái phải được kiểm tra trước khi công cụ giả định rằng trường đo từ xa có sẵn, hiện tại hoặc có ý nghĩa đối với mô-đun đang được thử nghiệm.
+Phần mềm cũng kiểm tra hỗ trợ chức năng trong băng và việc làn giao tiếp đã được thiết lập hay chưa. Đây là hai câu hỏi riêng biệt. Một số mô-đun hỗ trợ tự động phát hiện làn trong băng, cho phép thiết lập liên kết cơ bản với đối tác không có đo từ xa nâng cao. Vì vậy, chỉ thấy liên kết hoạt động chưa chứng minh có khả năng quan sát từ xa.
+
+Lệnh công bố khả năng hỗ trợ, CMD 8000h, trả về bitmap nhóm lệnh hoặc danh sách chỉ số được hỗ trợ cho mô-đun cục bộ hoặc đối tác từ xa được chọn. Phần mềm sử dụng các kết quả đó trước khi thực hiện thao tác hoặc diễn giải phép đo.
+
+Các trang định danh và trạng thái CMIS tiêu chuẩn, trang VDM, cùng vùng lệnh và dữ liệu tải CDB cung cấp bối cảnh quản lý liên quan. Trình tự thực tiễn là định danh, khả năng hỗ trợ, trạng thái, phép đo, rồi mới diễn giải tình trạng.

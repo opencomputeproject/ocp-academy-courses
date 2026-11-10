@@ -1,7 +1,9 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Quản lý phần mềm là một phần của độ tin cậy vì phép đo từ xa chỉ hữu ích khi hệ thống quang học được triển khai có thể được duy trì an toàn. Thông số kỹ thuật chỉ ra luồng quản lý firmware C M I S cho các hoạt động cục bộ: tải xuống hình ảnh, kích hoạt và theo dõi trạng thái.
+Bảo trì firmware đi theo hai đường liên quan. Thao tác cục bộ tiêu chuẩn sử dụng các lệnh quản lý firmware CMIS phiên bản 5.3. Đặc tả đo từ xa nâng cao định nghĩa giao thức từ xa trong nhóm lệnh 8030h.
 
-Nó cũng mô tả giao thức nâng cấp firmware từ xa do nhà cung cấp xác định trong nhóm lệnh quản lý firmware. Đường dẫn từ xa đó sử dụng giao tiếp trong băng tần giữa đầu cục bộ và đầu đối diện.
+Bắt đầu bằng khám phá khả năng hỗ trợ và kiểm tra thông tin firmware. Phản hồi thông tin từ xa phân biệt tính hợp lệ của ảnh firmware, ảnh hiện đang chạy và ảnh được cam kết làm mặc định cho những lần đặt lại sau.
 
-Sơ đồ dòng nguồn dày đặc, điều này là bình thường đối với một thông số kỹ thuật. Bài học rút ra của người học là mô hình vòng đời. Khám phá khả năng. Bắt đầu cập nhật. Chuyển hình ảnh. Hoàn tất tải xuống. Chạy hình ảnh. Cam kết nó làm mặc định trong tương lai hoặc hủy bỏ nếu quá trình không thành công.
-Quy trình làm việc của phần mềm cơ sở cũng cần có khả năng kiểm tra. Người vận hành nên biết hình ảnh nào đã được phát hiện, hình ảnh nào đã được truyền, trạng thái nào được trả về và liệu kích hoạt hoặc cam kết có thực sự hoàn thành hay không trước khi tuyên bố cập nhật thành công.
+Trình tự từ xa thông thường bắt đầu tải, truyền các khối dữ liệu, hoàn tất và xác thực lượt tải, chạy ảnh firmware, rồi cam kết ảnh đang chạy đã được xác minh. Cũng có lệnh hủy cho lượt tải đã bắt đầu.
+
+Không được đồng nhất truyền thành công với kích hoạt thành công. Tương tự, chạy ảnh mới không tự động khiến nó trở thành mặc định cho lần đặt lại sau. Đó là các trạng thái riêng với kết quả lệnh riêng.
+
+Hãy ghi nhận đối tác được chọn, thông tin ảnh firmware và trạng thái ở từng bước. Điều đó giúp kiểm tra được hoạt động bảo trì và ngăn phần mềm tuyên bố thành công chỉ vì khối cuối đã được gửi.

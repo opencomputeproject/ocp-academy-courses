@@ -1,7 +1,12 @@
 # pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-O acesso remoto C M I S estende o mesmo modelo até o extremo distante. O host não abre um caminho de gerenciamento direto separado para o módulo remoto. Ele solicita o módulo local compatível, e o módulo local recupera os dados remotos na banda.
+O acesso remoto C M I S permite leitura e gravação. O host envia a solicitação ao módulo local compatível, que alcança o parceiro remoto selecionado pela interface em banda.
 
-Conceitualmente, existem dois modos de acesso úteis. O acesso por bytes é direcionado. É apropriado quando o software precisa de um campo pequeno ou de um alcance estreito. O acesso à página é mais amplo. Ele recupera um snapshot maior orientado a páginas.
+O acesso por bytes usa o comando 8020h. Ele seleciona porta remota, banco, página, endereço, operação e comprimento. É útil para um intervalo restrito de registradores transportado pelo payload local.
 
-Isso é poderoso para operações porque oferece ao switch host uma forma de inspecionar ambas as extremidades do enlace óptico. O operador pode comparar evidências locais e remotas sem acessar fisicamente a extremidade remota primeiro.
-O acesso remoto também ajuda quando o acesso físico é lento ou indisponível. Antes de enviar alguém para um rack ou substituir um módulo, o operador pode coletar evidências de extremidade e decidir se a ação é justificada.
+O acesso por página usa o comando 8021h e o payload estendido. É útil quando o software precisa ler ou gravar uma página remota completa em vez de vários intervalos pequenos.
+
+No diagnóstico, uma leitura recupera evidências. Uma gravação altera o estado remoto; por isso, a ferramenta deve deixar claros a operação e o destino e seguir os controles de manutenção da implantação.
+
+Nos dois modos, verifique a conclusão do comando e o status de falha antes de confiar no resultado. Preserve na saída o parceiro selecionado e o contexto de banco e página.
+
+Isso oferece aos operadores visibilidade da outra extremidade por uma única interface local de gerenciamento. Também torna essencial selecionar o destino com cuidado, especialmente em configurações breakout, nas quais uma solicitação válida pode estar direcionada ao parceiro errado.

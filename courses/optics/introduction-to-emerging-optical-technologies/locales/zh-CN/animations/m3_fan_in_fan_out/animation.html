@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>扇入与扇出纤芯映射</title>
   <style>
+@font-face{font-family:AcademyZhCN;src:url("../../assets/fonts/NotoSansSC-zh-CN.woff2") format("woff2")}
+
+
+
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
-      font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+      font-family:AcademyZhCN,"PingFang SC","Microsoft YaHei",sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
     .stage-label {
       font-size: 20px;
@@ -40,8 +44,8 @@
     .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
   </style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="四条单芯光路经扇入进入四芯多芯光纤主干，再通过扇出恢复为四条单芯光路。">
+<body data-duration-ms="16000" data-poster-ms="12000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="四条单芯光路经扇入进入 4 芯多芯主干，再经扇出还原为四条单芯光路。">
   <defs>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
@@ -87,7 +91,7 @@
     <circle id="core-ring-3" cx="-25" cy="25" r="18" fill="none" stroke="#00a7c4" stroke-width="4" opacity="0"/>
     <circle id="core-ring-4" cx="25" cy="25" r="18" fill="none" stroke="#d88911" stroke-width="4" opacity="0"/>
   </g>
-  <text x="744" y="128" class="callout-title">共享包层</text>
+  <text x="744" y="128" class="callout-title">共用包层</text>
   <text x="744" y="154" class="callout-note">四个独立纤芯</text>
   <path d="M708 185 C760 205 788 232 808 282" fill="none" stroke="#8dc63f" stroke-width="3" stroke-dasharray="7 7"/>
 
@@ -98,28 +102,28 @@
 
     <rect x="1000" y="214" width="220" height="324" rx="20" fill="#f8fafc" stroke="#a6b0bf" stroke-width="3"/>
     <text x="1110" y="254" text-anchor="middle" class="stage-label">单芯端口</text>
-    <text x="1110" y="280" text-anchor="middle" class="stage-note">恢复原始映射</text>
+    <text x="1110" y="280" text-anchor="middle" class="stage-note">恢复原有映射</text>
   </g>
 
   <g id="fan-in-device">
     <path d="M280 276 L410 322 L410 430 L280 476 Z" fill="#eef0fb" stroke="#343895" stroke-width="4"/>
-    <text x="345" y="363" text-anchor="middle" class="stage-label">扇入</text>
-    <text x="345" y="389" text-anchor="middle" class="stage-note">映射光路</text>
-    <text x="345" y="412" text-anchor="middle" class="stage-note">到 MCF 纤芯</text>
+    <text x="345" y="502" text-anchor="middle" class="stage-label">扇入</text>
+    <text x="345" y="528" text-anchor="middle" class="stage-note">将光路映射</text>
+    <text x="345" y="551" text-anchor="middle" class="stage-note">至 MCF 纤芯</text>
   </g>
 
   <g id="mcf-trunk">
     <rect x="400" y="318" width="480" height="116" rx="54" fill="#edf6e6" stroke="#8dc63f" stroke-width="5"/>
     <rect x="420" y="335" width="440" height="82" rx="38" fill="#ffffff" stroke="#bcc6d3" stroke-width="2"/>
-    <text x="640" y="468" text-anchor="middle" class="stage-label">四芯 MCF 主干</text>
+    <text x="640" y="468" text-anchor="middle" class="stage-label">4 芯 MCF 主干</text>
     <text x="640" y="494" text-anchor="middle" class="stage-note">一条紧凑路径</text>
   </g>
 
   <g id="fan-out-device">
     <path d="M870 322 L1000 276 L1000 476 L870 430 Z" fill="#eef7f9" stroke="#00a7c4" stroke-width="4"/>
-    <text x="935" y="363" text-anchor="middle" class="stage-label">扇出</text>
-    <text x="935" y="389" text-anchor="middle" class="stage-note">恢复纤芯映射</text>
-    <text x="935" y="412" text-anchor="middle" class="stage-note">到独立光路</text>
+    <text x="935" y="502" text-anchor="middle" class="stage-label">扇出</text>
+    <text x="935" y="528" text-anchor="middle" class="stage-note">将纤芯还原</text>
+    <text x="935" y="551" text-anchor="middle" class="stage-note">为独立光路</text>
   </g>
 
   <g id="base-paths" fill="none" stroke-linecap="round">
@@ -212,10 +216,10 @@
 
   function setStatus(t, progress) {
     let message = '四条光路，一条紧凑路径';
-    if (t >= 1.2 && t < 4.6) message = '四条单芯光路以独立标识进入';
-    else if (t >= 4.6 && t < 7.2) message = '扇入将每条光路映射到指定 MCF 纤芯';
-    else if (t >= 7.2 && t < 10.9) message = '四个独立纤芯在共享包层内传输';
-    else if (t >= 10.9 && t < 14.6) message = '扇出恢复原有的四条映射光路';
+    if (t >= 1.2 && t < 4.6) message = '四条单芯光路保留各自身份进入';
+    else if (t >= 4.6 && t < 7.2) message = '扇入将各光路映射至特定 MCF 纤芯';
+    else if (t >= 7.2 && t < 10.9) message = '四个独立纤芯位于同一包层中';
+    else if (t >= 10.9) message = '扇出还原相同的四条映射光路';
     statusText.textContent = message;
 
     const dynamicStrength = t < 1.2 || t > 14.8 ? 0 : Math.sin(Math.PI * clamp((t - 1.2) / 13.6));
@@ -225,7 +229,7 @@
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = Math.max(0, Math.min(rawTime, duration));
     const movement = clamp((t - 1.2) / 12.9);
     const progress = smoothstep(movement);
     let opacity = smoothstep((t - 0.8) / 0.6);

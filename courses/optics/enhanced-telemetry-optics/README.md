@@ -6,18 +6,18 @@ This standalone SCORM course belongs to the **Optical Connectivity & Reliability
 
 ## Modules
 
-| Module | Title | Narrated Duration | Summary |
+| Module | Title | Estimated Learner Time | Summary |
 |---|---|---:|---|
-| 1 | The AI Fabric Visibility Problem | 10 min | Enhanced telemetry as an operations model for local and remote optical endpoints. |
-| 2 | Metrics, Flags, and Link Health | 12 min | Capability discovery, host/media health scores, flags, default counter masks, thresholds, and autonomous shutdown. |
-| 3 | CDB Workflows, Event Logs, and Remote Access | 11 min | Checked command-reply workflows, durable 32-byte event records, and remote register read/write access. |
-| 4 | Firmware, Host Software, and Deployment Readiness | 11 min | Local and remote firmware maintenance, module-time correlation, host measurements, and verified deployment behavior. |
+| 1 | The AI Fabric Visibility Problem | 10 min | Frame link reliability at fabric scale, identify the software and transceiver responsibilities, and distinguish local, remote, and breakout endpoints within the telemetry model. |
+| 2 | Metrics, Flags, and Link Health | 14 min | Classify quality, error, recovery, environmental, and context metrics. Interpret link-health scores, flags, masks, thresholds, and autonomous-shutdown behavior. |
+| 3 | CDB Workflows, Event Logs, and Remote Access | 14 min | Trace checked Command Data Block exchanges and persistent event logs. Distinguish remote byte and page access and connect the resulting evidence to a failure investigation. |
+| 4 | Firmware, Host Software, and Deployment Readiness | 12 min | Review firmware maintenance, module-time correlation, host measurements, and command-line API categories. Connect telemetry collection and server aggregation to deployment-readiness checks. |
 
-The course contains 44.1 minutes of narration and is designed for about 50 minutes of learner time including knowledge checks and interaction. Module durations above are rounded from the generated audio.
+Designed for about **50 minutes of learner time**, including narration, diagrams, knowledge checks and review. Estimated learner time is distinct from narration runtime.
 
 ## Media
 
-Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Generated narration WAV files and rendered SCORM files are not checked in.
+Course-owned PNG, SVG, and MP4 teaching assets are stored in `figures/`. Editable HTML/SVG and frame-rendering sources for the custom animations are stored in `animations/` where available. Delivery narration is 96 kbps CBR mono MP3 at 44.1 kHz, approved for this rebuild. WAV authoring masters are retained outside Git and outside the LMS package. No narration or rendered SCORM files are checked in. Per-slide `audio.generation_provenance` records reused recordings without inventing unknown legacy model IDs.
 
 The 800 × 400 LMS catalog poster is `thumbnail.png`. Its editable copy and artwork selection are in `poster.json`; the shared Academy template supplies the layout. See the repository poster build instructions.
 
@@ -54,3 +54,7 @@ node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course
 ```
 
 See [the poster standard](../../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.
+
+## LMS Catalog Metadata
+
+Formal learner-facing LMS copy is maintained separately in [lms-catalog.md](lms-catalog.md) and [lms-catalog.json](lms-catalog.json). The course is available in English and seven self-contained language editions under `locales/`.

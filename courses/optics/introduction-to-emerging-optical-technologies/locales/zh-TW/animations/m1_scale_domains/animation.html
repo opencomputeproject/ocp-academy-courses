@@ -3,19 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Scale-up、Scale-out 與 Scale-across</title>
+  <title>縱向擴充、橫向擴充與跨域擴充</title>
   <style>
+@font-face{font-family:AcademyZhTW;src:url("../../assets/fonts/NotoSansTC-zh-TW.woff2") format("woff2");font-weight:100 900;font-display:block;}
+
+
+
+
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
-      font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", Arial, sans-serif;
+      font-family:AcademyZhTW,"PingFang TC","Microsoft JhengHei",sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
-    text { letter-spacing: 0; }.facility-label { font-size: 28px; font-weight: 800; fill: #343895; }.rack-label { font-size: 18px; font-weight: 800; fill: #343895; }.device-label { font-size: 14px; font-weight: 800; fill: #ffffff; }.switch-label { font-size: 17px; font-weight: 800; fill: #ffffff; }.stage-name { font-size: 34px; font-weight: 800; fill: #ffffff; }.constraint-text { font-size: 27px; font-weight: 800; fill: #1f2937; }.domain-label {
+    svg { display: block; width: 100vw; height: 100vh; }
+    text { letter-spacing: 0; }
+    .facility-label { font-size: 28px; font-weight: 800; fill: #343895; }
+    .rack-label { font-size: 18px; font-weight: 800; fill: #343895; }
+    .device-label { font-size: 14px; font-weight: 800; fill: #ffffff; }
+    .switch-label { font-size: 17px; font-weight: 800; fill: #ffffff; }
+    .stage-name { font-size: 34px; font-weight: 800; fill: #ffffff; }
+    .constraint-text { font-size: 27px; font-weight: 800; fill: #1f2937; }
+    .domain-label {
       font-size: 25px;
       font-weight: 800;
       paint-order: stroke fill;
@@ -25,9 +37,19 @@
     }
   </style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="動畫展示機架內的 Scale-up 鏈路、跨機架的 Scale-out 鏈路，以及資料中心建築之間的 Scale-across 鏈路。">
+<body data-duration-ms="18000" data-poster-ms="14000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="巢狀動畫展示機架內縱向擴充、跨機架橫向擴充，以及資料中心建築間的跨域擴充鏈路。">
   <defs>
+    <mask id="device-label-clearance" maskUnits="userSpaceOnUse" x="0" y="0" width="1280" height="720">
+      <rect width="1280" height="720" fill="#ffffff"/>
+      <g fill="#000000">
+        <rect x="188" y="272" width="34" height="46" rx="6"/>
+        <rect x="234" y="272" width="34" height="46" rx="6"/>
+        <rect x="188" y="330" width="34" height="46" rx="6"/>
+        <rect x="234" y="330" width="34" height="46" rx="6"/>
+        <rect x="190" y="396" width="76" height="30" rx="6"/>
+      </g>
+    </mask>
     <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1f2937" flood-opacity="0.16"/>
     </filter>
@@ -56,7 +78,7 @@
 
   <g id="world">
     <rect x="72" y="90" width="1136" height="516" rx="28" fill="#f8fafc" stroke="#00a7c4" stroke-width="4" stroke-dasharray="12 10"/>
-    <text id="campus-label" x="640" y="140" text-anchor="middle" class="domain-label" fill="#007f96">園區 / 鄰近設施</text>
+    <text id="campus-label" x="640" y="126" text-anchor="middle" class="domain-label" fill="#007f96">園區／鄰近設施</text>
 
     <g id="hall-a">
       <rect x="116" y="150" width="500" height="404" rx="22" fill="#ffffff" stroke="#a6b0bf" stroke-width="4" filter="url(#shadow)"/>
@@ -74,7 +96,7 @@
         <text x="205" y="358" text-anchor="middle" class="device-label">C</text>
         <text x="251" y="358" text-anchor="middle" class="device-label">D</text>
         <rect x="190" y="396" width="76" height="30" rx="6" fill="#5f6062"/>
-        <text x="228" y="417" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">機架網路</text>
+        <text x="228" y="417" text-anchor="middle" font-size="13" font-weight="800" fill="#ffffff">機架內網路</text>
       </g>
 
       <g id="rack-a2">
@@ -100,7 +122,7 @@
       </g>
 
       <rect x="280" y="478" width="172" height="46" rx="10" fill="#343895"/>
-      <text x="366" y="508" text-anchor="middle" class="switch-label">網路交換機</text>
+      <text x="366" y="508" text-anchor="middle" class="switch-label">網路交換器</text>
     </g>
 
     <g id="hall-b">
@@ -120,10 +142,10 @@
       <text x="900" y="252" text-anchor="middle" class="rack-label">機架 6</text>
       <text x="1016" y="252" text-anchor="middle" class="rack-label">機架 7</text>
       <rect x="833" y="478" width="172" height="46" rx="10" fill="#343895"/>
-      <text x="919" y="508" text-anchor="middle" class="switch-label">網路交換機</text>
+      <text x="919" y="508" text-anchor="middle" class="switch-label">網路交換器</text>
     </g>
 
-    <g id="base-links" fill="none" stroke-linecap="round">
+    <g id="base-links" fill="none" stroke-linecap="round" mask="url(#device-label-clearance)">
       <path id="up-path-1" d="M205 318 V390 Q205 404 220 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
       <path id="up-path-2" d="M251 318 V390 Q251 404 238 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
       <path id="up-path-3" d="M205 376 V390 Q205 404 220 410 H228" stroke="#8dc63f" stroke-width="8" opacity="0.35"/>
@@ -147,24 +169,24 @@
     </g>
 
     <g id="domain-labels">
-      <text id="up-label" x="228" y="202" text-anchor="middle" class="domain-label" fill="#5f8f20">Scale-up</text>
-      <text id="out-label" x="366" y="592" text-anchor="middle" class="domain-label" fill="#343895">Scale-out</text>
-      <text id="across-label" x="920" y="592" text-anchor="middle" class="domain-label" fill="#007f96">Scale-across</text>
+      <text id="up-label" x="228" y="202" text-anchor="middle" class="domain-label" fill="#5f8f20">縱向擴充</text>
+      <text id="out-label" x="366" y="592" text-anchor="middle" class="domain-label" fill="#343895">橫向擴充</text>
+      <text id="across-label" x="920" y="592" text-anchor="middle" class="domain-label" fill="#007f96">跨域擴充</text>
     </g>
 
-    <g id="up-pulses"></g>
+    <g id="up-pulses" mask="url(#device-label-clearance)"></g>
     <g id="out-pulses"></g>
     <g id="across-pulses"></g>
   </g>
 
   <g id="stage-band">
-    <rect id="stage-band-bg" x="386" y="20" width="508" height="68" rx="34" fill="#8dc63f" filter="url(#shadow)"/>
-    <text id="stage-name" x="640" y="65" text-anchor="middle" class="stage-name">SCALE-UP（縱向擴充套件）</text>
+    <rect id="stage-band-bg" x="386" y="30" width="508" height="68" rx="34" fill="#8dc63f" filter="url(#shadow)"/>
+    <text id="stage-name" x="640" y="75" text-anchor="middle" class="stage-name">縱向擴充</text>
   </g>
 
   <g id="constraint-band">
     <rect id="constraint-band-bg" x="116" y="626" width="1048" height="62" rx="18" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
-    <text id="constraint-text" x="640" y="666" text-anchor="middle" class="constraint-text">封裝  •  散熱設計  •  維護空間</text>
+    <text id="constraint-text" x="640" y="666" text-anchor="middle" class="constraint-text">封裝  •  散熱設計  •  維護可達性</text>
   </g>
 </svg>
 
@@ -186,6 +208,13 @@
     across: document.getElementById('across-label'),
   };
   const campusLabel = document.getElementById('campus-label');
+  const contextFrame = world.ownerSVGElement.querySelector('rect[x="24"][y="18"]');
+  const contextStageBand = document.getElementById('stage-band');
+  const contextFooterBand = document.getElementById('constraint-band');
+  const contextLabels = Array.from(world.querySelectorAll('text'), node => ({
+    node,
+    visibility: node.style.visibility,
+  }));
 
   const cameras = {
     up: { scale: 2.25, cx: 228, cy: 340 },
@@ -220,8 +249,7 @@
     if (t < 4.9) return mixCamera(cameras.up, cameras.out, (t - 3.6) / 1.3);
     if (t < 8.2) return cameras.out;
     if (t < 9.5) return mixCamera(cameras.out, cameras.across, (t - 8.2) / 1.3);
-    if (t < 16.2) return cameras.across;
-    return mixCamera(cameras.across, cameras.up, (t - 16.2) / 1.8);
+    return cameras.across;
   }
 
   function setCamera(camera) {
@@ -236,7 +264,7 @@
   }
 
   function stageAt(t) {
-    if (t < 4.25 || t >= 17.1) return 'up';
+    if (t < 4.25) return 'up';
     if (t < 8.85) return 'out';
     if (t < 13.1) return 'across';
     return 'all';
@@ -246,8 +274,8 @@
     const pulse = 0.72 + 0.28 * Math.sin(t * Math.PI * 2) ** 2;
     let opacity = { up: 0.16, out: 0.10, across: 0.08 };
     let labelOpacity = { up: 0, out: 0, across: 0 };
-    let name = 'SCALE-UP（縱向擴充套件）';
-    let message = '封裝  •  散熱設計  •  維護空間';
+    let name = '縱向擴充';
+    let message = '封裝  •  散熱設計  •  維護可達性';
     let color = '#8dc63f';
     let pale = '#f4faef';
 
@@ -256,21 +284,21 @@
     } else if (stage === 'out') {
       opacity = { up: 0.34, out: pulse, across: 0.08 };
       labelOpacity = { up: 0.48, out: 0, across: 0 };
-      name = 'SCALE-OUT（橫向擴充套件）';
-      message = '交換機埠規模  •  光纖芯數  •  鏈路可靠性';
+      name = '橫向擴充';
+      message = '交換器埠數  •  光纖數量  •  鏈路可靠性';
       color = '#343895';
       pale = '#eef0fb';
     } else if (stage === 'across') {
       opacity = { up: 0.18, out: 0.42, across: pulse };
       labelOpacity = { up: 0.32, out: 0.50, across: 0 };
-      name = 'SCALE-ACROSS（跨域）';
+      name = '跨域擴充';
       message = '傳輸距離  •  傳播延遲';
       color = '#00a7c4';
       pale = '#eef9fb';
     } else {
       opacity = { up: pulse, out: pulse, across: pulse };
       labelOpacity = { up: 1, out: 1, across: 1 };
-      name = '三個擴充套件域';
+      name = '三個網路域';
       message = '先明確約束，再選擇技術';
       color = '#343895';
       pale = '#f2f4f8';
@@ -285,8 +313,43 @@
       setOpacity(highlights[key], opacity[key]);
       setOpacity(labels[key], labelOpacity[key]);
     });
-    setOpacity(campusLabel, stage === 'across' || stage === 'all'? 1: 0);
+    setOpacity(campusLabel, stage === 'across' || stage === 'all' ? 1 : 0);
   }
+
+  // Measure after camera/stage updates; visibility keeps hidden labels measurable.
+  function updateContextLabelVisibility() {
+    const svg = world.ownerSVGElement;
+    const matrix = svg.getScreenCTM();
+    if (!matrix) return;
+    const gap = 4 * Math.max(Math.hypot(matrix.a, matrix.b), Math.hypot(matrix.c, matrix.d));
+    const viewport = svg.getBoundingClientRect();
+    const frame = contextFrame.getBoundingClientRect();
+    const stage = contextStageBand.getBoundingClientRect();
+    const footer = contextFooterBand.getBoundingClientRect();
+    const safe = {
+      left: Math.max(viewport.left, frame.left) + gap,
+      right: Math.min(viewport.right, frame.right) - gap,
+      top: Math.max(viewport.top, frame.top, stage.bottom) + gap,
+      bottom: Math.min(viewport.bottom, frame.bottom, footer.top) - gap,
+    };
+    for (const { node, visibility } of contextLabels) {
+      const box = node.getBBox();
+      const bounds = node.getBoundingClientRect();
+      const textMatrix = node.getScreenCTM();
+      const style = getComputedStyle(node);
+      const stroke = style.stroke === 'none' ? 0 : parseFloat(style.strokeWidth) || 0;
+      const strokePadding = textMatrix ? stroke * 0.5 * Math.max(
+        Math.hypot(textMatrix.a, textMatrix.b), Math.hypot(textMatrix.c, textMatrix.d)
+      ) : 0;
+      const fullyVisible = box.width > 0 && box.height > 0
+        && bounds.left - strokePadding >= safe.left
+        && bounds.right + strokePadding <= safe.right
+        && bounds.top - strokePadding >= safe.top
+        && bounds.bottom + strokePadding <= safe.bottom;
+      node.style.visibility = fullyVisible ? visibility : 'hidden';
+    }
+  }
+
 
   function makePulses(pathIds, groupId, color, filterId, particlesPerPath) {
     const group = document.getElementById(groupId);
@@ -295,7 +358,7 @@
       const particles = [];
       for (let i = 0; i < particlesPerPath; i += 1) {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('r', i === 0? '8': '5');
+        circle.setAttribute('r', i === 0 ? '8' : '5');
         circle.setAttribute('fill', color);
         circle.setAttribute('stroke', '#ffffff');
         circle.setAttribute('stroke-width', '1.5');
@@ -321,26 +384,29 @@
         const point = item.path.getPointAtLength(position * length);
         particle.setAttribute('cx', String(point.x));
         particle.setAttribute('cy', String(point.y));
-        particle.setAttribute('opacity', String(visible * (particleIndex === 0? 1: 0.62)));
+        particle.setAttribute('opacity', String(visible * (particleIndex === 0 ? 1 : 0.62)));
       });
     });
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = Math.max(0, Math.min(rawTime, duration));
     const stage = stageAt(t);
     setCamera(cameraAt(t));
     setStage(stage, t);
+    updateContextLabelVisibility();
 
-    const upVisible = stage === 'up' || stage === 'all'? 1: stage === 'out'? 0.42: 0.18;
-    const outVisible = stage === 'out' || stage === 'all'? 1: stage === 'across'? 0.46: 0.10;
-    const acrossVisible = stage === 'across' || stage === 'all'? 1: 0.08;
+    const upVisible = stage === 'up' || stage === 'all' ? 1 : stage === 'out' ? 0.42 : 0.18;
+    const outVisible = stage === 'out' || stage === 'all' ? 1 : stage === 'across' ? 0.46 : 0.10;
+    const acrossVisible = stage === 'across' || stage === 'all' ? 1 : 0.08;
     animatePulses(pulseGroups.up, (t * 0.34) % 1, upVisible, 0.12);
     animatePulses(pulseGroups.out, (t * 0.22) % 1, outVisible, 0.16);
     animatePulses(pulseGroups.across, (t * 0.14) % 1, acrossVisible, 0.12);
   };
 
   window.renderAt(0);
+  document.fonts?.ready.then(updateContextLabelVisibility);
+  window.addEventListener('resize', updateContextLabelVisibility);
 </script>
 </body>
 </html>

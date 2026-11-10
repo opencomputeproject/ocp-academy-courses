@@ -1,7 +1,10 @@
 # pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-As métricas deste módulo não são apenas uma longa lista. Eles são uma forma de transformar o estado do link em ação.
+As métricas deste módulo transformam o estado do link em uma decisão.
 
-Métricas de qualidade ajudam a localizar se o sinal fraco é elétrico, óptico, do lado da linha, do lado do host ou específico da faixa. Métricas de erro e recuperação mostram se a fraqueza está causando carga de correção, relinks ou comportamento não corrigível. Os campos ambientais e de identidade tornam as evidências rastreáveis.
+As medições de qualidade do sinal ajudam a localizar a interface ou lane mais fraca. Os dados de erros, recuperação e tempo de atividade mostram se essa fragilidade afeta o serviço. Campos ambientais e de identidade vinculam as evidências ao módulo físico.
 
-A pontuação link-health então comprime essa evidência cuidadosamente. Ele usa a categoria mais fraca em vez de uma média, porque um único campo ruim ainda pode ser a razão pela qual um link é pouco confiável. Essa ideia nos prepara para a camada do fluxo de trabalho: como o software do host solicita, verifica, recupera e registra os dados.
-O teste prático é se a métrica muda uma decisão. Isso aponta para limpeza óptica, substituição de módulo, revisão de firmware, inspeção térmica ou monitoramento contínuo? Acionável telemetria reduz o próximo passo.
+A pontuação de integridade adota o mínimo das pontuações das categorias suportadas para o lado selecionado, do host ou do meio físico. O bitmap das categorias de menor pontuação identifica todos os participantes empatados. As máscaras de contadores e os limiares configurados explicam como esse resumo foi calculado.
+
+O desligamento autônomo é uma resposta configurada separada. Ele começa desativado após reinicialização, e um desligamento acionado deixa evidências de falha e de evento. Não confunda uma pontuação baixa com prova de que o desligamento estava habilitado ou ocorreu.
+
+O teste prático é saber se as evidências restringem a próxima etapa. Elas sugerem inspeção óptica, investigação da margem elétrica, verificações térmicas, revisão do firmware ou monitoramento contínuo? O próximo módulo mostra como o software solicita e preserva as informações por trás dessas escolhas.

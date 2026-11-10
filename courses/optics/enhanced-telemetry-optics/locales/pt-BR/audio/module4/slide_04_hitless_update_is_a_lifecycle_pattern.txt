@@ -1,7 +1,12 @@
 # pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-atualização sem interrupção não é um comando único. É um ciclo de vida com pontos de controle. A especificação inclui comportamento de download de blocos, status de comando, conclusão e etapas de ativação. Esses detalhes importam na implementação, mas o padrão operacional é a parte a se lembrar.
+A manutenção de firmware sem interrupção depende de um ciclo de vida controlado, não de um único comando bem-sucedido.
 
-Uma atualização segura começa com informações de capacidade e imagem. Ele se move através do comportamento de iniciar, transferir, completar, executar e comprometer. Em cada fase, o software precisa de feedback de status, manejo de erros e uma compreensão clara de qual imagem está ativa agora e qual se torna ativa após futuras resetações.
+Inspecione as informações da imagem remota e inicie o download. Transfira o firmware em blocos e verifique cada resultado. Se a transferência de um bloco falhar, aborte o download e faça a limpeza em vez de continuar com uma imagem incompleta.
 
-A atualização remota adiciona mais uma camada: o módulo local está ajudando a gerenciar o extremo distante. Isso torna a disciplina de comando e o relatório de status ainda mais importantes.
-A expressão 'sem acertos' deve ser tratada como um requisito operacional, não como uma promessa casual. Depende da qualidade da implementação, feedback de status, manejo de erros e da política de implantação que decide quando uma atualização é permitida.
+Depois da chegada de todos os blocos, o comando de conclusão do download valida essa etapa. Uma falha, como uma soma de verificação incorreta da imagem, significa que o download não foi bem-sucedido. Não prossiga para a ativação.
+
+Quando a conclusão for bem-sucedida, execute a nova imagem e verifique seu comportamento. Só então confirme a imagem em execução como padrão para futuras reinicializações. Essa distinção entre executar e confirmar é central para saber o que o módulo fará agora e após uma reinicialização.
+
+O módulo local leva essas operações ao parceiro remoto escolhido pela interface em banda. Preserve a identidade desse parceiro durante toda a sequência.
+
+A capacidade de operação sem interrupção ainda precisa ser verificada na implantação. Confira a continuidade real do tráfego, o status dos comandos, o comportamento de recuperação e a política de manutenção antes de confiar no fluxo em serviço.

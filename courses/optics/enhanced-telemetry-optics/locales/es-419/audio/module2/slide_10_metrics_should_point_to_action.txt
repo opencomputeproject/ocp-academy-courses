@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Las métricas de este módulo no son solo una larga lista. Son una forma de convertir el estado de enlace en acción.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+Las métricas de este módulo convierten el estado del enlace en una decisión.
 
-Las métricas de calidad ayudan a localizar si la señal débil es eléctrica, óptica, del lado de la línea, del lado del anfitrión o específica del carril. Las métricas de error y recuperación muestran si la debilidad está causando la carga de corrección, los reenlaces o un comportamiento incorregible. Los campos ambientales e identitarios hacen que la evidencia sea rastreable.
+Las mediciones de calidad de señal ayudan a localizar la interfaz o el carril débil. Los datos de errores, recuperación y tiempo de actividad muestran si esa debilidad afecta al servicio. Los campos ambientales y de identidad vinculan la evidencia con el módulo físico.
 
-La puntuación link-health comprime esa evidencia cuidadosamente. Utiliza la categoría más débil en lugar de una media, porque un solo campo defectuoso puede seguir siendo la razón por la que un enlace es poco fiable. Esa idea nos prepara para la capa de flujo de trabajo: cómo el software del host solicita, revisa, recupera y registra los datos.
-La prueba práctica es si la métrica cambia una decisión. ¿Apunta a limpieza óptica, reemplazo de módulos, revisión de firmware, inspección térmica o monitorización continua? Accionable telemetría reduce el siguiente paso.
+La puntuación del estado es el mínimo de las puntuaciones de las categorías compatibles del lado seleccionado, sea el del host o el del medio. El mapa de bits de las categorías más bajas identifica todas las que empatan. Las máscaras de contadores y los umbrales configurados explican cómo se calculó ese resumen.
+
+El apagado autónomo es una respuesta configurada independiente. Comienza desactivado después de un reinicio y, cuando se activa, deja evidencia de falla y de evento. No confunda una puntuación baja con la prueba de que el apagado estaba habilitado o se produjo.
+
+La prueba práctica es si la evidencia acota el siguiente paso. ¿Sugiere inspección óptica, investigación del margen eléctrico, comprobaciones térmicas, revisión del firmware o continuar el monitoreo? El siguiente módulo muestra cómo el software solicita y conserva la información que respalda esas decisiones.

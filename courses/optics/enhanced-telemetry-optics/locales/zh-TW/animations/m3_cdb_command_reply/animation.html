@@ -3,23 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CDB 命令-應答工作流程</title>
+  <title>CDB 命令回應工作流程</title>
   <style>
+@font-face{font-family:AcademyZhTW;src:url("../../assets/fonts/NotoSansTC-zh-TW.woff2") format("woff2");font-weight:100 900;font-display:block;}
+
+
+
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f9fc;
-      font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans CJK TC", Arial, sans-serif;
+      font-family:AcademyZhTW,"PingFang TC","Microsoft JhengHei",sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
-    text { letter-spacing: 0; }.title { font-size: 34px; font-weight: 800; fill: #343895; }.subtitle { font-size: 20px; font-weight: 700; fill: #5f6062; }.node-label { font-size: 25px; font-weight: 800; fill: #ffffff; }.node-note { font-size: 17px; font-weight: 700; fill: #eef0fb; }.page-label { font-size: 24px; font-weight: 800; fill: #343895; }.field-label { font-size: 15px; font-weight: 800; fill: #343895; }.step-title { font-size: 19px; font-weight: 800; fill: #343895; }.step-note { font-size: 14px; font-weight: 700; fill: #5f6062; }.status { font-size: 25px; font-weight: 800; fill: #1f2937; }.pill { font-size: 20px; font-weight: 800; fill: #ffffff; }
+    svg { display: block; width: 100vw; height: 100vh; }
+    text { letter-spacing: 0; }
+    .title { font-size: 34px; font-weight: 800; fill: #343895; }
+    .subtitle { font-size: 20px; font-weight: 700; fill: #5f6062; }
+    .node-label { font-size: 25px; font-weight: 800; fill: #ffffff; }
+    .node-note { font-size: 17px; font-weight: 700; fill: #eef0fb; }
+    .page-label { font-size: 24px; font-weight: 800; fill: #343895; }
+    .field-label { font-size: 15px; font-weight: 800; fill: #343895; }
+    .step-title { font-size: 19px; font-weight: 800; fill: #343895; }
+    .step-note { font-size: 14px; font-weight: 700; fill: #5f6062; }
+    .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
+    .pill { font-size: 20px; font-weight: 800; fill: #ffffff; }
   </style>
 </head>
-<body>
-<svg viewBox="0 0 1280 720" role="img" aria-label="動畫展示 CDB 的準備、觸發、輪詢和檢索工作流程。">
+<body data-duration-ms="16000" data-poster-ms="14000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="無聲動畫展示 CDB 的準備、觸發、輪詢與獲取流程。">
   <defs>
     <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
       <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"/>
@@ -46,13 +60,13 @@
 
   <rect width="1280" height="720" fill="#f7f9fc"/>
   <rect x="34" y="28" width="1212" height="664" rx="24" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"/>
-  <text x="640" y="82" text-anchor="middle" class="title">CDB 是命令-應答工作流程</text>
-  <text x="640" y="114" text-anchor="middle" class="subtitle">寫入請求、觸發執行、檢查狀態、讀取應答。</text>
+  <text x="640" y="82" text-anchor="middle" class="title">CDB 是命令-回應工作流程</text>
+  <text x="640" y="114" text-anchor="middle" class="subtitle">寫入請求、觸發執行、檢查狀態、讀取回應。</text>
 
   <g id="host" transform="translate(82 230)">
     <rect width="240" height="152" rx="22" fill="#343895" filter="url(#shadow)"/>
     <text x="120" y="62" text-anchor="middle" class="node-label">主機軟體</text>
-    <text x="120" y="94" text-anchor="middle" class="node-note">構建請求</text>
+    <text x="120" y="94" text-anchor="middle" class="node-note">構造請求</text>
     <rect x="60" y="112" width="120" height="18" rx="9" fill="#eef0fb" opacity="0.95"/>
   </g>
 
@@ -65,18 +79,18 @@
 
   <g id="page" transform="translate(456 182)">
     <rect width="368" height="260" rx="24" fill="#eef0fb" stroke="#343895" stroke-width="5" filter="url(#shadow)"/>
-    <text x="184" y="44" text-anchor="middle" class="page-label">9Fh 頁</text>
+    <text x="184" y="44" text-anchor="middle" class="page-label">Page 9Fh</text>
     <g id="cmd-fields">
       <rect id="cmd-header" x="42" y="72" width="284" height="44" rx="10" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
       <text x="184" y="100" text-anchor="middle" class="field-label">命令頭</text>
       <rect id="cmd-payload" x="42" y="124" width="284" height="44" rx="10" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="184" y="152" text-anchor="middle" class="field-label">有效載荷</text>
+      <text x="184" y="152" text-anchor="middle" class="field-label">酬載</text>
     </g>
     <g id="reply-fields">
       <rect id="reply-header" x="42" y="176" width="284" height="34" rx="10" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="184" y="199" text-anchor="middle" class="field-label">應答頭</text>
+      <text x="184" y="199" text-anchor="middle" class="field-label">回應頭</text>
       <rect id="reply-payload" x="42" y="218" width="284" height="34" rx="10" fill="#ffffff" stroke="#d6dce7" stroke-width="2"/>
-      <text x="184" y="241" text-anchor="middle" class="field-label">應答有效載荷</text>
+      <text x="184" y="241" text-anchor="middle" class="field-label">回應酬載</text>
     </g>
   </g>
 
@@ -94,22 +108,22 @@
     <g id="step-0" transform="translate(0 0)">
       <rect id="step-bg-0" width="252" height="86" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
       <text x="20" y="32" class="step-title">1. 準備</text>
-      <text x="20" y="60" class="step-note">頭部與有效載荷</text>
+      <text x="20" y="60" class="step-note">命令頭與酬載</text>
     </g>
     <g id="step-1" transform="translate(300 0)">
       <rect id="step-bg-1" width="252" height="86" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"/>
       <text x="20" y="32" class="step-title">2. 觸發</text>
-      <text x="20" y="60" class="step-note">執行命令</text>
+      <text x="20" y="60" class="step-note">命令執行</text>
     </g>
     <g id="step-2" transform="translate(600 0)">
       <rect id="step-bg-2" width="252" height="86" rx="16" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
       <text x="20" y="32" class="step-title">3. 輪詢</text>
-      <text x="20" y="60" class="step-note">忙碌到完成</text>
+      <text x="20" y="60" class="step-note">忙碌後完成</text>
     </g>
     <g id="step-3" transform="translate(900 0)">
       <rect id="step-bg-3" width="252" height="86" rx="16" fill="#eef7f9" stroke="#00a7c4" stroke-width="3"/>
-      <text x="20" y="32" class="step-title">4. 檢索</text>
-      <text x="20" y="60" class="step-note">應答頭與資料</text>
+      <text x="20" y="32" class="step-title">4. 獲取</text>
+      <text x="20" y="60" class="step-note">回應頭與資料</text>
     </g>
   </g>
 
@@ -119,7 +133,7 @@
   </g>
   <g>
     <rect x="184" y="132" width="912" height="46" rx="23" fill="#f8fafc" stroke="#d6dce7" stroke-width="2"/>
-    <text id="status" x="640" y="163" text-anchor="middle" class="status">CDB 讓主機與模組的互動保持結構化且可觀測。</text>
+    <text id="status" x="640" y="163" text-anchor="middle" class="status">CDB 使主機與模組的互動結構清晰、可觀察。</text>
   </g>
 </svg>
 
@@ -140,21 +154,21 @@
     const el = document.getElementById(id);
     el.setAttribute('stroke', color);
     el.setAttribute('stroke-width', String(2 + strength * 4));
-    el.setAttribute('fill', strength > 0.12? (color === '#00a7c4'? '#eef7f9': '#f4faef'): '#ffffff');
+    el.setAttribute('fill', strength > 0.12 ? (color === '#00a7c4' ? '#eef7f9' : '#f4faef') : '#ffffff');
   }
   function setStep(index, strength) {
     const bg = document.getElementById(`step-bg-${index}`);
     const colors = ['#8dc63f', '#8dc63f', '#343895', '#00a7c4'];
     bg.setAttribute('stroke', colors[index]);
     bg.setAttribute('stroke-width', String(3 + strength * 4));
-    bg.style.filter = strength > 0.2? 'url(#shadow)': '';
+    bg.style.filter = strength > 0.2 ? 'url(#shadow)' : '';
   }
   function pointOn(path, progress) {
     return path.getPointAtLength(path.getTotalLength() * clamp(progress));
   }
 
   window.renderAt = function renderAt(rawTime) {
-    const t = ((rawTime % duration) + duration) % duration;
+    const t = clamp(rawTime, 0, duration);
     const prepare = windowValue(t, 0.8, 4.2, 0.7);
     const trigger = windowValue(t, 3.6, 7.0, 0.7);
     const poll = windowValue(t, 6.3, 10.9, 0.7);
@@ -209,12 +223,12 @@
       pill.setAttribute('width', '118');
     }
 
-    let status = 'CDB 讓主機與模組的互動保持結構化且可觀測。';
-    if (t >= 0.8 && t < 3.8) status = '主機準備命令頭和有效載荷。';
+    let status = 'CDB 使主機與模組的互動結構清晰、可觀察。';
+    if (t >= 0.8 && t < 3.8) status = '主機準備命令頭與酬載。';
     else if (t >= 3.8 && t < 6.7) status = '觸發操作將請求交給模組。';
-    else if (t >= 6.7 && t < 10.3) status = '輪詢顯示執行仍在進行還是已經完成。';
-    else if (t >= 10.3 && t < 14.6) status = '完成後返回應答頭和有效載荷。';
-    else if (t >= 14.6) status = '同一模式支援遙測、日誌和更大的有效載荷。';
+    else if (t >= 6.7 && t < 10.3) status = '輪詢判斷執行仍在進行，還是已經完成。';
+    else if (t >= 10.3 && t < 14.6) status = '完成後傳回回應頭與酬載。';
+    else if (t >= 14.6) status = '相同模式支援遙測、日誌和更大酬載。';
     document.getElementById('status').textContent = status;
   };
 

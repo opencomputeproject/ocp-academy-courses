@@ -1,7 +1,12 @@
 # pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Logs de eventos precisam de detalhes suficientes para serem úteis, mas também precisam de controle. Um link ruidoso pode cruzar um limiar repetidamente. Sem histerese, o registro pode ser preenchido com entradas duplicadas que obscurecem a sequência real dos eventos.
+Um log de eventos útil precisa de detalhes e de contenção. Um link ruidoso pode repetir a mesma condição com frequência suficiente para sobrescrever o buffer circular com duplicatas.
 
-A especificação inclui eventos orientados por limiar, como ligação para cima, ligação para baixo, perda de sinal, perda de link, M P I limite, S N R, pre-feck B E R limite, feck limiar de histograma, feck não corrigível, temperatura do módulo e potência recebida. Também lista suporte para host API para leitura e escrita de histerese de eventos, com valor padrão de 10 segundos na especificação.
+A especificação usa histerese programável com padrão de dez segundos. Isso limita o registro de duplicatas dentro do intervalo configurado e preserva eventos distintos.
 
-Para a versão final, esse valor deve ser verificado em relação à especificação publicada. O conceito é estável: ajustar o comportamento dos eventos para que os logs preservem o sinal em vez do ruído.
-Histerese não é sobre esconder fracassos. Trata-se de preservar uma história de fracasso legível. Um log que registra a mesma oscilação muitas vezes pode tornar a causa raiz mais difícil, não mais fácil.
+As definições de eventos abrangem temperatura e tensão do módulo, alarmes de potência óptica, reinicializações, condições de sinal ou sincronismo do receptor, limiares de erros, alterações de firmware e desligamento autônomo. Decodifique o identificador de evento e seus detalhes em vez de tratar todo registro como um alarme genérico de link.
+
+Os limiares de pontuação e as condições de registro de eventos têm finalidades diferentes. Não presuma que alterar um limite de pontuação altera todos os limiares de evento, nem que um contador mascarado deixa de ser uma evidência útil.
+
+As APIs do host expõem recuperação de eventos e controle de histerese para endpoints locais e remotos. Use esses controles de forma deliberada e preserve a validade do horário do módulo e o contexto da sequência durante a correlação.
+
+A histerese deve tornar legível o histórico da falha. Antes de limpar um log ou zerar contadores, recupere os registros que explicam o incidente e mantenha-os com a linha do tempo do host.

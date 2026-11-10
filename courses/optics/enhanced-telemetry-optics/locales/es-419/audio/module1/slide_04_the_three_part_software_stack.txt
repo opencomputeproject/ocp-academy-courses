@@ -1,7 +1,10 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-El documento fuente nombra tres componentes en un sistema de software compatible. El primero es el propio transceptor: firmware, métricas telemetría, registro de eventos y el comportamiento de comandos necesario para exponer esos valores.
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+Un flujo común de fiabilidad tiene tres capas. El transceptor implementa el firmware, las mediciones, el historial de eventos y el comportamiento de comandos necesario para exponer evidencia local y remota.
 
-El segundo es software del host, normalmente en el interruptor. Esta es la capa que se comunica con el módulo local sobre I al cuadrado C, solicita datos de socios locales o remotos y convierte las respuestas de los módulos en herramientas que un operador puede utilizar.
+El software del host, normalmente en un switch, descubre las capacidades del módulo, solicita datos, comprueba los resultados de los comandos y prepara la salida para las herramientas operativas. El host sigue siendo el punto de control local, incluso cuando la información solicitada proviene de un extremo remoto.
 
-El tercero es el software de servidor de telemetría. La especificación espera que la telemetría se compile, resuma e informe a nivel de red, pero no prescribe cómo cada operador construye ese lado del servidor. Ese límite es importante. El curso enseña la interfaz común módulo-anfitrión, porque esa es la parte que la contribución estandariza.
-Esa visión en capas también ayuda con la responsabilidad. El transceptor posee lo que puede medir y preservar. El host es el responsable de cómo pide y presenta. El servidor telemetría posee una correlación más amplia en toda la entorno a gran escala.
+Por encima, el software del servidor de telemetría puede compilar, resumir e informar el estado de la red. Su implementación depende del operador. La especificación define el comportamiento del módulo y la interfaz común del host, no un diseño obligatorio de servidor de monitoreo.
+
+Esta división importa durante la integración. Un proveedor puede implementar la interfaz del módulo; un equipo de switches, la recopilación; y un operador, las herramientas de agregación adecuadas para su despliegue. El límite compartido permite que esas decisiones funcionen juntas.
+
+Durante un incidente, siga las mismas capas. Pregunte si la evidencia existe en el módulo, si el host la recuperó correctamente y si el sistema de monitoreo conservó el contexto.

@@ -1,9 +1,11 @@
-# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
-Đến cuối mô-đun này, bạn sẽ có thể kết nối bốn phần hoạt động.
+Đến cuối mô-đun này, bạn sẽ kết nối hành vi giao thức với quy trình vận hành có thể lặp lại.
 
-Đầu tiên, bạn sẽ mô tả việc quản lý firmware cục bộ và từ xa mà không cần phải ghi nhớ mọi mã định danh lệnh. Thứ hai, bạn sẽ giải thích lý do tại sao phần mềm host giao tiếp với mô-đun cục bộ, ngay cả khi người vận hành muốn thông tin từ đối tác ở xa.
+Trước hết, bạn sẽ phân biệt quy trình firmware CMIS cục bộ tiêu chuẩn với nhóm lệnh từ xa 8030h. Bạn sẽ giải thích vì sao tải, chạy và cam kết ảnh firmware là những bước riêng.
 
-Thứ ba, bạn sẽ xác định các danh mục API biến hoạt động của mô-đun thành các lệnh có thể sử dụng: truy cập đăng ký, tải xuống dữ liệu đo từ xa, nhật ký sự kiện, cập nhật firmware, thời gian kỷ nguyên, độ trễ và xếp hạng liên kết.
+Tiếp theo, bạn sẽ mô tả ranh giới host. Host giao tiếp với mô-đun cục bộ qua I2C, trong khi mô-đun đó truy xuất dữ liệu đối tác từ xa trong băng.
 
-Cuối cùng, bạn sẽ kết nối việc thu thập dữ liệu từ xa và lịch sử sự kiện với một bản đồ tình trạng trên toàn mạng. Đó là nơi khóa học trở thành sự sẵn sàng triển khai chứ không chỉ là kiến ​​thức về giao thức.
-Khi bạn xem xét các mục tiêu, hãy nghĩ đến việc chuyển giao. Dữ liệu mô-đun trở thành đầu ra của máy chủ. Đầu ra của máy chủ trở thành hành động của người vận hành. Hành động của người vận hành phù hợp với quy trình triển khai có thể lặp lại. Quá trình lặp lại đó chính là mục tiêu.
+Thứ ba, bạn sẽ xác định các nhóm công cụ người vận hành cần: truy cập thanh ghi, dữ liệu đo từ xa, lịch sử sự kiện, bảo trì firmware, thời gian mô-đun, hysteresis và điểm tình trạng.
+
+Cuối cùng, bạn sẽ kết nối dấu thời gian mô-đun và phép đo bộ thu tại host vào cùng một dòng thời gian bằng chứng. Bạn sẽ xác minh khả năng hỗ trợ, danh tính đối tác, cấu hình điểm, giá trị mặc định tự động ngắt và kết quả firmware trước khi dựa vào hệ thống trong sự cố.
+
+Mục tiêu là chuyển giao đáng tin cậy từ phép đo mô-đun sang đầu ra host, từ đầu ra host sang quyết định vận hành và từ quyết định sang hành động được ghi nhận.
