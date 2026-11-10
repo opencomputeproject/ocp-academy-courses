@@ -18,6 +18,12 @@ class GlossaryAuditTests(unittest.TestCase):
         self.assertEqual(match_term({'term':'开放硬件'},'开放硬件可以帮助团队。'),'开放硬件')
         self.assertEqual(match_term({'term':'相互運用性'},'相互運用性を検証します。'),'相互運用性')
 
+    def test_punctuated_engineering_acronym_next_to_japanese(self):
+        self.assertEqual(match_term({'term':'N+1'}, 'N+1は予備容量を表します。'), 'N+1')
+        self.assertEqual(match_term({'term':'N+1'}, '構成N+1を検証します。'), 'N+1')
+        self.assertIsNone(match_term({'term':'N+1'}, 'N+1suffix'))
+        self.assertIsNone(match_term({'term':'N+1'}, 'prefixN+1は'))
+
     def test_korean_particles_without_latin_substring_matches(self):
         self.assertEqual(match_term({'term':'상호 운용성'},'상호 운용성은 검증해야 합니다.'),'상호 운용성')
         self.assertEqual(match_term({'term':'버스바'},'버스바를 확인하세요.'),'버스바')

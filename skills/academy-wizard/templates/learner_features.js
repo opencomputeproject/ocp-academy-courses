@@ -3,6 +3,7 @@ function learnerText(key, fallback) {
   return String(videoUiLabels[key] ?? fallback);
 }
 
+
 // Keep desktop glossary bubbles inside the viewport, including rightmost pills.
 function fitGlossaryTooltip(chip) {
   if (!chip) return;
