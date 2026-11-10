@@ -5,15 +5,25 @@
     "engine": "elevenlabs",
     "voice_id": "zl1Ut8dvwcVSuQSB9XkG",
     "voice_name": "Ninoska",
-    "model_id": "eleven_multilingual_v2"
+    "model_id": "eleven_v4",
+    "speed": 1.18,
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR",
+      "migration_decision": "mp3"
+    }
   },
   "course_slug": "cooling_fluids_in_direct_liquid_cooling_es_419",
   "course_title": "Fluidos de refrigeración en refrigeración líquida directa (DLC)",
   "course_subtitle": "Monofásico TCS guía fluida para implementaciones directo al chip",
   "tagline": "Community-driven Hyperscale Innovation for All",
-  "spec_version_chip": "Directrices para el uso de fluido de transferencia de calor",
+  "spec_version_chip": "OCP Especificaciones básicas + PG25 Directrices",
   "target_duration_minutes": 35,
-  "audience_level": "intermedio",
+  "audience_level": "intermediate",
   "brand": {
     "primary_color": "#8DC63F",
     "primary_color_dark": "#6FA030",
@@ -37,14 +47,29 @@
   },
   "sources": [
     {
+      "kind": "ocp_base_specification_pdf",
+      "title": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
+    },
+    {
+      "kind": "ocp_base_specification_pdf",
+      "title": "OCP Base Specification - PG25 - V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf"
+    },
+    {
       "kind": "ocp_contribution_pdf",
-      "title": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+      "title": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
       "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
     },
     {
       "kind": "ocp_contribution_pdf",
-      "title": "Directrices para el uso de dieléctrico fluidos de transferencia de calor en bifásico racks enfriados por líquido con base de placa fría",
+      "title": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
       "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+    },
+    {
+      "kind": "ocp_operating_guideline_pdf",
+      "title": "OCP PG25 Guidelines V1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf"
     }
   ],
   "term_glossary": [
@@ -53,42 +78,63 @@
       "term": "DLC",
       "tooltip": "Refrigeración líquida directa. Un enfoque de enfriamiento en el que el líquido elimina el calor cerca de los componentes que generan calor, como procesadores o aceleradores.",
       "reference_label": "OCP Ambientes de refrigeración",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "refrigeración líquida directa"
+      ]
     },
     {
       "id": "cdu",
       "term": "CDU",
       "tooltip": "Unidad de distribución de refrigerante. Equipo que bombea y acondiciona refrigerante y transfiere calor entre TCS y los sistemas de la instalación.",
       "reference_label": "OCP Ambientes de refrigeración",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "unidad de distribución de refrigerante"
+      ]
     },
     {
       "id": "tcs",
       "term": "TCS",
       "tooltip": "Sistema de refrigeración de tecnología. El circuito secundario cerrado entre CDU y el hardware de refrigeración del servidor o bastidor.",
       "reference_label": "Uso de ASHRAE/OCP",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "sistema de refrigeración de tecnología"
+      ]
     },
     {
       "id": "fws",
       "term": "FWS",
       "tooltip": "Sistema de agua de la instalación. El bucle del lado de la instalación fuera del límite TCS.",
       "reference_label": "OCP Ambientes de refrigeración",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "url": "https://www.opencompute.org/wiki/Cooling_Environments",
+      "aliases": [
+        "sistema de agua de la instalación"
+      ]
     },
     {
       "id": "pg25",
       "term": "PG25",
-      "tooltip": "Un fluido de transferencia de calor con 25 por ciento de propilenglicol, comúnmente utilizado en monofásico directo al chip refrigeración.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "tooltip": "Fluido de transferencia de calor listo para usar, con un 25–28 % de propilenglicol en masa según la especificación básica OCP PG25 V1.0.0.",
+      "reference_label": "OCP Especificación básica - PG25 - V1.0.0",
+      "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+      "aliases": [
+        "P G veinticinco",
+        "PG veinticinco"
+      ]
     },
     {
       "id": "qd",
       "term": "QD",
       "tooltip": "Desconexión rápida. Un conector de servicio que permite hacer y romper conexiones de fluidos en el circuito.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP guía de funcionamiento de fase única",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+      "aliases": [
+        "QDs",
+        "desconexión rápida",
+        "Desconectaciones rápidas"
+      ]
     },
     {
       "id": "iat",
@@ -109,36 +155,51 @@
       "id": "azole",
       "term": "Azol",
       "tooltip": "Una familia inhibidor de corrosión utilizada para proteger el cobre y los metales amarillos.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP guía de funcionamiento de fase única",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
+      "aliases": [
+        "Azoles"
+      ]
     },
     {
       "id": "tss",
       "term": "TSS",
       "tooltip": "Sólidos suspendidos totales. Partículas suspendidas en el fluido.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP especificación básica de la base del refrigerante a base de agua V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "tds",
       "term": "TDS",
       "tooltip": "Sólidos disueltos totales. Material disuelto en el fluido, relacionado con la conductividad.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP especificación básica de la base del refrigerante a base de agua V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "cfu",
       "term": "CFU/ml",
       "tooltip": "Unidades formadoras de colonias por mililitro, utilizadas para recuentos microbianos en el líquido.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP especificación básica de la base del refrigerante a base de agua V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+      "aliases": [
+        "CFU/ml",
+        "CFU",
+        "unidades formadoras de colonias por mililitro"
+      ]
+    },
+    {
+      "id": "ntu",
+      "term": "NTU",
+      "tooltip": "Unidad de turbidez nefelométrica. Una medida de la turbidez del líquido causada por partículas suspendidas.",
+      "reference_label": "OCP especificación básica de la base del refrigerante a base de agua V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "icp",
       "term": "ICP",
       "tooltip": "Análisis de plasma acoplado inductivamente, utilizado para identificar iones solubles y contaminación metálica.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP guía de funcionamiento de fase única",
+      "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
     },
     {
       "id": "sds",
@@ -151,8 +212,8 @@
       "id": "coa",
       "term": "COA",
       "tooltip": "Certificado de Análisis. Un documento del fabricante que muestra la calidad del producto o la conformidad de un fluido fabricado.",
-      "reference_label": "OCP monofásico borrador de guía",
-      "url": "https://www.opencompute.org/wiki/Cooling_Environments"
+      "reference_label": "OCP especificación básica de la base del refrigerante a base de agua V1.3",
+      "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
     },
     {
       "id": "latent_heat",
@@ -196,6 +257,38 @@
       "tooltip": "Equipo de protección personal. Guantes, protección ocular y otros controles seleccionados de SDS y procedimientos de seguridad locales.",
       "reference_label": "Descripción general de OSHA PPE",
       "url": "https://www.osha.gov/personal-protective-equipment"
+    },
+    {
+      "id": "refractive_index",
+      "term": "índice de refracción",
+      "tooltip": "Una propiedad óptica utilizada para estimar la concentración de glicol con los datos de calibración exactos del proveedor del fluido. No es una medición directa de la salud del inhibidor.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 Directrices V1.0.0, Sección 11.6"
+    },
+    {
+      "id": "reserve_alkalinity",
+      "term": "alcalinidad de reserva",
+      "tooltip": "Una medida de titulación de la capacidad de amortiguación. Su interpretación depende de la formulación del inhibidor; los fluidos ácidos orgánicos no utilizan los mismos criterios que las formulaciones convencionales.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 Directrices V1.0.0, Tabla 14"
+    },
+    {
+      "id": "antifoam",
+      "term": "antiespumante",
+      "aliases": [
+        "antiespumante aditivos",
+        "antiespumante agentes"
+      ],
+      "tooltip": "Un aditivo utilizado para controlar la espuma. Una filtración fina o un medio filtrante incompatible pueden eliminarla de algunas formulaciones de glicol.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 Directrices V1.0.0, Secciones 6.5 y 7.2"
+    },
+    {
+      "id": "biostatic",
+      "term": "biostático",
+      "tooltip": "Inhibe el crecimiento microbiano en condiciones adecuadas; no significa que el líquido o el tubo esté estéril.",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+      "reference_label": "PG25 Directrices V1.0.0, Secciones 3.1 y 11.1"
     }
   ],
   "modules": [
@@ -216,13 +309,15 @@
           "title": "Fluidos de refrigeración en refrigeración líquida directa (DLC)",
           "slug": "cooling_fluids_in_direct_liquid_cooling",
           "subtitle": "Monofásico TCS selección de fluidos, puesta en servicio, monitoreo y operaciones.",
-          "version_chip": "Directrices para el uso de fluido de transferencia de calor",
+          "version_chip": "OCP Agua + PG25 Especificaciones básicas",
           "id": 1,
           "audio": {
             "script_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.txt",
             "wav_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_01_cooling_fluids_in_direct_liquid_cooling.mp3"
+          },
+          "transcript": "Bienvenido a Fluidos refrigerantes en refrigeración líquida directa. Este curso trata sobre las decisiones fluidas dentro del sistema de refrigeración de tecnología: el bucle TCS entre el CDU y el placas frías.\n\nSeguiremos centrados en monofásico directo al chip refrigeración: agua tratada y P G veinticinco. Al final, debería poder hacer mejores preguntas sobre compatibilidad, química, filtración, monitoreo y registros antes de que el fluido llegue a un costoso bastidor."
         },
         {
           "type": "course_overview",
@@ -253,11 +348,10 @@
           "audio": {
             "script_file": "audio/module1/slide_02_course_roadmap.txt",
             "wav_file": "audio/module1/slide_02_course_roadmap.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_02_course_roadmap.mp3"
           },
-          "term_refs": [
-            "dlc"
-          ]
+          "transcript": "Este curso tiene cuatro módulos. Primero, establecemos el límite: dónde vive el fluido, por qué la IA de alta densidad hace que la decisión sea importante y por qué los bifásico refrigerantes pertenecen a una ruta de aprendizaje separada.\n\nEn segundo lugar, comparamos el agua tratada y el P G veinticinco, luego desglosamos los objetivos de propiedades, la química del inhibidor y la evidencia de compatibilidad detrás de una especificación de fluido.\n\nEn tercer lugar, pasamos a puesta en servicio: diseño útil, comprobaciones de fugas, limpieza, llenado, muestreo inicial, filtración y control microbiano.\n\nFinalmente, cubrimos operaciones de estado estable: monitoreo de rutina, pruebas de laboratorio, interpretación de tendencias, ajustes guiados por proveedores, mezcla de fluidos, vida útil, eliminación y los registros que permiten que la infraestructura sobreviva a los ciclos de actualización."
         },
         {
           "type": "content_grid",
@@ -292,26 +386,99 @@
           "audio": {
             "script_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.txt",
             "wav_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_03_ai_heat_density_changes_the_cooling_problem.mp3"
           },
           "term_refs": [
-            "tdp",
-            "tcs"
-          ]
+            "tcs",
+            "tdp"
+          ],
+          "transcript": "Los bastidores A I cambiaron la conversación térmica porque el calor ahora se concentra donde el enfriamiento por aire lucha por mantener el ritmo. La tendencia es clara: la potencia de los aceleradores está aumentando, se empaquetan más aceleradores en espacios más pequeños y la potencia de los racks está pasando de las conocidas decenas de kilovatios a cientos de kilovatios.\n\nEso no significa que el aire desaparezca. En muchas implementaciones directo al chip, el líquido elimina la mayor parte del calor mientras que el aire aún maneja las cargas residuales. Pero sí significa que el fluido se convierte en parte de la historia de la confiabilidad. Si el fluido contamina, corroe, hace crecer la biología o tapa los microcanales, el caso de negocio informático puede convertirse muy rápidamente en un problema de mantenimiento."
         },
         {
           "type": "content_diagram",
           "title": "Donde vive el fluido",
           "slug": "where_the_fluid_lives",
           "section_label": "Límite del sistema",
+          "reference_links": [
+            {
+              "label": "Guía de agua · pp. 5–6",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=5"
+            }
+          ],
           "figure": {
             "path": "figures/tcs_loop.svg",
-            "alt": "Sistema de refrigeración de tecnología bucle entre CDU y placas frías",
-            "caption": "El curso se centra en el circuito cerrado TCS entre el CDU y el equipo de TI."
+            "alt": "La instalación separada y el intercambio de fluidos TCS intercambian calor en el CDU; el TCS circula a través de colectores y placas frías.",
+            "caption": "El calor cruza el intercambiador de calor CDU; la instalación y los fluidos TCS permanecen separados.",
+            "text_inventory": {
+              "sha256": "f6a54fdead168577b2cfcc958f3ca1f578033fdd786efbe9e70552baba2cbc73",
+              "entries": [
+                {
+                  "text": "sistema de refrigeración de tecnología (TCS)"
+                },
+                {
+                  "text": "Bucle secundario cerrado"
+                },
+                {
+                  "text": "Agua de la instalación"
+                },
+                {
+                  "text": "sistema (FWS)"
+                },
+                {
+                  "text": "Fuera de este alcance"
+                },
+                {
+                  "text": "CDU"
+                },
+                {
+                  "text": "intercambiador de calor"
+                },
+                {
+                  "text": "Bomba + filtros"
+                },
+                {
+                  "text": "estante"
+                },
+                {
+                  "text": "conjunto de puntos"
+                },
+                {
+                  "text": "Proveer / devolver"
+                },
+                {
+                  "text": "QDs + mangueras"
+                },
+                {
+                  "text": "Sensores"
+                },
+                {
+                  "text": "Equipo de TI"
+                },
+                {
+                  "text": "placas frías"
+                },
+                {
+                  "text": "venta"
+                },
+                {
+                  "text": "venta"
+                },
+                {
+                  "text": "vuelta"
+                },
+                {
+                  "text": "vuelta"
+                },
+                {
+                  "text": "El calor cruza el intercambiador. Los dos fluidos no se mezclan."
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "15-17"
             }
@@ -320,33 +487,89 @@
           "audio": {
             "script_file": "audio/module1/slide_04_where_the_fluid_lives.txt",
             "wav_file": "audio/module1/slide_04_where_the_fluid_lives.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_04_where_the_fluid_lives.mp3"
           },
           "term_refs": [
             "cdu",
             "fws",
+            "qd",
             "ashrae"
-          ]
+          ],
+          "transcript": "El primer límite es simple pero importante. Este curso trata sobre el circuito cerrado secundario que transporta calor desde el equipo del rack al CDU. En lenguaje ASHRAE, ese circuito es el sistema de refrigeración de tecnología, o TCS.\n\nEl sistema de agua de la instalación está en el otro lado del intercambiador de calor CDU. Importa para el diseño total, pero no es el mismo entorno fluido. El TCS toca placas frías, colectores, desconexiones rápidas, mangueras, sellos de bombas, filtros, depósitos y sensores. Cada una de esas superficies mojadas se convierte en parte de la cuestión de la compatibilidad de los fluidos."
         },
         {
           "type": "content_diagram",
           "title": "Monofásico Familias de fluidos en alcance",
           "slug": "single_phase_fluid_families_in_scope",
           "section_label": "Alcance",
+          "reference_links": [
+            {
+              "label": "Especificación PG25 · pp. 10–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            }
+          ],
           "figure": {
             "path": "figures/fluid_families.svg",
-            "alt": "El agua tratada y PG25 están dentro del alcance, mientras que los bifásico refrigerantes están aplazados.",
-            "caption": "La guía práctica en este curso es para agua tratada y bucles de estilo monofásico PG25."
+            "alt": "El agua tratada y listo para usar PG25 son el rango de fase única; los refrigerantes de fase doble son una familia separada.",
+            "caption": "El agua tratada y el PG25 permanecen líquidos mientras se transporta el calor; su química y requisitos de funcionamiento difieren.",
+            "text_inventory": {
+              "sha256": "03ec68915b9019ea9cfb7a6f063dfea52fe210a8d16ac7bb250508098964f3c8",
+              "entries": [
+                {
+                  "text": "Escopio de fase única"
+                },
+                {
+                  "text": "Agua tratada"
+                },
+                {
+                  "text": "Alta capacidad de calor"
+                },
+                {
+                  "text": "Química gestionada"
+                },
+                {
+                  "text": "menores acompañados"
+                },
+                {
+                  "text": "PG25"
+                },
+                {
+                  "text": "25-28% PG por peso"
+                },
+                {
+                  "text": "listo para usar + inhibidores"
+                },
+                {
+                  "text": "Bifásico"
+                },
+                {
+                  "text": "refrigerantes"
+                },
+                {
+                  "text": "Curso separado"
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "pg25"
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "5.2-5.3"
+            }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.txt",
             "wav_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_05_single_phase_fluid_families_in_scope.mp3"
+          },
+          "term_refs": [
+            "pg25"
+          ],
+          "transcript": "Para este curso, las principales familias de fluidos monofásico son agua tratada y P G veinticinco. El agua tratada puede ofrecer una excelente transferencia de calor, pero necesita atención activa a la corrosión, el crecimiento biológico, la conductividad, los sólidos, la dureza y los aditivos.\n\nLa especificación publicada OCP PG25 define un fluido listo para usar con entre veinticinco y veintiocho por ciento propilenglicol por peso. Ofrece un rendimiento térmico inferior al del agua y, por lo tanto, requiere datos de propiedades medidos para el rango de funcionamiento. La especificación también requiere inhibidores de corrosión, un colorante, impurezas controladas, filtración del producto y evidencia de envío.\n\nbifásico Los refrigerantes dieléctricos aparecen aquí sólo como contraste, porque su lógica de funcionamiento es diferente."
         },
         {
           "type": "content_grid",
@@ -381,12 +604,14 @@
           "audio": {
             "script_file": "audio/module1/slide_06_the_four_operator_questions.txt",
             "wav_file": "audio/module1/slide_06_the_four_operator_questions.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_06_the_four_operator_questions.mp3"
+          },
+          "transcript": "Las preocupaciones de los operadores no se concentran en un solo lugar. Los operadores se preocupan por elegir un fluido que sea compatible con su sistema. Les preocupan las fugas en torno al hardware costoso. Se preocupan por monitorear el fluido y saber qué significa una muestra. Y les preocupa tener suficiente experiencia en diseño y operación.\n\nEsas preguntas se convierten en la columna vertebral de este curso. La respuesta correcta rara vez es la declaración de un solo producto. Es una cadena de evidencia: química de fluidos, materiales en contacto con el fluido, limpieza de la instalación, filtración, monitoreo, tendencias, soporte de proveedores y decisiones documentadas."
         },
         {
           "type": "content_two_column",
-          "title": "Bifásico Los fluidos son un curso diferente",
+          "title": "Fluidos bifásicos: curso específico",
           "slug": "two_phase_fluids_are_a_different_course",
           "section_label": "Contraste",
           "subtitle": "No combine reglas de monofásico agua/PG25 con reglas de bifásico refrigerante.",
@@ -406,28 +631,55 @@
           ],
           "figure": {
             "path": "figures/single_vs_two_phase.svg",
-            "alt": "Los fluidos monofásico usan calor sensible mientras que los bifásico refrigerantes usan calor latente",
-            "caption": "Bifásico la educación fluida se puede encontrar en el curso bifásico DLC."
+            "alt": "Un termómetro representa calor sensible; una gota de líquido con vapor por encima representa calor latente.",
+            "caption": "Bifásico la educación fluida se puede encontrar en el curso bifásico DLC.",
+            "text_inventory": {
+              "sha256": "a92cc88dde367a5b20a2644fa1dc906a50bda232628267b28b4b10022dae1b44",
+              "entries": [
+                {
+                  "text": "Monofásico"
+                },
+                {
+                  "text": "Agua o PG25"
+                },
+                {
+                  "text": "calor sensible"
+                },
+                {
+                  "text": "El líquido se calienta; permanece líquido."
+                },
+                {
+                  "text": "Bifásico"
+                },
+                {
+                  "text": "Refrigerante dieléctrico"
+                },
+                {
+                  "text": "Calor latente"
+                },
+                {
+                  "text": "La evaporación transporta calor."
+                },
+                {
+                  "text": "Ejemplos de refrigerantes: R-515B, R-1233zd(E), R-1336mzz(Z)"
+                }
+              ]
+            }
           },
           "reference_links": [
             {
-              "label": "OCP bifásico guía de fluidos",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+              "label": "OCP Academy: DLC bifásico",
+              "url": "https://academy.opencompute.org/learn/courses/53/two-phase-direct-liquid-cooling-efficiencies-and-fluids"
             }
-          ],
-          "term_refs": [
-            "latent_heat",
-            "sds",
-            "coa"
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de dieléctrico fluidos de transferencia de calor en bifásico racks enfriados por líquido con base de placa fría",
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "slides": "6-13"
             },
             {
-              "source": "Directrices para el uso de dieléctrico fluidos de transferencia de calor en bifásico racks enfriados por líquido con base de placa fría",
+              "source": "Guidelines for Using Dielectric Heat Transfer Fluids in Two-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-dielectric-heat-transfer-fluids-in-two-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "timestamp": "03:12-09:15"
             }
@@ -436,8 +688,16 @@
           "audio": {
             "script_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.txt",
             "wav_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_07_two_phase_fluids_are_a_different_course.mp3"
+          },
+          "term_refs": [
+            "dlc",
+            "sds",
+            "coa",
+            "latent_heat"
+          ],
+          "transcript": "Esta es la única bifásico diapositiva del curso porque la superposición técnica es limitada. La lección compartida es la gobernanza: conozca el fluido, conozca el materiales en contacto con el fluido, mantenga registros y utilice la especificación correcta.\n\nEl comportamiento del fluido es diferente. bifásico DLC utiliza refrigerantes dieléctricos de bajo punto de ebullición como R cinco quince B, R doce treinta y tres Z D E y R trece treinta y seis M Z Z Z. Su ventaja es calor latente durante la ebullición o la evaporación. Como monofásico líquidos, estos fluidos tienen bajo calor específico. Ejecutarlos sin cambio de fase desperdiciaría su principal ventaja y requeriría caudales mucho más altos.\n\nPara obtener detalles sobre bifásico, utilice la guía OCP vinculada y el curso separado bifásico DLC."
         },
         {
           "type": "content_diagram",
@@ -446,12 +706,74 @@
           "section_label": "Disciplina de origen",
           "figure": {
             "path": "figures/standards_map.svg",
-            "alt": "Estándares y mapa de fuentes para la guía de fluidos DLC",
-            "caption": "La guía de fluidos es un conjunto de estándares comunitarios, métodos de prueba y planes de tratamiento específicos de productos."
+            "alt": "Las especificaciones básicas del producto y las pautas de ciclo de vida PG25 informan un plan aprobado por el proveedor, respaldado por métodos de prueba y contexto del sistema.",
+            "caption": "Los requisitos del producto y las recomendaciones de funcionamiento sirven para diferentes propósitos; utilícelos ambos con el plan de sistema aprobado por el proveedor.",
+            "text_inventory": {
+              "sha256": "09885da2735544d823e8e48c78d7c1e3510544b88e70d94f18024ee9eecd1db4",
+              "entries": [
+                {
+                  "text": "OCP especificaciones básicas"
+                },
+                {
+                  "text": "Refrigerante de agua V1.3 / PG25 V1.0.0"
+                },
+                {
+                  "text": "requisitos del producto listo para usar"
+                },
+                {
+                  "text": "PG25 Directrices V1.0.0"
+                },
+                {
+                  "text": "Compatibilidad hasta el final de la vida útil"
+                },
+                {
+                  "text": "Recomendaciones, no límites del producto"
+                },
+                {
+                  "text": "Plan de sistema aprobado por el proveedor"
+                },
+                {
+                  "text": "Fluido exacto + materiales en contacto con el fluido"
+                },
+                {
+                  "text": "Rango operativo + monitoreo"
+                },
+                {
+                  "text": "Límites de acción del sitio + respuesta"
+                },
+                {
+                  "text": "ASTM"
+                },
+                {
+                  "text": "medición"
+                },
+                {
+                  "text": "métodos"
+                },
+                {
+                  "text": "ASHRAE TC 9.9"
+                },
+                {
+                  "text": "Contexto del sistema"
+                }
+              ]
+            }
           },
           "reference_links": [
             {
-              "label": "OCP Ambientes de refrigeración",
+              "label": "Especificación agua · pp. 8–12",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=8"
+            },
+            {
+              "label": "Especificación PG25 · pp. 7–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=7"
+            },
+            {
+              "label": "Guía PG25 · pp. 9–10",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=9"
+            },
+            {
+              "label": "Ambientes de refrigeración",
               "url": "https://www.opencompute.org/wiki/Cooling_Environments"
             }
           ],
@@ -459,11 +781,26 @@
           "audio": {
             "script_file": "audio/module1/slide_08_standards_and_source_map.txt",
             "wav_file": "audio/module1/slide_08_standards_and_source_map.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_08_standards_and_source_map.mp3"
           },
           "term_refs": [
             "astm"
-          ]
+          ],
+          "source_refs": [
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "1; 14",
+              "pages": [
+                9,
+                10,
+                85,
+                86
+              ]
+            }
+          ],
+          "transcript": "El mapa de origen tiene dos tipos diferentes de documentos OCP. Las especificaciones básicas de refrigerante a base de agua y PG25 definen los requisitos para los productos listo para usar. Las Guías PG25, versión uno punto cero punto cero, agregan recomendaciones para el ciclo de vida de compatibilidad, puesta en servicio, filtración, pruebas, monitoreo y mantenimiento.\n\nNo trate una guía de operación como una sustitución de la especificación básica. Sus tablas de propiedades típicas y ejemplos de rangos de uso en funcionamiento ayudan a interpretar las condiciones de operación; no son límites universales de aceptación del producto. Aplíquelos con el soporte técnico exacto del proveedor del fluido y el plan aprobado del sitio.\n\nLos métodos de prueba de A T M proporcionan un lenguaje de medición común, mientras que los proveedores de sistemas establecen el materiales en contacto con el fluido real y el rango operativo. Las decisiones confiables conectan esas capas en lugar de seleccionar un solo número en aislamiento."
         },
         {
           "type": "takeaways",
@@ -479,8 +816,10 @@
           "audio": {
             "script_file": "audio/module1/slide_09_module_1_summary.txt",
             "wav_file": "audio/module1/slide_09_module_1_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_09_module_1_summary.mp3"
+          },
+          "transcript": "El módulo uno estableció el límite. El curso trata sobre monofásico decisiones sobre fluidos dentro del circuito TCS, no sobre el circuito de agua de la instalación ni sobre un curso completo de bifásico refrigerante.\n\nLa razón por la que esto es importante es sencilla: los racks AI de mayor densidad convierten condición del fluido en un problema de disponibilidad. Las preguntas útiles son las prácticas. ¿El fluido es compatible? ¿Cómo se llena? ¿Cómo se filtra? ¿Qué se monitorea? ¿Quién decide cuándo ajustarlo?\n\nEl punto en común con los sistemas bifásico es principalmente la gobernanza. La orientación operativa diverge rápidamente, por lo que el resto del recorrido se queda con agua tratada y P G veinticinco."
         },
         {
           "id": 10,
@@ -489,7 +828,8 @@
           "audio": {
             "script_file": "audio/module1/slide_10_knowledge_check.txt",
             "wav_file": "audio/module1/slide_10_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module1/slide_10_knowledge_check.mp3"
           },
           "title": "Verifique su límite de fluido",
           "subtitle": "Responda una vez para continuar. No se requiere corrección y puede volver a intentarlo.",
@@ -552,7 +892,8 @@
               "feedback_correct": "Correcto. La selección de fluidos, el control químico, la compatibilidad, la filtración y la práctica de servicio pertenecen al programa.",
               "feedback_incorrect": "El programa monofásico se basa en la elección de fluidos, límites químicos, materiales en contacto con el fluido, filtración y prácticas de servicio."
             }
-          ]
+          ],
+          "transcript": "Haga una pausa aquí para comprobar el límite del fluido desde el módulo uno.\n\nLa primera pregunta es de qué trata realmente este curso: monofásico fluidos a base de agua en directo al chip refrigeración, no tratamiento de agua de instalaciones ni bifásico refrigerantes. La segunda pregunta pregunta qué preguntas operativas pertenecen a un programa de fluidos monofásico saludable.\n\nEnvíe cada pregunta una vez para continuar. Utilice los comentarios para ajustar su respuesta y vuelva a intentarlo si desea realizar otro pase."
         },
         {
           "type": "up_next",
@@ -564,8 +905,10 @@
           "audio": {
             "script_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.txt",
             "wav_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module1/slide_11_up_next_choosing_and_specifying_single_phase_flu.mp3"
+          },
+          "transcript": "Buen trabajo. Has terminado el módulo de límites del sistema. Ahora sabes dónde se aplica este curso, qué familias de fluidos de fase única están cubiertas y qué especificaciones publicadas y guías de operación respaldan las decisiones prácticas.\n\nA continuación, pasamos a la selección y especificación. Compararemos el agua y el P G veinticinco, revisaremos los objetivos de propiedades clave y analizaremos la química de los inhibidores y materiales en contacto con el fluido con suficiente detalle para respaldar mejores conversaciones sobre adquisiciones y diseño."
         }
       ],
       "next_module_title": "Elección y especificación de monofásico fluidos"
@@ -591,8 +934,10 @@
           "audio": {
             "script_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.txt",
             "wav_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_01_choosing_and_specifying_single_phase_fluids.mp3"
+          },
+          "transcript": "El módulo dos trata sobre la elección y especificación de monofásico fluidos. Compararemos el agua tratada y el P G veinticinco, luego analizaremos la química y la evidencia de compatibilidad que debería estar detrás de una selección de fluido.\n\nEste módulo no intenta convertir a todos en químicos. El objetivo es más práctico. Debería poder leer un requisito de fluido, comprender qué protegen los números y saber cuándo un cambio de material o de operación requiere una nueva conversación sobre compatibilidad."
         },
         {
           "type": "objectives",
@@ -609,12 +954,10 @@
           "audio": {
             "script_file": "audio/module2/slide_02_selection_decisions_you_will_classify.txt",
             "wav_file": "audio/module2/slide_02_selection_decisions_you_will_classify.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module2/slide_02_selection_decisions_you_will_classify.mp3"
           },
-          "term_refs": [
-            "tcs",
-            "pg25"
-          ]
+          "transcript": "Al final de este módulo, podrá comparar el agua tratada y P G veinticinco sin reducir la decisión al rendimiento térmico únicamente.\n\nPodrás identificar los requisitos publicados del producto para refrigerante a base de agua y PG25, y luego explicar por qué parámetros como pH, conductividad, dureza, turbidez, bacterias y niveles de inhibidores permanecen como señales operativas.\n\nTambién podrá distinguir las estrategias de inhibidores I A T, O A T y H O A T en un alto nivel y conectar evidencia de compatibilidad con materiales en contacto con el fluido, desconexiones rápidas, placas frías, bombas, filtros y sellos."
         },
         {
           "type": "content_diagram",
@@ -623,25 +966,124 @@
           "section_label": "Elección de fluidos",
           "figure": {
             "path": "figures/water_pg25_tradeoff.svg",
-            "alt": "Agua tratada y PG25 compensaciones",
-            "caption": "El agua favorece el rendimiento térmico. PG25 agrega margen operativo biostático cuando se mantiene la concentración."
+            "alt": "Una tabla cualitativa compara la capacidad de calor y PG25 de agua, la viscosidad, el control químico y los requisitos de nuevos productos; no se implica ninguna relación de rendimiento medida.",
+            "caption": "Solo comparación cualitativa: utilice propiedades específicas de la formulación a temperatura de funcionamiento y registre si la concentración de glicol se mide por peso o por volumen.",
+            "text_inventory": {
+              "sha256": "0d05ab4dc81dda7decd65456b77cf88c38a409322be143b58d144aa53ed24a13",
+              "entries": [
+                {
+                  "text": "Agua tratada"
+                },
+                {
+                  "text": "PG25"
+                },
+                {
+                  "text": "Capacidad de calor"
+                },
+                {
+                  "text": "superior"
+                },
+                {
+                  "text": "Menos que el agua"
+                },
+                {
+                  "text": "viscosidad"
+                },
+                {
+                  "text": "más bajo"
+                },
+                {
+                  "text": "Más alta; la temperatura importa"
+                },
+                {
+                  "text": "Control de química"
+                },
+                {
+                  "text": "Corrosión +"
+                },
+                {
+                  "text": "control microbiano"
+                },
+                {
+                  "text": "Concentración de glicol +"
+                },
+                {
+                  "text": "equilibrio inhibitorio"
+                },
+                {
+                  "text": "Base de producto nuevo"
+                },
+                {
+                  "text": "Refrigerante de agua V1.3"
+                },
+                {
+                  "text": "25-28% PG por peso"
+                },
+                {
+                  "text": "Solo cualitativo. Diseñar con los datos de propiedad del proveedor a la temperatura de funcionamiento."
+                },
+                {
+                  "text": "Registre la base de concentración: el % de peso no es el % de volumen."
+                }
+              ]
+            }
           },
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "5.2-5.3"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "3.1; 11.5",
+              "pages": [
+                13,
+                14,
+                67,
+                70
+              ]
+            }
+          ],
           "id": 3,
           "audio": {
             "script_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.txt",
             "wav_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_03_water_versus_pg25_tradeoffs.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Especificación PG25 · pp. 10–11",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "Guía PG25 · pp. 13–16",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=13"
+            }
+          ],
+          "term_refs": [
+            "tcs",
+            "pg25"
+          ],
+          "transcript": "El agua es un excelente fluido de transferencia de calor, pero la capacidad de calor no es la única preocupación de diseño. Un bucle de centro de datos TCS también necesita protección contra la corrosión, control biológico y manejo de partículas, material disuelto y equilibrio de aditivos.\n\nLa especificación básica PG25 define un producto listo para usar que contiene entre el veinticinco y el veintiocho por ciento de propilenglicol por peso. La nueva guía de operación describe las concentraciones de glicol por volumen. Las porcentajes de peso y volumen no son intercambiables. Utilice los datos específicos de la formulación del proveedor de fluidos e identifique la base de medición en cada registro.\n\nPG25 tiene propiedades térmicas diferentes a las del agua, por lo que el diseño debe basarse en datos medidos en toda la gama de funcionamiento. Su glicol ayuda a limitar el crecimiento microbiano, mientras que su paquete de inhibidores protege los materiales. El cumplimiento del producto no garantiza que las formulaciones de diferentes proveedores sean intercambiables."
         },
         {
           "type": "content_table",
-          "title": "Listo para usar Objetivos de calidad de fluidos",
+          "title": "Objetivos publicados de refrigerante a base de agua",
           "slug": "ready_to_use_fluid_quality_targets",
           "section_label": "Objetivos fluidos",
-          "subtitle": "Valores de borrador seleccionados para fluidos de transferencia de calor a base de agua.",
+          "reference_links": [
+            {
+              "label": "Especificación agua · pp. 11–12",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=11"
+            }
+          ],
+          "subtitle": "Requisitos de producto seleccionados listo para usar de la especificación base OCP.",
           "columns": [
             "Parámetro",
-            "Borrador de objetivo",
+            "Límite publicado",
             "Por qué es importante"
           ],
           "rows": [
@@ -652,12 +1094,12 @@
             ],
             [
               "TDS",
-              "<1000 ppm después del tratamiento",
+              "<2000 ppm",
               "Sólidos disueltos y tendencia de contaminación"
             ],
             [
               "Conductividad",
-              "<2000 uS/cm a 25 grados C",
+              "<2000 EE. UU./cm",
               "Señal de campo sencilla para material disuelto"
             ],
             [
@@ -672,111 +1114,248 @@
             ],
             [
               "Bacterias",
-              "Llenar <1 CFU/ml; operación <100 CFU/ml",
-              "Bioincrustación controlar"
+              "<1 CFU/ml",
+              "Producto fresco control microbiano"
             ],
             [
-              "Azoles",
-              ">100 ppm o por Plan de Tratamiento",
-              "Protección de cobre y metal amarillo."
+              "Turbidez",
+              "<5 NTU",
+              "Claridad y control de partículas"
             ]
-          ],
-          "term_refs": [
-            "tss",
-            "tds",
-            "cfu",
-            "azole"
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "table": 1
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "sections": "5.4.1-5.4.7"
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.txt",
             "wav_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_04_ready_to_use_fluid_quality_targets.mp3"
+          },
+          "term_refs": [
+            "tss",
+            "tds",
+            "cfu",
+            "ntu"
+          ],
+          "transcript": "La especificación publicada de la base del refrigerante a base de agua convierte la calidad del producto fresco en límites de aceptación medibles. Los valores seleccionados en la pantalla se aplican al refrigerante listo para usar antes de entrar en servicio. Incluyen sólidos suspendidos totales por debajo de cinco partes por millón, sólidos disueltos totales por debajo de dos mil, conductividad por debajo de dos mil microseimens por centímetro, pH de ocho a diez punto cinco, dureza por debajo de treinta partes por millón como carbonato de calcio, turbidez por debajo de cinco N T U y bacterias por debajo de una unidad formadora de colonias por milímetro cúbico.\n\nEstos son requisitos del producto, no un plan de tratamiento operativo completo. Una vez que el refrigerante esté en servicio, la conductividad y el T D S se convierten en señales de tendencia para el material disuelto y la contaminación. La dureza puede indicar la calidad del agua de relleno o las fuentes de filtración. La turbidez y el T S S pueden revelar partículas que cargan los filtros o amenazan los microcanales. Las cantidades de bacterias revelan el riesgo biológico, mientras que los objetivos de los inhibidores permanecen específicos del producto.\n\nEl estudiante no necesita memorizar todos los umbrales hoy. El hábito importante es verificar el producto entrante contra su certificado de análisis, luego comparar el ciclo de operación con su línea de base y plan de tratamiento."
         },
         {
           "type": "content_bullets",
           "title": "Ventana de temperatura de funcionamiento y química",
           "slug": "operating_temperature_and_chemistry_window",
           "section_label": "Entorno operativo",
-          "subtitle": "La temperatura es parte del requisito de compatibilidad.",
+          "subtitle": "El agua y la guía PG25 tienen diferentes rangos operativos típicos.",
           "bullets": [
             {
-              "bold_lead": "Rango típico",
-              "text": "Los bucles TCS se describen por debajo de 49 grados C en el borrador de la guía."
+              "bold_lead": "Orientación sobre el agua",
+              "text": "describe la operación típica de TCS por debajo de 49 grados Celsius."
             },
             {
-              "bold_lead": "Techo esperado",
-              "text": "No se espera que el funcionamiento supere los 66 grados C sin una revisión adicional."
+              "bold_lead": "PG25 orientación",
+              "text": "describe un rango típico cerrado de 17-66 grados Celsius."
             },
             {
-              "bold_lead": "Activador de compatibilidad",
-              "text": "Una temperatura más alta requiere una revisión de materiales en contacto con el fluido y la química del tratamiento."
+              "bold_lead": "Más allá del rango",
+              "text": "revalidar materiales en contacto con el fluido, especialmente plásticos y elastómeros."
             },
             {
               "bold_lead": "Condiciones locales",
-              "text": "Confirmar la temperatura máxima de estancamiento de la superficie con TI y placa fría proveedores."
+              "text": "compruebe las temperaturas superficiales del fluido en granel y de la placa de frío con los proveedores."
             }
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "52-54"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.6",
+              "pages": [
+                25
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.txt",
             "wav_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_05_operating_temperature_and_chemistry_window.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía de agua · p. 12",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=12"
+            },
+            {
+              "label": "Guía PG25 · p. 25",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=25"
+            }
+          ],
+          "transcript": "Los cambios de temperatura afectan a la química y la compatibilidad, y los dos documentos operativos describen diferentes rangos típicos. La guía de operación a base de agua describe la operación típica de TCS por debajo de cuarenta y nueve grados C y requiere una revisión adicional por encima de sesenta y seis grados C. La guía PG25 describe un rango típico de bucle cerrado de diecisiete a sesenta y seis grados C.\n\nEstas son pautas de aplicación, no permiso para operar cualquier refrigerante o componente en cualquier lugar dentro de ese rango. Utilice el sobre aprobado por los proveedores de fluidos y equipos reales. Por encima del rango típico de la guía PG25, revise la materiales en contacto con el fluido, particularmente los elastómeros y los plásticos.\n\nLas temperaturas superficiales locales placa fría y las regiones estancadas pueden ser más severas que el fluido en su conjunto. Incluya esas condiciones al validar la compatibilidad y el rendimiento del inhibidor."
         },
         {
           "type": "content_diagram",
           "title": "Inhibidores de corrosión: IAT, OAT y HOAT",
           "slug": "corrosion_inhibitors_iat_oat_and_hoat",
           "section_label": "Química inhibidora",
+          "reference_links": [
+            {
+              "label": "Especificación PG25 · p. 10",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "Guía PG25 · p. 16",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=16"
+            }
+          ],
           "figure": {
             "path": "figures/inhibitor_timeline.svg",
-            "alt": "Cronología de la química del inhibidor del refrigerante desde el agua hasta IAT OAT y HOAT",
-            "caption": "La estrategia del inhibidor afecta la protección contra la corrosión, la vida útil y la sensibilidad a los contaminantes."
+            "alt": "Las familias de inhibidores IAT, OAT y HOAT se muestran como enfoques paralelos, no como una línea de tiempo o un ranking.",
+            "caption": "Compara familias de química sin clasificarlas. Verifica la formulación exacta; el PG25 que cumple con el OCP prohíbe los aditivos a base de silicatos.",
+            "text_inventory": {
+              "sha256": "2831289bcf1faa0d1f64e9c7b7c031cdedf5823a0cf6f6a7b9cd916360e75506",
+              "entries": [
+                {
+                  "text": "IAT"
+                },
+                {
+                  "text": "Tecnología de aditivos inorgánicos"
+                },
+                {
+                  "text": "Aditivos inorgánicos"
+                },
+                {
+                  "text": "Protección rápida de la película"
+                },
+                {
+                  "text": "OAT"
+                },
+                {
+                  "text": "Tecnología de ácidos orgánicos"
+                },
+                {
+                  "text": "Inhibidores de ácidos orgánicos"
+                },
+                {
+                  "text": "Enfoque de larga duración"
+                },
+                {
+                  "text": "HOAT"
+                },
+                {
+                  "text": "Tecnología de ácido orgánico híbrido"
+                },
+                {
+                  "text": "+"
+                },
+                {
+                  "text": "Enfoque combinado"
+                },
+                {
+                  "text": "Química orgánica + inorgánica"
+                },
+                {
+                  "text": "La protección, la compatibilidad, la vida útil y el monitoreo dependen de la formulación."
+                },
+                {
+                  "text": "PG25 conforme a OCP: sin aditivos a base de silicatos."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.2"
+            }
+          ],
+          "id": 6,
+          "audio": {
+            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
+            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.mp3"
           },
           "term_refs": [
             "iat",
             "oat",
             "hoat"
           ],
-          "id": 6,
-          "audio": {
-            "script_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.txt",
-            "wav_file": "audio/module2/slide_06_corrosion_inhibitors_iat_oat_and_hoat.wav",
-            "approved": true
-          }
+          "transcript": "inhibidores de corrosión son una de las razones por las que un refrigerante no es solo agua en una tubería. La tecnología de aditivos inorgánicos, o I A T, utiliza sustancias químicas como fosfato, silicato y borato para formar películas protectoras rápidamente. La compensación es una vida más corta del inhibidor y una mayor sensibilidad a algunas impurezas.\n\nLa tecnología de ácidos orgánicos, o O A T, se desarrolló para una protección de mayor duración. Hybrid O A T combina el enfoque de ácidos orgánicos de vida más larga con pequeñas cantidades de química inorgánica para una protección más rápida.\n\nPara los operadores de centros de datos, la lección no es que un acrónimo siempre gane. La lección es saber qué sistema inhibidor estás usando, qué materiales protege, cuánto es estable con contaminantes y cómo el proveedor espera que lo monitorees. Un requisito publicado es específico: el PG25 que cumple con el OCP prohíbe los aditivos a base de silicatos debido al riesgo de residuos y obstrucción. Una etiqueta familiar de química general nunca suprime las especificaciones exactas del producto."
         },
         {
           "type": "content_diagram",
           "title": "Riesgo de agua dura, incrustaciones y depósitos",
           "slug": "hard_water_scale_and_deposit_risk",
           "section_label": "Depósitos",
+          "reference_links": [
+            {
+              "label": "Especificación agua · p. 11",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=11"
+            }
+          ],
           "figure": {
             "path": "figures/hard_water_scale.svg",
-            "alt": "Los iones de agua dura pueden formar incrustaciones y amenazar los microcanales.",
-            "caption": "El calcio y el magnesio son pequeñas señales químicas con grandes consecuencias en el tiempo de actividad."
+            "alt": "El calcio y el magnesio pueden precipitarse con una química inadecuada y formar depósitos en estrechos pasajes de placas frías.",
+            "caption": "La calidad del agua, la filtración de materiales y la química de los inhibidores pueden convertir los iones disueltos en depósitos, carga de filtros y pasajes restringidos.",
+            "text_inventory": {
+              "sha256": "0f338d7ef772f6f5c46230691c05c2462694b3675aae7d451f87295fd5963a8b",
+              "entries": [
+                {
+                  "text": "Ca + Mg"
+                },
+                {
+                  "text": "California"
+                },
+                {
+                  "text": "miligramo"
+                },
+                {
+                  "text": "Calidad del agua o"
+                },
+                {
+                  "text": "deshidratación del material"
+                },
+                {
+                  "text": "Puede precipitarse"
+                },
+                {
+                  "text": "Interacción química"
+                },
+                {
+                  "text": "Formación de escala / depósito"
+                },
+                {
+                  "text": "Pasajes estrechos"
+                },
+                {
+                  "text": "Bloqueo + carga del filtro"
+                },
+                {
+                  "text": "Transferencia de calor reducida"
+                }
+              ]
+            }
           },
           "id": 7,
           "audio": {
             "script_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.txt",
             "wav_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_07_hard_water_scale_and_deposit_risk.mp3"
+          },
+          "transcript": "Los iones de agua dura, como el calcio y el magnesio, pueden ingresar al circuito debido a la mala calidad del agua o al lixiviarse de materiales como los rellenos de mangueras. Una vez presentes, pueden interactuar con la química inhibidora y formar precipitados. En el lugar equivocado, esos precipitados se convierten en incrustaciones, carga del filtro, reducción de la transferencia de calor o bloqueo de microcanales.\n\nLos ejemplos de estabilidad del agua dura son útiles porque conectan la observación de laboratorio con el riesgo operativo. La cuestión no es convertir a los estudiantes en químicos de prueba. El objetivo es mostrar por qué la compatibilidad, la calidad del agua, la química de los inhibidores y la filtración pertenecen a la misma conversación."
         },
         {
           "type": "content_diagram",
@@ -785,36 +1364,127 @@
           "section_label": "Compatibilidad",
           "figure": {
             "path": "figures/wetted_materials.svg",
-            "alt": "Materiales en contacto con el fluido mapa de compatibilidad",
-            "caption": "Un cambio de material es también un evento de compatibilidad de fluidos."
+            "alt": "El mapa de compatibilidad incluye la formulación exacta del refrigerante, metales, tratamientos superficiales, intercambiadores de calor, placas frías, elastómeros, filtros, sellos, bombas y accesorios.",
+            "caption": "Verifique el inventario completo del material mojado con la formulación exacta, la temperatura y las condiciones de exposición.",
+            "text_inventory": {
+              "sha256": "6f39842970cc7ede483235665d927e49701b53738e40f00b0a0955c442129e81",
+              "entries": [
+                {
+                  "text": "Metales + superficies"
+                },
+                {
+                  "text": "Grados, chapados y brasado,"
+                },
+                {
+                  "text": "selladores de hilo"
+                },
+                {
+                  "text": "placas frías"
+                },
+                {
+                  "text": "Intercambiadores de calor"
+                },
+                {
+                  "text": "Canales + materiales unidos"
+                },
+                {
+                  "text": "Elastómeros"
+                },
+                {
+                  "text": "Mangueras, sellos, juntas"
+                },
+                {
+                  "text": "Importan las combinaciones exactas"
+                },
+                {
+                  "text": "TCS líquido"
+                },
+                {
+                  "text": "Formulación exacta"
+                },
+                {
+                  "text": "+ condiciones de funcionamiento"
+                },
+                {
+                  "text": "Bombas + filtros"
+                },
+                {
+                  "text": "Medios, sellos, rodamientos"
+                },
+                {
+                  "text": "Compruebe la retención de aditivos"
+                },
+                {
+                  "text": "QDs + válvulas"
+                },
+                {
+                  "text": "Accesorios, sellos, depósitos"
+                },
+                {
+                  "text": "Incluir todas las partes mojadas"
+                },
+                {
+                  "text": "Verifique la formulación, el grado del material, la temperatura y la duración de la exposición juntos."
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "qd"
-          ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "46-51"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.2-6.5; 8-9",
+              "pages": [
+                19,
+                24,
+                30,
+                40
+              ]
             }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module2/slide_08_wetted_materials_and_compatibility.txt",
             "wav_file": "audio/module2/slide_08_wetted_materials_and_compatibility.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_08_wetted_materials_and_compatibility.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · pp. 18–24",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=18"
+            }
+          ],
+          "term_refs": [
+            "qd"
+          ],
+          "transcript": "La compatibilidad se aplica a todas las superficies que toca el fluido: placas frías, intercambiadores de calor, sellos de bombas, desconectores rápidos, mangueras, medios de filtro, depósitos, sellantes de tornillos, materiales de soldadura y superficies galvanizadas.\n\nLas listas de materiales de la guía PG25 son representativas, no una lista de aprobación exhaustiva. Verifique el grado de material exacto y la formulación del fluido a la temperatura esperada, la duración de la exposición y las condiciones de funcionamiento. Revise los datos del fabricante y las recomendaciones del proveedor, y organice pruebas controladas cuando la evidencia sea insuficiente.\n\nLas cartuchas de filtro y las juntas del alojamiento deben estar en esa revisión. Un filtro puede ser químicamente estable pero aún así afectar a un aditivo, y un metal compatible no garantiza una junta compatible. Cualquier cambio en el inventario del material mojado debe provocar una reevaluación de la combinación completa del fluido y el sistema."
         },
         {
           "type": "content_bullets",
           "title": "Calificación y evidencia de proveedores",
           "slug": "qualification_and_supplier_evidence",
           "section_label": "Evidencia",
+          "reference_links": [
+            {
+              "label": "Especificación agua · pp. 12–13",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf#page=12"
+            },
+            {
+              "label": "Especificación PG25 · pp. 14–16, 19–21",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=14"
+            }
+          ],
           "subtitle": "La especificación debe ser auditable una vez finalizada la orden de compra.",
           "bullets": [
             {
               "bold_lead": "COA",
-              "text": "Confirma la calidad y conformidad del producto fabricado."
+              "text": "confirma cada envío; PG25 informa sobre la concentración o índice de refracción y pH."
             },
             {
               "bold_lead": "SDS",
@@ -826,21 +1496,26 @@
             },
             {
               "bold_lead": "Confirmación de compatibilidad",
-              "text": "vincula el fluido a materiales en contacto con el fluido y las condiciones de funcionamiento."
+              "text": "asocia las pruebas de corrosión publicadas con los valores exactos de materiales en contacto con el fluido y las condiciones."
             },
             {
               "bold_lead": "Registros",
-              "text": "preservar las decisiones a través de ciclos de actualización de hardware."
+              "text": "preservar la trazabilidad, los análisis y las decisiones de lotes a través de ciclos de actualización."
             }
-          ],
-          "term_refs": [
-            "coa",
-            "sds",
-            "ppe"
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "sections": "5.5, 5.7"
+            },
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "3.2, 6.2, 8.2-8.6"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "31-36"
             }
@@ -849,8 +1524,16 @@
           "audio": {
             "script_file": "audio/module2/slide_09_qualification_and_supplier_evidence.txt",
             "wav_file": "audio/module2/slide_09_qualification_and_supplier_evidence.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_09_qualification_and_supplier_evidence.mp3"
+          },
+          "term_refs": [
+            "sds",
+            "coa",
+            "ppe",
+            "refractive_index"
+          ],
+          "transcript": "Una selección de fluidos debería dejar evidencia. Tanto las especificaciones básicas publicadas como requieren un certificado de análisis para cada envío. Para PG25, ese certificado incluye concentración, o índice de refracción con temperatura de medición, y pH como mínimo. La hoja de datos técnicos debe reportar la viscosidad medida, la capacidad calorífica, la densidad y la conductividad térmica en toda la gama de funcionamiento esperada. El propietario también debe conservar la hoja de datos de seguridad, el plan de tratamiento, la evidencia de compatibilidad, la identidad del lote y las recomendaciones del proveedor.\n\nLas pruebas de corrosión publicadas proporcionan evidencia importante, pero no califican exhaustivamente a cada plástico, elastómero, adhesivo, conector o condición de funcionamiento. El proveedor de fluidos, el proveedor de I T, el contratista y el proveedor de servicios deben acordarse sobre las condiciones exactas de materiales en contacto con el fluido y funcionamiento. Esto es especialmente importante en un entorno de rack con múltiples proveedores. Una infraestructura de refrigeración líquida reutilizable puede albergar diferentes hardware durante múltiples ciclos de actualización. Sin evidencia de envío, datos del producto y registros rastreables, cada actualización recrea incertidumbre."
         },
         {
           "type": "takeaways",
@@ -867,8 +1550,10 @@
           "audio": {
             "script_file": "audio/module2/slide_10_module_2_summary.txt",
             "wav_file": "audio/module2/slide_10_module_2_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_10_module_2_summary.mp3"
+          },
+          "transcript": "El módulo dos pasó de pensar en nombres de productos a en especificaciones. El agua tratada y el PG25 tienen su lugar, pero tienen propiedades térmicas y cargas de funcionamiento diferentes. El PG25 publicado es el listo para usar en un 25 a un 28 por ciento propilenglicol por peso, con inhibidores específicos del producto y evidencia de compatibilidad.\n\nLa tabla de refrigerantes a base de agua proporciona límites medibles de productos frescos para sólidos, material disuelto, conductividad, pH, dureza, turbidez y bacterias. Después de puesta en servicio, esas propiedades se convierten en parte de un plan de tratamiento más amplio línea de base. La química de los inhibidores es importante porque moldea la protección contra la corrosión y el riesgo de depósitos. La compatibilidad es importante porque el fluido toca más que el placa fría.\n\nUna buena especificación de fluido monofásico está respaldada por evidencia, es específica del sistema y está diseñada para funcionar."
         },
         {
           "id": 11,
@@ -877,39 +1562,40 @@
           "audio": {
             "script_file": "audio/module2/slide_11_knowledge_check.txt",
             "wav_file": "audio/module2/slide_11_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module2/slide_11_knowledge_check.mp3"
           },
           "title": "Verifique su selección de fluidos",
           "subtitle": "Responda una vez para continuar. No se requiere corrección y puede volver a intentarlo.",
           "questions": [
             {
               "id": "m2q1",
-              "prompt": "¿Cuál es la principal desventaja al elegir PG25 en lugar de agua tratada?",
+              "prompt": "¿Qué afirmación coincide con la especificación base publicada de OCP PG25?",
               "multiple": false,
               "choices": [
                 {
                   "id": "B",
-                  "text": "PG25 siempre elimina más calor que el agua al mismo caudal.",
+                  "text": "Cada líquido PG25 compatible es intercambiable con cualquier otro líquido PG25 compatible.",
                   "correct": false
                 },
                 {
                   "id": "D",
-                  "text": "PG25 elimina la necesidad de pruebas de compatibilidad.",
+                  "text": "PG25 se diluye en el sitio a cualquier concentración seleccionada por el operador.",
                   "correct": false
                 },
                 {
                   "id": "A",
-                  "text": "PG25 puede agregar protección contra el congelamiento y beneficios del paquete inhibidor, pero reduce la capacidad calorífica en comparación con el agua.",
+                  "text": "PG25 se suministra a listo para usar en 25 al 28 por ciento propilenglicol por peso.",
                   "correct": true
                 },
                 {
                   "id": "C",
-                  "text": "PG25 convierte el circuito en un sistema de refrigerante bifásico.",
+                  "text": "Los aditivos a base de silicatos son necesarios en los productos cumplimentarios PG25.",
                   "correct": false
                 }
               ],
-              "feedback_correct": "Correcto. PG25 puede ser útil, pero se deben tener en cuenta la menor capacidad calorífica y los cambios en las propiedades del fluido.",
-              "feedback_incorrect": "La compensación no es que PG25 sea automáticamente mejor. Puede ayudar con las necesidades de congelación e inhibidores, al tiempo que reduce la capacidad calorífica en comparación con el agua."
+              "feedback_correct": "Correcto. La especificación publicada OCP define PG25 como un producto listo para usar que contiene entre el 25 y el 28 por ciento de propilenglicol por peso.",
+              "feedback_incorrect": "Publicado PG25 es listo para usar en 25 al 28 por ciento propilenglicol por peso. El cumplimiento no establece la intercambiabilidad, y los aditivos a base de silicatos están prohibidos."
             },
             {
               "id": "m2q2",
@@ -923,7 +1609,7 @@
                 },
                 {
                   "id": "A",
-                  "text": "Listo para usar valores químicos como concentración, pH, conductividad y límites de inhibidor.",
+                  "text": "Un COA y datos del producto que cubran la concentración o índice de refracción, pH y las propiedades del fluido final.",
                   "correct": true
                 },
                 {
@@ -937,10 +1623,11 @@
                   "correct": true
                 }
               ],
-              "feedback_correct": "Correcto. La calificación necesita química, compatibilidad de materiales y orientación operativa del proveedor.",
-              "feedback_incorrect": "Un nombre genérico de fluido no es suficiente. El paquete necesita objetivos químicos, materiales exactos y orientación del proveedor."
+              "feedback_correct": "Correcto. La calificación requiere evidencia de envío, datos del producto, compatibilidad del material y orientación de funcionamiento del proveedor.",
+              "feedback_incorrect": "Un nombre genérico de fluido no es suficiente. El paquete necesita evidencia de envío, datos del producto, materiales exactos y orientación del proveedor."
             }
-          ]
+          ],
+          "transcript": "Antes de pasar a puesta en servicio, verifique su modelo de selección de fluidos.\n\nLa primera pregunta comprueba la definición publicada del producto para PG25. La segunda pregunta qué evidencia pertenece a un paquete de calificación antes de que un fluido sea aceptado en un bucle.\n\nElija con cuidado, envíe una vez y revise los comentarios. Puede volver a intentarlo y continuar después de un intento."
         },
         {
           "type": "up_next",
@@ -952,8 +1639,10 @@
           "audio": {
             "script_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.txt",
             "wav_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module2/slide_12_up_next_commissioning_filling_and_protecting_the.mp3"
+          },
+          "transcript": "Buen trabajo. Has finalizado el módulo de selección. Ahora puede comparar el agua tratada y el P G veinticinco, explicar los objetivos de fluidos clave y conectar la química de los inhibidores con la compatibilidad y las operaciones.\n\nA continuación, pasamos del escritorio de especificaciones al campo. Analizaremos el diseño útil, las comprobaciones de fugas, la limpieza y el lavado, el muestreo de inicio, la filtración, el contexto del filtro del Proyecto Deschutes y control microbiano."
         }
       ],
       "next_module_title": "Puesta en servicio, Llenando y protegiendo el bucle"
@@ -979,8 +1668,10 @@
           "audio": {
             "script_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.txt",
             "wav_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_01_commissioning_filling_and_protecting_the_loop.mp3"
+          },
+          "transcript": "El módulo tres trata sobre las prácticas de campo que protegen el circuito después de que se haya especificado el fluido. Una elección de fluido fuerte aún puede fallar si el sistema está sucio, el lavado es descuidado, el fluido de verificación de fugas es incompatible o la primera muestra nunca se captura.\n\nEl mensaje es práctico. Diseñe el circuito para que pueda ser reparado. Llénelo limpiamente. Filtre dónde pueden actuar los equipos de servicio. Controlar el riesgo microbiano. Luego conserve el inicio línea de base, porque ese línea de base es lo que hace que el monitoreo posterior sea significativo."
         },
         {
           "type": "objectives",
@@ -997,14 +1688,22 @@
           "audio": {
             "script_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.txt",
             "wav_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_02_commissioning_practices_you_will_apply.mp3"
+          },
+          "transcript": "Al final de este módulo, podrá describir por qué la capacidad de servicio pertenece al diseño mecánico, no solo al manual de mantenimiento.\n\nPodrá explicar por qué el líquido de verificación de fugas debe ser compatible con el sistema y por qué los placas frías están aislados durante parte del lavado inicial.\n\nTambién podrá identificar qué no introducir en el bucle, qué registros línea de base son importantes al arrancar, cómo seleccionar la filtración de sidestream compatible y cómo el crecimiento biológico puede amenazar los microcanales placa fría."
         },
         {
           "type": "content_bullets",
-          "title": "Diseño mecánico para facilidad de servicio",
+          "title": "Diseño mecánico para mantenimiento",
           "slug": "mechanical_design_for_serviceability",
           "section_label": "Diseño",
+          "reference_links": [
+            {
+              "label": "Guía de agua · pp. 12–13",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=12"
+            }
+          ],
           "subtitle": "Un programa de fluidos necesita acceso físico para tomar muestras, agregar, drenar y aislar.",
           "bullets": [
             {
@@ -1030,7 +1729,7 @@
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "60-68"
             }
@@ -1039,8 +1738,13 @@
           "audio": {
             "script_file": "audio/module3/slide_03_mechanical_design_for_serviceability.txt",
             "wav_file": "audio/module3/slide_03_mechanical_design_for_serviceability.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_03_mechanical_design_for_serviceability.mp3"
+          },
+          "term_refs": [
+            "tcs"
+          ],
+          "transcript": "El mantenimiento de fluidos es mucho más fácil cuando la funcionalidad de servicio está diseñada en el sistema. Las instrucciones de operación de fase única requieren que las salidas drenen y llenen fluido de transferencia de calor y que inyecten químicos mientras el bucle TCS permanece operativo. También señala los arreglos de alimentadores o reservorios y bombas de inyección, con materiales de alimentador humedecidos que cumplan con las mismas expectativas de compatibilidad.\n\nEl drenaje completo es importante porque los canales muertos pueden atrapar contaminantes o poblaciones microbianas. La misma lógica se aplica a depósitos, válvulas, salidas de aire, medidores y puntos de aislamiento. No son extras. Determinan si el equipo puede realizar correcciones controladas sin convertir el mantenimiento de rutina en tiempo de inactividad."
         },
         {
           "type": "content_diagram",
@@ -1051,109 +1755,279 @@
             "path": "figures/commissioning_sequence.mp4",
             "media_type": "video",
             "poster": "figures/commissioning_sequence_poster.png",
-            "alt": "Animación silenciosa que muestra un nuevo sistema de refrigeración de tecnología siendo lavado con placas frías aislado, lavado nuevamente con placas frías conectado y luego llenado con el fluido final antes de muestrear y registrar un línea de base.",
-            "caption": "Una descarga por etapas mantiene los desechos de construcción alejados de los microcanales de la placa fría antes del llenado final de fluido y la muestra de línea de base.",
+            "alt": "Animación silenciosa de limpieza de escombros en escena: bypassar el placas frías aislado, limpiar los caminos de placas paralelas conectadas y luego tomar una muestra del fluido final y registrar un línea de base después de verificar la limpieza y la eliminación del limpiador.",
+            "caption": "Un ejemplo de limpieza simulada de escombros, no una limpieza completa ni un procedimiento pasivación. La grabación de un línea de base no establece la aceptación.",
             "source": "custom",
             "autoplay": true,
             "loop": true,
-            "muted": true
+            "muted": true,
+            "text_inventory": {
+              "sha256": "14170ed165f3eca532f682923755b1d3968dae8c1a4b879aaa803e179d1553ef",
+              "entries": [
+                {
+                  "text": "AISLAR + ENJUAGAR",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Capturar los escombros de la construcción",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "CONECTAR + REPETIR",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Incluir circuitos de placas frías",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "LLENADO FINAL + MUESTRA",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Registrar y conservar la referencia",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Placas frías aisladas - bypass abierto",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Placas frías - circuitos paralelos",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "CDU / bomba",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "vuelta",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Filtro en línea",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Captura de escombros",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Bypass en uso",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Solo enjuague de residuos. La limpieza química, la pasivación y la eliminación del limpiador requieren verificación por separado.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Circuitos conectados - repetir el enjuague según sea necesario",
+                  "at_seconds": 6.1
+                },
+                {
+                  "text": "Bypass cerrado",
+                  "at_seconds": 6.1
+                },
+                {
+                  "text": "Limpieza verificada - llenado final, muestra y referencia inicial",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "Sustituir los filtros según sea necesario",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "muestra",
+                  "at_seconds": 12.1
+                },
+                {
+                  "text": "REFERENCIA",
+                  "at_seconds": 15.5
+                },
+                {
+                  "text": "guardar registro",
+                  "at_seconds": 15.5
+                }
+              ]
+            }
           },
+          "caption": "Elija los fluidos de limpieza y desagüe del historial de contaminación; verifique la limpieza y la eliminación de productos químicos antes de llenar listo para usar PG25.",
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.3"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "paragraphs": "85-98"
+              "section": "5.2-5.3"
+            },
+            {
+              "source": "ASHRAE Handbook - Water Treatment: Deposition, Corrosion, and Biological Control",
+              "url": "https://handbook.ashrae.org/Handbooks/A19/IP/a19_ch50/a19_ch50_ip.aspx",
+              "section": "Closed Recirculating Systems"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.3-10.10",
+              "pages": [
+                47,
+                48,
+                51,
+                54,
+                56,
+                57,
+                59
+              ]
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.txt",
             "wav_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_04_new_system_cleaning_and_flush_sequence.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · pp. 47–59",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=47"
+            }
+          ],
+          "term_refs": [
+            "cdu",
+            "pg25"
+          ],
+          "media_focus": true,
+          "transcript": "Comience con un plan de limpieza documentado basado en el historial de fabricación, los contaminantes esperados, la metalurgia y las instrucciones del proveedor. El agua puede mover los residuos sueltos, pero no establece que se hayan eliminado aceites, grasas, fluidos, residuos de soldadura o productos de corrosión. Especialistas calificados deben determinar si se necesita desgrasado, limpieza química o pasivación.\n\nLa guía PG25 no prescribe un procedimiento de limpieza específico. Elija una solución de limpieza compatible, fluido de transferencia de calor, o agua según sea necesario. Continúe escurriendo hasta que se demuestre la limpieza mediante el comportamiento del filtro, la inspección y pruebas representativas, en lugar de una duración fija o un número de aprobaciones.\n\nLa animación ilustra únicamente el desagüe de los residuos estructurados. Verifique la eliminación del limpiador, escurra el líquido de enjuague residual, reemplace los filtros según sea necesario y llene con el listo para usar PG25 aprobado. El agua residual puede diluir tanto el glicol como los inhibidores, por lo que verifique la concentración final."
         },
         {
           "type": "content_bullets",
           "title": "Qué no poner en el circuito",
           "slug": "what_not_to_put_in_the_loop",
           "section_label": "Evitación",
-          "subtitle": "Los limpiadores y aditivos no controlados pueden generar riesgo de corrosión, residuos o depósitos.",
+          "subtitle": "La química de limpieza debe ser compatible y eliminada antes del llenado operativo.",
           "bullets": [
             {
-              "bold_lead": "Evite los limpiadores sin supervisión",
-              "text": "Los detergentes y limpiadores químicos requieren la orientación del proveedor."
+              "bold_lead": "Limpieza cualificada",
+              "text": "seleccione limpiadores para los aceites, grasas, residuos y materiales en contacto con el fluido reales."
             },
             {
-              "bold_lead": "Evite el silicato residual",
-              "text": "El silicato puede precipitar y depositarse en microcanales."
+              "bold_lead": "Eliminar el saldo pendiente",
+              "text": "los surfactantes pueden causar espuma; los biocidas residuales pueden interferir con los inhibidores PG25."
             },
             {
-              "bold_lead": "Respete las normas locales de descarga",
-              "text": "consulte los requisitos municipales o reglamentarios antes de drenar."
+              "bold_lead": "Escurrido final",
+              "text": "PG25 la guía excluye los surfactantes y los biocidas del enjuague final antes del llenado."
             },
             {
-              "bold_lead": "Proteger el fluido final.",
-              "text": "No introducir aditivos fuera del plan de tratamiento aprobado."
+              "bold_lead": "Evite los silicatos",
+              "text": "los depósitos pueden perjudicar la protección de los inhibidores y bloquear los pasajes de la placa fría."
+            },
+            {
+              "bold_lead": "Verificar la eliminación",
+              "text": "compara muestras de enjuague representativas; no confíes únicamente en un tiempo fijo."
             }
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "106-110"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.5; 10.8",
+              "pages": [
+                51,
+                52,
+                53,
+                57
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.txt",
             "wav_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_05_what_not_to_put_in_the_loop.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Especificación PG25 · p. 10",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=10"
+            },
+            {
+              "label": "Guía PG25 · pp. 51–58",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=51"
+            }
+          ],
+          "transcript": "puesta en servicio la química debe adaptarse a los contaminantes reales y a cada material en contacto con el fluido. La guía PG25 permite soluciones de limpieza calificadas cuando sea necesario, pero su eliminación completa es tan importante como su poder de limpieza.\n\nLos surfactantes residuales pueden causar espuma, y los biocidas de limpieza pueden interferir con la protección contra la corrosión del fluido final. La guía dice que el lavado final antes de llenar PG25 no debe contener surfactantes ni biocidas. Verifique la calidad del enjuague en ubicaciones representativas y utilice el plan aprobado por el proveedor para demostrar que no hay transferencia.\n\nEvite los aditivos de limpieza a base de silicatos porque los depósitos insolubles pueden perjudicar la protección contra la corrosión y restringir los pasajes placa fría. No improvise un limpiador ni una dosis. La selección, la compatibilidad, la eliminación y la verificación del fluido final son un proceso controlado."
         },
         {
           "type": "content_bullets",
           "title": "Muestreo de inicio y registros línea de base",
           "slug": "startup_sampling_and_baseline_records",
           "section_label": "Línea de base",
-          "subtitle": "La primera muestra limpia es el punto de referencia para la interpretación de tendencias futuras.",
+          "subtitle": "PG25 la muestra de inicio debe representar un fluido bien mezclado, no una bolsa estancada.",
           "bullets": [
             {
-              "bold_lead": "Circular",
-              "text": "ejecute el ciclo y verifique si hay fugas durante el inicio final."
+              "bold_lead": "Cheques de inicio de sesión",
+              "text": "PG25 orientación: libere aire de escape según sea necesario y compruebe las fugas durante al menos 30 minutos de circulación."
             },
             {
-              "bold_lead": "Purgar aire",
-              "text": "elimine el aire atrapado donde sea necesario antes dla línea de base muestreo."
+              "bold_lead": "Muestra en 1-3 días",
+              "text": "mantener una muestra operativa representativa y una muestra de líquido fresca y no expuesta."
             },
             {
-              "bold_lead": "Pruebe cada bucle",
-              "text": "capturar fluido representativo de cada bucle TCS."
+              "bold_lead": "Utilizar fluido fluido",
+              "text": "desagüe el puerto de muestreo; evite los depósitos, los desagües de puntos bajos y las ramas muertas."
             },
             {
-              "bold_lead": "Etiquete claramente",
-              "text": "unidad de registro, identidad del fluido, fecha y condición de inicio."
+              "bold_lead": "Verificar concentración",
+              "text": "utilice los datos del refractómetro específicos del proveedor después de una mezcla suficiente."
             },
             {
-              "bold_lead": "Mantener el registro",
-              "text": "conservar línea de base evidencia de la vida útil del fluido."
+              "bold_lead": "Etiqueta y conserva",
+              "text": "identificar el bucle, el fluido, la fecha y la condición; preservar las muestras de arranque durante toda la vida útil del fluido."
             }
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "111-113"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.10-10.11; 11.2-11.4",
+              "pages": [
+                59,
+                60,
+                62,
+                65
+              ]
             }
           ],
           "id": 6,
           "audio": {
             "script_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.txt",
             "wav_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module3/slide_06_startup_sampling_and_baseline_records.mp3"
           },
-          "term_refs": [
-            "tcs"
-          ]
+          "reference_links": [
+            {
+              "label": "Guía PG25 · pp. 59–66",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=59"
+            }
+          ],
+          "transcript": "La puesta en marcha crea el línea de base para futuras decisiones operativas. Para el PG25, la nueva guía recomienda liberar aire cuando sea necesario y verificar la presencia de fugas durante al menos treinta minutos mientras circula durante la puesta en marcha final. Esa verificación de puesta en marcha no es un procedimiento de limpieza completo ni un tiempo de mezcla universal.\n\nTome una muestra operativa representativa de cada sistema dentro de los primeros uno o tres días y guárdela por toda la vida del fluido. También guárdese una muestra de fluido fresco sin exposición. Etiquete ambas con el bucle o unidad, la identidad del fluido y la fecha.\n\nRecoja el fluido circulante bien mezclado, deseche el fluido estancado del puerto de muestreo y evite los ángulos del depósito, los desagües de punto bajo y las piernas muertas. Después de una circulación suficiente, verifique la concentración de glicol con la correlación del refractómetro del proveedor. Envíe la muestra línea de base para su análisis para que futuras modificaciones tengan una referencia confiable."
         },
         {
           "type": "content_diagram",
@@ -1162,67 +2036,180 @@
           "section_label": "Partículas y bioincrustantes",
           "figure": {
             "path": "figures/filtration_strategy.svg",
-            "alt": "Estrategia de filtración en línea y lateral",
-            "caption": "Los filtros deberían ser más fáciles de mantener que los microcanales de la placa fría."
+            "alt": "El flujo del circuito principal pasa a través de un tamiz de tensión en línea perforado; un ramal lateral de flujo parcial distinto se une nuevamente al retorno después de la filtración.",
+            "caption": "La filtración lateral es un ramo, no un segundo filtro en serie. Ajuste el medio de coincidencia, la clasificación, la eficiencia y el flujo al refrigerante sin quitar antiespumante.",
+            "text_inventory": {
+              "sha256": "432414a228f9769c1abbfaa89dc5205d8740f6276fa37a2a985e18b06e5a2e09",
+              "entries": [
+                {
+                  "text": "Colador inline"
+                },
+                {
+                  "text": "Todo el flujo del circuito principal"
+                },
+                {
+                  "text": "Ruta de refrigeración principal"
+                },
+                {
+                  "text": "bomba"
+                },
+                {
+                  "text": "placas frías"
+                },
+                {
+                  "text": "Pasajes sensibles"
+                },
+                {
+                  "text": "Canal secundario"
+                },
+                {
+                  "text": "Ramificación de flujo parcial"
+                },
+                {
+                  "text": "Medios validados por el proveedor"
+                },
+                {
+                  "text": "Proteja los aditivos antiespumante"
+                },
+                {
+                  "text": "Seleccionar juntos"
+                },
+                {
+                  "text": "Calificación + eficiencia de captura"
+                },
+                {
+                  "text": "Compatibilidad del refrigerante + medio"
+                },
+                {
+                  "text": "Flujo + facilidad de servicio"
+                },
+                {
+                  "text": "Solo esquema. Los ejemplos de filtración de llenado no son requisitos universales de flujo lateral."
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "61-66"
+            },
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "5.2"
+            },
+            {
+              "source": "Project Deschutes: Data Center Facilities",
+              "url": "https://ocpprodweb3.opencompute.org/documents/ocp-specification-deschutes-final-2025-09-05-pdf",
+              "section": "Filtration"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "6.5; 7.1-7.4; 10.10",
+              "pages": [
+                24,
+                25,
+                26,
+                27,
+                28,
+                59
+              ]
             }
           ],
           "id": 7,
           "audio": {
             "script_file": "audio/module3/slide_07_filtration_strategy.txt",
             "wav_file": "audio/module3/slide_07_filtration_strategy.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_07_filtration_strategy.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · pp. 23–28",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=23"
+            }
+          ],
+          "term_refs": [
+            "antifoam"
+          ],
+          "transcript": "La selección del filtro es más que elegir el número de micrones más pequeño. La guía PG25 recomienda considerar la filtración de flujo lateral porque evita colocar una presión de retorno que obstruye el filtro en el camino principal de refrigeración. Selecciona la clasificación, la eficiencia, el flujo y el medio para los pasajes sensibles más pequeños y el refrigerante real.\n\nUna filtración demasiado fina puede eliminar los aditivos antiespumante. La guía también advierte que los medios de polipropileno pueden adsorber siloxanos antiespumante. Un filtro nominal y uno absoluto con el mismo tamaño de micrómetro declarado no tienen la misma eficiencia de captura. Confirme el rendimiento con los proveedores del fluido, el filtro, CDU y placa fría.\n\nSu ejemplo de filtración absoluta de cinco a diez micrones durante el llenado no es un requisito universal de flujo lateral. Del mismo modo, las calificaciones de filtración del Proyecto Deschutes describen un diseño. Preserva la limpieza sin quitar aditivos, restringir el flujo o crear equipo inutilizable."
         },
         {
           "type": "content_bullets",
           "title": "Control microbiano y bioincrustación",
           "slug": "microbial_control_and_biofouling",
           "section_label": "Biología",
-          "subtitle": "Control microbiano protege la transferencia de calor, pero el uso de biocidas debe permanecer controlado.",
+          "subtitle": "Los niveles de acción microbiana del agua no son una receta de dosis PG25 automática.",
           "bullets": [
             {
-              "bold_lead": "Objetivo",
-              "text": "mantenga el total de bacterias viables operativas por debajo de 100 CFU/ml."
+              "bold_lead": "Agua tratada",
+              "text": "objetivos de orientación operativa <100 CFU/ml; recomienda acciones por encima de 1000 CFU/ml."
             },
             {
-              "bold_lead": "Nivel de acción",
-              "text": "Se recomienda encarecidamente el tratamiento con biocida por encima de 1000 CFU/ml."
+              "bold_lead": "PG25 protección",
+              "text": "mantener niveles aprobados por el proveedor de glicol e inhibidores; la dilución aumenta el riesgo de crecimiento biológico."
             },
             {
-              "bold_lead": "Tipo de biocida",
-              "text": "use biocida no oxidante solo si es necesario y según la etiqueta."
+              "bold_lead": "No estéril",
+              "text": "La naturaleza de biostático de PG25 no reemplaza la limpieza, las pruebas o la investigación."
             },
             {
-              "bold_lead": "Evite los halógenos",
-              "text": "El cloro y productos químicos similares pueden crear riesgo de corrosión."
+              "bold_lead": "Tratamiento controlado",
+              "text": "utilice biocida solo a través de un plan específico para fluidos aprobado por el proveedor."
             },
             {
-              "bold_lead": "Ver acumulación",
-              "text": "las adiciones frecuentes pueden crear acumulación orgánica o de contaminantes."
+              "bold_lead": "Evitar el traspaso",
+              "text": "eliminar los biocidas de limpieza antes de llenar PG25; no improvisar la dosis continua."
             }
-          ],
-          "term_refs": [
-            "cfu"
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
-              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
-              "paragraphs": "116-118"
+              "source": "Base Specification for Single Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "section": "5.4.7"
+            },
+            {
+              "source": "Guideline for Using Water-Based Coolants (supplied Rev-draft 110925.docx)",
+              "paragraphs": "116-118",
+              "note": "The 1000 CFU/ml action threshold is draft-only. Published water guidelines page 8 supports the below-100 CFU/ml target and investigation of increases from baseline, not this numerical action threshold."
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "3.1; 10.5; 10.8; 11.1",
+              "pages": [
+                13,
+                52,
+                57,
+                60
+              ]
             }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module3/slide_08_microbial_control_and_biofouling.txt",
             "wav_file": "audio/module3/slide_08_microbial_control_and_biofouling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_08_microbial_control_and_biofouling.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía de agua · p. 8",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf#page=8"
+            },
+            {
+              "label": "Guía PG25 · pp. 13–14, 52–58, 60",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=13"
+            }
+          ],
+          "term_refs": [
+            "cfu",
+            "biostatic"
+          ],
+          "transcript": "La guía microbiana debe coincidir con el fluido. Para el funcionamiento con agua tratada, la guía anterior basada en agua recomienda que las bacterias viables totales estén por debajo de cien unidades formadoras de colonias por milímetro y que la acción esté por encima de mil. Esos umbrales de funcionamiento difieren del límite de productos frescos de la especificación básica del refrigerante de agua.\n\nPG25 tiene un carácter biostático, pero eso no hace que el bucle sea estéril. El agua residual o el reabastecimiento no controlado pueden diluir el glicol e inhibidores y aumentar el riesgo de crecimiento biológico. Mantenga la concentración y la química exactas aprobadas por el proveedor, mantenga limpio puesta en servicio e investigue la condición anormal del fluido.\n\nNo transfiera una receta de dosificación de tratamiento de agua a PG25. Cualquier biocida o tratamiento corrector requiere la aprobación del proveedor específica para la formulación. Los biocidas de limpieza deben eliminarse antes del llenado final para evitar que interfieran con la protección contra la corrosión del fluido de operación."
         },
         {
           "type": "takeaways",
@@ -1239,8 +2226,10 @@
           "audio": {
             "script_file": "audio/module3/slide_09_module_3_summary.txt",
             "wav_file": "audio/module3/slide_09_module_3_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_09_module_3_summary.mp3"
+          },
+          "transcript": "El módulo tres se centró en las prácticas de campo que protegen el fluido y el hardware. La capacidad de servicio comienza en el diseño mecánico. El circuito necesita vías de drenaje, llenado, muestreo, aislamiento y adición de químicos que sean compatibles con las mismas reglas para materiales en contacto con el fluido que el resto del sistema.\n\nUn inicio limpio es importante porque los microcanales de la placa fría no son un buen lugar para descubrir escombros de construcción. Las comprobaciones de fugas, los lavados, el llenado final y la línea de base muestreo necesitan procedimientos documentados. La filtración y control microbiano se convierten entonces en defensas continuas.\n\nLa conclusión simple es que muchos problemas posteriores con líquidos son en realidad puesta en servicio o problemas de limpieza con un síntoma tardío."
         },
         {
           "id": 10,
@@ -1249,7 +2238,8 @@
           "audio": {
             "script_file": "audio/module3/slide_10_knowledge_check.txt",
             "wav_file": "audio/module3/slide_10_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module3/slide_10_knowledge_check.mp3"
           },
           "title": "Verifique su puesta en servicio Disciplina",
           "subtitle": "Responda una vez para continuar. No se requiere corrección y puede volver a intentarlo.",
@@ -1312,7 +2302,8 @@
               "feedback_correct": "Correcto. La capacidad de servicio, los registros, la filtración y el tratamiento controlado protegen el fluido y el hardware.",
               "feedback_incorrect": "No completes casualmente. Proteja el circuito con filtración compatible, registros y decisiones de tratamiento guiadas por el proveedor."
             }
-          ]
+          ],
+          "transcript": "Haga una pausa aquí para consultar la disciplina puesta en servicio del módulo tres.\n\nLa primera pregunta es qué secuencia de inicio protege mejor un nuevo bucle. La segunda pregunta qué prácticas de servicio ayudan a mantener el circuito limpio, compatible y rastreable a lo largo del tiempo.\n\nUtilice la retroalimentación como una verificación operativa rápida. Puede volver a intentarlo y continuar después de un intento."
         },
         {
           "type": "up_next",
@@ -1324,8 +2315,10 @@
           "audio": {
             "script_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.txt",
             "wav_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module3/slide_11_up_next_monitoring_and_operating_for_fluid_healt.mp3"
+          },
+          "transcript": "Buen trabajo. Ha finalizado el módulo puesta en servicio. Ahora tiene la secuencia de campo: diseño para capacidad de servicio, prueba de fugas con métodos compatibles, enjuague limpio, evite limpiadores no controlados, muestree el llenado final y filtre antes de que los desechos se conviertan en un problema placa fría.\n\nA continuación, pasamos a operaciones. Cubriremos pruebas de rutina, análisis de laboratorio, interpretación de tendencias, ajustes, mezcla, vida útil, eliminación y documentación."
         }
       ],
       "next_module_title": "Monitoreo, mantenimiento y juicio operativo"
@@ -1334,7 +2327,7 @@
       "id": 4,
       "slug": "monitoring_maintenance_operational_judgment",
       "title": "Monitoreo, mantenimiento y juicio operativo",
-      "subtitle": "Pruebas de rutina, laboratorio QA, interpretación de tendencias, ajustes, mezclas, vida útil y documentación.",
+      "subtitle": "Pruebas específicas para fluidos, muestreo basado en riesgos, interpretación de tendencias, correcciones guiadas por el proveedor y documentación.",
       "module_badge_text": "Módulo 4",
       "motion_intro": {
         "eyebrow": "Módulo 4",
@@ -1351,8 +2344,10 @@
           "audio": {
             "script_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.txt",
             "wav_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_01_monitoring_and_operating_for_fluid_health.mp3"
+          },
+          "transcript": "El módulo cuatro trata sobre mantener el bucle en buen estado después de puesta en servicio. Un buen programa fluido no espera al fracaso. Observa las tendencias, las compara con la línea de base y realiza ajustes controlados antes de que una señal química se convierta en tiempo de inactividad.\n\nSepararemos las pruebas in situ del control de calidad del laboratorio, analizaremos el monitoreo automatizado, interpretaremos tendencias, discutiremos la dosificación guiada por el proveedor y manejaremos la complicada realidad de la mezcla de fluidos. Cerraremos con la vida útil, la eliminación y los registros que evitan que la próxima actualización comience a ciegas."
         },
         {
           "type": "objectives",
@@ -1370,127 +2365,179 @@
           "audio": {
             "script_file": "audio/module4/slide_02_operating_judgments_you_will_make.txt",
             "wav_file": "audio/module4/slide_02_operating_judgments_you_will_make.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_02_operating_judgments_you_will_make.mp3"
+          },
+          "transcript": "Al final de este módulo, podrá describir el programa de monitoreo de rutina e identificar qué controles deben realizarse en el sitio o en un laboratorio independiente.\n\nPodrás interpretar tendencias en lugar de reaccionar ante un número aislado. Esto incluye aumento de la conductividad, deriva de iones metálicos, dureza, bacterias, turbidez, carga del filtro y agotamiento del inhibidor.\n\nTambién podrá explicar por qué los ajustes deben ser guiados por el proveedor, por qué la mezcla de fluidos complica el monitoreo y qué registros deben mantenerse para que los futuros operadores puedan comprender el ciclo que heredan."
         },
         {
           "type": "content_grid",
-          "title": "Programa de monitoreo de rutina",
+          "title": "Programa de monitoreo específico para fluidos",
           "slug": "routine_monitoring_schedule",
           "section_label": "Cadencia",
-          "subtitle": "El plan de monitoreo debería volverse más intenso cuando un parámetro se sale de las especificaciones.",
+          "subtitle": "PG25 la orientación se basa en el riesgo; puesta en servicio, las condiciones de garantía y los eventos establecen el plan.",
           "grid_cols": 4,
           "cards": [
             {
-              "title": "Inicio",
-              "body": "Pruebe inmediatamente después del llenado y circulación inicial.",
+              "title": "Línea de base",
+              "body": "Realice la prueba en puesta en servicio; conserve evidencia de inicio de sesión representativa.",
               "icon": "1"
             },
             {
-              "title": "Trimestral",
-              "body": "realice controles de rutina en el sitio durante el funcionamiento normal.",
+              "title": "PG25 de bajo riesgo",
+              "body": "Laboratorio calificado anualmente; chequeo opcional de seis meses en el primer año.",
               "icon": "2"
             },
             {
-              "title": "Semanalmente cuando esté fuera de especificaciones",
-              "body": "aumente la frecuencia hasta que el parámetro vuelva al rango.",
+              "title": "Riesgo medio PG25",
+              "body": "Análisis por un laboratorio calificado cada seis meses durante los primeros 1,5 años.",
               "icon": "3"
             },
             {
-              "title": "Laboratorio QA",
-              "body": "trimestralmente durante un año, luego intervalos de seis meses si es estable.",
+              "title": "Alto riesgo PG25",
+              "body": "Laboratorio calificado trimestralmente durante los primeros 1.5 años; investigar anomalías.",
               "icon": "4"
             }
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "120-125"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2, Table 13; 12.5",
+              "pages": [
+                61,
+                63,
+                64,
+                84
+              ]
             }
           ],
           "id": 3,
           "audio": {
             "script_file": "audio/module4/slide_03_routine_monitoring_schedule.txt",
             "wav_file": "audio/module4/slide_03_routine_monitoring_schedule.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module4/slide_03_routine_monitoring_schedule.mp3"
           },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · Tabla 13 · pp. 63–64",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=63"
+            }
+          ],
           "term_refs": [
-            "qa"
-          ]
+            "pg25"
+          ],
+          "transcript": "La frecuencia de monitoreo debe coincidir con el fluido y el riesgo del sistema. La guía de operación basada en agua proporciona controles rutinarios trimestrales, controles más frecuentes cuando los resultados son anormales y revisión del laboratorio trimestralmente en el primer año, luego cada seis meses si es estable.\n\nLa nueva guía PG25 utiliza ejemplos basados en riesgos diferentes. El riesgo bajo combina monitoreo en línea, materiales aceptables y un usuario experimentado: análisis puesta en servicio y pruebas de laboratorio anuales. El riesgo medio no tiene monitoreo en línea, pero tiene materiales aceptables y un usuario poco familiarizado: pruebas de laboratorio cada seis meses durante los primeros 18 meses. El riesgo alto añade la compatibilidad de materiales menos segura: pruebas de laboratorio trimestrales durante ese período.\n\nEstos son ejemplos de planificación, no un horario universal. Siga los requisitos de garantía y del proveedor, y aumente las pruebas después de eventos de servicio o anomalías inexplicables. Incluso con monitoreo en línea, la guía recomienda una confirmación de laboratorio anual."
         },
         {
           "type": "content_table",
-          "title": "Equipo de prueba in situ",
+          "title": "Juego de monitoreo rutinario",
           "slug": "on_site_test_set",
-          "section_label": "Comprobaciones de campo",
-          "subtitle": "Las pruebas de rutina son señales rápidas que guían la escalada y el seguimiento de laboratorio.",
+          "section_label": "Señales de campo y laboratorio",
+          "subtitle": "Elija las pruebas para la formulación del líquido: las comprobaciones del campo PG25 complementan los análisis de laboratorio programados.",
           "columns": [
-            "Control in situ",
+            "Verificación de monitoreo",
             "Señal",
             "Acción típica"
           ],
           "rows": [
             [
-              "Conductividad",
-              "Material disuelto o contaminación",
-              "Comparar con línea de base y tasa de aumento"
-            ],
-            [
               "pH",
-              "Ventana de química",
-              "Confirmar dentro del plan de tratamiento"
+              "Ventana de química específica del fluido",
+              "Calibrar; confirmar proveedor límites operativos"
             ],
             [
-              "Dureza",
-              "Agua de reposición o riesgo de lixiviación",
-              "Investigar la fuente de Ca/Mg"
+              "PG25 índice de refracción",
+              "Concentración / dilución de glicol",
+              "Utilice la conversión y la temperatura específicas del proveedor"
             ],
             [
-              "Bacterias viables totales",
-              "Actividad microbiana",
-              "Vuelva a realizar la prueba o trate según las instrucciones del proveedor"
-            ],
-            [
-              "Azoles",
-              "Protección de cobre",
-              "Agotamiento de tendencias y umbral de acción"
-            ],
-            [
-              "Turbidez/apariencia",
-              "Cambio de partículas o claridad.",
-              "Inspeccionar filtros e historial de muestras."
+              "Apariencia / turbidez",
+              "Partículas, turbidez, burbujas",
+              "Inspeccionar, luego investigar con datos de apoyo"
             ],
             [
               "Carga de filtro",
-              "Carga de partículas o bioincrustantes",
-              "Reemplace o investigue si es alto"
+              "Carga de contaminación / caída de presión",
+              "Filtros de servicio e investiga la fuente"
+            ],
+            [
+              "Conductividad (sostenida)",
+              "Tendencia iónica dependiente de la temperatura",
+              "Útil para las tendencias PG25, no prueba de salud contra inhibidores."
+            ],
+            [
+              "Bacterias (específicas del líquido)",
+              "Actividad microbiana",
+              "Siga el plan de tratamiento específico para el refrigerante"
+            ],
+            [
+              "Inhibidores / alcalinidad de reserva",
+              "Protección contra la corrosión (laboratorio)",
+              "Evaluar la química real del inhibidor"
+            ],
+            [
+              "Metales disueltos (laboratorio ICP)",
+              "Productos de corrosión / liberación de material",
+              "Tendencia Cu, Fe, Al y otros metales húmedos"
             ]
-          ],
-          "term_refs": [
-            "azole",
-            "cfu"
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "table": 4
+            },
+            {
+              "source": "Base Specification for Single-Phase Water-Based Cold Plate Coolant V1.3",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf",
+              "section": "5.4.8"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2; 11.5-11.6, Tables 14-15",
+              "pages": [
+                61,
+                67,
+                69,
+                71,
+                74
+              ]
             }
           ],
           "id": 4,
           "audio": {
             "script_file": "audio/module4/slide_04_on_site_test_set.txt",
             "wav_file": "audio/module4/slide_04_on_site_test_set.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_04_on_site_test_set.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · Tabla 14–15 · pp. 67–74",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=67"
+            }
+          ],
+          "term_refs": [
+            "icp",
+            "refractive_index",
+            "reserve_alkalinity"
+          ],
+          "transcript": "Los controles rutinarios deben ajustarse a la formulación. Para PG25, priorice pH, índice de refracción para la concentración de glicol y la apariencia. Interprete índice de refracción utilizando los datos específicos del fluido del proveedor; no es una medición directa de la salud del inhibidor. El filtrado de carga y la turbidez aportan evidencia sobre la limpieza.\n\nLa conductividad es una señal de tendencia auxiliar para el glucol inhibido, no normalmente su prueba de salud principal. Los aditivos y la temperatura afectan la lectura, y un valor estable no prueba que la protección contra la corrosión esté intacta. Las pruebas y el tratamiento de bacterias también siguen el plan específico para el refrigerante.\n\nLos análisis de laboratorio programados complementan esos controles con los niveles de inhibidores, alcalinidad de reserva cuando corresponda, y los metales disueltos medidos por ICP. Seleccione cobre, hierro, aluminio y otros elementos del inventario de materiales humedecidos. Compare las bases de datos y las tendencias; un solo resultado detectible no establece una corrosión activa."
         },
         {
           "type": "content_table",
           "title": "Laboratorio QA y ICP Análisis",
           "slug": "laboratory_qa_and_icp_analysis",
           "section_label": "Vista de laboratorio",
-          "subtitle": "El análisis independiente ayuda a distinguir la deriva de fluidos, la contaminación y los subproductos de la corrosión.",
+          "subtitle": "PG25 la análisis requiere glicol, inhibidores y química de degradación, así como metalurgia.",
           "columns": [
             "Control de laboratorio",
             "Lo que ayuda a revelar",
@@ -1498,59 +2545,77 @@
           ],
           "rows": [
             [
-              "TSS y TDS",
-              "Partículas y material disuelto.",
-              "Seguimiento de la limpieza y la contaminación."
+              "Concentración de glicol / pH",
+              "Dilución y deriva química",
+              "Confirmar los límites de uso en curso del proveedor"
             ],
             [
-              "Metales filtrados/sin filtrar",
-              "Cobre, hierro, zinc, cromo, níquel.",
-              "Indica corrosión o liberación de material."
+              "Inhibidores / alcalinidad de reserva",
+              "Protección y amortiguación",
+              "alcalinidad de reserva depende de la tecnología de inhibidores"
             ],
             [
-              "ICP análisis",
-              "Perfil elemental",
-              "Documenta los cambios en la calidad del agua a lo largo del tiempo."
+              "Cloruro / sulfato / dureza",
+              "Contaminación y agua de mala calidad",
+              "Investigar la fuente y la posible corrosión"
             ],
             [
-              "Turbidez",
-              "Claridad fluida y partículas.",
-              "Admite decisiones de filtrado y depósito"
+              "Ácidos de degradación",
+              "Descomposición del glicol",
+              "Evaluar junto con pH, el historial y la temperatura"
             ],
             [
-              "Cupones de corrosión si se usan",
-              "Evidencia suplementaria de corrosión",
-              "Puede no representar completamente la geometría placa fría"
+              "Metales disueltos (ICP)",
+              "Cu, Fe, Al y otros metales húmedos",
+              "Tendencia contra las líneas de base de fluidos frescos y startups"
             ],
             [
-              "Evaluación escrita",
-              "Interpretación técnica",
-              "Convierte los datos en guía para la acción"
+              "Evaluación escrita del proveedor",
+              "Interpretación específica de la formulación",
+              "Convierte los resultados validados en acciones correctivas"
             ]
-          ],
-          "term_refs": [
-            "tss",
-            "tds",
-            "icp"
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "table": 5
             },
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraph": "126"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2-11.5",
+              "pages": [
+                61,
+                65,
+                67,
+                69,
+                70
+              ]
             }
           ],
           "id": 5,
           "audio": {
             "script_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.txt",
             "wav_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_05_laboratory_qa_and_icp_analysis.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · pp. 65–70",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=65"
+            }
+          ],
+          "term_refs": [
+            "qa"
+          ],
+          "transcript": "El panel de laboratorio PG25 va más allá de la limpieza del agua. La guía recomienda verificar la concentración de glicol, pH, alcalinidad de reserva, la apariencia, las concentraciones de inhibidores, el cloruro, el sulfato, la dureza, los ácidos de degradación y los metales disueltos.\n\nalcalinidad de reserva depende de la tecnología de los inhibidores. Las formulaciones convencionales y las formulaciones con ácidos orgánicos no utilizan una interpretación intercambiable, por lo que un número bajo no es automáticamente una razón para administrar la dosis. El proveedor debe interpretar la formulación real.\n\nUtilice un laboratorio gestionado por el proveedor de fluidos o recomendado por él y capaz de realizar análisis completos y soporte técnico. Identifique los metales relevantes para la metalurgia del sistema y compare el informe con pruebas de fluido fresco y de arranque. Las comprobaciones de campo pH y el refractómetro, los sensores en línea y la química del laboratorio son complementarios; ninguno reemplaza el plan de monitoreo completo."
         },
         {
           "type": "content_diagram",
@@ -1559,64 +2624,178 @@
           "section_label": "Lógica de tendencias",
           "figure": {
             "path": "figures/monitoring_framework.svg",
-            "alt": "Condición del fluido marco de monitoreo que separa el estado del sistema y condición del fluido",
-            "caption": "Utilice línea de base y la dirección de la tendencia para distinguir el estado del sistema de condición del fluido."
+            "alt": "Una tendencia ascendente explícitamente ilustrativa sigue por debajo del límite de acción del sitio; compare línea de base, mediciones calibradas y confirmación de laboratorio.",
+            "caption": "Investigue la tendencia con evidencia sistemática y fluida. Estos son datos ilustrativos, no un límite universal; los requisitos de nuevos productos y las pautas de uso continuo siguen siendo distintos.",
+            "text_inventory": {
+              "sha256": "8d5b16035433b7491ed023e9b0a42eae505ebae2292da283ad11e665edb84da9",
+              "entries": [
+                {
+                  "text": "Tendencia ilustrativa - datos no medidos"
+                },
+                {
+                  "text": "Sinal relativo"
+                },
+                {
+                  "text": "Límite de acción del sitio"
+                },
+                {
+                  "text": "Línea de base"
+                },
+                {
+                  "text": "Muestras a lo largo del tiempo"
+                },
+                {
+                  "text": "Confirmar el cambio"
+                },
+                {
+                  "text": "Calibración + muestra representativa + comparación de laboratorio"
+                },
+                {
+                  "text": "Pruebas del sistema"
+                },
+                {
+                  "text": "Metales + partículas"
+                },
+                {
+                  "text": "Carga del filtro + deriva térmica"
+                },
+                {
+                  "text": "Pruebas líquidas"
+                },
+                {
+                  "text": "pH + concentración"
+                },
+                {
+                  "text": "Niveles de inhibidores + azoles"
+                },
+                {
+                  "text": "Productos de degradación del glicol"
+                },
+                {
+                  "text": "La conductividad por sí sola no"
+                },
+                {
+                  "text": "diagnosticar inhibido PG25."
+                },
+                {
+                  "text": "Requisitos de nuevos productos"
+                },
+                {
+                  "text": "Aceptación de especificaciones básicas"
+                },
+                {
+                  "text": "Límites de uso en curso / proveedor"
+                },
+                {
+                  "text": "Interpretación operativa"
+                }
+              ]
+            }
           },
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "121-128"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.5-11.7; 12.3-12.5",
+              "pages": [
+                67,
+                70,
+                75,
+                81,
+                83,
+                84
+              ]
             }
           ],
           "id": 6,
           "audio": {
             "script_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.txt",
             "wav_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_06_reading_the_trend_not_just_the_number.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · pp. 67–70, 81–84",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=67"
+            }
+          ],
+          "term_refs": [
+            "azole"
+          ],
+          "transcript": "Una tendencia añade dirección y contexto a una medición. Compare pH, concentración, conductividad, metales, apariencia y carga del filtro con línea de base, estado del instrumento, temperatura y eventos de servicio recientes.\n\nDistingue los límites de especificación del nuevo fluido de las pautas de operación. La guía PG25 proporciona rangos de ejemplo en uso, incluyendo rangos pH dependientes de la formulación. Estos no reemplazan los requisitos del nuevo producto de la especificación base ni autorizan automáticamente ampliar el límites operativos del proveedor.\n\nConfirme un cambio repentino con mediciones de campo calibradas o análisis de laboratorio antes de administrar la dosis. En el glicol inhibido, la conductividad por sí sola tiene un valor diagnóstico limitado. Una tendencia creciente de cobre o hierro puede justificar una investigación incluso antes de que se alcance un límite de acción.\n\nColoque los sensores en un fluido fluido representativo, mantenga la calibración y comparelos con los resultados del laboratorio. Revise los límites después de cambios importantes en el sistema o el fluido."
         },
         {
           "type": "content_bullets",
           "title": "Ajustes y dosificación guiada por el proveedor",
           "slug": "adjustments_and_supplier_guided_dosing",
           "section_label": "Acción correctiva",
-          "subtitle": "La dosificación controlada necesita un volumen conocido, orientación del proveedor, circulación, nuevas pruebas y registros.",
+          "subtitle": "Valide los resultados anormales antes de un ajuste aprobado por el proveedor; luego verifique la mezcla y el resultado.",
           "bullets": [
             {
+              "bold_lead": "Verificar primero",
+              "text": "comprobar la calibración del instrumento y confirmar los resultados anormales."
+            },
+            {
               "bold_lead": "Volumen conocido",
-              "text": "la dosificación no se puede calcular de forma segura sin el volumen del circuito."
+              "text": "calcular las correcciones de concentración o inhibidores aprobadas por el proveedor."
             },
             {
-              "bold_lead": "Orientación para proveedores",
-              "text": "ajuste únicamente según el plan de tratamiento y el soporte técnico."
+              "bold_lead": "Corrección compatible",
+              "text": "utilice concentrado aprobado; agua de dilución solo cuando sea necesario y conforme a las normas."
             },
             {
-              "bold_lead": "Circular",
-              "text": "mezcle durante 30 minutos antes del muestreo de seguimiento."
-            },
-            {
-              "bold_lead": "Volver a probar",
-              "text": "confirme que el ajuste movió los resultados al rango."
+              "bold_lead": "Mezcla y vuelve a probar",
+              "text": "utilice circulación verificada y muestras representativas, no un temporizador universal."
             },
             {
               "bold_lead": "Documento",
-              "text": "fecha de registro, sistema, tipo de aditivo, cantidad e informes."
+              "text": "registro de dosis, motivo, lote, resultados de la prueba y el nuevo línea de base."
             }
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "9"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "129-134"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "10.10; 11.7; 12.3",
+              "pages": [
+                59,
+                75,
+                76,
+                81,
+                82
+              ]
             }
           ],
           "id": 7,
           "audio": {
             "script_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.txt",
             "wav_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_07_adjustments_and_supplier_guided_dosing.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Guía PG25 · pp. 75–76, 81–83",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=75"
+            }
+          ],
+          "transcript": "Validar un resultado anormal antes de ajustar la química. Verifique la calibración, confirme con pruebas adecuadas y consulte al proveedor de fluidos. La guía PG25 recomienda enviar una muestra a un laboratorio calificado dentro de una semana después de que una prueba en el sitio indique un resultado fuera de los límites.\n\nEl volumen del sistema debe conocerse antes de calcular una dosis. Restaurar glicol o inhibidores solo con productos aprobados por el proveedor compatible. Una formulación concentrada puede corregir la sobredilución; el agua de alta pureza aprobada es una corrección excepcional para una concentración excesiva, no una permiso rutinario para diluir el producto listo para usar.\n\nCircula hasta que la mezcla sea adecuada y la muestra de seguimiento sea representativa. Utiliza la circulación de bucle verificada y las instrucciones del proveedor en lugar de un temporizador universal. Registra la razón, la cantidad, el lote y los resultados antes y después. Una vez verificada la corrección, establece el nuevo línea de base apropiado."
         },
         {
           "type": "content_diagram",
@@ -1624,20 +2803,99 @@
           "slug": "fluid_mixing_and_interoperability",
           "section_label": "Interoperabilidad",
           "figure": {
-            "path": "figures/mixing_decision.svg",
-            "alt": "Lógica de decisión de mezcla de fluidos",
-            "caption": "La mezcla se trata mejor como un evento controlado que requiere evidencia específica del líquido."
+            "path": "figures/mixing_decision_v2.svg",
+            "alt": "Evite la mezcla de fluidos residuales, verifique las formulaciones exactas y la evidencia del proveedor, luego tome muestras y documente los cambios operativos.",
+            "caption": "Antes de conectar equipos que contengan otro fluido, utilice un desagüe y llenado aprobados por el proveedor y supervise cambios significativos hasta que se confirme la estabilidad.",
+            "text_inventory": {
+              "sha256": "080ca62063e567bfbc8c1e1a394f334f444df9919191f13aa167f5825bd8a97a",
+              "entries": [
+                {
+                  "text": "Equipo entrante / recarga / evento de servicio"
+                },
+                {
+                  "text": "Evitar la mezcla"
+                },
+                {
+                  "text": "Identificar el líquido residual"
+                },
+                {
+                  "text": "Desagüe aprobado por el proveedor"
+                },
+                {
+                  "text": "Rellenar con líquido de funcionamiento"
+                },
+                {
+                  "text": "Antes de la conexión"
+                },
+                {
+                  "text": "Verificar fluidos exactos"
+                },
+                {
+                  "text": "Pruebas específicas de la formulación"
+                },
+                {
+                  "text": "Materiales + condiciones"
+                },
+                {
+                  "text": "Plan aprobado por el proveedor"
+                },
+                {
+                  "text": "Sin suposiciones a nivel familiar"
+                },
+                {
+                  "text": "Monitorea el cambio"
+                },
+                {
+                  "text": "Muestreo impulsado por eventos"
+                },
+                {
+                  "text": "Revisar las líneas de base de los inhib"
+                },
+                {
+                  "text": "Documenta cada cambio"
+                },
+                {
+                  "text": "Hasta que se confirme la estabilidad"
+                },
+                {
+                  "text": "PG25 La conformidad no hace que los fluidos de diferentes proveedores sean intercambiables."
+                }
+              ]
+            }
           },
-          "term_refs": [
-            "iat",
-            "oat"
+          "source_refs": [
+            {
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "section": "3.2"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "11.2",
+              "pages": [
+                62
+              ]
+            }
           ],
           "id": 8,
           "audio": {
             "script_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.txt",
             "wav_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_08_fluid_mixing_and_interoperability.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Especificación PG25 · p. 8",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=8"
+            },
+            {
+              "label": "Guía PG25 · p. 62",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=62"
+            }
+          ],
+          "transcript": "No asumas que todos los refrigerantes ácidos orgánicos se mezclen de forma segura o que todas las combinaciones inorgánicas y orgánicas sean incompatibles. La especificación básica PG25 dice que los productos compatibles de diferentes proveedores no son necesariamente intercambiables. Evalúa los fluidos, materiales y condiciones de funcionamiento exactos.\n\nLa nueva guía agrega un paso práctico de introducción del equipo. Si el nuevo equipo contiene agua u otra formulación, utilice un protocolo de limpieza aprobado por el proveedor y llévelo con el fluido de operación antes de conectar. Usar el mismo fluido durante la fabricación, las pruebas y el funcionamiento reduce los cambios químicos no deseados.\n\nAumente la muestra después de agregar servicios o equipos sustanciales hasta que se confirme la estabilidad del fluido. Incluso una mezcla probada puede complicar la interpretación porque las bases de referencia de los inhibidores y las acciones correctivas pueden ya no ser claras. Evite el reabastecimiento no aprobado y documente cualquier cambio intencional."
         },
         {
           "type": "content_bullets",
@@ -1665,25 +2923,60 @@
             {
               "bold_lead": "Plan de tratamiento",
               "text": "parámetros operativos, programa de pruebas y documentación del producto."
+            },
+            {
+              "bold_lead": "Historial del sensor",
+              "text": "calibración, mantenimiento, reemplazos y bases de referencia revisadas."
             }
-          ],
-          "term_refs": [
-            "coa",
-            "sds"
           ],
           "source_refs": [
             {
-              "source": "Directrices para el uso de fluido de transferencia de calor a base de agua en monofásico racks enfriados por líquido a base de placa fría",
+              "source": "OCP Base Specification - PG25 - V1.0.0",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf",
+              "sections": "8.2-8.6"
+            },
+            {
+              "source": "Guidelines for Using Water-based Heat Transfer Fluid in Single-Phase Cold Plate-Based Liquid-Cooled Racks",
               "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf",
               "paragraphs": "143-151"
+            },
+            {
+              "source": "OCP PG25 Guidelines V1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf",
+              "sections": "5.1; 10.2; 11.4; 12.4-12.5; 13.4-13.5",
+              "pages": [
+                17,
+                46,
+                65,
+                66,
+                83,
+                84,
+                85
+              ]
             }
           ],
           "id": 9,
           "audio": {
             "script_file": "audio/module4/slide_09_documentation_and_submittals.txt",
             "wav_file": "audio/module4/slide_09_documentation_and_submittals.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_09_documentation_and_submittals.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Especificación PG25 · pp. 19–21",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf#page=19"
+            },
+            {
+              "label": "Guía PG25 · pp. 17–18, 83",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf#page=17"
+            }
+          ],
+          "term_refs": [
+            "sds",
+            "coa"
+          ],
+          "transcript": "Mantenga un archivo rastreable para cada ciclo de refrigeración. Registre la identidad del fluido, la información de entrega y lote, los certificados de análisis, las hojas de datos de seguridad, el volumen del sistema, materiales en contacto con el fluido, el historial de limpieza y pasivación y las sustituciones de componentes.\n\nLa guía PG25 también enfatiza etiquetas de muestra consistentes y papeleo de presentación para que los informes puedan analizarse de manera fiable. Preserve los informes analíticos, los registros de dosis y la evidencia de inicio de funcionamiento. Mantenga un registro de sensores con los resultados de calibración, la limpieza, el mantenimiento, los reemplazos y los cambios línea de base.\n\nIncluya el manejo y las decisiones de fin de vida en el plan. Almacene el fluido en recipientes compatibles y protegidos bajo la guía del proveedor. No deseche el refrigerante usado a los desagües, al suelo o al agua superficial; siga las reglas locales y los arreglos aprobados de reciclaje o eliminación.\n\nLa documentación debe permitir que el siguiente operador entienda qué cambió, por qué cambió y qué evidencia justificó la decisión."
         },
         {
           "type": "takeaways",
@@ -1700,8 +2993,13 @@
           "audio": {
             "script_file": "audio/module4/slide_10_module_4_summary.txt",
             "wav_file": "audio/module4/slide_10_module_4_summary.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_10_module_4_summary.mp3"
+          },
+          "term_refs": [
+            "dlc"
+          ],
+          "transcript": "El módulo cuatro convirtió a condición del fluido en un modelo operativo. Los controles de rutina brindan una visibilidad rápida. Los análisis de laboratorio brindan evidencia más profunda. El monitoreo automatizado puede ayudar a que los sistemas más grandes o más críticos detecten la deriva antes. Pero el verdadero poder es la interpretación de tendencias frente a un línea de base limpio.\n\nLos ajustes deben ser guiados por el proveedor, basados ​​en el volumen, combinados, probados nuevamente y documentados. Se debe evitar la mezcla de fluidos cuando sea posible y evaluar fluido por fluido cuando esto suceda. Los ciclos de vida útil, eliminación y actualización dependen de los registros.\n\nLa lección final es sencilla: un sistema DLC monofásico confiable no se configura para luego olvidarlo. Hay que monitorear, interpretar, corregir y documentar."
         },
         {
           "id": 11,
@@ -1710,7 +3008,8 @@
           "audio": {
             "script_file": "audio/module4/slide_11_knowledge_check.txt",
             "wav_file": "audio/module4/slide_11_knowledge_check.wav",
-            "approved": true
+            "approved": true,
+            "delivery_file": "audio/module4/slide_11_knowledge_check.mp3"
           },
           "title": "Compruebe su criterio operativo",
           "subtitle": "Responda una vez para continuar. No se requiere corrección y puede volver a intentarlo.",
@@ -1773,38 +3072,133 @@
               "feedback_correct": "Correcto. La mezcla y la dosificación necesitan orientación, documentación y verificación de seguimiento del proveedor.",
               "feedback_incorrect": "No asuma intercambiabilidad. Confirme la compatibilidad, documente la acción y verifique el resultado."
             }
-          ]
+          ],
+          "transcript": "Esta verificación final de conocimientos se centra en el juicio operativo.\n\nLa primera pregunta es cómo se deben interpretar los resultados de rutina sobre la salud de los líquidos. El segundo pregunta qué debería suceder antes de mezclar los fluidos o ajustar la química.\n\nEnvíe cada pregunta una vez y luego utilice los comentarios para consultar su manual de mantenimiento. Puede volver a intentarlo y continuar después de un intento."
         },
         {
           "type": "course_complete",
           "title": "Fluidos de refrigeración en refrigeración líquida directa (DLC)",
           "slug": "cooling_fluids_in_direct_liquid_cooling",
           "course_title": "Fluidos de refrigeración en refrigeración líquida directa (DLC)",
-          "cert_message": "Has completado el curso de fluidos monofásico DLC. Utilice la guía OCP, el plan de tratamiento del proveedor y los registros operativos locales juntos al aplicar estos conceptos.",
-          "thank_you_message": "Gracias por completar el Módulo 4: Monitoreo, mantenimiento y juicio operativo.",
+          "cert_message": "Aplicar las especificaciones básicas OCP con orientación de funcionamiento, planes del proveedor y registros locales.",
+          "thank_you_message": "Gracias por completar el Módulo 4.",
           "id": 12,
           "audio": {
             "script_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.txt",
             "wav_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.wav",
-            "approved": true
-          }
+            "approved": true,
+            "delivery_file": "audio/module4/slide_12_cooling_fluids_in_direct_liquid_cooling.mp3"
+          },
+          "reference_links": [
+            {
+              "label": "Especificación de refrigerante acuoso",
+              "url": "https://www.opencompute.org/documents/base-specification-for-single-phase-water-based-cold-plate-coolant-v1-3-final-pdf"
+            },
+            {
+              "label": "Especificación básica PG25",
+              "url": "https://www.opencompute.org/documents/ocp-base-specification-pg25-v1-0-0-final-pdf"
+            },
+            {
+              "label": "Guía de fluidos acuosos",
+              "url": "https://www.opencompute.org/documents/guidelines-for-using-water-based-transfer-fluids-in-single-phase-cold-plate-based-liquid-cooled-racks-final-pdf"
+            },
+            {
+              "label": "Guía operativa PG25",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/OCP-PG25-Guidelines-V1.0.0.pdf"
+            }
+          ],
+          "transcript": "Esto es un resumen del módulo cuatro y del curso. Gracias por trabajar con los fluidos refrigerantes en refrigeración líquida directa.\n\nHa cubierto el límite monofásico TCS, la diferencia entre agua tratada y P G veinticinco, objetivos de fluidos clave, química inhibidora, compatibilidad de materiales en contacto con el fluido, puesta en servicio, filtración, monitoreo, ajustes, mezcla, vida útil y documentación.\n\nEl siguiente paso es la aplicación local: compare este curso con las especificaciones publicadas del refrigerante a base de agua OCP y la base PG25, las pautas de operación de fase única, su plan de tratamiento, las pautas del proveedor, el diseño CDU y los registros locales. Cuanto mejor sean las pruebas y las mejores sean las preguntas, más fuerte será la implementación."
         }
       ]
     }
   ],
-  "metadata_language_name": "Spanish (LATAM)",
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 5
+  },
+  "index_module_links": false,
+  "index_navigation_instruction": "Navegue por los módulos en cualquier orden utilizando el Plan de estudios en la barra lateral izquierda.",
+  "index_start": {
+    "enabled": true,
+    "label": "Comience con el MODULO 1",
+    "navigation": "direct"
+  },
+  "learner_reference_policy": {
+    "reviewed_at": "2026-10-09",
+    "style": "Grid Disturbance-style compact resource pills with explicit page/range labels and #page= links.",
+    "numbering": "One-based PDF viewer pages including the cover, matching #page=. The PG25 base specification's printed footer is one lower than its PDF viewer page.",
+    "scope": "English single-phase course only. Teaching-slide PDF resource pills must be page-specific. Closing resources, authoring sources, and glossary metadata retain canonical whole-document URLs.",
+    "closing_resources": "M4S12 links to each complete canonical document without page fragments or page/range labels, per the maintained AcademyWizard closing-resource exception.",
+    "content_preservation": "Narration, quiz content, figures, video, SCORM version, and module tracking are unchanged by this reference-only update.",
+    "source_caveat": "M3S8's 1000 CFU/ml treated-water action value comes from the supplied draft guideline, not the published PDF. The water PDF p. 8 supports the <100 CFU/ml operating target and baseline-triggered investigation; no published-PDF support is claimed for the draft-only value. The course owner confirmed on 2026-10-09 that the draft remains unpublished; resolve the claim in issue #84 before promoting it to published guidance.",
+    "follow_up_issues": {
+      "language_editions": "https://github.com/opencomputeproject/ocp-academy-courses/issues/83",
+      "draft_microbial_threshold": "https://github.com/opencomputeproject/ocp-academy-courses/issues/84"
+    }
+  },
+  "lms_catalog": {
+    "title": "Fluidos de refrigeración en refrigeración líquida directa (DLC)",
+    "short_description": "Compare agua y PG25 y aplique buenas prácticas de compatibilidad, puesta en marcha, monitoreo y mantenimiento.",
+    "overview": "Desarrollar una comprensión práctica de los fluidos de fase única sistema de refrigeración de tecnología para refrigeración líquida directa. Comparar el agua tratada con PG25, relacionar la química del refrigerante con la compatibilidad del material mojado y seguir el ciclo de vida del fluido desde la calificación del proveedor hasta puesta en servicio, pasando por el monitoreo, las correcciones controladas y los registros operativos. Las pruebas de conocimiento ayudan a los estudiantes a aplicar las recomendaciones a decisiones realistas de gestión de fluidos.",
+    "duration_minutes": 35,
+    "duration_basis": "estimated_learner_time",
+    "duration_note": "El tiempo estimado para el estudiante incluye narración, diagramas, comprobaciones de conocimientos y revisión. El estudio de referencia externa opcional, las reproducciones y los intentos de reintento añaden tiempo.",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 7,
+        "summary": "Localice el fluido dentro del sistema de refrigeración, distinga los enfoques de fase única y de fase dual, e identifique las decisiones recurrentes de compatibilidad, monitoreo y documentación."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 10,
+        "summary": "Compare el agua y el PG25 en términos de rendimiento y necesidades de mantenimiento. Revise la calidad del refrigerante, la química de los inhibidores, las condiciones de funcionamiento, el materiales en contacto con el fluido y la documentación de la calificación del proveedor."
+      },
+      {
+        "id": 3,
+        "duration_minutes": 9,
+        "summary": "Conecte el diseño del bucle funcional a la limpieza, el desagüe, el llenado, la filtración y control microbiano compatibles. Establezca la toma de muestras de arranque y los registros de línea de base para el funcionamiento posterior."
+      },
+      {
+        "id": 4,
+        "duration_minutes": 9,
+        "summary": "Combine las comprobaciones rutinarias y los análisis de laboratorio para interpretar las tendencias del fluido. Aplique los ajustes guiados por el proveedor, evalúe las preguntas sobre la mezcla y el ciclo de vida, y mantenga una documentación operativa útil."
+      }
+    ],
+    "labels": {
+      "title": "Título",
+      "short_description": "Descripción breve",
+      "long_description": "Descripción completa",
+      "overall_duration": "Duración total: {duration} minutos",
+      "unit_heading": "Módulo {number}: {title} - {duration} minutos"
+    }
+  },
+  "metadata_language_name": "Spanish (Latin America)",
   "localization": {
     "source_course": "../../course.json",
     "source_language": "en-US",
     "target_language": "es-419",
-    "source_course_sha256": "085233653e612c3ab97b2e834f2fbcf2562a736cc7ec71a13539cd84175559cb"
+    "source_course_sha256": "85a74a0d2effc141c2e8e27ffca70554334a7192fda286022575f033069dc85f",
+    "refreshed_at": "2026-11-10",
+    "translation_provider": "Apple on-device installed model with existing approved translation memory and technical-token protection",
+    "draft_threshold_issue": "https://github.com/opencomputeproject/ocp-academy-courses/issues/84"
   },
   "ui_labels": {
-    "not_started": "No iniciado",
-    "completed": "Completado",
-    "module": "Módulo",
-    "module_complete": "Módulo {module} completado",
-    "course_complete": "Curso completado",
+    "slide_transcript": "Transcripción de diapositivas",
+    "close_transcript": "Cerrar transcripción",
+    "transcript": "transcripción",
+    "no_narration": "Sin narración en esta diapositiva.",
+    "narration_on_hint": "Narración activada - haga clic para desactivarla",
+    "narration_off_hint": "Narración apagada - haz clic para encenderla",
+    "narration_off_message": "La narración está apagada. Lee la transcripción o usa Reproducir para esta diapositiva.",
+    "lms_navigation_note": "Utilice la navegación del curso del LMS para abrir otro módulo para que su finalización se registre correctamente.",
+    "play_narrated_video": "Reproducir video narrado",
+    "pause_narrated_video": "Pausa el video narrado",
+    "show_transcript": "Mostrar transcripción",
+    "toggle_narration": "Activa/desactiva la narración",
+    "narration_hint": "La narración comienza automáticamente. Use la flecha derecha o la barra espaciadora para avanzar.",
     "course_overview": "Descripción del curso",
     "learning_objectives": "Objetivos de aprendizaje",
     "key_takeaways": "Puntos clave",
@@ -1813,41 +3207,60 @@
     "retry": "Volver a intentar",
     "quiz_gate_note": "Para continuar, envíe cada pregunta una vez. Puede avanzar independientemente de la respuesta y volver a intentarlo.",
     "quiz_gate_warning": "Envíe cada pregunta una vez antes de avanzar.",
-    "select_answer": "Seleccione al menos una respuesta antes de enviar.",
-    "correct": "Correcto.",
-    "review_feedback": "Revise los comentarios antes de volver a intentarlo.",
-    "narration_hint": "La narración comienza automáticamente. Use la flecha derecha o la barra espaciadora para avanzar.",
+    "module": "Módulo",
+    "up_next": "Siguiente curso",
+    "course_complete": "Curso completado",
     "theme": "Tema",
     "toggle_dark_mode": "Alternar modo oscuro",
     "previous_slide": "Diapositiva anterior",
     "next_slide": "Siguiente diapositiva",
+    "previous_slide_hint": "Diapositiva anterior (← Flecha izquierda). Inicio: vaya a la diapositiva 1 de este módulo.",
+    "next_slide_hint": "Próxima diapositiva (→ Flecha derecha). Inicio: vaya a la diapositiva 1 de este módulo.",
+    "slide_counter_hint": "Usa las teclas de flecha ← / → para moverte entre diapositivas. Inicio: ve a la diapositiva 1 de este módulo.",
     "play_pause_narration": "Reproducir o pausar la narración",
     "playback_speed": "Velocidad de reproducción",
     "playback_speed_slider": "Ajustar la velocidad de reproducción",
     "speed": "Velocidad",
     "toggle_fullscreen": "Alternar pantalla completa",
     "fullscreen": "Pantalla completa",
-    "video_controls": "Controles de video",
+    "select_answer": "Seleccione al menos una respuesta antes de enviar.",
     "play_video": "Reproducir video",
     "pause_video": "Pausar video",
-    "zoom_video": "Ampliar video",
-    "video_figure": "Figura en video",
-    "zoom_figure": "Ampliar figura",
     "enlarged_figure": "Figura ampliada",
     "lightbox_close_hint": "Haga clic fuera o presione Esc para cerrar.",
-    "opens_new_tab": "Se abre en una pestaña nueva",
-    "learner_resource": "Recurso de aprendizaje",
-    "open": "Abrir",
-    "learn_more": "Más información",
-    "reference": "Referencia",
-    "course_intro": "Introducción del curso OCP Academy",
-    "skip_intro": "Omitir introducción",
+    "video_figure": "Figura en video",
+    "zoom_figure": "Ampliar figura",
     "share_feedback": "Enviar comentarios",
-    "survey_body": "¿Puede dedicar unos minutos para ayudarnos a mejorar? Sus comentarios al equipo de desarrollo se usarán para mejorar este curso y los próximos. Sortearemos obsequios entre quienes respondan.",
+    "course_home": "Página de inicio del curso",
+    "reference": "Referencia",
+    "opens_new_tab": "Se abre en una pestaña nueva",
+    "module_complete": "Módulo {module} completado",
+    "go_to_module": "Ir al módulo {module}",
+    "learn_more": "Más información",
     "default_module_thanks": "Gracias por completar el módulo {module}: {title}",
     "default_course_wrap": "Completó todos los módulos de {course}. Esperamos que este contenido le resulte útil en su trabajo.",
-    "up_next": "Siguiente curso",
-    "go_to_module": "Ir al módulo {module}"
-  },
-  "index_footer_line": "OCP ESUN · Especificación v1.0 · Español LATAM"
+    "lightbox_pan_hint": "Arrastra para inspeccionar. Toca fuera para cerrar.",
+    "learner_resource": "Recurso de aprendizaje",
+    "video_controls": "Controles de video",
+    "zoom_video": "Ampliar video",
+    "open": "Abrir",
+    "correct": "Correcto.",
+    "incorrect": "Incorrecto.",
+    "review_feedback": "Revise los comentarios antes de volver a intentarlo.",
+    "not_started": "No iniciado",
+    "completed": "Completado",
+    "syllabus_instruction": "Utilice el plan de estudios del LMS para avanzar a través de los módulos del curso en cualquier orden.",
+    "start_with_module": "Comience con el MODULO {module}",
+    "captions": "Subtítulos",
+    "play": "juego de niños",
+    "seek": "buscar",
+    "playback_rate": "Velocidad de reproducción",
+    "picture_in_picture": "Imagen en imagen",
+    "mute": "mudo",
+    "volume": "volumen",
+    "captions_off": "Subtítulos apagados",
+    "course_intro": "Introducción del curso OCP Academy",
+    "skip_intro": "Omitir introducción",
+    "survey_body": "¿Puede dedicar unos minutos para ayudarnos a mejorar? Sus comentarios al equipo de desarrollo se usarán para mejorar este curso y los próximos. Sortearemos obsequios entre quienes respondan."
+  }
 }
