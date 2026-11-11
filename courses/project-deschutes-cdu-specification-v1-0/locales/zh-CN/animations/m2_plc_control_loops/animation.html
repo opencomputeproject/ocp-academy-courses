@@ -7,25 +7,26 @@
   <style>
     * { box-sizing: border-box; }
     html, body {
-      width: 1280px;
-      height: 720px;
+      width: 100vw;
+      height: 100vh;
       margin: 0;
       overflow: hidden;
       background: #f7f8fa;
       font-family: Arial, Helvetica, sans-serif;
     }
-    svg { display: block; width: 1280px; height: 720px; }
+    svg { display: block; width: 100vw; height: 100vh; }
     text { letter-spacing: 0; }
-    .signal-command { stroke-dasharray: 14 13; animation: commandFlow 1.15s linear infinite; }
-    .signal-feedback { stroke-dasharray: 8 11; animation: feedbackFlow 1.35s linear infinite; }
-    .water-flow { stroke-dasharray: 18 16; animation: waterFlow 1.1s linear infinite; }
-    .pump-rotor { transform-box: fill-box; transform-origin: center; animation: spin 1.9s linear infinite; }
-    .valve-handle { transform-box: fill-box; transform-origin: center; animation: valve 4s ease-in-out infinite; }
-    .needle-left { transform-origin: 290px 530px; animation: needleLeft 5s ease-in-out infinite; }
-    .needle-right { transform-origin: 990px 530px; animation: needleRight 5s ease-in-out infinite; }
-    .power-a { animation: feedA 6s ease-in-out infinite; }
-    .power-b { animation: feedB 6s ease-in-out infinite; }
-    .status-pulse { animation: status 2s ease-in-out infinite; }
+    .signal-command { stroke-dasharray: 14 13; animation: commandFlow 1.15s linear 100; }
+    .signal-feedback { stroke-dasharray: 8 11; animation: feedbackFlow 1.35s linear 100; }
+    .signal-command, .signal-feedback { clip-path: url(#signal-header-clearance); }
+    .water-flow { stroke-dasharray: 18 16; animation: waterFlow 1.1s linear 100; }
+    .pump-rotor { transform-box: fill-box; transform-origin: center; animation: spin 1.9s linear 100; }
+    .valve-handle { transform-box: fill-box; transform-origin: center; animation: valve 4s ease-in-out 100; }
+    .needle-left { transform-origin: 290px 530px; animation: needleLeft 5s ease-in-out 100; }
+    .needle-right { transform-origin: 990px 530px; animation: needleRight 5s ease-in-out 100; }
+    .power-a { animation: feedA 6s ease-in-out 100; }
+    .power-b { animation: feedB 6s ease-in-out 100; }
+    .status-pulse { animation: status 2s ease-in-out 100; }
     @keyframes commandFlow { to { stroke-dashoffset: -27; } }
     @keyframes feedbackFlow { to { stroke-dashoffset: 19; } }
     @keyframes waterFlow { to { stroke-dashoffset: -34; } }
@@ -46,11 +47,15 @@
     @keyframes status { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
   </style>
 </head>
-<body>
+<body data-duration-ms="12000">
   <svg viewBox="0 0 1280 720" role="img" aria-labelledby="title desc" xmlns="http://www.w3.org/2000/svg">
     <title id="title">Project Deschutes并发PLC控制环路</title>
     <desc id="desc">静音动画显示差压反馈控制泵速，接近温差反馈控制主阀，冗余电源维持控制可用性。</desc>
     <defs>
+      <clipPath id="signal-header-clearance" clipPathUnits="userSpaceOnUse">
+        <rect width="1280" height="260"/>
+        <rect y="318" width="1280" height="402"/>
+      </clipPath>
       <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
         <feDropShadow dx="0" dy="7" stdDeviation="10" flood-color="#1b2340" flood-opacity="0.12"/>
       </filter>
