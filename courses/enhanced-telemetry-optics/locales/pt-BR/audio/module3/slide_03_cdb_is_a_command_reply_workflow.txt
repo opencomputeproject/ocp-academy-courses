@@ -1,0 +1,10 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+C D B fornece ao host e ao módulo um padrão estruturado de comando e resposta. Ele é opcional no C M I S em geral, mas os módulos ópticos compatíveis com telemetria avançada devem usá-lo para coletar telemetria e transferi-la ao host.
+
+A sequência tem quatro etapas principais. Prepare o cabeçalho e o payload exigidos pelo comando. Acione o comando. Consulte seus registradores de status. Depois, recupere a resposta quando a execução terminar com sucesso.
+
+Cada etapa faz parte do contrato. Uma resposta não deve se tornar evidência operacional apenas porque o software encontrou bytes na área de resposta. Esses bytes precisam pertencer à solicitação que realmente foi concluída.
+
+A mesma disciplina se aplica à recuperação de medições, coleta de eventos, acesso a registradores remotos e transferência de firmware. Verifique o comando suportado, o endpoint selecionado, os campos de entrada e o status final.
+
+Isso também oferece um modelo útil de depuração de software. A solicitação foi formada corretamente? Foi acionada? O módulo terminou com sucesso? O software recuperou e validou a resposta correspondente? Quatro perguntas claras são mais úteis do que uma ferramenta que imprime dados sem explicar como os obteve.

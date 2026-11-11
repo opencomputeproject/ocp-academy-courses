@@ -1,0 +1,12 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+El mantenimiento del firmware sin interrupción depende de un ciclo de vida controlado, no de un solo comando exitoso.
+
+Inspeccione la información de las imágenes remotas y después inicie la descarga. Transfiera el firmware por bloques y compruebe cada resultado. Si falla un bloque, aborte la descarga y realice la limpieza necesaria en vez de continuar con una imagen incompleta.
+
+Cuando hayan llegado todos los bloques, el comando de finalización valida esa etapa. Una falla, como una suma de comprobación incorrecta, significa que la descarga no tuvo éxito. No avance a la activación.
+
+Una vez finalizada correctamente, ejecute la nueva imagen y verifique su comportamiento. Solo entonces confirme la imagen en ejecución como predeterminada para los siguientes reinicios. Distinguir entre ejecutar y confirmar es fundamental para saber qué hará el módulo ahora y después de un reinicio.
+
+El módulo local transmite estas operaciones al extremo remoto elegido mediante la interfaz en banda. Mantenga la identidad de ese extremo durante toda la secuencia.
+
+La capacidad sin interrupción también exige verificación en el despliegue. Compruebe la continuidad real del tráfico, el estado de los comandos, el comportamiento de recuperación y la política de mantenimiento antes de confiar en el flujo durante el servicio.

@@ -1,0 +1,12 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+Un registro útil de eventos necesita detalle y moderación. Un enlace con ruido puede repetir la misma condición hasta llenar el búfer circular de duplicados y sobrescribirlo.
+
+La especificación utiliza histéresis programable con un valor predeterminado de diez segundos. Esto limita el registro de duplicados dentro del intervalo configurado y conserva los eventos distintos.
+
+Las definiciones abarcan temperatura y voltaje del módulo, alarmas de potencia óptica, reinicios, condiciones de señal o sincronización del receptor, umbrales de error, cambios de firmware y apagado autónomo. Decodifique el identificador y los campos de detalle en lugar de tratar todos los registros como alarmas genéricas del enlace.
+
+Los umbrales de puntuación y las condiciones de registro de eventos tienen propósitos diferentes. No suponga que cambiar un límite de puntuación modifica todos los umbrales de eventos, ni que un contador enmascarado deja de ser evidencia útil.
+
+Las A P I del host exponen la recuperación de eventos y el control de histéresis para extremos locales y remotos. Utilice esos controles deliberadamente y conserve la validez de la hora del módulo y el contexto de secuencia al correlacionar.
+
+La histéresis debe hacer legible la historia de la falla. Antes de borrar un registro o reiniciar contadores, recupere los eventos que explican el incidente y consérvelos junto con la línea temporal del host.

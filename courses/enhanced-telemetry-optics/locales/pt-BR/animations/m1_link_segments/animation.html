@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Telemetria por segmento do link</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      background: #f7f9fc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    svg { display: block; width: 100vw; height: 100vh; }
+    text { letter-spacing: 0; }
+    .title { font-size: 34px; font-weight: 800; fill: #343895; }
+    .subtitle { font-size: 20px; font-weight: 700; fill: #5f6062; }
+    .node-label { font-size: 21px; font-weight: 800; fill: #ffffff; }
+    .node-small { font-size: 15px; font-weight: 700; fill: #eef0fb; }
+    .segment-label { font-size: 21px; font-weight: 800; fill: #343895; paint-order: stroke fill; stroke: #ffffff; stroke-width: 6px; stroke-linejoin: round; }
+    .card-title { font-size: 19px; font-weight: 800; fill: #343895; }
+    .card-score { font-size: 28px; font-weight: 800; fill: #1f2937; }
+    .card-note { font-size: 15px; font-weight: 700; fill: #5f6062; }
+    .status { font-size: 25px; font-weight: 800; fill: #1f2937; }
+  </style>
+</head>
+<body data-duration-ms="16000" data-poster-ms="14000">
+<svg viewBox="0 0 1280 720" role="img" aria-label="Animação silenciosa dos segmentos elétricos do switch, ópticos e elétricos do host para localização por telemetria.">
+  <defs>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#1f2937" flood-opacity="0.14"></feDropShadow>
+    </filter>
+    <filter id="glow-green" x="-160%" y="-160%" width="420%" height="420%">
+      <feGaussianBlur stdDeviation="7" result="blur"></feGaussianBlur>
+      <feFlood flood-color="#8dc63f" flood-opacity="0.85"></feFlood>
+      <feComposite in2="blur" operator="in"></feComposite>
+      <feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+    </filter>
+    <filter id="glow-amber" x="-160%" y="-160%" width="420%" height="420%">
+      <feGaussianBlur stdDeviation="8" result="blur"></feGaussianBlur>
+      <feFlood flood-color="#d88911" flood-opacity="0.85"></feFlood>
+      <feComposite in2="blur" operator="in"></feComposite>
+      <feMerge><feMergeNode></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1280" height="720" fill="#f7f9fc"></rect>
+  <rect x="34" y="28" width="1212" height="664" rx="24" fill="#ffffff" stroke="#d7dde8" stroke-width="2" filter="url(#shadow)"></rect>
+  <text x="640" y="82" text-anchor="middle" class="title">Três interfaces, seis sentidos</text>
+  <text id="subtitle" x="640" y="114" text-anchor="middle" class="subtitle">A telemetria mantém separadas as evidências elétricas e ópticas.</text>
+
+  <g id="fabric" transform="translate(0 12)">
+    <g id="switch-node">
+      <rect x="76" y="238" width="190" height="150" rx="22" fill="#343895" filter="url(#shadow)"></rect>
+      <text x="171" y="294" text-anchor="middle" class="node-label">Switch</text>
+      <text x="171" y="323" text-anchor="middle" class="node-small">host elétrico</text>
+      <rect x="116" y="342" width="110" height="18" rx="9" fill="#eef0fb" opacity="0.95"></rect>
+    </g>
+    <g id="local-module">
+      <rect x="328" y="220" width="178" height="186" rx="18" fill="#eef0fb" stroke="#343895" stroke-width="5" filter="url(#shadow)"></rect>
+      <rect x="358" y="249" width="118" height="58" rx="12" fill="#343895"></rect>
+      <text x="417" y="284" text-anchor="middle" class="node-label">Módulo</text>
+      <text x="417" y="333" text-anchor="middle" class="segment-label">local</text>
+      <circle cx="417" cy="366" r="11" fill="#8dc63f"></circle>
+    </g>
+    <g id="remote-module">
+      <rect x="774" y="220" width="178" height="186" rx="18" fill="#eef7f9" stroke="#00a7c4" stroke-width="5" filter="url(#shadow)"></rect>
+      <rect x="804" y="249" width="118" height="58" rx="12" fill="#343895"></rect>
+      <text x="863" y="284" text-anchor="middle" class="node-label">Módulo</text>
+      <text x="863" y="333" text-anchor="middle" class="segment-label">remoto</text>
+      <circle cx="863" cy="366" r="11" fill="#00a7c4"></circle>
+    </g>
+    <g id="host-node">
+      <rect x="1014" y="238" width="190" height="150" rx="22" fill="#343895" filter="url(#shadow)"></rect>
+      <text x="1109" y="294" text-anchor="middle" class="node-label">Host</text>
+      <text x="1109" y="323" text-anchor="middle" class="node-small">receptor elétrico</text>
+      <rect x="1054" y="342" width="110" height="18" rx="9" fill="#eef0fb" opacity="0.95"></rect>
+    </g>
+
+    <path id="seg-switch" d="M266 313 H328" fill="none" stroke="#8dc63f" stroke-width="13" stroke-linecap="round" opacity="0.38"></path>
+    <path id="seg-optical" d="M506 313 C600 228 680 228 774 313" fill="none" stroke="#8dc63f" stroke-width="13" stroke-linecap="round" opacity="0.38"></path>
+    <path id="seg-host" d="M952 313 H1014" fill="none" stroke="#8dc63f" stroke-width="13" stroke-linecap="round" opacity="0.38"></path>
+    <path id="return-optical" d="M774 347 C680 432 600 432 506 347" fill="none" stroke="#00a7c4" stroke-width="9" stroke-linecap="round" opacity="0.24"></path>
+
+    <text x="297" y="180" text-anchor="middle" class="segment-label">Elétrico do switch</text>
+    <text x="640" y="170" text-anchor="middle" class="segment-label">Caminho óptico</text>
+    <text x="983" y="180" text-anchor="middle" class="segment-label">Elétrico do host</text>
+
+    <rect id="highlight-switch" x="66" y="206" width="452" height="226" rx="28" fill="none" stroke="#8dc63f" stroke-width="6" opacity="0"></rect>
+    <rect id="highlight-optical" x="480" y="190" width="320" height="268" rx="38" fill="none" stroke="#d88911" stroke-width="7" opacity="0"></rect>
+    <rect id="highlight-host" x="760" y="206" width="454" height="226" rx="28" fill="none" stroke="#00a7c4" stroke-width="6" opacity="0"></rect>
+
+    <g id="noise" opacity="0">
+      <circle cx="622" cy="278" r="18" fill="none" stroke="#d88911" stroke-width="6"></circle>
+      <circle cx="666" cy="285" r="13" fill="none" stroke="#d88911" stroke-width="5"></circle>
+      <path d="M600 322 l28 -24 l23 40 l31 -58" fill="none" stroke="#d88911" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+    <g id="pulses"></g>
+  </g>
+
+  <g id="cards">
+    <g id="card-switch" transform="translate(126 500)">
+      <rect width="270" height="112" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"></rect>
+      <text x="22" y="35" class="card-title">Elétrico do switch</text>
+      <text id="score-switch" x="22" y="75" class="card-score">OK</text>
+      <rect x="130" y="58" width="110" height="14" rx="7" fill="#dce2ea"></rect>
+      <rect id="bar-switch" x="130" y="58" width="106" height="14" rx="7" fill="#8dc63f"></rect>
+      <text x="22" y="99" class="card-note">evidência local</text>
+    </g>
+    <g id="card-optical" transform="translate(505 500)">
+      <rect id="card-optical-bg" width="270" height="112" rx="16" fill="#f4faef" stroke="#8dc63f" stroke-width="3"></rect>
+      <text x="22" y="35" class="card-title">Caminho óptico</text>
+      <text id="score-optical" x="22" y="75" class="card-score">OK</text>
+      <rect x="130" y="58" width="110" height="14" rx="7" fill="#dce2ea"></rect>
+      <rect id="bar-optical" x="130" y="58" width="106" height="14" rx="7" fill="#8dc63f"></rect>
+      <text id="note-optical" x="22" y="99" class="card-note">segmento central</text>
+    </g>
+    <g id="card-host" transform="translate(884 500)">
+      <rect width="270" height="112" rx="16" fill="#eef7f9" stroke="#00a7c4" stroke-width="3"></rect>
+      <text x="22" y="35" class="card-title">Elétrico do host</text>
+      <text id="score-host" x="22" y="75" class="card-score">OK</text>
+      <rect x="130" y="58" width="110" height="14" rx="7" fill="#dce2ea"></rect>
+      <rect id="bar-host" x="130" y="58" width="106" height="14" rx="7" fill="#00a7c4"></rect>
+      <text x="22" y="99" class="card-note">evidência remota</text>
+    </g>
+  </g>
+
+  <g>
+    <rect x="206" y="630" width="868" height="48" rx="24" fill="#eef0fb" stroke="#d6dce7" stroke-width="2"></rect>
+    <text id="status" x="640" y="662" text-anchor="middle" class="status" font-size="23.84" style="font-size: 23.85px;">Siga o sinal e compare as evidências por segmento.</text>
+  </g>
+</svg>
+
+<script>
+  const NS = 'http://www.w3.org/2000/svg';
+  const duration = 16;
+  const paths = ['seg-switch', 'seg-optical', 'seg-host'].map((id) => document.getElementById(id));
+  const pulses = document.getElementById('pulses');
+  const pulseNodes = [];
+  for (let i = 0; i < 7; i += 1) {
+    const circle = document.createElementNS(NS, 'circle');
+    circle.setAttribute('r', String(Math.max(4, 12 - i * 1.05)));
+    circle.setAttribute('fill', i === 0 ? '#8dc63f' : '#b5df80');
+    circle.setAttribute('filter', 'url(#glow-green)');
+    circle.setAttribute('opacity', '0');
+    pulses.appendChild(circle);
+    pulseNodes.push(circle);
+  }
+
+  function clamp(v, min = 0, max = 1) { return Math.min(max, Math.max(min, v)); }
+  function smooth(v) { const x = clamp(v); return x * x * (3 - 2 * x); }
+  function mix(a, b, p) { return a + (b - a) * p; }
+  function windowValue(v, start, end, feather = 0.12) {
+    return clamp(Math.min(smooth((v - start) / feather), 1 - smooth((v - (end - feather)) / feather)));
+  }
+  function setOpacity(id, value) { document.getElementById(id).setAttribute('opacity', String(clamp(value))); }
+
+  function pointOnChain(progress) {
+    const weights = [0.22, 0.56, 0.22];
+    let local = progress;
+    for (let i = 0; i < paths.length; i += 1) {
+      if (local <= weights[i] || i === paths.length - 1) {
+        const p = clamp(local / weights[i]);
+        const path = paths[i];
+        return { point: path.getPointAtLength(path.getTotalLength() * p), segment: i };
+      }
+      local -= weights[i];
+    }
+    return { point: paths[2].getPointAtLength(paths[2].getTotalLength()), segment: 2 };
+  }
+
+  function setScore(score, scoreId, barId, color) {
+    document.getElementById(scoreId).textContent = score < 55 ? "BAIXO" : 'OK';
+    document.getElementById(barId).setAttribute('width', String(110 * clamp(score / 100)));
+    document.getElementById(barId).setAttribute('fill', color);
+  }
+
+  window.renderAt = function renderAt(rawTime) {
+    const t = clamp(rawTime, 0, duration);
+    const cycle = (t % 4.8) / 4.8;
+    pulseNodes.forEach((node, i) => {
+      const trailProgress = (cycle - i * 0.028 + 1) % 1;
+      const location = pointOnChain(trailProgress);
+      node.setAttribute('cx', location.point.x);
+      node.setAttribute('cy', location.point.y + 12);
+      const head = i === 0 ? 1 : 0.64 - i * 0.07;
+      node.setAttribute('opacity', String(clamp(head)));
+    });
+
+    const degrade = smooth((t - 5.6) / 0.9);
+    const confirm = windowValue(t, 10.2, 14.4, 0.8);
+    const opticalScore = mix(80, 40, degrade);
+    const opticalColor = opticalScore < 55 ? '#d88911' : '#8dc63f';
+    setScore(96, 'score-switch', 'bar-switch', '#8dc63f');
+    setScore(opticalScore, 'score-optical', 'bar-optical', opticalColor);
+    setScore(95, 'score-host', 'bar-host', '#00a7c4');
+
+    const optical = document.getElementById('seg-optical');
+    optical.setAttribute('stroke', degrade > 0.1 ? '#d88911' : '#8dc63f');
+    optical.setAttribute('opacity', String(0.38 + degrade * 0.45));
+    document.getElementById('card-optical-bg').setAttribute('fill', degrade > 0.2 ? '#fff7e8' : '#f4faef');
+    document.getElementById('card-optical-bg').setAttribute('stroke', degrade > 0.2 ? '#d88911' : '#8dc63f');
+    document.getElementById('note-optical').textContent = degrade > 0.25 ? "degradação localizada" : "segmento central";
+
+    setOpacity('highlight-switch', windowValue(t, 0.8, 4.1, 0.7));
+    setOpacity('highlight-optical', Math.max(windowValue(t, 2.8, 6.1, 0.7), degrade * 0.95));
+    setOpacity('highlight-host', Math.max(windowValue(t, 4.4, 7.4, 0.7), confirm * 0.7));
+    setOpacity('noise', degrade * (0.55 + 0.45 * Math.sin(t * Math.PI * 3) ** 2));
+
+    let status = "Siga o sinal e compare as evidências por segmento.";
+    if (t >= 1.0 && t < 3.2) status = "A telemetria local cobre o segmento elétrico entre switch e módulo.";
+    else if (t >= 3.2 && t < 5.5) status = "O caminho óptico é um segmento monitorado separado.";
+    else if (t >= 5.5 && t < 8.8) status = "Interfaces saudáveis não devem ocultar um segmento óptico degradado.";
+    else if (t >= 8.8 && t < 12.8) status = "Evidências remotas ajudam a localizar a causa, não apenas o sintoma.";
+    else if (t >= 12.8) status = "O resultado é um caminho para comparar, não uma peça a culpar primeiro.";
+    document.getElementById('status').textContent = status;
+  };
+
+  window.renderAt(0);
+</script>
+
+
+
+
+</body></html>

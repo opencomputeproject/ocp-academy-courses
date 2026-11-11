@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>最低類別鏈路健康評分</title>
+  <style>
+@font-face{font-family:AcademyZhTW;src:url("../../assets/fonts/NotoSansTC-zh-TW.woff2") format("woff2");font-weight:100 900;font-display:block;}
+
+
+
+    * { box-sizing: border-box; }
+    html, body { width:100vw; height:100vh; margin:0; overflow:hidden; background:#fff; font-family:AcademyZhTW,"PingFang TC","Microsoft JhengHei",sans-serif; }
+    svg { display:block; width:100vw; height:100vh; }
+    text { letter-spacing:0; }
+    .healthyPhase { animation:healthyPhase 18s linear both; }
+    .warning { animation:warning 18s linear both; }
+    .critical { animation:critical 18s linear both; }
+    @keyframes healthyPhase { 0%,22.21% {opacity:1} 22.22%,100% {opacity:0} }
+    @keyframes warning { 0%,22.21% {opacity:0} 22.22%,44.43% {opacity:1} 44.44%,100% {opacity:0} }
+    @keyframes critical { 0%,44.43% {opacity:0} 44.44%,100% {opacity:1} }
+  </style>
+</head>
+<body data-duration-ms="18000" data-poster-ms="14000">
+<svg viewBox="0 0 1920 1080" role="img" aria-label="部分介質側類別的評分為 80、60 或 40；報告評分取最低值，而非平均值。">
+  <rect width="1920" height="1080" fill="#fff"/>
+  <g text-anchor="middle" fill="#343895">
+    <text x="960" y="95" font-size="54" font-weight="700">最弱類別決定健康評分</text>
+    <text x="960" y="151" font-size="32" fill="#5f6062">部分介質側類別 - 規定評分區間：80 / 60 / 40</text>
+    <g font-size="34" font-weight="700">
+      <rect x="90" y="234" width="320" height="280" rx="8" fill="#eff8e9" stroke="#6fa030" stroke-width="3"/>
+      <text x="250" y="292">SNR</text><text x="250" y="389" font-size="76">80</text>
+      <rect x="470" y="234" width="320" height="280" rx="8" fill="#eff8e9" stroke="#6fa030" stroke-width="3"/>
+      <text x="630" y="292">眼高</text><text x="630" y="389" font-size="76">80</text>
+      <rect x="850" y="234" width="320" height="280" rx="8" fill="#eff8e9" stroke="#6fa030" stroke-width="3"/>
+      <rect class="warning" x="850" y="234" width="320" height="280" rx="8" fill="#fff7df" stroke="#a77710" stroke-width="4"/>
+      <rect class="critical" x="850" y="234" width="320" height="280" rx="8" fill="#fff0eb" stroke="#b34524" stroke-width="4"/>
+      <text x="1010" y="292">Pre-FEC BER</text>
+      <text class="healthyPhase" x="1010" y="389" font-size="76">80</text>
+      <text class="warning" x="1010" y="389" font-size="76" fill="#8a620c">60</text>
+      <text class="critical" x="1010" y="389" font-size="76" fill="#b34524">40</text>
+      <rect x="1230" y="234" width="280" height="280" rx="8" fill="#eff8e9" stroke="#6fa030" stroke-width="3"/>
+      <text x="1370" y="292">MPI</text><text x="1370" y="389" font-size="76">80</text>
+      <rect x="1570" y="234" width="260" height="280" rx="8" fill="#eff8e9" stroke="#6fa030" stroke-width="3"/>
+      <text x="1700" y="292">模組旗標</text><text x="1700" y="389" font-size="76">80</text>
+    </g>
+    <g font-size="27" fill="#5f6062">
+      <text x="250" y="462">訊號裕量</text><text x="630" y="462">接收器裕量</text>
+      <text x="1010" y="462">錯誤狀態</text><text x="1370" y="462">光學干擾</text><text x="1700" y="462">無告警</text>
+    </g>
+    <rect x="290" y="615" width="550" height="258" rx="8" fill="#eef0fb" stroke="#343895" stroke-width="3"/>
+    <text x="565" y="671" font-size="35" font-weight="700">簡單平均值</text>
+    <text class="healthyPhase" x="565" y="789" font-size="100" font-weight="700">80</text>
+    <text class="warning" x="565" y="789" font-size="100" font-weight="700">76</text>
+    <text class="critical" x="565" y="789" font-size="100" font-weight="700">72</text>
+    <text x="565" y="838" font-size="27" fill="#5f6062">並非報告評分</text>
+    <rect x="1080" y="615" width="550" height="258" rx="8" fill="#eff8e9" stroke="#6fa030" stroke-width="3"/>
+    <rect class="warning" x="1080" y="615" width="550" height="258" rx="8" fill="#fff7df" stroke="#a77710" stroke-width="4"/>
+    <rect class="critical" x="1080" y="615" width="550" height="258" rx="8" fill="#fff0eb" stroke="#b34524" stroke-width="4"/>
+    <text x="1355" y="671" font-size="35" font-weight="700">報告的最低值</text>
+    <text class="healthyPhase" x="1355" y="789" font-size="100" font-weight="700">80</text>
+    <text class="warning" x="1355" y="789" font-size="100" font-weight="700" fill="#8a620c">60</text>
+    <text class="critical" x="1355" y="789" font-size="100" font-weight="700" fill="#b34524">40</text>
+    <text x="1355" y="838" font-size="27" fill="#5f6062">深入檢視最低評分類別</text>
+    <text x="960" y="752" font-size="43" font-weight="700">對比</text>
+    <g font-size="35" font-weight="700">
+      <text class="healthyPhase" x="960" y="972">起始時，受支援類別均健康。</text>
+      <text class="warning" x="960" y="972">BER 類別評分降至 60 分，整體最低評分也隨之降低。</text>
+      <text class="critical" x="960" y="972">嚴重 BER 狀態使最低值降至 40 分。</text>
+    </g>
+  </g>
+</svg>
+</body>
+</html>

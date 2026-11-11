@@ -1,0 +1,12 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; SNR -> S N R; BER -> B E R; FEC -> F E C; DSP -> D S P
+A configuração muda como o módulo avalia uma condição e como pode responder a ela. Mantenha essas duas escolhas separadas.
+
+O controle de limiares, comando 8004h, lê ou define dois limites de pontuação para nível de faixa FEC, B E R pré-FEC, S N R e altura do diagrama de olho. Os limites separam as faixas de pontuação oitenta, sessenta e quarenta.
+
+O sentido da comparação depende da métrica. B E R mais alta é pior. S N R e altura do olho mais altas são melhores. Os limiares se aplicam ao módulo selecionado, e indicadores de eventos ou sinalizadores de status não são categorias com limiares de pontuação programáveis por esse comando.
+
+O desligamento autônomo usa o comando 8005h. Ele fica desativado por padrão após reinicialização do módulo ou da alimentação. Quando habilitado e acionado por uma condição não saudável, leva o módulo ao estado de falha.
+
+O módulo informa a causa de falha 26h e registra o evento 000Ch. Os detalhes identificam o lado afetado, a porta do datapath, a categoria e o valor da métrica. Essa evidência ajuda a distinguir uma resposta configurada de uma queda de link sem explicação.
+
+Antes da qualificação ou da análise de um incidente, leia novamente os limiares efetivos e o estado do desligamento. A configuração faz parte das evidências, não é apenas informação de contexto.

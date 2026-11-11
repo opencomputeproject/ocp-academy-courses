@@ -54,7 +54,10 @@ try {
   check('No tile anchors, tabindex or status elements', await page.locator('a.module-card,.module-card[tabindex],.module-card .status,.module-card.completed').count(), 0);
   check('Exact authored Syllabus instruction', await page.locator('#lmsNavNote').innerText(), course.index_navigation_instruction || 'Navigate modules in any order using the Syllabus in the left sidebar.');
   check('Syllabus instruction matches normal tile body size', await styles('#lmsNavNote', ['fontSize']), await styles('.module-info p', ['fontSize']));
-  check('Exact start label', await page.locator('.index-start-label').innerText(), 'Start with MODULE 1');
+  const firstModule = course.modules[0].id;
+  const expectedStartLabel = course.index_start?.label ||
+    (course.ui_labels?.start_with_module || 'Start with MODULE {module}').replace('{module}', firstModule);
+  check('Exact start label', await page.locator('.index-start-label').innerText(), expectedStartLabel);
   check('Start label uses OCP indigo', await styles('.index-start-label', ['color']), {color: 'rgb(52, 56, 149)'});
   const card = page.locator('.module-card').first();
   await card.hover();
@@ -100,10 +103,10 @@ try {
     await page.keyboard.press('ArrowRight');
     check(`M${m} saves each visited slide`, await page.evaluate(() => testCalls.filter(c => c[0] === 'set' && c[1] === 'cmi.core.lesson_location')), [3,4,5].map(s => ['set', 'cmi.core.lesson_location', `module${m}:slide${s}`]));
     if (course.scorm?.organization === 'single-sco' || course.scorm?.navigation === 'direct' || course.scorm?.compatibility_profile) {
-      check(`M${m} keeps approved course-home link`, await page.getByRole('link', {name:'Course home', exact:true}).getAttribute('href'), 'index.html');
+      check(`M${m} keeps approved course-home link`, await page.getByRole('link', {name:course.ui_labels?.course_home || 'Course home', exact:true}).getAttribute('href'), 'index.html');
     } else {
       check(`M${m} keeps its course mark`, await page.locator('.module-badge-logo img').count(), 1);
-      check(`M${m} does not imply a direct LMS home handoff`, await page.getByRole('link', {name:'Course home', exact:true}).count(), 0);
+      check(`M${m} does not imply a direct LMS home handoff`, await page.getByRole('link', {name:course.ui_labels?.course_home || 'Course home', exact:true}).count(), 0);
     }
   }
   check('No JavaScript errors', errors, []);

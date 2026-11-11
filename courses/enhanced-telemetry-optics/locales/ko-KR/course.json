@@ -1,0 +1,3329 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_networking_project_optics_reliability_ko_kr",
+  "course_title": "향상된 광학 텔레메트리",
+  "language": "ko-KR",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+    "voice_name": "Chris - Warm and clear",
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR",
+      "migration_decision": "mp3"
+    },
+    "model_id": "eleven_v4",
+    "speed": 1.18,
+    "recording_provenance": "Every delivered recording uses full eleven_v4; verified v4 masters are reused when the script, voice and audio hashes match."
+  },
+  "course_subtitle": "AI 광 패브릭에서 무엇이 어디서 왜 고장났는지 파악하기 위한 향상된 텔레메트리.",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "향상된 텔레메트리 명세 v1.0.0",
+  "index_footer_line": "OCP Networking Project 광학 신뢰성 워크스트림: 향상된 텔레메트리 명세 v1.0.0 - 2026",
+  "target_duration_minutes": 50,
+  "audience_level": "중급 기술",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "ocp_optics_reliability_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "OPTICS"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP 아카데미"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "kind": "pdf",
+      "version": "1.0.0"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "pmd",
+      "term": "PMD",
+      "tooltip": "광모듈 경로의 물리 매체 종속 구현 세부사항입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "cmis",
+      "term": "CMIS",
+      "tooltip": "플러거블 트랜시버 관리에 사용되는 공통 관리 인터페이스 명세입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "i2c",
+      "term": "I2C",
+      "tooltip": "호스트가 로컬 트랜시버와 통신할 때 사용하는 2선식 로컬 관리 인터페이스입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "aliases": [
+        "I squared C"
+      ]
+    },
+    {
+      "id": "vdm",
+      "term": "VDM",
+      "tooltip": "여러 모듈 텔레메트리 값을 제공하는 CMIS의 다목적 진단 모니터링 페이지입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "snr",
+      "term": "SNR",
+      "tooltip": "신호 대 잡음비: 호스트 및 라인 레인의 신호 품질을 나타내는 측정값입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "fec",
+      "term": "FEC",
+      "tooltip": "순방향 오류 정정: 링크 스트레스와 정정 불가능한 장애를 파악하는 데 사용하는 오류 정정 동작입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "aliases": [
+        "feck"
+      ]
+    },
+    {
+      "id": "ber",
+      "term": "BER",
+      "tooltip": "비트 오류율: 오류 비트 수를 전체 전송 비트 수와 비교하여 링크 품질을 정량화한 값입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "ddmi",
+      "term": "DDMI",
+      "tooltip": "모듈이 보고하는 디지털 진단 모니터링 인터페이스 값과 경고 또는 알람 플래그입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "cdb",
+      "term": "CDB",
+      "tooltip": "명령 데이터 블록: 텔레메트리 수집과 전송에 사용하는 CMIS 명령-응답 메커니즘입니다.",
+      "reference_label": "향상된 광학 텔레메트리 명세 v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "the_ai_fabric_visibility_problem",
+      "title": "AI 패브릭 가시성 문제",
+      "subtitle": "로컬 및 원격 광학 엔드포인트를 위한 운영 모델로서의 향상된 텔레메트리.",
+      "module_badge_text": "모듈 1",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "the_ai_fabric_visibility_problem",
+          "title": "AI 패브릭 가시성 문제",
+          "subtitle": "로컬과 원격 엔드포인트 전반에서 광 링크 문제를 찾기 위한 향상된 텔레메트리.",
+          "version_chip": "향상된 텔레메트리 명세 v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                12
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.txt",
+            "wav_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "c0c7f4724dcf06c23104fb60eb1b7a37c00a780dbc172140498c25f60134bbb7",
+              "master_sha256": "fc2b9464567427a03386b83db1cf6711b2ad4bd5b91268e1da86636859ff3e24",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "ae52acc8301e41f1c99271d3e95df4442be497897d21f3a08241c0dd4b1f5884",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "향상된 광학 텔레메트리에 오신 것을 환영합니다. 이 과정는 실용적인 운영 질문에 관한 것입니다: 대규모 AI 네트워크에서 광 링크 상태가 변할 때, 무엇이 고장났는지, 어디서 고장났는지, 그리고 다음 행동을 가리키는 증거는 어떻게 찾을 수 있을까요?\n\n기술적 기반으로 향상된 광학 텔레메트리 소프트웨어 명세을 사용할 것입니다. 목표는 모든 레지스터 테이블을 외우는 것이 아닙니다. 목표는 가시성 모델을 이해하는 것입니다: 준수하는 트랜시버가 보고하는 내용, 호스트 소프트웨어가 이를 어떻게 요구하는지, 그리고 그 신호들이 어떻게 대규모 장비군의 신뢰성 워크플로우로 발전할 수 있는지.\n이미 네트워크를 운영하는 학습자들에게는 이를 번역 계층으로 간주하세요. 링크 불확실성이 얼마나 비용이 많이 들 수 있는지 아실 겁니다. 이 과정는 데이터 경로에 이름과 구조를 제공하여 불확실성을 줄일 수 있도록 합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "the_reliability_questions_this_course_answers",
+          "title": "이 과정이 답하는 신뢰성 질문들",
+          "subtitle": "네 개의 모듈은 운영 문제에서 배포 가능한 호스트 워크플로우로 이동합니다.",
+          "modules_listed": [
+            "AI 패브릭 가시성 문제",
+            "지표, 플래그, 링크 상태",
+            "CDB 워크플로우, 이벤트 로그, 원격 액세스",
+            "펌웨어, 호스트 소프트웨어, 배포 준비"
+          ],
+          "chips": [
+            {
+              "text": "총 약 50분"
+            },
+            {
+              "text": "중급 기술 학습자 대상"
+            },
+            {
+              "text": "OCP 명세 v1.0.0"
+            },
+            {
+              "text": "Credo 작성, Cisco·Credo·Marvell·Oracle의 커뮤니티 의견 반영"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 범위 및 운영 모델 - 10-12쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=10"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                8,
+                10,
+                11,
+                12
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.txt",
+            "wav_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "1f6c03696c886fb6a5910f05dcb90f6284e19fdf2a6da8935f9d3d04e2086ebf",
+              "master_sha256": "0d9a9a478acb3acd27254e56375b8e0c9980e2e9a722287ed7afc4ebae9be459",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "a29822211177da3cb41597fc9ee6611632158fa496a4f46806b7b5f775f0be60",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "향상된 광학 텔레메트리 과정에서는 광 링크 신뢰성을 위한 OCP Networking Project의 공통 운영 모델을 학습합니다. 이 명세는 Credo의 Chris Collins가 작성했으며, Cisco, Credo, Marvell 및 Oracle의 커뮤니티 의견 기여를 인정하고 있습니다.\n\n과정은 네 부분으로 구성됩니다. 먼저 스위치 포트, 트랜시버 모듈, 광섬유 경로, 그리고 베어메탈 서버 내부에 있을 수도 있는 원격 엔드포인트 전반의 가시성 공백을 살펴봅니다.\n\n둘째, 신호 품질, 오류, 복구 동작, 환경 및 식별 정보를 검토합니다. 이러한 측정값을 측별 상태 점수, 플래그, 카운터 마스크 및 설정된 모듈 동작과 연결합니다.\n\n셋째, 증거를 전달하는 명령-응답 워크플로우를 추적합니다. 여기에는 CDB, 타임스탬프가 있는 이벤트 로그 및 원격 CMIS 레지스터 접근이 포함됩니다.\n\n마지막으로 텔레메트리를 펌웨어 유지보수, 호스트 API, 동기화된 시간 및 배포 점검과 연결합니다. 이 정보가 운영자가 문제의 위치를 찾고 다음 조치를 선택하는 데 도움이 되는지 계속 생각해 보세요. 그것이 공통 인터페이스의 목적입니다.",
+          "term_refs": []
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "link_flaps_become_fabric_scale_events",
+          "section_label": "운영 동인",
+          "title": "링크 플랩이 네트워크 규모의 이벤트로 전환됨",
+          "subtitle": "하나의 로컬 증상에 원격 원인이 있을 수 있어, 대규모 AI 패브릭에서는 광학 사각지대의 비용이 커집니다.",
+          "bullets": [
+            {
+              "bold_lead": "더 많은 엔드포인트",
+              "text": "네트워크는 많은 가속기, 스위치, 광 기술, 서버 엔드포인트를 연결하기 때문에, 한 가지 물리적 증상이 여러 소유권 경계를 넘을 수 있습니다."
+            },
+            {
+              "bold_lead": "직접 접근이 제한됩니다",
+              "text": "베어메탈 또는 원격 종단점은 스위치 경보를 보는 운영자에게 반대편 광학 모듈을 숨길 수 있습니다."
+            },
+            {
+              "bold_lead": "더 높은 가동 중단 비용",
+              "text": "링크 플랩은 예측 가능한 네트워크 상태에 의존하는 학습, 검증 또는 서비스 워크플로우를 중단시킬 수 있습니다."
+            },
+            {
+              "bold_lead": "공통 증거의 필요성",
+              "text": "운영자는 대규모로 증상을 비교하기 전에 공급업체와 폼팩터 간에 일관된 텔레메트리가 필요합니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                11
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.txt",
+            "wav_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "bd843b40f9af7436668955ea68222825b533f040c1cae6b3dc2872668ed67d74",
+              "master_sha256": "02ceb04c59399cd72be0137f4dd5bc3b7c6f33f7d06e088707ed5edc52b47947",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "3dcdab3dbdf2568095fde77952edf1708be8b6e5b389f9c8ff4a4f58f2c589eb",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "링크 플랩은 이름 붙이기 쉽지만 진단하기는 어렵습니다. 스위치는 링크 상태가 바뀌었다고 알려주지만, 증거는 여러 곳에 있을 수 있습니다. 모듈의 스위치 쪽 전기 쪽에 있을 수도 있습니다. 광 경로에 있을 수도 있어요. 원격 엔드포인트의 호스트 쪽 전기 쪽에 있을 수도 있습니다.\n\nAI 네트워크에서는 링크 수, 트래픽 결합, 운영 압력이 모두 함께 증가하면서 그 격차가 더 커집니다. 로컬 알람은 로컬 모듈, 원격 모듈, 광섬유 경로, 호스트 수신기 또는 임계값 이벤트가 문제를 일으켰는지 자동으로 설명하지 않습니다.\n\n이 명세는 공통 텔레메트리 모델을 준수하는 광학 기술과 호스트 소프트웨어에 적용함으로써 대응합니다. 이는 운영자들에게 단순히 벤더별 디버그 명령어의 집합이 아니라 링크 상태을 위한 공유 언어를 제공합니다.\n이것은 팀이 협업하는 방식에도 변화를 가져갑니다. 스위치 소프트웨어 팀, 광학 기술 공급업체, 자격 시험 실험실, 운영 팀 모두 동일한 고장을 보고도 서로 다른 도구를 사용할 수 있습니다. 공통 텔레메트리는 그들에게 공유 증거 계층을 제공합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "the_three_part_software_stack",
+          "section_label": "소프트웨어 스택",
+          "title": "3단계 소프트웨어 스택",
+          "subtitle": "이 명세는 시스템을 트랜시버 구현, 호스트 소프트웨어, 텔레메트리-서버 통합으로 구분합니다.",
+          "bullets": [
+            {
+              "bold_lead": "트랜시버 펌웨어 및 지표",
+              "text": "모듈은 텔레메트리를 수집하고 이벤트 이력을 유지하며, 로컬 및 원격 작업을 위한 공통 명령 인터페이스를 제공합니다."
+            },
+            {
+              "bold_lead": "스위치의 호스트 소프트웨어",
+              "text": "호스트는 모듈을 폴링하고, 로컬 또는 원격 데이터를 요청하며, SDK나 명령줄 도구를 통해 운영 결과를 준비합니다."
+            },
+            {
+              "bold_lead": "텔레메트리-서버 통합",
+              "text": "서버는 전체 네트워크 상태를 종합하고 요약할 수 있지만, 구현은 사용자 의존적이며 명세 범위 밖에 있습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/software_stack.svg",
+            "alt": "트랜시버 펌웨어부터 호스트 소프트웨어, 텔레메트리 서버까지 3부분 텔레메트리 소프트웨어 스택.",
+            "caption": "이 명세는 트랜시버 동작과 호스트 소프트웨어와의 공통 인터페이스에 중점을 둡니다; 텔레메트리 서버 설계는 의도적으로 운영자에게 맡겨집니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "37ec98ed0683e41dd3f833e824f6dfaf95693816bf3947f5e315d4860afc909e",
+              "entries": [
+                {
+                  "text": "텔레메트리 소프트웨어 스택 | 트랜시버 | 펌웨어 | 지표 | 이벤트 로그 | 스위치 호스트 | 소프트웨어 | 폴링 | 운영 API | 텔레메트리 | 서버 | 패브릭 상태 | 맵 | 모듈 데이터와 대규모 장비 운영을 위한 공통 인터페이스"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_the_three_part_software_stack.txt",
+            "wav_file": "audio/module1/slide_04_the_three_part_software_stack.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_04_the_three_part_software_stack.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "185415634616b9d52a057e8b5ea028d821c77124ce90ac73c3de7b777666ccde",
+              "master_sha256": "3d2bec319b58ce525aac9cf1a60e556e77851b22f0a3a2c0c1ee07db7860eca0",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "9afd252d03b232b77fa85f7ba911f8a9f2d16ce59774167a9c8c42d835f544df",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "공통 신뢰성 워크플로우는 세 계층으로 구성됩니다. 트랜시버는 로컬 및 원격 증거를 제공하는 데 필요한 펌웨어, 측정, 이벤트 이력 및 명령 동작을 구현합니다.\n\n일반적으로 스위치에서 실행되는 호스트 소프트웨어는 모듈의 지원 기능을 탐색하고, 데이터를 요청하고, 명령 결과를 확인하며, 운영 도구에 전달할 출력을 준비합니다. 요청한 정보가 원격 링크 파트너에서 오더라도 호스트는 로컬 제어 지점으로 유지됩니다.\n\n그 위의 텔레메트리 서버 소프트웨어는 네트워크 상태를 수집하고 요약하여 보고할 수 있습니다. 구현 방식은 운영자에 따라 달라집니다. 명세는 특정 모니터링 서버 설계를 의무화하는 대신 모듈 동작과 공통 호스트 인터페이스를 정의합니다.\n\n이러한 역할 분담은 통합 과정에서 중요합니다. 공급업체는 모듈 인터페이스를 구현하고, 스위치 팀은 수집 기능을 구현하며, 운영자는 배포 환경에 맞는 집계 도구를 선택할 수 있습니다. 공통 경계가 있기에 이러한 선택들이 함께 작동할 수 있습니다.\n\n장애가 발생했을 때도 같은 계층을 따라가세요. 모듈에 증거가 존재하는지, 호스트가 올바르게 가져왔는지, 모니터링 시스템이 그 맥락을 보존했는지 확인합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 5,
+          "type": "content_bullets",
+          "slug": "what_the_specification_includes_and_excludes",
+          "section_label": "범위",
+          "title": "명세에 포함 및 제외되는 내용",
+          "subtitle": "이 기여는 모든 모니터링 시스템을 소유하려는 시도 없이 일반적인 텔레메트리 동작을 목표로 합니다.",
+          "bullets": [
+            {
+              "bold_lead": "적용 속도",
+              "text": "이 명세는 400G, 800G, 1.6T를 준수하는 트랜시버에 적용됩니다."
+            },
+            {
+              "bold_lead": "PMD 독립적",
+              "text": "텔레메트리 모델은 모듈의 물리적 매체 의존 구현과 독립적으로 설계되었습니다."
+            },
+            {
+              "bold_lead": "CMIS를 기반으로 구축됨",
+              "text": "이 명세는 OIF CMIS 5.x 기능을 사용하며, 향상된 텔레메트리을 위한 정의 및 수정을 추가합니다."
+            },
+            {
+              "bold_lead": "서버 구현은 개방적입니다",
+              "text": "텔레메트리 서버 구현은 사용자 의존적이며 문서의 범위 내에 포함되지 않습니다."
+            }
+          ],
+          "term_refs": [
+            "pmd",
+            "cmis"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.txt",
+            "wav_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "5cf779dfe4dd37119ced52dfb7671923e4ccf645fb0fd85d7b0cca59dd641883",
+              "master_sha256": "33883f56451cd6e844b305d3e287b2072c096a5fd81ab8672d5ea95092d845a6",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "3bc76ac92e15cc872c8ce973c36745d399a558abe4e4da95f462c8b6b3bed80d",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 범위 - 10쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=10"
+            }
+          ],
+          "transcript": "스코프는 여기서 유용한 일을 하고 있습니다. 이 명세는 호환 가능한 400G, 800G, 1.6T 트랜시버에 적용되며, 모듈 P M D, 즉 물리-매체 의존적 구현에 독립적으로 적용되도록 설계되었습니다. 즉, 텔레메트리 인터페이스는 단일 광학 구현 세부 사항에 의존해서는 안 됩니다.\n\n이 명세는 또한 OIF의 공통 관리 인터페이스 명세인 C M I S를 기반으로 합니다. 이 기술이 C M I S를 대체하지는 않습니다. 이 기능은 C M I S 기능을 사용하며, 광학 기술 원격 측정이 운영 질문에 보다 일관되게 답변할 수 있도록 특정 정의와 수정을 추가합니다.\n\n제외 조항도 중요합니다. 텔레메트리 서버는 범위 밖에 있습니다. 이로 인해 운영자는 트랜시버 경계의 공통 인터페이스를 약화시키지 않으면서도 모듈과 호스트 데이터를 자체 관측 스택에 통합할 수 있습니다.\n스코프 컨트롤은 약점이 아닙니다. 이것이 기여를 실행 가능하게 만드는 요소입니다. 인터페이스를 표준화하면서 상위 서버 설계는 열어두면서, 모델은 하나의 관측 스택을 강요하지 않고 다양한 운영자 환경에 적합할 수 있습니다."
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "six_functions_of_a_compliant_transceiver",
+          "section_label": "핵심 기능",
+          "title": "준수 트랜시버의 여섯 가지 기능",
+          "subtitle": "이 명세는 원시 모듈 데이터를 운영을 위한 공통 가시성 모델로 전환합니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "미션 모드 모니터링",
+              "body": "링크가 서비스 중인 동안 호스트 및 라인 방향 수신기의 통계를 수집합니다."
+            },
+            {
+              "title": "링크 상태 보고",
+              "body": "고립된 카운터가 아니라 공통 상태 지표를 통해 텔레메트리를 추적하고 기록하세요."
+            },
+            {
+              "title": "원격 식별",
+              "body": "링크 양 끝의 트랜시버 간에 데이터를 교환하기 위해 인밴드 통신을 사용합니다."
+            },
+            {
+              "title": "이벤트 기록",
+              "body": "비휘발성 모듈 메모리에 중요한 이벤트를 알리고, 타임스탬프를 찍으며, 보존합니다."
+            },
+            {
+              "title": "히트리스 펌웨어 업데이트",
+              "body": "지원 기능 탐색과 명령 상태 확인을 통해 로컬 및 원격 트랜시버의 히트리스 펌웨어 유지보수를 지원합니다."
+            },
+            {
+              "title": "호스트 수집",
+              "body": "스위치 소프트웨어를 활성화하여 텔레메트리를 수집하고 텔레메트리 서버로 스트리밍할 준비를 합니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                11,
+                13,
+                14,
+                15
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.txt",
+            "wav_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "4dd2e5f88b388b46d3806f863b2283ae7cbf84593cea4a31dc9d3431f1f2b92e",
+              "master_sha256": "9725bd30d177ef6a78fdd4fdf4f9cf0dc43c87f1a76862a7c28e9f154c4a0fff",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "5a04171bdd0e5c6fc3663143d3e602b3c24cc1934bcf1b4a388bda045e269047",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "transcript": "개요에서는 우리가 염두에 두어야 할 여섯 가지 기능을 제시합니다. 첫째, 준수 트랜시버는 미션 모드에서 링크를 모니터링하는데, 이는 링크가 유용한 작업을 수행하는 동안 모듈이 통계를 수집한다는 의미입니다.\n\n둘째, 모듈은 공통 지표를 통해 링크 상태를 보고하고 시간에 따른 텔레메트리를 추적합니다. 셋째, 이 모듈은 링크의 양 끝이 서로를 식별하고 데이터를 교환할 수 있도록 투명한 인밴드 통신을 지원합니다.\n\n넷째, 모듈은 비휘발성 메모리에 이벤트를 알리고 기록할 수 있습니다. 다섯째, 로컬 및 원격 트랜시버에서 히트리스 펌웨어 업데이트를 지원합니다. 여섯째, 스위치 소프트웨어는 모듈 텔레메트리를 수집하여 서버로 스트리밍할 준비를 할 수 있습니다.\n\n이 기능들은 측정, 점수 매김, 최종 도달, 스토리 보존, 안전하게 업데이트, 운영 시스템에 공급하는 사슬로 기억하기 가장 쉽습니다.\n이 기능들 중 어느 것도 독립적으로 작동하지 않는다는 점을 주목하세요. 기록 없이 모니터링하면 기록이 사라집니다. 원격 연결 없이 기록하면 엔드포인트 맥락을 잃게 됩니다. 상태 피드백 없이 펌웨어를 업데이트하면 위험이 커집니다. 신뢰성은 이 여섯 기능이 함께 작동할 때 확보됩니다.",
+          "term_refs": []
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "a_link_is_more_than_one_fiber_path",
+          "section_label": "링크 모델",
+          "title": "링크는 광섬유 경로만으로 이루어지지 않습니다",
+          "figure": {
+            "path": "figures/link_segments_telemetry.mp4",
+            "media_type": "video",
+            "alt": "텔레메트리 위치 지정과 함께 스위치 전기, 광학, 호스트 전기 링크 구간을 보여주는 무음 애니메이션.",
+            "caption": "세 인터페이스 영역에는 방향별로 6개의 링크 구간이 있습니다. 트랜시버 텔레메트리와 호스트 수신기 측정값을 함께 사용하여 성능 저하 구간을 찾습니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/link_segments_telemetry_poster.png",
+            "text_inventory": {
+              "sha256": "15c27279e9da887bfe2f7623d650e38a1edf14f139629ec937dbb44a0635bd52",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "세 인터페이스, 여섯 방향 | 텔레메트리는 전기적 증거와 광학 증거를 분리합니다. | 스위치 | 전기 호스트 | 로컬 | 모듈 | 원격 | 모듈 | 호스트 | 전기 수신기 | 스위치 전기 | 광 경로 | 호스트 전기 | 스위치 전기 | 정상 | 로컬 증거 | 광 경로 | 정상 | 중간 구간 | 호스트 전기 | 정상 | 원격 증거 | 신호를 추적한 뒤 구간별 증거를 비교하세요."
+                },
+                {
+                  "at_seconds": 4,
+                  "text": "세 인터페이스, 여섯 방향 | 텔레메트리는 전기적 증거와 광학 증거를 분리합니다. | 스위치 | 전기 호스트 | 로컬 | 모듈 | 원격 | 모듈 | 호스트 | 전기 수신기 | 스위치 전기 | 광 경로 | 호스트 전기 | 스위치 전기 | 정상 | 로컬 증거 | 광 경로 | 정상 | 중간 구간 | 호스트 전기 | 정상 | 원격 증거 | 광 경로는 별도로 모니터링되는 구간입니다."
+                },
+                {
+                  "at_seconds": 8,
+                  "text": "세 인터페이스, 여섯 방향 | 텔레메트리는 전기적 증거와 광학 증거를 분리합니다. | 스위치 | 전기 호스트 | 로컬 | 모듈 | 원격 | 모듈 | 호스트 | 전기 수신기 | 스위치 전기 | 광 경로 | 호스트 전기 | 스위치 전기 | 정상 | 로컬 증거 | 광 경로 | 저하 | 저하 구간 확인 | 호스트 전기 | 정상 | 원격 증거 | 양 끝 구간이 정상이라고 광 구간의 저하가 가려져서는 안 됩니다."
+                },
+                {
+                  "at_seconds": 12,
+                  "text": "세 인터페이스, 여섯 방향 | 텔레메트리는 전기적 증거와 광학 증거를 분리합니다. | 스위치 | 전기 호스트 | 로컬 | 모듈 | 원격 | 모듈 | 호스트 | 전기 수신기 | 스위치 전기 | 광 경로 | 호스트 전기 | 스위치 전기 | 정상 | 로컬 증거 | 광 경로 | 저하 | 저하 구간 확인 | 호스트 전기 | 정상 | 원격 증거 | 원격 증거는 증상뿐 아니라 원인의 위치를 찾는 데 도움이 됩니다."
+                },
+                {
+                  "at_seconds": 15.966666666666667,
+                  "text": "세 인터페이스, 여섯 방향 | 텔레메트리는 전기적 증거와 광학 증거를 분리합니다. | 스위치 | 전기 호스트 | 로컬 | 모듈 | 원격 | 모듈 | 호스트 | 전기 수신기 | 스위치 전기 | 광 경로 | 호스트 전기 | 스위치 전기 | 정상 | 로컬 증거 | 광 경로 | 저하 | 저하 구간 확인 | 호스트 전기 | 정상 | 원격 증거 | 결과는 비교할 경로를 알려 주며, 특정 부품을 먼저 원인으로 지목하지 않습니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                11
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.txt",
+            "wav_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "410c85e761100baf7bd26805782985261949e2e1d8ccf2b55d1f3b6e31a9d99b",
+              "master_sha256": "83e6daa153c2c0557c6e50102361e3842f223093c5b4266644911ef8c3b436f8",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "8948d8a3475b43886b9922c3f772bc63b4b495dcc3003892b1aa1ac4ee930429",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 6개 링크 구간 - 11-12쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=11"
+            }
+          ],
+          "term_refs": [
+            "fec",
+            "ber"
+          ],
+          "transcript": "링크는 두 모듈 사이의 광섬유만으로 이루어지지 않습니다. 스위치와 모듈 사이의 전기 연결, 모듈 사이의 광 연결, 모듈과 서버 사이의 전기 연결이라는 세 인터페이스 영역이 있습니다.\n\n트래픽은 양방향으로 흐르므로 명세는 방향별로 6개의 링크 구간을 설명합니다. 각 수신기는 특정 입력 신호를 관찰합니다. 어느 한 수신기의 결과가 나쁘다고 해서 송신기, 광섬유 또는 전기 인터페이스 중 무엇이 원인인지 자동으로 알 수 있는 것은 아닙니다.\n\n이 구분은 모듈 텔레메트리와 호스트 수신기 측정값을 함께 봐야 하는 이유를 설명합니다. 스위치도 자체 FEC 이전 BER과 정정 불가능한 코드워드를 기록합니다. 운영자가 서버에 직접 접근할 수 없는 경우에도 원격 텔레메트리를 통해 반대편 모듈을 파악할 수 있습니다.\n\n애니메이션은 6개 방향을 세 인터페이스 영역으로 묶어 보여줍니다. 이 관점으로 조사를 정리한 뒤 관련 수신 엔드포인트의 측정값을 비교하세요.\n\n증상이 서로 일치하지 않으면 그 불일치도 증거로 보존하세요. 로컬 경보, 원격 이벤트 및 호스트 측 오류 패턴은 같은 장애의 서로 다른 부분을 설명할 수 있습니다. 구간의 식별 정보가 있어야 이러한 관찰을 유용하게 활용할 수 있습니다."
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "breakout_links_multiply_remote_endpoints",
+          "section_label": "브레이크아웃 링크",
+          "title": "브레이크아웃 링크가 원격 엔드포인트를 늘립니다",
+          "figure": {
+            "path": "figures/source_spec_breakout_segments.png",
+            "alt": "한 스위치 모듈이 여러 호스트 모듈에 연결하는 브레이크아웃 광 링크 예시.",
+            "caption": "브레이크아웃이나 셔플 사용 사례에서는 한 스위치 포트가 여러 원격 파트너로부터 독립적인 텔레메트리가 필요할 수 있습니다.",
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "f20f65573b93088af7befa8434d06c7b2eeb453180ffaa6527ed0049de3b31e3",
+              "entries": [
+                {
+                  "text": "광 링크 | 2 | 5 | 스위치-모듈 | 전기 연결 | 10 | 3 | 4 | 8 | 9 | 호스트-모듈 | 전기 연결"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                12
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.txt",
+            "wav_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "2c4d658500967cf016b8e426e02a9aaff79b712f86c3f8c2fb76d89c067f8dfe",
+              "master_sha256": "903232ba3be44e2e0c978f812702b6d5ddbbf8fce39a27717eb4feb28331ec43",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "809db4a7fd627b417265a2c59706933b6ccbbfa09f3333bbbbea104e2409ec9e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "브레이크아웃은 가시성 문제를 더 흥미롭게 만듭니다. 단일 스위치사이드 모듈이 여러 원격 엔드포인트에 연결할 수 있습니다. 원격 파트너들이 다르게 행동하면, 운영자는 어느 원격 측이 상태하고 어느 쪽이 악화되고 있는지 식별할 수 있는 텔레메트리가 필요합니다.\n\n명세에 이 점이 직접적으로 명시되어 있습니다. 트랜시버는 브레이크아웃 사용 사례에서 여러 링크 파트너와 연결될 수 있으므로, 로컬 소프트웨어는 엔드포인트 식별을 유지해야 합니다. 전체 전면 패널 포트에 대한 하나의 요약 값이 실제 고장 경로를 숨길 수 있습니다.\n\n그래서 원격 식별, 세그먼트별 모니터링, 호스트 측 수집도 같은 이야기에 속합니다. 인터페이스는 단순히 데이터를 수집하는 것이 아닙니다. 이는 운영자가 데이터를 올바른 물리적·논리적 엔드포인트로 매핑할 수 있도록 충분한 맥락을 보존하는 것입니다.\n브레이크아웃은 모호한 언어가 무너지는 부분입니다. 포트가 상태하지 않다고 말해도 영향을 받은 파트너를 식별하지 못할 수 있습니다. 유용한 질문은 어느 원격 엔드포인트, 어떤 레인 그룹, 그리고 전기 또는 광 경계의 어느 쪽이 바뀌었는가 하는 점입니다.",
+          "term_refs": []
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "visibility_starts_with_a_shared_model",
+          "title": "가시성은 공유 모델에서 시작됩니다",
+          "items": [
+            "운영 문제는 단순히 링크 상태가 바뀌었다는 것을 알아차리는 것이 아니라, 고장 중인 구간을 찾는 것입니다.",
+            "표준화된 경계는 트랜시버 동작과 호스트 소프트웨어와의 공통 인터페이스입니다.",
+            "준수하는 광학 기술은 로컬 및 원격 텔레메트리 수집을 지원할 것으로 기대됩니다.",
+            "브레이크아웃 링크는 엔드포인트 식별과 독립적인 원격 모니터링을 필수적으로 만듭니다.",
+            "텔레메트리 서버 설계는 운영자에 따라 다르지만, 모듈-호스트 모델은 흔할 수 있습니다."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                12,
+                13,
+                14,
+                15
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.txt",
+            "wav_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "db40b499c02b44284a9b4b8ccc4037a05b9db00039b98f2f9f693941694e2f7b",
+              "master_sha256": "31165429b8ada63e9ed71886de97c2faaf569449ee3c0d6f09082c0d6833e1d0",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "c3eb60f28540022f8575dee8e618997a9434bbae84d121997aeb5b578adb8396",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "첫 번째 모듈은 나머지 과정에 대한 사고 모델을 제공합니다. 향상된 텔레메트리는 로컬 경보와 이를 설명하는 원격 또는 구간 특화 증거 사이의 가시성 간극을 메우려는 시도입니다.\n\n표준화된 작업은 트랜시버와 호스트 인터페이스에서 이루어집니다. 텔레메트리 서버는 운영자마다 다를 수 있지만, 스위치 소프트웨어가 유용한 데이터를 수집할 수 있도록 모듈은 공통 동작을 요구합니다.\n\n두 가지 세부 사항이 계속 떠오를 것입니다. 첫째, 준수 광학 기술이 로컬 및 원격 텔레메트리를 수집합니다. 둘째, 한 링크는 여러 모니터링 세그먼트나 여러 원격 파트너를 포함할 수 있습니다. 다음 모듈에서는 그 모델을 운영자가 사용할 수 있는 구체적인 지표, 플래그, 링크 상태 점수로 변환합니다.\n검토를 위해 모든 이후의 기능을 이 공유 모델에 다시 연결하세요. 만약 메트릭, 이벤트, 명령어, API가 링크 조건을 찾거나 설명하는 데 도움이 되지 않는다면, 이는 핵심 교훈보다는 보조 세부사항일 가능성이 큽니다.",
+          "term_refs": []
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "check_your_model_visibility_and_scope",
+          "title": "모델 점검: 가시성과 범위",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "향상된 광학 기술 원격 측정이 해소하려는 주요 가시성 격차는 무엇인가요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "로컬 링크 경보는 문제를 일으킨 로컬 전기, 광학, 원격 전기 세그먼트를 밝히지 않을 수 있습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "텔레메트리 서버는 모든 운영자마다 하나의 의무화된 구현이 필요합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "명세는 텔레메트리 서버 구현에 따라 사용자 의존성을 유지합니다. 일반적인 작업은 트랜시버와 호스트 인터페이스에서 이루어집니다."
+                },
+                {
+                  "id": "c",
+                  "text": "모든 광학 모듈은 동일한 물리적 매체 의존 설계가 필요합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "범위는 PMD와 독립적으로 설계되어 있어, 공통 텔레메트리 모델이 구현 전반에 적용될 수 있습니다."
+                }
+              ],
+              "feedback_correct": "맞아요. 가치는 증상을 고장 세그먼트에 연결하는 로컬 및 원격 증거입니다.",
+              "feedback_incorrect": "가시성 모델을 검토하세요: 목표는 로컬 증상과 로컬 전기, 광학, 원격 전기 엔드포인트 근거를 연결하는 것입니다."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "준수 트랜시버 및 호스트 텔레메트리 모델에 속하는 기능은 무엇인가요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "미션 모드 링크 모니터링 및 통계 수집.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "링크 파트너 간의 인밴드 원격 식별 및 데이터 교환.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "프로그래밍 가능한 이벤트 알림과 비휘발성 이벤트 기록.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "필수 텔레메트리 서버 제품 아키텍처.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞아요. 공유 모델은 모듈과 호스트 기능을 포함하며, 서버 구현은 개방적입니다.",
+              "feedback_incorrect": "경계를 명확히 유지하세요: 준수하는 모듈 동작과 호스트 수집은 표준화되어 있습니다; 텔레메트리 서버 구현은 규정되어 있지 않습니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                12,
+                13,
+                14,
+                15
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.txt",
+            "wav_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "4780b9afb00d7066aa2e0185c82b3fbeacfeb427c944d8fba5f50daeeab86c4d",
+              "master_sha256": "d8fb04ba470684a090a9fa27eedb48fc6474fcf0a86210a8a5eca16b0d5a30e2",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "0c235dd598a3dcd3340220d44db6f9486a4246e31d79c97813eb66375639e4bf",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "모듈을 마치기 전에 가시성 모델을 확인해 보세요. 첫 번째 질문은 향상된 텔레메트리가 어떤 격차를 메우려 하는지 묻습니다. 두 번째는 준수 트랜시버와 호스트 워크플로우에 속하는 기능이 무엇인지 묻습니다.\n\n각 질문을 한 번씩 제출하면 계속 진행하세요. 정답이 필수는 아니며, 피드백 후에 다시 도전할 수 있습니다. 피드백을 이용해 표준화된 모듈-호스트 인터페이스를 그 위에 있는 운영자 전용 텔레메트리 서버와 분리하세요.",
+          "term_refs": []
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next_metrics_and_link_health",
+          "title": "다음 단계: 지표와 링크 상태",
+          "next_module_number": 2,
+          "next_module_title": "지표, 플래그, 그리고 링크 상태",
+          "thank_you_message": "잘하셨습니다 - OCP 광학 기술 신뢰성에 대한 가시성 모델을 완성하셨네요.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                27,
+                38,
+                39,
+                40
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_metrics_and_link_health.txt",
+            "wav_file": "audio/module1/slide_11_up_next_metrics_and_link_health.wav",
+            "approved": true,
+            "delivery_file": "audio/module1/slide_11_up_next_metrics_and_link_health.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "b15c0bcc04ca67b9cf81f4744d5a06bb02784d01647721b0fa5d47c065e2e802",
+              "master_sha256": "3826f8515d2105efaa3e2282cb03fbe5270446eb3a6cf64ce8b69a3d2cc3fdd2",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "17c5297a0a8571823daf47e45d2f81d2558bc17fb609682803f81aa37155692e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "잘했어. 가시성 모델을 완성하셨습니다. 이제 왜 이 과정이 로컬 및 원격 엔드포인트, 모니터링되는 링크 세그먼트, 그리고 트랜시버 동작, 호스트 소프트웨어, 텔레메트리-서버 통합 간의 경계에서 시작하는지 알게 되었습니다.\n\n다음은 지표, 플래그, 그리고 링크 상태입니다. 모듈이 수집하는 측정값과 링크 상태 점수가 평균에 숨기지 않고 가장 약한 범주를 가리키도록 설계된 방식을 살펴보겠습니다.",
+          "term_refs": []
+        }
+      ],
+      "next_module_title": "지표, 플래그, 링크 상태"
+    },
+    {
+      "id": 2,
+      "slug": "metrics_flags_and_link_health",
+      "title": "지표, 플래그, 링크 상태",
+      "subtitle": "지원 기능 탐색, 측별 점수, 플래그, 마스크, 임계값 및 자율 종료.",
+      "module_badge_text": "모듈 2",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "metrics_flags_and_link_health",
+          "title": "지표, 플래그, 링크 상태",
+          "subtitle": "규격을 준수하는 광모듈이 원시 측정값을 조치 가능한 링크 상태로 변환하는 방식.",
+          "version_chip": "향상된 텔레메트리 명세 v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                14,
+                18,
+                27,
+                38
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_01_metrics_flags_and_link_health.txt",
+            "wav_file": "audio/module2/slide_01_metrics_flags_and_link_health.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_01_metrics_flags_and_link_health.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "52956fd922bf506317c2bc0ec9623e869d233de5a98daf2ead5cd9135c46dfd0",
+              "master_sha256": "a2038ef62ce5b145b07c14703b6586b938a3c74b91b1e9a04b52b747aaa264f1",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "9b88466f4fa788b539ad2e39f0e4d219f8e901ecf662270b07b4f4a0a57c08e6",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "모듈 2는 가시성 모델을 측정값으로 전환합니다. 명세에는 준수하는 트랜시버가 호스트에 제공해야 하는 텔레메트리가 명시되어 있으며, 이는 로컬 또는 인밴드 메시징 인터페이스를 통해 원격 링크 파트너로부터 제공되어야 합니다.\n\n우리는 이러한 분야를 광학 품질, 전기 품질, 오류, 복구 행동, 환경 맥락, 관리 식별 정보 등 운영 범주로 분류할 것입니다. 그 다음 카테고리를 플래그, 마스크, 링크 상태 점수에 연결할 것입니다.\n이 모듈을 대시보드 어휘를 만드는 것으로 생각하세요. 이 값은 기술적이지만, 목표는 운영에 있습니다: 마진 문제와 서비스 문제를 구분하고, 로컬 증상과 원격 또는 구간별 원인을 구분합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "signals_you_will_interpret",
+          "title": "해석할 신호들",
+          "subtitle": "이 모듈이 끝날 때쯤이면 텔레메트리를 분류하고 링크 상태를 어떻게 요약하는지 설명할 수 있게 됩니다.",
+          "objectives": [
+            "개념적 수준에서 로컬 및 원격 텔레메트리 쿼리를 구분합니다.",
+            "일반적인 지표를 품질, 오류, 복구, 환경, 맥락 범주로 분류합니다.",
+            "왜 링크-헬스 점수가 평균이 아니라 가장 약한 카테고리에 의해 결정되는지 설명해 주세요.",
+            "요약 플래그, 기본 카운터 마스크, 설정 가능한 점수 임계값 및 자율 종료를 설명합니다."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                14,
+                18,
+                27,
+                38,
+                46,
+                50
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_signals_you_will_interpret.txt",
+            "wav_file": "audio/module2/slide_02_signals_you_will_interpret.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_02_signals_you_will_interpret.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "6b95059d9c74608b70ca233a48f4ed228cca69d54cf5106c298141fcd815f16d",
+              "master_sha256": "eff20e43a8d62df3280f060c93a175133123f71e8f3d5181fd7fbb9b295bd39f",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "2d0ae15f3e85be2d90ffc1c9b2e232b9768ed37d3c33ebecb004fa933adc1b7e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "이 모듈을 마치면 측정값을 운영상의 결정과 연결할 수 있게 됩니다.\n\n먼저 로컬 쿼리와 원격 쿼리를 구분하고, 소프트웨어가 데이터를 해석하기 전에 모듈의 지원 기능을 탐색하는 이유를 설명합니다. 명세의 릴리스 번호와 모듈의 텔레메트리 버전 레지스터는 서로 다른 식별자입니다.\n\n둘째, 신호 품질, 오류 및 정정 동작, 복구 카운터, 환경 및 모듈 식별 정보를 분류합니다. 호스트 측과 미디어 측을 구분하여 측정값이 해당 인터페이스에 계속 연결되도록 합니다.\n\n셋째, 상태 점수가 지원되는 범주별 점수의 최솟값이라는 점을 설명합니다. 또한 최저 범주 비트맵을 사용하여 최저점에 동률인 모든 범주를 식별합니다.\n\n마지막으로 플래그, 카운터 마스크, 임계값 설정 및 자율 종료를 구분합니다. 이러한 제어 기능은 목적과 기본값이 서로 다릅니다. 어떤 카운터가 점수에 반영되고 어떤 임계값이 적용되는지 소프트웨어가 알아야 요약 점수를 해석할 수 있습니다.\n\n목표는 값의 의미와 출처, 그리고 그 값이 어떤 후속 증거를 확인해야 함을 시사하는지 이해하는 것입니다.",
+          "term_refs": []
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "local_and_remote_queries_use_one_mental_model",
+          "section_label": "쿼리 모델",
+          "title": "로컬 및 원격 쿼리는 하나의 사고 모델을 사용합니다",
+          "subtitle": "호스트가 로컬 모듈에 묻습니다; 로컬 모듈은 자체 데이터를 반환하거나 파트너 데이터를 인밴드 내에서 가져올 수 있습니다.",
+          "bullets": [
+            {
+              "bold_lead": "로컬 쿼리",
+              "text": "호스트는 I2C를 통해 직접 도달할 수 있는 모듈에 텔레메트리를 요청합니다."
+            },
+            {
+              "bold_lead": "원격 조회",
+              "text": "로컬 모듈은 원격 링크 파트너로부터 텔레메트리를 가져와 동일한 호스트에 반환합니다."
+            },
+            {
+              "bold_lead": "브레이크아웃 인식",
+              "text": "원격 요청은 어떤 파트너나 포트가 쿼리 대상인지 식별해야 할 수도 있습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/local_remote_query_model.svg",
+            "alt": "호스트는 I2C를 통해 로컬 모듈을 조회하고, 로컬 모듈은 인밴드 내 원격 파트너에 도달합니다.",
+            "caption": "일관된 호스트 워크플로우는 로컬 데이터, 원격 데이터, 분출 파트너 식별을 여전히 구분할 수 있습니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "fa89e0ed696d5acc19736e694675b0164b675e6c3818b342b6e3ed0efa1bec83",
+              "entries": [
+                {
+                  "text": "단일 호스트 뷰, 로컬 및 원격 엔드포인트 | 스위치 호스트 | 운영자 도구 | I2C | 로컬 모듈 | 로컬 데이터 서비스 | 인밴드 | 원격 모듈 | 파트너 텔레메트리 | 호스트는 로컬 모듈에 질의하고, 로컬 모듈은 원격 파트너에 접근합니다."
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "i2c"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                31,
+                32
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.txt",
+            "wav_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "18358062eb61c7b2e5315bb7ebeb2c9892e70c60c082c80f4b186b5e33d7d60a",
+              "master_sha256": "2630ee256617d1e63d27847d836e83fd0d5df1435544801348037b86942ef025",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "49ba3e18e8d0122862242b18827f920fa467f7c86e2b055a3257e2fb084ab54e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "호스트 소프트웨어는 링크의 모든 면마다 다른 사고 모델이 필요 없습니다. 이 장비는 I 제곱 C 위에서 로컬 트랜시버와 통신합니다. 그 다음, 명령어는 로컬 데이터를 요청하거나, 로컬 모듈에게 인밴드 인터페이스를 통해 원격 링크 파트너로부터 데이터를 가져오도록 요청할 수 있습니다.\n\n이는 특히 돌파 사건에서 매우 중요합니다. 로컬 모듈은 두 개 이상의 원격 파트너를 가질 수 있으므로, 요청은 적절한 데이터를 반환할 수 있도록 충분한 엔드포인트 컨텍스트를 보존해야 합니다.\n\n운영자에게 이점은 일관성입니다. 호스트는 여전히 통제 지점입니다. 로컬 준수 모듈은 원격 가시성으로 가는 다리 역할을 합니다. 이것이 다음에 검토하는 많은 지표들의 운영 모델입니다.\n이 모델은 또한 공구가 단편화되는 것을 방지합니다. 로컬 쿼리와 원격 쿼리가 워크플로우를 공유하면, 데이터 소스가 링크 반대편에 있어도 일관된 운영자 경험을 제공할 수 있습니다."
+        },
+        {
+          "id": 4,
+          "type": "content_bullets",
+          "slug": "status_pages_establish_the_baseline",
+          "section_label": "지원 기능 및 기준 상태",
+          "title": "텔레메트리를 읽기 전에 지원 기능을 확인하세요",
+          "subtitle": "명세의 릴리스 버전과 모듈의 텔레메트리 버전 레지스터는 서로 다른 항목을 식별합니다.",
+          "bullets": [
+            {
+              "bold_lead": "Telemetry Version 2",
+              "text": "페이지 01h의 바이트 191은 v1.0.0 명세에서 정의한 프로토콜 동작을 알립니다."
+            },
+            {
+              "bold_lead": "인밴드 사용 가능 여부",
+              "text": "원격 파트너에 접근할 수 있다고 가정하기 전에 지원 여부와 레인 연결 상태를 확인합니다."
+            },
+            {
+              "bold_lead": "명령 탐색",
+              "text": "CMD 8000h는 지원되는 명령 그룹 비트맵과 로컬 또는 원격 지표의 지원 정보를 반환합니다."
+            },
+            {
+              "bold_lead": "관리 페이지",
+              "text": "CMIS 식별 정보, 상태, VDM, CDB 및 페이로드 페이지는 지원되는 측정값을 해석하는 데 필요한 맥락을 제공합니다."
+            }
+          ],
+          "term_refs": [
+            "cmis",
+            "vdm",
+            "cdb"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                18,
+                19,
+                27,
+                28,
+                29
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_status_pages_establish_the_baseline.txt",
+            "wav_file": "audio/module2/slide_04_status_pages_establish_the_baseline.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_04_status_pages_establish_the_baseline.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "b22d82115f0305ee3578f9cd584cd6b0f66f1321b20750e8f996778982d6b471",
+              "master_sha256": "c019a3819ddfab054e27f52e15e675ba176afa40232a80bd7ca226a5bbd39772",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "68a7a14f661fa709f293dd36142a98edfc61139869aed1075c99df7d58c63f58",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 기능 탐색 - 18-19, 27-29쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=18"
+            }
+          ],
+          "transcript": "텔레메트리를 해석하기 전에 지원 기능을 탐색해야 합니다. 지원하지 않는 필드나 접근할 수 없는 원격 파트너를 정상 상태의 0으로 표시해서는 안 됩니다.\n\nv1.0.0 명세는 Telemetry Version 2로 알리는 동작을 정의합니다. 이 프로토콜 식별자는 페이지 01h의 바이트 191에 보고됩니다. 문서의 릴리스 번호와는 다릅니다.\n\n소프트웨어는 인밴드 기능의 지원 여부와 통신 레인의 연결 여부도 확인합니다. 이 둘은 별개의 질문입니다. 일부 모듈은 자동 인밴드 레인 감지를 지원하므로 향상된 텔레메트리가 없는 파트너와도 기본 링크를 연결할 수 있습니다. 따라서 기본 링크가 연결되었다는 사실만으로 원격 가시성이 입증되지는 않습니다.\n\n기능 알림 명령 8000h는 로컬 모듈 또는 선택한 원격 파트너의 지원 명령 그룹 비트맵이나 지원 지표 목록을 반환합니다. 소프트웨어는 작업을 실행하거나 측정값을 해석하기 전에 이 결과를 사용합니다.\n\n표준 CMIS 식별 및 상태 페이지, VDM 페이지, CDB 명령 및 페이로드 영역은 주변 관리 맥락을 제공합니다. 실무적으로는 식별 정보, 지원 기능, 상태, 측정값, 상태 해석 순서로 진행합니다."
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "optical_and_electrical_quality_metrics",
+          "section_label": "품질 지표",
+          "title": "광학 및 전기 품질 지표",
+          "subtitle": "품질 측정은 라인 측 광학 문제와 호스트 측 전기 문제를 구분하는 데 도움을 줍니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "SNR",
+              "body": "광 라인 레인과 전기 호스트의 고속 신호 레인에서의 신호 대 잡음비."
+            },
+            {
+              "title": "아이 높이",
+              "body": "호스트 측과 라인 측 아이 높이 측정값은 신호 여유를 나타냅니다."
+            },
+            {
+              "title": "PAM4 LTP",
+              "body": "레벨 전이 매개변수는 호스트 및 라인 PAM4 신호 동작을 특성화하는 데 도움을 줍니다."
+            },
+            {
+              "title": "MPI 추정",
+              "body": "다중 경로 간섭 추정은 광학 반사 또는 경로 효과를 식별하는 데 도움을 줍니다."
+            },
+            {
+              "title": "호스트 대 라인",
+              "body": "호스트 방향과 라인 방향 값을 분리하면 약한 세그먼트를 국소화하는 데 도움이 됩니다."
+            },
+            {
+              "title": "레인별 뷰",
+              "body": "레인 레벨 값은 한 레인이 포트 레벨 요약 내에서 사라지는 것을 방지합니다."
+            }
+          ],
+          "term_refs": [
+            "snr"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                34,
+                35
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.txt",
+            "wav_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "354eddaac9837471f7b4abe86a38059fd39f729051030656f4c6fb2850fed04b",
+              "master_sha256": "5177ec65e0405b67613d7df62c93738e0aea0edb230a606ca246dc7ddf7ec452",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "3bba4b67f0e7bc16822ed587f67a92bd2574685976fc836fd40c27ed44bb0c42",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "transcript": "품질 지표는 위치 질문에 답하는 데 도움이 됩니다. 신호 마진이 광선 쪽에서 저하되고 있나요, 아니면 호스트 쪽 전기 쪽에서 떨어지고 있나요? 명세에는 S N R, 아이 높이, PAM 4단계 전이 매개변수, M P I 추정이 포함되어야 하는 값이 포함되어 있습니다.\n\nS N R은 잡음에 대한 신호를 나타냅니다. 아이 높이는 신호 여유를 또 다른 시각으로 제공합니다. PAM 4단계 전이 동작은 다단계 신호를 특징짓는 데 도움을 줍니다. M P I 추정은 반사나 간섭과 같은 광학 경로 효과를 가리킵니다.\n\n운영 가치는 분리에서 나옵니다. 라인 측 광학 문제, 호스트 측 전기 문제, 그리고 하나의 약한 레인이 하나의 모호한 포트 경고로 합쳐져서는 안 됩니다. 미터가 더 정확히 배치될수록 다음 행동을 선택하는 것이 더 쉬워집니다.\n문제 해결을 위해서는 유사점과 유사점을 비교해 보세요. 라인 측 광값은 광 경로 및 원격 파트너 동작과 비교해야 합니다. 호스트 측 전기 값은 로컬 또는 원격 전기 인터페이스와 비교되어야 합니다."
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "error_and_recovery_metrics",
+          "section_label": "오류 및 복구",
+          "title": "오류 및 복구 지표",
+          "subtitle": "오류 카운터와 복구 동작은 링크가 단순히 잡음이 많은지 아니면 실제로 서비스가 끊겼는지를 보여줍니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "FEC 이전 BER",
+              "body": "보정 전 비트 오류 동작은 원시 링크 스트레스를 나타냅니다."
+            },
+            {
+              "title": "FEC 히스토그램",
+              "body": "심볼 오류 구간별 프레임 수는 오류 정정 부하와 오류가 많은 프레임의 누적 여부를 보여줍니다."
+            },
+            {
+              "title": "정정 불가능한 코드워드",
+              "body": "수정으로도 해결할 수 없는 실패는 더 심각한 링크 저하를 의미합니다."
+            },
+            {
+              "title": "재링크",
+              "body": "링크 드롭 및 연결 복구 카운터는 시간이 지남에 따라 불안정함을 보여줍니다."
+            },
+            {
+              "title": "LOS와 LOL",
+              "body": "신호 손실과 DSP 잠금 손실은 이벤트 이력이 필요한 수신기 상태를 식별합니다."
+            },
+            {
+              "title": "작동 시간",
+              "body": "마지막 연결 이후 경과된 시간은 복구와 안정성에 대한 맥락을 제공합니다."
+            }
+          ],
+          "term_refs": [
+            "fec",
+            "ber"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                35,
+                36,
+                55
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_error_and_recovery_metrics.txt",
+            "wav_file": "audio/module2/slide_06_error_and_recovery_metrics.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_06_error_and_recovery_metrics.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "79d33de7a98ed5b958c74b9b0fa69a914221ac9bc02e7fb99dfbd36836801995",
+              "master_sha256": "98092bff3df11dce6d5b2fce695dda37d8c6acc68d39c532a2db518d8f585975",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "0466583d1df184eac4dd803340bee9a4f6e65bbcc9824e8bd04bc398b2c61f13",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "transcript": "품질 측정값은 여유도를 설명합니다. 오류 및 복구 측정값은 그 여유도가 서비스에 어떤 영향을 주는지 보여줍니다.\n\nFEC 이전 BER은 정정 전의 오류를 나타냅니다. FEC 히스토그램은 심볼 오류의 정도에 따라 프레임을 묶습니다. 오류가 많은 구간을 보면 수신기가 까다로운 작동 조건에 가까워지고 있는지 파악할 수 있습니다. 정정 불가능한 코드워드는 오류 정정으로 데이터를 복구할 수 없는 경우를 나타냅니다.\n\n재링크와 가동 시간은 서비스 타임라인을 더해 줍니다. 잡음이 있어도 계속 작동하는 링크와 반복적으로 끊어졌다 다시 연결되는 링크는 서로 다른 상황입니다.\n\n신호 손실은 입력 신호를 감지할 수 없는 수신기를 나타냅니다. 상세 DSP 이벤트 정의에서 LOL은 잠금 손실을 의미합니다. 로그를 해석할 때 이 수신기 상태를 전체 링크 다운 이벤트와 구분하세요.\n\n현재 값을 시간 및 이벤트 이력과 함께 보세요. 짧은 오류 급증, 오류가 많은 프레임의 증가, 반복적인 재링크는 서로 다른 운영 상황을 나타냅니다.\n\n또한 누적 FEC 구간 카운터와 링크 다운 카운터는 기본 마스크에 의해 상태 점수에서 제외되어도 증거로 조회할 수 있습니다. 조회 가능 여부와 점수 반영 여부는 별개의 사실입니다."
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "environment_and_module_context",
+          "section_label": "맥락 지표",
+          "title": "환경 및 모듈 맥락",
+          "subtitle": "온도, 전력, 일련번호 식별 및 경고는 측정값을 추적 가능한 증거로 전환합니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "모듈 온도",
+              "body": "모듈 온도는 열 조건이 링크 품질에 영향을 미칠 수 있는지 여부를 나타냅니다."
+            },
+            {
+              "title": "레이저 온도",
+              "body": "레이저 온도는 드리프트와 경보 동작에 대한 광학 장치 맥락을 제공합니다."
+            },
+            {
+              "title": "전압",
+              "body": "전원 상태은 연결 문제와 로컬 전기 상태를 연관시키는 데 도움을 줍니다."
+            },
+            {
+              "title": "Rx 전력",
+              "body": "수신 광 파워은 다른 증상과 광 경로 손실을 구분하는 데 도움을 줍니다."
+            },
+            {
+              "title": "DDMI 경고",
+              "body": "경보 및 경고 플래그는 모듈에서 보고된 임계값 통과 신호를 노출시킵니다."
+            },
+            {
+              "title": "일련번호",
+              "body": "식별 정보 필드는 텔레메트리와 이벤트 이력을 물리적 모듈에 연결합니다."
+            }
+          ],
+          "term_refs": [
+            "ddmi"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                33,
+                34,
+                35
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_environment_and_module_context.txt",
+            "wav_file": "audio/module2/slide_07_environment_and_module_context.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_07_environment_and_module_context.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "3b31dc1ebcd696e313457cf923d0526f0ebc3805b327d9c8f6bbb2bb969bb9ac",
+              "master_sha256": "0c395de2a7d3ce1dc2645df30bf9ae6fea25360d58f291996da5a2f53e64a3f7",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "152f999946e3046f95c49af7540194c6e76bead57f86f68a98e381829aca5da4",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "transcript": "맥락 지표는 쉽게 과소평가될 수 있습니다. 온도, 전압, 수신된 광전력, 경고 신호, 일련번호 등이 주요 증상은 아닐 수 있지만, 증상을 추적 가능하게 만듭니다.\n\n모듈 온도 값은 특정 공기 흐름이나 서비스 조건에서 링크가 열화되는 이유를 설명하는 데 도움이 될 수 있습니다. 레이저 온도는 광학 장치에 대한 맥락을 제공합니다. 수신된 광전원은 경로 손실과 호스트의 전기 문제를 분리하는 데 도움을 줍니다. D D M I 경고와 경보 플래그는 모듈 자체가 임계값을 넘었다고 판단하는지 알려줍니다.\n\n직렬 식별은 이벤트 이력이 물리적 하드웨어를 따라가기 때문에 중요합니다. 모듈이 이동, 교체 또는 자격 기록과 비교될 경우, 텔레메트리는 올바른 객체에 계속 연결되어 있어야 합니다.\n하드웨어 변경 후에는 컨텍스트 필드도 도움이 됩니다. 모듈이 재장착, 교체 또는 포트 간 이동이 이루어졌다면, 식별 정보 및 환경 이력은 조사가 적절한 물리적 장치에 연결되도록 유지할 수 있습니다."
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "link_health_score_uses_the_worst_category",
+          "section_label": "점수 모델",
+          "title": "링크 상태 점수는 최악 카테고리를 사용합니다",
+          "figure": {
+            "path": "figures/link_health_minimum_score.mp4",
+            "media_type": "video",
+            "alt": "보고된 상태가 가장 약한 카테고리 다음에 있는 여러 링크 상태 카테고리 점수를 무음 애니메이션으로 보여줍니다.",
+            "caption": "지원되는 각 범주에 80, 60 또는 40점을 부여한 뒤, 선택한 호스트 측 또는 미디어 측의 최솟값을 보고합니다. 최저 범주 비트맵은 최저점에 동률인 모든 범주를 식별합니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/link_health_minimum_score_poster.png",
+            "text_inventory": {
+              "sha256": "0f2f682c3c05fc9be144dc787210d736ea1d6a11e6d104c17dd086b50b6317d1",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "가장 취약한 범주가 상태 점수를 결정합니다 | 선택한 미디어 측 범주 - 정의된 점수 구간: 80 / 60 / 40 | SNR | 80 | 아이 높이 | 80 | FEC 이전 BER | 80 | MPI | 80 | 모듈 플래그 | 80 | 신호 여유도 | 수신기 여유도 | 오류 상태 | 광학 간섭 | 경보 없음 | 단순 평균 | 80 | 보고되는 점수가 아님 | 보고되는 최솟값 | 80 | 최저점 범주를 자세히 확인 | 비교 | 지원되는 범주가 정상인 상태에서 시작합니다."
+                },
+                {
+                  "at_seconds": 4.5,
+                  "text": "가장 취약한 범주가 상태 점수를 결정합니다 | 선택한 미디어 측 범주 - 정의된 점수 구간: 80 / 60 / 40 | SNR | 80 | 아이 높이 | 80 | FEC 이전 BER | 60 | MPI | 80 | 모듈 플래그 | 80 | 신호 여유도 | 수신기 여유도 | 오류 상태 | 광학 간섭 | 경보 없음 | 단순 평균 | 76 | 보고되는 점수가 아님 | 보고되는 최솟값 | 60 | 최저점 범주를 자세히 확인 | 비교 | BER이 중간 구간인 60으로 이동하면 최솟값도 이를 따릅니다."
+                },
+                {
+                  "at_seconds": 9,
+                  "text": "가장 취약한 범주가 상태 점수를 결정합니다 | 선택한 미디어 측 범주 - 정의된 점수 구간: 80 / 60 / 40 | SNR | 80 | 아이 높이 | 80 | FEC 이전 BER | 40 | MPI | 80 | 모듈 플래그 | 80 | 신호 여유도 | 수신기 여유도 | 오류 상태 | 광학 간섭 | 경보 없음 | 단순 평균 | 72 | 보고되는 점수가 아님 | 보고되는 최솟값 | 40 | 최저점 범주를 자세히 확인 | 비교 | 심각한 BER 상태가 최솟값을 40으로 결정합니다."
+                },
+                {
+                  "at_seconds": 13.5,
+                  "text": "가장 취약한 범주가 상태 점수를 결정합니다 | 선택한 미디어 측 범주 - 정의된 점수 구간: 80 / 60 / 40 | SNR | 80 | 아이 높이 | 80 | FEC 이전 BER | 40 | MPI | 80 | 모듈 플래그 | 80 | 신호 여유도 | 수신기 여유도 | 오류 상태 | 광학 간섭 | 경보 없음 | 단순 평균 | 72 | 보고되는 점수가 아님 | 보고되는 최솟값 | 40 | 최저점 범주를 자세히 확인 | 비교 | 심각한 BER 상태가 최솟값을 40으로 결정합니다."
+                },
+                {
+                  "at_seconds": 17.966666666666665,
+                  "text": "가장 취약한 범주가 상태 점수를 결정합니다 | 선택한 미디어 측 범주 - 정의된 점수 구간: 80 / 60 / 40 | SNR | 80 | 아이 높이 | 80 | FEC 이전 BER | 40 | MPI | 80 | 모듈 플래그 | 80 | 신호 여유도 | 수신기 여유도 | 오류 상태 | 광학 간섭 | 경보 없음 | 단순 평균 | 72 | 보고되는 점수가 아님 | 보고되는 최솟값 | 40 | 최저점 범주를 자세히 확인 | 비교 | 심각한 BER 상태가 최솟값을 40으로 결정합니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                32,
+                33,
+                38,
+                39,
+                40
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.txt",
+            "wav_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "aeff3528e54f18bf5ade7d4696ac9fd8cfe63b608db23b93a5102c7636187a46",
+              "master_sha256": "59d21569bca44799e18ab24cbeeaf6d7c9a380db38748a7705c44c3a285b99b8",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "f77cf9b5738b57e7533d814abf312524331158f6c4e761eb1d760b02bc7424bf",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 상태 점수 및 범주 - 32-40쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=32"
+            }
+          ],
+          "transcript": "상태 점수는 조치가 필요한 측정값을 드러내야 합니다. 정상 필드와 문제가 있는 필드 하나를 평균하면 문제가 가려질 수 있습니다.\n\n명세는 먼저 지원되는 각 범주를 임계값과 비교하여 평가합니다. 정의된 범주별 점수는 80, 60, 40입니다. 그런 다음 그 최솟값을 선택한 호스트 측 또는 미디어 측의 등급으로 사용합니다.\n\n호스트 측 범주에는 전기 신호 품질, FEC 이전 BER, 모듈 플래그, 그리고 활성화된 경우 정의된 카운터가 포함됩니다. 미디어 측 점수에는 MPI, 광전력 플래그, 레이저 바이어스 플래그처럼 광학에 특화된 증거도 포함됩니다. 양측의 범주 목록은 동일하지 않습니다.\n\n애니메이션은 선택된 미디어 측 범주들을 보여줍니다. BER 범주가 40으로 떨어지면 최솟값도 이를 따릅니다. 평균은 여전히 더 양호해 보입니다. 명세는 바로 이러한 정보 손실을 방지합니다.\n\n텔레메트리 응답에는 최저 등급 범주 비트맵도 포함됩니다. 여러 범주가 최저점에 동률이면 여러 비트가 설정될 수 있습니다. 원인을 하나로 추정해서 선택하는 대신 이 비트맵과 실제 값을 읽으세요.\n\n마지막으로 유효한 카운터 마스크와 임계값 설정을 함께 고려하여 결과를 해석합니다. 점수는 설정과 엔드포인트 맥락이 있어야 의미를 가집니다.",
+          "term_refs": []
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "flags_and_masks_keep_monitoring_actionable",
+          "section_label": "플래그와 마스크",
+          "title": "플래그와 마스크는 모니터링을 실행 가능하게 만듭니다",
+          "subtitle": "요약 플래그는 영향을 받은 측을 식별하고, 정의된 두 카운터 마스크는 점수 반영 여부를 제어합니다.",
+          "bullets": [
+            {
+              "bold_lead": "플래그 추적",
+              "text": "소프트웨어 인터럽트, 로컬/원격 요약, 텔레메트리 응답의 상세 플래그 순서로 읽습니다."
+            },
+            {
+              "bold_lead": "기본 제외 항목",
+              "text": "전원이 켜지면 FEC 구간 카운터와 링크 다운 카운터는 상태 점수에서 제외됩니다. 해당 텔레메트리는 계속 조회할 수 있습니다."
+            },
+            {
+              "bold_lead": "마스크 규칙",
+              "text": "마스크 비트가 1이면 해당 카운터를 제외하고, 0이면 포함합니다. CMD 8003h로 이 카운터 마스크를 변경합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/flags_and_masks.svg",
+            "alt": "별도의 플래그 요약 및 점수 마스크 제어: 로컬 또는 원격 플래그를 확인하며, 전원을 켤 때 FEC 및 링크 다운 카운터는 점수에서 제외됩니다.",
+            "caption": "점수 마스크는 카운터의 점수 반영 여부를 바꿉니다. 카운터 데이터나 이벤트 로그를 지우지는 않습니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "fd9a01440d46c1c4de31aeffe3e3d8b68583ac01b879434fc1799bb4e74e1576",
+              "entries": [
+                {
+                  "text": "플래그는 상태를 보고하고 마스크는 점수 반영 카운터를 선택합니다 | 플래그 요약 | 로컬 또는 원격 플래그 | 그다음 응답의 상세 플래그 | 마스크 제어 | FEC 및 링크 다운 카운터 | 0: 포함 / 1: 제외 | 전원 인가 시 둘 다 제외 | 마스킹은 점수 반영 여부만 바꾸며 저장된 증거는 유지됩니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                19,
+                20,
+                43,
+                44
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.txt",
+            "wav_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "59a12308b429ae803ce0fa7abe0916137eb2d5b17716f16c3a3f3b91cacf85f9",
+              "master_sha256": "002c88aea32cc1ac85e36f749fae5eb2ed25a9beeb85cd7691aaac14fd34581c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "0cc77906c537f3f3655c1c75d85eac51f4b9276729ebb3da736e0fc221a6b091",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 플래그 및 카운터 마스크 - 19-20, 43-44쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=19"
+            }
+          ],
+          "transcript": "플래그와 마스크는 서로 다른 문제를 해결합니다. 플래그는 보고된 경고나 경보 중 어디에 주의가 필요한지 소프트웨어에 알립니다. 마스크는 특정 누적 카운터가 상태 점수에 반영되는지를 결정합니다.\n\n권장 플래그 확인 절차는 소프트웨어 인터럽트에서 시작합니다. 그런 다음 로컬 포트와 원격 포트의 플래그를 구분하는 요약을 읽고, 텔레메트리 응답에서 상세 모듈 플래그, 광전력 플래그 및 레이저 바이어스 플래그를 가져옵니다. 이 플래그들은 래치되었다가 해당 레지스터를 읽을 때 지워지므로 수집 소프트웨어는 관찰한 내용을 보존해야 합니다.\n\n정의된 점수 마스크는 FEC 카운터와 링크 다운 카운터에 적용됩니다. 모듈 전원이 켜질 때 두 카운터는 모두 점수에서 제외됩니다. 마스크 비트가 1이면 해당 카운터를 제외하고 0이면 포함합니다. 명령 8003h가 이 마스크를 제어합니다.\n\n마스킹은 증거 삭제가 아닙니다. 카운터 데이터는 계속 가져올 수 있고 이벤트 이력은 별도로 유지됩니다. 누적 카운터 초기화에는 다른 명령을 사용합니다.\n\n모듈 간 또는 시간에 따른 점수를 비교할 때는 유효한 마스크를 기록하세요. 두 도구의 반영 설정이 다르면 겉으로 같은 점수라도 동일한 운영 상태를 뜻하지 않을 수 있습니다.",
+          "term_refs": []
+        },
+        {
+          "id": 10,
+          "type": "content_grid",
+          "slug": "thresholds_and_autonomous_shutdown",
+          "section_label": "설정된 동작",
+          "title": "임계값과 자율 종료",
+          "subtitle": "점수 설정과 모듈의 장애 대응은 서로 별개의 운영 선택입니다.",
+          "grid_cols": 3,
+          "mobile_scroll": true,
+          "cards": [
+            {
+              "title": "임계값 제어",
+              "body": "CMD 8004h는 FEC 구간, FEC 이전 BER, SNR 및 아이 높이의 두 경계값을 읽거나 설정합니다.",
+              "tone": "blue"
+            },
+            {
+              "title": "지표의 방향",
+              "body": "BER은 높을수록 나쁘고 SNR과 아이 높이는 높을수록 좋습니다. 각 지표의 단위로 임계값을 비교합니다.",
+              "tone": "blue"
+            },
+            {
+              "title": "모듈 적용 범위",
+              "body": "임계값 설정은 선택한 모듈에 적용됩니다. 상태 플래그는 프로그래밍 가능한 점수 임계값 범주가 아닙니다.",
+              "tone": "blue"
+            },
+            {
+              "title": "기본값은 비활성화",
+              "body": "모듈 또는 전원 리셋 후에는 자율 종료가 비활성화됩니다. CMD 8005h로 상태를 읽거나 변경합니다.",
+              "tone": "amber"
+            },
+            {
+              "title": "장애 증거",
+              "body": "종료가 발생하면 장애 원인 26h와 이벤트 000Ch가 보고되며, 영향을 받은 측, 포트 및 범주가 포함됩니다.",
+              "tone": "amber"
+            },
+            {
+              "title": "정책 확인",
+              "body": "링크 단절을 원인 불명의 장애로 판단하기 전에 유효 임계값과 종료 상태를 확인합니다.",
+              "tone": "amber"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 임계값 및 종료 - 46-51, 57쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=46"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                57
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_thresholds_and_autonomous_shutdown.txt",
+            "wav_file": "audio/module2/slide_10_thresholds_and_autonomous_shutdown.wav",
+            "target_seconds": 90,
+            "delivery_file": "audio/module2/slide_10_thresholds_and_autonomous_shutdown.mp3",
+            "approved": false,
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "132e62838a85b5be57e5c6dbf1a0eea52aa24062e3b2d6d7ffea3a64e5bd9dff",
+              "master_sha256": "c41f5e430e1d8fdaf4ee0090b25dc1f20c5895a97f04e60333fa4b64ac0b857c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "988e528021e631627ad1deaa8b37bf79dd7b64e66e89809a91c20a926391c9b1",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "설정은 모듈이 상태를 평가하는 방식과 대응하는 방식을 바꿉니다. 이 두 선택을 구분하세요.\n\n임계값 제어 명령 8004h는 FEC 구간 수준, FEC 이전 BER, SNR 및 아이 높이에 대한 두 점수 경계값을 읽거나 설정합니다. 이 경계값은 80, 60, 40점 구간을 나눕니다.\n\n비교 방향은 지표에 따라 다릅니다. BER은 높을수록 나쁩니다. SNR과 아이 높이는 높을수록 좋습니다. 임계값 설정은 선택한 모듈에 적용되며, 이벤트 표시나 상태 플래그는 이 명령을 통해 프로그래밍할 수 있는 점수 임계값 범주가 아닙니다.\n\n자율 종료에는 명령 8005h를 사용합니다. 모듈 리셋 또는 전원 리셋 후에는 기본적으로 비활성화됩니다. 활성화된 상태에서 비정상 조건으로 트리거되면 모듈이 장애 상태로 전환됩니다.\n\n모듈은 장애 원인 26h를 보고하고 이벤트 000Ch를 기록합니다. 이벤트 상세 정보는 영향을 받은 측, 데이터패스 포트, 범주 및 지표 값을 식별합니다. 이 증거는 설정에 따른 대응을 원인 불명의 링크 단절과 구분하는 데 도움이 됩니다.\n\n적격성 평가나 장애 분석 전에 유효 임계값과 종료 상태를 다시 읽어 확인하세요. 설정은 배경 정보가 아니라 증거의 일부입니다.",
+          "term_refs": []
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "metrics_should_point_to_action",
+          "title": "지표는 행동을 가리켜야 합니다",
+          "items": [
+            "로컬 및 원격 텔레메트리는 동일한 호스트 중심 운영 모델을 사용합니다.",
+            "품질 지표는 호스트 측의 전기적 행동과 라인 측 광 동작을 구분합니다.",
+            "오류, 복구, 가동 시간 값은 링크가 잡음이 많은지, 불안정한지, 또는 실패 여부를 보여줍니다.",
+            "환경 및 식별 필드는 측정값을 실제 하드웨어로 추적할 수 있게 합니다.",
+            "호스트 측과 미디어 측의 점수 범주는 다릅니다. 마스크와 임계값은 최솟값 계산 방식에 영향을 줍니다."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                38,
+                39,
+                40,
+                46,
+                50
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_metrics_should_point_to_action.txt",
+            "wav_file": "audio/module2/slide_10_metrics_should_point_to_action.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_10_metrics_should_point_to_action.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "30175737cfd8b653efce74d3af6be262e109eb79e04af079870534cdb54395d8",
+              "master_sha256": "01ae7adb515a3e7b373f93b8f8f2be082d7ca8f153bcc766020f4c51a0ca0805",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "c229ed8f7d7d2b53c9e3a473d8cbc2fc7c339a68828f328c599a4d7ffff6aeb5",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "이 모듈의 지표는 링크 상태를 결정으로 이어지게 합니다.\n\n신호 품질 측정값은 취약한 인터페이스나 레인의 위치를 찾는 데 도움이 됩니다. 오류, 복구 및 가동 시간 데이터는 그 취약성이 서비스에 영향을 주는지 보여줍니다. 환경 및 식별 정보 필드는 증거를 물리적인 모듈과 연결합니다.\n\n상태 점수는 선택한 호스트 측 또는 미디어 측에서 지원되는 범주별 점수의 최솟값입니다. 최저 범주 비트맵은 최저점에 동률인 모든 범주를 식별합니다. 카운터 마스크와 설정된 임계값은 그 요약이 어떻게 계산되었는지 설명합니다.\n\n자율 종료는 별도로 설정하는 대응입니다. 리셋 후에는 비활성화된 상태로 시작하며, 종료가 트리거되면 장애 및 이벤트 증거를 남깁니다. 점수가 낮다는 사실을 종료가 활성화되었거나 실제로 발생했다는 증거로 혼동하지 마세요.\n\n실무적인 판단 기준은 증거가 다음 단계를 좁혀 주는지입니다. 광학 검사, 전기적 여유도 조사, 열 상태 확인, 펌웨어 검토 또는 지속적인 모니터링 중 무엇을 시사하나요? 다음 모듈에서는 소프트웨어가 이러한 선택을 뒷받침하는 정보를 어떻게 요청하고 보존하는지 살펴봅니다.",
+          "term_refs": []
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "check_your_model_metrics_and_scores",
+          "title": "모델 점검: 지표와 점수",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "왜 링크 상태 점수는 평균이 아닌 가장 약한 범주를 사용하는 걸까요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "다른 범주가 양호해도 하나의 불량 범주가 링크를 신뢰할 수 없게 만들 수 있습니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "텔레메트리 필드만으로는 평균을 계산하는 것이 불가능합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "평균은 계산할 수 있지만, 행동을 이끌어야 할 필드를 숨길 수 있습니다."
+                },
+                {
+                  "id": "c",
+                  "text": "링크 상태에는 오직 광전력만이 중요합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "광전력은 유용하지만, 모델은 전기 품질, 오류, 복구 동작, 그리고 맥락도 고려합니다."
+                }
+              ],
+              "feedback_correct": "맞아요. 점수는 가장 약한 범주에서 조치 신호를 보존하도록 설계되었습니다.",
+              "feedback_incorrect": "점수 모델을 검토하세요: 요약이 문제가 있는 범주를 가려서는 안 됩니다."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "링크 상태 진단에 유용한 텔레메트리 증거는 무엇인가요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "지원 기능을 고려하여 해석한 SNR, 아이 높이, PAM4 LTP 및 MPI 측정값.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "FEC 이전 BER, FEC 히스토그램, 리링크, LOS, 그리고 LOL.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "모듈 온도, 레이저 온도, 수신된 광 전력, 그리고 직렬 식별 정보.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "최종 합격/불합격 결과는 외부 대시보드에서만 나옵니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞아요. 유용한 진단은 품질, 오류, 복구, 환경, 식별 정보 맥락을 결합합니다.",
+              "feedback_incorrect": "카테고리 모델을 사용하세요: 링크 상태를 판단하려면 최종 대시보드 결과뿐 아니라 품질, 오류, 복구, 환경, 식별 증거를 함께 봐야 합니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                38,
+                39,
+                40
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.txt",
+            "wav_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "0b07324cb4761fed66769c7edaeaed1fa2b8c2ed3e9a5d433b15060830e70170",
+              "master_sha256": "1d61cc49df91e43c93e40097d3ec644be5841f5bbf96a65a803f4dd254f29bd7",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "b9e00340319fc81002df5af48782ebcf7bbcae2c23b84089d36d4d8e6db72834",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "잠시 시간을 내어 미터법 모델을 확인해 보세요. 첫 번째 질문은 왜 링크-헬스 점수에서 가장 약한 카테고리가 중요한지를 묻습니다. 두 번째는 어떤 텔레메트리 증거가 링크 상태를 진단하는 데 도움이 되는지를 묻습니다.\n\n각 질문을 한 번씩 제출하면 계속 진행하세요. 정답은 필수 사항이 아니며, 재시도 피드백도 가능합니다. 피드백을 활용해 개별 측정값을 더 큰 목표, 즉 링크 경로에서 가장 약한 부분을 찾는 것과 연결하세요.",
+          "term_refs": []
+        },
+        {
+          "id": 13,
+          "type": "up_next",
+          "slug": "up_next_cdb_and_event_workflows",
+          "title": "다음 단계: CDB 및 이벤트 워크플로우",
+          "next_module_number": 3,
+          "next_module_title": "CDB 워크플로우, 이벤트 로그 및 원격 접근",
+          "thank_you_message": "잘했어요 - 텔레메트리와 링크 상태 모듈을 완료하셨네요.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.txt",
+            "wav_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.wav",
+            "approved": true,
+            "delivery_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "ea8fec796927a39c1707264b6ff5ed5477dc8b863b7095f4d96a6cbc217acc78",
+              "master_sha256": "21b8c7472601f71e8021ae033c51816e5a11caee4928a7f83f7efe0a1b93d55a",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "323e809b5642ada649f300fb209f698ad053bbc640a197d22d3cbcd7f971402c",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "잘했어. 미터법 레이어를 완성하셨습니다. 이제 텔레메트리를 신호 품질, 오류, 복구, 환경, 식별 등으로 그룹화할 수 있으며, 상태 점수가 가장 약한 범주를 유지해야 하는 이유를 알 수 있습니다.\n\n다음은 C D B 워크플로우, 이벤트 로그, 원격 접속입니다. 명령어가 모듈 인터페이스를 통해 어떻게 이동하는지, 이벤트 히스토리가 어떻게 보존되는지, 그리고 호스트 소프트웨어가 로컬 모듈을 통해 원단 C M I S 데이터에 어떻게 도달하는지 살펴볼 것입니다.",
+          "term_refs": []
+        }
+      ],
+      "next_module_title": "CDB 워크플로우, 이벤트 로그, 원격 액세스"
+    },
+    {
+      "id": 3,
+      "slug": "cdb_workflows_event_logs_and_remote_access",
+      "title": "CDB 워크플로우, 이벤트 로그, 원격 액세스",
+      "subtitle": "상태를 확인하는 CDB 교환, 영속적인 이벤트 기록 및 원격 CMIS 읽기/쓰기 접근.",
+      "module_badge_text": "모듈 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "cdb_workflows_event_logs_and_remote_access",
+          "title": "CDB 워크플로우, 이벤트 로그, 원격 액세스",
+          "subtitle": "텔레메트리 요청, 응답, 로그 및 원격 접근이 모듈 인터페이스를 통해 전달되는 방식.",
+          "version_chip": "향상된 텔레메트리 명세 v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.txt",
+            "wav_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "c272891a10cfafc1616f5a8fc7f17c6f1c0995f1e4574a4ae43eeb35929c6e98",
+              "master_sha256": "cc445f2162722e4c35d001a6b5c843c7c4b9782ea845f33032e820adf1dcf112",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "7b90c49ef56b1603566fa4e4d1239f642e342b1e481b80aee70b278562572c1b",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "모듈 3은 측정된 것에서 호스트가 그것을 어떻게 얻는지로 넘어갑니다. 이 명세는 호스트와 모듈 간의 명령-응답 교환을 위해 C D B, 즉 명령 데이터 블록을 사용합니다.\n\n우리는 레벨을 개념적인 수준으로 유지할 것입니다. 준비, 트리거, 폴링, 수집 워크플로우를 이해해야 합니다. 또한 상태 확인, 이벤트 로그, 원격 C M I S 접근, 페이로드 처리가 신뢰할 수 있는 운영에 왜 중요한지 이해해야 합니다.\n모듈 2가 어휘라면, 이 모듈은 문법입니다. C D B는 호스트 소프트웨어가 데이터를 반복적으로 요청하고 결과를 자신 있게 해석할 수 있도록 요청과 응답이 어떻게 구조화되는지 정의합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "workflows_you_will_trace",
+          "title": "추적할 워크플로우",
+          "subtitle": "이 모듈이 끝날 때쯤이면 명령, 로그, 원격 접근 동작을 따라갈 수 있게 됩니다.",
+          "objectives": [
+            "4단계 CDB 명령-응답 워크플로우를 추적하세요.",
+            "Page 9Fh와 확장 페이로드 영역이 바이트 맵을 외우지 않고도 왜 중요한지 설명하세요.",
+            "비휘발성 이벤트 로그가 어떻게 실패 스토리를 보존하는지 설명해 주세요.",
+            "원격 바이트 접근과 원격 페이지 접근을 개념적으로 구분하세요."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54,
+                69
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_workflows_you_will_trace.txt",
+            "wav_file": "audio/module3/slide_02_workflows_you_will_trace.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_02_workflows_you_will_trace.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "2708fecf15afb7af4521dc71c02d9ecb73f555f5e93ff589bd4147ab42a18f97",
+              "master_sha256": "618cdc48e28cc3d14305b4bbdaa4d8e1f64bf6eb7a0f61419483dd0cfa28cda8",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "774bf691486500c5b4dd3968b483452c3345ff2c4311a50f2f75ccbd54681b1c",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "이 모듈이 끝날 때쯤이면 명령어 메시지 준비, 명령어 트리거, 상태 레지스터 폴링, 응답 가져오기 등 4단계로 이루어진 C D B 워크플로우를 추적할 수 있습니다.\n\n또한 바이트 필드를 외우지 않고도 페이지 9Fh와 확장 페이로드 페이지의 목적을 설명할 수 있습니다.\n\n그 다음 명령어 워크플로우를 이벤트 로그에 연결합니다. 이벤트 로그는 즉각적인 증상이 지나간 후에도 시간, 식별 정보, 이벤트 유형을 보존하기 때문에 중요합니다.\n\n마지막으로, 원격 바이트 접근과 원격 페이지 접근을 구분할 것입니다. 두 방법 모두 로컬 준수 모듈을 통해 원격 엔드포인트의 정보를 전달하는 방법입니다.\n워크플로우가 저수준처럼 보일 수 있지만, 펌웨어 엔지니어만을 위한 것이 아닙니다. 운영자는 도구가 올바르게 재시도하거나, 실패를 명확히 보고하거나, 링크가 복구된 후에도 이벤트 기록을 보존할 때 그 영향을 느낍니다.",
+          "term_refs": []
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "cdb_is_a_command_reply_workflow",
+          "section_label": "CDB 패턴",
+          "title": "CDB는 명령-응답 워크플로우입니다",
+          "figure": {
+            "path": "figures/cdb_command_reply.mp4",
+            "media_type": "video",
+            "alt": "명령어 준비부터 응답 수집까지 4단계 CDB 워크플로우를 보여주는 무음 애니메이션.",
+            "caption": "일반적인 CDB 명령 시퀀스는 메시지를 준비하고, 실행을 트리거하며, 상태를 폴링하고, 완료 후 응답을 가져옵니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/cdb_command_reply_poster.png",
+            "text_inventory": {
+              "sha256": "c8fcc4f6b5742adfa5e1356e77ce5bdef4d6b04cd246ade3a6e9a203ed21dc1e",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "CDB는 명령-응답 워크플로우입니다 | 요청을 작성하고, 실행을 트리거하고, 상태를 확인하고, 응답을 읽습니다. | 호스트 소프트웨어 | 요청 작성 | 모듈 | 명령 실행 | 9Fh 페이지 | 명령 헤더 | 페이로드 | 응답 헤더 | 응답 페이로드 | 준비 | 상태 레지스터 | 1. 준비 | 헤더 및 페이로드 | 2. 트리거 | 명령 실행 | 3. 폴링 | 실행 중에서 완료로 전환 | 4. 응답 수집 | 응답 헤더와 데이터 | CDB는 호스트-모듈 트랜잭션을 구조화하고 관찰 가능하게 합니다."
+                },
+                {
+                  "at_seconds": 4,
+                  "text": "CDB는 명령-응답 워크플로우입니다 | 요청을 작성하고, 실행을 트리거하고, 상태를 확인하고, 응답을 읽습니다. | 호스트 소프트웨어 | 요청 작성 | 모듈 | 명령 실행 | 9Fh 페이지 | 명령 헤더 | 페이로드 | 응답 헤더 | 응답 페이로드 | 준비 | 상태 레지스터 | 1. 준비 | 헤더 및 페이로드 | 2. 트리거 | 명령 실행 | 3. 폴링 | 실행 중에서 완료로 전환 | 4. 응답 수집 | 응답 헤더와 데이터 | 트리거가 요청을 모듈에 전달합니다."
+                },
+                {
+                  "at_seconds": 8,
+                  "text": "CDB는 명령-응답 워크플로우입니다 | 요청을 작성하고, 실행을 트리거하고, 상태를 확인하고, 응답을 읽습니다. | 호스트 소프트웨어 | 요청 작성 | 모듈 | 명령 실행 | 9Fh 페이지 | 명령 헤더 | 페이로드 | 응답 헤더 | 응답 페이로드 | 실행 중 | 상태 레지스터 | 1. 준비 | 헤더 및 페이로드 | 2. 트리거 | 명령 실행 | 3. 폴링 | 실행 중에서 완료로 전환 | 4. 응답 수집 | 응답 헤더와 데이터 | 폴링으로 실행 중인지 완료되었는지 확인합니다."
+                },
+                {
+                  "at_seconds": 12,
+                  "text": "CDB는 명령-응답 워크플로우입니다 | 요청을 작성하고, 실행을 트리거하고, 상태를 확인하고, 응답을 읽습니다. | 호스트 소프트웨어 | 요청 작성 | 모듈 | 명령 실행 | 9Fh 페이지 | 명령 헤더 | 페이로드 | 응답 헤더 | 응답 페이로드 | 완료 | 상태 레지스터 | 1. 준비 | 헤더 및 페이로드 | 2. 트리거 | 명령 실행 | 3. 폴링 | 실행 중에서 완료로 전환 | 4. 응답 수집 | 응답 헤더와 데이터 | 완료 후 응답 헤더와 페이로드가 반환됩니다."
+                },
+                {
+                  "at_seconds": 15.966666666666667,
+                  "text": "CDB는 명령-응답 워크플로우입니다 | 요청을 작성하고, 실행을 트리거하고, 상태를 확인하고, 응답을 읽습니다. | 호스트 소프트웨어 | 요청 작성 | 모듈 | 명령 실행 | 9Fh 페이지 | 명령 헤더 | 페이로드 | 응답 헤더 | 응답 페이로드 | 준비 | 상태 레지스터 | 1. 준비 | 헤더 및 페이로드 | 2. 트리거 | 명령 실행 | 3. 폴링 | 실행 중에서 완료로 전환 | 4. 응답 수집 | 응답 헤더와 데이터 | 같은 패턴이 텔레메트리, 로그 및 큰 페이로드를 지원합니다."
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "cmis",
+            "cdb"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.txt",
+            "wav_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "6d520c2892226e5f60673244651147671baf5e0d7e7f30b8771bc2a69fc3c338",
+              "master_sha256": "1285717c5dff9bb91f01c0c3834a327e1e9c46b187275785f60016f1b8655cc8",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "e50930346d9736e16d7a4539467b9148c4610c6753ffe0d9fe350aef99200263",
+              "objective_signal_check": "passed"
+            }
+          },
+          "subtitle": "일반 CMIS에서 CDB는 선택 사항이지만, 규격을 준수하는 광모듈의 텔레메트리 수집과 전송에는 필수입니다.",
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - CDB 구현 - 16-17쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=16"
+            }
+          ],
+          "transcript": "CDB는 호스트와 모듈에 구조화된 명령-응답 패턴을 제공합니다. 일반 CMIS에서는 선택 사항이지만, 향상된 텔레메트리 규격을 준수하는 광모듈은 텔레메트리 수집과 호스트 전송에 이를 사용해야 합니다.\n\n순서는 네 단계입니다. 필요한 명령 헤더와 페이로드를 준비합니다. 명령을 트리거합니다. 상태 레지스터를 폴링합니다. 그런 다음 실행이 성공적으로 완료되면 응답을 가져옵니다.\n\n모든 단계가 인터페이스의 약속에 포함됩니다. 소프트웨어가 응답 영역에서 바이트를 찾았다는 이유만으로 그 응답을 운영 증거로 사용해서는 안 됩니다. 해당 바이트는 실제로 완료된 요청에 대응해야 합니다.\n\n측정값 조회, 이벤트 기록 수집, 원격 레지스터 접근 및 펌웨어 전송에도 같은 원칙을 적용합니다. 지원 명령, 선택한 엔드포인트, 입력 필드 및 최종 상태를 확인하세요.\n\n이는 소프트웨어 디버깅에도 유용한 모델입니다. 요청을 올바르게 구성했나요? 트리거되었나요? 모듈이 성공적으로 완료했나요? 소프트웨어가 해당 응답을 가져와 검증했나요? 이처럼 명확한 네 질문이 데이터를 어떻게 얻었는지 설명하지 않고 출력만 하는 도구보다 유용합니다."
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "page_9fh_carries_the_control_conversation",
+          "section_label": "제어 페이지",
+          "title": "9Fh 페이지가 제어 흐름을 담당합니다",
+          "subtitle": "제어 페이지에는 명령 및 응답 구조가 저장되어 있습니다; 이 과정은 모든 바이트 필드보다는 패턴에 중점을 둡니다.",
+          "bullets": [
+            {
+              "bold_lead": "명령 헤더",
+              "text": "호스트는 명령 식별자와 관련 요청 정보를 작성합니다."
+            },
+            {
+              "bold_lead": "응답 헤더",
+              "text": "모듈은 실행 후 완료 및 응답 메타데이터를 반환합니다."
+            },
+            {
+              "bold_lead": "로컬 페이로드",
+              "text": "페이지 9Fh는 최대 120바이트의 로컬 페이로드를 제공합니다. 더 큰 전송에는 확장 페이로드 페이지를 사용합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/page_9f_structure.svg",
+            "alt": "명령어 헤더, 응답 헤더, 로컬 페이로드가 포함된 단순화된 구조 9Fh.",
+            "caption": "9Fh 페이지는 사양에서 호스트와 모듈 간의 CDB 메시징 페이지입니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "34e3f5b2eddc1c153d95bc89d1d1b5a1ac81a6ccdec70cf7091261b25bf50f8b",
+              "entries": [
+                {
+                  "text": "9Fh페이지는 통제 대화를 담당합니다 | 명령 | 헤더 | 응답 | 헤더 | 로컬 | 페이로드 | 먼저 흐름을 이해하세요. 세부 바이트 맵은 명세에서 확인할 수 있습니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.txt",
+            "wav_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "2ab238ca95eee7c2390ae2459a8aed05eb0603660e2ffb7188866d1d3b9c09b9",
+              "master_sha256": "3a32ae7b40db08987c9de53e907476643652d2207a2fcd61fdbdbda33ee6ed8e",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "c7d6787c4ecd7ffa4646aa63128e33978dd432e3d3093d8024d390d4514c4728",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "9Fh페이지가 통제 관련 대화가 있는 곳입니다. 명세는 C M I S C D B 메시징 페이지를 가리키며 명령 헤더 필드, 응답 헤더 필드, 로컬 페이로드 영역을 식별합니다.\n\n수업 목적상 모든 바이트를 가르칠 필요는 없습니다. 지속 개념은 역할 분리입니다. 호스트가 명령을 작성합니다. 모듈은 상태를 보고하고 응답을 반환합니다. 페이로드 영역은 해당 요청에 속하는 데이터를 저장합니다.\n\n이는 많은 운영자 도구가 궁극적으로 동일한 하위 수준 분야에 의존하기 때문에 중요합니다. 소프트웨어가 상태 확인을 건너뛰거나 응답을 너무 일찍 읽으면, 구조화된 명령 모델을 신뢰할 수 없는 디버그 출력으로 바꿀 위험이 있습니다.\n구현 세부사항과 학습 세부사항을 분리하기에 좋은 지점입니다. 인터페이스를 구현하는 엔지니어들은 바이트 맵이 필요합니다. 시스템을 조작하는 학습자는 바이트 맵이 무엇을 조직하는지 알아야 합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "extended_payload_handles_larger_transfers",
+          "section_label": "페이로드 크기",
+          "title": "확장 페이로드는 더 큰 전송을 처리합니다",
+          "subtitle": "로컬 페이로드가 부족할 경우, 뱅크된 페이로드 페이지가 더 큰 응답을 담고 있습니다.",
+          "bullets": [
+            {
+              "bold_lead": "먼저 로컬 페이로드",
+              "text": "작은 명령어와 응답은 로컬 페이로드 공간을 사용할 수 있습니다."
+            },
+            {
+              "bold_lead": "확장 페이로드 페이지",
+              "text": "뱅크된 페이지 A0h부터 AFh까지는 사양 내에서 더 큰 페이로드 용량을 제공합니다."
+            },
+            {
+              "bold_lead": "길이 및 무결성 필드",
+              "text": "페이로드 길이와 체크 필드는 소프트웨어가 무엇을 수집하고 검증해야 하는지 알 수 있도록 돕습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/extended_payload.svg",
+            "alt": "로컬 페이로드와 A0h에서 AFh 페이지까지 보여주는 단순화된 확장 페이로드 다이어그램.",
+            "caption": "명세는 최대 2048바이트의 더 큰 명령 데이터를 위한 확장 페이로드 페이지를 설명합니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "dcd264a4aee9a5292c88228ed17d024364a37412ece106c9a52ca1a1332d78b3",
+              "entries": [
+                {
+                  "text": "확장 페이로드는 더 큰 전송을 처리할 수 있습니다 | 로컬 페이로드 | 소규모 응답 | 확장 페이로드 페이지 | A0h | A1h | ... | AFh | 최대 2048바이트 | 호스트는 여전히 명령, 상태, 응답을 따릅니다. 오직 페이로드 면적만 커집니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.txt",
+            "wav_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "cb8b6eb93775d50b12d9fff29e3f59dc455dca0b0a48dcf40dcd24dc211f3c16",
+              "master_sha256": "17e6bc0800bd3f6adbcff5921f115570e902d0ca7e7e2313672cb54f16aaa92d",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "548893c662f0606ac7621cd36fb09a54f3195c43aa1203f28d93501c2ae9e32f",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "모든 답변이 로컬 페이로드 영역에 편안하게 맞는 것은 아닙니다. 명세는 더 큰 전송을 위한 확장 페이로드 페이지(A0h부터 AFh)를 설명합니다. 최대 2048바이트의 용량을 기록하고 있습니다.\n\n운영 아이디어는 간단합니다. 명령어 워크플로우는 변하지 않지만 데이터 영역은 증가합니다. 소프트웨어는 여전히 명령을 준비하고, 실행하며, 상태를 폴링하고, 응답을 가져옵니다. 차이점은 응답의 일부가 로컬 페이로드뿐만 아니라 확장 페이로드 페이지에 존재할 수 있다는 점입니다.\n\n길이와 체크 필드는 중요합니다. 호스트는 응답에 속한 데이터의 양과 그 데이터가 올바르게 수집되었는지 알아야 하기 때문입니다. 더 큰 전송일수록 이런 규율이 더 중요해집니다.\n확장 페이로드는 특히 풍부한 응답과 로그에 적합합니다. 텔레메트리가 더 유용해질수록 답변 공간이 더 필요할 수 있습니다. 워크플로우는 모든 큰 응답을 특수한 사례로 만들지 않고 확장되어야 합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "status_registers_tell_the_host_when_to_read",
+          "section_label": "명령 상태",
+          "title": "상태 레지스터는 호스트에게 언제 읽어야 하는지 알려줍니다",
+          "subtitle": "완료 및 실패 상태는 워크플로우의 일부이지, 선택적 정리가 아닙니다.",
+          "bullets": [
+            {
+              "bold_lead": "실행 중 상태",
+              "text": "호스트는 명령 실행에 시간이 걸리고 진행 상황을 확인할 수 있다고 예상해야 합니다."
+            },
+            {
+              "bold_lead": "완료 플래그",
+              "text": "완료 상태는 소프트웨어가 응답을 언제 읽을 수 있는지를 알려줍니다."
+            },
+            {
+              "bold_lead": "실패 처리",
+              "text": "실패한 명령은 유효한 텔레메트리로 해석되어서는 안 되고, 명시적으로 처리되어야 합니다."
+            },
+            {
+              "bold_lead": "반복 가능한 소프트웨어",
+              "text": "일관된 상태 동작은 SDK와 명령줄 도구가 신뢰할 수 있는 운영자 워크플로우가 되도록 합니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                17
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.txt",
+            "wav_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "c5b36b417830eb9b5f71ad4609c48d4a55f03c6a10ab17d9618cc21fd605851c",
+              "master_sha256": "77ec225bef16c1a05ca3b9c9b6b9b580a11c4844278c7350244f580fd6252d16",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "08f55bc250da5c69eb08bf76a85ff9bad0d11ffc8ce4dec94a613baac02d3158",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "상태 확인은 명령-응답 워크플로우를 정직하게 유지하는 핵심입니다. 모듈이 사용 중일 수 있습니다. 명령이 성공적으로 완료될 수도 있습니다. 명령이 실패할 수도 있습니다. 호스트 소프트웨어는 응답을 유효한 것으로 처리하기 전에 어떤 상태를 보고 있는지 알아야 합니다.\n\n그래서 명세에는 C D B 명령 상태 레지스터와 완료 표시기가 포함되어 있습니다. 중요한 것은 명령을 완성하는 것만이 아닙니다. 핵심은 호스트 행동을 반복 가능하게 만드는 것입니다.\n\n신뢰할 수 있는 운영자 도구는 텔레메트리가 준비되었다고 추측해서는 안 됩니다. 명령어를 트리거하고, 완료를 폴링하며, 실패를 명확히 처리한 후 응답을 가져와야 합니다. 이러한 소프트웨어 규율이 저수준 모듈 동작을 신뢰할 수 있는 운영 증거로 만들 수 있게 합니다.\n좋은 상태 동작은 자동화도 향상시킵니다. 스크립트는 안전하게 재시도, 후퇴, 명령 실패 보고, 오래된 데이터를 제공하기 전에 멈출 수 있습니다. 이것이 유용한 도구와 위험한 지름길의 차이입니다.",
+          "term_refs": []
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_retrieval_follows_the_same_pattern",
+          "section_label": "텔레메트리 커맨드",
+          "title": "텔레메트리 수집도 같은 패턴을 따릅니다",
+          "figure": {
+            "path": "figures/telemetry_retrieval_flow.svg",
+            "alt": "호스트는 텔레메트리를 요청하고, 로컬 모듈은 로컬 또는 원격 데이터를 수집하며, 응답은 상태 필드를 반환합니다.",
+            "caption": "텔레메트리 응답은 선택한 대상, 측 및 포트의 접근 가능 여부, 상태 등급, 최저 범주 마스크, FEC 이전 BER 및 기타 측정값을 함께 제공합니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "cd216f50e3789433289ee1d5464be33fca719c611b144fe4192384e6720411fa",
+              "entries": [
+                {
+                  "text": "텔레메트리 수집도 같은 패턴을 따릅니다 | 호스트 | 지표 요청 | 로컬 모듈 | 로컬 수집 | 또는 원격 데이터 | 응답 | 상태 필드 | 같은 워크플로우가 여러 운영 명령에 적용됩니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                31,
+                32,
+                33,
+                34,
+                35,
+                36
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.txt",
+            "wav_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "599f32b736c1829ca95d434848a8e2fa489ac8343c15bca67b7b475662144854",
+              "master_sha256": "f5c6957c38185e8528c5899177206ca1703bec55d5697beae491341122563719",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "2839538b9f18c7548a7d82e9a203515758ec4928de0a160040e5ce079af13d2a",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 텔레메트리 요청 및 응답 - 31-36쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=31"
+            }
+          ],
+          "term_refs": [
+            "fec",
+            "ber"
+          ],
+          "transcript": "텔레메트리 요청에는 대상, 측, 포트라는 세 가지 맥락이 필요합니다.\n\n대상은 로컬 모듈 또는 원격 파트너를 선택합니다. 측은 호스트 방향 전기 인터페이스 또는 미디어 방향 광 인터페이스를 선택합니다. 포트는 해당 데이터패스를 식별하며, 하나의 모듈이 여러 파트너에 연결될 때 중요합니다.\n\n명령 8001h는 이 선택에 대한 텔레메트리를 반환합니다. 소프트웨어는 요청을 준비하고 트리거한 뒤 상태를 폴링하고 성공한 응답을 읽습니다.\n\n응답은 대상이 온라인 상태인지, 접근 가능한지를 식별합니다. 등급과 최저 범주 비트맵, 모듈 일련번호 식별 정보, 링크 다운 횟수, 가동 시간, 플래그, 신호 품질 측정값, 환경 값 및 FEC 정보가 포함됩니다.\n\n일부 응답 필드는 각 레인을 개별적으로 나열하는 대신 최악의 레인을 요약합니다. 광전력에는 최솟값과 최댓값이 포함됩니다. 포트 요약에서 상세 조사로 넘어갈 때 이러한 집계 맥락을 유지하세요.\n\n오프라인 대상은 지표 값이 0인 정상 대상이 아닙니다. 접근 가능 여부를 명확히 보고하세요. 로컬 및 원격 요청은 같은 공통 워크플로우를 사용하지만, 엔드포인트와 인터페이스 맥락은 증거에 계속 연결되어 있어야 합니다."
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "event_logs_preserve_the_failure_story",
+          "section_label": "이벤트 이력",
+          "title": "이벤트 로그가 장애 이력을 보존합니다",
+          "subtitle": "비휘발성 이벤트 로그는 운영자가 현재 링크의 모습뿐만 아니라 무슨 일이 있었는지 확인할 수 있게 해줍니다.",
+          "bullets": [
+            {
+              "bold_lead": "영속적인 이력",
+              "text": "비휘발성 원형 버퍼는 전원 인가, 모듈 제거 및 재삽입 후에도 기록을 보존합니다."
+            },
+            {
+              "bold_lead": "32바이트 기록",
+              "text": "각 기록에는 16비트 UID, 64비트 나노초 타임스탬프, 이벤트 ID, 4개의 상세 필드 및 예약 공간이 포함됩니다."
+            },
+            {
+              "bold_lead": "이벤트 해석",
+              "text": "이벤트 ID에 따라 상세 필드를 해석합니다. 상관관계를 분석할 때 UID 순환과 시간 유효성을 고려합니다."
+            },
+            {
+              "bold_lead": "삭제 전에 읽기",
+              "text": "CMD 8010h로 로컬 또는 원격 이력을 조회합니다. 초기화에는 같은 명령의 다른 옵션을 사용합니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/event_log_record.svg",
+            "source": "custom",
+            "alt": "UID, 나노초 타임스탬프, 이벤트 ID, 4개의 상세 필드 및 예약 바이트로 구성된 32바이트 이벤트 기록.",
+            "caption": "이벤트 필드는 리틀 엔디언입니다. 나노초 타임스탬프 형식이 나노초 수준의 시계 정확도를 보장하지는 않습니다.",
+            "text_inventory": {
+              "sha256": "26333d96dbd3f9aab21b4a49a002164cc641a4492d2a9382129d02c8e865d4d4",
+              "entries": [
+                {
+                  "text": "이벤트 하나에 담긴 32바이트의 맥락 | 리틀 엔디언 필드: 이벤트 ID에 따라 상세 정보 해석 | UID | 16비트 순서 | 2바이트 | TIME_NSEC | 64비트 타임스탬프 | 8바이트 | EVENT_ID | 이벤트 유형 | 2바이트 | DETAIL0-3 | 32비트 상세 필드 4개 | 16바이트 | 예약 공간 | 4바이트 | 순서, 시간 유효성 및 이벤트 의미를 보존하세요."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                15,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                65
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.txt",
+            "wav_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "d7518d43d60fdc89f148f6161fd2a15e96bf2357cc6f5264357885ce7db57104",
+              "master_sha256": "dd9ed053f9dd7bdcc33059d3158436ab1dc08b2c33713e12cb86c191dc4bb859",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "ca1f9dc4c1f543e97e9b2a82e23a180442c9e878e2d898cd0d60d2749af65962",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 이벤트 형식 및 해석 - 54-65쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=54"
+            }
+          ],
+          "transcript": "현재 텔레메트리는 지금 링크가 어떤 상태인지 알려줍니다. 영속적인 이벤트 기록은 그 상태에 이른 과정을 설명하는 데 도움이 됩니다.\n\n각 이벤트 항목은 32바이트입니다. 16비트 순서 식별자, 나노초로 표현되는 64비트 타임스탬프, 이벤트 식별자, 4개의 상세 필드 및 예약 공간이 포함됩니다. 필드는 리틀 엔디언 바이트 순서를 사용합니다.\n\n이벤트 식별자는 상세 정보의 해석 방식을 결정합니다. 온도 이벤트는 온도 정보를 담습니다. 수신기 이벤트는 레인 비트맵을 담을 수 있습니다. 종료 이벤트는 해당 측, 포트, 트리거 범주 및 지표 값을 기록합니다.\n\n원형 버퍼는 전원 인가, 모듈 제거 및 재삽입 후에도 기존 기록을 보존해야 합니다. 순서 식별자는 순환할 수 있으므로 소프트웨어는 숫자 식별자만 기계적으로 정렬하지 말고 시간 순서의 맥락을 보존해야 합니다.\n\n시간에도 맥락이 필요합니다. 나노초 타임스탬프 형식이 나노초 수준의 시계 정확도를 보장하지는 않습니다. 모듈 시간을 설정하고, 유효한 시간 기준이 설정되기 전에 생성된 기록을 식별하세요.\n\n명령 8010h는 로컬 또는 원격 이력을 가져옵니다. 같은 명령의 다른 옵션은 이력을 지웁니다. 영속적인 기록은 일시적인 장애에 대한 유일한 기록일 때가 많으므로, 삭제하기 전에 증거를 읽고 내보내세요.",
+          "term_refs": []
+        },
+        {
+          "id": 9,
+          "type": "content_grid",
+          "slug": "hysteresis_prevents_noise_from_burying_signal",
+          "section_label": "이벤트 컨트롤",
+          "title": "히스테리시스는 잡음이 신호를 묻지 못하게 막습니다",
+          "subtitle": "반복되는 임계값 통과는 불안정한 시기에도 로그가 유용하게 유지되도록 통제가 필요합니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "기록되는 이벤트",
+              "body": "로그에는 온도, 전압, 광전력 경보, 리셋, DSP 수신기 상태, 펌웨어 및 종료 이벤트가 포함됩니다."
+            },
+            {
+              "title": "기본값 10초",
+              "body": "프로그래밍 가능한 히스테리시스 간격이 중복 이벤트를 억제하여 원형 버퍼의 유용성을 유지합니다."
+            },
+            {
+              "title": "임계값 증거",
+              "body": "이벤트 ID와 상세 필드를 통해 어떤 상태가 기록되었고 어떤 값이나 비트맵이 동반되었는지 알 수 있습니다."
+            },
+            {
+              "title": "로컬 및 원격",
+              "body": "호스트 SDK는 어느 엔드포인트에서든 이벤트 조회와 히스테리시스 제어를 제공합니다."
+            },
+            {
+              "title": "시간 유효성",
+              "body": "장치 간 이벤트를 비교하기 전에 모듈 시간을 설정하고 기록 순서를 보존합니다."
+            },
+            {
+              "title": "이력 보존",
+              "body": "로그를 지우거나 카운터를 초기화하기 전에 이벤트 증거를 읽고 내보냅니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                15,
+                55,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.txt",
+            "wav_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "7fa652eeeac388798e48a1a92485b0c24678f50132f2b9c77b2541400324021b",
+              "master_sha256": "11a6b2720d18228ede638e360ee9d621193b82e28e8bb8bf7f551a1e5ec1ce83",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "f3f180c71ba692de52963adcb7f7b11a1f80e8ab65dd5b68334b14a8abb3b057",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 이벤트 제어 - 14-15, 55, 96-97쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=14"
+            }
+          ],
+          "mobile_scroll": true,
+          "transcript": "유용한 이벤트 로그에는 상세 정보와 절제가 모두 필요합니다. 잡음이 많은 링크는 같은 상태를 자주 반복하여 원형 버퍼를 중복 기록으로 덮어쓸 수 있습니다.\n\n명세는 기본값이 10초인 프로그래밍 가능한 히스테리시스를 사용합니다. 이를 통해 서로 다른 이벤트는 보존하면서 설정된 간격 내의 중복 기록을 제한합니다.\n\n이벤트 정의는 모듈 온도와 전압, 광전력 경보, 리셋, 수신기 신호 또는 잠금 상태, 오류 임계값, 펌웨어 변경 및 자율 종료를 포함합니다. 모든 기록을 일반적인 링크 경보로 취급하지 말고 이벤트 식별자와 상세 필드를 해석하세요.\n\n점수 임계값과 이벤트 기록 조건은 목적이 다릅니다. 점수 경계값을 바꾸면 모든 이벤트 임계값이 바뀐다거나, 점수에서 마스킹한 카운터가 더 이상 유용한 증거가 아니라고 가정하지 마세요.\n\n호스트 API는 로컬 및 원격 엔드포인트에 대한 이벤트 조회와 히스테리시스 제어를 제공합니다. 이러한 제어를 의도에 맞게 사용하고, 상관관계 분석 중 모듈 시간의 유효성과 순서 맥락을 보존하세요.\n\n히스테리시스는 장애 이력을 읽기 쉽게 만들어야 합니다. 로그를 지우거나 카운터를 초기화하기 전에 장애를 설명하는 기록을 가져와 호스트 타임라인과 함께 보관하세요.",
+          "term_refs": []
+        },
+        {
+          "id": 10,
+          "type": "content_two_column",
+          "slug": "remote_cmis_access_reaches_the_far_endpoint",
+          "section_label": "원격 접속",
+          "title": "원격 CMIS 접근이 원격 엔드포인트에 도달합니다",
+          "subtitle": "원격 접근은 호스트 소프트웨어가 로컬 준수 모듈을 통해 파트너 모듈로부터 정보를 가져올 수 있게 합니다.",
+          "bullets": [
+            {
+              "bold_lead": "바이트 접근",
+              "text": "CMD 8020h는 로컬 페이로드를 통해 대상 원격 레지스터 범위를 읽거나 씁니다."
+            },
+            {
+              "bold_lead": "페이지 접근",
+              "text": "CMD 8021h는 확장 페이로드를 통해 원격 페이지를 읽거나 씁니다."
+            },
+            {
+              "bold_lead": "같은 신뢰 경계",
+              "text": "호스트는 여전히 로컬 모듈과 통신하며; 로컬 모듈은 인밴드에서 원격 데이터를 가져옵니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/remote_cmis_access.svg",
+            "alt": "원격 CMIS 바이트 접근 및 페이지 접근 비교.",
+            "caption": "두 접근 모드 모두 읽기와 쓰기를 지원합니다. 원격 파트너와 뱅크/페이지를 명시적으로 선택한 뒤 명령 상태를 확인합니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "5042d587c84a51aaf8f4719367e6c37ba3252a858444cc7178cf051a221438a6",
+              "entries": [
+                {
+                  "text": "원격 CMIS 접근으로 반대편 엔드포인트에 도달합니다 | 바이트 접근 | 대상 범위 읽기 / 쓰기 | 8020h - 로컬 페이로드 | 페이지 접근 | 전체 페이지 읽기 / 쓰기 | 8021h - 확장 페이로드 | 두 방식 모두 로컬 호스트, 로컬 모듈, 원격 파트너라는 운영 모델을 유지합니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                69,
+                70,
+                72,
+                73
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.txt",
+            "wav_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "2283b05a8053393860fe6511eb112330ad41671fbb42f1adb9c488135f53d711",
+              "master_sha256": "635bff10b611a0dee5b9c52ad8a886c7bcc6da1d71082e9649cbd019f0efb4df",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "58e5e80cb00452aaaa25025a2ff9167dd13fb20c8b880a0d901c6280bc72d276",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 원격 레지스터 접근 - 69-73쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=69"
+            }
+          ],
+          "transcript": "원격 CMIS 접근은 읽기와 쓰기를 모두 지원합니다. 호스트는 로컬의 규격 준수 모듈에 요청을 보내며, 이 모듈은 인밴드 인터페이스를 통해 선택한 원격 파트너에 접근합니다.\n\n바이트 접근은 명령 8020h를 사용합니다. 원격 포트, 뱅크, 페이지, 주소, 작업 및 길이를 선택합니다. 로컬 페이로드로 전달하는 좁은 레지스터 범위에 유용합니다.\n\n페이지 접근은 명령 8021h와 확장 페이로드를 사용합니다. 여러 작은 범위 대신 원격 페이지 전체를 읽거나 써야 할 때 유용합니다.\n\n진단에서 읽기는 증거를 가져오는 작업입니다. 쓰기는 원격 상태를 변경하므로 도구는 작업과 목적지를 명확히 표시하고 배포 환경의 유지보수 통제를 따라야 합니다.\n\n어느 모드에서든 결과를 신뢰하기 전에 명령 완료 및 실패 상태를 확인하세요. 선택한 파트너와 뱅크/페이지 맥락을 출력에 보존합니다.\n\n이를 통해 운영자는 하나의 로컬 관리 인터페이스에서 원격 가시성을 얻습니다. 동시에 신중한 대상 지정이 필수적입니다. 특히 브레이크아웃 구성에서는 요청 자체가 유효하더라도 잘못된 파트너를 향할 수 있습니다.",
+          "term_refs": []
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "cdb_turns_telemetry_into_an_operational_workflow",
+          "title": "CDB가 텔레메트리를 운영 워크플로우로 전환합니다",
+          "items": [
+            "CDB는 반복 가능한 준비, 트리거, 폴링, 응답 수집 순서를 사용합니다.",
+            "페이지 9Fh 및 페이로드 영역은 명령 및 응답 교환을 지원합니다; 바이트 맵은 사양 내에 남아 있습니다.",
+            "상태 확인은 미완성 또는 실패한 명령어를 유효한 데이터로 취급하는 것을 방지합니다.",
+            "이벤트 로그는 일시적 실패 이후에도 순서와 타임스탬프가 찍힌 증거를 보존합니다.",
+            "원격 CMIS 접근은 호스트가 로컬 준수 모듈을 통해 원격 엔드포인트를 검사할 수 있게 합니다."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54,
+                69
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.txt",
+            "wav_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "e69dc62a07feff90e9da454bff2443af7987552eca766f873acf6c91addfa381",
+              "master_sha256": "753c07e96c2e8a8dea93a3ddc6a469ea3fc23055b6c47c94f3ce4dd03b410d92",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "ee56a9516c045d394a98060f026ee70bb379b39863ca635522ee3d28ce80b78a",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "이 모듈은 텔레메트리를 워크플로우로 전환합니다. C D B는 호스트 소프트웨어에 반복 가능한 명령-응답 시퀀스를 제공합니다: 준비, 트리거, 폴링, 응답 수집. 페이지 9Fh와 페이로드 페이지는 그 교환의 구조를 제공합니다.\n\n상태 확인은 난간과 같습니다. 도구가 미완성이거나 실패한 명령어를 오해의 소지가 있는 결과물로 만들어서는 안 됩니다.\n\n이벤트 로그에 기록을 추가합니다. 이들은 순서, 시간, 이벤트 유형, 세부 정보를 보존하여 운영자가 링크 상태 변경 후 무슨 일이 있었는지 재구성할 수 있습니다. 원격 C M I S 접근은 로컬 모듈을 통해 먼 끝점에 도달하여 가시성 경로를 완성합니다.\n\n이러한 워크플로우들이 결합되어 텔레메트리가 단순히 측정 가능한 것이 아니라 실제로 작동할 수 있게 만듭니다.\n이 층의 주요 위험은 거짓 신뢰입니다. 데이터를 반환하는 것처럼 보이는 명령어는 소프트웨어가 워크플로우를 따르고 상태를 확인했을 때만 유용합니다. 증거는 그 뒤에 있는 절차가 필요합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "check_your_model_cdb_and_events",
+          "title": "모델 확인하기: CDB와 이벤트",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "어떤 순서가 일반적인 CDB 상호작용을 가장 잘 설명할까요?",
+              "shuffle_choices": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "명령을 준비하고, 트리거하고, 상태를 폴링하고, 응답을 가져오세요.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "응답을 가져오고, 명령을 트리거하고, 헤더를 준비하고, 상태를 무시합니다.",
+                  "correct": false,
+                  "feedback_incorrect": "명령이 완료된 후 응답이 읽히며, 상태 폴링이 워크플로우의 일부입니다."
+                },
+                {
+                  "id": "c",
+                  "text": "부팅 시 상태를 한 번 폴링한 뒤, 명령어 없이 모든 텔레메트리를 읽으세요.",
+                  "correct": false,
+                  "feedback_incorrect": "각 명령 워크플로우마다 상태가 확인됩니다. 텔레메트리 수집은 여전히 명령과 응답 동작을 사용합니다."
+                }
+              ],
+              "feedback_correct": "맞아요. 이 4단계 순서가 핵심 CDB 워크플로우입니다.",
+              "feedback_incorrect": "명령 패턴을 검토하세요: 준비, 트리거, 폴링, 응답 수집."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "즉각적인 증상이 지나간 후 연결 플랩을 진단하는 데 도움이 되는 기능들은 무엇인가요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "시퀀스와 타임스탬프가 포함된 비휘발성 이벤트 로그.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "원격 CMIS 접근을 통해 원격 엔드포인트를 점검합니다.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "오래된 응답 대신 상태를 확인한 텔레메트리 응답을 수집하는 것.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "이벤트 히스테리시스를 제거하여 모든 중복 임계값 교차가 항상 기록되도록 하는 것입니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞아요. 내구성 있는 기록, 원격 가시성, 그리고 명확한 명령 상태 확인 모두 증거 보존에 도움이 됩니다.",
+              "feedback_incorrect": "증거 경로를 생각하세요: 이벤트 이력을 보존하고, 먼 끝에 도달한 뒤, 명령 완료를 확인한 후 응답을 신뢰하세요."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54,
+                69
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_12_check_your_model_cdb_and_events.txt",
+            "wav_file": "audio/module3/slide_12_check_your_model_cdb_and_events.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_12_check_your_model_cdb_and_events.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "10e190cac99319d72b93682bbb2704672b24c7ec1ad26b5e0988039203a3a691",
+              "master_sha256": "593db54fb9c602174791eced2495c5adecead47e02386d2e489739fd19b2bd89",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "0d62819235c5c423b9b66956f8a7fbd18edcebd6a2b913698abe3b766cf11393",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "끝내기 전에 워크플로우 모델을 확인해 보세요. 첫 번째 질문은 올바른 C D B 명령 시퀀스를 요구합니다. 두 번째는 즉각적인 증상이 지나간 후 링크 플랩을 진단하는 데 어떤 기능들이 있는지 묻습니다.\n\n각 질문을 한 번씩 제출하면 계속 진행하세요. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다. 피드백을 활용해 명령 규율, 이벤트 이력, 원격 접근을 하나의 문제 해결 워크플로우로 연결하세요.",
+          "term_refs": []
+        },
+        {
+          "id": 13,
+          "type": "up_next",
+          "slug": "up_next_firmware_and_host_readiness",
+          "title": "다음 단계: 펌웨어 및 호스트 준비",
+          "next_module_number": 4,
+          "next_module_title": "펌웨어, 호스트 소프트웨어, 배포 준비 상태",
+          "thank_you_message": "잘했어요 - 명령과 이벤트 워크플로우 모듈을 완료하셨네요.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.txt",
+            "wav_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.wav",
+            "approved": true,
+            "delivery_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "5cd147c0cde44445a8145046a513bc9cde27b5bcc8dc68d85275556bfe1754bd",
+              "master_sha256": "59816b9407cae20b395e5237ddfeafd246412801eab3cef96787ccdce1e0fffe",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "44b2e832b399245f27504810e5fa7b05b53d477a08137c326d268e8d9134bdb2",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "잘했어. 명령 및 이벤트 워크플로우 모듈을 완료하셨습니다. 이제 C D B 시퀀스를 추적하고, 상태 확인이 왜 중요한지 설명하며, 이벤트 로그와 원격 C M I S 접근이 어떻게 증거를 보존하는지 설명할 수 있습니다.\n\n다음은 펌웨어, 호스트 소프트웨어, 그리고 배포 준비 상태입니다. 텔레메트리 인터페이스를 라이프사이클 운영, 호스트 API, 그리고 대규모 배포를 신뢰성 있게 만드는 점검과 연결할 것입니다.",
+          "term_refs": []
+        }
+      ],
+      "next_module_title": "펌웨어, 호스트 소프트웨어, 배포 준비"
+    },
+    {
+      "id": 4,
+      "slug": "firmware_host_software_and_deployment_readiness",
+      "title": "펌웨어, 호스트 소프트웨어, 배포 준비",
+      "subtitle": "펌웨어 유지보수, 모듈 시간 상관관계, 호스트 측정값 및 배포 점검.",
+      "module_badge_text": "모듈 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "firmware_host_software_and_deployment_readiness",
+          "title": "펌웨어, 호스트 소프트웨어, 배포 준비",
+          "subtitle": "텔레메트리, 원격 접근, 펌웨어 관리 및 호스트 API가 대규모 장비 운영으로 이어지는 방식.",
+          "version_chip": "향상된 텔레메트리 명세 v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.txt",
+            "wav_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.wav",
+            "approved": true,
+            "delivery_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "06c6cbb2fa8f8c981baa63ddd5a8b9e82bb6d3ac042202f1d544f5be0f8dae56",
+              "master_sha256": "0dcaeabc3a37b781003276329f2b7ce701afbd6a7bf29923b9e3cc75bd89f421",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "5b6ca31e14bcd7bd7cbe93e4729523f2f2a21366993df735c822767e3ddf172c",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "모듈 4는 부품들을 배치에 연결한다. 텔레메트리는 반복 가능한 운영자 워크플로우가 될 때 가장 가치가 있습니다: 적절한 엔드포인트를 조회하고, 현재 상태를 조회하며, 지속 가능한 이벤트 이력을 검사하고, 펌웨어를 안전하게 업데이트하며, 유용한 데이터를 네트워크 전체 상태 뷰로 전송합니다.\n\n우리는 역량과 워크플로우에 집중할 것입니다. 상세한 명령 테이블은 사양 내에 남아 있어야 할 자리에 남아 있습니다.\n이 마지막 모듈에서 신뢰성이 생명주기가 됩니다. 장애 진단을 돕는 동일한 인터페이스가 유지보수, 버전 관리, 실제 사고 시 사용하는 호스트 도구도 지원해야 합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "operations_you_will_connect",
+          "title": "연결할 운영 요소",
+          "subtitle": "이 모듈이 끝날 때쯤이면 라이프사이클과 호스트 도구가 신뢰성을 어떻게 지원하는지 설명할 수 있을 것입니다.",
+          "objectives": [
+            "로컬 및 원격 펌웨어 관리를 기능 수준에서 설명하세요.",
+            "원격 데이터가 요청될 때도 호스트 소프트웨어가 로컬 모듈과 통신하는 이유를 설명하세요.",
+            "운영자 워크플로우를 지원하는 명령줄 API 카테고리를 식별하세요.",
+            "텔레메트리 수집, 이벤트 이력, 서버 집계를 배포 준비 모델에 연결하세요."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_operations_you_will_connect.txt",
+            "wav_file": "audio/module4/slide_02_operations_you_will_connect.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_02_operations_you_will_connect.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "fdf88c5c74428af5d1f1dce586887963571847338d6f3d1a3879c41b79c8ef97",
+              "master_sha256": "3d38ebf8e779c1a4effcba8402643477425c3b749ede34f4513756f8085a09a7",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "a827ea7e0c7eff5037cd3e2f5b415bb1a63249fa2443a465830818c4fb4601a3",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "이 모듈을 마치면 프로토콜 동작을 반복 가능한 운영과 연결할 수 있게 됩니다.\n\n먼저 표준 로컬 CMIS 펌웨어 워크플로우와 원격 8030h 명령 계열을 구분합니다. 이미지 다운로드, 실행 및 커밋이 별개의 단계인 이유를 설명합니다.\n\n둘째, 호스트 경계를 설명합니다. 호스트는 I2C를 통해 로컬 모듈과 통신하고, 로컬 모듈은 인밴드 방식으로 원격 파트너 데이터를 가져옵니다.\n\n셋째, 운영자에게 필요한 도구 범주를 식별합니다. 레지스터 접근, 텔레메트리, 이벤트 이력, 펌웨어 유지보수, 모듈 시간, 히스테리시스 및 상태 등급이 포함됩니다.\n\n마지막으로 모듈 타임스탬프와 호스트 수신기 측정값을 같은 증거 타임라인에 연결합니다. 장애 상황에서 배포 환경을 신뢰하기 전에 지원 기능, 파트너 식별 정보, 점수 설정, 종료 기본값 및 펌웨어 결과를 검증합니다.\n\n목표는 모듈 측정값에서 호스트 출력으로, 호스트 출력에서 운영자의 결정으로, 그리고 그 결정에서 문서화된 조치로 이어지는 신뢰할 수 있는 전달 체계를 만드는 것입니다.",
+          "term_refs": []
+        },
+        {
+          "id": 3,
+          "type": "content_table",
+          "slug": "firmware_management_supports_local_and_remote_optics",
+          "section_label": "펌웨어 기능",
+          "title": "펌웨어 관리는 로컬 및 원격 광모듈을 지원합니다",
+          "subtitle": "로컬 유지보수는 CMIS 5.3을 따르고, 원격 유지보수는 8030h 명령 계열을 사용합니다.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                77,
+                78,
+                80,
+                83,
+                85,
+                88,
+                90,
+                93
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.txt",
+            "wav_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "d10b5df211c82b2379141fc6ad4ab8b81ddbbc81c1ad1ee214c62aed43127871",
+              "master_sha256": "cd257130072f244cf899bf1d5a777c105126ac662443c9bdcb7a04e272988d4f",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "38339302bf157ff9ba478673c3b59fb4ea98b51c33221bcc562c392c586248a8",
+              "objective_signal_check": "passed"
+            }
+          },
+          "columns": [
+            "원격 명령",
+            "목적"
+          ],
+          "rows": [
+            [
+              "8030h - 정보 조회",
+              "이미지 버전, 유효성, 실행 중인 이미지 및 커밋된 기본 이미지를 확인합니다."
+            ],
+            [
+              "8031h - 시작",
+              "선택한 원격 파트너의 이미지 다운로드를 시작합니다."
+            ],
+            [
+              "8032h - 중단",
+              "이미 시작한 다운로드를 중단합니다."
+            ],
+            [
+              "8033h - 전송",
+              "펌웨어 데이터 블록을 보내고 각 결과를 확인합니다."
+            ],
+            [
+              "8034h - 완료",
+              "활성화를 시도하기 전에 완료 상태를 검증합니다."
+            ],
+            [
+              "8035h - 실행",
+              "다운로드한 이미지를 활성화합니다."
+            ],
+            [
+              "8036h - 커밋",
+              "검증된 실행 이미지를 이후 리셋에 사용할 기본 이미지로 지정합니다."
+            ]
+          ],
+          "mobile_scroll": true,
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 펌웨어 관리 - 76-94쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=76"
+            }
+          ],
+          "term_refs": [
+            "cmis"
+          ],
+          "transcript": "펌웨어 유지보수에는 서로 관련된 두 경로가 있습니다. 표준 로컬 작업은 CMIS 5.3 펌웨어 관리 명령을 사용합니다. 향상된 텔레메트리 명세는 8030h 명령 계열의 원격 프로토콜을 정의합니다.\n\n먼저 지원 여부를 탐색하고 펌웨어 정보를 확인합니다. 원격 정보 응답은 이미지 유효성, 현재 실행 중인 이미지 및 이후 리셋에 사용할 기본 이미지로 커밋된 이미지를 구분합니다.\n\n일반적인 원격 순서는 다운로드 시작, 데이터 블록 전송, 다운로드 완료 및 검증, 이미지 실행, 검증된 실행 이미지 커밋입니다. 이미 시작한 다운로드를 중단하는 명령도 있습니다.\n\n전송 성공을 활성화 성공과 동일하게 보지 마세요. 마찬가지로 새 이미지를 실행했다고 해서 그 이미지가 이후 리셋의 기본 이미지가 되는 것은 아닙니다. 이들은 별도의 명령 결과를 갖는 서로 다른 상태입니다.\n\n각 단계에서 선택한 파트너, 이미지 정보 및 상태를 기록하세요. 그러면 유지보수 조치를 추적하고 검토할 수 있으며, 마지막 블록을 보냈다는 이유만으로 소프트웨어가 성공을 선언하는 일을 방지합니다."
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "hitless_update_is_a_lifecycle_pattern",
+          "section_label": "업데이트 수명주기",
+          "title": "히트리스 업데이트는 라이프사이클 패턴입니다",
+          "figure": {
+            "path": "figures/remote_firmware_lifecycle.svg",
+            "source": "custom",
+            "alt": "원격 펌웨어 수명주기: 정보 확인, 시작, 전송, 완료, 실행 및 검증, 커밋. 다운로드 실패 시 중단하고 정리합니다.",
+            "caption": "모든 명령의 결과를 확인하세요. 이미지 실행과 이후 리셋을 위한 커밋은 별개의 단계입니다.",
+            "text_inventory": {
+              "sha256": "3999b7855e8aa9038a6e663fda624a9cb1f15d4394d3bdb0545611a35b29f83b",
+              "entries": [
+                {
+                  "text": "원격 펌웨어: 실행, 검증, 그리고 커밋 | 파트너를 선택하고 모든 명령 결과를 확인하세요 | 정보 확인 | 8030h: 이미지 및 상태 | 다운로드 시작 | 8031h: 이미지 전송 시작 | 블록 전송 | 8033h: 각 블록 확인 | 다운로드 완료 | 8034h: 완료 검증 | 실행 및 검증 | 8035h: 이미지 활성화 | 커밋 | 8036h: 이후 리셋 기본값 | 다운로드 실패: 중단 및 정리 | 8032h로 시작한 다운로드를 중단합니다. 불완전한 이미지는 실행하지 마세요."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                80,
+                83,
+                85,
+                88,
+                90,
+                93
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.txt",
+            "wav_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "b5b0345dee8b1e5626a7c2db3c6c8517ce3fc8edcaeb1ba670138c53b83b10a3",
+              "master_sha256": "7dc612973721d21b67b95f783bff12df5e1efef417274d2303d2929556c545ae",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "650c938cc7a40171bb9ed82e7dba1ce7d7b90b6ad8c21a75d0df79379d568429",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 원격 펌웨어 수명주기 - 76-94쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=76"
+            }
+          ],
+          "transcript": "히트리스 펌웨어 유지보수는 하나의 명령이 성공했는지가 아니라 통제된 수명주기에 달려 있습니다.\n\n원격 이미지 정보를 확인한 뒤 다운로드를 시작합니다. 펌웨어를 블록 단위로 전송하고 모든 결과를 확인하세요. 블록 전송이 실패하면 불완전한 이미지로 계속 진행하지 말고 다운로드를 중단하고 정리합니다.\n\n모든 블록이 도착하면 다운로드 완료 명령이 해당 단계를 검증합니다. 이미지 체크섬 오류와 같은 실패는 다운로드가 성공하지 못했음을 뜻합니다. 활성화로 진행하지 마세요.\n\n완료가 성공하면 새 이미지를 실행하고 동작을 검증합니다. 그 후에만 실행 중인 이미지를 이후 리셋의 기본값으로 커밋합니다. 실행과 커밋의 구분은 모듈이 지금 무엇을 하고 리셋 후에 무엇을 할지 이해하는 데 핵심적입니다.\n\n로컬 모듈은 인밴드 인터페이스를 통해 선택한 원격 파트너에 이러한 작업을 전달합니다. 전체 순서에서 해당 파트너의 식별 정보를 유지하세요.\n\n히트리스 기능도 배포 환경에서 검증해야 합니다. 서비스 중 이 워크플로우를 신뢰하기 전에 실제 트래픽 연속성, 명령 상태, 복구 동작 및 유지보수 정책을 확인합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "host_software_owns_the_local_conversation",
+          "section_label": "호스트 경계",
+          "title": "호스트 소프트웨어가 로컬 통신을 담당합니다",
+          "subtitle": "호스트는 I2C를 통해 로컬 준수 모듈과 통신하며; 로컬 모듈은 원격 데이터를 가져옵니다.",
+          "bullets": [
+            {
+              "bold_lead": "로컬 제어 지점",
+              "text": "모든 준수하는 트랜시버 통신은 명세에 따라 I2C를 통해 이루어집니다."
+            },
+            {
+              "bold_lead": "원격 회수",
+              "text": "원격 데이터가 요청되면 로컬 트랜시버가 이를 수집하여 호스트에 전달합니다."
+            },
+            {
+              "bold_lead": "직접적인 원격 경로 없음",
+              "text": "로컬 호스트는 원격 파트너 모듈과 직접 통신하지 않습니다."
+            }
+          ],
+          "figure": {
+            "path": "figures/host_local_conversation.svg",
+            "alt": "호스트는 I2C를 통해 로컬 모듈과 통신하고, 로컬 모듈은 원격 파트너 데이터 인밴드를 가져옵니다.",
+            "caption": "호스트는 국지적입니다; 컴플라이언스 모듈은 원격 엔드포인트를 브리지합니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "fddb02a4544577b05d26a175ba36d14a2a294ad86bab5ca1c14cbf16ecab71a5",
+              "entries": [
+                {
+                  "text": "호스트 소프트웨어가 로컬 통신을 담당합니다 | 스위치 호스트 | SDK 및 CLI | I2C | 로컬 광모듈 | 로컬 응답 | 원격 프록시 | 인밴드 | 원격 | 파트너 | 호스트는 원격 모듈로 별도의 직접 경로가 필요하지 않습니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                96
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.txt",
+            "wav_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.wav",
+            "approved": true,
+            "delivery_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "21114b96b349947374cb60541c3f994e6e1e27dfa3e48b0c3c5f2621f19c158d",
+              "master_sha256": "5ca51fd34c4c357b021f8f57c24f30d90925e264b1aa35a0a02a11cfedbd23f2",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "09138b61808ebb267f7fe9214059c3fcdafcc8da9cd18ef9e4ed0981b5fdbdb7",
+              "objective_signal_check": "passed"
+            }
+          },
+          "term_refs": [
+            "i2c"
+          ],
+          "transcript": "호스트 경계는 명시되어 있습니다. 모든 준수하는 트랜시버 통신은 로컬 호스트와의 I 제곱 C 위에서 수행됩니다. 로컬 모듈에 발령된 명령은 로컬 트랜시버나 원격 링크 파트너 중 하나로부터 텔레메트리를 요청할 수 있습니다.\n\n원격 데이터가 요청될 때, 로컬 트랜시버는 해당 데이터를 수집하여 로컬 호스트에 전달할 책임이 있습니다. 로컬 호스트는 원격 파트너 모듈과 직접 통신하지 않습니다.\n\n이 세부 사항은 아키텍처, 디버깅, 보안 검토에 영향을 미칩니다. 호스트 소프트웨어는 일관성을 유지할 수 있습니다. 모듈은 인밴드 원격 데이터 수집을 담당합니다. 운영자는 각 원격 광 엔드포인트마다 별도의 관리 경로를 발명하지 않고도 먼 범위의 가시성을 얻을 수 있습니다.\n이 경계는 접근 제어 논의도 단순화합니다. 호스트는 로컬 상호작용을 승인하고 기록할 수 있으며, 준수 모듈은 링크를 통한 원격 데이터 수집을 처리합니다. 이는 많은 임시 원격 디버그 경로보다 더 깨끗합니다."
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "command_line_apis_become_operator_tools",
+          "section_label": "운영자 API",
+          "title": "명령줄 API가 운영자 도구가 됩니다",
+          "subtitle": "호스트 SDK와 명령줄 API는 공통 모듈 기능을 반복 가능한 워크플로우로 노출합니다.",
+          "columns": [
+            "API 카테고리",
+            "운영자 사용"
+          ],
+          "rows": [
+            [
+              "표준 CMIS 접근",
+              "로컬 레지스터와 표준 모듈 상태를 읽습니다."
+            ],
+            [
+              "원격 CMIS 접근",
+              "선택한 링크 파트너를 통해 원격 CMIS 레지스터를 읽거나 씁니다."
+            ],
+            [
+              "텔레메트리 다운로드",
+              "로컬 또는 원격 모듈의 텔레메트리 매개변수를 표시합니다."
+            ],
+            [
+              "이벤트 로그",
+              "로컬 또는 원격 이력을 읽고 증거를 내보낸 뒤, 의도한 경우에만 삭제합니다."
+            ],
+            [
+              "펌웨어 업데이트",
+              "로컬 또는 원격 히트리스 펌웨어 업데이트 워크플로우를 실행합니다."
+            ],
+            [
+              "시간 및 등급",
+              "모듈 시간을 읽고 설정하며, 히스테리시스를 조정하고 링크 등급을 표시합니다."
+            ],
+            [
+              "텔레메트리 제어",
+              "지원 기능을 탐색하고 점수 마스크/임계값을 설정하며 종료 상태를 확인합니다."
+            ]
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                18,
+                27,
+                43,
+                46,
+                50,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.txt",
+            "wav_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "d11f20279d5f231ab6f96f5fba198992fce1113afdce69f94f5cf0fbbac12a6f",
+              "master_sha256": "4d407fec55bcd6b1f3ad19da19fbc0742a3df07c0a5ccdb535f0849bbaf75c7c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "1724ba285ac67ce76dc7f7228943a922ce2f9788a37bf1aa59bb73f43710b02a",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 호스트 API - 96-97쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=96"
+            }
+          ],
+          "transcript": "호스트 SDK는 공통 모듈 인터페이스를 운영자 워크플로우로 전환합니다. 명세는 SONiC 구현과 여러 명령줄 API 범주를 설명합니다.\n\n로컬 및 원격 CMIS 접근은 레지스터 상태를 제공합니다. 텔레메트리 다운로드는 선택한 엔드포인트, 측 및 포트의 측정값을 표시합니다. 이벤트 도구는 최근 이력을 사람이 읽을 수 있는 형태로 가져오고, 히스테리시스를 제어하며, 의도한 경우에만 이력을 삭제합니다.\n\n펌웨어 도구는 적절한 명령 계열과 확인된 수명주기 결과를 사용하여 로컬 또는 원격 유지보수를 수행합니다. 모듈 시간 제어는 기록 비교에 필요한 기준을 제공하고, 링크 등급 표시는 그 근거가 되는 증거로 들어가는 간결한 출발점을 제공합니다.\n\n적격성 평가 및 진단 도구에는 지원 기능 탐색, 카운터 마스크 제어, 임계값 제어 및 종료 상태 검증도 필요합니다. 특정 사용자 인터페이스에서 다르게 묶더라도 하위 수준의 명령은 이러한 작업을 정의합니다.\n\n읽기와 설정 변경을 명확히 구분하세요. 이력을 가져오는 것, 이력을 지우는 것, 모듈의 대응 방식을 바꾸는 것은 서로 다른 작업입니다.\n\n유용한 도구는 값과 함께 목적지, 지원 기능, 유효 설정 및 명령 결과를 보고합니다. 이 맥락이 있어야 실제 장애 상황에서 출력을 신뢰할 수 있습니다.",
+          "term_refs": []
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_harvesting_builds_a_link_timeline",
+          "section_label": "수집",
+          "title": "텔레메트리 수집이 링크 타임라인을 구축하다",
+          "figure": {
+            "path": "figures/telemetry_timeline.svg",
+            "alt": "호스트 폴링, 이벤트 임계값, 원격 파트너 쿼리, 네트워크 상태 맵를 보여주는 타임라인.",
+            "caption": "모듈 시간 조회/설정(0005h/0006h)은 POSIX 에포크 이후의 나노초를 사용합니다. 양쪽 모듈 엔드포인트와 스위치 수신기 측정값의 상관관계를 확인합니다.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "83ad4bf0250d3606003214a7954e3db361c3a7dbc0225c96588a8105f1bf6376",
+              "entries": [
+                {
+                  "text": "텔레메트리 수집은 링크 타임라인을 구축합니다 | 폴링 | 현재 지표 | 이벤트 | 임계값 초과 | 원격 | 상대편 조회 | 맵 | 패브릭 상태 | 현재 상태와 사건 이력을 연결할 수 있을 때 운영이 개선됩니다."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                21,
+                22,
+                24,
+                25,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.txt",
+            "wav_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "9b66326efa86605402535bcf44fbde3c74d9ad230a7860ca08c63a34bcdaf194",
+              "master_sha256": "b10ef119ad95723ebe0782df31be228dd84a668bb9e4980836d0c35e9dada161",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "90af877e8e0ec0316ed8a7f91eb2dc0fda3dd32322e3cff29ecaf90087385aaf",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 시간 및 호스트 수집 - 21-25, 96-97쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=21"
+            }
+          ],
+          "term_refs": [
+            "fec",
+            "ber"
+          ],
+          "transcript": "지속적인 수집은 개별 측정값을 링크 성능 타임라인으로 전환합니다. 호스트는 이 타임라인을 텔레메트리 서버로 스트리밍할 수 있으며, 운영자는 서버에서 패브릭 전체의 상태를 파악합니다.\n\n시간 동기화도 이러한 증거 경로의 일부입니다. 모듈 시간 조회와 설정에는 명령 0005h와 0006h를 사용합니다. 이들은 POSIX 에포크, 즉 UTC 기준 1970년 시작 시점 이후의 시간을 64비트 나노초로 표현합니다.\n\n향상된 텔레메트리 정의는 이 명령을 원격 작업으로 확장합니다. 호스트는 선택한 원격 파트너의 시간을 조회할 수 있습니다. 설정 명령은 대상 필드의 정의에 따라 로컬 모듈 또는 로컬 및 원격 포트를 지정할 수 있습니다.\n\n타임스탬프 단위가 시계 정확도를 보장하지는 않습니다. 소프트웨어는 모듈과 호스트 간의 이벤트를 비교하기 전에 시간 기준을 설정하고 검증해야 합니다.\n\n타임라인에는 스위치 자체 수신기의 FEC 이전 BER과 정정 불가능한 코드워드 측정값도 포함됩니다. 모듈 데이터만으로 모든 수신 구간을 포괄할 수는 없습니다.\n\n엔드포인트 식별 정보, 유효한 시간, 현재 지표 및 영속적인 이벤트 기록을 함께 보면, 운영자는 재링크에 앞선 온도 상승과 원격 장애 뒤에 발생한 로컬 경보를 구분할 수 있습니다."
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "deployment_readiness_checks",
+          "section_label": "준비 상태 점검",
+          "title": "배치 준비 상태 점검",
+          "subtitle": "배포는 필드의 존재 여부뿐만 아니라 동작을 검증해야 합니다.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "로컬 및 원격 파트너",
+              "body": "호스트가 로컬 모듈과 올바른 원격 엔드포인트에서 데이터를 가져올 수 있는지 확인하세요."
+            },
+            {
+              "title": "브레이크아웃 사례",
+              "body": "한 포트가 여러 원격 측에 매핑될 때 파트너 식별 정보과 엔드포인트별 텔레메트리를 검증합니다."
+            },
+            {
+              "title": "서드파티 광모듈",
+              "body": "인밴드 지원과 자동 레인 감지를 확인합니다. 기본 데이터 링크가 연결되었다고 원격 텔레메트리의 가용성이 입증되는 것은 아닙니다."
+            },
+            {
+              "title": "에포크 타임",
+              "body": "로컬/원격 모듈 시간을 설정하고 검증합니다. 타임스탬프 단위만으로 시계 정확도가 보장되지는 않습니다."
+            },
+            {
+              "title": "펌웨어 수명 주기",
+              "body": "탐색, 전송, 활성화, 커밋, 중단, 복구 상태를 검증합니다."
+            },
+            {
+              "title": "점수 및 종료 정책",
+              "body": "카운터 마스크, 모듈 임계값 및 종료 활성화 상태와 리셋 후 기본값을 확인합니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                18,
+                19,
+                21,
+                24,
+                50,
+                54,
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_deployment_readiness_checks.txt",
+            "wav_file": "audio/module4/slide_08_deployment_readiness_checks.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_08_deployment_readiness_checks.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "bbd14d6789b8f3e05baa940b050f40bcced96bfc7ab5356fede7ccb792b5e2a2",
+              "master_sha256": "ad2bb9079bb8cb8054ce4ddefe759fab1c0fe3e0c8c7beacbbefe68efa8476ea",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "36983f615ff9558e8ea2f5515092cffb3f923b4f5908612e09bc75f8f3bc0494",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "reference_links": [
+            {
+              "label": "명세 v1.0.0 - 기능 및 정책 - 18-25, 50-51쪽",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=18"
+            }
+          ],
+          "transcript": "배포 준비도는 전체 증거 경로의 동작을 시험하는 것입니다.\n\n모듈의 텔레메트리 버전, 지원 명령 및 지표 기능을 탐색합니다. 인밴드 지원과 레인 연결을 검증하세요. 혼합 배포에서 서드파티 파트너와 데이터 링크가 작동한다고 해서 원격의 향상된 텔레메트리를 사용할 수 있다고 볼 수는 없습니다.\n\n브레이크아웃 상황에서 올바른 파트너와 데이터패스를 포함하여 로컬 및 원격 쿼리를 시험합니다. 모듈 시간을 설정하고 이벤트가 호스트 측정값과 맞물리는지 확인하세요. 리셋, 모듈 제거 및 재삽입 후에도 이력을 보존합니다.\n\n점수 마스크와 임계값을 다시 읽어 확인합니다. 리셋 후 자율 종료가 비활성화된 상태로 시작하는지 검증하고, 설정 후 의도한 상태인지 확인합니다. 활성화한 경우에는 장애 및 이벤트 증거가 해당 대응을 어떻게 식별하는지 시험합니다.\n\n펌웨어 탐색, 전송, 완료, 실행, 검증, 커밋 및 중단 처리를 검증합니다. 실행 중인 이미지 상태와 이후 리셋의 기본값을 구분하세요.\n\n마지막으로 운영자가 실제 호스트 도구를 통해 이러한 증거를 가져올 수 있는지 확인합니다. 첫 중대 장애가 발생하기 전에 팀이 인터페이스를 예측 가능한 방식으로 사용할 수 있어야 배포 준비가 된 것입니다.",
+          "term_refs": []
+        },
+        {
+          "id": 9,
+          "type": "content_diagram",
+          "slug": "from_link_flap_to_root_cause",
+          "section_label": "문제 해결",
+          "title": "링크 플랩에서 근본 원인까지",
+          "figure": {
+            "path": "figures/link_flap_root_cause.mp4",
+            "media_type": "video",
+            "alt": "링크 플랩 알림부터 상태 점수, 지표, 이벤트 로그, 원격 쿼리, 근거 기반 조치까지 문제 해결을 보여주는 무음 애니메이션.",
+            "caption": "양쪽의 개별 점수, 최저점에 동률인 범주, 이벤트 상세 정보 및 원격 증거를 확인합니다. 설정에 따른 종료 자체가 링크 단절의 원인일 수 있습니다.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/link_flap_root_cause_poster.png",
+            "text_inventory": {
+              "sha256": "b760cc8d3932a33e0a7cef2672c2587a66110422aa3cf30f945d4ec659a33f25",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "링크 플랩에서 근본 원인까지 | 향상된 텔레메트리는 이벤트를 구조화된 증거 추적 경로로 전환합니다. | ! | 플랩 알림 | 증상이 나타난다 | 40 | 상태 점수 | 취약 범주 | M | 지표 | 현재 필드 | L | 이벤트 로그 | 순서가 있는 기록 | R | 원격 조회 | 원격 엔드포인트 | T | 호스트 타임라인 | 시스템 관점 | 증거 묶음 | 증거 기반 조치 | 청소 / 재장착 | 광모듈 교체 | 펌웨어 업데이트 | 벤더 지원 요청 | 플랩을 확인한 뒤 증거를 수집하고 조치를 선택하세요."
+                },
+                {
+                  "at_seconds": 4.5,
+                  "text": "링크 플랩에서 근본 원인까지 | 향상된 텔레메트리는 이벤트를 구조화된 증거 추적 경로로 전환합니다. | ! | 플랩 알림 | 증상이 나타난다 | 40 | 상태 점수 | 취약 범주 | M | 지표 | 현재 필드 | L | 이벤트 로그 | 순서가 있는 기록 | R | 원격 조회 | 원격 엔드포인트 | T | 호스트 타임라인 | 시스템 관점 | 증거 묶음 | 상태 점수 | 광학 범주 약함 | 증거 기반 조치 | 청소 / 재장착 | 광모듈 교체 | 펌웨어 업데이트 | 벤더 지원 요청 | 상태 점수는 가장 취약한 범주를 가리킵니다."
+                },
+                {
+                  "at_seconds": 9,
+                  "text": "링크 플랩에서 근본 원인까지 | 향상된 텔레메트리는 이벤트를 구조화된 증거 추적 경로로 전환합니다. | ! | 플랩 알림 | 증상이 나타난다 | 40 | 상태 점수 | 취약 범주 | M | 지표 | 현재 필드 | L | 이벤트 로그 | 순서가 있는 기록 | R | 원격 조회 | 원격 엔드포인트 | T | 호스트 타임라인 | 시스템 관점 | 증거 묶음 | 상태 점수 | 광학 범주 약함 | 지표 | 광전력 및 BER 변화 | 이벤트 순서 | 플랩 전에 경고 | 원격 엔드포인트 | 반대편 확인 | 증거 기반 조치 | 청소 / 재장착 | 광모듈 교체 | 펌웨어 업데이트 | 벤더 지원 요청 | 원격 엔드포인트 데이터와 호스트 타임라인이 원인 범위를 좁힙니다."
+                },
+                {
+                  "at_seconds": 13.5,
+                  "text": "링크 플랩에서 근본 원인까지 | 향상된 텔레메트리는 이벤트를 구조화된 증거 추적 경로로 전환합니다. | ! | 플랩 알림 | 증상이 나타난다 | 40 | 상태 점수 | 취약 범주 | M | 지표 | 현재 필드 | L | 이벤트 로그 | 순서가 있는 기록 | R | 원격 조회 | 원격 엔드포인트 | T | 호스트 타임라인 | 시스템 관점 | 증거 묶음 | 상태 점수 | 광학 범주 약함 | 지표 | 광전력 및 BER 변화 | 이벤트 순서 | 플랩 전에 경고 | 원격 엔드포인트 | 반대편 확인 | 호스트 타임라인 | 서버 이벤트 정렬 | 증거 기반 조치 | 청소 / 재장착 | 광모듈 교체 | 펌웨어 업데이트 | 벤더 지원 요청 | 이제 조치를 뒷받침하는 증거가 있습니다."
+                },
+                {
+                  "at_seconds": 17.966666666666665,
+                  "text": "링크 플랩에서 근본 원인까지 | 향상된 텔레메트리는 이벤트를 구조화된 증거 추적 경로로 전환합니다. | ! | 플랩 알림 | 증상이 나타난다 | 40 | 상태 점수 | 취약 범주 | M | 지표 | 현재 필드 | L | 이벤트 로그 | 순서가 있는 기록 | R | 원격 조회 | 원격 엔드포인트 | T | 호스트 타임라인 | 시스템 관점 | 증거 묶음 | 상태 점수 | 광학 범주 약함 | 지표 | 광전력 및 BER 변화 | 이벤트 순서 | 플랩 전에 경고 | 원격 엔드포인트 | 반대편 확인 | 호스트 타임라인 | 서버 이벤트 정렬 | 조치 기록 | 결정 근거 추적 가능 | 증거 기반 조치 | 청소 / 재장착 | 광모듈 교체 | 펌웨어 업데이트 | 벤더 지원 요청 | 다음 장애에 맥락을 제공하도록 조치를 기록하세요."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                32,
+                38,
+                50,
+                54,
+                57,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_09_from_link_flap_to_root_cause.txt",
+            "wav_file": "audio/module4/slide_09_from_link_flap_to_root_cause.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_09_from_link_flap_to_root_cause.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "e9e89b847ea9dc267ed296ff5a2fb5b3c513f6732d5cfb08e1571e0a1f07ae4b",
+              "master_sha256": "7001d9539094a2998574d3dea4ab0bb0498583c20adf2ea8b06eb61697272fab",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "eb3672aaf870606b2cf6264a63ab47422cd9e64c250dfff5f3138449b5aa6784",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "링크 플랩이 발생했습니다. 먼저 증거를 확인한 뒤 조치를 선택하세요.\n\n관련 엔드포인트의 호스트 측 및 미디어 측 등급을 확인합니다. 특히 여러 범주가 동률일 때 최저 범주에 기여한 모든 항목을 읽으세요. 요약의 근거가 되는 측정값, 마스크 및 유효 임계값을 검토합니다.\n\n그런 다음 이벤트 이력을 가져옵니다. 단절 전에 광전력 경보, 수신기 상태, 리셋, 펌웨어 작업 또는 설정된 자율 종료가 있었나요? 종료 기록은 일반적인 링크 다운 증상만 남기는 대신 해당 측, 포트, 범주 및 값을 식별합니다.\n\n로컬 모듈을 통해 원격 파트너를 조회하고 그 증거를 호스트 타임라인과 비교합니다. 누락되거나 시간상 어긋난 데이터를 정상 결과로 판단하기 전에 접근 가능 여부와 시간 유효성을 확인하세요.\n\n이 순서는 가능한 원인을 광 경로 손실, 전기적 여유도, 열 조건, 펌웨어 동작, 원격 엔드포인트 문제 또는 의도된 설정 대응으로 좁혀 줍니다.\n\n조치와 그 근거가 된 증거를 기록하세요. 청소, 모듈 교체, 설정 변경 또는 공급업체 지원 요청은 전체 경로를 합리적으로 해석한 뒤 이루어져야 합니다.",
+          "term_refs": []
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "reliability_depends_on_common_interfaces",
+          "title": "신뢰성은 공통 인터페이스에 따라 달라집니다",
+          "items": [
+            "펌웨어 관리는 기능 탐색, 상태 점검, 활성화, 커밋, 복구 동작을 포함하는 라이프사이클입니다.",
+            "호스트 소프트웨어는 I2C를 통해 로컬에서 통신하며, 준수 모듈은 원격 파트너 데이터를 인밴드 내에 가져옵니다.",
+            "호스트 도구는 지원 기능 탐색, 점수 설정, 이벤트 이력, 펌웨어 유지보수 및 동기화된 시간을 통합합니다.",
+            "연속 수집은 현재 상태와 이벤트 이력을 링크 타임라인으로 변환합니다.",
+            "배포 준비 상태란 로컬, 원격, 브레이크아웃, 혼합 호환성 사례 전반에 걸친 동작을 검증하는 것을 의미합니다."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.txt",
+            "wav_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "f05ec20744853388fbb1b06c401008e96eec32b7eb20686bb089ff76a572962f",
+              "master_sha256": "53aa42ccf360ee78501534a4181981f8c0471859a290feae1c9c03fae08f7168",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "364b27170666c6167f4e3ff923019dc8fa96672568a7aefbe12e562205b08324",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "신뢰할 수 있는 운영에는 공통 인터페이스와 결과에 대한 체계적인 해석이 필요합니다.\n\n펌웨어 유지보수는 탐색, 전송, 유효성 검사, 활성화, 검증 및 커밋을 구분합니다. 호스트는 I2C를 통한 로컬 제어 지점으로 유지되고, 모듈은 인밴드 방식으로 원격 파트너에 접근합니다.\n\n호스트 도구는 지원 기능, 로컬 및 원격 측정값, 측별 등급, 점수 설정, 이벤트 이력, 모듈 시간 및 펌웨어 결과를 통합합니다. 스위치도 자체 수신기 오류 측정값을 제공합니다.\n\n설정은 증거와 함께 유지되어야 합니다. 카운터 마스크는 점수 반영 여부에 영향을 줍니다. 임계값은 점수 구간에 영향을 줍니다. 자율 종료는 별도의 대응으로, 리셋 후 기본값은 비활성화이며 식별 가능한 장애 및 이벤트 기록을 남깁니다.\n\n엔드포인트 식별 정보와 유효한 타임스탬프가 이러한 요소를 연결하면 현재 상태가 타임라인이 되고, 타임라인은 패브릭 전체의 신뢰성 파악을 뒷받침합니다.\n\n이 모델을 활용하여 적격성 평가와 장애 상황에서 정확한 질문을 하세요. 어떤 수신기, 어떤 파트너, 어떤 설정, 어떤 이벤트, 그리고 어떤 완료된 명령이 그 결론을 뒷받침하나요?",
+          "term_refs": []
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_deployment_workflow",
+          "title": "모델 점검: 배포 워크플로우",
+          "subtitle": "한 번 대답하면 계속됩니다. 정확성은 필수 아니며, 피드백 후 다시 시도할 수 있습니다.",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "왜 로컬 호스트는 사양 모델에서 원격 파트너 모듈과 직접 통신하지 않는가?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "호스트는 로컬 준수 모듈과 통신하며; 로컬 모듈은 인밴드에서 원격 데이터를 가져옵니다.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "원격 텔레메트리는 지원되지 않습니다.",
+                  "correct": false,
+                  "feedback_incorrect": "원격 텔레메트리는 로컬 모듈과 인밴드 통신을 통해 지원됩니다."
+                },
+                {
+                  "id": "c",
+                  "text": "원격 광학 데이터를 요청할 수 있는 것은 오직 텔레메트리 서버뿐입니다.",
+                  "correct": false,
+                  "feedback_incorrect": "호스트 소프트웨어는 로컬 준수 모듈을 통해 원격 데이터를 요청할 수 있습니다; 서버는 상위 수준의 상태 정보를 집계합니다."
+                }
+              ],
+              "feedback_correct": "맞아요. 로컬 모듈은 원격 데이터 수집을 중계하는 역할을 하며, 호스트는 하나의 로컬 제어 경로를 유지합니다.",
+              "feedback_incorrect": "호스트 경계를 검토하세요: 로컬 호스트에서 로컬 모듈로 I2C를 거쳐, 그 다음 로컬 모듈에서 원격 파트너로 인밴드를 연결하세요."
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "어떤 호스트/API 기능은 대규모 광모듈 운영을 지원하나요?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "로컬 및 원격 텔레메트리 다운로드.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "이벤트 로그 읽기, 지우기, 최근 이벤트 다운로드, 히스테리시스 제어.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "로컬 및 원격 펌웨어 업데이트 워크플로우.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "호스트 측의 FEC 이전 BER과 정정 불가능한 코드워드 데이터를 무시합니다.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "맞아요. 대규모 광모듈 운영은 최신 텔레메트리, 지속적인 이벤트 이력, 원격 접속, 펌웨어 수명주기 지원, 호스트 측 맥락이 필요합니다.",
+              "feedback_incorrect": "전체 운영 체인을 생각해 보세요: 현재 텔레메트리, 이벤트 이력, 원격 접속, 펌웨어 관리, 시간 상관관계, 링크 등급, 호스트 측 맥락 등이 포함됩니다."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_11_check_your_model_deployment_workflow.txt",
+            "wav_file": "audio/module4/slide_11_check_your_model_deployment_workflow.wav",
+            "approved": true,
+            "delivery_file": "audio/module4/slide_11_check_your_model_deployment_workflow.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "ce07e6560b6b95db037a6b0a60c7e806062f6bd6cea99eb394448b8aa41a4f73",
+              "master_sha256": "0b40a2f831688aece9e90d4516463692491c062af99b566a4776fc81e27b43cc",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "9d60afcfb29f49a22abc280001f8f7af1ef705f14a0a875379de2946af298444",
+              "objective_signal_check": "passed"
+            }
+          },
+          "transcript": "과정을 마치기 전에 마지막으로 한 번 더 확인해 보세요. 첫 번째 질문은 데이터가 원격 파트너로부터 왔음에도 불구하고 로컬 호스트가 왜 하나의 로컬 제어 경로를 유지하는지에 대한 질문입니다. 두 번째 질문은 대규모 광모듈 운영을 지원하는 호스트와 API 기능이 무엇인지 묻습니다.\n\n각 질문을 한 번씩 제출하면 계속 진행하세요. 정답이 필수는 아니며, 재시도를 위한 피드백도 가능합니다. 피드백을 활용해 호스트 경계, 원격 조회, 이벤트 이력, 펌웨어 워크플로우를 연결하세요.",
+          "term_refs": []
+        },
+        {
+          "id": 12,
+          "type": "course_complete",
+          "slug": "course_complete_ocp_optics_reliability",
+          "title": "과정 완료: 향상된 광학 텔레메트리",
+          "course_title": "향상된 광학 텔레메트리",
+          "thank_you_message": "마지막 모듈인 펌웨어, 호스트 소프트웨어, 배포 준비 과정을 완료해 주셔서 감사합니다.",
+          "cert_message": "이제 로컬 및 원격 증거, 측별 상태 점수, 설정된 모듈 동작, 영속적인 이벤트 이력, 펌웨어 유지보수 및 호스트 API를 하나의 신뢰성 워크플로우로 연결할 수 있습니다.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.txt",
+            "wav_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "PDoCXqBQFGsvfO0hNkEs",
+              "script_sha256": "99f5a65f89d5741316ee6f86597bdc0080fc556746f1d965a08ec709b99a4602",
+              "master_sha256": "cead03d8d678f571e392589544dd7de616e3c8144c0112d0fb3fef9ace1248a5",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "ac565a159126ac53901330ef7246f4f6d15aec74527445d0e38702d84776973c",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "향상된 광학 텔레메트리 명세 v1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+            }
+          ],
+          "transcript": "향상된 광학 텔레메트리 과정을 완료해 주셔서 감사합니다.\n\n로컬 및 원격 가시성, 지원 기능 탐색, 측별 상태 점수, 설정된 모듈 동작, CDB 워크플로우, 영속적인 이벤트 이력, 원격 레지스터 접근, 펌웨어 유지보수 및 호스트 도구를 학습했습니다.\n\n실무의 핵심은 공통 증거입니다. 엔드포인트 식별 정보를 보존하고, 명령 결과를 검증하고, 유효 설정을 이해하며, 유효한 시간 기준을 사용하여 이벤트의 상관관계를 확인하세요.\n\n인터페이스를 구현하거나 적격성을 평가할 때는 명세 자료에서 명령과 필드 정의를 확인하세요. 어떤 증거를 수집하고 링크 상태에 어떤 조치가 필요한지 결정할 때 이 운영 모델을 적용해 보세요.",
+          "term_refs": []
+        }
+      ]
+    }
+  ],
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 5
+  },
+  "index_module_links": false,
+  "index_start": {
+    "enabled": true,
+    "label": "모듈 1부터 시작",
+    "navigation": "direct"
+  },
+  "index_navigation_instruction": "왼쪽 사이드바의 강의 목록에서 원하는 순서로 모듈을 선택하세요.",
+  "lms_catalog": {
+    "title": "향상된 광학 텔레메트리",
+    "short_description": "광학 지표, 이벤트 이력, 원격 접근 및 펌웨어 워크플로우를 활용하여 링크 상태와 배포 준비도를 평가합니다.",
+    "overview": "향상된 광학 텔레메트리가 AI 패브릭에서 무엇이 어디서 고장 났는지, 그리고 어떤 증거를 바탕으로 다음 조치를 결정할 수 있는지 파악하는 데 어떻게 도움이 되는지 살펴봅니다. 링크 상태 지표와 플래그를 명령 워크플로우, 영속적인 이벤트 이력, 원격 접근, 펌웨어 관리 및 호스트 소프트웨어와 연결합니다. 광 링크를 진단하고 배포 준비도를 평가하기 위한 실용적인 모델을 익힙니다.",
+    "duration_minutes": 50,
+    "duration_basis": "estimated_learner_time",
+    "duration_note": "예상 학습 시간에는 내레이션, 도해, 지식 확인 및 복습이 포함됩니다. 선택적인 외부 참고 자료 학습, 다시 재생 및 재시도에는 추가 시간이 필요합니다.",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 10,
+        "summary": "패브릭 규모에서 링크 신뢰성을 이해하고, 소프트웨어와 트랜시버의 역할을 식별하며, 텔레메트리 모델에서 로컬, 원격 및 브레이크아웃 엔드포인트를 구분합니다."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 14,
+        "summary": "품질, 오류, 복구, 환경 및 맥락 지표를 분류합니다. 링크 상태 점수, 플래그, 마스크, 임계값 및 자율 종료 동작을 해석합니다."
+      },
+      {
+        "id": 3,
+        "duration_minutes": 14,
+        "summary": "상태를 확인하는 Command Data Block 교환과 영속적인 이벤트 로그를 추적합니다. 원격 바이트 접근과 페이지 접근을 구분하고, 수집한 증거를 장애 조사에 연결합니다."
+      },
+      {
+        "id": 4,
+        "duration_minutes": 12,
+        "summary": "펌웨어 유지보수, 모듈 시간 상관관계, 호스트 측정값 및 명령줄 API 범주를 살펴봅니다. 텔레메트리 수집과 서버 집계를 배포 준비도 점검에 연결합니다."
+      }
+    ],
+    "labels": {
+      "title": "과정명",
+      "short_description": "짧은 설명",
+      "long_description": "상세 설명",
+      "overall_duration": "총 학습 시간: {duration}분",
+      "unit_heading": "모듈 {number}: {title} - {duration}분"
+    }
+  },
+  "metadata_language_name": "Korean",
+  "localization": {
+    "source_course": "../../course.json",
+    "source_language": "en-US",
+    "target_language": "ko-KR",
+    "source_course_sha256": "8ea7ad507933d8c685ece5a70fdf793e2a73af63b1edb4076a1931e1393b2f11"
+  },
+  "ui_labels": {
+    "not_started": "시작 전",
+    "completed": "완료",
+    "course_overview": "과정 개요",
+    "learning_objectives": "학습 목표",
+    "reference": "참고 자료",
+    "learn_more": "자세히 보기",
+    "opens_new_tab": "새 탭에서 열림",
+    "learner_resource": "학습 자료",
+    "open": "열기",
+    "video_controls": "비디오 컨트롤",
+    "play_video": "비디오 재생",
+    "pause_video": "비디오 일시정지",
+    "zoom_video": "비디오 확대",
+    "video_figure": "비디오 도해",
+    "zoom_figure": "도해 확대",
+    "enlarged_figure": "확대된 도해",
+    "lightbox_close_hint": "바깥쪽을 클릭하거나 Esc 키를 눌러 닫으세요",
+    "key_takeaways": "핵심 요점",
+    "knowledge_check": "지식 확인",
+    "submit": "제출",
+    "retry": "다시 시도",
+    "correct": "정답입니다.",
+    "review_feedback": "피드백을 검토한 후 다시 시도하세요.",
+    "select_answer": "답을 하나 이상 선택한 후 제출하세요.",
+    "module": "모듈",
+    "module_complete": "모듈 {module} 완료",
+    "up_next": "다음 모듈",
+    "go_to_module": "모듈 {module}로 이동",
+    "share_feedback": "피드백 공유",
+    "survey_body": "과정에 대한 의견을 공유하여 OCP Academy의 향후 학습 콘텐츠 개선에 도움을 주세요.",
+    "course_complete": "과정 완료",
+    "theme": "테마",
+    "toggle_dark_mode": "다크 모드 전환",
+    "previous_slide": "이전 슬라이드",
+    "next_slide": "다음 슬라이드",
+    "play_pause_narration": "내레이션 재생 또는 일시정지",
+    "playback_speed": "재생 속도",
+    "playback_speed_slider": "재생 속도 슬라이더",
+    "speed": "속도",
+    "toggle_fullscreen": "전체 화면 전환",
+    "fullscreen": "전체 화면",
+    "narration_hint": "내레이션이 자동으로 시작됩니다. 오른쪽 화살표 또는 스페이스 키로 진행하세요.",
+    "screenshot_navigation": "이미지 탐색",
+    "previous_image": "이전 이미지",
+    "next_image": "다음 이미지",
+    "hide_captions": "자막 숨기기",
+    "show_captions": "자막 표시",
+    "captions": "자막",
+    "captions_off": "자막 끄기",
+    "quiz_gate_note": "계속하려면 각 문항의 답을 한 번씩 제출하세요. 정답이 아니어도 진행할 수 있으며 다시 시도할 수 있습니다.",
+    "quiz_gate_warning": "다음으로 진행하기 전에 각 문항의 답을 한 번씩 제출하세요.",
+    "incorrect": "오답입니다.",
+    "default_module_thanks": "모듈 {module}: {title}을(를) 완료해 주셔서 감사합니다.",
+    "default_course_wrap": "과정을 완료했습니다. 학습한 내용을 실제 업무에 적용해 보세요.",
+    "course_home": "과정 홈",
+    "previous_slide_hint": "이전 슬라이드: 왼쪽 화살표 키. Home 키: 이 모듈의 첫 슬라이드로 이동.",
+    "next_slide_hint": "다음 슬라이드: 오른쪽 화살표 키. Home 키: 이 모듈의 첫 슬라이드로 이동.",
+    "slide_counter_hint": "왼쪽 또는 오른쪽 화살표 키로 슬라이드를 이동합니다. Home 키로 이 모듈의 첫 슬라이드로 이동합니다.",
+    "transcript": "내레이션 원고",
+    "automatic_narration": "자동 내레이션",
+    "toggle_narration": "자동 내레이션 전환",
+    "narration_on": "내레이션 켜짐: 클릭하여 끄기",
+    "narration_off": "내레이션 꺼짐: 클릭하여 켜기",
+    "narration_on_hint": "내레이션 켜짐: 클릭하여 끄기",
+    "narration_off_hint": "내레이션 꺼짐: 클릭하여 켜기",
+    "lightbox_pan_hint": "드래그하여 살펴보세요. 바깥쪽을 누르면 닫힙니다.",
+    "syllabus_instruction": "LMS 왼쪽 사이드바의 강의 목록에서 원하는 순서로 모듈을 선택하세요.",
+    "start_with_module": "모듈 {module}부터 시작",
+    "play": "재생",
+    "pause": "일시정지",
+    "seek": "재생 위치 이동",
+    "playback_rate": "재생 속도",
+    "picture_in_picture": "화면 속 화면",
+    "mute": "음소거",
+    "unmute": "음소거 해제",
+    "volume": "음량",
+    "lms_connection_failed": "LMS에 연결할 수 없습니다. 학습 진행 상황이 저장되지 않을 수 있습니다. LMS에서 과정을 다시 여세요.",
+    "lms_storage_limit": "LMS의 저장 용량 한도에 도달하여 진행 상황을 저장할 수 없습니다. LMS 관리자에게 문의하세요.",
+    "browser_storage_blocked": "브라우저가 저장소 접근을 차단했습니다. 이 과정의 저장소 접근을 허용한 후 다시 여세요.",
+    "lms_save_failed": "LMS에 진행 상황을 저장하지 못했습니다. 연결 상태를 확인하고 다시 시도하세요.",
+    "javascript_required": "이 과정의 탐색과 진행 상황 추적에는 JavaScript가 필요합니다.",
+    "slide_transcript": "슬라이드 내레이션 원고",
+    "close_transcript": "원고 닫기",
+    "lms_navigation_note": "완료 상태가 올바르게 기록되도록 LMS 과정 탐색에서 다른 모듈을 여세요.",
+    "no_narration": "이 슬라이드에는 내레이션이 없습니다.",
+    "narration_off_message": "내레이션이 꺼져 있습니다. 원고를 읽거나 이 슬라이드의 재생 버튼을 사용하세요.",
+    "home_syllabus_note": "왼쪽 사이드바의 강의 목록에서 과정 홈을 여세요.",
+    "play_narrated_video": "내레이션과 함께 비디오 재생",
+    "pause_narrated_video": "내레이션 비디오 일시정지",
+    "exit_fullscreen": "전체 화면 종료",
+    "picture_in_picture_unavailable": "이 브라우저에서는 화면 속 화면을 사용할 수 없습니다."
+  },
+  "local_font_stylesheet": "resources/fonts/noto-sans-kr.css",
+  "resource_assets": [
+    "resources/fonts/noto-sans-kr.css",
+    "resources/fonts/noto-sans-kr-400.woff",
+    "resources/fonts/noto-sans-kr-700.woff",
+    "resources/fonts/OFL.txt"
+  ]
+}

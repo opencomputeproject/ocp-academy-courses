@@ -1,0 +1,10 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+C D B proporciona al host y al módulo un patrón estructurado de comando-respuesta. Es opcional en C M I S general, pero los módulos ópticos de telemetría avanzada conformes deben utilizarlo para recopilar y transferir telemetría al host.
+
+La secuencia tiene cuatro pasos principales. Prepare el encabezado y la carga útil del comando requerido. Active el comando. Consulte sus registros de estado. Después recupere la respuesta una vez que la ejecución haya terminado correctamente.
+
+Cada etapa forma parte del contrato. Una respuesta no debe convertirse en evidencia operativa solo porque el software encontró bytes en el área de respuesta. Esos bytes deben corresponder a la solicitud que efectivamente terminó.
+
+La misma disciplina se aplica al recuperar mediciones, recopilar eventos, acceder a registros remotos o transferir firmware. Compruebe el comando compatible, el extremo seleccionado, los campos de entrada y el estado final.
+
+Esto también ofrece un modelo útil para depurar software. ¿Se formó correctamente la solicitud? ¿Se activó? ¿Terminó correctamente el módulo? ¿El software recuperó y validó la respuesta correspondiente? Cuatro preguntas claras son más útiles que una herramienta que muestra datos sin explicar cómo los obtuvo.

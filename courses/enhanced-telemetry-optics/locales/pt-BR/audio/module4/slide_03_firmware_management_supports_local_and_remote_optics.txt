@@ -1,0 +1,10 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+A manutenção de firmware segue dois caminhos relacionados. As operações locais padrão usam os comandos de gerenciamento de firmware do C M I S versão cinco ponto três. A especificação de telemetria avançada define um protocolo remoto na família de comandos 8030h.
+
+Comece descobrindo o suporte e inspecionando as informações do firmware. A resposta remota de informações distingue a validade da imagem, a imagem atualmente em execução e a imagem confirmada como padrão para futuras reinicializações.
+
+A sequência remota normal inicia o download, transfere os blocos de dados, conclui e valida o download, executa a imagem e confirma a imagem em execução verificada. Também existe um comando de aborto para um download já iniciado.
+
+Não confunda transferência bem-sucedida com ativação bem-sucedida. Da mesma forma, executar a nova imagem não a torna automaticamente o padrão para futuras reinicializações. São estados separados, com resultados de comandos separados.
+
+Registre o parceiro selecionado, as informações da imagem e o status de cada etapa. Isso torna a manutenção auditável e impede que o software declare sucesso apenas porque enviou o último bloco.

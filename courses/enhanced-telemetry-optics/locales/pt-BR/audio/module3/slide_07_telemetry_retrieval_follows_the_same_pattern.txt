@@ -1,0 +1,12 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+Uma solicitação de telemetria precisa de três elementos de contexto: destino, lado e porta.
+
+O destino seleciona o módulo local ou um parceiro remoto. O lado seleciona a interface elétrica voltada para o host ou a interface óptica voltada para o meio físico. A porta identifica o datapath relevante, o que importa quando um módulo se conecta a vários parceiros.
+
+O comando 8001h retorna a telemetria dessa seleção. O software prepara a solicitação, aciona o comando, consulta o status e lê a resposta bem-sucedida.
+
+A resposta identifica se o destino está online e acessível. Inclui classificação e bitmap das categorias de menor pontuação, número de série do módulo, contagem de quedas do link, tempo de atividade, sinalizadores, medições de qualidade do sinal, valores ambientais e informações FEC.
+
+Alguns campos da resposta resumem a pior lane em vez de listar cada lane separadamente. A potência óptica inclui valores mínimo e máximo. Preserve esse contexto de agregação ao passar de um resumo por porta para uma investigação detalhada.
+
+Um destino offline não é um destino saudável com métricas zeradas. Informe explicitamente a acessibilidade. O fluxo comum permanece igual para solicitações locais e remotas, mas o contexto do endpoint e da interface deve acompanhar as evidências.

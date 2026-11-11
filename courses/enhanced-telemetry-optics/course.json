@@ -1,0 +1,3128 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_networking_project_optics_reliability",
+  "course_title": "Enhanced Telemetry Optics",
+  "language": "en-US",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo v2",
+    "model_id": "eleven_v4",
+    "speed": 1.18,
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR",
+      "migration_decision": "mp3"
+    },
+    "recording_provenance": "Every delivered recording uses full eleven_v4; verified v4 masters are reused when the script, voice and audio hashes match."
+  },
+  "course_subtitle": "Enhanced telemetry for finding what failed, where, and why in AI optical fabrics.",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Enhanced Telemetry Spec v1.0.0",
+  "index_footer_line": "OCP Networking Project's Optics Reliability Workstream: Enhanced Telemetry Spec v1.0.0 - 2026",
+  "target_duration_minutes": 50,
+  "audience_level": "intermediate technical",
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "ocp_optics_reliability_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "OPTICS"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "path": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "kind": "pdf",
+      "version": "1.0.0"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "pmd",
+      "term": "PMD",
+      "tooltip": "Physical-media-dependent implementation details for the optical module path.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "cmis",
+      "term": "CMIS",
+      "tooltip": "Common Management Interface Specification used for pluggable transceiver management.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "i2c",
+      "term": "I2C",
+      "tooltip": "Two-wire local management interface used by the host to communicate with the local transceiver.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "aliases": [
+        "I squared C"
+      ]
+    },
+    {
+      "id": "vdm",
+      "term": "VDM",
+      "tooltip": "Versatile Diagnostics Monitoring pages in CMIS used by many module telemetry values.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "snr",
+      "term": "SNR",
+      "tooltip": "Signal-to-noise ratio; a signal quality measurement used for host and line lanes.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "fec",
+      "term": "FEC",
+      "tooltip": "Forward error correction; error-correction behavior used to understand link stress and uncorrectable failures.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+      "aliases": [
+        "feck"
+      ]
+    },
+    {
+      "id": "ber",
+      "term": "BER",
+      "tooltip": "Bit error rate; the ratio of errored bits to total transmitted bits, used to quantify link quality.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "ddmi",
+      "term": "DDMI",
+      "tooltip": "Digital diagnostics monitoring interface values and warning or alarm flags reported by the module.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    },
+    {
+      "id": "cdb",
+      "term": "CDB",
+      "tooltip": "Command Data Block; a CMIS command-reply mechanism used for telemetry collection and transfer.",
+      "reference_label": "Enhanced Telemetry Optics specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "the_ai_fabric_visibility_problem",
+      "title": "The AI Fabric Visibility Problem",
+      "subtitle": "Enhanced telemetry as an operations model for local and remote optical endpoints.",
+      "module_badge_text": "Module 1",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "the_ai_fabric_visibility_problem",
+          "title": "The AI Fabric Visibility Problem",
+          "subtitle": "Enhanced telemetry for finding optical link issues across local and remote endpoints.",
+          "version_chip": "Enhanced Telemetry Spec v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                12
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.txt",
+            "wav_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_01_the_ai_fabric_visibility_problem.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "bd5ec34c6e2e6373af3b0fbed85b68b74be3acdfb82ffec1ed146ba7afd0f0d0",
+              "master_sha256": "e0162050f7750bf2127e4e6bd4d23276200b446cfb8b33ff1aeb97d0c0b501a3",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "810a3349dfdb6f3425d69e467a8f0d6066460662b9d845fc42a14cf6f7e63c11",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "the_reliability_questions_this_course_answers",
+          "title": "The Reliability Questions This Course Answers",
+          "subtitle": "Four modules move from the operational problem to deployable host workflows.",
+          "modules_listed": [
+            "The AI Fabric Visibility Problem",
+            "Metrics, Flags, and Link Health",
+            "CDB Workflows, Event Logs, and Remote Access",
+            "Firmware, Host Software, and Deployment Readiness"
+          ],
+          "chips": [
+            {
+              "text": "About 50 minutes total"
+            },
+            {
+              "text": "Intermediate technical audience"
+            },
+            {
+              "text": "OCP specification v1.0.0"
+            },
+            {
+              "text": "Credo author; community feedback from Cisco, Credo, Marvell and Oracle"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - scope and operating model - pp. 10-12",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=10"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                8,
+                10,
+                11,
+                12
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.txt",
+            "wav_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_02_the_reliability_questions_this_course_answers.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "1040d67f11ac854acf1568ffc4c05b728370a0b11bfadfe643fb489ea91fb838",
+              "master_sha256": "81a8318b490d14056fdb844241c46c052c7473786188d41b5eb58a291b477dc1",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "e268ace81fe0bc72738301061528d443be158083486c2e4393623ac8174f176c",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_bullets",
+          "slug": "link_flaps_become_fabric_scale_events",
+          "section_label": "Operational Driver",
+          "title": "Link Flaps Become Fabric-Scale Events",
+          "subtitle": "Large AI fabrics make optical blind spots expensive because one local symptom can have a remote cause.",
+          "bullets": [
+            {
+              "bold_lead": "More endpoints",
+              "text": "Fabrics connect many accelerators, switches, optics, and server endpoints, so one physical symptom may cross several ownership boundaries."
+            },
+            {
+              "bold_lead": "Less direct access",
+              "text": "Bare-metal or remote endpoints can hide the far-side optical module from the operator who sees the switch alarm."
+            },
+            {
+              "bold_lead": "Higher downtime cost",
+              "text": "A link flap can interrupt training, qualification, or service workflows that depend on predictable fabric health."
+            },
+            {
+              "bold_lead": "Need for common evidence",
+              "text": "Operators need consistent telemetry across vendors and form factors before they can compare symptoms at scale."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                11
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.txt",
+            "wav_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_03_link_flaps_become_fabric_scale_events.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "c373971b8da0f3a4082cb8102e24f06964e45152a7d7b113814f3f1050f56dcd",
+              "master_sha256": "ff9abe5d48a9efb0131057ae86a069e02e8864a78c564fd2f1c80af50d18b37c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "b964a6042c104accfa676be2f34e754979b7bd3fb1e4b89d8bd6f58c2e997216",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "the_three_part_software_stack",
+          "section_label": "Software Stack",
+          "title": "The Three-Part Software Stack",
+          "subtitle": "The spec separates the system into transceiver implementation, host software, and telemetry-server integration.",
+          "bullets": [
+            {
+              "bold_lead": "Transceiver firmware and metrics",
+              "text": "The module gathers telemetry, maintains event history, and exposes a common command interface for local and remote operations."
+            },
+            {
+              "bold_lead": "Host software on the switch",
+              "text": "The host polls modules, requests local or remote data, and prepares operational output through SDK or command-line tools."
+            },
+            {
+              "bold_lead": "Telemetry-server integration",
+              "text": "A server can compile and summarize overall network health, but its implementation remains user dependent and outside the spec scope."
+            }
+          ],
+          "figure": {
+            "path": "figures/software_stack.svg",
+            "alt": "Three-part telemetry software stack from transceiver firmware to host software to telemetry server.",
+            "caption": "The specification focuses on transceiver behavior and the common interface to host software; telemetry-server design is intentionally left to operators.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "50be33011120d44d33d6b34a5290518a68861d5afb242b4b4ff4a7d04539c1f9",
+              "entries": [
+                {
+                  "text": "Telemetry software stack | Transceiver | firmware | metrics | event logs | Host switch | software | polling | operator APIs | Telemetry | server | fabric health | map | Common interface from module data to fleet operations"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_04_the_three_part_software_stack.txt",
+            "wav_file": "audio/module1/slide_04_the_three_part_software_stack.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_04_the_three_part_software_stack.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "2d7982da7194e7b557adc155eb51a89685dc9e8d60632503afa03aff5d331bf8",
+              "master_sha256": "cd5990a4acccdcd3a4d1cd3893df6b100b05cbad9ae81b4671808a6adf5cbafb",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "5fba769d642db5969faefc55d6a21585ab95df68334ff565cee9cfafd494d8ed",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_bullets",
+          "slug": "what_the_specification_includes_and_excludes",
+          "section_label": "Scope",
+          "title": "What the Specification Includes and Excludes",
+          "subtitle": "The contribution targets common telemetry behavior without trying to own every monitoring system above it.",
+          "bullets": [
+            {
+              "bold_lead": "Rates in scope",
+              "text": "The spec applies to 400G, 800G, and 1.6T compliant transceivers."
+            },
+            {
+              "bold_lead": "PMD independent",
+              "text": "The telemetry model is intended to be independent of the module physical-media-dependent implementation."
+            },
+            {
+              "bold_lead": "Built on CMIS",
+              "text": "The spec uses OIF CMIS 5.x functions and adds definitions and modifications for enhanced telemetry."
+            },
+            {
+              "bold_lead": "Server left open",
+              "text": "Telemetry-server implementation is user dependent and not within the scope of the document."
+            }
+          ],
+          "term_refs": [
+            "pmd",
+            "cmis"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.txt",
+            "wav_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_05_what_the_specification_includes_and_excludes.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "e4003951731c73ebe72347636bd9f5930c617626daeb5ade3edef4c6d4886142",
+              "master_sha256": "a229e2d939a448683ee7bf7e92aa67c405979e1054cd347a658f1d903790b551",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "8dce0d506d9358b1e2005f894070fed5f6cac47943a585dce3453ddabaa6aa46",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - scope - p. 10",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=10"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "six_functions_of_a_compliant_transceiver",
+          "section_label": "Core Functions",
+          "title": "Six Functions of a Compliant Transceiver",
+          "subtitle": "The specification turns raw module data into a common visibility model for operations.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Mission-mode monitoring",
+              "body": "Collect statistics on host-facing and line-facing receivers while the link is in service."
+            },
+            {
+              "title": "Link-health reporting",
+              "body": "Track and log telemetry through a common health metric rather than isolated counters."
+            },
+            {
+              "title": "Remote identification",
+              "body": "Use in-band communication to exchange data between the transceivers at both ends of a link."
+            },
+            {
+              "title": "Event logging",
+              "body": "Notify, timestamp, and preserve important events in non-volatile module memory."
+            },
+            {
+              "title": "Hitless firmware update",
+              "body": "Support hitless firmware maintenance on local and remote transceivers, with capability discovery and checked command status."
+            },
+            {
+              "title": "Host harvesting",
+              "body": "Enable switch software to collect telemetry and prepare it for streaming to a telemetry server."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                11,
+                13,
+                14,
+                15
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.txt",
+            "wav_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_06_six_functions_of_a_compliant_transceiver.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "83aa43eb924ce2306c51f0d798ecb1b916ec0d626514c95aef22d8fc23d24b7e",
+              "master_sha256": "c69a5c8780d0d3bbcb27f396860dc9e32ef8c06d518e55b9d834f4b1ef96c853",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "70a92a7e35966af16df498d6fdfdd0d6c17610b7f72388c30e864d1248b7e6e7",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "a_link_is_more_than_one_fiber_path",
+          "section_label": "Link Model",
+          "title": "A Link Is More Than One Fiber Path",
+          "figure": {
+            "path": "figures/link_segments_telemetry.mp4",
+            "media_type": "video",
+            "alt": "Silent animation showing switch electrical, optical, and host electrical link segments with telemetry localization.",
+            "caption": "Three interface regions contain six directional link segments. Combine transceiver telemetry with host receiver measurements to localize degradation.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/link_segments_telemetry_poster.png",
+            "text_inventory": {
+              "sha256": "ad92bb5a65d638f1524d96595471c4df776bee31532ced078588549f04038c2d",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "Three Interfaces, Six Directions | Telemetry keeps the electrical and optical evidence separate. | Switch | electrical host | Local | module | Remote | module | Host | electrical receiver | Switch electrical | Optical path | Host electrical | Switch electrical | OK | local evidence | Optical path | OK | middle segment | Host electrical | OK | remote evidence | Trace the signal, then compare the segment evidence."
+                },
+                {
+                  "at_seconds": 4,
+                  "text": "Three Interfaces, Six Directions | Telemetry keeps the electrical and optical evidence separate. | Switch | electrical host | Local | module | Remote | module | Host | electrical receiver | Switch electrical | Optical path | Host electrical | Switch electrical | OK | local evidence | Optical path | OK | middle segment | Host electrical | OK | remote evidence | The optical path is a separate monitored segment."
+                },
+                {
+                  "at_seconds": 8,
+                  "text": "Three Interfaces, Six Directions | Telemetry keeps the electrical and optical evidence separate. | Switch | electrical host | Local | module | Remote | module | Host | electrical receiver | Switch electrical | Optical path | Host electrical | Switch electrical | OK | local evidence | Optical path | LOW | degradation localized | Host electrical | OK | remote evidence | A degraded optical segment should not be hidden by healthy edges."
+                },
+                {
+                  "at_seconds": 12,
+                  "text": "Three Interfaces, Six Directions | Telemetry keeps the electrical and optical evidence separate. | Switch | electrical host | Local | module | Remote | module | Host | electrical receiver | Switch electrical | Optical path | Host electrical | Switch electrical | OK | local evidence | Optical path | LOW | degradation localized | Host electrical | OK | remote evidence | Remote evidence helps localize the cause, not just the symptom."
+                },
+                {
+                  "at_seconds": 15.966666666666667,
+                  "text": "Three Interfaces, Six Directions | Telemetry keeps the electrical and optical evidence separate. | Switch | electrical host | Local | module | Remote | module | Host | electrical receiver | Switch electrical | Optical path | Host electrical | Switch electrical | OK | local evidence | Optical path | LOW | degradation localized | Host electrical | OK | remote evidence | The result is a path to compare, not a part to blame first."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                11
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.txt",
+            "wav_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_07_a_link_is_more_than_one_fiber_path.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "d32b7221e5cea49a04c35c32eed1aa82e3059c4cb9b2bbc9e140a2d524105769",
+              "master_sha256": "7f6d439926a9992db2070abbc2d8f54ad418cf9767d57a25edf32834b26b58f9",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "16e886eb290da3cb70bfaa9d9543e2c84c93661dbd47ea9071d7fc467e66eff8",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - six link segments - pp. 11-12",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=11"
+            }
+          ],
+          "term_refs": [
+            "fec",
+            "ber"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "breakout_links_multiply_remote_endpoints",
+          "section_label": "Breakout Links",
+          "title": "Breakout Links Multiply Remote Endpoints",
+          "figure": {
+            "path": "figures/source_spec_breakout_segments.png",
+            "alt": "Breakout optical link example where one switch module connects to multiple host modules.",
+            "caption": "In breakout or shuffle use cases, one switch port may need independent telemetry from more than one remote partner.",
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "cd08c4c9b605fd9a5ede5a82959b458fa9a81b933abbbf9ea0fd371bc5023848",
+              "entries": [
+                {
+                  "text": "Optical Links | Switch-Module Electrical Link | Host-Module Electrical Links | 1 2 3 4 5 6 7 8 9 10"
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                12
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.txt",
+            "wav_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_08_breakout_links_multiply_remote_endpoints.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "6cebd05ba7e17a9380cd7bd6d7bac4d2a8a985d85b2a6ee905d942858d1664da",
+              "master_sha256": "181e48030839a5c00da2e0e4c8903e4e86263f67d8e364aeec36c79026581d8c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "5362e03dd8c7a240783ed0e8f3767380a66cc366d6b12f7853726c7cd8b2b4b8",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "visibility_starts_with_a_shared_model",
+          "title": "Visibility Starts With a Shared Model",
+          "items": [
+            "The operational problem is finding the failing segment, not just noticing that a link changed state.",
+            "The standardized boundary is transceiver behavior and the common interface to host software.",
+            "Compliant optics are expected to support local and remote telemetry collection.",
+            "Breakout links make endpoint identity and independent remote monitoring essential.",
+            "Telemetry-server design remains operator dependent, but the module-to-host model can be common."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                12,
+                13,
+                14,
+                15
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.txt",
+            "wav_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_09_visibility_starts_with_a_shared_model.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "1bec99873035d9794820af593e31073020af2aaaa3d51733c8768b03305131ce",
+              "master_sha256": "ab1beed46bcef4617360ead84d466a9e95555219c3a9870977a07aa9bbca2e11",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "64e7053f6ac781a1f4b850e82cb80235f14bf9e92693540f73f95b825ad8245e",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "check_your_model_visibility_and_scope",
+          "title": "Check Your Model: Visibility and Scope",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry after feedback.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "What is the primary visibility gap enhanced optics telemetry is meant to close?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A local link alarm may not reveal which local, optical, or remote segment caused the problem.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Telemetry servers need one mandated implementation for every operator.",
+                  "correct": false,
+                  "feedback_incorrect": "The spec leaves telemetry-server implementation user dependent. The common work is at the transceiver and host interface."
+                },
+                {
+                  "id": "c",
+                  "text": "Every optical module needs the same physical-media-dependent design.",
+                  "correct": false,
+                  "feedback_incorrect": "The scope is intended to be PMD independent, so a common telemetry model can apply across implementations."
+                }
+              ],
+              "feedback_correct": "Correct. The value is local and remote evidence that maps symptoms to the failing segment.",
+              "feedback_incorrect": "Review the visibility model: the goal is to connect local symptoms with local, optical, and remote endpoint evidence."
+            },
+            {
+              "id": "m1_q2",
+              "multiple": true,
+              "prompt": "Which functions belong in the compliant transceiver and host telemetry model?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Mission-mode link monitoring and statistics collection.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "In-band remote identification and data exchange between link partners.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Programmable event notification and non-volatile event logging.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "A required telemetry-server product architecture.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. The shared model includes module and host functions, while server implementation remains open.",
+              "feedback_incorrect": "Keep the boundary clear: compliant module behavior and host harvesting are standardized; the telemetry-server implementation is not prescribed."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                12,
+                13,
+                14,
+                15
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.txt",
+            "wav_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_10_check_your_model_visibility_and_scope.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "5b29ec13b6c2cd7dcad38abe86ea5929dc3d753271fea363610991bca2cbbabd",
+              "master_sha256": "1ba7e4904c30d0f8ca5f8ef869deeda57cff60a73ddf5d1a89ab5027c13f0849",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "bda50f6cb881d27231dc527475feb2efff2a0c60372b02fb80ce2705c3d1b924",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 11,
+          "type": "up_next",
+          "slug": "up_next_metrics_and_link_health",
+          "title": "Up Next: Metrics and Link Health",
+          "next_module_number": 2,
+          "next_module_title": "Metrics, Flags, and Link Health",
+          "thank_you_message": "Nice work - you have finished the visibility model for OCP optics reliability.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                27,
+                38,
+                39,
+                40
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_11_up_next_metrics_and_link_health.txt",
+            "wav_file": "audio/module1/slide_11_up_next_metrics_and_link_health.wav",
+            "approved": false,
+            "delivery_file": "audio/module1/slide_11_up_next_metrics_and_link_health.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "6d86fd61aa5abedc52d3768f631426a5db586f7add390c32072ca4193aab26f0",
+              "master_sha256": "9499c5e65712f5e3e979291ef29ade80b52b3485740b425cab87ab593184028d",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "c2283a454f7818f18c35a0b32e43743f02306ca31952340a7fdded7c550c5cbf",
+              "objective_signal_check": "passed"
+            }
+          }
+        }
+      ],
+      "next_module_title": "Metrics, Flags, and Link Health"
+    },
+    {
+      "id": 2,
+      "slug": "metrics_flags_and_link_health",
+      "title": "Metrics, Flags, and Link Health",
+      "subtitle": "Capability discovery, side-specific scores, flags, masks, thresholds, and autonomous shutdown.",
+      "module_badge_text": "Module 2",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "metrics_flags_and_link_health",
+          "title": "Metrics, Flags, and Link Health",
+          "subtitle": "How compliant optics turn raw measurements into actionable link state.",
+          "version_chip": "Enhanced Telemetry Spec v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                14,
+                18,
+                27,
+                38
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_01_metrics_flags_and_link_health.txt",
+            "wav_file": "audio/module2/slide_01_metrics_flags_and_link_health.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_01_metrics_flags_and_link_health.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "53d31533dc2be8edbf8a449d95747dfe933f7d1844b5e3a811155a586475f6f7",
+              "master_sha256": "b81d1acbb80bd024964518a3b1a51732fc36318e09e96c5c9e58366d7f8c9929",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "e6f533143015b6dacf5feeac7418fb79e59a5a00cc4ef9f92d5940f7de30edac",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "signals_you_will_interpret",
+          "title": "Signals You Will Interpret",
+          "subtitle": "By the end of this module, you will be able to classify telemetry and explain how link health is summarized.",
+          "objectives": [
+            "Distinguish local and remote telemetry queries at a conceptual level.",
+            "Classify common metrics into quality, error, recovery, environmental, and context categories.",
+            "Explain why the link-health score is driven by the weakest category rather than an average.",
+            "Explain summary flags, default counter masks, configurable score thresholds, and autonomous shutdown."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                14,
+                18,
+                27,
+                38,
+                46,
+                50
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_signals_you_will_interpret.txt",
+            "wav_file": "audio/module2/slide_02_signals_you_will_interpret.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_02_signals_you_will_interpret.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "2033ac737a3e87da38dda406f3cc294de7b2c1e6d0b1bbddd69d72ac3483586e",
+              "master_sha256": "f8386615dbd0124cdc140046cfe2531ea9ad67b42b4083c46872b3df8e72fed0",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "44e1888d06e24a344b8fb956459a42845eb43878b3e856e87d5fd1521bfe98d8",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "local_and_remote_queries_use_one_mental_model",
+          "section_label": "Query Model",
+          "title": "Local and Remote Queries Use One Mental Model",
+          "subtitle": "The host asks the local module; the local module may return its own data or retrieve partner data in-band.",
+          "bullets": [
+            {
+              "bold_lead": "Local query",
+              "text": "The host requests telemetry from the module it can reach directly over I2C."
+            },
+            {
+              "bold_lead": "Remote query",
+              "text": "The local module retrieves telemetry from a remote link partner and presents it back to the same host."
+            },
+            {
+              "bold_lead": "Breakout awareness",
+              "text": "Remote requests may need to identify which partner or port is being queried."
+            }
+          ],
+          "figure": {
+            "path": "figures/local_remote_query_model.svg",
+            "alt": "Host queries local module over I2C and local module reaches remote partner in-band.",
+            "caption": "A consistent host workflow can still distinguish local data, remote data, and breakout partner identity.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "b26e6c970a86d0f04c0427cc03124ebba8b0b886959ab938a745906664c0cf23",
+              "entries": [
+                {
+                  "text": "One host view, local and remote endpoints | Host switch | operator tool | I2C | Local module | serves local data | in-band | Remote module | partner telemetry | The host asks locally; the local module reaches remotely."
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "i2c"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                31,
+                32
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.txt",
+            "wav_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_03_local_and_remote_queries_use_one_mental_model.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "3f089de0603362c730ceb9288cc23420be179e84dd0c3fdbfb3387face85400d",
+              "master_sha256": "67cfd42af475189476ddca6606ef8bb119a541fda7743c4c3a2e9ed1e929f89c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "1f9fcaed3330b6e2ea0c598f532f76ca7551a67ac9bf61a0e143319987db19f9",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 4,
+          "type": "content_bullets",
+          "slug": "status_pages_establish_the_baseline",
+          "section_label": "Capability and Baseline",
+          "title": "Discover Capability Before Reading Telemetry",
+          "subtitle": "The specification release and the module telemetry-version register identify different things.",
+          "bullets": [
+            {
+              "bold_lead": "Telemetry Version 2",
+              "text": "Page 01h, byte 191 advertises the protocol behavior defined by the v1.0.0 specification."
+            },
+            {
+              "bold_lead": "In-band availability",
+              "text": "Read support and lane-establishment status before assuming the remote partner is accessible."
+            },
+            {
+              "bold_lead": "Command discovery",
+              "text": "CMD 8000h returns supported command-group bitmaps and local or remote metric support."
+            },
+            {
+              "bold_lead": "Management pages",
+              "text": "CMIS identity, status, VDM, CDB and payload pages provide the context needed to interpret supported measurements."
+            }
+          ],
+          "term_refs": [
+            "vdm",
+            "cmis",
+            "cdb"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                13,
+                18,
+                19,
+                27,
+                28,
+                29
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_04_status_pages_establish_the_baseline.txt",
+            "wav_file": "audio/module2/slide_04_status_pages_establish_the_baseline.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_04_status_pages_establish_the_baseline.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "f2533832ee209c569263a27bdcd5c667632ee380851fab00fd734850b370ec43",
+              "master_sha256": "6dbaa07e0bba1f88f6a4aa41cad1129a5a7b24242f8fd2d92065493c4545d788",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "f879c7ddc65768e187e9459b2669beaf0020d709b6063ed7892dfcb96325e5b2",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - capability discovery - pp. 18-19, 27-29",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=18"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_grid",
+          "slug": "optical_and_electrical_quality_metrics",
+          "section_label": "Quality Metrics",
+          "title": "Optical and Electrical Quality Metrics",
+          "subtitle": "Quality measurements help separate line-side optical issues from host-side electrical issues.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "SNR",
+              "body": "Signal-to-noise ratio on optical line lanes and electrical host lanes."
+            },
+            {
+              "title": "Eye height",
+              "body": "Host-side and line-side eye-height measurements indicate signal margin."
+            },
+            {
+              "title": "PAM4 LTP",
+              "body": "Level transition parameters help characterize host and line PAM4 signal behavior."
+            },
+            {
+              "title": "MPI estimation",
+              "body": "Multipath interference estimates help identify optical reflection or path effects."
+            },
+            {
+              "title": "Host vs line",
+              "body": "Separating host-facing and line-facing values helps localize the weak segment."
+            },
+            {
+              "title": "Per-lane view",
+              "body": "Lane-level values prevent one degraded lane from disappearing inside a port-level summary."
+            }
+          ],
+          "term_refs": [
+            "snr"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                34,
+                35
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.txt",
+            "wav_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_05_optical_and_electrical_quality_metrics.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "2665843b6e926d6971d5e8110ff07473dc4b275833ac7a5f076a8e8264720870",
+              "master_sha256": "6551cb863d8e7acfdf1644d9cf39592eef91de3a3b72f94aaace5cde092f368e",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "b06d914218238f325a237dddb9094462270245dc04bc1990a98a5d86e9fad104",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "error_and_recovery_metrics",
+          "section_label": "Errors and Recovery",
+          "title": "Error and Recovery Metrics",
+          "subtitle": "Error counters and recovery behavior show whether a link is merely noisy or actually losing service.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Pre-FEC BER",
+              "body": "Bit error behavior before correction shows raw link stress."
+            },
+            {
+              "title": "FEC histogram",
+              "body": "Symbol-error bins show correction load and whether higher-error frames are accumulating."
+            },
+            {
+              "title": "Uncorrectable codewords",
+              "body": "Failures that correction cannot fix point to more serious link degradation."
+            },
+            {
+              "title": "Relinks",
+              "body": "Link drop and reacquisition counters show instability over time."
+            },
+            {
+              "title": "LOS and LOL",
+              "body": "Loss of signal and DSP loss of lock identify receiver conditions that need event history."
+            },
+            {
+              "title": "Uptime",
+              "body": "Elapsed time since the last link-up gives recovery and stability context."
+            }
+          ],
+          "term_refs": [
+            "ber",
+            "fec"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                35,
+                36,
+                55
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_error_and_recovery_metrics.txt",
+            "wav_file": "audio/module2/slide_06_error_and_recovery_metrics.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_06_error_and_recovery_metrics.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "a2a41176a7223eee85ab861b8bf70232f9f4d856fe27f2a6a0f8c3da4ca9dd0c",
+              "master_sha256": "a3a617b15d4f7c8d9a4a65c496393029ef62e81b39a685e071a21e09a8bc080b",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "57bcbcfe93f4159ecd1a7c083e8fc4cddfa86db6d97bc81d017808b297427429",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 7,
+          "type": "content_grid",
+          "slug": "environment_and_module_context",
+          "section_label": "Context Metrics",
+          "title": "Environment and Module Context",
+          "subtitle": "Temperature, power, serial identity, and warnings turn measurements into traceable evidence.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Module temperature",
+              "body": "Module temperature indicates whether thermal conditions may contribute to link quality."
+            },
+            {
+              "title": "Laser temperature",
+              "body": "Laser temperature provides optical-device context for drift and alarm behavior."
+            },
+            {
+              "title": "Voltage",
+              "body": "Supply context helps correlate link issues with local electrical conditions."
+            },
+            {
+              "title": "Rx and Tx power",
+              "body": "Minimum and maximum optical power plus alarm flags expose path and transmitter context."
+            },
+            {
+              "title": "DDMI warnings",
+              "body": "Alarm and warning flags expose module-reported threshold crossings."
+            },
+            {
+              "title": "Serial number",
+              "body": "Identity fields tie telemetry and event history to the physical module."
+            }
+          ],
+          "term_refs": [
+            "ddmi"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                33,
+                34,
+                35
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_07_environment_and_module_context.txt",
+            "wav_file": "audio/module2/slide_07_environment_and_module_context.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_07_environment_and_module_context.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "de5bf0ae7512e577057fae50cff7f16c406d671d9e9c9f4e19e22613861d1cfd",
+              "master_sha256": "53a07e0ed067d5776a01f25e2490f786e887f18b92119e109513580ceb62ba16",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "7a9f0ea305249b8584ffef11a7709208e9e34bb25c892502a0a08dbe80ac49dd",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true
+        },
+        {
+          "id": 8,
+          "type": "content_diagram",
+          "slug": "link_health_score_uses_the_worst_category",
+          "section_label": "Score Model",
+          "title": "Link Health Score Uses the Worst Category",
+          "figure": {
+            "path": "figures/link_health_minimum_score.mp4",
+            "media_type": "video",
+            "alt": "Silent animation showing multiple link-health category scores where the reported health follows the weakest category.",
+            "caption": "Score each supported category at 80, 60 or 40, then report the minimum for the selected host or media side. The lowest-category bitmap identifies every tied contributor.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/link_health_minimum_score_poster.png",
+            "text_inventory": {
+              "sha256": "a5c418d4957a631ee3ad065461828e034e4a675a4bf8ed751a990cbc21f01841",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "One weak category sets the health score | Selected media-side categories - defined score bands: 80 / 60 / 40 | SNR | 80 | Eye height | 80 | Pre-FEC BER | 80 | MPI | 80 | Module flags | 80 | Signal margin | Receiver margin | Error condition | Optical interference | No alarm | Simple average | 80 | Not the reported score | Reported minimum | 80 | Drill into the lowest categories | vs. | Start with healthy supported categories."
+                },
+                {
+                  "at_seconds": 4.5,
+                  "text": "One weak category sets the health score | Selected media-side categories - defined score bands: 80 / 60 / 40 | SNR | 80 | Eye height | 80 | Pre-FEC BER | 60 | MPI | 80 | Module flags | 80 | Signal margin | Receiver margin | Error condition | Optical interference | No alarm | Simple average | 76 | Not the reported score | Reported minimum | 60 | Drill into the lowest categories | vs. | BER moves to its middle band: 60. The minimum follows it."
+                },
+                {
+                  "at_seconds": 9,
+                  "text": "One weak category sets the health score | Selected media-side categories - defined score bands: 80 / 60 / 40 | SNR | 80 | Eye height | 80 | Pre-FEC BER | 40 | MPI | 80 | Module flags | 80 | Signal margin | Receiver margin | Error condition | Optical interference | No alarm | Simple average | 72 | Not the reported score | Reported minimum | 40 | Drill into the lowest categories | vs. | A critical BER condition sets the minimum to 40."
+                },
+                {
+                  "at_seconds": 13.5,
+                  "text": "One weak category sets the health score | Selected media-side categories - defined score bands: 80 / 60 / 40 | SNR | 80 | Eye height | 80 | Pre-FEC BER | 40 | MPI | 80 | Module flags | 80 | Signal margin | Receiver margin | Error condition | Optical interference | No alarm | Simple average | 72 | Not the reported score | Reported minimum | 40 | Drill into the lowest categories | vs. | A critical BER condition sets the minimum to 40."
+                },
+                {
+                  "at_seconds": 17.966666666666665,
+                  "text": "One weak category sets the health score | Selected media-side categories - defined score bands: 80 / 60 / 40 | SNR | 80 | Eye height | 80 | Pre-FEC BER | 40 | MPI | 80 | Module flags | 80 | Signal margin | Receiver margin | Error condition | Optical interference | No alarm | Simple average | 72 | Not the reported score | Reported minimum | 40 | Drill into the lowest categories | vs. | A critical BER condition sets the minimum to 40."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                32,
+                33,
+                38,
+                39,
+                40
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.txt",
+            "wav_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_08_link_health_score_uses_the_worst_category.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "a6a57e4cadd5c126a5629bd9e97b21cf45444737fd5400f9248434cc5ab388a4",
+              "master_sha256": "95686cd18069554a5d83a91e0d4d16b0206c62e96ef19cfcfe9456a0f1a5a2ac",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "9461536c953c238c6fdbb73a1f8ba8656270d82f9ed30bc56a5e6d6a9d3ee8e8",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - health score and categories - pp. 32-40",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=32"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_two_column",
+          "slug": "flags_and_masks_keep_monitoring_actionable",
+          "section_label": "Flags and Masks",
+          "title": "Flags and Masks Keep Monitoring Actionable",
+          "subtitle": "Summary flags identify the affected side; two defined counter masks control score participation.",
+          "bullets": [
+            {
+              "bold_lead": "Follow the flag",
+              "text": "Read the software interrupt, then the local/remote summary, then the detailed flags in the telemetry reply."
+            },
+            {
+              "bold_lead": "Default exclusions",
+              "text": "FEC-bin and link-down counters are excluded from the health score at power-up. Their telemetry remains available."
+            },
+            {
+              "bold_lead": "Mask convention",
+              "text": "A mask bit of 1 excludes its counter; 0 includes it. CMD 8003h changes these defined counter masks."
+            }
+          ],
+          "figure": {
+            "path": "figures/flags_and_masks.svg",
+            "alt": "Separate flag-summary and score-mask controls: local or remote flags, with FEC and link-down counters excluded from scoring at power-up.",
+            "caption": "A score mask changes counter participation; it does not erase counter data or the event log.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "d4574ab5bdee1c97bf112923162203614296c83e10fda8886b889d05890edcff",
+              "entries": [
+                {
+                  "text": "Flags report; masks select scoring counters | Flag summary | local or remote flags | then detailed reply flags | Mask controls | FEC and link-down counters | 0: include / 1: exclude | both excluded at power-up | Masking changes score participation, not the stored evidence."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                19,
+                20,
+                43,
+                44
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.txt",
+            "wav_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_09_flags_and_masks_keep_monitoring_actionable.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "11d149a4b0ba7626ed604359b3aee42e03453f9b6c281a97d3e10142d89e14ce",
+              "master_sha256": "f1536eba1a31664fa84db38bb311668accbf5825fad733680c09ae4a974994de",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "57e6c5cc75fccc7027e6b757682a1fbf35a42b4e68b02aa9e0817e6d42f6948e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - flags and counter masks - pp. 19-20, 43-44",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=19"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "content_grid",
+          "slug": "thresholds_and_autonomous_shutdown",
+          "section_label": "Configured Behavior",
+          "title": "Thresholds and Autonomous Shutdown",
+          "subtitle": "Score configuration and a module fault response are separate operating choices.",
+          "grid_cols": 3,
+          "mobile_scroll": true,
+          "cards": [
+            {
+              "title": "Threshold control",
+              "body": "CMD 8004h reads or sets two boundaries for FEC bins, pre-FEC BER, SNR and eye height.",
+              "tone": "blue"
+            },
+            {
+              "title": "Metric direction",
+              "body": "Higher BER is worse; higher SNR or eye height is better. Compare thresholds in the metric's own units.",
+              "tone": "blue"
+            },
+            {
+              "title": "Module scope",
+              "body": "Threshold settings apply to the selected module. Status flags are not programmable score-threshold categories.",
+              "tone": "blue"
+            },
+            {
+              "title": "Disabled by default",
+              "body": "Autonomous shutdown starts disabled after module or power reset. CMD 8005h reads or changes its state.",
+              "tone": "amber"
+            },
+            {
+              "title": "Fault evidence",
+              "body": "A triggered shutdown reports fault cause 26h and event 000Ch, including the affected side, port and category.",
+              "tone": "amber"
+            },
+            {
+              "title": "Verify the policy",
+              "body": "Check effective thresholds and shutdown state before treating a link drop as an unexplained fault.",
+              "tone": "amber"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - thresholds and shutdown - pp. 46-51, 57",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=46"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                46,
+                47,
+                48,
+                49,
+                50,
+                51,
+                57
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_thresholds_and_autonomous_shutdown.txt",
+            "wav_file": "audio/module2/slide_10_thresholds_and_autonomous_shutdown.wav",
+            "target_seconds": 90,
+            "delivery_file": "audio/module2/slide_10_thresholds_and_autonomous_shutdown.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "53047ba246b2ad449fbdc6ce6d7dd32c792bf6a92b9ebbb74fc203579ab816ef",
+              "master_sha256": "99bdc922497dedf176863dc860cdeaad4352a3024efdabce4b0a0b1c6d1daa18",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "9bfbfd3618cd52ae9baa2aea2c3e295839bce6357db9ab998538643b8a7f62bd",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "metrics_should_point_to_action",
+          "title": "Metrics Should Point to Action",
+          "items": [
+            "Local and remote telemetry use the same host-centered operating model.",
+            "Quality metrics separate host-side electrical behavior from line-side optical behavior.",
+            "Error, recovery, and uptime values show whether a link is noisy, unstable, or failing.",
+            "Environmental and identity fields make measurements traceable to real hardware.",
+            "Host and media sides have distinct score categories; masks and thresholds affect how the minimum is calculated."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                38,
+                39,
+                40,
+                46,
+                50
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_metrics_should_point_to_action.txt",
+            "wav_file": "audio/module2/slide_10_metrics_should_point_to_action.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_10_metrics_should_point_to_action.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "23ca4c5919f78f7f310db364b993b01aea522d9a5fdaaa89678b54cacc371b1d",
+              "master_sha256": "d510384c2b81742453a1efc2627e9d2f14d00a855e3ff0f8c5ba17148d5f0a27",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "89c2ebb7b862efdd1badfb84675d95c0a977d3003e529aa4e76bcfdb0adefd3e",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "check_your_model_metrics_and_scores",
+          "title": "Check Your Model: Metrics and Scores",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry after feedback.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "Why does the link-health score use the weakest category rather than an average?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A single bad category can make a link unreliable even when other categories are healthy.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Averages are impossible to calculate from telemetry fields.",
+                  "correct": false,
+                  "feedback_incorrect": "Averages can be calculated, but they can hide the field that should drive action."
+                },
+                {
+                  "id": "c",
+                  "text": "Only optical power matters for link health.",
+                  "correct": false,
+                  "feedback_incorrect": "Optical power is useful, but the model also considers electrical quality, errors, recovery behavior, and context."
+                }
+              ],
+              "feedback_correct": "Correct. The score is designed to preserve the action signal from the weakest category.",
+              "feedback_incorrect": "Review the score model: summarization should not mask a failing category."
+            },
+            {
+              "id": "m2_q2",
+              "multiple": true,
+              "prompt": "Which items are useful telemetry evidence for diagnosing link health?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "SNR, eye height, PAM4 LTP and MPI measurements, interpreted with supported capabilities.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Pre-FEC BER, FEC histograms, relinks, LOS, and LOL.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Module temperature, laser temperature, received optical power, and serial identity.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Only the final pass/fail result from an external dashboard.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Useful diagnosis combines quality, error, recovery, environment, and identity context.",
+              "feedback_incorrect": "Use the category model: link health needs quality, errors, recovery, environment, and identity evidence, not only a final dashboard result."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                38,
+                39,
+                40
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.txt",
+            "wav_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_11_check_your_model_metrics_and_scores.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "5ad418bb6b87e1d2d7e97b32e77f57d59167ac879cc7b1cf2a2710c1e506b330",
+              "master_sha256": "86dc127941701f82b8cf91f5c9b0ee459cfddcc084e661daadc6c75d6751a0d3",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "8d9f7700f372109a2190671d89bbf3aa2e890705b566fb10c7d7d2f0d4954a95",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 13,
+          "type": "up_next",
+          "slug": "up_next_cdb_and_event_workflows",
+          "title": "Up Next: CDB and Event Workflows",
+          "next_module_number": 3,
+          "next_module_title": "CDB Workflows, Event Logs, and Remote Access",
+          "thank_you_message": "Nice work - you have finished the telemetry and link-health module.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.txt",
+            "wav_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.wav",
+            "approved": false,
+            "delivery_file": "audio/module2/slide_12_up_next_cdb_and_event_workflows.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "b7445b122266de53b861aa0e0e88a3dbdbaea8effb4e17cc61bec2e8a0275eaa",
+              "master_sha256": "2cbc8541ecb30b5d00b3f0a3474e3a716b06fe44e183e3a4ca49b5d5e106b4ab",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "4f8d0b72c4d1d02ebd6a7036bbdf37246309825865954afc6559cff100f094be",
+              "objective_signal_check": "passed"
+            }
+          }
+        }
+      ],
+      "next_module_title": "CDB Workflows, Event Logs, and Remote Access"
+    },
+    {
+      "id": 3,
+      "slug": "cdb_workflows_event_logs_and_remote_access",
+      "title": "CDB Workflows, Event Logs, and Remote Access",
+      "subtitle": "Checked CDB exchanges, durable event records, and remote CMIS read/write access.",
+      "module_badge_text": "Module 3",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "cdb_workflows_event_logs_and_remote_access",
+          "title": "CDB Workflows, Event Logs, and Remote Access",
+          "subtitle": "How telemetry requests, replies, logs, and far-end access move through the module interface.",
+          "version_chip": "Enhanced Telemetry Spec v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.txt",
+            "wav_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_01_cdb_workflows_event_logs_and_remote_access.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "8a0116316e073f0fea415a4f89fab022f71b2e74ae9cf4f85556d92063a56da2",
+              "master_sha256": "33b655b7146b67692d0d069a8f6dc3adf2223081c7fc2e609bc26f36bf6ccba7",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "74278963c70d7c9ccfc366e83e93c4066b79ff1d39b19d0e9f32ae7c4743276d",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "workflows_you_will_trace",
+          "title": "Workflows You Will Trace",
+          "subtitle": "By the end of this module, you will be able to follow command, log, and remote-access behavior.",
+          "objectives": [
+            "Trace the four-step CDB command-reply workflow.",
+            "Describe why Page 9Fh and extended payload areas matter without memorizing byte maps.",
+            "Explain how non-volatile event logs preserve a failure story.",
+            "Distinguish remote byte access from remote page access conceptually."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54,
+                69
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_02_workflows_you_will_trace.txt",
+            "wav_file": "audio/module3/slide_02_workflows_you_will_trace.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_02_workflows_you_will_trace.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "7bcb60d55e15c81ffacacc1c13a067a97b3be57bf33edc2871c3bcb5433526a7",
+              "master_sha256": "4413cb13a822ce8697d40881be166631e44de3159cc1b1745f83b7ef93448fa5",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "07615401810bb278e22b84c2ab3af751849439736148a13723869c1a57f9f22f",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "cdb_is_a_command_reply_workflow",
+          "section_label": "CDB Pattern",
+          "title": "CDB Is a Command-Reply Workflow",
+          "figure": {
+            "path": "figures/cdb_command_reply.mp4",
+            "media_type": "video",
+            "alt": "Silent animation showing a four-step CDB workflow from command preparation through reply retrieval.",
+            "caption": "A typical CDB command sequence prepares the message, triggers execution, polls status, and retrieves the reply after completion.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/cdb_command_reply_poster.png",
+            "text_inventory": {
+              "sha256": "308835a35de9666c285cc25468dbc67ae759d76e7f488c79bd9e6d5de5856b93",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "CDB Is a Command-Reply Workflow | Write the request, trigger execution, check status, read the reply. | Host software | forms request | Module | executes command | Page 9Fh | Command header | Payload | Reply header | Reply payload | READY | Status register | 1. Prepare | header and payload | 2. Trigger | command execution | 3. Poll | busy then complete | 4. Retrieve | reply header and data | CDB keeps host-module transactions structured and observable."
+                },
+                {
+                  "at_seconds": 4,
+                  "text": "CDB Is a Command-Reply Workflow | Write the request, trigger execution, check status, read the reply. | Host software | forms request | Module | executes command | Page 9Fh | Command header | Payload | Reply header | Reply payload | READY | Status register | 1. Prepare | header and payload | 2. Trigger | command execution | 3. Poll | busy then complete | 4. Retrieve | reply header and data | A trigger hands the request to the module."
+                },
+                {
+                  "at_seconds": 8,
+                  "text": "CDB Is a Command-Reply Workflow | Write the request, trigger execution, check status, read the reply. | Host software | forms request | Module | executes command | Page 9Fh | Command header | Payload | Reply header | Reply payload | BUSY | Status register | 1. Prepare | header and payload | 2. Trigger | command execution | 3. Poll | busy then complete | 4. Retrieve | reply header and data | Polling shows whether execution is still busy or complete."
+                },
+                {
+                  "at_seconds": 12,
+                  "text": "CDB Is a Command-Reply Workflow | Write the request, trigger execution, check status, read the reply. | Host software | forms request | Module | executes command | Page 9Fh | Command header | Payload | Reply header | Reply payload | DONE | Status register | 1. Prepare | header and payload | 2. Trigger | command execution | 3. Poll | busy then complete | 4. Retrieve | reply header and data | The reply header and payload return after completion."
+                },
+                {
+                  "at_seconds": 15.966666666666667,
+                  "text": "CDB Is a Command-Reply Workflow | Write the request, trigger execution, check status, read the reply. | Host software | forms request | Module | executes command | Page 9Fh | Command header | Payload | Reply header | Reply payload | READY | Status register | 1. Prepare | header and payload | 2. Trigger | command execution | 3. Poll | busy then complete | 4. Retrieve | reply header and data | The same pattern supports telemetry, logs, and larger payloads."
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "cdb",
+            "cmis"
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.txt",
+            "wav_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_03_cdb_is_a_command_reply_workflow.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "0befe63fcabaa2331fff81c6f471650a7cf818d1dd92987ab8fcf5700f2c93cb",
+              "master_sha256": "464139cc7820bf4e7b4611bb2b2894acd1c2feae67f5f52b6b0c7ab9a5fd83f5",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "2ec85046f6ab551caca6cb3561d99d4e8870a1f183aa0c71cda6ad92f6b1567c",
+              "objective_signal_check": "passed"
+            }
+          },
+          "subtitle": "CDB is optional in general CMIS, but mandatory for telemetry collection and transfer in compliant optics.",
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - CDB implementation - pp. 16-17",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=16"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_two_column",
+          "slug": "page_9fh_carries_the_control_conversation",
+          "section_label": "Control Page",
+          "title": "Page 9Fh Carries the Control Conversation",
+          "subtitle": "The control page holds command and reply structures; the course emphasizes the pattern rather than every byte field.",
+          "bullets": [
+            {
+              "bold_lead": "Command header",
+              "text": "The host writes the command identity and related request information."
+            },
+            {
+              "bold_lead": "Reply header",
+              "text": "The module returns completion and response metadata after execution."
+            },
+            {
+              "bold_lead": "Local payload",
+              "text": "Page 9Fh provides up to 120 bytes of local payload; larger transfers use the extended payload pages."
+            }
+          ],
+          "figure": {
+            "path": "figures/page_9f_structure.svg",
+            "alt": "Page 9Fh simplified structure with command header, reply header, and local payload.",
+            "caption": "Page 9Fh is the CDB messaging page between host and module in the spec.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "2e9204f2f78f2a876587ee30eac541b7b9eeca26c138c8e3b06baf9bbd47cb6f",
+              "entries": [
+                {
+                  "text": "Page 9Fh carries the control conversation | Command | header | Reply | header | Local | payload | Learners need the pattern first. Byte maps stay in the specification."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.txt",
+            "wav_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_04_page_9fh_carries_the_control_conversation.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "4691c69f711f88fc6711d3c9d519f57b1bf0b27fbcb56d13a02a9c7d2bc5f91a",
+              "master_sha256": "7036058d07e8f6facde83cc39a10a251a4148e11f5a7b4e17109b7c13ffc278b",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "b12f0bb6ea3680afe010fc003173728a1af2b9dda04397c19a28b7912a64b094",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "extended_payload_handles_larger_transfers",
+          "section_label": "Payload Size",
+          "title": "Extended Payload Handles Larger Transfers",
+          "subtitle": "When the local payload is not enough, banked payload pages carry larger replies.",
+          "bullets": [
+            {
+              "bold_lead": "Local payload first",
+              "text": "Small commands and replies can use the local payload space."
+            },
+            {
+              "bold_lead": "Extended payload pages",
+              "text": "Banked pages A0h through AFh provide larger payload capacity in the spec."
+            },
+            {
+              "bold_lead": "Length and integrity fields",
+              "text": "Payload length and check fields help software know what it should retrieve and validate."
+            }
+          ],
+          "figure": {
+            "path": "figures/extended_payload.svg",
+            "alt": "Simplified extended payload diagram showing local payload and A0h to AFh pages.",
+            "caption": "The spec describes extended payload pages for larger command data, up to 2048 bytes.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "b06721fc0115c3d50e0754937808ce62d49fa4690be41182a28c4abe1921a6eb",
+              "entries": [
+                {
+                  "text": "Extended payload handles larger transfers | Local payload | small replies | Extended payload pages | A0h | A1h | ... | AFh | up to 2048 bytes | The host still follows command, status, and reply. Only the payload area grows."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.txt",
+            "wav_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_05_extended_payload_handles_larger_transfers.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "9b3a8e8736ecc007fd4279a1b9b339dd16a941a037f46b5d72b7f1921a5f78af",
+              "master_sha256": "1e06943c1d9b5a5a67a4df4ce79511b215f3493f9a4759468be9fa8d555a28e5",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "d35ec1e61ba7157a4ac2b8a5df38aab936640d7926dca2ce732c497980ba51ae",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "type": "content_bullets",
+          "slug": "status_registers_tell_the_host_when_to_read",
+          "section_label": "Command Status",
+          "title": "Status Registers Tell the Host When to Read",
+          "subtitle": "Completion and failure status are part of the workflow, not optional cleanup.",
+          "bullets": [
+            {
+              "bold_lead": "Busy state",
+              "text": "The host should expect command execution to take time and poll progress."
+            },
+            {
+              "bold_lead": "Completion flags",
+              "text": "Completion status tells software when the reply can be read."
+            },
+            {
+              "bold_lead": "Failure handling",
+              "text": "A failed command must be handled explicitly rather than interpreted as valid telemetry."
+            },
+            {
+              "bold_lead": "Repeatable software",
+              "text": "Consistent status behavior lets SDKs and command-line tools become reliable operator workflows."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                17
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.txt",
+            "wav_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_06_status_registers_tell_the_host_when_to_read.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "eb9bdf109ae1978a97107c3015d7b5b441ad6824cb3974f1c6c60188a0f73a8b",
+              "master_sha256": "47f3342a91b266cc113e84378bfdd3bff08ad1f87f4ce2285144d9b8e746bb42",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "eb5f61a15c481162841018526cd3efddfb2a9a680ec9e995615b2184815a2e64",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_retrieval_follows_the_same_pattern",
+          "section_label": "Telemetry Command",
+          "title": "Telemetry Retrieval Follows the Same Pattern",
+          "figure": {
+            "path": "figures/telemetry_retrieval_flow.svg",
+            "alt": "Host requests telemetry, local module collects local or remote data, and reply returns health fields.",
+            "caption": "The telemetry reply combines accessibility, health rating, lowest-category mask, pre-FEC BER and other measurements for the selected target, side and port.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "3d6df03bb20d602e093f5d816a585ca97d4e9701a20794fd9ed68c24b1db6ede",
+              "entries": [
+                {
+                  "text": "Telemetry retrieval follows the same pattern | Host | requests metrics | Local module | collects local | or remote data | Reply | health fields | Same workflow, many operational commands."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                31,
+                32,
+                33,
+                34,
+                35,
+                36
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.txt",
+            "wav_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_07_telemetry_retrieval_follows_the_same_pattern.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "644d37b80e6312264ab41b79e53c0685890d7d845e82581b571bdafce06a4bed",
+              "master_sha256": "294b18d5f4cedf2227ccabc8d432556dd9cba90a993309eceeb44592fdc1ca13",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "7eae9b9a3ffa9834512812c4885f1592400cac5d1f30a3857936071fef4487b0",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - telemetry request and reply - pp. 31-36",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=31"
+            }
+          ],
+          "term_refs": [
+            "fec",
+            "ber"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_two_column",
+          "slug": "event_logs_preserve_the_failure_story",
+          "section_label": "Event History",
+          "title": "Event Logs Preserve the Failure Story",
+          "subtitle": "Non-volatile event logs let operators inspect what happened, not only what the link looks like now.",
+          "bullets": [
+            {
+              "bold_lead": "Durable history",
+              "text": "A non-volatile circular buffer preserves records across power-up, removal and reinsertion."
+            },
+            {
+              "bold_lead": "32-byte record",
+              "text": "Each record contains a 16-bit UID, 64-bit nanosecond timestamp, event ID, four detail fields and reserved space."
+            },
+            {
+              "bold_lead": "Decode the event",
+              "text": "Interpret detail fields by event ID; preserve UID wraparound and time validity during correlation."
+            },
+            {
+              "bold_lead": "Read before clearing",
+              "text": "Retrieve local or remote history with CMD 8010h. Reset uses the same command with a different option."
+            }
+          ],
+          "figure": {
+            "path": "figures/event_log_record.svg",
+            "source": "custom",
+            "alt": "A 32-byte event record with UID, nanosecond timestamp, event ID, four detail fields and reserved bytes.",
+            "caption": "Event fields are little-endian. A nanosecond timestamp format is not a guarantee of nanosecond clock accuracy.",
+            "text_inventory": {
+              "sha256": "b691576cc9dfd8866d1888c3e684769a1f4e7d1cf41cff68f6c9bc9f3dcce42f",
+              "entries": [
+                {
+                  "text": "One event, 32 bytes of context | Little-endian fields; decode details by event ID | UID | 16-bit sequence | 2 bytes | TIME_NSEC | 64-bit timestamp | 8 bytes | EVENT_ID | Event type | 2 bytes | DETAIL0-3 | Four 32-bit detail fields | 16 bytes | Reserved | 4 bytes | Preserve sequence, time validity and event meaning."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                14,
+                15,
+                54,
+                55,
+                56,
+                57,
+                58,
+                59,
+                60,
+                65
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.txt",
+            "wav_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_08_event_logs_preserve_the_failure_story.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "b4534987a8a2b0d9273b415e72039188f657f2f731da7045631af1598bb28e5e",
+              "master_sha256": "fac5eef4bff55ab92d585715c317a7f9e7f190a63f951d4fa1e6b129f5e75325",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "46d69ad0bd15ca0386189eca865b086fd36b2c2f4b880423295cfc241bb075e2",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - event format and decoding - pp. 54-65",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=54"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_grid",
+          "slug": "hysteresis_prevents_noise_from_burying_signal",
+          "section_label": "Event Control",
+          "title": "Hysteresis Prevents Noise From Burying Signal",
+          "subtitle": "Repeated threshold crossings need control so logs remain useful during unstable periods.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Recorded events",
+              "body": "Logs include temperature, voltage, optical-power alarms, reset, DSP receiver conditions, firmware and shutdown events."
+            },
+            {
+              "title": "10-second default",
+              "body": "A programmable hysteresis interval suppresses duplicate events so the circular buffer stays useful."
+            },
+            {
+              "title": "Threshold evidence",
+              "body": "An event ID and its detail fields explain which condition was recorded and what value or bitmap accompanied it."
+            },
+            {
+              "title": "Local and remote",
+              "body": "The host SDK exposes event retrieval and hysteresis control for either endpoint."
+            },
+            {
+              "title": "Time validity",
+              "body": "Establish module time and preserve the record sequence before correlating events across devices."
+            },
+            {
+              "title": "Preserve the history",
+              "body": "Read and export event evidence before clearing logs or resetting counters."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                15,
+                55,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.txt",
+            "wav_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_09_hysteresis_prevents_noise_from_burying_signal.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "01d8df203b2c36f6e66988ad3c113671b1f93cdbfb9d899ab3e07b76ac2fb78a",
+              "master_sha256": "8575be9ed91e4aa3eb5498d50274a5221db49036e81cd15129da1f81dc3b72c5",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "6d60a83b812d5ecfe692c8cf58984a808da179fb1a912eb5e37669f86da65f0a",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - event control - pp. 14-15, 55, 96-97",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=14"
+            }
+          ],
+          "mobile_scroll": true
+        },
+        {
+          "id": 10,
+          "type": "content_two_column",
+          "slug": "remote_cmis_access_reaches_the_far_endpoint",
+          "section_label": "Remote Access",
+          "title": "Remote CMIS Access Reaches the Far Endpoint",
+          "subtitle": "Remote access lets host software retrieve information from the partner module through the local compliant module.",
+          "bullets": [
+            {
+              "bold_lead": "Byte access",
+              "text": "CMD 8020h reads or writes a targeted remote register range through the local payload."
+            },
+            {
+              "bold_lead": "Page access",
+              "text": "CMD 8021h reads or writes a remote page through the extended payload."
+            },
+            {
+              "bold_lead": "Same trust boundary",
+              "text": "The host still communicates with the local module; the local module retrieves remote data in-band."
+            }
+          ],
+          "figure": {
+            "path": "figures/remote_cmis_access.svg",
+            "alt": "Remote CMIS byte access and page access comparison.",
+            "caption": "Both access modes support read and write operations. Select the remote partner and bank/page explicitly, then check command status.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "4b01b6b5c3bd5ce6a793c0b274601d9633f6a0ec521f5ebf7d22b86e683d7729",
+              "entries": [
+                {
+                  "text": "Remote CMIS access reaches the far endpoint | Byte access | targeted read / write | 8020h - local payload | Page access | whole-page read / write | 8021h - extended payload | Both preserve the same operating idea: local host, local module, remote partner."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                69,
+                70,
+                72,
+                73
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.txt",
+            "wav_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_10_remote_cmis_access_reaches_the_far_endpoint.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "0f5aa86e94ff58ca59aea5ebc5b347beeb3b668dd735496ceb69407849b7e085",
+              "master_sha256": "d8f304573a31c0a0bc3dabcc53b786dc12c1fd84e64f2f13c532523a9e3c1d4e",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "cd2ea381cc2a2c5cedcf3ad3f699d925807ddc5126482e444cb99b2985294a2e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - remote register access - pp. 69-73",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=69"
+            }
+          ]
+        },
+        {
+          "id": 11,
+          "type": "takeaways",
+          "slug": "cdb_turns_telemetry_into_an_operational_workflow",
+          "title": "CDB Turns Telemetry Into an Operational Workflow",
+          "items": [
+            "CDB uses a repeatable prepare, trigger, poll, and retrieve sequence.",
+            "Page 9Fh and payload areas support command and reply exchange; byte maps remain in the spec.",
+            "Status checking protects operators from treating unfinished or failed commands as valid data.",
+            "Event logs preserve ordered, timestamped evidence after transient failures.",
+            "Remote CMIS access lets the host inspect the far endpoint through the local compliant module."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54,
+                69
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.txt",
+            "wav_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_11_cdb_turns_telemetry_into_an_operational_workflow.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "e7ae54d9ec3b97df4889d927ec146eb3dfd5b41d88d64e9f2084aa80d30535f5",
+              "master_sha256": "9c0b68679081bb02b7a5cd6154ed3aca823e363a09d385d811cc0a1426709f8c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "0df09979425c6ad5a1b28895e7728c6767de3e7f9cefc396362ef7cc46fee67c",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 12,
+          "type": "knowledge_check",
+          "slug": "check_your_model_cdb_and_events",
+          "title": "Check Your Model: CDB and Events",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry after feedback.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "Which sequence best describes a typical CDB interaction?",
+              "shuffle_choices": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Prepare the command, trigger it, poll status, retrieve the reply.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Retrieve the reply, trigger the command, prepare the header, ignore status.",
+                  "correct": false,
+                  "feedback_incorrect": "The reply is read after command completion, and status polling is part of the workflow."
+                },
+                {
+                  "id": "c",
+                  "text": "Poll status once at boot, then read all telemetry without commands.",
+                  "correct": false,
+                  "feedback_incorrect": "Status is checked for each command workflow. Telemetry retrieval still uses command and reply behavior."
+                }
+              ],
+              "feedback_correct": "Correct. That four-step sequence is the core CDB workflow.",
+              "feedback_incorrect": "Review the command pattern: prepare, trigger, poll, retrieve."
+            },
+            {
+              "id": "m3_q2",
+              "multiple": true,
+              "prompt": "Which features help diagnose a link flap after the immediate symptom has passed?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Non-volatile event logs with sequence and timestamps.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Remote CMIS access to inspect the far endpoint.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Status-checked telemetry retrieval rather than reading stale replies.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Removing event hysteresis so every duplicate threshold crossing is always logged.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Durable logs, remote visibility, and disciplined command status all help preserve evidence.",
+              "feedback_incorrect": "Think evidence path: preserve event history, reach the far endpoint, and verify command completion before trusting the reply."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                16,
+                17,
+                54,
+                69
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_12_check_your_model_cdb_and_events.txt",
+            "wav_file": "audio/module3/slide_12_check_your_model_cdb_and_events.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_12_check_your_model_cdb_and_events.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "431d5a6bc354d19c48e74b57f846a7323bf992e59704f1cd60d5999abe30245a",
+              "master_sha256": "5d0460a2698346772328dc67f1b4c068244596f94f542e562c59d3fd9e2c2351",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "a1b1bd6bc66b25784ae7d53cd0396ef77492c3316ebd298ab7a0906da6afb0f9",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 13,
+          "type": "up_next",
+          "slug": "up_next_firmware_and_host_readiness",
+          "title": "Up Next: Firmware and Host Readiness",
+          "next_module_number": 4,
+          "next_module_title": "Firmware, Host Software, and Deployment Readiness",
+          "thank_you_message": "Nice work - you have finished the command and event workflow module.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.txt",
+            "wav_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.wav",
+            "approved": false,
+            "delivery_file": "audio/module3/slide_13_up_next_firmware_and_host_readiness.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "cdf23c4d42ca3c99c0676bd3a78e98ac1a744d1b3d6d02f861536e6d2e373c4e",
+              "master_sha256": "32bce7bc05fab9221245b63bb64666abcb6934f9bd1cf5d10c89f506bc0a6c94",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "0555786bc51491d7a56150e3c674a2795fa54ba7c1692b07ba03d8a28a7dfae5",
+              "objective_signal_check": "passed"
+            }
+          }
+        }
+      ],
+      "next_module_title": "Firmware, Host Software, and Deployment Readiness"
+    },
+    {
+      "id": 4,
+      "slug": "firmware_host_software_and_deployment_readiness",
+      "title": "Firmware, Host Software, and Deployment Readiness",
+      "subtitle": "Firmware maintenance, module-time correlation, host measurements, and deployment checks.",
+      "module_badge_text": "Module 4",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "firmware_host_software_and_deployment_readiness",
+          "title": "Firmware, Host Software, and Deployment Readiness",
+          "subtitle": "How telemetry, remote access, firmware management, and host APIs become fleet-scale operations.",
+          "version_chip": "Enhanced Telemetry Spec v1.0.0",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.txt",
+            "wav_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_01_firmware_host_software_and_deployment_readiness.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "290cc8d6b42cd55a2e9e9ae6887ce63d127976a980b567b0055e48cc3e692137",
+              "master_sha256": "c81ada8b8d547d6878ce467e56f3538eba279fd74d637a04c4bb7de8488efe90",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "e618b2063814696e8390f4c7452ff05b27daa78b176b0c082bfe47b367e4aef2",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "operations_you_will_connect",
+          "title": "Operations You Will Connect",
+          "subtitle": "By the end of this module, you will be able to explain how lifecycle and host tooling support reliability.",
+          "objectives": [
+            "Describe local and remote firmware management at the capability level.",
+            "Explain why host software communicates with the local module even when remote data is requested.",
+            "Identify command-line API categories that support operator workflows.",
+            "Connect telemetry harvesting, event history, and server aggregation into a deployment-readiness model."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_02_operations_you_will_connect.txt",
+            "wav_file": "audio/module4/slide_02_operations_you_will_connect.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_02_operations_you_will_connect.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "ec39863bb586efed7f18c877081c8f02c5daedd9de71a3c728459e25e5286bb7",
+              "master_sha256": "b29bc2ddaa39272ce5edbaccb1ad5355f136097a2551a82f5180c998b1019310",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "3f6fc8c228985b8f401e1149c4bbdaf3722df82112db1075b529e83e34d62961",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_table",
+          "slug": "firmware_management_supports_local_and_remote_optics",
+          "section_label": "Firmware Capability",
+          "title": "Firmware Management Supports Local and Remote Optics",
+          "subtitle": "Local maintenance follows CMIS 5.3; remote maintenance uses the 8030h command family.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                77,
+                78,
+                80,
+                83,
+                85,
+                88,
+                90,
+                93
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.txt",
+            "wav_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_03_firmware_management_supports_local_and_remote_optics.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "7c69ccad8471eaac3fa6676a7c910f50b7870801b84ff1162412d0fceec691ac",
+              "master_sha256": "e865079ae70e7c5a11d2244d512bbdde34b0f4bf885b53262a335f6f7c4ab03e",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "e2c9b7c019427e4b71f2bc2a399c62067f9c15d27f06f182823b51bb5a0df5c2",
+              "objective_signal_check": "passed"
+            }
+          },
+          "columns": [
+            "Remote command",
+            "Purpose"
+          ],
+          "rows": [
+            [
+              "8030h - Get information",
+              "Inspect image versions, validity, running image and committed default."
+            ],
+            [
+              "8031h - Start",
+              "Begin the image download for the selected remote partner."
+            ],
+            [
+              "8032h - Abort",
+              "Abort a download that has been started."
+            ],
+            [
+              "8033h - Transfer",
+              "Send firmware data blocks and check each result."
+            ],
+            [
+              "8034h - Complete",
+              "Validate completion before attempting activation."
+            ],
+            [
+              "8035h - Run",
+              "Activate the downloaded image."
+            ],
+            [
+              "8036h - Commit",
+              "Make the verified running image the default for future resets."
+            ]
+          ],
+          "mobile_scroll": true,
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - firmware management - pp. 76-94",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=76"
+            }
+          ],
+          "term_refs": [
+            "cmis"
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "hitless_update_is_a_lifecycle_pattern",
+          "section_label": "Update Lifecycle",
+          "title": "Hitless Update Is a Lifecycle Pattern",
+          "figure": {
+            "path": "figures/remote_firmware_lifecycle.svg",
+            "source": "custom",
+            "alt": "Remote firmware lifecycle: inspect information, start, transfer, complete, run and verify, commit; abort and cleanup when a download fails.",
+            "caption": "Check every command result. Running an image and committing it for future resets are separate steps.",
+            "text_inventory": {
+              "sha256": "98ff325fee3c0672baf14bb33a686855a1c20d129a427ba7e7126ab06c2d4dfb",
+              "entries": [
+                {
+                  "text": "Remote firmware: run, verify, then commit | Use the selected partner and check every command result | Inspect information | 8030h: images and status | Start download | 8031h: begin image transfer | Transfer blocks | 8033h: check each block | Complete download | 8034h: validate completion | Run and verify | 8035h: activate the image | Commit | 8036h: future reset default | Download failure: abort and clean up | 8032h aborts a started download. Do not run an incomplete image."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                80,
+                83,
+                85,
+                88,
+                90,
+                93
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.txt",
+            "wav_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_04_hitless_update_is_a_lifecycle_pattern.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "19eb4ea0944e8d9fb7d68edc75401520f7ef9feb1af1281e8bd5bd2b890f71e2",
+              "master_sha256": "ea811eeb9bc8d8cfbc42eb019cb8a27c5eb59a586b7856e6c24782fa5fc184ec",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "59dfa7b5d81899158563590fdda507c8fc3e190824eb73ab50b782e1a1a8d43e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - remote firmware lifecycle - pp. 76-94",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=76"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "content_two_column",
+          "slug": "host_software_owns_the_local_conversation",
+          "section_label": "Host Boundary",
+          "title": "Host Software Owns the Local Conversation",
+          "subtitle": "The host communicates over I2C with the local compliant module; the local module retrieves remote data.",
+          "bullets": [
+            {
+              "bold_lead": "Local control point",
+              "text": "All compliant transceiver communication with the local host is performed over I2C in the spec."
+            },
+            {
+              "bold_lead": "Remote retrieval",
+              "text": "When remote data is requested, the local transceiver retrieves it and presents it to the host."
+            },
+            {
+              "bold_lead": "No direct remote path",
+              "text": "The local host does not directly communicate with remote partner modules."
+            }
+          ],
+          "figure": {
+            "path": "figures/host_local_conversation.svg",
+            "alt": "Host communicates with local module over I2C while local module retrieves remote partner data in-band.",
+            "caption": "The host remains local; the compliant module bridges the remote endpoint.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "06cc5d317fc31e3458991f6489ab7cd1435416d3ee19043acf2d6559ee117871",
+              "entries": [
+                {
+                  "text": "Host software owns the local conversation | Switch host | SDK and CLI | I2C | Local optics | local answers | remote proxy | in-band | Remote | partner | The host does not need a separate direct path into the far module."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                96
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.txt",
+            "wav_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_05_host_software_owns_the_local_conversation.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "5e5a592f53700290867cb1fbf71f72873f9d356d2fca2a63a6928c121cf32047",
+              "master_sha256": "3de9b9483d61c659856a761ff1caaf70a7b36905fbb366979b6cf6c2dfc9885d",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "f6522289a8aea9bff268138b42307f6b48fdb9aad5f821e52bff16c9df9fffb5",
+              "objective_signal_check": "passed"
+            }
+          },
+          "term_refs": [
+            "i2c"
+          ]
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "command_line_apis_become_operator_tools",
+          "section_label": "Operator APIs",
+          "title": "Command-Line APIs Become Operator Tools",
+          "subtitle": "The host SDK and command-line APIs expose the common module capabilities as repeatable workflows.",
+          "columns": [
+            "API category",
+            "Operator use"
+          ],
+          "rows": [
+            [
+              "Standard CMIS access",
+              "Read local registers and standard module state."
+            ],
+            [
+              "Remote CMIS access",
+              "Read or write remote CMIS registers through the selected link partner."
+            ],
+            [
+              "Telemetry download",
+              "Display local or remote module telemetry parameters."
+            ],
+            [
+              "Event logs",
+              "Retrieve local or remote history, export evidence, then clear only when intended."
+            ],
+            [
+              "Firmware update",
+              "Run local or remote hitless firmware update workflows."
+            ],
+            [
+              "Time and rating",
+              "Get/set module time, tune hysteresis and display link rating."
+            ],
+            [
+              "Telemetry controls",
+              "Discover capability, set score masks/thresholds and verify shutdown state."
+            ]
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                18,
+                27,
+                43,
+                46,
+                50,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.txt",
+            "wav_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_06_command_line_apis_become_operator_tools.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "bf8a0d701bfa3b7b1dc40a16de2f1f6334fe1a55b80e8ef671676359c8c8fae9",
+              "master_sha256": "e4642aad02bbaaee6eed32086bcbde01e04afeb214cf56f1d9c950fa01e84496",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "5878bb9fd31d0ed47d3bc23a81944d4041a951dcbfa262db427df299bb5474c8",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - host APIs - pp. 96-97",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=96"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "telemetry_harvesting_builds_a_link_timeline",
+          "section_label": "Harvesting",
+          "title": "Telemetry Harvesting Builds a Link Timeline",
+          "figure": {
+            "path": "figures/telemetry_timeline.svg",
+            "alt": "Timeline showing host polling, event threshold, remote partner query, and fabric health map.",
+            "caption": "Get/Set Module Time (0005h/0006h) uses nanoseconds since the POSIX epoch. Correlate both module endpoints with switch receiver measurements.",
+            "source": "svg_inline",
+            "text_inventory": {
+              "sha256": "6063c14db39e148abbba34322a73a093fd3ccc4b0566f3aec1383cd677f0c812",
+              "entries": [
+                {
+                  "text": "Telemetry harvesting builds a link timeline | Poll | current metrics | Event | threshold crossed | Remote | partner query | Map | fabric health | Operations improve when current state and event history can be stitched together."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                21,
+                22,
+                24,
+                25,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.txt",
+            "wav_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_07_telemetry_harvesting_builds_a_link_timeline.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "a042a4ada100c3ec1744feb381a61431b2e535955d5642f27cf2fd7232686f0a",
+              "master_sha256": "ee0816e9b122ce68132c93f4998117d99f98fb116fbfb67d6a6244bdfdd5c73c",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "12b7c39021898134e1b4c2aed9ce2ef9d580bb216b91a98112a3d26543ca824e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - time and host harvesting - pp. 21-25, 96-97",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=21"
+            }
+          ],
+          "term_refs": [
+            "fec",
+            "ber"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "deployment_readiness_checks",
+          "section_label": "Readiness Checks",
+          "title": "Deployment Readiness Checks",
+          "subtitle": "A deployment should verify behavior, not only whether fields exist.",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Local and remote partners",
+              "body": "Confirm the host can retrieve data from local modules and the correct remote endpoints."
+            },
+            {
+              "title": "Breakout cases",
+              "body": "Verify partner identity and per-endpoint telemetry when one port maps to multiple remote sides."
+            },
+            {
+              "title": "Third-party optics",
+              "body": "Inspect in-band support and automatic lane detection; a basic data link does not prove remote telemetry is available."
+            },
+            {
+              "title": "Epoch time",
+              "body": "Set and verify local/remote module time; timestamp units alone do not establish clock accuracy."
+            },
+            {
+              "title": "Firmware lifecycle",
+              "body": "Exercise discovery, transfer, activation, commit, abort, and recovery states."
+            },
+            {
+              "title": "Score and shutdown policy",
+              "body": "Verify counter masks, module thresholds and shutdown enable state, including their reset defaults."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                18,
+                19,
+                21,
+                24,
+                50,
+                54,
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_08_deployment_readiness_checks.txt",
+            "wav_file": "audio/module4/slide_08_deployment_readiness_checks.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_08_deployment_readiness_checks.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "1bbd30c5f99af4ff9d189eb70469ff0c7be55a55a9943bc0d2cacb5fa00115a6",
+              "master_sha256": "80fed5352d22aa2e7e6558d1e711a77f212da89dd8fba52a56849adbbea12075",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "fcd3fe188b72e037cffcedbb583f8cde157b3188cedb6c0765c7646a0801ef8e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "mobile_scroll": true,
+          "reference_links": [
+            {
+              "label": "Spec v1.0.0 - capabilities and policy - pp. 18-25, 50-51",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf#page=18"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "type": "content_diagram",
+          "slug": "from_link_flap_to_root_cause",
+          "section_label": "Troubleshooting",
+          "title": "From Link Flap to Root Cause",
+          "figure": {
+            "path": "figures/link_flap_root_cause.mp4",
+            "media_type": "video",
+            "alt": "Silent animation showing troubleshooting from a link flap alert through health score, metrics, event log, remote query, and evidence-based action.",
+            "caption": "Check both side-specific scores, tied lowest categories, event details and remote evidence. A configured shutdown may itself explain the link drop.",
+            "source": "custom",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "poster": "figures/link_flap_root_cause_poster.png",
+            "text_inventory": {
+              "sha256": "9e158b77fa78f6310ab9c6dbbf6d9544c4082bdc69e63fffd6438da86cf42eb0",
+              "entries": [
+                {
+                  "at_seconds": 0,
+                  "text": "From Link Flap to Root Cause | Enhanced telemetry turns an incident into a structured evidence trail. | ! | Flap alert | symptom arrives | 40 | Health score | weak category | M | Metrics | current fields | L | Event log | ordered story | R | Remote query | far endpoint | T | Host timeline | system view | Evidence bundle | Evidence-based action | Clean / reseat | Replace optic | Firmware update | Vendor case | Start with the flap, then collect evidence before choosing an action."
+                },
+                {
+                  "at_seconds": 4.5,
+                  "text": "From Link Flap to Root Cause | Enhanced telemetry turns an incident into a structured evidence trail. | ! | Flap alert | symptom arrives | 40 | Health score | weak category | M | Metrics | current fields | L | Event log | ordered story | R | Remote query | far endpoint | T | Host timeline | system view | Evidence bundle | Health score | optical category weak | Evidence-based action | Clean / reseat | Replace optic | Firmware update | Vendor case | The health score points to the weakest category."
+                },
+                {
+                  "at_seconds": 9,
+                  "text": "From Link Flap to Root Cause | Enhanced telemetry turns an incident into a structured evidence trail. | ! | Flap alert | symptom arrives | 40 | Health score | weak category | M | Metrics | current fields | L | Event log | ordered story | R | Remote query | far endpoint | T | Host timeline | system view | Evidence bundle | Health score | optical category weak | Metrics | power and BER drift | Event order | warning before flap | Remote endpoint | far side confirms | Evidence-based action | Clean / reseat | Replace optic | Firmware update | Vendor case | Remote endpoint data and host timelines narrow the field."
+                },
+                {
+                  "at_seconds": 13.5,
+                  "text": "From Link Flap to Root Cause | Enhanced telemetry turns an incident into a structured evidence trail. | ! | Flap alert | symptom arrives | 40 | Health score | weak category | M | Metrics | current fields | L | Event log | ordered story | R | Remote query | far endpoint | T | Host timeline | system view | Evidence bundle | Health score | optical category weak | Metrics | power and BER drift | Event order | warning before flap | Remote endpoint | far side confirms | Host timeline | server events aligned | Evidence-based action | Clean / reseat | Replace optic | Firmware update | Vendor case | The action now has evidence behind it."
+                },
+                {
+                  "at_seconds": 17.966666666666665,
+                  "text": "From Link Flap to Root Cause | Enhanced telemetry turns an incident into a structured evidence trail. | ! | Flap alert | symptom arrives | 40 | Health score | weak category | M | Metrics | current fields | L | Event log | ordered story | R | Remote query | far endpoint | T | Host timeline | system view | Evidence bundle | Health score | optical category weak | Metrics | power and BER drift | Event order | warning before flap | Remote endpoint | far side confirms | Host timeline | server events aligned | Action record | decision is auditable | Evidence-based action | Clean / reseat | Replace optic | Firmware update | Vendor case | Record the action so the next incident has context."
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                32,
+                38,
+                50,
+                54,
+                57,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_09_from_link_flap_to_root_cause.txt",
+            "wav_file": "audio/module4/slide_09_from_link_flap_to_root_cause.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_09_from_link_flap_to_root_cause.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "47582c08fc3bdc7168f3b9edac07600829dbd24959af5996c89fdfd48ec56039",
+              "master_sha256": "7553a35746304218f86a2b17e51c12399f03fa55d8241a27e2ad81ad6f449851",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "2850c416e934d4bf3f8efc9a8106bf6c994069b0530277fc8859e8c595906674",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 10,
+          "type": "takeaways",
+          "slug": "reliability_depends_on_common_interfaces",
+          "title": "Reliability Depends on Common Interfaces",
+          "items": [
+            "Firmware management is a lifecycle with capability discovery, status checks, activation, commit, and recovery behavior.",
+            "Host software talks locally over I2C while compliant modules retrieve remote partner data in-band.",
+            "Host tooling combines capability discovery, score configuration, event history, firmware maintenance and synchronized time.",
+            "Continuous harvesting turns current state and event history into a link timeline.",
+            "Deployment readiness means verifying behavior across local, remote, breakout, and mixed-compatibility cases."
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.txt",
+            "wav_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_10_reliability_depends_on_common_interfaces.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "968535371520690e264456ecb5d85e49b67e75cd7ce55e09273da22340c2763b",
+              "master_sha256": "a8271b4026adca60375003f669d3370f58fd2ac6f2d642296e57aa12371107d6",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "12f89088ab4d3486700c2d630b292ec07a775aba1949bcf3d0700f9a3dad725f",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 11,
+          "type": "knowledge_check",
+          "slug": "check_your_model_deployment_workflow",
+          "title": "Check Your Model: Deployment Workflow",
+          "subtitle": "Answer once to continue. Correctness is not required, and you can retry after feedback.",
+          "questions": [
+            {
+              "id": "m4_q1",
+              "prompt": "Why does the local host not directly communicate with remote partner modules in the spec model?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The host communicates with the local compliant module; the local module retrieves remote data in-band.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Remote telemetry is not supported.",
+                  "correct": false,
+                  "feedback_incorrect": "Remote telemetry is supported through the local module and in-band communication."
+                },
+                {
+                  "id": "c",
+                  "text": "Only the telemetry server can ask for remote optical data.",
+                  "correct": false,
+                  "feedback_incorrect": "Host software can request remote data through the local compliant module; the server aggregates higher-level health information."
+                }
+              ],
+              "feedback_correct": "Correct. The local module bridges remote retrieval while the host keeps one local control path.",
+              "feedback_incorrect": "Review the host boundary: local host to local module over I2C, then local module to remote partner in-band."
+            },
+            {
+              "id": "m4_q2",
+              "multiple": true,
+              "prompt": "Which host/API features support fleet-scale optics operations?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Local and remote telemetry download.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Event-log read, clear, recent-event download, and hysteresis control.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Local and remote firmware update workflows.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Ignoring host-side pre-FEC BER and uncorrectable codeword data.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Fleet operations need current telemetry, durable history, remote access, firmware lifecycle support, and host-side context.",
+              "feedback_incorrect": "Think about the full operations chain: current telemetry, event history, remote access, firmware management, time correlation, rating, and host-side context."
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                76,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_11_check_your_model_deployment_workflow.txt",
+            "wav_file": "audio/module4/slide_11_check_your_model_deployment_workflow.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_11_check_your_model_deployment_workflow.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "c18ac75afe1c4fdb625ee3c0a33922be1a3dd2aa0bd248501d60df9f67e9e7d1",
+              "master_sha256": "4356be4dc157f7a01e28ad76784a5c652746fe07e42a7a9cbd1f5e76408d3ec2",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "659c96ddd12e94e50079d4dfaf669ab2c55379f474c921ceaf7c794a6f4e77c8",
+              "objective_signal_check": "passed"
+            }
+          }
+        },
+        {
+          "id": 12,
+          "type": "course_complete",
+          "slug": "course_complete_ocp_optics_reliability",
+          "title": "Course Complete: Enhanced Telemetry Optics",
+          "course_title": "Enhanced Telemetry Optics",
+          "thank_you_message": "Thank you for completing the final module: Firmware, Host Software, and Deployment Readiness.",
+          "cert_message": "You can now connect local and remote evidence, side-specific health scores, configured module behavior, durable event history, firmware maintenance and host APIs into a reliability workflow.",
+          "source_refs": [
+            {
+              "source": "2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf",
+              "pages": [
+                10,
+                11,
+                96,
+                97
+              ]
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.txt",
+            "wav_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.wav",
+            "approved": false,
+            "delivery_file": "audio/module4/slide_12_course_complete_ocp_optics_reliability.mp3",
+            "generation_provenance": {
+              "origin": "generated_recording",
+              "model_id": "eleven_v4",
+              "voice_id": "bbGtsRRKUfYO634UxSjz",
+              "script_sha256": "63053b084450704a38b4020f919153526eb84cfbf4fea4705660b2c2325c5c1b",
+              "master_sha256": "c040378b9a7e4841dab810631f2aee87201ee787796e0446050b980be359c397",
+              "tempo_multiplier": 1.18,
+              "native_master_sha256": "3c0a94bda3a1ed20b081eb3bd3bf644d9b53ddb28c4432dc98de9f82567ae89e",
+              "objective_signal_check": "passed"
+            }
+          },
+          "reference_links": [
+            {
+              "label": "Enhanced Telemetry Optics specification v1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/10/2026_OCP_Enhanced_Telemetry_Optics_Software_Specification_R1.0.0.pdf"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 5
+  },
+  "index_module_links": false,
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
+  "index_navigation_instruction": "Navigate modules in any order using the Syllabus in the left sidebar.",
+  "lms_catalog": {
+    "title": "Enhanced Telemetry Optics",
+    "short_description": "Use optical metrics, event history, remote access, and firmware workflows to assess link health and deployment readiness.",
+    "overview": "Explore how enhanced optics telemetry helps operators identify what failed, where it failed, and what evidence supports the next action in AI fabrics. Connect link-health metrics and flags to command workflows, durable event history, remote access, firmware management, and host software. Build a practical model for diagnosing optical links and assessing deployment readiness.",
+    "duration_minutes": 50,
+    "duration_basis": "estimated_learner_time",
+    "duration_note": "Estimated learner time includes narration, diagrams, knowledge checks, and review. Optional external reference study, replays, and retries add time.",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 10,
+        "summary": "Frame link reliability at fabric scale, identify the software and transceiver responsibilities, and distinguish local, remote, and breakout endpoints within the telemetry model."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 14,
+        "summary": "Classify quality, error, recovery, environmental, and context metrics. Interpret link-health scores, flags, masks, thresholds, and autonomous-shutdown behavior."
+      },
+      {
+        "id": 3,
+        "duration_minutes": 14,
+        "summary": "Trace checked Command Data Block exchanges and persistent event logs. Distinguish remote byte and page access and connect the resulting evidence to a failure investigation."
+      },
+      {
+        "id": 4,
+        "duration_minutes": 12,
+        "summary": "Review firmware maintenance, module-time correlation, host measurements, and command-line API categories. Connect telemetry collection and server aggregation to deployment-readiness checks."
+      }
+    ]
+  }
+}

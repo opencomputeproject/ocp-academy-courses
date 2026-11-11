@@ -1,0 +1,12 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+Una solicitud de telemetría necesita tres elementos de contexto: destino, lado y puerto.
+
+El destino selecciona el módulo local o un extremo remoto. El lado selecciona la interfaz eléctrica orientada al host o la interfaz óptica orientada al medio. El puerto identifica la ruta de datos pertinente, algo importante cuando un módulo se conecta con varios extremos.
+
+El comando ocho mil uno hexadecimal devuelve la telemetría de esa selección. El software prepara la solicitud, la activa, consulta el estado y lee la respuesta exitosa.
+
+La respuesta identifica si el destino está en línea y es accesible. Incluye la puntuación y el mapa de bits de las categorías más bajas, la identidad de serie del módulo, el contador de caídas del enlace, el tiempo de actividad, los indicadores, las mediciones de calidad de señal, los valores ambientales y la información F E C.
+
+Algunos campos resumen el peor carril en vez de enumerarlos todos por separado. La potencia óptica incluye valores mínimos y máximos. Conserve ese contexto de agregación al pasar de un resumen de puerto a una investigación detallada.
+
+Un destino fuera de línea no es un destino saludable con métricas de valor cero. Informe explícitamente la accesibilidad. El flujo común es el mismo para solicitudes locales y remotas, pero el contexto del extremo y de la interfaz debe acompañar a la evidencia.

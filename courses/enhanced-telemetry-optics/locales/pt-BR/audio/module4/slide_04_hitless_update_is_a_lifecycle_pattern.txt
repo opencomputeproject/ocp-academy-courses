@@ -1,0 +1,12 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I squared C; SONiC -> sonic; PMD -> P M D; VDM -> V D M; DDMI -> D D M I; SNR -> S N R; PAM4 -> PAM four; MPI -> M P I; FEC -> feck; BER -> B E R; LOS -> L O S; LOL -> L O L; SDK -> S D K; API -> A P I
+A manutenção de firmware sem interrupção depende de um ciclo de vida controlado, não de um único comando bem-sucedido.
+
+Inspecione as informações da imagem remota e inicie o download. Transfira o firmware em blocos e verifique cada resultado. Se a transferência de um bloco falhar, aborte o download e faça a limpeza em vez de continuar com uma imagem incompleta.
+
+Depois da chegada de todos os blocos, o comando de conclusão do download valida essa etapa. Uma falha, como uma soma de verificação incorreta da imagem, significa que o download não foi bem-sucedido. Não prossiga para a ativação.
+
+Quando a conclusão for bem-sucedida, execute a nova imagem e verifique seu comportamento. Só então confirme a imagem em execução como padrão para futuras reinicializações. Essa distinção entre executar e confirmar é central para saber o que o módulo fará agora e após uma reinicialização.
+
+O módulo local leva essas operações ao parceiro remoto escolhido pela interface em banda. Preserve a identidade desse parceiro durante toda a sequência.
+
+A capacidade de operação sem interrupção ainda precisa ser verificada na implantação. Confira a continuidade real do tráfego, o status dos comandos, o comportamento de recuperação e a política de manutenção antes de confiar no fluxo em serviço.

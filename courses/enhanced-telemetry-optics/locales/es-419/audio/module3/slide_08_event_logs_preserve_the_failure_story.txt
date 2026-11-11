@@ -1,0 +1,12 @@
+# pronunciation: CMIS -> C M I S; CDB -> C D B; I2C -> I al cuadrado C; VDM -> V D M; SNR -> S N R; FEC -> F E C; BER -> B E R; DSP -> D S P; API -> A P I
+La telemetría actual muestra cómo está el enlace ahora. Los registros persistentes de eventos ayudan a explicar cómo llegó a ese estado.
+
+Cada entrada de evento ocupa treinta y dos bytes. Contiene un identificador de secuencia de dieciséis bits, una marca temporal de sesenta y cuatro bits expresada en nanosegundos, un identificador de evento, cuatro campos de detalle y espacio reservado. Los campos utilizan orden de bytes little-endian.
+
+El identificador de evento determina cómo se decodifican los detalles. Un evento de temperatura contiene información térmica. Un evento de receptor puede contener mapas de bits de carriles. Un evento de apagado registra el lado, el puerto, la categoría que lo activó y el valor de la métrica.
+
+El búfer circular debe conservar los registros existentes tras el encendido, la extracción y la reinserción. Los identificadores de secuencia pueden desbordarse, por lo que el software debe conservar el contexto cronológico y no ordenar ciegamente solo por el valor numérico.
+
+El tiempo también necesita contexto. Un formato de marca temporal en nanosegundos no garantiza precisión de reloj de nanosegundos. Establezca la hora del módulo y reconozca los registros creados antes de disponer de una referencia temporal válida.
+
+El comando ocho mil diez hexadecimal recupera el historial local o remoto. Otra opción del mismo comando lo borra. Lea y exporte la evidencia antes de borrarla, porque los registros persistentes suelen ser el único testimonio de una falla transitoria.

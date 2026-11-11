@@ -29,5 +29,13 @@ try{
   result=await run({...base,language:'ko-KR',badge:'뷁'});assert.notEqual(result.status,0);assert.match(result.stderr,/posters must be in English/);
   result=await run({...base,title_lines:['DIFFERENT TITLE']},['--check']);assert.notEqual(result.status,0);assert.match(result.stderr,/thumbnail differs/);
   assert.ok(original.equals(await fs.readFile(path.join(course,'thumbnail.png'))),'Check must not overwrite a stale image');
-  console.log('PASS: long titles fit; overflow and translated posters fail; locale folders are excluded; --check detects drift without changing accepted images.');
+  const series=path.join(temp,'series/test');await fs.mkdir(series,{recursive:true});
+  await fs.copyFile(path.join(course,'mark.svg'),path.join(series,'mark.svg'));
+  await fs.writeFile(path.join(series,'poster.json'),JSON.stringify({...base,badge:'OCP TEST SERIES',title_lines:['TEST SERIES']}));
+  result=await run(base);assert.equal(result.status,0,result.stderr);
+  const seriesReport=JSON.parse(await fs.readFile(path.join(temp,'build/poster-qa/report.json'),'utf8'));
+  assert.equal(seriesReport.posters.length,2,'Discover courses and separately stored series posters');
+  assert.ok((await fs.readFile(path.join(series,'thumbnail.png'))).length>0);
+  result=await run(base,['--check']);assert.equal(result.status,0,result.stderr);
+  console.log('PASS: long titles fit; overflow and translated posters fail; locales are excluded; separate series posters are discovered; --check detects drift without changing accepted images.');
 }finally{await fs.rm(temp,{recursive:true,force:true});}

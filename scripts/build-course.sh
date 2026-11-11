@@ -138,7 +138,7 @@ else
     rsync -a "$SOURCE_DIR/resources/" "$BUILD_DIR/resources/"
   fi
 
-  for asset_folder in fonts captions; do
+  for asset_folder in fonts captions assets; do
     if [[ -d "$SOURCE_DIR/$asset_folder" ]]; then
       rsync -a "$SOURCE_DIR/$asset_folder/" "$BUILD_DIR/$asset_folder/"
     fi
