@@ -1,0 +1,21 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { spawn } from 'node:child_process';
+import { here, scenes, readJSON, writeJSON, probe, sha256, resolveAudio } from './lib.mjs';
+
+const args = process.argv.slice(2), val = flag => args.includes(flag) ? args[args.indexOf(flag) + 1] : undefined;
+const locale = val('--locale'), id = val('--slide');
+if (!locale || !scenes[id] || id === 'M4S8') throw new Error('Usage: node align_audio.mjs --locale en-US --slide M1S3 [--model /path/ggml-base.bin]');
+const labels = (await readJSON(path.join(here, 'labels.json'))).editions[locale][id];
+const audioRelative = labels.audio.replace(/\.[^.]+$/, '.wav');
+const audio = resolveAudio(locale, audioRelative);
+const dir = path.join(here, 'alignment', locale);
+await fs.mkdir(dir, { recursive: true });
+const prefix = path.join(dir, id);
+const child = spawn(process.env.WHISPER_BIN || 'whisper-cli', ['-m', val('--model') || path.join(here, '.cache/ggml-base.bin'), '-f', audio, '-l', locale.split('-')[0], '-ojf', '-of', prefix, '-ml', '60', '-t', '6'], { stdio: 'inherit' });
+const code = await new Promise((resolve, reject) => { child.on('error', reject); child.on('close', resolve); });
+if (code !== 0) throw new Error(`Local alignment exited ${code}`);
+const transcript = await readJSON(`${prefix}.json`);
+transcript.params.model = path.basename(transcript.params.model);
+await writeJSON(`${prefix}.json`, transcript);
+await writeJSON(`${prefix}.audio.json`, { narration_path: audioRelative, narration_sha256: await sha256(audio), duration_ms: Number(probe(audio).format.duration) * 1000, method: 'Local whisper.cpp base multilingual; timing aid only, not a replacement for approved narration or transcript.', final_audio_verified: true, human_audio_review: 'pending', cues_reviewed: false });

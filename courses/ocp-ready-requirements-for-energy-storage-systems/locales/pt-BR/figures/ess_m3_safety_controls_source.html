@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>M3S6 editable teaching animation</title><style>html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;overflow:hidden}svg{display:block;width:100%;height:100%;letter-spacing:0}</style></head><body data-duration-ms="75189.02494331065" data-poster-ms="75089.02494331065"><svg id="scene" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Diagrama de fluxo conectando detecção, ventilação, supressão, controle de explosão e energia de reserva."></svg><script>window.SCENE={"scene":"M3S6","locale":"pt-BR","labels":{"slide_id":6,"slug":"detection_ventilation_and_suppression","audio":"audio/module3/slide_06_detection_ventilation_and_suppression.mp3","alt":"Diagrama de fluxo conectando detecção, ventilação, supressão, controle de explosão e energia de reserva.","caption":"Os controles devem funcionar juntos em condições de falha e emergência.","source_refs":[{"source":"WHITE PAPER_OCP READY REQUIREMENTS FOR ENERGY STORAGE SYSTEMS_FINAL.pdf","page":27},{"source":"WHITE PAPER_OCP READY REQUIREMENTS FOR ENERGY STORAGE SYSTEMS_FINAL.pdf","page":28},{"source":"WHITE PAPER_OCP READY REQUIREMENTS FOR ENERGY STORAGE SYSTEMS_FINAL.pdf","page":31},{"source":"WHITE PAPER_OCP READY REQUIREMENTS FOR ENERGY STORAGE SYSTEMS_FINAL.pdf","page":32},{"source":"WHITE PAPER_OCP READY REQUIREMENTS FOR ENERGY STORAGE SYSTEMS_FINAL.pdf","page":33},{"source":"WHITE PAPER_OCP READY REQUIREMENTS FOR ENERGY STORAGE SYSTEMS_FINAL.pdf","page":34}],"labels":["Detecção","fumaça / gás / térmica","Ventilação","remover gases","Supressão","controle de fogo","Controle de explosão","quando aplicável","energia de backup para subsistemas críticos de segurança"]},"timing":{"narration_path":"audio/module3/slide_06_detection_ventilation_and_suppression.wav","narration_sha256":"6fc91fa710f550cb4af7f888782b26891a4216ea6185f29eecf3b0b005e2e698","duration_ms":75189.02494331065,"method":"Local whisper.cpp base multilingual; timing aid only, not a replacement for approved narration or transcript.","final_audio_verified":true,"human_audio_review":"pending","cues_reviewed":true,"cues_ms":{"detection":0,"ventilation":26980,"backup":33980,"suppression":40980,"coordination":58060},"anchors":["Detecção opening","A ventilação não é apenas resfriamento para conforto","Subsistemas críticos de segurança","A supressão depende do perigo e do espaço","O design deve evitar contradições"],"poster_ms":75089.02494331065,"mode":"narration-synchronized"},"qualifier":"Comparação ilustrativa; não são dados medidos da instalação."};</script><script>/* Shared deterministic SVG scene source. The only clock is setTeachingTime(ms). */
+(() => {
+  'use strict';
+  const { scene, locale, labels, timing, qualifier } = window.SCENE;
+  const NS = 'http://www.w3.org/2000/svg';
+  const colors = { ink: '#343895', green: '#8DC63F', darkGreen: '#507722', neutral: '#5F6062', light: '#E2E5E8', pale: '#F4F8F1', recharge: '#B4D980', amber: '#AC731B' };
+  const font = 'Arial, "Arial Unicode MS", "PingFang SC", "PingFang TC", "Hiragino Sans", "Apple SD Gothic Neo", sans-serif';
+  const root = document.getElementById('scene');
+  const tracks = [];
+  const boxes = [];
+  const arrows = [];
+  const canvas = document.createElement('canvas');
+  const measure = canvas.getContext('2d');
+  function el(tag, attrs = {}, parent = root) {
+    const e = document.createElementNS(NS, tag);
+    for (const [key, value] of Object.entries(attrs)) e.setAttribute(key, value);
+    parent.appendChild(e);
+    return e;
+  }
+  function group() { return el('g'); }
+  function rect(x, y, width, height, fill, stroke = 'none', parent = root) {
+    return el('rect', { x, y, width, height, rx: 8, fill, stroke, 'stroke-width': 4 }, parent);
+  }
+  function text(value, x, y, width, height, size = 38, weight = 600, fill = colors.ink, parent = root) {
+    const node = el('text', { fill, 'font-family': font, 'font-weight': weight, 'text-anchor': 'middle', 'data-label': value }, parent);
+    const tokens = /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/u.test(value) ? [...value] : value.split(/\s+/);
+    const joiner = tokens.length && tokens[0].length === 1 && /[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af]/u.test(value) ? '' : ' ';
+    let lines;
+    // Fit actual glyphs with 0.75em clearance on all four sides, not character counts.
+    for (; size >= 24; size--) {
+      measure.font = `${weight} ${size}px ${font}`;
+      lines = [''];
+      for (const token of tokens) {
+        const candidate = lines.at(-1) ? `${lines.at(-1)}${joiner}${token}` : token;
+        if (measure.measureText(candidate).width > width - 1.5 * size && lines.at(-1)) lines.push(token);
+        else lines[lines.length - 1] = candidate;
+      }
+      if (lines.every(line => measure.measureText(line).width <= width - 1.5 * size) && lines.length * size * 1.25 <= height - 1.5 * size) break;
+    }
+    if (size < 24) throw new Error(`Label cannot fit safely: ${value}`);
+    node.setAttribute('font-size', size);
+    const lineHeight = size * 1.25;
+    lines.forEach((line, index) => {
+      const span = el('tspan', { x: x + width / 2, y: y + height / 2 - (lines.length - 1) * lineHeight / 2 + size * 0.34 + index * lineHeight }, node);
+      span.textContent = line;
+    });
+    boxes.push({ node, x, y, width, height, clearance: size * 0.75 });
+    return node;
+  }
+  const smooth = v => { const x = Math.max(0, Math.min(1, v)); return x * x * (3 - 2 * x); };
+  function track(cue, duration, update, offset = 0) {
+    tracks.push({ start: timing.cues_ms[cue] + offset, duration, update });
+  }
+  function reveal(node, cue, duration = 650, offset = 0) { track(cue, duration, p => node.setAttribute('opacity', p), offset); }
+  function trace(node, cue, duration = 1600) {
+    const length = node.getTotalLength();
+    node.setAttribute('stroke-dasharray', length);
+    track(cue, duration, p => node.setAttribute('stroke-dashoffset', length * (1 - p)));
+  }
+  function arrow(points, cue, color = colors.ink, duration = 650, offset = 0) {
+    const tip = points.at(-1);
+    const prior = points.at(-2);
+    const distance = Math.hypot(tip[0] - prior[0], tip[1] - prior[1]);
+    const ux = (tip[0] - prior[0]) / distance, uy = (tip[1] - prior[1]) / distance;
+    const back = [tip[0] - ux * 18, tip[1] - uy * 18];
+    const g = group();
+    const shaftPoints = [...points.slice(0, -1), back];
+    const shaft = el('path', { d: shaftPoints.map((p, i) => `${i ? 'L' : 'M'}${p.join(' ')}`).join(' '), fill: 'none', stroke: color, 'stroke-width': 6, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' }, g);
+    const triangle = [tip, [back[0] - uy * 9, back[1] + ux * 9], [back[0] + uy * 9, back[1] - ux * 9]];
+    el('polygon', { points: triangle.map(p => p.join(',')).join(' '), fill: color, class: 'arrowhead' }, g);
+    arrows.push({ tip, back, previous: shaftPoints.at(-2), triangle });
+    // Fade the complete connected arrow; never show a detached head or a growing shaft pointing into a node.
+    reveal(g, cue, duration, offset);
+    return shaft;
+  }
+  function panel(x, y, w, h, title, detail, cue, accent = '#9CA3AF') {
+    rect(x, y, w, h, '#FFFFFF', colors.light);
+    const g = group();
+    rect(x, y, w, h, colors.pale, accent, g);
+    text(title, x, y + 24, w, 142, 40, 700, colors.ink, g);
+    text(detail, x + 12, y + 164, w - 24, h - 182, 30, 400, colors.neutral, g);
+    reveal(g, cue);
+    return g;
+  }
+
+  function deployment() {
+    const [centralized, distributed, ...placements] = labels.labels;
+    rect(80, 70, 820, 108, '#F3F3F9');
+    rect(1020, 70, 820, 108, colors.pale);
+    text(centralized, 100, 76, 780, 96, 42, 700);
+    text(distributed, 1040, 76, 780, 96, 42, 700, colors.darkGreen);
+    const xs = [200, 580, 960, 1340, 1720];
+    const centralYs = [300, 380, 485, 610, 690];
+    const distributedYs = [700, 600, 485, 360, 265];
+    el('path', { d: 'M140 790 H1780', stroke: colors.neutral, 'stroke-width': 3, fill: 'none' });
+    const line = (ys, color, cue) => {
+      const p = el('path', { d: xs.map((x, i) => `${i ? 'L' : 'M'}${x} ${ys[i]}`).join(' '), stroke: color, 'stroke-width': 8, fill: 'none', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+      trace(p, cue);
+      xs.forEach((x, i) => {
+        const dot = el('circle', { cx: x, cy: ys[i], r: 11, fill: '#FFFFFF', stroke: color, 'stroke-width': 6 });
+        reveal(dot, cue, 220, i * 350);
+      });
+    };
+    line(centralYs, colors.ink, 'centralized');
+    line(distributedYs, colors.green, 'distributed');
+    xs.forEach((x, i) => {
+      el('path', { d: `M${x} 790 v16`, stroke: colors.neutral, 'stroke-width': 3 });
+      const t = text(placements[i], x - 170, 818, 340, 120, 38, 600);
+      reveal(t, 'placements', 600);
+    });
+    text(qualifier, 160, 956, 1600, 90, 28, 400, colors.neutral);
+  }
+  function charging() {
+    const [normal, peak, recharge, it, facility, ess] = labels.labels;
+    const baseline = 800, scale = 3.2;
+    el('path', { d: 'M120 100 V800 H1280', stroke: colors.neutral, 'stroke-width': 3, fill: 'none' });
+    [[102, 50, 22], [128, 46, 28], [94, 48, 44]].forEach((values, i) => {
+      const x = 220 + i * 390;
+      let accumulated = 0;
+      values.forEach((value, j) => {
+        const h = value * scale, bottom = baseline - accumulated;
+        const r = el('rect', { x, y: bottom, width: 190, height: 0, fill: [colors.ink, colors.green, colors.recharge][j] });
+        track(['it', 'facility', 'recharge'][j], 1300, p => { r.setAttribute('y', bottom - h * p); r.setAttribute('height', h * p); });
+        accumulated += h;
+      });
+      text([normal, peak, recharge][i], x - 88, 828, 366, 140, 36, 600);
+    });
+    [it, facility, ess].forEach((label, i) => {
+      const g = group();
+      el('rect', { x: 1380, y: 260 + i * 170, width: 32, height: 32, fill: [colors.ink, colors.green, colors.recharge][i] }, g);
+      text(label, 1430, 200 + i * 170, 410, 150, 36, 600, colors.ink, g);
+      reveal(g, ['it', 'facility', 'recharge'][i]);
+    });
+    text(qualifier, 140, 968, 1640, 88, 28, 400, colors.neutral);
+  }
+  function safety() {
+    const t = labels.labels;
+    const xs = [80, 540, 1000, 1460], y = 220, w = 380, h = 330;
+    ['detection', 'ventilation', 'suppression', 'coordination'].forEach((cue, i) => panel(xs[i], y, w, h, t[i * 2], t[i * 2 + 1], cue));
+    // An undirected common spine encodes coordination, never an automatic trigger sequence.
+    const coordination = group();
+    el('path', { d: `M${xs[0] + w / 2} 630 H${xs[3] + w / 2}`, fill: 'none', stroke: colors.neutral, 'stroke-width': 4 }, coordination);
+    xs.forEach(x => {
+      el('path', { d: `M${x + w / 2} ${y + h} V630`, fill: 'none', stroke: colors.neutral, 'stroke-width': 4 }, coordination);
+      el('circle', { cx: x + w / 2, cy: 630, r: 6, fill: colors.neutral }, coordination);
+    });
+    reveal(coordination, 'coordination');
+    const backup = group();
+    rect(300, 710, 1320, 150, '#F3F3F9', 'none', backup);
+    text(t[8], 330, 720, 1260, 130, 38, 600, colors.ink, backup);
+    reveal(backup, 'backup');
+  }
+  function workflow() {
+    const xs = [150, 600, 1050, 1500], y1 = 180, y2 = 650, w = 340, h = 270;
+    const positions = [[xs[0], y1], [xs[1], y1], [xs[2], y1], [xs[3], y1], [xs[3], y2], [xs[2], y2], [xs[1], y2], [xs[0], y2]];
+    labels.steps.forEach((step, i) => {
+      const [x, y] = positions[i];
+      panel(x, y, w, h, step.label, step.detail, `step${i + 1}`);
+      text(String(i + 1).padStart(2, '0'), x + 10, y - 92, 120, 80, 32, 700, colors.neutral);
+    });
+    positions.slice(0, 7).forEach(([x, y], i) => {
+      const [nx, ny] = positions[i + 1];
+      const points = ny !== y ? [[x + w / 2, y + h], [nx + w / 2, ny]] : nx > x ? [[x + w, y + h / 2], [nx, ny + h / 2]] : [[x, y + h / 2], [nx + w, ny + h / 2]];
+      arrow(points, `step${i + 2}`, colors.darkGreen, 550);
+    });
+    arrow([[150, y2 + h / 2], [65, y2 + h / 2], [65, y1 + h / 2], [150, y1 + h / 2]], 'feedback', colors.darkGreen, 1500);
+    const note = text(labels.loop_label, 170, 970, 1650, 90, 32, 600, colors.darkGreen);
+    reveal(note, 'feedback', 700, 700);
+  }
+  ({ M1S3: deployment, M2S6: charging, M3S6: safety, M4S8: workflow })[scene]();
+  window.setTeachingTime = milliseconds => {
+    const t = Math.max(0, Math.min(timing.duration_ms, milliseconds));
+    tracks.forEach(({ start, duration, update }) => update(smooth((t - start) / duration)));
+    document.body.dataset.timeMs = t;
+  };
+  window.animationQA = () => ({
+    boxes: boxes.map(({ node, ...bounds }) => ({ ...bounds, text: node.textContent, bbox: (() => { const b = node.getBBox(); return { x: b.x, y: b.y, width: b.width, height: b.height }; })() })),
+    arrows, transitions: tracks.flatMap(t => [t.start, t.start + t.duration]),
+    timeline_end_ms: Math.max(...tracks.map(t => t.start + t.duration)),
+  });
+  document.body.dataset.durationMs = timing.duration_ms;
+  document.body.dataset.posterMs = timing.poster_ms;
+  document.body.dataset.timingMode = timing.mode;
+  const params = new URLSearchParams(location.search);
+  window.setTeachingTime(params.has('time') ? Number(params.get('time')) : timing.poster_ms);
+  // Explicit author preview only. Recording and default file opening stay deterministic and paused.
+  if (params.get('play') === '1' && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const start = performance.now();
+    const play = now => { window.setTeachingTime(now - start); if (now - start < timing.duration_ms) requestAnimationFrame(play); };
+    requestAnimationFrame(play);
+  }
+})();
+</script></body></html>
