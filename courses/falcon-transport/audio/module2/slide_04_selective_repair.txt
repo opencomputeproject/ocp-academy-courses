@@ -1,0 +1,10 @@
+# pronunciation: RACK -> Rack; EACK -> E ack
+Consider four Push Data packets on one path, with P S Ns three hundred through three hundred three and transaction sequence numbers one through four. The first packet is lost. The other three reach the receiver and remain available there while the ordered connection waits for the missing first transaction.
+
+Read the displayed bits from right to left: bit zero, the rightmost bit, represents P S N three hundred. The data received bitmap is one one one zero in binary. The data acknowledgement bitmap is still zero zero zero zero because the target U L P has not acknowledged the ordered requests. The zero received bit identifies the network hole; the zero acknowledgement bits alone would not.
+
+Now apply the out-of-order distance method. For this example only, assume a threshold of two and that the recency check has passed. Three hundred is less than three hundred three minus two, and the last transmission plus one round-trip time is earlier than now. The sender can select P S N three hundred for early retransmission, subject to the transmission gates.
+
+When it arrives, received state becomes one one one one. The receiver can deliver transactions one through four in order. After U L P acknowledgement, the cumulative data base advances to three hundred four. Packets three hundred one through three hundred three are preserved, not replayed.
+
+A small gap or a recently sent packet would not supply the same evidence. With multipathing, the distance calculation uses each packet's saved path identity. A faster different path is not sufficient evidence by itself.

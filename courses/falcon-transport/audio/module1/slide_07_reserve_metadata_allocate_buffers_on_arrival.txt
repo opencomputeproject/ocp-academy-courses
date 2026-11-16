@@ -1,0 +1,12 @@
+# pronunciation: ULP -> U L P; CID -> C I D; RSN -> R S N; PSN -> P S N; NIC -> Nick; ncwnd -> n c window; versions spelled out.
+Forward progress depends on keeping resources independent where the protocol needs them. Transmit and receive resources serve different directions. Packet metadata and payload buffers serve different purposes. Requests and responses also need protected capacity so one class of work cannot consume everything required to finish another.
+
+Head of line, or H o L, means the next transaction whose progress unblocks an ordered stream. Resource protections preserve progress for that work even under pressure. The specification describes separate resource regions and head-of-line provisions; our diagram shows their protocol purpose, not a particular allocator or hardware design.
+
+Now follow a version one point two pull with request sequence number seven. When initiating the request, Falcon proactively reserves the required receive packet metadata in the upper-layer requests region. That metadata lets the later response be matched with its outstanding request. It has not been removed by on-demand buffering.
+
+While the response is pending, don't picture the full response payload buffer as already reserved. When Pull Data arrives, Falcon validates its outstanding request and allocates receive buffer resources from the network region, using the receive packet metadata reserved earlier.
+
+Consider a separate admission-failure case. If receive buffers are unavailable, Falcon discards that data packet and generates a resource negative-acknowledgement event. No delivery or completion occurs from that rejected arrival.
+
+Compatibility preserves another distinction. When interoperating with a version one point zero or one point one peer, the target must gate Pull Responses on the Nick congestion window, called n c window, for performance. Negotiation doesn't give an older receiver the newer resource behavior. Reservation, arrival-time allocation, and successful admission remain three different facts.

@@ -1,0 +1,10 @@
+# pronunciation: RACK -> Rack; EACK -> E ack
+Complete In Error, or C I E, is a terminal transaction result that still needs reliable sequence progress. In the worked push flow, P S N three hundred one carries transaction sequence number one. The target U L P rejects it with C I E, and the first error NACK is lost.
+
+The initiator eventually retransmits the unacknowledged data packet. The target recognizes its saved C I E state and returns the same error indication. It does not repeat the failed U L P operation. Once that NACK reaches the initiator, the initiator sends Resync using the original packet's P S N, transaction sequence number, and path identity.
+
+Resync closes the sequence hole at the receiver and receives its own acknowledgement. In this worked sequence, the initiator then returns an error completion to its U L P. Sequence progress is restored, but the transaction remains failed. Pull error completion uses separate zero-length response semantics; it is not this push Resync flow.
+
+Early recovery also has a backup. Retransmission timeouts protect packets when feedback is absent, while retry limits and error handling bound recovery. Physical packet and buffer resources are ultimately guarded and reclaimed by timeout. The specification recommends a significantly longer transaction-resource reclaim timeout than the packet-delivery timeout to prevent races. These are protocol responsibilities, not a hardware allocation recipe.
+
+Related M R C and S U E T courses provide useful comparison. Keep their mechanisms distinct: Falcon retains out-of-order packets and selectively repairs holes, and its acknowledgement boundaries follow Falcon's rules. Do not import another transport's failure-bypass timing or gap-recovery algorithm into this sequence.

@@ -1,0 +1,10 @@
+# pronunciation: RACK -> Rack; EACK -> E ack
+Recent Acknowledgement, or Rack, asks whether an unreceived packet has waited long enough, using time rather than sequence distance. This is a separate example of the alternative early-retransmission method. Falcon supports both method families, but selects one at system initialization. Do not combine their thresholds into a new algorithm.
+
+Our illustrative timeline sends P S N three hundred at time zero, three hundred one at time one, and three hundred two at time two, in microseconds. At time seven, an E ack reports that the latter two packets were received. Three hundred is missing, and it lies within the reported bitmap horizon.
+
+The latest acknowledged transmission time is two. Assume a measured round trip of four microseconds, a smoothed round trip of four, and a reordering factor of one quarter. The Rack timeout is four plus four times one quarter, or five microseconds. The missing packet was sent no later than time two, and its elapsed time is seven, which is at least five. It is eligible for the Rack loss decision, subject to transmission gating.
+
+Three exclusions matter. A packet already reported received is excluded even if its transaction is not yet acknowledged. A packet beyond the known bitmap horizon is excluded because its received state is unknown. A packet sent after the latest acknowledged transmission time is too fresh for this inference.
+
+For an otherwise eligible packet whose elapsed time is still below the timeout, the remaining cushion allows reordering before loss is declared. Rack is a disciplined inference from feedback and timing, not proof that every outstanding packet was dropped.

@@ -1,0 +1,8 @@
+# pronunciation: NIC -> Nick; RUE -> R U E; CSIG -> C S I G; PLB -> P L B; ACK -> acknowledgment; version numbers spelled out.
+A congestion controller needs a measurement that separates time in the fabric from time waiting at the receiver. Falcon's datapath collects measurements and sends events to the Rate Update Engine, or R U E. The engine returns control parameters. That contract separates observing a packet from choosing the response to its congestion evidence.
+
+Follow the four timestamps in this example. The sender transmits at T one, with its local clock reading one hundred. The receiver records T two at five hundred ten, then transmits the acknowledgment at T three, five hundred sixteen. The sender receives that acknowledgment at T four, one hundred thirty. These are two independent clocks, with an arbitrary offset.
+
+Subtract readings within each clock domain first. T four minus T one is thirty ticks of round-trip time. T three minus T two is six ticks of receiver residence. Subtract that residence from the round trip: thirty minus six gives twenty-four ticks of fabric delay. Each wire timestamp tick represents one hundred thirty-one point zero seven two nanoseconds, so the fabric result is three point one four five seven two eight microseconds.
+
+The large offset between the clocks does not enter either local difference. A direct one-way subtraction, such as T two minus T one, needs synchronized clocks. With acknowledgment coalescing, Falcon uses T one and T two from the most recently received packet. Under the specified measurement assumptions, subtracting receiver residence prevents that coalescing delay from being mistaken for extra fabric delay. Keep the local differences and the cross-clock condition separate.

@@ -1,0 +1,8 @@
+# pronunciation: NIC -> Nick; RUE -> R U E; CSIG -> C S I G; PLB -> P L B; ACK -> acknowledgment; version numbers spelled out.
+Keep four distinctions from this module. First, a round-trip measurement includes receiver residence, so fabric-delay estimation subtracts that residence using differences within each clock. One-way delay is a separate measurement that requires synchronized clocks.
+
+Second, fabric congestion and remote receive pressure have different controls. Swift's fabric windows are per flow under multipathing; the Nick window remains per connection. Signals, control responses, aggregate gates, path arbitration, and pacing each have a specific role.
+
+Third, delivery state is shared but path credit is precise. An acknowledged packet reopens the path saved with that packet. The Max-Open-Window scheduler uses current capacity and round-robin handling of near ties, rather than relying on the older static weights.
+
+Finally, Protective Load Balancing responds to persistent congestion by changing a flow label. It preserves path identity and seeks another route without promising physical diversity. When reading a design, ask what was measured, which state changed, and which endpoint and fabric capabilities support that behavior.

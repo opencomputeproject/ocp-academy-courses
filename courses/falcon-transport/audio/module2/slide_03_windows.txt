@@ -1,0 +1,10 @@
+# pronunciation: RACK -> Rack; EACK -> E ack
+Reliable delivery needs a precise answer to two questions: which packet arrived, and which packet may be acknowledged? Falcon separates Pull Requests into the request window and Push Data and Pull Data into the data window. Their packet sequence numbers, or P S Ns, belong to independent sequence spaces.
+
+In version one point two, each receiver window holds five hundred twelve positions. That internal capacity does not enlarge the fields carried in an extended acknowledgement, or E ack. The wire format still provides one hundred twenty-eight data acknowledgement bits, one hundred twenty-eight data received bits, and sixty-four request bits. A feedback snapshot therefore does not describe every possible internal position at once.
+
+For Push Data, arrival sets received state, while acknowledgement waits for the target Upper Layer Protocol, or U L P, to acknowledge the transaction. The request bitmap can serve both purposes because request receipt and acknowledgement coincide. This distinction prevents a packet waiting at the target from being mistaken for a network loss.
+
+Two header controls also have different jobs. A R, the acknowledgement request bit, requests an acknowledgement when the packet is acknowledged. For Push Data, it does not bypass the U L P. E R, the extended acknowledgement request bit, selects E ack feedback on a supporting receiver. It does not turn receipt into transaction success.
+
+Keep the window, state, and feedback format separate. Those three boundaries explain both selective recovery and mixed-version behavior.

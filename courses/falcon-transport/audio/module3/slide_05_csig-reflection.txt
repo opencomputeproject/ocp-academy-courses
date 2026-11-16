@@ -1,0 +1,8 @@
+# pronunciation: NIC -> Nick; RUE -> R U E; CSIG -> C S I G; PLB -> P L B; ACK -> acknowledgment; version numbers spelled out.
+Congestion Signaling, or C S I G, supplies information to a transport; it does not prescribe the transport's entire congestion-control algorithm. Falcon supports the compact four-byte tag. It sits in the layer-two header, where supporting switches can record bottleneck information using compare-and-replace operations.
+
+Trace the signal path. The sender constructs a compact tag. Switches along the packet path can update its congestion information. The receiving Falcon keeps the latest received tag state, separately for each flow when multipathing is enabled. A later acknowledgment or negative acknowledgment reflects the information back to the sender. The Rate Update Engine selects signals and processes the reflection through the congestion-event interface.
+
+The two support conditions matter. Endpoints negotiate Falcon's C S I G capability with each other. That exchange does not negotiate switch support. The fabric must support compact C S I G end to end along the packet paths, and it should only be configured and used under that condition. An endpoint capability alone cannot establish that the network will populate the signal correctly.
+
+C S I G and multipathing were introduced in Falcon version one point one. They are retained in version one point two; the new path scheduler does not make them new features of that revision. With a version one point zero peer, they must be disabled. Think of this reflection as a measurement channel. Swift and other supported control choices determine how measurements affect rate; the existence of a four-byte tag is not itself a rate-control policy or a guarantee of better performance.

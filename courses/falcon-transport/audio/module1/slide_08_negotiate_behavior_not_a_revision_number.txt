@@ -1,0 +1,10 @@
+# pronunciation: ULP -> U L P; CID -> C I D; RSN -> R S N; PSN -> P S N; NIC -> Nick; ncwnd -> n c window; versions spelled out.
+A specification revision and a packet's Version field answer different questions. This course uses Falcon specification version one point two point zero. The base-header Version field remains one. Reading that field alone doesn't tell you which later capabilities both endpoints can use.
+
+The control plane negotiates endpoint capabilities during connection establishment. Version one point two endpoints must interoperate with peers using version one point zero or one point one features. Compatibility means selecting supported behavior and respecting older-peer limits, not treating every feature as universally available.
+
+Keep the chronology straight. Multipathing with up to four paths and compact congestion signaling arrived in version one point one. Congestion signaling is commonly abbreviated C S I G. Both capabilities are incompatible with a version one point zero peer, so multipathing must be disabled for that peer and C S I G cannot be assumed.
+
+Version one point two adds the time-based recovery mechanisms, the explicit extended-acknowledgement request bit, expanded receive state, a new multipath scheduler, and on-demand pull-response resources. Older receivers ignore the new extended-acknowledgement request bit. For a version one point one receiver, the interoperability table specifies a transmit-window cap of two hundred fifty-six for performance. Don't generalize that numeric row into an unstated rule for every older peer.
+
+The related M R C and S U E T courses explore neighboring transport ideas. They are optional context, not Falcon prerequisites or alternate names for its mechanisms. Use Falcon's own transaction, acknowledgement, resource, and compatibility rules when reasoning about Falcon. Modules two and three develop the recovery and congestion-control details from that foundation.

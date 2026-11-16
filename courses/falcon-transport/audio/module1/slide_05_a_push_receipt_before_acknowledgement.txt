@@ -1,0 +1,12 @@
+# pronunciation: ULP -> U L P; CID -> C I D; RSN -> R S N; PSN -> P S N; NIC -> Nick; ncwnd -> n c window; versions spelled out.
+A push shows why received and acknowledged must remain separate states. Follow two transactions on an ordered connection. Their request sequence numbers are one and two. Packet delivery assigns data packet sequence numbers three hundred and three hundred one. The starting data base is three hundred.
+
+Now let the network deliver packet three hundred one first. Falcon retains that later packet while the earlier transaction is missing. The two-position received bitmap becomes one zero in binary. The rightmost bit, bit zero, represents packet three hundred. The acknowledged bitmap is still zero zero. One packet has arrived, but neither push has yet earned its acknowledgement.
+
+When packet three hundred arrives, the received bitmap becomes one one. Falcon can now deliver the two requests to the target upper-layer protocol in request-sequence order: one, then two. Even at this point, receipt alone has not changed the acknowledged bitmap.
+
+The target upper-layer protocol now acknowledges both push requests. This boundary event allows Falcon to acknowledge their Push Data packets. Once both are acknowledged, the cumulative data base advances to three hundred two.
+
+The acknowledgement returns to the initiator. Falcon delivers the two push completions in request-sequence order. The upper-layer protocol still owns operation-level completion semantics.
+
+Pause on the finished sequence and trace the dependency backward. Initiator completion follows the returning acknowledgement. That acknowledgement follows target upper-layer acknowledgement. Network receipt is necessary, but is an earlier event. The same identifiers stay attached to the work throughout, even though packets arrived in the opposite order.

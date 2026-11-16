@@ -1,0 +1,10 @@
+# pronunciation: NIC -> Nick; RUE -> R U E; CSIG -> C S I G; PLB -> P L B; ACK -> acknowledgment; version numbers spelled out.
+The version one point two Max-Open-Window scheduler selects paths using current available capacity. Assume the connection's aggregate transmit gates have passed and all four shown paths are valid. These integer windows and the ten-percent tie tolerance are illustrative.
+
+For each path, subtract outstanding packets from its fabric window. Path zero zero has eight minus seven, leaving one. Path zero one has six minus two, leaving four. Paths one zero and one one have no open capacity. They are ineligible. The current maximum is four; with our illustrative ten-percent tolerance, the candidate threshold is three point six. Only path zero one qualifies.
+
+Send the next packet on path zero one. Its outstanding count rises to three, so its open window falls from four to three. That is immediate path credit consumption, without waiting for a new set of software-computed weights.
+
+Next, feedback acknowledges two previously unacknowledged packets that were originally sent on path zero zero. Their saved path identifiers direct the accounting. Its outstanding count falls from seven to five, reopening the window from one to three. Paths zero zero and zero one now tie, so round-robin tie handling selects between them. The configurable tolerance also admits sufficiently close positive windows, preventing strict maximum selection from continually favoring a slightly larger path.
+
+A shared bitmap may acknowledge packets from several paths. Do not credit every packet to the path of the returning acknowledgment's congestion metadata. In the separate blocked case, every valid path has a nonpositive open window, so transmission waits for feedback or a window expansion. This acknowledgment-clocked scheduler replaces the earlier static weighted round-robin plan. The older scheme may be retained as an optional configuration, but it is not the normative version one point two behavior.
