@@ -1,0 +1,10 @@
+# pronunciation: RACK -> Rack; EACK -> E ack
+A quiet tail creates a different problem: the sender may have too little feedback to make a useful loss decision. Tail Loss Probe, or T L P, sends a probe after a period with no transmitted or received packets. It tries to restart feedback, rather than declaring every quiet packet lost.
+
+Reset to a new illustrative case. P S N four hundred is acknowledged, and four hundred one remains unacknowledged. Last activity occurred at time four microseconds. Assume a smoothed round trip of four, a probe factor of two, and a minimum probe timeout of six. The timeout is the maximum of eight and six, so eight microseconds.
+
+At time twelve point one, inactivity exceeds eight. The sender retransmits the lowest unacknowledged packet in that window, four hundred one, as the probe. It sets both A R and E R. If both request and data windows have outstanding work, probing is considered per window. The returned feedback can then support Rack recovery when its conditions hold.
+
+Compatibility changes the feedback expectation. A version one point zero or one point one receiver ignores E R. T L P falls back to A R-triggered acknowledgement behavior; an immediate E ack is not guaranteed. A R still respects packet acknowledgement semantics, including U L P acknowledgement for Push Data.
+
+The larger receive window is a separate compatibility issue. With a version one point one receiver, cap the transmit window at its two hundred fifty-six positions for performance. Do not infer five hundred twelve-position peer capacity from a version one point two sender. The backup retransmission timeout remains available.

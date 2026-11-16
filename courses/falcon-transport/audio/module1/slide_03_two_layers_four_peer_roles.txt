@@ -1,0 +1,12 @@
+# pronunciation: ULP -> U L P; CID -> C I D; RSN -> R S N; PSN -> P S N; NIC -> Nick; ncwnd -> n c window; versions spelled out.
+Falcon separates transaction responsibilities from packet delivery responsibilities. That separation explains why one event can finish at one layer while work remains at another.
+
+The transaction sublayer handles requests and responses, transaction ordering, and resource management. A transaction begins with an upper-layer protocol request and ends with a response or completion delivered back to that protocol. We'll abbreviate upper-layer protocol as U L P. Its operation semantics remain outside Falcon's transport boundary.
+
+The packet delivery sublayer handles reliable packet delivery, congestion control, and multipath load balancing. It sends packets, tracks feedback, and repairs losses. These responsibilities support transactions, but a packet arrival is not automatically a completed transaction.
+
+Four role names keep the two views clear. Initiator and target name the transaction peers. Transmitter and receiver name the packet-delivery peers for a particular direction. These are roles, not four separate devices. An initiator can transmit one packet and receive another within the same transaction.
+
+A pull makes that change easy to see. The initiator sends a request toward the target. Later, the target transmits response data back to the initiator. The transaction roles stay fixed while the packet roles reverse.
+
+Keep that distinction whenever you read a trace. First ask which transaction is being served. Then ask which side is transmitting this particular packet. We won't derive an application interface, a driver architecture, or an upper-layer operation mapping from the diagram. Those would require contracts beyond the transport model taught here.

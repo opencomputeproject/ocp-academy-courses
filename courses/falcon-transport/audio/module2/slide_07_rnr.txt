@@ -1,0 +1,10 @@
+# pronunciation: RACK -> Rack; EACK -> E ack
+Receiver Not Ready, or R N R, means that the target U L P cannot accept a transaction yet. The retry owner depends on whether the transaction is a push or a pull. Follow the two numbered flows separately.
+
+For a push, the initiator sends Push Data with P S N three hundred one and transaction sequence number one. The target U L P returns R N R. Suppose the first network negative acknowledgement, or NACK, is lost. The original data packet remains unacknowledged at the initiator, so its retransmission timeout still protects progress. The initiator sends the packet again.
+
+A later R N R NACK reaches the initiator. Retry timing now respects the indicated delay. The error-handling table specifies the maximum of the retransmission timeout and the R N R NACK timeout, rather than a shorter invented deadline. When retry becomes eligible, the initiator sends again. Once the target U L P accepts and acknowledges the push, Falcon can return the final acknowledgement and the initiator can complete it.
+
+For a pull, the request packet can already be acknowledged before the target U L P reports R N R. The target retains the transaction, waits for the indicated delay, and redelivers the request to its own U L P. When accepted, the target sends the returned Pull Data.
+
+This is why the pull diagram has a local retry at the target. A remote push-style retransmission loop would assign responsibility to the wrong endpoint. Packet acknowledgement has already changed what remains to be recovered.

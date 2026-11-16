@@ -1,0 +1,10 @@
+# pronunciation: ULP -> U L P; CID -> C I D; RSN -> R S N; PSN -> P S N; NIC -> Nick; ncwnd -> n c window; versions spelled out.
+Three different identities answer three different questions: which connection, which transaction, and which packet?
+
+A Falcon connection is bidirectional. Each receiver allocates a destination connection identifier, or C I D, for traffic coming toward it. That destination identifier travels in the Falcon header. A source C I D is the transmitter's locally unique connection identifier and is not carried in that header. Destination identifiers don't have global meaning; the same numeric value can be allocated independently at different receivers.
+
+Within a connection, a request sequence number, or R S N, tracks a transaction and its ordering. A packet sequence number, or P S N, tracks packet delivery. Falcon separates packet numbering into a request window for Pull Requests and a data window for Push Data and Pull Data. Don't compare a request P S N with a data P S N as though both belonged to one counter.
+
+An ordered connection preserves the specified transaction order when delivering requests, responses, and completions. An unordered connection permits the corresponding out-of-order processing. Network arrival order and transaction delivery order are therefore different observations. We'll use ordered connections in both worked examples.
+
+Finally, security belongs to the connection's envelope. Falcon uses P S P or I P sec E S P authentication and encryption, with a security association in each direction. That protects transferred data; it doesn't erase the distinctions among connection identity, transaction identity, and packet identity. Detailed security setup and upper-layer mappings remain outside this course.

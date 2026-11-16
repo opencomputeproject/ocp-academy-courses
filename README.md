@@ -20,6 +20,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [OCP Diablo 400: Disaggregated Power for High-Density AI Racks](courses/diablo-400-disaggregated-power-for-high-density-ai-racks/README.md) | Examine Diablo 400 sidecar power architecture, electrical interfaces, protection, telemetry, and its relationship to facility LVDC distribution. |
 | [Distributed AI Infrastructure](courses/distributed-ai-infrastructure/README.md) | Connect AI workload coordination to distributed state, timing, geographic placement, scaling, and controlled recovery. |
 | [Enhanced Telemetry Optics](courses/enhanced-telemetry-optics/README.md) | Use optical metrics, link-health indicators, event logs, remote access, and firmware workflows to diagnose issues in AI fabrics and assess deployment readiness. |
+| [Falcon Transport](courses/falcon-transport/README.md) | Trace Falcon v1.2 transactions, reliable delivery and loss recovery, congestion control and multipathing through worked packet flows and compatibility cases. |
 | [FCSA: Architecting Interoperable Chiplet Systems](courses/fcsa-architecting-interoperable-chiplet-systems/README.md) | Apply Foundation Chiplet System Architecture to chiplet roles, interfaces, boot coordination, security, and the evidence needed for interoperable integration. |
 | [Fast Optical Circuit Switching for Dynamic AI Fabrics](courses/fast-optical-circuit-switching-for-dynamic-ai-fabrics/README.md) | Evaluate optical circuit switching against AI workload timing, complete reconfiguration delays, switching mechanisms, and deployment constraints. |
 | [Grid Disturbance Performance for Hyperscale Data Centers](courses/grid-disturbance-performance/README.md) | Interpret voltage ride-through and active-power recovery requirements, coordinate facility responses, and assess mitigations at the utility interface. |
@@ -101,6 +102,7 @@ courses/
   diablo-400-disaggregated-power-for-high-density-ai-racks/
   distributed-ai-infrastructure/
   enhanced-telemetry-optics/
+  falcon-transport/
   fcsa-architecting-interoperable-chiplet-systems/
   fast-optical-circuit-switching-for-dynamic-ai-fabrics/
   grid-disturbance-performance/

@@ -1,0 +1,12 @@
+# pronunciation: ULP -> U L P; CID -> C I D; RSN -> R S N; PSN -> P S N; NIC -> Nick; ncwnd -> n c window; versions spelled out.
+A pull changes the direction of data, but keeps transaction identity stable. Begin with two Pull Requests, using request sequence numbers one and two. Their request-window packet numbers are one hundred and one hundred one.
+
+Suppose request one hundred one reaches the target first. The ordered connection retains it until request one hundred arrives, then presents the requests to the target upper-layer protocol in request-sequence order. Packet delivery can acknowledge receipt of these request packets. In this example, one coalesced request acknowledgement advances the request base to one hundred two.
+
+That acknowledgement is not the pull response. It reports request-packet delivery. The requested data still has to be produced and returned. Treating the request acknowledgement as returned data would collapse two different stages of the transaction.
+
+Next, the target upper-layer protocol supplies the responses. Falcon sends Pull Data using the original request sequence numbers, one and two. The target's data-window packet numbers are two hundred and two hundred one. These numbers belong to a separate packet sequence space from the request numbers.
+
+The transaction initiator is now the packet receiver. The transaction target is now the packet transmitter. At the initiator, Falcon delivers the responses in request-sequence order and acknowledges the returned data packets. This closes the transport exchange while leaving operation-level semantics with the upper-layer protocol.
+
+Compare the two returning paths in the finished diagram. The request acknowledgement confirms that requests arrived. Pull Data carries the response and preserves the transaction's request sequence number. The two arrows have different jobs, even though both travel toward the initiator.
