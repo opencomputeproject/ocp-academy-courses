@@ -137,17 +137,12 @@ def catalog_metadata(course):
     labels = catalog_labels(source, course.get('language') or 'en-US', label)
     overall = labels['overall_duration'].format(duration=_number(duration))
     long_md = [overview, f'**{overall}**']
-    long_html = [f'<p>{html.escape(overview)}</p>', f'<p><strong>{html.escape(overall)}</strong></p>']
+    # Explicit blank paragraphs retain the authored spacing in LMS rich-text fields.
+    long_html = [f'<p>{html.escape(overview)}</p>', '<p><br></p>',
+                 f'<p><strong>{html.escape(overall)}</strong></p>', '<p><br></p>']
     if optional_duration is not None:
         long_md.append(note)
         long_html.append(f'<p>{html.escape(note)}</p>')
-    if home:
-        if str(course.get('language') or 'en-US').split('-')[0].casefold() != 'en' and not all(source.get(k) for k in ('home_heading', 'home_summary')):
-            raise ValueError('Non-English Home metadata needs translated home_heading and home_summary')
-        home_heading = _text(source.get('home_heading', 'Course Home — {duration} minute orientation.'), 'lms_catalog.home_heading').format(duration=_number(home))
-        home_summary = _text(source.get('home_summary', 'Review the course outcomes and module structure.'), 'lms_catalog.home_summary')
-        long_md.append(f'**{home_heading}**{MARKDOWN_BREAK}{home_summary}')
-        long_html.append(f'<p><strong>{html.escape(home_heading)}</strong><br>{html.escape(home_summary)}</p>')
     for index, row in enumerate(exported, 1):
         heading = labels['unit_heading'].format(number=index, title=row['title'], duration=_number(row['duration_minutes']))
         summary = ' '.join(row['summary'].split())

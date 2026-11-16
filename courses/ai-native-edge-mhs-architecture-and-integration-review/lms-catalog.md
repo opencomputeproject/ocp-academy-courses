@@ -10,9 +10,6 @@ Build a practical method for reviewing AI Native Edge-MHS Host Processor Modules
 
 **Overall duration: 55 minutes**
 
-**Course Home — 1 minute orientation.**\
-Review the course outcomes and module structure.
-
 **Module 1: Architecture and Class N/L — 16 minutes.**\
 Compare Class N/L form factors and depth choices, follow fixed and floating references, and distinguish architecture intent from complete system interoperability.
 

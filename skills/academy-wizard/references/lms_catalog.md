@@ -47,7 +47,11 @@ Requirements:
 - Short Description: one line, **at most 130 Unicode characters**, including
   spaces and punctuation. Edit overlong copy; never silently truncate it.
 - Long Description: one overview paragraph, then overall duration in minutes,
-  then one small paragraph per module/lesson in authored order.
+  then one small paragraph per module/lesson in authored order. List the content
+  modules/lessons only; omit Course Home from the public description.
+- Leave a blank line after the overview and after the bold overall duration.
+  In LMS HTML, retain a visible blank paragraph (`<p><br></p>`) after each so the
+  spacing survives a rich-text editor that collapses normal paragraph margins.
 - Start each unit paragraph with its **bold title and duration**. Put its short
   summary on the **next line**, using a Markdown hard break or HTML `<br>`.
 - Durations are estimated learner time, including relevant media, reading,
@@ -62,9 +66,10 @@ Requirements:
 
 For Slides courses with Course Home, `lms_catalog.home_duration_minutes` adds
 orientation time to the required-module total. Keep the module estimates intact;
-Home plus required modules must equal `duration_minutes`. The exporter includes
-a separate Home paragraph. Translations using this field must supply
-`home_heading` (with `{duration}`) and `home_summary` in the course language.
+Home plus required modules must equal `duration_minutes`. This is internal time
+accounting: keep the overall estimate intact while listing only the content
+modules in the public long description. Do not add a Home paragraph or change
+SCORM structure to change the LMS description.
 
 ### Courses with a separately timed optional path
 
