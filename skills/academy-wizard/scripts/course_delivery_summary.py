@@ -121,7 +121,13 @@ def catalog_metadata(course):
         for row in exported:
             if str(row['id']) in authored_optional:
                 row['optional'] = True
-    total = sum(row['duration_minutes'] for row in exported if not row.get('optional'))
+    home = source.get('home_duration_minutes', 0)
+    if home != 0 or isinstance(home, bool):
+        home = _minutes(home, 'lms_catalog.home_duration_minutes')
+        from slides_syllabus import include_home_sco
+        if scrolling or not include_home_sco(course):
+            raise ValueError('Home orientation time requires a Slides course with Course Home')
+    total = home + sum(row['duration_minutes'] for row in exported if not row.get('optional'))
     if abs(total - duration) > .01:
         raise ValueError(f'Unit durations total {_number(total)} minutes, but overall duration is {_number(duration)}; reconcile the approved estimates')
     note = source.get('duration_note')
@@ -131,7 +137,9 @@ def catalog_metadata(course):
     labels = catalog_labels(source, course.get('language') or 'en-US', label)
     overall = labels['overall_duration'].format(duration=_number(duration))
     long_md = [overview, f'**{overall}**']
-    long_html = [f'<p>{html.escape(overview)}</p>', f'<p><strong>{html.escape(overall)}</strong></p>']
+    # Explicit blank paragraphs retain the authored spacing in LMS rich-text fields.
+    long_html = [f'<p>{html.escape(overview)}</p>', '<p><br></p>',
+                 f'<p><strong>{html.escape(overall)}</strong></p>', '<p><br></p>']
     if optional_duration is not None:
         long_md.append(note)
         long_html.append(f'<p>{html.escape(note)}</p>')
@@ -148,6 +156,8 @@ def catalog_metadata(course):
               'duration_basis': 'estimated_learner_time', key: exported,
               'long_description': '\n\n'.join(long_md),
               'long_description_html': '\n'.join(long_html)}
+    if home:
+        result['home_duration_minutes'] = home
     if note:
         result['duration_note'] = note
     if optional_duration is not None:

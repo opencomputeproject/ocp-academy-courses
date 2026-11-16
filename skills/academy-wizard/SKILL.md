@@ -81,7 +81,11 @@ series/course title, a Short Description of at most 130 characters, and the
 structured Long Description under `course.json.lms_catalog`. The long copy has
 an overview paragraph, overall learner duration in minutes, and one paragraph per
 module with its **bold title and duration**, then its summary on the **next line**.
-Keep estimated learner time distinct from narration runtime.
+List only content modules/lessons in the public description; omit Course Home.
+Leave extra paragraph spacing after the overview and after the bold overall
+duration, using visible blank paragraphs in LMS HTML. Keep estimated learner
+time distinct from narration runtime and preserve any internally recorded Home
+orientation time in the overall estimate.
 
 These are **LMS catalog fields**, not the course README. Save and Git-track
 `lms-catalog.json` and `lms-catalog.md` with the editable source. The README keeps

@@ -1,0 +1,2303 @@
+{
+  "style": "Slides",
+  "course_slug": "ai_native_edge_mhs_architecture_integration",
+  "course_title": "AI Native Edge-MHS: Architecture and Integration Review",
+  "course_subtitle": "Class N/L form factors, critical interfaces and evidence-led integration decisions",
+  "language": "en-US",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Base Specification v1.0.0",
+  "target_duration_minutes": 55,
+  "audience_level": "intermediate",
+  "standalone_course": true,
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 4
+  },
+  "index_module_links": false,
+  "index_show_module_status": false,
+  "index_navigation_instruction": "In your LMS, use the course Syllabus to choose a module. Start below with Module 1.",
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
+  "narration": {
+    "engine": "elevenlabs",
+    "model_id": "eleven_v4",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "LEO v2 - Technical and Precise",
+    "model_policy": "stable",
+    "speed": 1.18,
+    "teaching_video_mode": "narration-synchronized",
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR"
+    }
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "edge_mhs_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "EDGE-MHS"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "sources": [
+    {
+      "slug": "base_spec",
+      "kind": "spec",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf"
+    },
+    {
+      "slug": "design_archive",
+      "kind": "design_files",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-V1.0.0-3D-Files.zip"
+    },
+    {
+      "slug": "summit_edge_mhs",
+      "kind": "summit_slides",
+      "url": "https://drive.google.com/file/d/1i-7MPO70npkxhCh2-7A1xMs3u9xvfT5O/view"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "hpm",
+      "term": "HPM",
+      "tooltip": "Host Processor Module: the board/assembly form factor defined by the base specification.",
+      "aliases": [
+        "Host Processor Module"
+      ],
+      "reference_label": "Edge-MHS terminology · p. 19",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=19"
+    },
+    {
+      "id": "cci",
+      "term": "CCI",
+      "tooltip": "Common Chassis Interval: an HPM length planning point associated with common system infrastructure.",
+      "aliases": [
+        "Common Chassis Interval"
+      ],
+      "reference_label": "Edge-MHS · p. 22",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=22"
+    },
+    {
+      "id": "datum",
+      "term": "Datum",
+      "tooltip": "The reference point, axis or plane used to locate dimensions and tolerances.",
+      "reference_label": "Edge-MHS · pp. 19, 40",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=19"
+    },
+    {
+      "id": "fixed_feature",
+      "term": "Fixed feature",
+      "tooltip": "A feature located relative to the common datum; its datum reference stays fixed as the outline changes.",
+      "aliases": [
+        "Fixed features"
+      ],
+      "reference_label": "Edge-MHS · p. 27",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=27"
+    },
+    {
+      "id": "floating_feature",
+      "term": "Floating feature",
+      "tooltip": "A feature located relative to a board edge; it follows that edge when the outline changes.",
+      "aliases": [
+        "Floating features"
+      ],
+      "reference_label": "Edge-MHS · p. 27",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=27"
+    },
+    {
+      "id": "koz",
+      "term": "KOZ",
+      "tooltip": "Keep Out Zone: a defined restriction on components, routing or height; apply the particular zone’s rules.",
+      "aliases": [
+        "keep out zone",
+        "keep out zones",
+        "keepouts"
+      ],
+      "reference_label": "Edge-MHS · pp. 19, 40",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=19"
+    },
+    {
+      "id": "dc_scm",
+      "term": "DC-SCM",
+      "tooltip": "Data Center Secure Control Module. CFF means Compact Form Factor.",
+      "aliases": [
+        "Data Center Secure Control Module"
+      ],
+      "reference_label": "Edge-MHS · p. 62",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=62"
+    },
+    {
+      "id": "m_pic",
+      "term": "M-PIC",
+      "tooltip": "Platform Infrastructure Connectivity: the companion specification for infrastructure connectors and related interfaces.",
+      "aliases": [
+        "M Pick",
+        "M-PIC"
+      ],
+      "reference_label": "Edge-MHS applicable specifications · p. 17",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=17"
+    },
+    {
+      "id": "hsio",
+      "term": "HSIO",
+      "tooltip": "High-speed input/output interfaces; their connector and electrical conditions are defined by the applicable specifications.",
+      "aliases": [
+        "high-speed input and output",
+        "high-speed interfaces",
+        "high-speed input/output"
+      ],
+      "reference_label": "Edge-MHS · pp. 67–73",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=67"
+    },
+    {
+      "id": "m_xio",
+      "term": "M-XIO",
+      "tooltip": "Extensible I/O: the companion specification defining high-speed connectors, electrical interfaces and pinouts.",
+      "aliases": [
+        "M X I O"
+      ],
+      "reference_label": "Edge-MHS applicable specifications · p. 17",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=17"
+    },
+    {
+      "id": "picpwr",
+      "term": "PICPWR",
+      "tooltip": "The M-PIC power-connector family used for the specified platform power interfaces.",
+      "aliases": [
+        "pick power"
+      ],
+      "reference_label": "Edge-MHS · pp. 81–86",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=81"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "architecture",
+      "title": "Architecture and Class N/L",
+      "subtitle": "Choose a form factor and preserve the interface contract.",
+      "estimated_duration_minutes": 16,
+      "module_badge_text": "Module 1",
+      "slides": [
+        {
+          "id": 1,
+          "slug": "title",
+          "type": "title",
+          "title": "Architecture and Class N/L",
+          "transcript": "Welcome to A I Native Edge MHS: architecture and integration review. Modular Hardware System designs separate reusable hardware interfaces from the details of a particular processor generation. That separation is useful only when designers understand which boundaries must remain consistent.\n\nIn this first module, you'll compare the two Host Processor Module classes, choose a depth, and explain how their interface references support reuse. Keep one practical question in mind: what evidence would you need before claiming that a board and a system work together?",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "delivery_file": "audio/module1/slide_01_title.mp3",
+            "approved": true,
+            "duration_seconds": 31.324126984126984,
+            "script_sha256": "8dceef68802f500625649ade790c435aed3f020c806f6ea94a6264b05360e8b5"
+          },
+          "subtitle": "From a reusable HPM form factor to a justified integration decision",
+          "module_number": 1
+        },
+        {
+          "id": 2,
+          "slug": "overview",
+          "type": "course_overview",
+          "title": "Three decisions you will learn to make",
+          "transcript": "This course follows three engineering decisions. First, choose a Host Processor Module class and depth that suit the intended system. Second, review the interfaces that constrain mounting, clearances, connectors and power. Third, turn your observations into findings that another engineer can reproduce.\n\nThe complete course takes about fifty-five minutes, including time to inspect diagrams and answer questions. The two review cases are guided desk exercises. You don't need a C A D workstation or a firmware development environment to complete them. Optional conference recordings and the related Academy courses are available for later study.",
+          "audio": {
+            "script_file": "audio/module1/slide_02_overview.txt",
+            "wav_file": "audio/module1/slide_02_overview.wav",
+            "delivery_file": "audio/module1/slide_02_overview.mp3",
+            "approved": true,
+            "duration_seconds": 35.05301587301587,
+            "script_sha256": "7bccf1bda5745d97c54205bd0d7ed92ee4f4d9f692353544561c73a90498929d"
+          },
+          "modules_listed": [
+            "Architecture and Class N/L",
+            "Mechanical interfaces and compatibility",
+            "Integration review exercises"
+          ],
+          "chips": [
+            {
+              "text": "55 minutes including review exercises"
+            },
+            {
+              "text": "Intermediate hardware engineering"
+            },
+            {
+              "text": "Base Specification v1.0.0"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "slug": "contract",
+          "type": "content_grid",
+          "title": "Read the HPM contract at the right level",
+          "transcript": "The Host Processor Module, or HPM, is the board-level form factor defined here. It sits inside a larger system of chassis structures, power infrastructure, peripherals and management functions. The A I Computing Continuum provides the wider architectural context. This base specification supplies a focused hardware boundary within that context.\n\nRead each statement with its strength and conditions intact. Shall identifies a requirement. Should identifies a recommendation. May identifies an allowed option. An example shows a possible arrangement, but it doesn't create a universal configuration. A permitted option can still carry mandatory conditions when you implement it.\n\nSection six points you to compliance-related passages. It explicitly warns that its table isn't a standalone checklist. Follow each reference into the body and read the whole condition. Some requirements contain several obligations, and body text can carry important details that a summary row doesn't capture.\n\nThe complete compute core, cooling solution, chassis design, firmware and security implementation are outside this base specification's detailed scope. Their interfaces can still constrain the HPM. Your review therefore needs two records: what this base specification establishes, and what the product or companion specification must establish separately. Keep both attached to the design decision.",
+          "audio": {
+            "script_file": "audio/module1/slide_03_contract.txt",
+            "wav_file": "audio/module1/slide_03_contract.wav",
+            "delivery_file": "audio/module1/slide_03_contract.mp3",
+            "approved": true,
+            "duration_seconds": 78.6475283446712,
+            "script_sha256": "5c4e550f016d44024632d5af4754cc407bd6c981be8a015ce3c60110f3872611"
+          },
+          "section_label": "Contract and scope",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Requirement",
+              "body": "Preserve “shall” and its applicability condition.",
+              "tone": "green"
+            },
+            {
+              "title": "Recommendation",
+              "body": "Preserve “should” and the compatibility consequence.",
+              "tone": "blue"
+            },
+            {
+              "title": "Example",
+              "body": "A possible arrangement, clearly labeled.",
+              "tone": "slate"
+            },
+            {
+              "title": "Companion or excluded scope",
+              "body": "Identify the owning specification and the evidence still needed.",
+              "tone": "amber"
+            }
+          ],
+          "term_refs": [
+            "hpm"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 12
+            },
+            {
+              "source": "base_spec",
+              "page": 13
+            },
+            {
+              "source": "base_spec",
+              "page": 14
+            },
+            {
+              "source": "base_spec",
+              "page": 17
+            },
+            {
+              "source": "base_spec",
+              "page": 20
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 12, 13, 14, 17, 20",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=12",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "slug": "classes",
+          "type": "content_two_column",
+          "title": "Compare the two classes",
+          "transcript": "Class N is the narrow form factor, with a fixed width of one hundred sixty-eight millimeters. Class L is the large form factor, with a fixed width of two hundred ninety-five millimeters. Both allow depths from two hundred fifty to three hundred sixty-five millimeters. The class defines width and a corresponding feature set; it doesn't select the processor or complete system configuration for you.\n\nClass N is useful in single-node and dense multi-node arrangements. Class L provides a wider board area for single-node designs. These are intended use cases, not proof that a particular populated system will fit an enclosure. The source's overview illustrations show approximate subsystem regions. Read the dimensioned requirements when making an interface decision.\n\nClass N supports two near-side fixed riser locations. Class L supports three. Full population of those locations isn't required. When a fixed riser is implemented, however, its connector, placement and power conditions apply. A board with fewer populated risers can therefore remain compliant while requiring more integration effort in a system designed around other options.\n\nCompare width, depth and implemented features together. A matching class name answers the first part of a review. It doesn't answer the clearance, cabling, power or management questions that follow.",
+          "audio": {
+            "script_file": "audio/module1/slide_04_classes.txt",
+            "wav_file": "audio/module1/slide_04_classes.wav",
+            "delivery_file": "audio/module1/slide_04_classes.mp3",
+            "approved": true,
+            "duration_seconds": 74.16893424036282,
+            "script_sha256": "8839386751063b61b1913d1fc88d72c61d785aa588794f2b1ef98236d4d36563"
+          },
+          "section_label": "Form-factor choice",
+          "bullets": [
+            {
+              "bold_lead": "Class N",
+              "text": "168mm wide; 250–365mm deep; two fixed riser positions."
+            },
+            {
+              "bold_lead": "Class L",
+              "text": "295mm wide; 250–365mm deep; three fixed riser positions."
+            },
+            {
+              "bold_lead": "Population is conditional",
+              "text": "Implementing every fixed riser position is not mandatory."
+            }
+          ],
+          "figure": {
+            "path": "figures/classes.svg",
+            "source": "custom",
+            "caption": "Required board envelopes are separate from example chassis arrangements.",
+            "alt": "Class N and Class L outlines drawn to the same scale.",
+            "text_inventory": {
+              "sha256": "a15c289e1d0a65988e836979f870b046953f8033cfad78af90c61936bc34d431",
+              "entries": [
+                {
+                  "text": "Class N"
+                },
+                {
+                  "text": "Class L"
+                },
+                {
+                  "text": "168mm wide"
+                },
+                {
+                  "text": "295mm wide"
+                },
+                {
+                  "text": "250–365mm depth"
+                },
+                {
+                  "text": "250–365mm depth"
+                },
+                {
+                  "text": "2 fixed riser positions"
+                },
+                {
+                  "text": "3 fixed riser positions Population is optional"
+                }
+              ],
+              "review_basis": "Source crop or authored diagram visually inspected at native resolution on 2026-11-13."
+            }
+          },
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 21
+            },
+            {
+              "source": "base_spec",
+              "page": 22
+            },
+            {
+              "source": "base_spec",
+              "page": 37
+            },
+            {
+              "source": "base_spec",
+              "page": 38
+            },
+            {
+              "source": "base_spec",
+              "page": 70
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 21, 22, 37, 38, 70",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=21",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "slug": "cci",
+          "type": "content_table",
+          "title": "Choose a depth without confusing it with chassis depth",
+          "transcript": "A Common Chassis Interval, or CCI, is a planning point for the maximum HPM length that common system infrastructure can support. It isn't the overall length of the server. A chassis also needs room for its power, cooling, cabling and service structures.\n\nThe listed planning points are two hundred sixty, two hundred eighty, three hundred five, three hundred fifty and three hundred sixty-five millimeters. Choosing a board just beyond a supported boundary can reduce the set of systems it can address. The specification illustrates this with a board that grows beyond the infrastructure's supported interval.\n\nAn HPM designator combines the class letter with a length rounded down to the nearest millimeter. The outline tables show a three hundred five point five nine millimeter board using the N three-oh-five or L three-oh-five designator. Don't read the short name as a substitute for the exact dimensioned drawing.\n\nFor a review, record the actual board depth and the chassis's supported HPM depth separately. Then check the references that move with the board edge, the interfaces fixed to the datum, and the system items that consume the remaining space. The designator helps you organize that evidence; it doesn't replace it.",
+          "audio": {
+            "script_file": "audio/module1/slide_05_cci.txt",
+            "wav_file": "audio/module1/slide_05_cci.wav",
+            "delivery_file": "audio/module1/slide_05_cci.mp3",
+            "approved": true,
+            "duration_seconds": 65.49913832199546,
+            "script_sha256": "2c27edcebe0381d37470fde172387bf641b922bcebdfa9ee74e69803e6c7f60b"
+          },
+          "section_label": "Depth and designators",
+          "columns": [
+            "CCI planning point",
+            "What the learner should verify"
+          ],
+          "rows": [
+            [
+              "260mm / 280mm",
+              "Actual supported HPM length and system envelope"
+            ],
+            [
+              "305mm",
+              "Outline tables specify 305.59mm; designator rounds down"
+            ],
+            [
+              "350mm / 365mm",
+              "Crossing the supported boundary can reduce reuse"
+            ]
+          ],
+          "term_refs": [
+            "cci",
+            "datum"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 22
+            },
+            {
+              "source": "base_spec",
+              "page": 23
+            },
+            {
+              "source": "base_spec",
+              "page": 24
+            },
+            {
+              "source": "base_spec",
+              "page": 37
+            },
+            {
+              "source": "base_spec",
+              "page": 38
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 22, 23, 24, 37, 38",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=22",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "slug": "fixed_floating",
+          "type": "content_diagram",
+          "title": "Keep the reference frame while the outline changes",
+          "transcript": "Start with the datum, the shared reference used to locate features. Near and far describe positions relative to that datum. They don't mean front and rear in every possible server arrangement.\n\nNow shorten the board at its far edge. Fixed features retain their positions relative to the datum. A fixed riser location or retention feature doesn't slide inward merely because the board becomes shorter. If a fixed feature ends up outside a smaller outline, that feature can fall outside the applicable board area. Read the specific requirements before deciding what remains necessary.\n\nFloating features follow the relevant board edge. The far power zone and far-side connector or mounting references move with that edge, preserving their relationship to the boundary. The animation separates this edge-based movement from the datum-based locations that stay still.\n\nThis is a conceptual view of the reference rules, not a toleranced board drawing. It explains why a shorter board can reuse important interfaces without making every physical feature identical. A compatible tray may extend beyond the shorter board to reach the chassis's existing interlocks. Cables or other system details may also change.\n\nThe design review must preserve the right reference frame for each feature. Ask what stays anchored, what follows an edge, and which requirements still apply even when a particular chassis doesn't use that feature. That last question matters for far-edge keep out zones.",
+          "audio": {
+            "script_file": "audio/module1/slide_06_fixed_floating.txt",
+            "wav_file": "audio/module1/slide_06_fixed_floating.wav",
+            "delivery_file": "audio/module1/slide_06_fixed_floating.mp3",
+            "approved": true,
+            "duration_seconds": 78.71809523809524,
+            "script_sha256": "ab8779b57cb6b40f52eac1a214aa6f76a20672a3e7eb3795b00080cc1c2325e1"
+          },
+          "section_label": "Fixed and floating features",
+          "figure": {
+            "path": "figures/video_m1s6_fixed_floating.mp4",
+            "poster": "figures/video_m1s6_fixed_floating_poster.png",
+            "media_type": "video",
+            "source": "custom",
+            "caption": "Fixed features reference the datum; floating features reference a board edge. This is a conceptual teaching view.",
+            "alt": "Single-pass animation of datum-referenced and edge-referenced features during board shortening.",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "duration_seconds": 78.733333,
+            "text_inventory": {
+              "sha256": "de07fefe9fc22ec5661f64ab5f4541d1fb11f6c5d44e6f8bf03be75ce032bf75",
+              "entries": [
+                {
+                  "text": "Far edge",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Near edge",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Conceptual scaling example · not a dimensional model",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Common datum stays fixed",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Retention",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Fixed → common datum",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Fixed positions do not move.",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Some can become inapplicable on a smaller HPM.",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Floating → board edge",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Zones follow the moving edge.",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Floating features do not drop off.",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "A shorter outline is not the whole review",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Check mounting, cables and keep-out zones.",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Reassess the proposed chassis integration.",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Control panel zone",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Far-edge power zone",
+                  "at_seconds": 74.782
+                },
+                {
+                  "text": "Fixed riser positions",
+                  "at_seconds": 74.782
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "fixed_feature",
+            "floating_feature"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 27
+            },
+            {
+              "source": "base_spec",
+              "page": 28
+            },
+            {
+              "source": "base_spec",
+              "page": 29
+            },
+            {
+              "source": "base_spec",
+              "page": 30
+            },
+            {
+              "source": "base_spec",
+              "page": 31
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 27, 28, 29, 30, 31",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=27",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "slug": "compatibility",
+          "type": "content_two_column",
+          "title": "Turn a shared outline into a review plan",
+          "transcript": "The common-chassis example aligns the board origins and places two Class N modules on a one hundred eighty-one millimeter pitch. It shows how Class N and Class L arrangements can share important interface positions. That pitch belongs to the arrangement being illustrated; it isn't a universal spacing rule for every system.\n\nThe chassis determines the maximum supported HPM depth. A shorter board may use a suitable tray to reach fixed chassis interlocks, while cables and other implementation choices change. Keep these system adaptations distinct from the board's own interface obligations.\n\nMechanical and electrical fit also don't establish logical plug-and-play behavior. Modular Plug-and-Play, or M-PNP, addresses discovery and management interoperability. The companion specifications define such matters as platform infrastructure connectivity, high-speed interfaces and peripheral sideband behavior. The HPM Design Specification records the options selected for an actual product.\n\nWrite your handoff as a set of questions that can be answered with evidence. Which tray and retention arrangement is intended? Which connectors and cables are selected? What power can the system deliver? Which management baseline and discovery behavior are implemented? The shared form-factor architecture makes these questions more repeatable. It doesn't remove the need to answer them.",
+          "audio": {
+            "script_file": "audio/module1/slide_07_compatibility.txt",
+            "wav_file": "audio/module1/slide_07_compatibility.wav",
+            "delivery_file": "audio/module1/slide_07_compatibility.mp3",
+            "approved": true,
+            "duration_seconds": 74.65043083900227,
+            "script_sha256": "3c48a72e21b022a9e841773b7cddddeb734da01bab32239dfcf138223c91e824"
+          },
+          "section_label": "Integration boundary",
+          "bullets": [
+            {
+              "bold_lead": "Mechanical evidence",
+              "text": "Tray, retention, clearances, connector offsets and cabling."
+            },
+            {
+              "bold_lead": "Electrical evidence",
+              "text": "Selected interfaces, power delivery and companion specifications."
+            },
+            {
+              "bold_lead": "Logical evidence",
+              "text": "M-PNP discovery and management behavior remains a separate review."
+            }
+          ],
+          "figure": {
+            "path": "figures/common_chassis.png",
+            "source": "reuse",
+            "caption": "The source example aligns datum references; the surrounding system still needs an integration review.",
+            "alt": "Source common-chassis drawing showing the 181mm Class N pitch.",
+            "text_inventory": {
+              "sha256": "63a0a7d7ce55c72ea3d71442b1c17a95909b630074523144e3d9a57d71aa0afb",
+              "entries": [
+                {
+                  "text": "Figure 13: Common 19” Chassis Supporting Class N and Class L (PRIMARY SIDE)"
+                },
+                {
+                  "text": "N365"
+                },
+                {
+                  "text": "N350"
+                },
+                {
+                  "text": "L260"
+                },
+                {
+                  "text": "365"
+                },
+                {
+                  "text": "350"
+                },
+                {
+                  "text": "260"
+                },
+                {
+                  "text": "DATUM"
+                },
+                {
+                  "text": "181 PITCH"
+                }
+              ],
+              "review_basis": "Source crop or authored diagram visually inspected at native resolution on 2026-11-13."
+            },
+            "source_ref": {
+              "source": "base_spec",
+              "page": 34,
+              "method": "Unaltered geometry cropped from the published PDF"
+            }
+          },
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 17
+            },
+            {
+              "source": "base_spec",
+              "page": 24
+            },
+            {
+              "source": "base_spec",
+              "page": 30
+            },
+            {
+              "source": "base_spec",
+              "page": 34
+            },
+            {
+              "source": "base_spec",
+              "page": 88
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 17, 24, 30, 34, 88",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=17",
+              "kind": "pdf"
+            },
+            {
+              "label": "OCP Academy · Modular Plug-and-Play (M-PNP)",
+              "url": "https://academy.opencompute.org/learn/courses/47/ocp-mhs-modular-plug-and-play-m-pnp/lessons",
+              "kind": "course"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "slug": "takeaways",
+          "type": "takeaways",
+          "title": "Carry these architecture decisions forward",
+          "transcript": "Choose class and depth first, then keep the selected implementation visible throughout the review. The two classes provide different widths and fixed riser opportunities. The depth designator summarizes a board choice, while the exact drawing supplies the actual dimensions.\n\nFixed features use the datum. Floating features use a board edge. That distinction explains how outlines can change while important interfaces remain consistent. A compatible system may still need a different tray, cables or other implementation details.\n\nFinally, preserve the strength of every claim. A requirement, a recommendation and an example answer different questions. When a subject belongs to a companion specification or the complete product design, name that boundary and record the missing evidence. You'll use this discipline in the interface review.",
+          "audio": {
+            "script_file": "audio/module1/slide_08_takeaways.txt",
+            "wav_file": "audio/module1/slide_08_takeaways.wav",
+            "delivery_file": "audio/module1/slide_08_takeaways.mp3",
+            "approved": true,
+            "duration_seconds": 45.49460317460318,
+            "script_sha256": "fc94b7b9f2c3d8de0674469b6ea701e0a8b016f7b54132ebb88b1a776c2ebdc3"
+          },
+          "items": [
+            "Choose class, actual depth and implemented options together.",
+            "Keep datum-based and edge-based feature references distinct.",
+            "Separate board requirements from examples and system adaptations.",
+            "Carry electrical and logical interoperability questions into the handoff."
+          ]
+        },
+        {
+          "id": 9,
+          "slug": "knowledge_check",
+          "type": "knowledge_check",
+          "title": "Check your architecture decisions",
+          "transcript": "Use these questions to check the architecture model. The first asks what a class designation tells you. The second asks how features behave when the far edge of a board moves.\n\nSubmit each question once to continue. Correct answers aren't required, and you can retry after reading the feedback. If an answer seems to promise complete system compatibility from a single board label, reconsider what evidence the label actually provides. Keep the distinction between a reference rule and a complete product decision in mind.",
+          "audio": {
+            "script_file": "audio/module1/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_09_knowledge_check.wav",
+            "delivery_file": "audio/module1/slide_09_knowledge_check.mp3",
+            "approved": true,
+            "duration_seconds": 27.595192743764173,
+            "script_sha256": "39e37c120c7f856a304430771e610bb0ce04056923f0f7a59a934b9f650d3c42"
+          },
+          "questions": [
+            {
+              "id": "m1q1",
+              "prompt": "What does choosing Class N establish?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A 168mm board width and corresponding form-factor features",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Guaranteed compatibility with every 19-inch chassis",
+                  "correct": false,
+                  "feedback_incorrect": "A rack width alone does not establish tray, depth, clearance, power or management compatibility."
+                },
+                {
+                  "id": "c",
+                  "text": "A mandatory processor and cooling solution",
+                  "correct": false,
+                  "feedback_incorrect": "Compute-core and cooling implementation are outside this base specification’s detailed scope."
+                }
+              ],
+              "feedback_correct": "Correct. The class defines width and a feature set; actual integration still needs review.",
+              "feedback_incorrect": "Review the condition and the scope of the claim."
+            },
+            {
+              "id": "m1q2",
+              "multiple": true,
+              "prompt": "When an HPM is shortened at the far edge, which statements are supported?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Fixed features retain datum-based positions.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Floating far-edge features move with the board edge.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Every riser connector must move toward the datum.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "System tray or cable choices may need to change.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Reference rules preserve consistent relationships while the system implementation may change.",
+              "feedback_incorrect": "Fixed references stay anchored; floating references follow the edge. System adaptations may still be needed."
+            }
+          ],
+          "subtitle": "Submit both questions once to continue. You can retry after feedback."
+        },
+        {
+          "id": 10,
+          "slug": "next",
+          "type": "up_next",
+          "title": "Review the interfaces next",
+          "transcript": "You've finished the architecture module. You can now compare the two classes, interpret a depth designator, and explain why fixed and floating references matter.\n\nNext, you'll follow the board into an interface review. Start at the datum, inspect the mounting and clearance rules, then connect the chosen peripheral and power interfaces to their governing requirements. Keep the source page close to each decision so the review remains reproducible.",
+          "audio": {
+            "script_file": "audio/module1/slide_10_next.txt",
+            "wav_file": "audio/module1/slide_10_next.wav",
+            "delivery_file": "audio/module1/slide_10_next.mp3",
+            "approved": true,
+            "duration_seconds": 22.378004535147394,
+            "script_sha256": "546b3fd0103921c04855497b0eaae8ff375e0c985663f9122db22620388d0107"
+          },
+          "next_module_number": 2,
+          "next_module_title": "Mechanical interfaces and compatibility",
+          "thank_you_message": "You have completed Module 1: Architecture and Class N/L."
+        }
+      ],
+      "next_module_title": "Mechanical interfaces and compatibility"
+    },
+    {
+      "id": 2,
+      "slug": "interfaces",
+      "title": "Mechanical interfaces and compatibility",
+      "subtitle": "Follow the datum, envelope, connectors and power evidence.",
+      "estimated_duration_minutes": 20,
+      "module_badge_text": "Module 2",
+      "slides": [
+        {
+          "id": 1,
+          "slug": "title",
+          "type": "title",
+          "title": "Mechanical interfaces and compatibility",
+          "transcript": "Module two follows the interfaces that make a reusable board useful in a real system. You'll start at the datum, inspect the mounting and height restrictions, and connect the selected peripheral interfaces to their electrical and power requirements.\n\nThe aim is a repeatable review sequence. You won't memorize every dimension. You'll learn where a condition applies, where its evidence belongs, and when a source conflict needs clarification before you can close a finding.",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "delivery_file": "audio/module2/slide_01_title.mp3",
+            "approved": true,
+            "duration_seconds": 24.476507936507936,
+            "script_sha256": "3718eb2097f5a8762d1dec53fbb6a9f2976e673614ed6892807233335e2ea863"
+          },
+          "subtitle": "A compact review sequence for the critical HPM interfaces",
+          "module_number": 2
+        },
+        {
+          "id": 2,
+          "slug": "objectives",
+          "type": "objectives",
+          "title": "Make the interface checks that matter",
+          "transcript": "By the end of this module, you'll be able to locate the datum and identify the mounting, retention and handling interfaces that depend on it. You'll distinguish secondary-side zones from the height restrictions on the primary side.\n\nYou'll also separate an optional peripheral from the mandatory conditions that apply when it is implemented. Finally, you'll explain why a connector's published rating doesn't establish the power actually delivered by a board or system. Use the page links as working references. The review method matters more than recalling a long table from memory.",
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "delivery_file": "audio/module2/slide_02_objectives.mp3",
+            "approved": true,
+            "duration_seconds": 29.359682539682538,
+            "script_sha256": "320badad922b937884d15c87b4ec6f69129721a58a154824235a79923c0e0d08"
+          },
+          "objectives": [
+            "Locate datum, mounting, retention and handle interfaces.",
+            "Apply height and keepout conditions to the selected configuration.",
+            "Separate connector placement, electrical definition and power delivery.",
+            "Record evidence gaps and source conflicts without inventing a pass."
+          ]
+        },
+        {
+          "id": 3,
+          "slug": "datum_interfaces",
+          "type": "content_diagram",
+          "title": "Start the review at the datum",
+          "transcript": "Orient the model before measuring anything. The imported assembly uses its own three-dimensional coordinates. The specification's datum and primary-side view define the reference you need for the board review. A model axis or the corner of a screenshot isn't automatically that datum.\n\nThe animation uses the supplied Class L STEP assembly. It contains board and connector geometry, not a complete populated computer or chassis. Locate the near-side datum reference first. Then inspect the mounting and alignment features, the chassis-retention interface, and the handle-hole interface near the far edge. Use the actual published hole details to evaluate size, pad and keep out requirements.\n\nRequired and recommended holes serve different purposes. Additional mounting holes must use the standard mounting-hole requirements. Fixed risers introduce conditional retention-hole obligations. The handle-hole interface is required even though the designer may choose a handling solution that doesn't install a handle in that hole.\n\nThe source also permits localized negative board features, such as notches. Those features can't compromise required interfaces or remove a whole side edge to create a nonstandard width. A system that depends on a particular notch can lose compatibility with other compliant boards.\n\nFor Class L, the compliance table and body disagree on a near-side hole count. Record that conflict rather than choosing whichever number matches your model. A useful C A D observation supports the review; it doesn't settle conflicting normative text.",
+          "audio": {
+            "script_file": "audio/module2/slide_03_datum_interfaces.txt",
+            "wav_file": "audio/module2/slide_03_datum_interfaces.wav",
+            "delivery_file": "audio/module2/slide_03_datum_interfaces.mp3",
+            "approved": true,
+            "duration_seconds": 84.40902494331065,
+            "script_sha256": "9157cd94074bc0bfd369a0e71b89041c3a8200c95ae969d4bd18872753db06d9"
+          },
+          "section_label": "Datum and mounting",
+          "figure": {
+            "path": "figures/video_m2s3_datum_interfaces.mp4",
+            "poster": "figures/video_m2s3_datum_interfaces_poster.png",
+            "media_type": "video",
+            "source": "custom",
+            "caption": "Use the supplied STEP geometry for orientation and the published details for requirements. Model import is not a compliance result.",
+            "alt": "Datum-led walkthrough of the supplied Class L board and its mounting, retention and handling interfaces.",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "duration_seconds": 84.4,
+            "text_inventory": {
+              "sha256": "c64461d6acca1ef2687b499de4b298c4c72b8bcaa924a53864703a4db1c068c1",
+              "entries": [
+                {
+                  "text": "L365 · supplied STEP geometry",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "Board and connectors only · no chassis",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "1  Establish the common datum",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "Model axes are not automatically the board datum.",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "2  Inspect mounting and retention",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "Verify published hole, pad and keep-out requirements.",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "3  Check the handle-hole interface",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "Required interface; a fitted handle is not mandatory.",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "4  Review any negative board features",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "Notches must preserve required interfaces.",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "5  Flag conflicting source evidence",
+                  "at_seconds": 80.189
+                },
+                {
+                  "text": "A model does not resolve the Class L hole-count conflict.",
+                  "at_seconds": 80.189
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "datum"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 36
+            },
+            {
+              "source": "base_spec",
+              "page": 39
+            },
+            {
+              "source": "base_spec",
+              "page": 40
+            },
+            {
+              "source": "base_spec",
+              "page": 41
+            },
+            {
+              "source": "base_spec",
+              "page": 42
+            },
+            {
+              "source": "base_spec",
+              "page": 44
+            },
+            {
+              "source": "base_spec",
+              "page": 46
+            },
+            {
+              "source": "base_spec",
+              "page": 59
+            },
+            {
+              "source": "base_spec",
+              "page": 60
+            },
+            {
+              "source": "base_spec",
+              "page": 61
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 36, 39, 40, 41, 42, 44, 46, 59, 60, 61",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=36",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "slug": "secondary_zones",
+          "type": "content_two_column",
+          "title": "Read the underside as four different zones",
+          "transcript": "The secondary side has four zones with different purposes. Zone one is the general component region. Its universal component-height restriction is one point six millimeters, except where the defined zones or permitted local exceptions apply.\n\nA tall-component exception must remain local. Each instance must not exceed four hundred square millimeters, and separate instances must not be closer than ten millimeters. The recommended combined board-and-component height of five point two millimeters is compatibility guidance. Don't silently convert that recommendation into another universal requirement, or treat the permitted exception as a guarantee of chassis clearance.\n\nZone two protects the chassis-hook interface. Its required zero-height keep out areas include floating far-edge locations across board depths. A selected tray may not use a particular area, but the board can still need that area for a different supported system. Through-hole power or signal leads aren't permitted in these hook keepouts. The separate allowance for specified alignment posts and grounded retention barbs must be read precisely.\n\nZone three provides for secondary support beneath areas that may deflect during assembly. Zone four provides the CPU backing-plate allowance. That allowance depends on board thickness and other tolerances. The source's stack-up is an example, not a universal chassis construction. Review the actual parts and their worst-case relationship before closing a clearance finding.",
+          "audio": {
+            "script_file": "audio/module2/slide_04_secondary_zones.txt",
+            "wav_file": "audio/module2/slide_04_secondary_zones.wav",
+            "delivery_file": "audio/module2/slide_04_secondary_zones.mp3",
+            "approved": true,
+            "duration_seconds": 79.87224489795918,
+            "script_sha256": "2fecb5a95291c02a0b94bd8ec403d0e04656c8ce71979455e00d9986483c129b"
+          },
+          "section_label": "Secondary-side envelope",
+          "bullets": [
+            {
+              "bold_lead": "Zone 1",
+              "text": "1.6mm general component limit; controlled local exceptions."
+            },
+            {
+              "bold_lead": "Zone 2",
+              "text": "Chassis-hook keepouts, including far-edge obligations."
+            },
+            {
+              "bold_lead": "Zones 3 and 4",
+              "text": "Secondary support and CPU backplate allowances."
+            }
+          ],
+          "figure": {
+            "path": "figures/secondary_stack.png",
+            "source": "reuse",
+            "caption": "The illustrated Z stack-up is an example; evaluate the actual system dimensions and tolerances.",
+            "alt": "Source Table 5 and diagrams showing secondary-side zone stack-ups.",
+            "text_inventory": {
+              "sha256": "fd501db1d1490c14043edd0cdf50a469d658885f87fcc748d29efd6c2c543ea1",
+              "entries": [
+                {
+                  "text": "Table 5: Example Z-Height Compliant Stack-Up, Per Zone"
+                },
+                {
+                  "text": "Zone 1 Zone 2 Zone 3 Zone 4"
+                },
+                {
+                  "text": "Item Description Z Value (mm) Notes"
+                },
+                {
+                  "text": "A HPM 3.18 MAX Thickness (w/o Added tolerance, Assumes bottom mounting)"
+                },
+                {
+                  "text": "B Bottom Component Z 1.60 0 MAX Height"
+                },
+                {
+                  "text": "C CPU Backing Plate 2.94 MAX Thickness Backplate for MAX Thickness HPM, Hole in Pan/Tray"
+                },
+                {
+                  "text": "D HPM Bottom Support 2.12 HPM Support Thickness +/-0.10mm, must exceed Bottom Component Z"
+                },
+                {
+                  "text": "E(1) Resultant Gap 0.62 0.58 Gap is Larger, Requires Insulation and/or Clearance"
+                },
+                {
+                  "text": "E(2) Resultant Gap 0.10 0.08 Gap is Small, Contact between Parts is either Desired or Permissible"
+                },
+                {
+                  "text": "F Board Pan 0.80"
+                },
+                {
+                  "text": "G Chassis Hook 2.44 MAX Height from Inside Surface of Chassis"
+                },
+                {
+                  "text": "TOTAL 6.2 Example Solution Stack-up"
+                },
+                {
+                  "text": "Figure 28: Secondary Side Components (Zone 1)"
+                },
+                {
+                  "text": "Figure 29: Chassis Hook Keepouts (Zone 2)"
+                },
+                {
+                  "text": "Figure 30: HPM Secondary Support (Zone 3)"
+                },
+                {
+                  "text": "Figure 31: CPU Backing Plate (Zone 4)"
+                },
+                {
+                  "text": "TOTAL A B E(1) E(2) C D F G"
+                }
+              ],
+              "review_basis": "Source crop or authored diagram visually inspected at native resolution on 2026-11-13."
+            },
+            "source_ref": {
+              "source": "base_spec",
+              "page": 58,
+              "method": "Unaltered geometry cropped from the published PDF"
+            }
+          },
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 47
+            },
+            {
+              "source": "base_spec",
+              "page": 48
+            },
+            {
+              "source": "base_spec",
+              "page": 49
+            },
+            {
+              "source": "base_spec",
+              "page": 50
+            },
+            {
+              "source": "base_spec",
+              "page": 51
+            },
+            {
+              "source": "base_spec",
+              "page": 54
+            },
+            {
+              "source": "base_spec",
+              "page": 55
+            },
+            {
+              "source": "base_spec",
+              "page": 56
+            },
+            {
+              "source": "base_spec",
+              "page": 57
+            },
+            {
+              "source": "base_spec",
+              "page": 58
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 47, 48, 49, 50, 51, 54, 55, 56, 57, 58",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=47",
+              "kind": "pdf"
+            }
+          ],
+          "term_refs": [
+            "koz"
+          ]
+        },
+        {
+          "id": 5,
+          "slug": "primary_heights",
+          "type": "content_grid",
+          "title": "Apply the limit to the implemented configuration",
+          "transcript": "The primary-side height rules are conditional, so start by identifying what the system actually implements. The twelve millimeter zone is strongly recommended to support common thermal and cable arrangements. Exceeding it can reduce compatibility, but the source doesn't make it the same kind of universal requirement as every mandatory clearance.\n\nThe eleven point three millimeter zone becomes required when PCIe Card Electromechanical, or C E M, cards sit directly above the HPM and its peripherals. The source includes qualifications and exemptions, including the compact secure-control module. The six millimeter zone is required when PCIe risers are implemented, protecting their mechanical interface.\n\nThese restrictions apply to soldered board components, mated connector heights and the specified mated assemblies. They don't automatically apply in the same way to later-added heatsinks, shrouds or other mechanical parts. That distinction doesn't remove the system designer's responsibility to check those parts for collision.\n\nSome connector and plug arrangements have explicit exceptions. Review the complete condition and actual mated height instead of comparing only an unmated receptacle with a zone number. Your finding should name the configuration, the applicable limit, any supported exception, and the clearance evidence still required. This makes a conditional rule usable without overstating it.",
+          "audio": {
+            "script_file": "audio/module2/slide_05_primary_heights.txt",
+            "wav_file": "audio/module2/slide_05_primary_heights.wav",
+            "delivery_file": "audio/module2/slide_05_primary_heights.mp3",
+            "approved": true,
+            "duration_seconds": 73.76448979591837,
+            "script_sha256": "224bc08cb7378314087a2c78334d5ea3cd0c33ae99d8abb32a652775987aa041"
+          },
+          "section_label": "Primary-side conditions",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "12mm",
+              "body": "Strongly recommended compatibility guidance.",
+              "tone": "blue"
+            },
+            {
+              "title": "11.3mm",
+              "body": "Required with CEM cards directly above; apply stated qualifications.",
+              "tone": "amber"
+            },
+            {
+              "title": "6mm",
+              "body": "Required when PCIe risers are implemented.",
+              "tone": "green"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 74
+            },
+            {
+              "source": "base_spec",
+              "page": 75
+            },
+            {
+              "source": "base_spec",
+              "page": 76
+            },
+            {
+              "source": "base_spec",
+              "page": 77
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 74, 75, 76, 77",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=74",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "slug": "peripheral_placement",
+          "type": "content_two_column",
+          "title": "Review the complete peripheral interface",
+          "transcript": "An optional peripheral can bring mandatory interface conditions with it. The O C P network-interface card is optional here. When implemented, the specified placement condition applies. The compact Data Center Secure Control Module, or DC-SCM CFF, has a recommended placement region. The board must also provide the specified battery-backed voltage interface.\n\nDon't reduce a peripheral review to the connector centerline. A screw or other retention feature can interfere with the control module's keep-in volume, especially when a heatsink or daughtercard is involved. The source calls out this risk. Use the actual selected module and retention hardware when checking it.\n\nPlatform infrastructure connectors follow M-PIC, the Platform Infrastructure Connectivity specification. Intrusion, control-panel and power-distribution-management connectors are required but may be depopulated. Their exact recommended positions sit within allowable placement zones. A connector can move away from the recommended point while still needing to remain inside the specified zone.\n\nThe source contains a separate conflict in its secure-control-module power-version references. Record the conflicting passages and confirm the intended interface baseline. Don't silently select a version or a pinout because it makes a proposed design convenient. Placement, mated volume, electrical definition and the resolved baseline belong together in the final evidence record.",
+          "audio": {
+            "script_file": "audio/module2/slide_06_peripheral_placement.txt",
+            "wav_file": "audio/module2/slide_06_peripheral_placement.wav",
+            "delivery_file": "audio/module2/slide_06_peripheral_placement.mp3",
+            "approved": true,
+            "duration_seconds": 77.76467120181405,
+            "script_sha256": "0faf7df8f7fe630e951a5fb79b12699bdb650035b1935f4cdfaa16a544cb9079"
+          },
+          "section_label": "Peripheral and infrastructure interfaces",
+          "bullets": [
+            {
+              "bold_lead": "Optional device",
+              "text": "Implementing it can trigger mandatory interface conditions."
+            },
+            {
+              "bold_lead": "Recommended point / required zone",
+              "text": "Preserve the difference when locating M-PIC connectors."
+            },
+            {
+              "bold_lead": "Mated volume",
+              "text": "Review connector, module and retention hardware together."
+            }
+          ],
+          "figure": {
+            "path": "figures/cff_conflict.png",
+            "source": "reuse",
+            "caption": "The source identifies a possible retention-hardware conflict with the CFF keep-in volume.",
+            "alt": "Published illustration of a mounting feature that can interfere with a compact DC-SCM.",
+            "text_inventory": {
+              "sha256": "f258b7a7149209a9cfc0fe591672f52fb7f10cb0906015b120bff514ac236e94",
+              "entries": [
+                {
+                  "text": "DC-SCM 2.2 CFF"
+                },
+                {
+                  "text": "Edge-MHS HPM"
+                },
+                {
+                  "text": "DC-SCM 2.2 CFF Keep In Zone"
+                },
+                {
+                  "text": "Region at risk for mechanical conflict"
+                },
+                {
+                  "text": "Edge-MHS Required Mounting Hole (Datum) & Potential Conflict"
+                }
+              ],
+              "review_basis": "Source crop or authored diagram visually inspected at native resolution on 2026-11-13."
+            },
+            "source_ref": {
+              "source": "base_spec",
+              "page": 62,
+              "method": "Unaltered geometry cropped from the published PDF"
+            }
+          },
+          "term_refs": [
+            "dc_scm",
+            "m_pic"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 26
+            },
+            {
+              "source": "base_spec",
+              "page": 62
+            },
+            {
+              "source": "base_spec",
+              "page": 63
+            },
+            {
+              "source": "base_spec",
+              "page": 64
+            },
+            {
+              "source": "base_spec",
+              "page": 65
+            },
+            {
+              "source": "base_spec",
+              "page": 66
+            },
+            {
+              "source": "base_spec",
+              "page": 67
+            },
+            {
+              "source": "base_spec",
+              "page": 86
+            },
+            {
+              "source": "base_spec",
+              "page": 89
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 26, 62, 63, 64, 65, 66, 67, 86, 89",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=26",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "slug": "hsio",
+          "type": "content_table",
+          "title": "Keep the riser interface and HSIO definition together",
+          "transcript": "High-speed input and output can use board-to-board, board-to-cable or hybrid connections. A hybrid interface combines direct board connections with cable connections. The same system-level purpose can therefore use different physical arrangements.\n\nTable six identifies the compliant connector families. Near-side fixed risers use S F F T A ten thirty-three with a twenty-one ampere power block. Other high-speed interfaces can use the listed ten sixteen, ten twenty-six or ten thirty-three families, subject to the Extensible I O specification, known as M-XIO. A familiar connector shape by itself doesn't establish the correct pinout or interface.\n\nWhen near-side fixed risers are implemented, their defined locations apply. Full population of every location isn't required. The source illustrates alternative compliant choices that can demand more work from an ecosystem chassis. Keep that adoption effort separate from whether a particular requirement is mandatory.\n\nFor other high-speed connectors, this base specification doesn't fix every location or quantity. Placement must still respect required features and height restrictions. The riser board, endpoint and cable implementation need their own evidence. Record the exact connector variant, mated arrangement, electrical baseline and implemented location so another reviewer can reproduce your conclusion.",
+          "audio": {
+            "script_file": "audio/module2/slide_07_hsio.txt",
+            "wav_file": "audio/module2/slide_07_hsio.wav",
+            "delivery_file": "audio/module2/slide_07_hsio.mp3",
+            "approved": true,
+            "duration_seconds": 76.7465306122449,
+            "script_sha256": "f99677def47564207c9d22cbc3c3c645389404d960d7ee09310072834a953828"
+          },
+          "section_label": "HSIO and fixed risers",
+          "columns": [
+            "Interface",
+            "Base-spec review focus"
+          ],
+          "rows": [
+            [
+              "Near-side fixed riser",
+              "SFF-TA-1033, 21A block; required position if implemented"
+            ],
+            [
+              "Other HSIO",
+              "Listed SFF-TA-1016 / -1026 / -1033; M-XIO definition"
+            ],
+            [
+              "B2B / B2C / hybrid",
+              "Review the selected mated arrangement and system implementation"
+            ]
+          ],
+          "term_refs": [
+            "hsio",
+            "m_xio"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 68
+            },
+            {
+              "source": "base_spec",
+              "page": 69
+            },
+            {
+              "source": "base_spec",
+              "page": 70
+            },
+            {
+              "source": "base_spec",
+              "page": 71
+            },
+            {
+              "source": "base_spec",
+              "page": 72
+            },
+            {
+              "source": "base_spec",
+              "page": 73
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 68, 69, 70, 71, 72, 73",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=68",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "slug": "power",
+          "type": "content_two_column",
+          "title": "Separate connector ratings from delivered power",
+          "transcript": "Power review starts with the ingress path and the actual board budget. Cabled ingress and egress use the specified PICPWR connector families: two by six with twelve sidebands, or two by three with six sidebands. The far power zone must include the body of at least one two-by-six connector. It must also contain enough connectors to meet the full HPM power budget when used for ingress. A proposal using only two-by-three connectors therefore misses an explicit condition, even if someone adds their nameplate ratings together.\n\nPublished connector ratings don't establish what the board or system delivers. Each implemented fixed riser must receive at least eighty-seven watts. That minimum supports one seventy-five watt PCIe C E M card plus the specified conversion and miscellaneous allowance. The connector's higher published rating isn't permission to assume the board supplies that higher power.\n\nReview the power-distribution board, wiring, loading, voltage drop and implemented interfaces using the product design and companion specifications. M-PIC governs relevant power and sideband details. The source delegates additional electrical requirements to its MHS family references.\n\nYour record should connect the required condition to a selected connector, a budget and evidence of delivered power. If any part is missing, describe the gap. Physical presence and an adequate connector rating alone can't close the power review.",
+          "audio": {
+            "script_file": "audio/module2/slide_08_power.txt",
+            "wav_file": "audio/module2/slide_08_power.wav",
+            "delivery_file": "audio/module2/slide_08_power.mp3",
+            "approved": true,
+            "duration_seconds": 79.59473922902494,
+            "script_sha256": "c32af172cb40b87da63210ade593e6ab4b51c48435abb75282434dba306d09c2"
+          },
+          "section_label": "Power and electrical evidence",
+          "bullets": [
+            {
+              "bold_lead": "Far-zone condition",
+              "text": "At least one 2x6+12SB body, plus enough ingress capability for the full HPM budget."
+            },
+            {
+              "bold_lead": "Each implemented fixed riser",
+              "text": "Minimum 87W delivered; not merely connector-rated capacity."
+            },
+            {
+              "bold_lead": "Companion evidence",
+              "text": "Power path, loading, voltage drop and required sideband behavior."
+            }
+          ],
+          "figure": {
+            "path": "figures/power_review.svg",
+            "source": "custom",
+            "caption": "Check the mandatory connector condition and the delivered-power budget as separate questions.",
+            "alt": "Power review diagram separating the far-zone connector condition from fixed-riser delivery.",
+            "text_inventory": {
+              "sha256": "2dc23e33867ae8b1f604efd1eb3bf73014d6031b263d6a542bb3d6b3cd80e22d",
+              "entries": [
+                {
+                  "text": "Far power zone"
+                },
+                {
+                  "text": "Each fixed riser"
+                },
+                {
+                  "text": "At least one 2x6+12SB body Enough ingress capability for the full HPM budget"
+                },
+                {
+                  "text": "87W minimum"
+                },
+                {
+                  "text": "Delivered by the HPM when the riser is implemented"
+                },
+                {
+                  "text": "Connector rating ≠ evidence of delivered power"
+                },
+                {
+                  "text": "Review loading, power path and required electrical / sideband behavior."
+                }
+              ],
+              "review_basis": "Source crop or authored diagram visually inspected at native resolution on 2026-11-13."
+            }
+          },
+          "term_refs": [
+            "picpwr"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 80
+            },
+            {
+              "source": "base_spec",
+              "page": 81
+            },
+            {
+              "source": "base_spec",
+              "page": 82
+            },
+            {
+              "source": "base_spec",
+              "page": 83
+            },
+            {
+              "source": "base_spec",
+              "page": 84
+            },
+            {
+              "source": "base_spec",
+              "page": 85
+            },
+            {
+              "source": "base_spec",
+              "page": 86
+            },
+            {
+              "source": "base_spec",
+              "page": 88
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 80, 81, 82, 83, 84, 85, 86, 88",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=80",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 9,
+          "slug": "takeaways",
+          "type": "takeaways",
+          "title": "Use one interface review sequence",
+          "transcript": "Start with the correct orientation and datum, then review the board outline, mounting and retention interfaces. Follow with the secondary-side zones and the primary-side limits that apply to the actual configuration.\n\nNext, check the complete peripheral interface: position, allowable zone, mated volume and governing electrical definition. Required connector provisions and optional population can coexist. Finally, connect the far-zone and riser-power requirements to a real budget and evidence of delivery.\n\nUse exact source pages and preserve qualifications. When the published source disagrees with itself, report the conflict and obtain clarification. The goal is a finding that another engineer can understand and reproduce, including a clear account of what remains unresolved.",
+          "audio": {
+            "script_file": "audio/module2/slide_09_takeaways.txt",
+            "wav_file": "audio/module2/slide_09_takeaways.wav",
+            "delivery_file": "audio/module2/slide_09_takeaways.mp3",
+            "approved": true,
+            "duration_seconds": 42.377097505668935,
+            "script_sha256": "cee4f94e180d71f87b152956362c1fb9417541f97a8f7109ede71b6b6e8b3b5f"
+          },
+          "items": [
+            "Orient → locate datum → review outline, mounting and retention.",
+            "Apply the correct zone limits and explicit exceptions.",
+            "Check selected connector variants, mated volumes and companion definitions.",
+            "Require delivered-power evidence and escalate conflicting requirements."
+          ]
+        },
+        {
+          "id": 10,
+          "slug": "knowledge_check",
+          "type": "knowledge_check",
+          "title": "Check your interface judgment",
+          "transcript": "The first question tests the difference between a recommendation and a requirement that depends on the configuration. The second asks which evidence is needed to close a power review.\n\nSubmit both questions once to continue. You can retry after feedback, and correct answers aren't required for progression. If you need a reminder, use the source links on the teaching pages. Focus on the actual condition being evaluated, then ask whether the available observation is enough to support that conclusion.",
+          "audio": {
+            "script_file": "audio/module2/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_10_knowledge_check.wav",
+            "delivery_file": "audio/module2/slide_10_knowledge_check.mp3",
+            "approved": true,
+            "duration_seconds": 26.447845804988663,
+            "script_sha256": "ec828273fe739423c36bd93f0cb07c59f27c4d9a4bbb428c6cfee8d0a528d55d"
+          },
+          "questions": [
+            {
+              "id": "m2q1",
+              "prompt": "Which statement correctly preserves the primary-side height rules?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The 6mm zone is required when PCIe risers are implemented.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The 12mm zone is an unconditional mandatory limit for every component.",
+                  "correct": false,
+                  "feedback_incorrect": "The 12mm zone is strongly recommended; preserve that strength and the stated exceptions."
+                },
+                {
+                  "id": "c",
+                  "text": "The 11.3mm zone applies identically to every system configuration.",
+                  "correct": false,
+                  "feedback_incorrect": "The 11.3mm rule depends on cards directly above and includes stated qualifications."
+                }
+              ],
+              "feedback_correct": "Correct. The 6mm condition follows riser implementation; read the other zones with their own qualifications.",
+              "feedback_incorrect": "Review the condition and the scope of the claim."
+            },
+            {
+              "id": "m2q2",
+              "multiple": true,
+              "prompt": "Which items belong in the power review?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A far-zone connector arrangement meeting the explicit 2x6 condition",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Evidence that each implemented fixed riser receives at least 87W",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "A connector nameplate rating as the sole proof of delivered power",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "An ingress budget and applicable electrical/sideband evidence",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. Connector provision, actual delivery and implementation evidence are separate checks.",
+              "feedback_incorrect": "A nameplate rating alone does not establish delivered power. Preserve the far-zone condition, riser minimum and system evidence."
+            }
+          ],
+          "subtitle": "Submit both questions once to continue. You can retry after feedback."
+        },
+        {
+          "id": 11,
+          "slug": "next",
+          "type": "up_next",
+          "title": "Put the review method into practice",
+          "transcript": "You've completed the interface module. You now have a review sequence that connects geometry, conditional limits, connector choices and delivered power.\n\nThe final module applies that sequence to two short integration cases. You'll decide what the source establishes, what the supplied evidence supports, and what still needs a measurement, an implementation record or a clarified requirement. Use the cases to practice concise findings that help the next engineer act.",
+          "audio": {
+            "script_file": "audio/module2/slide_11_next.txt",
+            "wav_file": "audio/module2/slide_11_next.wav",
+            "delivery_file": "audio/module2/slide_11_next.mp3",
+            "approved": true,
+            "duration_seconds": 24.476145124716552,
+            "script_sha256": "e4e3433b56c8c2293128f36fe7142559ba759b2c1888c9a2fface771c0768809"
+          },
+          "next_module_number": 3,
+          "next_module_title": "Integration review exercises",
+          "thank_you_message": "You have completed Module 2: Mechanical interfaces and compatibility."
+        }
+      ],
+      "next_module_title": "Integration review exercises"
+    },
+    {
+      "id": 3,
+      "slug": "integration_review",
+      "title": "Integration review exercises",
+      "subtitle": "Use two guided cases to make traceable review decisions.",
+      "estimated_duration_minutes": 18,
+      "module_badge_text": "Module 3",
+      "slides": [
+        {
+          "id": 1,
+          "slug": "title",
+          "type": "title",
+          "title": "Integration review exercises",
+          "transcript": "Module three puts the architecture and interface rules to work. You'll review two constructed examples, decide which observations support a finding, and identify the questions that remain open.\n\nThese are desk-review exercises, not product certification tests. Take time to inspect the evidence before using the narrated debrief. Your goal is to make a conclusion another engineer can reproduce, including a precise explanation when the available evidence isn't enough.",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "delivery_file": "audio/module3/slide_01_title.mp3",
+            "approved": true,
+            "duration_seconds": 25.023628117913834,
+            "script_sha256": "d4174e9ae8e34c736f51a576c024702feade2709fbd2f5a34c78a3c4c527de00"
+          },
+          "subtitle": "From a plausible arrangement to a traceable finding",
+          "module_number": 3
+        },
+        {
+          "id": 2,
+          "slug": "objectives",
+          "type": "objectives",
+          "title": "Turn observations into useful findings",
+          "transcript": "By the end of this module, you'll be able to separate an example configuration from a mandatory interface condition. You'll connect a source page, an applicable requirement and an observed fact in one review record.\n\nYou'll also distinguish a demonstrated mismatch from a missing measurement or conflicting source statement. Keep the scope of each disposition narrow. A sound finding about a connector or keep out area doesn't establish that the complete system is compliant, thermally suitable, secure or ready for deployment.",
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "delivery_file": "audio/module3/slide_02_objectives.mp3",
+            "approved": true,
+            "duration_seconds": 27.529297052154195,
+            "script_sha256": "346c7b236eea6ef272adf6097089a0d893c829974260820d66742569f027d958"
+          },
+          "objectives": [
+            "Identify the applicable clause and the evidence actually provided.",
+            "Distinguish a mismatch, an evidence gap and a source conflict.",
+            "Record a concise disposition and the next action or owner."
+          ]
+        },
+        {
+          "id": 3,
+          "slug": "review_record",
+          "type": "content_grid",
+          "title": "Build a finding that another engineer can reproduce",
+          "transcript": "A useful finding has a short chain of evidence. State the claim, identify the applicable clause and page, record the observation, and explain the disposition. Add the action and owner needed to close any gap. Keep the selected board, connector and system configuration in the record so the condition stays meaningful.\n\nUse four dispositions. Conforms on available evidence means the supplied evidence supports this particular check. Does not conform on available evidence means it demonstrates a mismatch with an applicable requirement. Not applicable needs a stated reason. Insufficient or conflicting evidence means the review cannot yet support a definitive conclusion.\n\nTwo source conflicts illustrate the last category. The Class L near-side hole count differs between the compliance table and body. Secure-control-module power references also differ from the version named elsewhere. Your observation that a model has a certain number of features doesn't resolve the first conflict. Familiarity with another version doesn't resolve the second.\n\nRecord the passages and route the question to the specification owner. This is a useful engineering result. It prevents an unsupported assumption from becoming a design rule or a test expectation. The source table helps you locate obligations, but the review still needs the full body text and the actual implementation evidence.",
+          "audio": {
+            "script_file": "audio/module3/slide_03_review_record.txt",
+            "wav_file": "audio/module3/slide_03_review_record.wav",
+            "delivery_file": "audio/module3/slide_03_review_record.mp3",
+            "approved": true,
+            "duration_seconds": 73.96575963718821,
+            "script_sha256": "173012cd220956e5459e2e28601577d61ac2624ef17320880edef9cd17dcffa4"
+          },
+          "section_label": "Evidence and disposition",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Claim and applicability",
+              "body": "What is being checked, in which configuration?"
+            },
+            {
+              "title": "Source and observation",
+              "body": "Which clause/page and which measurement or record?"
+            },
+            {
+              "title": "Disposition",
+              "body": "Supported, mismatched, not applicable, or unresolved?"
+            },
+            {
+              "title": "Action and owner",
+              "body": "What closes the gap, and who supplies it?"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 12
+            },
+            {
+              "source": "base_spec",
+              "page": 14
+            },
+            {
+              "source": "base_spec",
+              "page": 16
+            },
+            {
+              "source": "base_spec",
+              "page": 44
+            },
+            {
+              "source": "base_spec",
+              "page": 62
+            },
+            {
+              "source": "base_spec",
+              "page": 86
+            },
+            {
+              "source": "base_spec",
+              "page": 89
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 12, 14, 16, 44, 62, 86, 89",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=12",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "slug": "case_chassis",
+          "type": "content_two_column",
+          "title": "Case 1: review N350 in a chassis planned for L365",
+          "transcript": "Consider a chassis whose design supports an L three-sixty-five board. The proposed alternative uses two N three-fifty boards. The source's common-chassis and tray examples suggest a route to reuse, but your evidence pack contains only an outline overlay and the described tray concept.\n\nPause and make three observations. Which references must remain aligned? How could the shorter board assembly reach the chassis's existing interlocks? Can a far-edge keep out area be removed simply because this chassis doesn't use it? Use the page links, then compare your reasoning with the debrief that follows.\n\nThe shared datum references explain how important near-side interfaces can remain consistent. The example places the two Class N boards on a one hundred eighty-one millimeter pitch. That is evidence of the illustrated scheme, not a guarantee for every chassis. A suitable tray can extend beyond a shorter board to reach interlocks fixed by the chassis design.\n\nThe board still retains its applicable far-edge keep out obligations. The source explicitly explains that a keep out unused in this particular installation may be needed when the same board is deployed in another compatible chassis.\n\nThe appropriate overall disposition is insufficient evidence to approve the complete integration. The example supports a plausible arrangement. You still need the selected tray and retention geometry, clearances, cabling, power and management evidence. Record each missing item with an owner. Don't convert a useful architectural example into a whole-system pass.",
+          "audio": {
+            "script_file": "audio/module3/slide_04_case_chassis.txt",
+            "wav_file": "audio/module3/slide_04_case_chassis.wav",
+            "delivery_file": "audio/module3/slide_04_case_chassis.mp3",
+            "approved": true,
+            "duration_seconds": 84.4762358276644,
+            "script_sha256": "dc02dba18159da1962e795b96c81f8aa878192de0bb84bbf8f6532892eef8429"
+          },
+          "section_label": "Guided case 1",
+          "bullets": [
+            {
+              "bold_lead": "Provided",
+              "text": "N350/L365 outline relationship and a tray concept."
+            },
+            {
+              "bold_lead": "Consider",
+              "text": "Datum alignment, tray-to-chassis interface and far-edge KOZ obligations."
+            },
+            {
+              "bold_lead": "Before continuing",
+              "text": "Decide whether the evidence supports a whole-system approval."
+            }
+          ],
+          "figure": {
+            "path": "figures/case1.svg",
+            "source": "custom",
+            "caption": "Constructed review exercise based on the source example; the outline overlay is not a complete integration proof.",
+            "alt": "Teaching overlay relating shorter Class N boards to an example chassis planned for Class L.",
+            "text_inventory": {
+              "sha256": "28843d64ab366a89ca6ed0c0bcb44013ac80fc00cf6871553c8de44ec1282890",
+              "entries": [
+                {
+                  "text": "Constructed teaching example · not a dimensional chassis model"
+                },
+                {
+                  "text": "N350"
+                },
+                {
+                  "text": "N350"
+                },
+                {
+                  "text": "Board-specific far-edge obligations remain applicable"
+                },
+                {
+                  "text": "Tray and system interfaces still need evidence"
+                },
+                {
+                  "text": "Shared references support an approach; the complete integration remains to be reviewed."
+                }
+              ],
+              "review_basis": "Source crop or authored diagram visually inspected at native resolution on 2026-11-13."
+            }
+          },
+          "term_refs": [
+            "datum",
+            "koz"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 27
+            },
+            {
+              "source": "base_spec",
+              "page": 28
+            },
+            {
+              "source": "base_spec",
+              "page": 29
+            },
+            {
+              "source": "base_spec",
+              "page": 30
+            },
+            {
+              "source": "base_spec",
+              "page": 34
+            },
+            {
+              "source": "base_spec",
+              "page": 49
+            },
+            {
+              "source": "base_spec",
+              "page": 50
+            },
+            {
+              "source": "base_spec",
+              "page": 51
+            },
+            {
+              "source": "base_spec",
+              "page": 52
+            },
+            {
+              "source": "base_spec",
+              "page": 53
+            },
+            {
+              "source": "base_spec",
+              "page": 54
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 27, 28, 29, 30, 34, 49, 50, 51, 52, 53, 54",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=27",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "slug": "case_power",
+          "type": "content_table",
+          "title": "Case 2: identify what blocks the proposed integration",
+          "transcript": "The second evidence pack describes a Class L design with an implemented fixed riser and a twelve millimeter tall soldered component inside a six millimeter riser height-restriction zone. No source-listed exception applies to that component. Its far power zone contains only two-by-three PICPWR connectors. The board's stated delivered-power budget for the implemented fixed riser is seventy-five watts.\n\nPause and classify the three findings. For each, name the applicable condition and distinguish the observation from the conclusion. Then consider the separate statement that the populated board will be logically plug-and-play because its outline fits the system.\n\nThe first finding is a demonstrated height mismatch in the constructed configuration. Risers are implemented, the component occupies the six millimeter zone, and the pack supplies no applicable exception. Record the exact component, location and mated configuration that support that conclusion.\n\nThe second finding is a connector-provision mismatch. Only two-by-three connectors are shown, while the far zone must contain at least one two-by-six connector body and sufficient ingress capability for the full board budget. Adding ratings doesn't remove that condition.\n\nThe third finding is a delivered-power shortfall. Seventy-five watts is below the eighty-seven watt minimum for each implemented fixed riser. A seventy-five watt card needs the additional allowance described by the source.\n\nFinally, outline fit doesn't demonstrate discovery or firmware behavior. That claim remains unsupported until the relevant logical-interoperability evidence is supplied. Keep it as a separate evidence gap rather than confusing it with the demonstrated physical and power mismatches.",
+          "audio": {
+            "script_file": "audio/module3/slide_05_case_power.txt",
+            "wav_file": "audio/module3/slide_05_case_power.wav",
+            "delivery_file": "audio/module3/slide_05_case_power.mp3",
+            "approved": true,
+            "duration_seconds": 91.72290249433107,
+            "script_sha256": "29c62d061ec618eb137a7ec7e6e7bc0eed416a97757462af6818f1640e30beea"
+          },
+          "section_label": "Guided case 2",
+          "columns": [
+            "Constructed evidence",
+            "Review question"
+          ],
+          "rows": [
+            [
+              "12mm component in 6mm riser zone; riser implemented; no exception",
+              "Does the applicable height condition permit it?"
+            ],
+            [
+              "Only 2x3+6SB connectors in far zone",
+              "Is the explicit far-zone connector condition met?"
+            ],
+            [
+              "75W delivered to an implemented fixed riser",
+              "Does this meet the 87W minimum?"
+            ],
+            [
+              "“Outline fits, therefore logical plug-and-play”",
+              "What discovery and firmware evidence supports that claim?"
+            ]
+          ],
+          "term_refs": [
+            "picpwr"
+          ],
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 69
+            },
+            {
+              "source": "base_spec",
+              "page": 70
+            },
+            {
+              "source": "base_spec",
+              "page": 74
+            },
+            {
+              "source": "base_spec",
+              "page": 83
+            },
+            {
+              "source": "base_spec",
+              "page": 86
+            },
+            {
+              "source": "base_spec",
+              "page": 88
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 69, 70, 74, 83, 86, 88",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=69",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "slug": "evidence_debrief",
+          "type": "content_diagram",
+          "title": "Reveal the evidence behind each disposition",
+          "transcript": "Bring the two cases together as an evidence trail. Start with the architectural claim: two shorter Class N boards could use infrastructure planned for Class L. The datum overlay and tray example support a possible approach. They don't establish every clearance, cable, power and management condition. The complete integration therefore remains an evidence gap.\n\nNow take the explicit interface conditions one at a time. In the constructed second case, an implemented riser activates the six millimeter zone requirement. A twelve millimeter component in that zone, with no applicable exception, demonstrates a mismatch. The disposition is does not conform on the supplied evidence for that check.\n\nThe far zone contains only two-by-three connectors. The requirement includes at least one two-by-six connector body, so that observation demonstrates another mismatch. The riser budget supplies seventy-five watts where the minimum is eighty-seven. That is a separate shortfall, even if the connector itself has a higher rating.\n\nFinish with the disputed source statement. The Class L hole count differs between the compliance table and body. The appropriate disposition is clarification required. Don't animate a guessed number into a definitive pass or fail.\n\nEach conclusion has a scope: plausible approach, demonstrated mismatch, missing evidence or conflicting requirement. Attach the source page, the actual observation and the next action. That chain lets the team fix a real problem without overstating what a drawing, model or desk review can prove.",
+          "audio": {
+            "script_file": "audio/module3/slide_06_evidence_debrief.txt",
+            "wav_file": "audio/module3/slide_06_evidence_debrief.wav",
+            "delivery_file": "audio/module3/slide_06_evidence_debrief.mp3",
+            "approved": true,
+            "duration_seconds": 84.13759637188208,
+            "script_sha256": "6e0d889cbafe300a70e76a03bc0278624041e0f7b6798e644f850e044d739123"
+          },
+          "section_label": "Evidence-led debrief",
+          "figure": {
+            "path": "figures/video_m3s6_evidence_debrief.mp4",
+            "poster": "figures/video_m3s6_evidence_debrief_poster.png",
+            "media_type": "video",
+            "source": "custom",
+            "caption": "A finding combines an applicable requirement, an observed fact and a scoped disposition. Unresolved source conflicts stay open.",
+            "alt": "Sequential reveal of the compatibility evidence gap, height and power mismatches, and source-conflict escalation.",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "duration_seconds": 84.133333,
+            "text_inventory": {
+              "sha256": "a36ece451b85c17565cd1b5b6aa0e198e30c30bd101c5c7c0d45ebef85114981",
+              "entries": [
+                {
+                  "text": "Check",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Evidence in the review pack",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Disposition",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Shared chassis approach",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Datum overlay and tray example",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "do not establish complete integration.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Insufficient evidence",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "for the complete system",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Riser height zone",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Riser implemented; 6 mm zone.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "12 mm component; no applicable exception.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Does not conform",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "for this check",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Far-power connector",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Only 2 × 3 bodies supplied.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "At least one 2 × 6 body required.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Delivered riser power",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "75 W supplied.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "87 W minimum per implemented fixed riser.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Class L hole-count claim",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Compliance table and body disagree.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "A matching model cannot resolve the text.",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Clarification required",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Conflicting evidence",
+                  "at_seconds": 79.931
+                },
+                {
+                  "text": "Constructed examples · each finding applies to the stated check",
+                  "at_seconds": 79.931
+                }
+              ]
+            }
+          },
+          "source_refs": [
+            {
+              "source": "base_spec",
+              "page": 14
+            },
+            {
+              "source": "base_spec",
+              "page": 30
+            },
+            {
+              "source": "base_spec",
+              "page": 34
+            },
+            {
+              "source": "base_spec",
+              "page": 44
+            },
+            {
+              "source": "base_spec",
+              "page": 74
+            },
+            {
+              "source": "base_spec",
+              "page": 83
+            },
+            {
+              "source": "base_spec",
+              "page": 86
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "Edge-MHS v1.0.0 · pp. 14, 30, 34, 44, 74, 83, 86",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf#page=14",
+              "kind": "pdf"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "slug": "takeaways",
+          "type": "takeaways",
+          "title": "Carry the method into your next design review",
+          "transcript": "The strongest review record is precise about both its evidence and its limits. State the implementation condition before applying the rule. Cite the actual page and preserve the requirement's strength. Then explain what the observation supports.\n\nA mismatch should lead to a specific design action. A missing measurement should lead to an evidence request. A source conflict should lead to clarification. Those outcomes help different owners do the right next piece of work.\n\nKeep examples and future proposals in their proper roles. A promising arrangement can guide a design without establishing that a complete product is compliant. Use the same discipline when you move from this desk exercise to actual board, system and companion-spec validation.",
+          "audio": {
+            "script_file": "audio/module3/slide_07_takeaways.txt",
+            "wav_file": "audio/module3/slide_07_takeaways.wav",
+            "delivery_file": "audio/module3/slide_07_takeaways.mp3",
+            "approved": true,
+            "duration_seconds": 40.68371882086168,
+            "script_sha256": "0c32ba777e668b92d60d446071b13ab8045eb82fb6446b55da5f14fb251f0435"
+          },
+          "items": [
+            "Condition → source → observation → disposition → action.",
+            "A demonstration of fit is narrower than whole-system interoperability.",
+            "Correct a mismatch, request missing evidence, and escalate conflicting requirements.",
+            "Keep examples, future proposals and excluded implementation scope explicit."
+          ]
+        },
+        {
+          "id": 8,
+          "slug": "knowledge_check",
+          "type": "knowledge_check",
+          "title": "Check your review decisions",
+          "transcript": "These final questions ask you to choose useful engineering dispositions. The first concerns conflicting requirement text. The second returns to the constructed power and clearance case.\n\nSubmit both questions once to continue. Correct answers aren't required, and you can retry after the feedback. When several findings are valid, select every supported finding. Avoid answers that claim a complete product approval from a narrow observation. The goal is to preserve the chain from an applicable requirement to the evidence and the next action.",
+          "audio": {
+            "script_file": "audio/module3/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_08_knowledge_check.wav",
+            "delivery_file": "audio/module3/slide_08_knowledge_check.mp3",
+            "approved": true,
+            "duration_seconds": 29.018321995464852,
+            "script_sha256": "d26195d97af5a40807fe1555736a8120e35382ade2fc76c61e7361ae8ebe965f"
+          },
+          "questions": [
+            {
+              "id": "m3q1",
+              "prompt": "The compliance table and body give different Class L hole counts. What should the review record do?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Record both passages and obtain clarification before a definitive count-based conclusion.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Select the number that matches the supplied CAD model.",
+                  "correct": false,
+                  "feedback_incorrect": "The model is an observation, not authority to resolve the published conflict."
+                },
+                {
+                  "id": "c",
+                  "text": "Ignore the conflict because the board looks compatible.",
+                  "correct": false,
+                  "feedback_incorrect": "Visual plausibility does not close a requirement conflict."
+                }
+              ],
+              "feedback_correct": "Correct. A model observation cannot settle conflicting normative text; retain the evidence and escalate it.",
+              "feedback_incorrect": "Review the condition and the scope of the claim."
+            },
+            {
+              "id": "m3q2",
+              "multiple": true,
+              "prompt": "Which findings are supported by Case 2 as stated?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The 12mm component violates the applicable 6mm condition in this case.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "An all-2x3 far zone misses the explicit 2x6 connector-body requirement.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "75W delivered meets the fixed-riser minimum because a CEM card is rated 75W.",
+                  "correct": false
+                },
+                {
+                  "id": "d",
+                  "text": "Outline fit alone leaves the logical plug-and-play claim unsupported.",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. The stated case demonstrates the conditional height and connector mismatches, plus an unsupported logical claim. The 75W budget also falls below 87W.",
+              "feedback_incorrect": "Use the actual conditions: no height exception applies; the far zone needs a 2x6 body; each implemented fixed riser needs at least 87W; logical interoperability needs separate evidence."
+            }
+          ],
+          "subtitle": "Submit both questions once to complete the module. You can retry after feedback."
+        },
+        {
+          "id": 9,
+          "slug": "complete",
+          "type": "course_complete",
+          "title": "Apply the method and keep the references",
+          "transcript": "You've completed A I Native Edge MHS: architecture and integration review. You can now compare Class N and Class L, follow their interface references, and write a scoped finding supported by evidence.\n\nUse the specification and the companion resources when you review a real design. The optional contributor recording adds context, while the related Academy courses explore the wider architecture and logical-interoperability work. Thank you for taking the course. Bring the same clear source trail, careful applicability checks and useful next actions to your next integration review.",
+          "audio": {
+            "script_file": "audio/module3/slide_09_complete.txt",
+            "wav_file": "audio/module3/slide_09_complete.wav",
+            "delivery_file": "audio/module3/slide_09_complete.mp3",
+            "approved": true,
+            "duration_seconds": 31.391519274376417,
+            "script_sha256": "9a92d8f19844756813392647aeefebd3ba292818defeeef5a3f0e8227d2beccd"
+          },
+          "course_title": "AI Native Edge-MHS: Architecture and Integration Review",
+          "thank_you_message": "Thank you for completing Module 3 and the course.",
+          "cert_message": "Use the source-linked review method to make clear, reproducible integration decisions.",
+          "reference_links": [
+            {
+              "label": "AI Native Edge-MHS Base Specification v1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-Base-Specification_V1.0.0.pdf",
+              "kind": "pdf"
+            },
+            {
+              "label": "Supporting 3D design files",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/AI-Native-Edge-MHS-V1.0.0-3D-Files.zip"
+            },
+            {
+              "label": "Optional contributor talk · 16:35",
+              "url": "https://www.youtube.com/watch?v=NtcCQE-pXQg"
+            },
+            {
+              "label": "AICC project and learning context",
+              "url": "https://www.opencompute.org/projects/aicc/"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "authoring_approval": {
+    "outline_approved": true,
+    "production_authorized": true,
+    "zip_authorized": true,
+    "user_instruction": "Approved. Go ahead with the scripts for the 55-minute course, and keep Astra handling all the videos. Go ahead and build everything, including all of the narration and videos. I will review the full SCORM package when ready.",
+    "editorial_review": "Full review build requested; scripts and figure/video production authorized without intermediate review gates.",
+    "video_owner": {
+      "model": "gpt-6-astra",
+      "agent": "/root/video_lead"
+    },
+    "lms_publication_authorized": true,
+    "repository_pr_authorized": true,
+    "publication_instruction": "Use Courses Made with AI; create a new course in the Data Center Technologies catalog and category, with poster, LMS information, blank course code and average completion time. Also make a pull request on the GitHub repository.",
+    "publication_authorized_date": "2026-11-16"
+  },
+  "lms_catalog": {
+    "title": "AI Native Edge-MHS: Architecture and Integration Review",
+    "short_description": "Review Class N/L form factors, mechanical interfaces and integration evidence using the AI Native Edge-MHS specification.",
+    "overview": "Build a practical method for reviewing AI Native Edge-MHS Host Processor Modules. Compare Class N and Class L, examine critical mechanical and power interfaces, and apply source-linked requirements to two guided integration cases. The course distinguishes requirements, recommendations, examples and excluded scope, while identifying the evidence that companion specifications and complete system designs must supply.",
+    "duration_minutes": 55,
+    "duration_basis": "estimated_learner_time",
+    "home_duration_minutes": 1,
+    "duration_note": "Includes a 1-minute Course Home orientation, narration, reading, guided review exercises and knowledge checks. Optional Summit recordings and adjacent Academy courses are additional.",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 16,
+        "summary": "Compare Class N/L form factors and depth choices, follow fixed and floating references, and distinguish architecture intent from complete system interoperability."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 20,
+        "summary": "Follow a datum-led interface review through mounting, height restrictions, peripheral placement, HSIO and power. Preserve conditional requirements and identify source conflicts."
+      },
+      {
+        "id": 3,
+        "duration_minutes": 18,
+        "summary": "Review two constructed integration cases and connect requirements, observations, dispositions and next actions. Separate demonstrated mismatches, evidence gaps and conflicting source text."
+      }
+    ]
+  },
+  "local_font_stylesheet": "assets/fonts/open-sans.css",
+  "resource_assets": [
+    "assets/fonts/OFL.txt",
+    "assets/fonts/open-sans-00.ttf",
+    "assets/fonts/open-sans-01.ttf",
+    "assets/fonts/open-sans-02.ttf",
+    "assets/fonts/open-sans-03.ttf",
+    "assets/fonts/open-sans-04.ttf",
+    "assets/fonts/open-sans-05.ttf",
+    "assets/fonts/open-sans.css"
+  ],
+  "font_delivery": {
+    "family": "Open Sans",
+    "delivery": "local files; same maintained font family and authored weights"
+  },
+  "authoring_toolchain": "authoring/toolchain"
+}
