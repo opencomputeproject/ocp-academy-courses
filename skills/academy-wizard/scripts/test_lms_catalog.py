@@ -91,6 +91,29 @@ class CatalogTests(unittest.TestCase):
         self.assertNotIn('optional_duration_minutes',result)
         self.assertNotIn('optional',result['modules'][1])
 
+    def test_home_orientation_counts_toward_total_and_preserves_module_estimates(self):
+        course=fixture();course['target_duration_minutes']=31
+        course['scorm']={'organization':'multi-sco','include_home_sco':True}
+        course['lms_catalog'].update(duration_minutes=31,home_duration_minutes=1)
+        result=catalog_metadata(course)
+        self.assertEqual(result['home_duration_minutes'],1)
+        self.assertEqual([r['duration_minutes'] for r in result['modules']],[10,20])
+        self.assertIn('Course Home — 1 minute orientation.',result['long_description'])
+        course['scorm']['include_home_sco']=False
+        course['scorm']['home_sco_omission']={'approved':True,'user_instruction':'Omit Course Home.'}
+        with self.assertRaisesRegex(ValueError,'requires a Slides course with Course Home'):catalog_metadata(course)
+
+    def test_home_time_rejects_invalid_values_and_requires_localized_copy(self):
+        for value in [-1,True,False,None,float('nan'),float('inf')]:
+            course=fixture();course['lms_catalog']['home_duration_minutes']=value
+            with self.assertRaises(ValueError):catalog_metadata(course)
+        course=fixture();course['language']='fr-FR';course['target_duration_minutes']=31
+        course['lms_catalog'].update(duration_minutes=31,home_duration_minutes=1)
+        course['lms_catalog']['labels']=catalog_metadata(fixture())['labels']
+        with self.assertRaisesRegex(ValueError,'translated home_heading'):catalog_metadata(course)
+        course['lms_catalog'].update(home_heading='Accueil — {duration} minute.',home_summary='Consultez les objectifs.')
+        self.assertIn('Accueil — 1 minute.',catalog_metadata(course)['long_description'])
+
     def test_source_check_catches_stale_exports_without_changing_them(self):
         with tempfile.TemporaryDirectory() as temp:
             course=fixture();paths=write_catalog(course,temp)

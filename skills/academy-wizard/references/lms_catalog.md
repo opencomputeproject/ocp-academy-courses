@@ -58,6 +58,14 @@ Requirements:
 - Review LMS copy whenever scope, unit order, titles, or learner time changes.
   Keep editorial history and internal build information out of LMS descriptions.
 
+### Separately timed Course Home
+
+For Slides courses with Course Home, `lms_catalog.home_duration_minutes` adds
+orientation time to the required-module total. Keep the module estimates intact;
+Home plus required modules must equal `duration_minutes`. The exporter includes
+a separate Home paragraph. Translations using this field must supply
+`home_heading` (with `{duration}`) and `home_summary` in the course language.
+
 ### Courses with a separately timed optional path
 
 Preserve an existing core-time estimate when an authored module or lesson has

@@ -1,0 +1,11 @@
+import {chromium} from 'playwright';
+import fs from 'node:fs/promises';import path from 'node:path';import {fileURLToPath,pathToFileURL} from 'node:url';
+const dir=path.dirname(fileURLToPath(import.meta.url));await fs.mkdir(path.join(dir,'qa'),{recursive:true});const browser=await chromium.launch({headless:true});
+await Promise.all(process.argv.slice(2).map(async stem=>{
+ const p=await browser.newPage({viewport:{width:1920,height:1080}});const url=pathToFileURL(path.join(dir,'../figures',stem+'.mp4')).href;
+ await p.goto(pathToFileURL(path.join(dir,stem+'.html')).href);await p.setContent(`<html><body style="margin:0;background:white"><video id="v" style="display:block;width:1920px;height:1080px" muted playsinline src="${url}"></video></body></html>`);
+ await p.evaluate(async()=>{const v=document.getElementById('v');window.samples=[];window.decodedFrames=0;window.start=performance.now();window.errors=[];v.addEventListener('error',()=>errors.push(v.error?.message));v.addEventListener('timeupdate',()=>samples.push({time:v.currentTime,wall:(performance.now()-start)/1000}));const frame=()=>{window.decodedFrames++;if(!v.ended)v.requestVideoFrameCallback(frame)};v.requestVideoFrameCallback(frame);await v.play()});
+ let i=0;while(!await p.evaluate(()=>document.getElementById('v').ended)){await p.waitForTimeout(2000);await p.screenshot({path:path.join(dir,'qa',stem+'-pass-'+String(i++).padStart(2,'0')+'.png')});}
+ const end=await p.evaluate(()=>({duration:document.getElementById('v').duration,currentTime:document.getElementById('v').currentTime,ended:document.getElementById('v').ended,muted:document.getElementById('v').muted,decodedFrames,errors,samples}));await p.waitForTimeout(1200);const held=await p.evaluate(()=>({currentTime:document.getElementById('v').currentTime,ended:document.getElementById('v').ended}));
+ await p.screenshot({path:path.join(dir,'qa',stem+'-decoded-end.png')});await fs.writeFile(path.join(dir,'qa',stem+'-playback.json'),JSON.stringify({...end,after_hold:held,monotonic_time:end.samples.every((x,i)=>!i||x.time>=end.samples[i-1].time),playback_mode:'complete real-time muted pass; 2-second visual scrub frames plus separate transition checkpoints'},null,2));await p.close();console.log(stem,'complete muted pass',end.duration,'seconds',end.decodedFrames,'presented frames');
+}));await browser.close();

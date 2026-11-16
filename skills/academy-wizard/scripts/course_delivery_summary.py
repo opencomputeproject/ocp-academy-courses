@@ -121,7 +121,13 @@ def catalog_metadata(course):
         for row in exported:
             if str(row['id']) in authored_optional:
                 row['optional'] = True
-    total = sum(row['duration_minutes'] for row in exported if not row.get('optional'))
+    home = source.get('home_duration_minutes', 0)
+    if home != 0 or isinstance(home, bool):
+        home = _minutes(home, 'lms_catalog.home_duration_minutes')
+        from slides_syllabus import include_home_sco
+        if scrolling or not include_home_sco(course):
+            raise ValueError('Home orientation time requires a Slides course with Course Home')
+    total = home + sum(row['duration_minutes'] for row in exported if not row.get('optional'))
     if abs(total - duration) > .01:
         raise ValueError(f'Unit durations total {_number(total)} minutes, but overall duration is {_number(duration)}; reconcile the approved estimates')
     note = source.get('duration_note')
@@ -135,6 +141,13 @@ def catalog_metadata(course):
     if optional_duration is not None:
         long_md.append(note)
         long_html.append(f'<p>{html.escape(note)}</p>')
+    if home:
+        if str(course.get('language') or 'en-US').split('-')[0].casefold() != 'en' and not all(source.get(k) for k in ('home_heading', 'home_summary')):
+            raise ValueError('Non-English Home metadata needs translated home_heading and home_summary')
+        home_heading = _text(source.get('home_heading', 'Course Home — {duration} minute orientation.'), 'lms_catalog.home_heading').format(duration=_number(home))
+        home_summary = _text(source.get('home_summary', 'Review the course outcomes and module structure.'), 'lms_catalog.home_summary')
+        long_md.append(f'**{home_heading}**{MARKDOWN_BREAK}{home_summary}')
+        long_html.append(f'<p><strong>{html.escape(home_heading)}</strong><br>{html.escape(home_summary)}</p>')
     for index, row in enumerate(exported, 1):
         heading = labels['unit_heading'].format(number=index, title=row['title'], duration=_number(row['duration_minutes']))
         summary = ' '.join(row['summary'].split())
@@ -148,6 +161,8 @@ def catalog_metadata(course):
               'duration_basis': 'estimated_learner_time', key: exported,
               'long_description': '\n\n'.join(long_md),
               'long_description_html': '\n'.join(long_html)}
+    if home:
+        result['home_duration_minutes'] = home
     if note:
         result['duration_note'] = note
     if optional_duration is not None:
