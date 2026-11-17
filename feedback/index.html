@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OCP Academy Feedback Survey</title>
+<style>
+/* OCP Academy palette: indigo from the Academy logo, OCP green and gray from the OCP brand guidelines. */
+:root{--indigo:#262673;--deep:#19194D;--green:#8DC63F;--gray:#5F6062;
+  --bg:#F3F4F5;--card:#FFFFFF;--ink:#19194D;--body:#3F4042;--muted:#5F6062;--line:#DADCDF;--soft:#E9EAF4;
+  --accent:#262673;--on-accent:#FFFFFF;--err:#B3261E;--ok:#3E7D10;
+  --band:#262673;--band-2:#19194D;
+  --f-display:"Franklin Gothic Medium","Franklin Gothic","ITC Franklin Gothic","Libre Franklin","Arial Narrow",Arial,sans-serif;
+  --f-body:"Franklin Gothic Book","ITC Franklin Gothic","Libre Franklin","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F0F2E;--card:#16163F;--ink:#FFFFFF;--body:#DADBE6;--muted:#A6A7BE;--line:#2C2D63;--soft:#23245A;--accent:#A9ACF0;--on-accent:#0F0F2E;--err:#F2847A;--ok:#A6D96A;--band:#1C1C55;--band-2:#0A0A24;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F0F2E;--card:#16163F;--ink:#FFFFFF;--body:#DADBE6;--muted:#A6A7BE;--line:#2C2D63;--soft:#23245A;--accent:#A9ACF0;--on-accent:#0F0F2E;--err:#F2847A;--ok:#A6D96A;--band:#1C1C55;--band-2:#0A0A24;color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--body);font:16px/1.55 var(--f-body)}
+.wrap{max-width:780px;margin:0 auto}
+header{background:linear-gradient(135deg,var(--band) 0%,var(--band-2) 100%);color:#FFFFFF;padding:28px 16px 30px;border-bottom:6px solid var(--green)}
+.logo{display:block;width:150px;height:auto;margin:0 0 18px}
+.kicker{margin:0;font:600 12px/1.4 var(--f-display);letter-spacing:3px;text-transform:uppercase;color:var(--green)}
+h1{margin:6px 0 0;font:500 clamp(26px,5vw,38px)/1.15 var(--f-display);letter-spacing:.5px;color:#FFFFFF}
+header p.intro{margin:12px 0 0;color:#DADBF0;max-width:640px}
+header p.deadline{margin:8px 0 0;color:#DADBF0}
+main{padding:24px 16px 64px}
+.card{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:6px;padding:8px 28px 28px}
+.section{margin:30px 0 16px}
+.section h2{margin:0;font:500 20px/1.25 var(--f-display);letter-spacing:.5px;color:var(--ink);padding-bottom:8px;border-bottom:2px solid var(--line);position:relative}
+.section h2::after{content:"";position:absolute;left:0;bottom:-2px;width:56px;height:2px;background:var(--green)}
+.section p{margin:10px 0 0;color:var(--muted)}
+.section a{color:var(--accent);font-weight:600}
+.field{margin:0 0 22px;border:0;padding:0;min-width:0}
+.field>label,.field>legend{display:block;font-weight:600;color:var(--ink);margin:0 0 8px;padding:0}
+.req{color:var(--err)}
+.help{color:var(--muted);font-size:14px;margin:-2px 0 8px}
+input[type=text],input[type=email],input[type=url],input[type=date],select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:10px 12px}
+textarea{min-height:110px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* Pick-one lists */
+.opts.list{display:grid;gap:6px}
+.choice{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:4px;font-weight:400;cursor:pointer}
+.choice:hover{border-color:var(--accent)}
+.choice:has(input:checked){border-color:var(--accent);background:var(--soft)}
+.choice input{margin-top:4px;width:18px;height:18px;flex:none;accent-color:var(--accent)}
+/* 1–10 scales and rating rows: radio buttons drawn as pills */
+.pill{position:relative;display:flex;align-items:center;justify-content:center;min-height:40px;padding:6px 8px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);font-size:14px;font-weight:600;text-align:center;line-height:1.2;cursor:pointer;user-select:none}
+.pill input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.pill:hover{border-color:var(--accent)}
+.pill:has(input:checked){background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.pill:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.opts.scale{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:6px}
+.ends{display:flex;justify-content:space-between;gap:12px;margin-top:6px;color:var(--muted);font-size:13px}
+.field.row{margin:0;padding:12px 0;border-bottom:1px solid var(--line)}
+.field.row.last{margin-bottom:22px}
+.field.row>legend{float:left;width:44%;margin:0;padding:8px 16px 0 0;font-weight:500}
+.field.row .opts{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px}
+.count{color:var(--muted);font-size:13px;text-align:right;margin-top:4px}
+.invalid input[type=text],.invalid input[type=email],.invalid select,.invalid textarea,.invalid .pill,.invalid .choice{border-color:var(--err)}
+.ferr{clear:both;color:var(--err);font-size:14px;padding-top:6px}
+.hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+.actions{margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
+button{font:600 14px/1 var(--f-display);letter-spacing:1.5px;text-transform:uppercase;background:var(--green);color:var(--deep);border:0;border-radius:4px;padding:15px 26px;cursor:pointer}
+button:hover{filter:brightness(.95)}
+button[disabled]{opacity:.6;cursor:wait}
+.msg{margin:14px 0 0;color:var(--err)}
+.note{color:var(--muted);font-size:14px}
+.note a{color:var(--accent)}
+.banner{border-left:4px solid var(--green);padding:10px 14px;margin:20px 0;background:var(--soft)}
+.done{padding:24px 0 8px}
+.done h2{margin:0 0 8px;font:500 26px/1.2 var(--f-display);color:var(--ink)}
+.done .cta{display:inline-block;margin-top:12px;background:var(--green);color:var(--deep);font:600 14px/1 var(--f-display);letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;padding:15px 22px;border-radius:4px}
+#loading,#closed,#fatal{padding-top:20px}
+footer{padding:0 16px 40px;color:var(--muted);font-size:13px;text-align:center}
+footer a{color:inherit}
+@media (max-width:640px){
+  .card{padding:4px 16px 22px}
+  .field.row>legend{float:none;width:auto;padding:0 0 8px}
+  .opts.scale{gap:4px}
+  .opts.scale .pill{min-height:38px;padding:4px 0;font-size:13px}
+  .field.row .pill{font-size:13px;padding:6px 4px}
+}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a href="https://academy.opencompute.org/learn" target="_blank" rel="noopener" aria-label="OCP Academy"><svg class="logo" width="150" height="74" fill="#FFFFFF" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 289.1 141.7"><polygon points="115.4 70.4 113.7 72.3 113.7 67.9 112.4 67.9 112.4 72.3 110.6 70.4 110.6 72.4 113.0 75.0 115.4 72.4 115.4 70.4"/><polygon points="98.1 100.7 97.9 104.2 101.4 104.0 102.8 102.6 100.3 102.7 103.4 99.6 102.5 98.7 99.4 101.8 99.5 99.3 98.1 100.7"/><polygon points="73.7 113.5 69.4 113.5 71.2 111.8 69.2 111.8 66.7 114.2 69.2 116.5 71.2 116.5 69.3 114.8 73.7 114.8 73.7 113.5"/><polygon points="42.4 100.6 41.0 99.2 37.5 99.1 37.6 102.6 39.0 104.0 38.9 101.4 42.0 104.6 43.0 103.6 39.9 100.5 42.4 100.6"/><polygon points="28.2 74.9 28.2 70.5 29.9 72.3 29.9 70.4 27.5 67.8 25.1 70.4 25.1 72.3 26.9 70.5 26.9 74.9 28.2 74.9"/><polygon points="42.4 42.1 42.6 38.6 39.1 38.7 37.7 40.1 40.2 40.0 37.1 43.2 38.0 44.1 41.1 41.0 41.0 43.5 42.4 42.1"/><polygon points="66.8 29.3 71.2 29.3 69.3 31.0 71.3 31.0 73.9 28.6 71.3 26.2 69.3 26.2 71.2 28.0 66.8 28.0 66.8 29.3"/><polygon points="98.1 42.2 99.5 43.6 103.0 43.7 102.9 40.2 101.5 38.8 101.6 41.4 98.5 38.2 97.6 39.2 100.7 42.3 98.1 42.2"/><polygon points="109.5 61.9 112.5 63.8 114.1 60.7 113.6 58.8 112.4 61.1 111.3 56.8 110.0 57.1 111.2 61.4 109.0 60.0 109.5 61.9"/><polygon points="109.8 93.1 107.4 93.9 109.6 90.1 108.5 89.4 106.3 93.2 105.7 90.8 104.7 92.5 105.5 95.9 108.8 94.9 109.8 93.1"/><polygon points="84.5 111.2 80.3 112.3 81.6 110.1 79.7 110.7 77.8 113.6 80.9 115.3 82.9 114.8 80.6 113.6 84.9 112.4 84.5 111.2"/><polygon points="48.5 111.0 47.8 108.5 51.6 110.7 52.2 109.6 48.4 107.4 50.9 106.8 49.2 105.8 45.8 106.6 46.8 110.0 48.5 111.0"/><polygon points="31.0 80.8 28.0 79.0 26.4 82.1 26.9 84.0 28.1 81.7 29.2 86.0 30.5 85.7 29.4 81.4 31.5 82.7 31.0 80.8"/><polygon points="34.3 49.6 34.8 52.0 35.8 50.3 35.0 46.9 31.7 47.9 30.7 49.6 33.1 48.9 30.9 52.7 32.1 53.4 34.3 49.6"/><polygon points="56.0 31.6 60.2 30.5 58.9 32.6 60.8 32.1 62.7 29.2 59.6 27.5 57.7 28.0 59.9 29.2 55.7 30.4 56.0 31.6"/><polygon points="92.0 31.8 92.8 34.3 88.9 32.1 88.3 33.2 92.1 35.4 89.6 36.0 91.3 36.9 94.8 36.2 93.7 32.8 92.0 31.8"/><polygon points="105.0 47.3 107.2 51.1 104.8 50.4 105.7 52.1 109.1 53.1 109.9 49.7 108.9 48.0 108.3 50.5 106.1 46.7 105.0 47.3"/><polygon points="113.6 84.1 114.1 82.2 111.9 83.5 113.1 79.3 111.8 78.9 110.7 83.2 109.5 80.9 109.0 82.9 110.6 85.9 113.6 84.1"/><polygon points="90.5 108.3 91.3 105.9 89.5 106.9 88.5 110.2 91.9 111.0 93.6 110.0 91.2 109.4 95.0 107.2 94.3 106.1 90.5 108.3"/><polygon points="62.7 113.0 58.5 111.8 60.7 110.6 58.8 110.1 55.7 111.8 57.6 114.7 59.5 115.2 58.1 113.1 62.4 114.2 62.7 113.0"/><polygon points="35.5 95.5 33.4 91.7 35.8 92.4 34.8 90.7 31.4 89.6 30.6 93.1 31.6 94.8 32.2 92.3 34.4 96.1 35.5 95.5"/><polygon points="29.9 56.8 26.9 58.7 26.4 60.6 28.6 59.3 27.4 63.5 28.7 63.9 29.8 59.6 31.0 61.9 31.5 59.9 29.9 56.8"/><polygon points="50.0 34.5 49.3 36.9 51.0 35.9 52.0 32.6 48.6 31.8 46.9 32.8 49.4 33.3 45.5 35.5 46.2 36.7 50.0 34.5"/><polygon points="134.9 67.8 131.9 67.8 128.0 71.4 131.9 75.1 134.9 75.1 132.1 72.4 138.8 72.4 138.8 70.4 132.1 70.4 134.9 67.8"/><polygon points="118.5 114.6 116.4 112.5 111.1 112.3 111.3 117.6 113.4 119.7 113.3 115.8 118.0 120.6 119.4 119.2 114.7 114.5 118.5 114.6"/><polygon points="66.6 133.0 66.6 136.1 69.2 133.2 69.2 139.9 71.2 139.9 71.2 133.2 73.8 136.1 73.8 133.0 70.2 129.2 66.6 133.0"/><polygon points="21.9 114.5 25.8 114.4 21.1 119.1 22.5 120.5 27.2 115.8 27.0 119.6 29.2 117.5 29.4 112.2 24.1 112.4 21.9 114.5"/><polygon points="5.6 74.9 8.6 74.9 12.5 71.3 8.6 67.7 5.6 67.7 8.4 70.3 1.7 70.3 1.7 72.3 8.4 72.3 5.6 74.9"/><polygon points="22.0 28.2 24.2 30.3 29.5 30.5 29.3 25.2 27.1 23.1 27.3 26.9 22.5 22.2 21.1 23.6 25.8 28.3 22.0 28.2"/><polygon points="73.9 9.7 73.9 6.7 71.3 9.6 71.3 2.9 69.3 2.9 69.3 9.5 66.7 6.7 66.7 9.7 70.3 13.6 73.9 9.7"/><polygon points="118.6 28.3 114.7 28.4 119.4 23.7 118.0 22.3 113.3 27.0 113.5 23.2 111.3 25.3 111.2 30.6 116.5 30.4 118.6 28.3"/><polygon points="128.9 52.0 126.1 56.5 130.8 59.0 133.7 58.2 130.3 56.4 136.7 54.7 136.2 52.7 129.8 54.5 131.8 51.2 128.9 52.0"/><polygon points="128.0 100.6 125.4 99.1 120.3 100.3 121.8 105.4 124.4 106.9 123.3 103.2 129.1 106.5 130.1 104.8 124.3 101.5 128.0 100.6"/><polygon points="89.7 130.0 85.2 127.2 82.7 131.9 83.5 134.8 85.3 131.4 87.0 137.8 88.9 137.3 87.2 130.9 90.4 132.9 89.7 130.0"/><polygon points="36.3 122.9 34.8 125.5 38.4 124.4 35.1 130.2 36.8 131.2 40.2 125.4 41.0 129.2 42.5 126.6 41.3 121.4 36.3 122.9"/><polygon points="11.6 90.8 14.4 86.3 9.8 83.8 6.9 84.6 10.3 86.4 3.8 88.1 4.3 90.0 10.8 88.3 8.7 91.6 11.6 90.8"/><polygon points="12.5 42.1 15.1 43.6 20.3 42.5 18.7 37.4 16.1 35.9 17.2 39.6 11.4 36.2 10.4 38.0 16.2 41.3 12.5 42.1"/><polygon points="50.9 12.8 55.4 15.6 57.8 10.9 57.1 8.0 55.3 11.4 53.5 4.9 51.6 5.5 53.3 11.9 50.1 9.9 50.9 12.8"/><polygon points="104.3 19.8 105.8 17.2 102.1 18.4 105.4 12.6 103.7 11.6 100.4 17.3 99.5 13.6 98.0 16.2 99.2 21.4 104.3 19.8"/><polygon points="128.1 42.2 124.3 41.4 130.1 38.0 129.1 36.3 123.4 39.6 124.5 36.0 121.9 37.5 120.3 42.6 125.5 43.7 128.1 42.2"/><polygon points="133.6 84.7 130.7 83.9 126.0 86.4 128.9 90.9 131.8 91.7 129.7 88.4 136.2 90.1 136.7 88.2 130.3 86.5 133.6 84.7"/><polygon points="104.2 123.0 99.1 121.5 97.9 126.6 99.4 129.2 100.3 125.5 103.6 131.2 105.3 130.3 102.0 124.5 105.7 125.6 104.2 123.0"/><polygon points="50.8 130.0 50.0 132.9 53.3 130.8 51.5 137.3 53.4 137.8 55.2 131.4 57.0 134.8 57.7 131.9 55.3 127.2 50.8 130.0"/><polygon points="12.4 100.5 16.2 101.4 10.4 104.8 11.4 106.5 17.2 103.1 16.0 106.8 18.6 105.3 20.2 100.2 15.0 99.0 12.4 100.5"/><polygon points="6.9 58.1 9.8 58.9 14.5 56.4 11.7 51.9 8.7 51.1 10.8 54.4 4.3 52.7 3.8 54.6 10.3 56.3 6.9 58.1"/><polygon points="36.4 19.8 41.4 21.3 42.6 16.2 41.1 13.6 40.2 17.3 36.9 11.5 35.2 12.5 38.5 18.3 34.9 17.2 36.4 19.8"/><polygon points="89.8 12.8 90.5 9.9 87.3 11.9 89.0 5.5 87.1 5.0 85.4 11.4 83.6 8.0 82.8 10.9 85.3 15.6 89.8 12.8"/><polygon points="103.8 65.1 102.3 65.3 103.9 66.5 100.4 67.0 100.6 68.0 104.0 67.5 102.8 69.1 104.3 68.9 106.1 66.7 103.8 65.1"/><polygon points="125.0 63.0 121.6 60.2 119.1 63.8 119.4 66.2 121.2 63.7 121.9 69.1 123.6 68.9 122.8 63.5 125.3 65.5 125.0 63.0"/><polygon points="98.4 90.7 97.2 89.7 97.5 91.7 94.7 89.6 94.1 90.4 96.9 92.6 94.9 92.7 96.1 93.7 98.9 93.4 98.4 90.7"/><polygon points="113.3 106.1 114.9 104.1 114.4 99.8 110.1 100.5 108.6 102.5 111.8 102.0 108.4 106.3 109.7 107.3 113.0 103.0 113.3 106.1"/><polygon points="76.5 105.0 76.3 103.4 75.2 105.1 74.7 101.5 73.7 101.7 74.1 105.2 72.6 103.9 72.8 105.5 74.9 107.2 76.5 105.0"/><polygon points="75.4 120.5 78.0 122.3 72.5 123.1 72.7 124.7 78.2 124.0 76.2 126.4 78.6 126.1 81.4 122.7 77.9 120.2 75.4 120.5"/><polygon points="51.2 95.2 49.1 98.0 48.9 96.0 47.9 97.2 48.2 100.0 51.0 99.6 51.9 98.3 49.9 98.7 52.1 95.9 51.2 95.2"/><polygon points="35.5 114.5 37.5 116.0 41.9 115.6 41.1 111.3 39.2 109.8 39.7 112.9 35.3 109.5 34.3 110.8 38.7 114.2 35.5 114.5"/><polygon points="38.3 77.5 36.6 76.3 40.1 75.8 40.0 74.8 36.5 75.2 37.8 73.7 36.2 73.9 34.4 76.0 36.7 77.7 38.3 77.5"/><polygon points="15.6 79.8 18.9 82.6 21.5 79.0 21.2 76.5 19.3 79.1 18.6 73.7 17.0 73.9 17.7 79.3 15.2 77.3 15.6 79.8"/><polygon points="42.1 52.1 43.3 53.1 43.0 51.0 45.8 53.2 46.4 52.4 43.7 50.2 45.7 50.0 44.4 49.1 41.6 49.3 42.1 52.1"/><polygon points="27.2 36.7 25.7 38.6 26.1 43.0 30.4 42.3 31.9 40.3 28.8 40.8 32.1 36.5 30.8 35.5 27.5 39.8 27.2 36.7"/><polygon points="64.0 37.8 64.2 39.4 65.4 37.7 65.8 41.2 66.9 41.1 66.4 37.6 68.0 38.9 67.8 37.3 65.6 35.5 64.0 37.8"/><polygon points="65.1 22.3 62.5 20.4 68.0 19.7 67.8 18.1 62.3 18.8 64.3 16.4 61.9 16.7 59.1 20.1 62.7 22.6 65.1 22.3"/><polygon points="89.3 47.6 91.4 44.8 91.6 46.8 92.6 45.5 92.3 42.7 89.6 43.2 88.6 44.5 90.6 44.1 88.5 46.9 89.3 47.6"/><polygon points="105.0 28.3 103.0 26.8 98.7 27.2 99.4 31.5 101.4 33.0 100.8 29.9 105.2 33.2 106.2 31.9 101.8 28.6 105.0 28.3"/><polygon points="98.6 60.3 101.9 58.9 101.1 60.8 102.5 60.2 103.7 57.6 101.1 56.6 99.6 57.2 101.5 57.9 98.2 59.3 98.6 60.3"/><polygon points="120.9 49.1 116.9 47.3 115.4 51.4 116.4 53.7 117.5 50.7 119.6 55.8 121.1 55.2 119.0 50.1 121.9 51.4 120.9 49.1"/><polygon points="101.4 84.9 99.5 85.6 101.0 86.3 103.6 85.3 102.5 82.7 101.0 82.1 101.9 84.0 98.6 82.6 98.2 83.6 101.4 84.9"/><polygon points="121.8 91.5 120.3 87.4 116.3 89.2 115.4 91.5 118.3 90.2 116.2 95.3 117.7 95.9 119.8 90.8 120.9 93.8 121.8 91.5"/><polygon points="84.4 100.7 83.7 102.6 82.3 99.4 81.4 99.8 82.7 103.0 80.9 102.2 81.5 103.7 84.0 104.8 85.0 102.2 84.4 100.7"/><polygon points="87.9 117.5 90.9 118.6 85.8 120.7 86.5 122.2 91.5 120.1 90.2 123.0 92.5 122.1 94.3 118.1 90.2 116.6 87.9 117.5"/><polygon points="58.9 103.6 59.5 102.1 57.7 103.0 59.0 99.7 58.1 99.3 56.7 102.6 56.0 100.7 55.4 102.1 56.4 104.8 58.9 103.6"/><polygon points="50.2 122.9 54.3 121.4 52.4 117.4 50.2 116.5 51.5 119.4 46.4 117.3 45.8 118.8 50.8 120.9 47.9 122.0 50.2 122.9"/><polygon points="41.9 82.5 38.6 83.8 39.5 82.0 38.0 82.6 36.8 85.2 39.5 86.1 40.9 85.5 39.0 84.8 42.3 83.5 41.9 82.5"/><polygon points="23.6 95.5 25.1 91.4 24.2 89.1 23.0 92.1 20.9 87.0 19.4 87.6 21.5 92.7 18.7 91.3 19.6 93.6 23.6 95.5"/><polygon points="39.1 57.8 41.0 57.1 39.5 56.5 36.9 57.5 38.0 60.0 39.5 60.7 38.7 58.8 41.9 60.1 42.3 59.2 39.1 57.8"/><polygon points="18.7 51.3 20.2 55.4 24.2 53.6 25.2 51.3 22.3 52.6 24.4 47.5 22.9 46.9 20.8 52.0 19.7 49.0 18.7 51.3"/><polygon points="56.1 42.1 56.8 40.1 58.2 43.4 59.1 43.0 57.8 39.8 59.6 40.6 59.0 39.1 56.5 38.0 55.5 40.6 56.1 42.1"/><polygon points="52.6 25.3 49.6 24.2 54.7 22.1 54.1 20.6 49.0 22.7 50.3 19.8 48.0 20.7 46.2 24.7 50.3 26.2 52.6 25.3"/><polygon points="82.5 43.5 83.8 40.2 84.5 42.1 85.1 40.6 84.2 38.0 81.6 39.2 81.0 40.6 82.9 39.8 81.5 43.1 82.5 43.5"/><polygon points="90.4 19.8 86.3 21.4 88.1 25.3 90.4 26.3 89.0 23.4 94.1 25.5 94.8 24.0 89.7 21.9 92.6 20.8 90.4 19.8"/><polygon points="94.2 52.5 94.8 53.3 97.6 51.2 97.3 53.1 98.5 52.2 99.0 49.4 96.2 49.2 94.9 50.1 97.0 50.3 94.2 52.5"/><polygon points="110.5 39.2 113.9 43.6 115.2 42.6 111.8 38.2 114.9 38.8 113.4 36.8 109.1 36.1 108.7 40.4 110.2 42.4 110.5 39.2"/><polygon points="103.8 77.8 106.1 76.2 104.3 74.0 102.7 73.8 104.0 75.4 100.5 74.9 100.4 76.0 103.9 76.4 102.2 77.6 103.8 77.8"/><polygon points="122.4 82.8 123.1 77.3 124.9 79.9 125.3 77.5 122.7 73.9 119.4 76.7 119.0 79.1 121.5 77.1 120.8 82.6 122.4 82.8"/><polygon points="89.5 99.6 92.2 100.1 92.5 97.3 91.5 96.1 91.3 98.1 89.2 95.3 88.3 95.9 90.5 98.7 88.5 98.4 89.5 99.6"/><polygon points="104.9 114.6 105.6 110.2 101.2 109.8 99.3 111.4 102.4 111.7 98.1 115.0 99.1 116.3 103.4 113.0 102.9 116.1 104.9 114.6"/><polygon points="65.7 101.5 65.2 105.0 64.1 103.4 63.9 104.9 65.5 107.2 67.6 105.4 67.8 103.9 66.3 105.2 66.7 101.7 65.7 101.5"/><polygon points="65.0 120.5 62.5 120.2 64.5 122.6 59.1 121.9 58.9 123.5 64.3 124.2 61.7 126.1 64.2 126.4 67.8 123.9 65.0 120.5"/><polygon points="46.4 90.3 45.7 89.5 42.9 91.6 43.3 89.6 42.0 90.6 41.5 93.4 44.3 93.6 45.6 92.6 43.6 92.5 46.4 90.3"/><polygon points="30.0 103.6 26.6 99.2 25.3 100.2 28.7 104.5 25.6 104.0 27.1 106.0 31.4 106.7 31.8 102.4 30.3 100.4 30.0 103.6"/><polygon points="36.7 65.0 34.4 66.6 36.2 68.8 37.8 69.0 36.5 67.4 40.0 67.9 40.1 66.8 36.6 66.4 38.3 65.2 36.7 65.0"/><polygon points="18.1 60.0 17.4 65.4 15.6 62.9 15.3 65.3 17.8 68.9 21.2 66.1 21.5 63.6 19.0 65.7 19.8 60.2 18.1 60.0"/><polygon points="51.1 43.1 48.3 42.7 48.0 45.5 49.0 46.7 49.2 44.7 51.3 47.5 52.2 46.8 50.0 44.1 52.0 44.4 51.1 43.1"/><polygon points="35.7 28.2 34.9 32.5 39.3 32.9 41.3 31.4 38.1 31.1 42.5 27.8 41.5 26.5 37.1 29.8 37.6 26.7 35.7 28.2"/><polygon points="74.8 41.2 75.3 37.8 76.5 39.4 76.7 37.8 75.0 35.6 72.9 37.3 72.7 38.9 74.2 37.6 73.8 41.1 74.8 41.2"/><polygon points="75.6 22.3 78.0 22.6 76.0 20.2 81.4 20.9 81.7 19.3 76.2 18.5 78.8 16.7 76.3 16.4 72.8 18.9 75.6 22.3"/><polygon points="77.8 29.8 82.0 31.0 79.8 32.1 81.7 32.7 84.8 31.0 82.9 28.1 81.0 27.5 82.4 29.7 78.1 28.6 77.8 29.8"/><path d="M55.3,79.6h.0c.0.7.4,1.5,1.1,2.3l.9-7.5-2.1-1.0v6.2Z"/><path d="M85.8,79.6v-6.1l-13.6,6.6s-.7.3-1.5.3c-.8,0-1.5-.3-1.5-.3l-8.7-4.2,1.2,9.9c2.5,1.2,5.6,2.0,8.9,2.0,8.3,0,15.1-5.3,15.2-8.2h.0Z"/><path d="M58.8,90.2c1.5,0,1.8-1.5,1.8-1.5l-1.8-13.6-1.8,13.6s.3,1.5,1.8,1.5Z"/><path d="M94.5,66.5l-22.3-10.7c-.8-.4-2.2-.4-3.1,0l-22.3,10.7c-.8.4-.8,1.1,0,1.5l9.8,4.7c.4.2.8.4,1.1.5.3.1.4.2.4.2,0-.3.1-.4.2-.5.0-.0.2-.1.5-.3l1.4-.8,7.8-4.1c-.1-.1-.1-.3-.1-.5,0-.9,1.2-1.7,2.7-1.7,1.5,0,2.7.8,2.7,1.7,0,.9-1.2,1.7-2.7,1.7-.5,0-.9-.1-1.3-.2l-9.5,5.0s-.1.1-.1.3c0,.2.1.2.1.2.4.2.7.4,1.2.6l8.1,3.9c.8.4,2.2.4,3.1,0l22.3-10.7c.8-.4.8-1.1.0-1.5Z"/><path d="M184.3,38.1h-14.1c-7.2,0-9.7,3.7-9.7,10.5v12.7c0,6.9,2.5,10.5,9.7,10.5h14.1c7.2,0,9.7-3.7,9.7-10.5v-12.7c0-6.9-2.6-10.5-9.7-10.5ZM186.0,61.5c0,2.2-1.5,2.7-3.4,2.7h-10.6c-2.0,0-3.4-.4-3.4-2.7v-13.0c0-2.2,1.5-2.7,3.4-2.7h10.6c2.0,0,3.4.4,3.4,2.7v13.0Z"/><path d="M255.6,71.9h4.5c.9,0,1.7-.9,1.7-1.8v-11.2h15.4c6.9,0,9.7-3.6,9.7-10.2,0-6.9-2.5-10.5-9.7-10.5h-21.6c-.9,0-1.8.7-1.8,1.6v30.3c0,.9.8,1.8,1.7,1.8ZM261.9,45.9h13.6c2.0,0,3.5.4,3.5,2.7,0,2.3-1.6,2.7-3.7,2.7h-13.5v-5.3Z"/><path d="M240.7,61.8h-8.0c-.1,2.0-1.5,2.4-3.4,2.4h-10.6c-2.0,0-3.4-.4-3.4-2.7v-13.0c0-2.2,1.5-2.7,3.4-2.7h10.6c1.9,0,3.3.4,3.4,2.4h8.0c-.1-6.6-2.7-10.1-9.7-10.1h-14.1c-7.2,0-9.7,3.7-9.7,10.5v12.7c0,6.9,2.5,10.5,9.7,10.5h14.1c7.0,0,9.6-3.5,9.7-10.1Z"/><path d="M168.5,85.9l-3.1.4-.2.2-6.6,18.4.2.2h3.2l.2-.2,1.4-4.3h6.7l1.4,4.3.2.2h3.2l.2-.2-6.7-18.7-.2-.2ZM164.7,97.7l1.9-5.6.5-1.8.5,1.8,1.9,5.6h-4.8Z"/><path d="M190.2,99.6l-.3.1s-.8,2.6-4.4,2.6c-2.5,0-4.4-1.3-4.4-4.1v-5.0c0-2.8,1.8-4.2,4.4-4.2,3.0,0,4.1,2.5,4.1,2.5l.3.1,2.7-1.1.1-.3s-1.4-4.3-7.2-4.3c-4.8,0-7.9,2.5-7.9,7.1v5.4c0,4.6,3.1,7,7.9,7,6.4,0,7.5-4.5,7.5-4.5l-.1-.3-2.7-1.0Z"/><path d="M204.6,85.9l-3.1.4-.2.2-6.6,18.4.2.2h3.2l.2-.2,1.4-4.3h6.7l1.4,4.3.2.2h3.2l.2-.2-6.7-18.7-.2-.2ZM200.7,97.7l1.9-5.6.5-1.8.5,1.8,1.9,5.6h-4.8Z"/><path d="M221.4,86.2h-6.8l-.2.2v18.5l.2.2h6.8c4.8,0,7.9-2.3,7.9-6.9v-5.0c0-4.6-3.1-7-7.9-7ZM225.7,97.9c0,2.8-1.8,4.1-4.3,4.1h-3.6v-12.7h3.6c2.5,0,4.3,1.3,4.3,4.1v4.5Z"/><polygon points="237.2 102.0 237.2 96.7 243.0 96.7 243.2 96.5 243.9 93.8 243.8 93.6 237.2 93.6 237.2 89.2 244.7 89.2 244.9 89.0 244.9 86.4 244.7 86.2 233.9 86.2 233.7 86.4 233.7 104.9 233.9 105.1 244.3 105.1 244.5 104.9 244.9 102.2 244.8 102.0 237.2 102.0"/><polygon points="264.5 86.3 264.2 86.5 258.5 96.5 252.6 86.1 252.3 86.0 249.4 86.3 249.2 86.5 249.2 104.9 249.4 105.1 252.5 105.1 252.7 104.9 252.7 92.4 253.6 94.3 256.9 100.0 257.2 100.2 259.8 100.2 260.1 100.0 263.4 94.4 264.4 92.3 264.4 104.9 264.6 105.1 267.6 105.1 267.8 104.9 267.8 86.1 267.5 86.0 264.5 86.3"/><polygon points="282.1 86.3 281.8 86.5 278.8 92.7 278.3 94.3 277.7 92.7 274.6 86.1 274.4 85.9 270.9 86.3 270.7 86.5 276.5 97.1 276.5 104.9 276.7 105.1 279.8 105.1 280.0 104.9 280.0 97.1 285.9 86.1 285.7 85.9 282.1 86.3"/></svg></a>
+  <p class="kicker">Open Compute Project</p>
+  <h1 id="title">OCP Academy Feedback Survey</h1>
+  <p id="intro" class="intro"></p><p id="deadline" class="deadline"></p>
+</div></header>
+<main><div class="wrap">
+  <div class="card">
+    <p id="loading" class="note">One moment…</p>
+    <form id="form" novalidate hidden>
+      <div id="editBanner" class="banner" hidden></div>
+      <div id="fields"></div>
+      <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="website" id="website" tabindex="-1" autocomplete="off"></label></div>
+      <div class="actions">
+        <button id="submit" type="submit">Submit feedback</button>
+        <p id="sendErr" class="msg" role="alert"></p>
+        <p id="privacy" class="note" hidden></p>
+      </div>
+    </form>
+    <div id="done" class="done" hidden aria-live="polite"><h2 id="doneTitle">Thank you for your feedback!</h2><p id="doneText"></p>
+      <a class="cta" href="https://academy.opencompute.org/learn" target="_blank" rel="noopener">Explore OCP Academy courses</a></div>
+    <div id="closed" hidden><h2 style="margin-top:0">This survey is closed</h2><p id="closedText" class="note"></p></div>
+    <p id="fatal" class="msg" role="alert" hidden></p>
+  </div>
+</div></main>
+<footer>Open Compute Project Foundation · <a href="https://academy.opencompute.org/learn" target="_blank" rel="noopener">OCP Academy</a></footer>
+<script>
+/* Hosting this page somewhere other than Apps Script (GitHub Pages, a website)? Paste the web app's
+   /exec URL here. Leave it '' when Apps Script serves the page itself (HTML file named "Form"). */
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycby3pq8O4f8SOF7H9Px65Onh5Oim55D3A_nzp9teXc8oP6G7uS2TkBbYE51vxGvhCoDj/exec';
+
+(function () {
+  const $ = id => document.getElementById(id);
+  const el = (tag, attrs, text) => { const e = document.createElement(tag); for (const k in attrs || {}) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; return e; };
+  const run = window.google && google.script && google.script.run;   // present when Apps Script serves the page
+  let CFG = null, EDIT = null;
+
+  function call(kind, payload) {
+    if (run) return new Promise((ok, fail) => google.script.run.withSuccessHandler(ok)
+      .withFailureHandler(() => fail(new Error('The connection to the server failed.')))[kind === 'get' ? 'apiGet' : 'apiPost'](payload));
+    if (!ENDPOINT) return Promise.reject(new Error('This page is not connected to its backend yet (ENDPOINT is empty).'));
+    const req = kind === 'get'
+      ? fetch(ENDPOINT + '?' + new URLSearchParams(payload))
+      // text/plain keeps this a "simple" request, so the browser does not send a CORS preflight Apps Script can't answer.
+      : fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+    return req.then(r => r.json());
+  }
+
+  const closed = () => !!CFG.closes && new Date() > new Date(CFG.closes);
+
+  function section(s) {
+    const box = el('div', { class: 'section' });
+    box.append(el('h2', null, s.title));
+    if (s.text || s.link) {
+      const p = el('p', null, s.text || '');
+      // Only https links from the settings are shown.
+      if (s.link && /^https:\/\//i.test(s.link.url)) { p.append(' '); p.append(el('a', { href: s.link.url, target: '_blank', rel: 'noopener' }, s.link.text || s.link.url)); p.append('.'); }
+      box.append(p);
+    }
+    return box;
+  }
+
+  function render() {
+    document.title = CFG.title;
+    $('title').textContent = CFG.title;
+    $('intro').textContent = CFG.intro || '';
+    if (CFG.closesLabel) $('deadline').textContent = 'The survey closes ' + CFG.closesLabel + '.';
+    if (CFG.privacyUrl) { const p = $('privacy'); p.append('How we handle your information: '); p.append(el('a', { href: CFG.privacyUrl, target: '_blank', rel: 'noopener' }, 'OCP privacy policy')); p.hidden = false; }
+    const box = $('fields');
+    CFG.fields.forEach((f, idx) => {
+      if (f.section) box.append(section(f.section));
+      const id = 'f_' + f.id, helpId = id + '_help', group = f.type === 'radio' || f.type === 'checkboxes';
+      const next = CFG.fields[idx + 1];
+      const cls = 'field' + (f.layout === 'row' ? ' row' + (!next || next.layout !== 'row' || next.section ? ' last' : '') : '');
+      const wrap = el(group ? 'fieldset' : 'div', { class: cls, 'data-id': f.id });
+      const star = () => el('span', { class: 'req', 'aria-hidden': 'true' }, ' *');
+      if (f.type === 'checkbox') {
+        const lab = el('label', { class: 'choice' }); const i = el('input', { type: 'checkbox', id, name: f.id });
+        lab.append(i, el('span', null, f.label)); if (f.required) lab.append(star()); wrap.append(lab);
+      } else {
+        const head = el(group ? 'legend' : 'label', group ? {} : { for: id }, f.label); if (f.required) head.append(star()); wrap.append(head);
+        if (f.help) wrap.append(el('p', { class: 'help', id: helpId }, f.help));
+        if (group) {
+          const pills = f.layout === 'scale' || f.layout === 'row';
+          const opts = el('div', { class: 'opts ' + (f.layout === 'scale' ? 'scale' : f.layout === 'row' ? 'rowopts' : 'list') });
+          f.options.forEach((o, n) => {
+            const lab = el('label', { class: pills ? 'pill' : 'choice' });
+            const input = el('input', { type: f.type === 'radio' ? 'radio' : 'checkbox', name: f.id, value: o, id: id + '_' + n });
+            if (f.layout === 'scale' && f.ends) input.setAttribute('aria-label', o + (n === 0 ? ' (' + f.ends[0] + ')' : n === f.options.length - 1 ? ' (' + f.ends[1] + ')' : ''));
+            lab.append(input, el('span', null, o)); opts.append(lab);
+          });
+          wrap.append(opts);
+          if (f.layout === 'scale' && f.ends) { const e = el('div', { class: 'ends', 'aria-hidden': 'true' }); e.append(el('span', null, '1 = ' + f.ends[0]), el('span', null, f.options.length + ' = ' + f.ends[1])); wrap.append(e); }
+        } else {
+          let input;
+          if (f.type === 'select') { input = el('select', { id, name: f.id }); input.append(el('option', { value: '' }, 'Choose…')); f.options.forEach(o => input.append(el('option', { value: o }, o))); }
+          else if (f.type === 'textarea') input = el('textarea', { id, name: f.id, maxlength: f.max });
+          else input = el('input', { type: f.type, id, name: f.id, maxlength: f.max, autocomplete: f.type === 'email' ? 'email' : f.id === 'firstName' ? 'given-name' : f.id === 'lastName' ? 'family-name' : 'on' });
+          if (f.placeholder) input.setAttribute('placeholder', f.placeholder);
+          if (f.help) input.setAttribute('aria-describedby', helpId);
+          if (f.required) input.setAttribute('aria-required', 'true');
+          wrap.append(input);
+          if (f.type === 'textarea') { const c = el('div', { class: 'count' }); const upd = () => c.textContent = input.value.length + ' / ' + f.max; input.addEventListener('input', upd); upd(); wrap.append(c); }
+        }
+      }
+      box.append(wrap);
+    });
+  }
+
+  function read() {
+    const d = {};
+    CFG.fields.forEach(f => {
+      if (f.type === 'checkbox') d[f.id] = $('f_' + f.id).checked;
+      else if (f.type === 'checkboxes') d[f.id] = [...document.querySelectorAll(`input[name="${f.id}"]:checked`)].map(i => i.value);
+      else if (f.type === 'radio') { const c = document.querySelector(`input[name="${f.id}"]:checked`); d[f.id] = c ? c.value : ''; }
+      else d[f.id] = $('f_' + f.id).value.trim();
+    });
+    return d;
+  }
+  function fill(data) {
+    CFG.fields.forEach(f => {
+      const v = data[f.id];
+      if (f.type === 'checkbox') $('f_' + f.id).checked = !!v;
+      else if (f.type === 'checkboxes' || f.type === 'radio') document.querySelectorAll(`input[name="${f.id}"]`).forEach(i => { i.checked = f.type === 'radio' ? i.value === v : (v || []).indexOf(i.value) >= 0; });
+      else { const i = $('f_' + f.id); i.value = v == null ? '' : v; i.dispatchEvent(new Event('input')); }
+    });
+  }
+  function validate(d) {
+    let first = null;
+    document.querySelectorAll('.field').forEach(w => { w.classList.remove('invalid'); const e = w.querySelector('.ferr'); if (e) e.remove(); });
+    CFG.fields.forEach(f => {
+      const v = d[f.id]; let msg = '';
+      const empty = f.type === 'checkbox' ? !v : f.type === 'checkboxes' ? !v.length : !v;
+      if (f.required && empty) msg = f.type === 'checkbox' ? 'Please tick this box.' : f.type === 'radio' ? 'Please choose an answer.' : 'This is required.';
+      else if (!empty && f.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) msg = 'Enter a valid email address.';
+      else if (!empty && f.type === 'url' && !/^https?:\/\/\S+$/i.test(v)) msg = 'Start the address with http:// or https://.';
+      else if (typeof v === 'string' && v.length > f.max) msg = `Keep this under ${f.max} characters.`;
+      if (msg) { const w = document.querySelector(`.field[data-id="${f.id}"]`); w.classList.add('invalid'); w.append(el('div', { class: 'ferr' }, msg)); first = first || w; }
+    });
+    if (first) { const i = first.querySelector('input,select,textarea'); if (i) i.focus({ preventScroll: true }); first.scrollIntoView({ block: 'center' }); }
+    return !first;
+  }
+
+  async function submit(ev) {
+    ev.preventDefault();
+    if (closed()) return showClosed();
+    const d = read();
+    if (!validate(d)) { $('sendErr').textContent = 'Please answer the questions marked in red.'; return; }
+    d.website = $('website').value;
+    if (EDIT) { d.editRef = EDIT.ref; d.editToken = EDIT.t; }
+    const b = $('submit'); b.disabled = true; b.textContent = 'Sending…'; $('sendErr').textContent = '';
+    try {
+      const j = await call('post', d);
+      if (!j.ok) { const e = new Error(j.error || 'The server did not accept the submission.'); e.limited = !!j.limited; e.field = j.field; throw e; }
+      $('form').hidden = true;
+      $('doneTitle').textContent = EDIT ? 'Your feedback was updated' : 'Thank you for your feedback!';
+      $('doneText').textContent = `Your reference is ${j.ref}.` + (CFG.sendReceipt ? ` A copy of your answers is on its way to ${d.email}.` : '');
+      $('done').hidden = false; $('done').scrollIntoView({ block: 'start' });
+    } catch (err) {
+      $('sendErr').textContent = 'Your feedback was not sent: ' + err.message + (err.limited ? '' : ' Please try again in a minute.');
+    } finally { b.disabled = false; b.textContent = EDIT ? 'Save my changes' : 'Submit feedback'; }
+  }
+
+  function showClosed() {
+    $('form').hidden = true; $('loading').hidden = true;
+    $('closedText').textContent = CFG.closesLabel ? 'The deadline was ' + CFG.closesLabel + '.' : '';
+    $('closed').hidden = false;
+  }
+  function fatal(msg) { $('loading').hidden = true; $('fatal').textContent = msg; $('fatal').hidden = false; }
+
+  async function start() {
+    const boot = window.__BOOT__ || null;
+    const q = new URLSearchParams(location.search);
+    const edit = boot ? boot.edit : q.get('edit'), t = boot ? boot.t : q.get('t');
+    try {
+      CFG = boot && boot.config ? boot.config : (await call('get', { action: 'config' })).config;
+      if (!CFG) throw new Error('The form settings could not be loaded.');
+    } catch (err) { return fatal('The form could not be loaded: ' + err.message); }
+    render();
+    if (closed()) return showClosed();
+    if (edit && t) {
+      try {
+        const j = await call('get', { action: 'load', ref: edit, t });
+        if (!j.ok) return fatal(j.error);
+        EDIT = { ref: edit, t }; fill(j.data);
+        $('editBanner').textContent = `Editing response ${edit}. Change what you need, then save.`; $('editBanner').hidden = false;
+        $('submit').textContent = 'Save my changes';
+      } catch (err) { return fatal('This response could not be loaded: ' + err.message); }
+    }
+    $('loading').hidden = true; $('form').hidden = false;
+    $('form').addEventListener('submit', submit);
+    const clear = e => {
+      const w = e.target.closest && e.target.closest('.invalid');
+      if (w) { w.classList.remove('invalid'); const m = w.querySelector('.ferr'); if (m) m.remove(); }
+      if (!document.querySelector('.field.invalid') && $('sendErr').textContent.startsWith('Please answer')) $('sendErr').textContent = '';
+    };
+    document.addEventListener('input', clear); document.addEventListener('change', clear);
+  }
+  // Apps Script appends its settings after this script, so start once the whole page has been read.
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+</body>
+</html>
