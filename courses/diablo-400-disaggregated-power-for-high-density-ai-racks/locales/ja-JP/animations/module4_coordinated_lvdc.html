@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja-JP">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>協調LVDC応答アニメーション</title>
+<title>調整された LVDC 応答アニメーション</title>
 <style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eef1f3}canvas{display:block;width:100vw;height:100vh}</style>
 </head>
 <body>
-<canvas id="scene" width="1280" height="720" aria-label="変換、保管、保護、健全な負荷を含むアニメーション化された協調LVDCシステム応答"></canvas>
+<canvas id="scene" width="1280" height="720" aria-label="変換、ストレージ、保護、正常な負荷を伴うアニメーション化された調整された LVDC システム応答"></canvas>
 <script src="academy_video_common.js"></script>
 <script>
 (function () {
@@ -40,26 +40,24 @@
     var fault = V.progress(t, 4450, 5000) * (1 - V.progress(t, 6050, 6500));
     var cleared = V.progress(t, 5750, 6500);
     var recovery = V.progress(t, 6500, 7550);
-    var reset = 1 - V.progress(t, 8350, 8950);
+    V.header("施設の LVDC システムが負荷と障害にどのように応答するか");
+    V.panel(28, 124, 1224, 466, "概念的な調整された対応");
 
-    V.header('モジュール4/協調LVDC', '変換、保管、保護は一つのシステムとして機能します');
-    V.panel(28, 124, 1224, 466, '概念的協調反応');
+    block(62, 260, 150, 112, "MV/AC", "出典", normal > 0.5 ? 'active' : 'idle');
+    block(262, 240, 166, 152, "変換", "整流器/SST", normal > 0.5 ? 'active' : 'idle');
+    block(478, 260, 146, 112, "DCバス", "LVDC", loadStep > 0.25 ? 'support' : (normal > 0.5 ? 'active' : 'idle'));
+    block(674, 240, 170, 152, "保護", "選択遮断", fault > 0.2 ? 'warning' : (cleared > 0.5 ? 'active' : 'idle'));
+    block(934, 190, 220, 112, "IT負荷", cleared > 0.45 ? "孤立したブランチ" : "AIコンピュート", fault > 0.2 ? 'fault' : (cleared > 0.45 ? 'idle' : (loadStep > 0.2 ? 'warning' : (normal > 0.5 ? 'active' : 'idle'))));
+    block(934, 350, 220, 112, "冷却", "健全な分岐", recovery > 0.2 ? 'active' : (normal > 0.5 ? 'active' : 'idle'));
+    block(478, 458, 146, 94, "ESS", "ストレージ", loadStep > 0.2 ? 'support' : 'idle');
 
-    block(62, 260, 150, 112, 'MV / AC', '出典', normal > 0.5 ? 'active' : 'idle');
-    block(262, 240, 166, 152, '転換', 'レクタイア / SST', normal > 0.5 ? 'active' : 'idle');
-    block(478, 260, 146, 112, 'DCバス', 'LVDC', loadStep > 0.25 ? 'support' : (normal > 0.5 ? 'active' : 'idle'));
-    block(674, 240, 170, 152, '保護', '選択遮断', fault > 0.2 ? 'warning' : (cleared > 0.5 ? 'active' : 'idle'));
-    block(934, 190, 220, 112, 'IT負荷', 'AIコンピュート', fault > 0.2 ? 'fault' : (loadStep > 0.2 ? 'warning' : (normal > 0.5 ? 'active' : 'idle')));
-    block(934, 350, 220, 112, '冷却', '健全な分岐', recovery > 0.2 ? 'active' : (normal > 0.5 ? 'active' : 'idle'));
-    block(478, 458, 146, 94, 'ESS', '保管', loadStep > 0.2 ? 'support' : 'idle');
-
-    V.arrow(212, 316, 254, 316, C.greenDark, 6, normal * reset);
-    V.arrow(428, 316, 470, 316, C.greenDark, 6, normal * reset);
-    V.arrow(624, 316, 666, 316, C.greenDark, 6, normal * reset);
-    V.arrow(844, 286, 926, 246, fault > 0.2 ? C.red : C.greenDark, 6, (cleared > 0.35 ? 0.25 : normal) * reset);
-    V.arrow(844, 346, 926, 406, C.greenDark, 6, normal * reset);
-    V.line(551, 458, 551, 380, C.border, 4, 1);
-    if (loadStep > 0.01) V.arrow(551, 458, 551, 380, C.blue, 6, loadStep * reset);
+    V.arrow(212, 316, 262, 316, C.greenDark, 6, normal);
+    V.arrow(428, 316, 478, 316, C.greenDark, 6, normal);
+    V.arrow(624, 316, 674, 316, C.greenDark, 6, normal);
+    V.arrow(844, 286, 934, 246, fault > 0.2 ? C.red : C.greenDark, 6, cleared > 0.35 ? 0.25 : normal);
+    V.arrow(844, 346, 934, 406, C.greenDark, 6, normal);
+    V.line(551, 458, 551, 372, C.border, 4, 1);
+    if (loadStep > 0.01) V.arrow(551, 458, 551, 372, C.blue, 6, loadStep);
 
     if (normal > 0.75) {
       V.movingDot(218, 316, 248, 316, t, 600, 700, C.green, 5);
@@ -73,12 +71,12 @@
       ctx.save();
       ctx.globalAlpha = fault;
       V.roundedRect(1062, 309, 68, 36, 18, C.redPale, C.red, 2);
-      V.text('故障', 1096, 327, 14, 700, C.red, 'center');
+      V.text("故障", 1096, 327, 14, 700, C.red, 'center');
       ctx.restore();
     }
     if (cleared > 0.45) {
       ctx.save();
-      ctx.globalAlpha = cleared * reset;
+      ctx.globalAlpha = cleared;
       ctx.strokeStyle = C.red;
       ctx.lineWidth = 7;
       ctx.beginPath();
@@ -90,11 +88,11 @@
       ctx.restore();
     }
 
-    var label = '通常運転 / 変換部がDCバスへ給電';
+    var label = "通常運転 / 変換部がDCバスへ給電";
     var tone = 'green';
-    if (loadStep > 0.2) { label = 'AI負荷変動 / ESSがDCバスを支援'; tone = 'blue'; }
-    if (fault > 0.2) { label = 'DC故障 / 保護が迅速に動作'; tone = 'amber'; }
-    if (cleared > 0.45) { label = '選択遮断 / 健全な冷却分岐は運転継続'; tone = 'green'; }
+    if (loadStep > 0.2) { label = "AI負荷変動 / ESSがDCバスを支援"; tone = 'blue'; }
+    if (fault > 0.2) { label = "DC故障 / 保護が迅速に動作"; tone = 'amber'; }
+    if (cleared > 0.45) { label = "選択遮断 / 健全な冷却分岐は運転継続"; tone = 'green'; }
     V.panel(118, 620, 1044, 70, '', tone);
     V.text(label, 640, 655, 21, 700, C.text, 'center', 980);
   }

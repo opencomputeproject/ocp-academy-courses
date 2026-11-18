@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi-VN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diablo 400 hoạt ảnh đường dẫn giao diện có thể phục vụ được</title>
+<title>Hoạt hình đường dẫn giao diện có thể sử dụng được của Mt. Diablo</title>
 <style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eef1f3}canvas{display:block;width:100vw;height:100vh}</style>
 </head>
 <body>
-<canvas id="scene" width="1280" height="720" aria-label="Lộ trình giao diện hoạt hình có thể sử dụng được từ AC cơ sở đến IT rack"></canvas>
+<canvas id="scene" width="1280" height="720" aria-label="Đường dẫn giao diện có thể sử dụng được hoạt hình từ cơ sở AC đến giá CNTT"></canvas>
 <script src="academy_video_common.js"></script>
 <script>
 (function () {
@@ -16,22 +16,22 @@
   var ctx = V.ctx;
   var C = V.C;
   var blocks = [
-    { x: 36, w: 136, lines: ['PHÍA TRÊN', 'THANH DẪN AC'] },
-    { x: 208, w: 136, lines: ['AC PDU', 'BẢO VỆ ĐẦU VÀO'] },
-    { x: 380, w: 136, lines: ['KỆ PSU', 'THAY NÓNG'] },
-    { x: 552, w: 136, lines: ['DỌC', 'THANH CÁI'] },
-    { x: 724, w: 136, lines: ['DC PDU', 'BẢO VỆ / ĐIỀU KHIỂN'] },
-    { x: 896, w: 136, lines: ['ĐẦU RA', 'CÁP'] },
-    { x: 1068, w: 176, lines: ['IT RACK', 'TẢI TÍNH TOÁN'] }
+    { x: 36, w: 136, lines: ["PHÍA TRÊN", "THANH DẪN AC"] },
+    { x: 208, w: 136, lines: ["AC PDU", "BẢO VỆ ĐẦU VÀO"] },
+    { x: 380, w: 136, lines: ["KỆ PSU", "PSU HOT-SWAP"] },
+    { x: 552, w: 136, lines: ["DỌC", "THANH CÁI"] },
+    { x: 724, w: 136, lines: ["DC PDU", "BẢO VỆ / ĐIỀU KHIỂN"] },
+    { x: 896, w: 136, lines: ["ĐẦU RA", "CÁP"] },
+    { x: 1068, w: 176, lines: ["IT RACK", "TẢI TÍNH TOÁN"] }
   ];
   var notes = [
-    'Cơ sở AC vào từ đường xe buýt phía trên.',
-    'AC PDU nhận đầu vào và bảo vệ các kệ điện.',
-    'Các kệ PSU tiếp cận phía trước chuyển đổi điện và chia sẻ dòng điện.',
-    'thanh cái dọc phân phối cộng, trừ và phổ thông.',
-    'DC PDU bảo vệ, chuyển đổi, điều khiển và báo cáo dữ liệu telemetry.',
-    'Điện áp đầu ra bị ngắt trước khi cáp được bảo trì.',
-    'Kết hợp lại, các giao diện tạo thành một con đường dịch vụ có chủ ý.'
+    "Cơ sở AC đi vào từ đường xe buýt trên cao.",
+    "AC PDU chấp nhận đầu vào và bảo vệ các kệ nguồn.",
+    "Các mô-đun PSU có thể thay thế nóng trên kệ sẽ chuyển đổi nguồn điện và chia sẻ dòng điện.",
+    "Thanh cái dọc phân phối cộng, trừ và chung.",
+    "DC PDU bảo vệ, chuyển mạch, điều khiển và báo cáo kết quả đo từ xa.",
+    "Điện áp đầu ra ngắt kết nối trước khi cáp được bảo dưỡng.",
+    "Cùng với nhau, các giao diện tạo thành một đường dẫn dịch vụ có chủ ý."
   ];
 
   function block(item, active, index) {
@@ -52,26 +52,24 @@
 
   function renderFrame(elapsed) {
     var t = elapsed * 0.5;
-    var reset = 1 - V.progress(t, 8250, 8850);
     var stage = Math.min(6, Math.floor(Math.max(0, t - 300) / 1050));
-    var complete = V.progress(t, 6900, 7900) * reset;
+    var complete = V.progress(t, 6900, 7900);
 
-    V.header('MÔ-ĐUN 3 / GIAO DIỆN DỄ BẢO TRÌ', 'Theo đường truyền điện từ cơ sở AC đến IT rack');
-    V.panel(28, 124, 1224, 400, 'ĐƯỜNG GIAO DIỆN DỄ BẢO TRÌ');
+    V.header("Đi theo đường dẫn nguồn từ AC của cơ sở đến giá CNTT");
+    V.panel(28, 124, 1224, 400, "ĐƯỜNG GIAO DIỆN DỄ BẢO TRÌ");
 
     for (var i = 0; i < blocks.length; i += 1) {
-      var local = V.progress(t, 300 + (i * 900), 850 + (i * 900)) * reset;
+      var local = V.progress(t, 300 + (i * 900), 850 + (i * 900));
       block(blocks[i], local > 0.55, i);
       if (i < blocks.length - 1) {
         var x1 = blocks[i].x + blocks[i].w;
-        var x2 = blocks[i + 1].x - 8;
-        V.arrow(x1 + 4, 335, x2, 335, C.greenDark, 5, V.progress(t, 720 + (i * 900), 1210 + (i * 900)) * reset);
-        if (t > 1200 + (i * 900)) V.movingDot(x1 + 8, 335, x2 - 8, 335, t, 1200 + (i * 900), 900, C.green, 5);
+        var x2 = blocks[i + 1].x;
+        V.arrow(x1, 335, x2, 335, C.greenDark, 5, V.progress(t, 720 + (i * 900), 1210 + (i * 900)));
       }
     }
 
     V.panel(86, 555, 1108, 110, '', complete > 0.2 ? 'green' : 'blue');
-    V.text('GIAI ĐOẠN ĐANG GIẢI THÍCH', 120, 585, 14, 700, complete > 0.2 ? C.greenDark : C.blue);
+    V.text("GIAI ĐOẠN ĐANG GIẢI THÍCH", 120, 585, 14, 700, complete > 0.2 ? C.greenDark : C.blue);
     V.text(complete > 0.55 ? notes[6] : notes[stage], 640, 624, 24, 700, C.text, 'center', 1020);
   }
 

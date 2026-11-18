@@ -113,12 +113,11 @@
     ctx.restore();
   }
 
-  function header(kicker, titleValue) {
+  function header(titleValue) {
     ctx.fillStyle = COLORS.bg;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     roundedRect(38, 28, 16, 62, 8, COLORS.green);
-    text(kicker, 76, 47, 18, 700, COLORS.greenDark);
-    text(titleValue, 76, 79, 34, 700, COLORS.text, 'left', 1150);
+    text(titleValue, 76, 60, 34, 700, COLORS.text, 'left', 1150);
   }
 
   function panel(x, y, w, h, label, tone) {
@@ -142,64 +141,36 @@
   }
 
   function install(renderFrame, durationMs, posterTimeMs) {
-    window.renderFrame = renderFrame;
+    document.body.dataset.durationMs = durationMs;
+    document.body.dataset.posterMs = posterTimeMs;
     window.__videoDurationMs = durationMs;
     window.__posterTimeMs = posterTimeMs;
 
     function startPreview() {
       var start = performance.now();
       function draw(now) {
-        renderFrame((now - start) % durationMs);
-        previewFrame = requestAnimationFrame(draw);
-        window.__previewFrame = previewFrame;
+        var elapsed = Math.min(now - start, durationMs);
+        renderFrame(elapsed);
+        if (elapsed < durationMs) previewFrame = requestAnimationFrame(draw);
       }
       previewFrame = requestAnimationFrame(draw);
-      window.__previewFrame = previewFrame;
     }
 
-    window.captureAnimation = function () {
-      return new Promise(function (resolve, reject) {
-        if (!window.MediaRecorder || !canvas.captureStream) {
-          reject(new Error('Canvas recording is not supported in this browser.'));
-          return;
-        }
-        if (previewFrame) cancelAnimationFrame(previewFrame);
-        renderFrame(0);
-        var stream = canvas.captureStream(30);
-        var recorder = new MediaRecorder(stream, {
-          mimeType: 'video/webm;codecs=vp8',
-          videoBitsPerSecond: 3200000
-        });
-        var chunks = [];
-        recorder.ondataavailable = function (event) {
-          if (event.data && event.data.size) chunks.push(event.data);
-        };
-        recorder.onerror = function (event) {
-          reject(event.error || new Error('MediaRecorder failed.'));
-        };
-        recorder.onstop = async function () {
-          try {
-            var blob = new Blob(chunks, { type: 'video/webm' });
-            var bytes = new Uint8Array(await blob.arrayBuffer());
-            renderFrame(posterTimeMs);
-            resolve(Array.from(bytes));
-          } catch (error) {
-            reject(error);
-          }
-        };
-        recorder.start(250);
-        var started = performance.now();
-        function drawRecorded(now) {
-          var elapsed = now - started;
-          renderFrame(Math.min(elapsed, durationMs - 1));
-          if (elapsed < durationMs) requestAnimationFrame(drawRecorded);
-          else recorder.stop();
-        }
-        requestAnimationFrame(drawRecorded);
-      });
+    window.setTeachingTime = function (time) {
+      if (previewFrame !== null) cancelAnimationFrame(previewFrame);
+      previewFrame = null;
+      var scale = Math.max(1, window.innerWidth * window.devicePixelRatio / 1280);
+      var width = Math.round(1280 * scale);
+      var height = Math.round(720 * scale);
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+      ctx.setTransform(width / 1280, 0, 0, height / 720, 0, 0);
+      renderFrame(clamp(time, 0, durationMs));
     };
 
-    if (new URLSearchParams(window.location.search).has('poster')) renderFrame(posterTimeMs);
+    if (new URLSearchParams(window.location.search).has('poster')) window.setTeachingTime(posterTimeMs);
     else startPreview();
   }
 
