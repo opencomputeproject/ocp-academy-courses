@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko-KR">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>전류, 구리, I2R 손실 애니메이션</title>
+<title>전류, 구리 및 I2R 손실 애니메이션</title>
 <style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eef1f3}canvas{display:block;width:100vw;height:100vh}</style>
 </head>
 <body>
-<canvas id="scene" width="1280" height="720" aria-label="낮은 분배 전압과 높은 분배 전압에서의 전류와 도체 부하의 애니메이션 비교"></canvas>
+<canvas id="scene" width="1280" height="720" aria-label="더 낮거나 높은 배전 전압에서 전류 및 도체 부하의 애니메이션 비교"></canvas>
 <script src="academy_video_common.js"></script>
 <script>
 (function () {
@@ -50,24 +50,19 @@
     var low = V.progress(t, 300, 1700);
     var high = V.progress(t, 2200, 4100);
     var result = V.progress(t, 4550, 6100);
-    var reset = 1 - V.progress(t, 7550, 8200);
-    low *= reset;
-    high *= reset;
-    result *= reset;
-
-    V.header('모듈 1 / 전력 물리학', '같은 전력 목표지만 전류 부담은 매우 다릅니다');
-    V.panel(38, 124, 574, 474, '낮은 배전 전압');
-    V.panel(668, 124, 574, 474, '더 높은 배전 전압', 'green');
+    V.header("동일한 전력 목표, 다른 전류 부담");
+    V.panel(38, 124, 574, 474, "더 낮은 배전 전압");
+    V.panel(668, 124, 574, 474, "더 높은 배전 전압", 'green');
 
     V.roundedRect(190, 175, 270, 44, 22, C.bluePale, '#d7d8f1', 2);
-    V.text('고정 전력 목표', 325, 197, 16, 700, C.blue, 'center');
+    V.text("고정 전력 목표", 325, 197, 16, 700, C.blue, 'center');
     V.roundedRect(820, 175, 270, 44, 22, C.bluePale, '#d7d8f1', 2);
-    V.text('같은 파워 타겟', 955, 197, 16, 700, C.blue, 'center');
+    V.text("동일한 전력 목표", 955, 197, 16, 700, C.blue, 'center');
 
-    gauge(162, 270, '전압', 0.38 * low, C.blue, false);
-    gauge(310, 270, '전류', 0.90 * low, C.amber, low > 0.85);
-    gauge(792, 270, '전압', 0.90 * high, C.blue, high > 0.85);
-    gauge(940, 270, '전류', 0.32 * high, C.greenDark, false);
+    gauge(162, 270, "전압", 0.38 * low, C.blue, false);
+    gauge(310, 270, "전류", 0.90 * low, C.amber, low > 0.85);
+    gauge(792, 270, "전압", 0.90 * high, C.blue, high > 0.85);
+    gauge(940, 270, "전류", 0.38 * high, C.greenDark, false);
 
     V.line(410, 432, 562, 432, C.dim, 28, low);
     V.line(1040, 432, 1192, 432, C.greenDark, 12, high);
@@ -79,17 +74,17 @@
     var heat = low * (0.45 + (0.35 * V.pulse(t, 600)));
     heatWave(484, 432, 38, heat);
     heatWave(484, 432, 55, heat * 0.7);
-    V.text('더 무거운 구리 / 더 많은 열', 326, 545, 17, 700, C.amber, 'center');
-    V.text('실용적인 케이블링 / 배선', 956, 545, 17, 700, C.greenDark, 'center');
+    V.text("더 무거운 구리 / 더 많은 열", 326, 545, 17, 700, C.amber, 'center');
+    V.text("실용적인 케이블링 / 배선", 956, 545, 17, 700, C.greenDark, 'center');
 
     V.panel(180, 620, 920, 70, '', result > 0.25 ? 'blue' : null);
     ctx.save();
     ctx.globalAlpha = 0.35 + (0.65 * result);
-    V.text('전압 상승', 300, 655, 18, 700, C.blue, 'center');
+    V.text("전압 상승", 300, 655, 18, 700, C.blue, 'center');
     V.arrow(390, 655, 500, 655, C.greenDark, 5, result);
-    V.text('전류 감소', 630, 655, 18, 700, C.text, 'center');
+    V.text("전류 감소", 630, 655, 18, 700, C.text, 'center');
     V.arrow(760, 655, 870, 655, C.greenDark, 5, result);
-    V.text('낮은 I2R 손실', 980, 655, 18, 700, C.greenDark, 'center');
+    V.text("낮은 I2R 손실", 980, 655, 18, 700, C.greenDark, 'center');
     ctx.restore();
   }
 

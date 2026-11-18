@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diablo 400可用的接口路径动画</title>
+<title>暗黑破坏神山可用界面路径动画</title>
 <style>html,body{width:100%;height:100%;margin:0;overflow:hidden;background:#eef1f3}canvas{display:block;width:100vw;height:100vh}</style>
 </head>
 <body>
-<canvas id="scene" width="1280" height="720" aria-label="从设施AC到IT rack的可操作接口路径动画"></canvas>
+<canvas id="scene" width="1280" height="720" aria-label="从设施 AC 到 IT 机架的动画可维护接口路径"></canvas>
 <script src="academy_video_common.js"></script>
 <script>
 (function () {
@@ -16,22 +16,22 @@
   var ctx = V.ctx;
   var C = V.C;
   var blocks = [
-    { x: 36, w: 136, lines: ['顶部', 'AC母线槽'] },
-    { x: 208, w: 136, lines: ['AC PDU', '输入保护'] },
-    { x: 380, w: 136, lines: ['PSU电源架', '热插拔'] },
-    { x: 552, w: 136, lines: ['垂直', '母线'] },
-    { x: 724, w: 136, lines: ['DC PDU', '保护 / 控制'] },
-    { x: 896, w: 136, lines: ['输出', '电缆'] },
-    { x: 1068, w: 176, lines: ['IT RACK', '计算负载'] }
+    { x: 36, w: 136, lines: ["顶部", "AC母线槽"] },
+    { x: 208, w: 136, lines: ["交流电源分配单元", "输入保护"] },
+    { x: 380, w: 136, lines: ["PSU电源架", "热插拔 PSU"] },
+    { x: 552, w: 136, lines: ["垂直", "母线"] },
+    { x: 724, w: 136, lines: ["直流配电单元", "保护 / 控制"] },
+    { x: 896, w: 136, lines: ["输出", "电缆"] },
+    { x: 1068, w: 176, lines: ["IT RACK", "计算负载"] }
   ];
   var notes = [
-    '设施AC从高架公交专用道进入。',
-    'AC PDU接受输入并保护电源架。',
-    '前置可触及的PSU层架可转换电源并共享电流。',
-    '垂直方向母线分布为正、负和普通。',
-    'DC PDU负责保护、切换、控制并报告遥测数据。',
-    '输出电压在电缆维护前会断开。',
-    '这些接口共同构成一条有意为之的服务路径。'
+    "设施AC从架空母线槽进入。",
+    "AC PDU 接受输入并保护电源架。",
+    "机架中的热插拔 PSU 模块可转换电源并共享电流。",
+    "垂直母线分布正、负、公共端。",
+    "DC PDU 可保护、开关、控制和报告遥测。",
+    "在维修电缆之前输出电压会断开。",
+    "这些接口一起形成了一条精心设计的服务路径。"
   ];
 
   function block(item, active, index) {
@@ -52,26 +52,24 @@
 
   function renderFrame(elapsed) {
     var t = elapsed * 0.5;
-    var reset = 1 - V.progress(t, 8250, 8850);
     var stage = Math.min(6, Math.floor(Math.max(0, t - 300) / 1050));
-    var complete = V.progress(t, 6900, 7900) * reset;
+    var complete = V.progress(t, 6900, 7900);
 
-    V.header('模块3 / 可维护接口', '沿着从设施AC到IT rack的电力路径');
-    V.panel(28, 124, 1224, 400, '可维护接口路径');
+    V.header("遵循从设施交流电到 IT 机架的电源路径");
+    V.panel(28, 124, 1224, 400, "可维护接口路径");
 
     for (var i = 0; i < blocks.length; i += 1) {
-      var local = V.progress(t, 300 + (i * 900), 850 + (i * 900)) * reset;
+      var local = V.progress(t, 300 + (i * 900), 850 + (i * 900));
       block(blocks[i], local > 0.55, i);
       if (i < blocks.length - 1) {
         var x1 = blocks[i].x + blocks[i].w;
-        var x2 = blocks[i + 1].x - 8;
-        V.arrow(x1 + 4, 335, x2, 335, C.greenDark, 5, V.progress(t, 720 + (i * 900), 1210 + (i * 900)) * reset);
-        if (t > 1200 + (i * 900)) V.movingDot(x1 + 8, 335, x2 - 8, 335, t, 1200 + (i * 900), 900, C.green, 5);
+        var x2 = blocks[i + 1].x;
+        V.arrow(x1, 335, x2, 335, C.greenDark, 5, V.progress(t, 720 + (i * 900), 1210 + (i * 900)));
       }
     }
 
     V.panel(86, 555, 1108, 110, '', complete > 0.2 ? 'green' : 'blue');
-    V.text('当前讲解阶段', 120, 585, 14, 700, complete > 0.2 ? C.greenDark : C.blue);
+    V.text("当前讲解阶段", 120, 585, 14, 700, complete > 0.2 ? C.greenDark : C.blue);
     V.text(complete > 0.55 ? notes[6] : notes[stage], 640, 624, 24, 700, C.text, 'center', 1020);
   }
 

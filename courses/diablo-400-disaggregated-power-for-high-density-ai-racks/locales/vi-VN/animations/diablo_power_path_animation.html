@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi-VN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diablo 400 hoạt hình đường truyền năng lượng</title>
+<title>Hoạt hình đường dẫn điện lưỡng cực Mt. Diablo</title>
 <style>
   html, body {
     width: 100%;
@@ -20,7 +20,8 @@
 </style>
 </head>
 <body>
-<canvas id="scene" width="1280" height="720" aria-label="Mô hình Diablo 400 khả năng duy trì vận hành động và đầu ra DC"></canvas>
+<canvas id="scene" width="1280" height="720" aria-label="Ví dụ hoạt hình về chuyến đi xuyên qua Mt. Diablo và đầu ra DC lưỡng cực"></canvas>
+<script src="academy_video_common.js"></script>
 <script>
 (function () {
   'use strict';
@@ -29,7 +30,6 @@
   var ctx = canvas.getContext('2d');
   var W = canvas.width;
   var H = canvas.height;
-  var previewFrame = null;
   var COLORS = {
     bg: '#eef1f3',
     panel: '#ffffff',
@@ -76,7 +76,13 @@
     ctx.fillStyle = color || COLORS.text;
     ctx.textAlign = align || 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(value, x, y);
+    var width = W - x - 42;
+    if (y === 205 && x === 74) width = 644;
+    if (x === 810) width = 386;
+    if (x === 104) width = 574;
+    if (x === 845) width = 150;
+    if (align === 'center') width = y === 605 ? 352 : y === 405 ? 154 : 170;
+    ctx.fillText(value, x, y, width);
   }
 
   function line(x1, y1, x2, y2, color, width, amount) {
@@ -135,8 +141,8 @@
     ctx.strokeStyle = active ? color : COLORS.border;
     ctx.stroke();
     ctx.restore();
-    text(label, x, y - 52, 18, 700, active ? COLORS.text : COLORS.muted, 'center');
-    text(detail, x, y + 54, 15, 400, COLORS.muted, 'center');
+    text(label, x, y - 52, 22, 700, active ? COLORS.text : COLORS.muted, 'center');
+    text(detail, x, y + 54, 17, 400, COLORS.muted, 'center');
   }
 
   function movingDot(x1, x2, y, t, start, end, color) {
@@ -174,42 +180,40 @@
   }
 
   function renderFrame(milliseconds) {
-    var t = ((milliseconds % 8000) + 8000) % 8000;
-    var resetFade = 1 - progress(t, 7350, 7980);
-    var acActive = clamp((1 - progress(t, 2050, 2420)) * resetFade, 0, 1);
-    var lossActive = progress(t, 1850, 2300) * resetFade;
-    var holdupActive = progress(t, 2150, 2800) * (1 - progress(t, 4300, 4850)) * resetFade;
-    var storageActive = progress(t, 3600, 4550) * resetFade;
-    var outputActive = progress(t, 4700, 6200) * resetFade;
+    var t = clamp(milliseconds, 0, 8000);
+    var acActive = 1 - progress(t, 2050, 2420);
+    var lossActive = progress(t, 1850, 2300);
+    var holdupActive = progress(t, 2150, 2800) * (1 - progress(t, 4300, 4850));
+    var storageActive = progress(t, 3600, 4550);
+    var outputActive = progress(t, 4700, 6200);
 
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = COLORS.bg;
     ctx.fillRect(0, 0, W, H);
 
     roundedRect(38, 28, 16, 62, 8, COLORS.green);
-    text('ĐƯỜNG TRUYỀN NGUỒN CỦA DIABLO 400', 76, 47, 18, 700, COLORS.greenDark);
-    text('Hỗ trợ khi mất AC và mô hình đầu ra DC cộng-trừ 400 V', 76, 79, 30, 700, COLORS.text);
+    text("Đầu ra lưỡng cực khi mất điện AC", 76, 60, 34, 700, COLORS.text);
 
     roundedRect(38, 124, 712, 548, 18, COLORS.panel, COLORS.border, 2);
     roundedRect(774, 124, 468, 548, 18, COLORS.panel, COLORS.border, 2);
-    text('TRÌNH TỰ HỖ TRỢ', 74, 165, 18, 700, COLORS.greenDark);
-    text('MÔ HÌNH ĐẦU RA DC', 810, 165, 18, 700, COLORS.greenDark);
+    text("TRÌNH TỰ HỖ TRỢ", 74, 165, 18, 700, COLORS.greenDark);
+    text("MÔ HÌNH ĐẦU RA DC", 810, 165, 18, 700, COLORS.greenDark);
 
-    text('Chuyển giao có kiểm soát giúp duy trì đầu ra DC.', 74, 205, 22, 700, COLORS.text);
+    text("Chuyển giao có kiểm soát giúp duy trì đầu ra DC.", 74, 205, 24, 700, COLORS.text);
     line(130, 316, 640, 316, COLORS.border, 8, 1);
     line(130, 316, 330, 316, COLORS.green, 8, acActive);
     line(330, 316, 522, 316, COLORS.green, 8, holdupActive);
     arrow(522, 316, 774, 316, COLORS.greenDark, 8, storageActive);
 
-    node(130, 316, 'AC CƠ SỞ', 'VẬN HÀNH BÌNH THƯỜNG', acActive, COLORS.green);
-    node(330, 316, 'HOLDUP', 'TỐI ĐA 20 ms', holdupActive, COLORS.green);
-    node(522, 316, 'BBU / CBU', 'LƯU TRỮ', storageActive, COLORS.blue);
+    node(130, 316, "AC CƠ SỞ", "VẬN HÀNH BÌNH THƯỜNG", acActive, COLORS.green);
+    node(330, 316, "HOLDUP", "TỐI ĐA 20 ms", holdupActive, COLORS.green);
+    node(522, 316, "BBU / CBU", "LƯU TRỮ", storageActive, COLORS.blue);
 
     if (lossActive > 0.05) {
       ctx.save();
       ctx.globalAlpha = lossActive;
       roundedRect(238, 388, 174, 34, 17, COLORS.amberPale, COLORS.amber, 2);
-      text('PHÁT HIỆN MẤT AC', 325, 405, 15, 700, COLORS.text, 'center');
+      text("PHÁT HIỆN MẤT AC", 325, 405, 15, 700, COLORS.text, 'center');
       ctx.restore();
     }
 
@@ -218,84 +222,27 @@
     movingDot(540, 748, 316, t, 4300, 5500, COLORS.blue);
 
     roundedRect(74, 430, 630, 176, 14, COLORS.greenPale, '#dbe9cb', 2);
-    text('DUY TRÌ TỨC THỜI TÍCH HỢP', 104, 468, 21, 700, COLORS.text);
-    text('Duy trì thời điểm đầu tiên sau khi mất AC.', 104, 501, 18, 400, COLORS.muted);
-    text('LƯU TRỮ NĂNG LƯỢNG TÙY CHỌN', 104, 548, 21, 700, COLORS.text);
-    text('Hỗ trợ BBU: 45 đến 90 giây khi tải 100%.', 104, 581, 18, 400, COLORS.muted);
+    text("DUY TRÌ TỨC THỜI TÍCH HỢP", 104, 468, 21, 700, COLORS.text);
+    text("Duy trì thời điểm đầu tiên sau khi mất AC.", 104, 501, 18, 400, COLORS.muted);
+    text("LƯU TRỮ NĂNG LƯỢNG TÙY CHỌN", 104, 548, 21, 700, COLORS.text);
+    text("Hỗ trợ BBU: 45 đến 90 giây khi tải 100%.", 104, 581, 18, 400, COLORS.muted);
 
-    text('DC danh định cộng-trừ 400 vôn', 810, 205, 21, 700, COLORS.text);
+    text("DC danh định cộng-trừ 400 vôn", 810, 205, 24, 700, COLORS.text);
     roundedRect(810, 238, 396, 320, 14, COLORS.bluePale, '#d7d8f1', 2);
-    rail(312, '+400 V DC', COLORS.blue, outputActive, t, 0);
-    rail(398, 'PHỔ BIẾN', COLORS.greenDark, outputActive, t, 360);
-    rail(484, '-400 V DC', COLORS.blue, outputActive, t, 720);
+    rail(312, "+400V DC", COLORS.blue, outputActive, t, 0);
+    rail(398, "CHUNG", COLORS.greenDark, outputActive, t, 360);
+    rail(484, "-400V DC", COLORS.blue, outputActive, t, 720);
 
-    var midpointAlpha = progress(t, 5900, 6550) * resetFade;
+    var midpointAlpha = progress(t, 5900, 6550);
     ctx.save();
     ctx.globalAlpha = 0.35 + (0.65 * midpointAlpha);
     roundedRect(818, 578, 380, 54, 12, COLORS.greenPale, '#dbe9cb', 2);
-    text('Dây chung là điểm giữa hai cực + và -', 1008, 605, 15, 700, COLORS.text, 'center');
+    text("Dây chung là điểm giữa hai cực + và -", 1008, 605, 15, 700, COLORS.text, 'center');
     ctx.restore();
 
   }
 
-  function startPreview() {
-    var start = performance.now();
-    function draw(now) {
-      renderFrame(now - start);
-      previewFrame = requestAnimationFrame(draw);
-      window.__previewFrame = previewFrame;
-    }
-    previewFrame = requestAnimationFrame(draw);
-    window.__previewFrame = previewFrame;
-  }
-
-  window.renderFrame = renderFrame;
-  window.captureAnimation = function () {
-    return new Promise(function (resolve, reject) {
-      if (!window.MediaRecorder || !canvas.captureStream) {
-        reject(new Error('Canvas recording is not supported in this browser.'));
-        return;
-      }
-      if (previewFrame) cancelAnimationFrame(previewFrame);
-      renderFrame(0);
-      var stream = canvas.captureStream(30);
-      var recorder = new MediaRecorder(stream, {
-        mimeType: 'video/webm;codecs=vp8',
-        videoBitsPerSecond: 3200000
-      });
-      var chunks = [];
-      recorder.ondataavailable = function (event) {
-        if (event.data && event.data.size) chunks.push(event.data);
-      };
-      recorder.onerror = function (event) {
-        reject(event.error || new Error('MediaRecorder failed.'));
-      };
-      recorder.onstop = async function () {
-        try {
-          var blob = new Blob(chunks, { type: 'video/webm' });
-          var bytes = new Uint8Array(await blob.arrayBuffer());
-          renderFrame(6800);
-          resolve(Array.from(bytes));
-        } catch (error) {
-          reject(error);
-        }
-      };
-      recorder.start(250);
-      var started = performance.now();
-      function drawRecorded(now) {
-        var elapsed = now - started;
-        renderFrame(Math.min(elapsed, 7999));
-        if (elapsed < 8000) {
-          requestAnimationFrame(drawRecorded);
-        } else {
-          recorder.stop();
-        }
-      }
-      requestAnimationFrame(drawRecorded);
-    });
-  };
-
-  startPreview();
+  window.AcademyVideo.install(renderFrame, 8000, 6800);
 }());
 </script>
 </body>
