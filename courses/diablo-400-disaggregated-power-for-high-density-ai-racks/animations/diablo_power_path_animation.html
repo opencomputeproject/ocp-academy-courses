@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Diablo 400 power-path animation</title>
+<title>Mt. Diablo bipolar power-path animation</title>
 <style>
   html, body {
     width: 100%;
@@ -20,7 +20,8 @@
 </style>
 </head>
 <body>
-<canvas id="scene" width="1280" height="720" aria-label="Animated Diablo 400 ride-through and DC output model"></canvas>
+<canvas id="scene" width="1280" height="720" aria-label="Animated Mt. Diablo ride-through and bipolar DC output example"></canvas>
+<script src="academy_video_common.js"></script>
 <script>
 (function () {
   'use strict';
@@ -29,7 +30,6 @@
   var ctx = canvas.getContext('2d');
   var W = canvas.width;
   var H = canvas.height;
-  var previewFrame = null;
   var COLORS = {
     bg: '#eef1f3',
     panel: '#ffffff',
@@ -174,21 +174,19 @@
   }
 
   function renderFrame(milliseconds) {
-    var t = ((milliseconds % 8000) + 8000) % 8000;
-    var resetFade = 1 - progress(t, 7350, 7980);
-    var acActive = clamp((1 - progress(t, 2050, 2420)) * resetFade, 0, 1);
-    var lossActive = progress(t, 1850, 2300) * resetFade;
-    var holdupActive = progress(t, 2150, 2800) * (1 - progress(t, 4300, 4850)) * resetFade;
-    var storageActive = progress(t, 3600, 4550) * resetFade;
-    var outputActive = progress(t, 4700, 6200) * resetFade;
+    var t = clamp(milliseconds, 0, 8000);
+    var acActive = 1 - progress(t, 2050, 2420);
+    var lossActive = progress(t, 1850, 2300);
+    var holdupActive = progress(t, 2150, 2800) * (1 - progress(t, 4300, 4850));
+    var storageActive = progress(t, 3600, 4550);
+    var outputActive = progress(t, 4700, 6200);
 
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = COLORS.bg;
     ctx.fillRect(0, 0, W, H);
 
     roundedRect(38, 28, 16, 62, 8, COLORS.green);
-    text('DIABLO 400 POWER PATH', 76, 47, 18, 700, COLORS.greenDark);
-    text('Support through AC loss and the plus-minus 400 V DC output model', 76, 79, 34, 700, COLORS.text);
+    text('Bipolar output during an AC outage', 76, 60, 34, 700, COLORS.text);
 
     roundedRect(38, 124, 712, 548, 18, COLORS.panel, COLORS.border, 2);
     roundedRect(774, 124, 468, 548, 18, COLORS.panel, COLORS.border, 2);
@@ -229,7 +227,7 @@
     rail(398, 'COMMON', COLORS.greenDark, outputActive, t, 360);
     rail(484, '-400 V DC', COLORS.blue, outputActive, t, 720);
 
-    var midpointAlpha = progress(t, 5900, 6550) * resetFade;
+    var midpointAlpha = progress(t, 5900, 6550);
     ctx.save();
     ctx.globalAlpha = 0.35 + (0.65 * midpointAlpha);
     roundedRect(818, 578, 380, 54, 12, COLORS.greenPale, '#dbe9cb', 2);
@@ -238,64 +236,7 @@
 
   }
 
-  function startPreview() {
-    var start = performance.now();
-    function draw(now) {
-      renderFrame(now - start);
-      previewFrame = requestAnimationFrame(draw);
-      window.__previewFrame = previewFrame;
-    }
-    previewFrame = requestAnimationFrame(draw);
-    window.__previewFrame = previewFrame;
-  }
-
-  window.renderFrame = renderFrame;
-  window.captureAnimation = function () {
-    return new Promise(function (resolve, reject) {
-      if (!window.MediaRecorder || !canvas.captureStream) {
-        reject(new Error('Canvas recording is not supported in this browser.'));
-        return;
-      }
-      if (previewFrame) cancelAnimationFrame(previewFrame);
-      renderFrame(0);
-      var stream = canvas.captureStream(30);
-      var recorder = new MediaRecorder(stream, {
-        mimeType: 'video/webm;codecs=vp8',
-        videoBitsPerSecond: 3200000
-      });
-      var chunks = [];
-      recorder.ondataavailable = function (event) {
-        if (event.data && event.data.size) chunks.push(event.data);
-      };
-      recorder.onerror = function (event) {
-        reject(event.error || new Error('MediaRecorder failed.'));
-      };
-      recorder.onstop = async function () {
-        try {
-          var blob = new Blob(chunks, { type: 'video/webm' });
-          var bytes = new Uint8Array(await blob.arrayBuffer());
-          renderFrame(6800);
-          resolve(Array.from(bytes));
-        } catch (error) {
-          reject(error);
-        }
-      };
-      recorder.start(250);
-      var started = performance.now();
-      function drawRecorded(now) {
-        var elapsed = now - started;
-        renderFrame(Math.min(elapsed, 7999));
-        if (elapsed < 8000) {
-          requestAnimationFrame(drawRecorded);
-        } else {
-          recorder.stop();
-        }
-      }
-      requestAnimationFrame(drawRecorded);
-    });
-  };
-
-  startPreview();
+  window.AcademyVideo.install(renderFrame, 8000, 6800);
 }());
 </script>
 </body>

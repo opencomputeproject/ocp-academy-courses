@@ -1,11 +1,11 @@
-Grounding is one of the most consequential choices in a higher voltage DC rack.
+Grounding starts with two separate questions: what is the voltage between output conductors, and how are those conductors referenced to protective earth, or P E?
 
-Diablo 400 defines two ways to connect the plus-minus 400 volts DC midpoint to protective earth. The first is high resistance midpoint grounding. In this case, the plus-minus 400 volts DC routing uses plus 400 volts DC, midpoint, minus 400 volts DC, and protective earth. The midpoint connects to protective earth through a high resistance path, and the resistor value is design dependent.
+For the bipolar plus-minus 400 volts DC architecture, the midpoint may connect to protective earth through high resistance or through a solid connection. Version one dot zero dot zero explicitly allows three-wire routing plus protective earth, or two-wire routing plus protective earth with no midpoint routed to the IT rack. A two-wire cable does not, by itself, tell you where the earth reference is.
 
-The second option is solid contact midpoint grounding. In this case, the midpoint connects to protective earth through a solid connection, or zero-ohm contact.
+The specification also describes 800 volt distribution with two conductors and protective earth. The return reference may use high-resistance grounding for a floating output, or a solid connection for a single-ended 800 volt output. Differential 800 volts describes the voltage between the conductors. It does not mean every conductor has the same voltage to earth in every architecture.
 
-The appendix lays out the tradeoffs. High resistance grounding can reduce shock risk from touching one pole to ground under normal conditions and can mitigate arcs from a line-to-ground fault. But it does not remove shock risk between plus 400 and minus 400 volts. It also requires effective fault detection, sensor maintenance, and timely response, because a first ground fault may not disrupt operation.
+Fault detection is a significant update. Ground-fault detection is required for both solid midpoint grounding and high-resistance midpoint grounding. The high-resistance midpoint implementation also needs voltage-balance detection. Residual-current detection is required at each output cable or connection to the IT rack.
 
-Solid grounding is simpler to design and maintain. It also aligns with clearer safety-standard expectations and can make problem circuits easier to identify. But high-voltage parts must remain inaccessible, arcing may occur until a fuse operates, bonding must carry fault current until protection opens, and multiple solidly grounded power racks can create ground-loop concerns.
+Appendix A provides non-normative grounding tradeoffs. High resistance can limit a first earth-fault current, but requires reliable detection and a timely response. Solid grounding requires fault-current coordination and a protective bond that can carry fault current until protection opens. Neither approach removes shock risk between output poles.
 
-The lesson is not that one choice is universally correct. The lesson is that grounding defines fault behavior, protection design, service procedures, and vendor compatibility.
+Review the selected wiring, grounding, insulation, detection, and downstream converter compatibility as one system. The architecture descriptions in section eight must be reconciled with the power supply isolation requirements for the implementation being qualified.
