@@ -837,7 +837,7 @@ PDF continuing resources here always open the whole document: omit page
 fragments, contents-page anchors, and page/range labels. This is the explicit
 exception to the page-specific teaching-slide PDF default.
 
-Optionally add a `survey` object to attach a feedback CTA card below the centered resources. The card has a body paragraph and a button that opens the survey URL in a new tab. Omit `survey` entirely to render the slide without any CTA. `button_text` defaults to "Share Feedback".
+The completion slide includes the shared feedback button. Its destination for new builds and rebuilds is https://opencomputeproject.github.io/ocp-academy-courses/feedback/. Set `survey.button_text` to customize its label. Legacy per-slide URL fields do not override the shared destination.
 
 ```json
 {
@@ -846,9 +846,7 @@ Optionally add a `survey` object to attach a feedback CTA card below the centere
   "thank_you_message": "Thank you for completing Module 6: Compliance, Ecosystem & Future.",
   "cert_message": "You've completed every module of the OCP Academy NIC 3.0 course. We hope this course leaves you ready to put what you've learned into practice.",
   "survey": {
-    "body": "Got a couple minutes to help us improve? Help us shape improvements and our future courses by sharing your feedback with the course development team. We periodically select submitters at random for great giveaways!",
-    "button_text": "Share Feedback",
-    "url": "https://forms.gle/..."
+    "button_text": "Share Feedback"
   }
 }
 ```

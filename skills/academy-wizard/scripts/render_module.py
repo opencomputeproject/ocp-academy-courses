@@ -907,7 +907,7 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
     # not be changed by per-course course.json overrides. button_text
     # alone remains customizable via slide.survey.button_text (defaults
     # to "Share Feedback").
-    SURVEY_URL = "https://docs.google.com/forms/d/e/1FAIpQLSf-IDIuFSXbRk-nks90x7J_4-iiZ6vEvmmNQoVps3ySP6UFmg/viewform?usp=header"
+    from course_feedback import FEEDBACK_URL
     default_survey_body = (
         "Got a couple minutes to help us improve? Help us shape "
         "improvements and our future courses by sharing your feedback "
@@ -922,7 +922,7 @@ def render_course_complete(slide: dict, course: dict, module: dict) -> str:
     survey_html = f'''
       <div class="survey-cta animate-in" style="max-width: 680px; margin: 18px auto 0; padding: 18px 24px; background: var(--bg-card); border: 1px solid var(--ocp-green); border-radius: 12px; box-shadow: var(--card-shadow); text-align: center;">
         <p style="font-size: 1.0rem; line-height: 1.45; margin: 0 0 12px 0; color: var(--text-primary);">{esc(survey_body)}</p>
-        <a class="survey-btn" href="{esc(SURVEY_URL)}" target="_blank" rel="noopener" style="display: inline-block; padding: 10px 24px; background: var(--ocp-green); color: #ffffff; text-decoration: none; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em; border-radius: 8px; transition: background 0.15s ease;">{esc(survey_button)} &#8594;</a>
+        <a class="survey-btn" href="{esc(FEEDBACK_URL)}" target="_blank" rel="noopener" style="display: inline-block; padding: 10px 24px; background: var(--ocp-green); color: #ffffff; text-decoration: none; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em; border-radius: 8px; transition: background 0.15s ease;">{esc(survey_button)} &#8594;</a>
       </div>'''
     # Same centering treatment as render_up_next.
     return f'''
