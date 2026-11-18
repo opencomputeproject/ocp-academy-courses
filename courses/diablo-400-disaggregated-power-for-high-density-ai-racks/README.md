@@ -13,7 +13,7 @@ The course includes one silent animated teaching figure per module. The encoded 
 | 1 | Why Mt. Diablo Exists | AI rack density, higher-voltage distribution, the sidecar model, and the OCP Rack & Power context. |
 | 2 | Mt. Diablo Architecture and Power Path | Rack envelope, AC input, DC output, ride-through, storage options, dynamic loading, and efficiency. |
 | 3 | Interfaces, Safety, Telemetry, and Adoption | PDUs, shelves, cables, grounding choices, Redfish telemetry, safety, EMC, and implementation boundaries. |
-| 4 | Optional: Future Work - Facility LVDC Power Distribution | Facility LVDC architectures, voltage bands, grounding topologies, protection, ESS, SST, standards, and future OCP work. |
+| 4 | Optional: Future Work - Facility LVDC Power Distribution | Facility and rack architectures, voltage compatibility, earthing, coordinated protection and storage, operating sequences, EMC, and verification. |
 
 ## Build
 
@@ -26,11 +26,10 @@ export ELEVENLABS_API_KEY="<your key>"
 
 The finished SCORM folder and LMS zip are created under `build/`.
 
-To regenerate the teaching animations before building the course, run the recording scripts from the course's `animations/` directory. They require Node.js and Playwright:
+To regenerate the teaching animations, run the course wrapper with the installed AcademyWizard skill, Playwright Chromium, and a full ffmpeg build with VP9 support:
 
 ```bash
 node record_module_videos.js
-node record_diablo_power_path.js
 ```
 
 For local QA with previously generated audio, set `EXISTING_AUDIO_DIR` to a folder shaped like `audio/`:
@@ -44,7 +43,8 @@ EXISTING_AUDIO_DIR=/path/to/audio ./scripts/build-course.sh diablo-400-disaggreg
 The original research files, downloaded PDFs, generated audio, and captured paid article assets are not included in this repository. Public learner/source references used by the course include:
 
 - OCP specification: Mt. Diablo Disaggregated Power Rack Specification v1.0.0 - https://www.opencompute.org/wp-content/uploads/2026/10/OCP-Specification-Mt.-Diablo-Disaggregated-Power-Rack-Specification-v1.0.0.pdf
-- OCP white paper: DCF Power Distribution LVDC White Paper Version 1.0 - https://www.opencompute.org/documents/dcf-power-distribution-lvdc-white-paper-version-1-0-final-pdf-1
+- OCP white paper: DCF Power Distribution LVDC White Paper v1.1.0 - https://www.opencompute.org/wp-content/uploads/2026/10/DCF-Power-Distribution-LVDC-white-paper-version-1.1.0.pdf
+- OCP Academy companion course: LVDC Power Distribution for Data Centers - https://academy.opencompute.org/learn/courses/77/lvdc-power-distribution-for-data-centers/
 - OCP Rack & Power Project - https://www.opencompute.org/community/rack-and-power
 - OCP Diablo 400 Project, HVDC Industry Standardization Effort - https://www.youtube.com/watch?v=OvrZR2Sp2aw
 - Meta, Google, and Microsoft implementation comparison, starting at 12:17 - https://youtu.be/OvrZR2Sp2aw?si=NIwuLbVCDniyOjNZ&t=737
@@ -68,4 +68,4 @@ See [the poster standard](../../skills/academy-wizard/references/lms_poster_styl
 
 The English source targets the final Mt. Diablo specification effective October 8, 2026. The stable course folder, course slug, module slugs and audio filenames are retained. The seven locale sources remain based on v0.7.0 and must be refreshed separately before release as v1.0.0.
 
-The English content and scripts were approved on November 17, 2026. All 32 narration clips were generated with River and full Eleven v4, using the maintained 1.18 pitch-preserving tempo multiplier and WAV delivery. Automated audio checks passed; human listening approval and release packaging remain pending. Generated audio, rendered review pages and LMS packages are not source-controlled. See `SPEC_UPDATE_V1.0.0.md` for the change map and source ambiguities.
+The English content and scripts were approved on November 17, 2026. The local rebuild uses the approved Leo v2 voice with the full Eleven v4 synthesis model and the maintained 1.18 pitch-preserving tempo multiplier. Delivery is 44.1 kHz, 96 kbps CBR mono MP3. Retain WAV masters outside learner delivery. Generated audio, rendered review pages and LMS packages are not source-controlled. See `SPEC_UPDATE_V1.0.0.md` for the change map and source ambiguities.

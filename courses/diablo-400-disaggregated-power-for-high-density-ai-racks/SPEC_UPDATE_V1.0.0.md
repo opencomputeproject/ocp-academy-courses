@@ -1,6 +1,20 @@
 # Mt. Diablo specification v1.0.0: English course refresh
 
-Status: English content and scripts approved by the user on November 17, 2026. All 32 WAV clips have been generated with River. Final human audio review and release packaging remain pending.
+Status: English content and scripts approved by the user on November 17, 2026. The notes below describe the original PR review. The November 18 local rebuild uses Leo v2 with the full Eleven v4 model and 96 kbps MP3 delivery. It rebuilds the four teaching videos at 1080p and preserves the separate syllabus entries. Human listening review and release packaging remain pending.
+
+The local review now has 36 slides. Each module ends with a dedicated takeaways slide, a knowledge check, and a next-module or course-completion slide. Each of those slides has separate narration. Modules 1–3 retain their quiz content and audio. Question IDs remain stable across all modules.
+
+## Optional Module 4 source audit
+
+Module 4 now follows the 239-page [OCP DCF Power Distribution LVDC white paper v1.1.0](https://www.opencompute.org/wp-content/uploads/2026/10/DCF-Power-Distribution-LVDC-white-paper-version-1.1.0.pdf), dated September 2, 2026. The 15-minute estimate is unchanged. The white paper describes architecture options and draft criteria; the Mt. Diablo base specification remains the authority for Modules 1–3.
+
+| Slides | What changed | v1.1.0 evidence (PDF viewer pages) |
+| --- | --- | --- |
+| 1–3 | Refresh the version and objectives. Verify the three adoption stages, distinguish the facility stages from the two rack conversion placements, and label rack-input voltage criteria preliminary. Remove the older deployment-metric examples from the short overview. | pp. 1, 7–8, 25–31, 166–174 |
+| 4 | Teach the difference between the nominal label, equipment rating, and operating limits. Qualify proposed voltage bands and explain why the selected polarity and earthing matter. | pp. 51–74, 80–98 |
+| 5 | Explain the existing conceptual video using the updated paper's protection, conversion, and tiered storage treatment. Avoid a universal timing or grid-recovery target. | pp. 111–128, 144–150, 182–187 |
+| 6 | Add operating sequences, control responsibilities, and EMC under representative loads. Retain DC arc-flash and applicable-code verification. | pp. 133–135, 188–200, 203–230 |
+| 7–9 | Summarize what to verify, test equipment compatibility and system behavior, then link to the complete paper. | Chapters 5–7, 10–12 |
 
 Baseline: the repository's English Diablo 400 course, based on v0.7.0 (March 1, 2026). Target: **Mt. Diablo Disaggregated Power Rack Specification v1.0.0**, effective October 8, 2026.
 

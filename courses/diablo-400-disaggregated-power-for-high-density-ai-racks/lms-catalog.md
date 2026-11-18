@@ -2,11 +2,11 @@
 OCP Mt. Diablo: Disaggregated Power for High-Density AI Racks
 
 **Short Description**\
-Explore Mt. Diablo sidecar power, interfaces, protection, telemetry, and its connection to facility LVDC distribution.
+Learn Mt. Diablo v1.0.0 sidecar power for high-density AI racks, with an optional module on facility LVDC.
 
 **Long Description**
 
-Examine how OCP Mt. Diablo moves power conversion into a sidecar to support high-density AI racks. Trace the electrical architecture, review physical and management interfaces, and connect protection, grounding, safety, and qualification requirements to deployment decisions. An optional final module extends the discussion to facility-level low-voltage DC power distribution.
+Use the OCP Mt. Diablo v1.0.0 specification to understand how a sidecar power rack supports high-density AI racks. Trace the AC-to-DC power path, review rack and management interfaces, and connect grounding, protection, telemetry, EMC, and safety requirements to deployment decisions. An optional module uses the OCP LVDC white paper v1.1.0 to extend the discussion to facility-level DC distribution.
 
 **Overall duration: 35 minutes**
 
@@ -22,4 +22,4 @@ Trace AC input through sidecar building blocks to DC output. Review the physical
 Review distribution components, grounding choices, management and telemetry, environmental operation, and safety and compliance boundaries. Identify the evidence needed for an implementation review.
 
 **Module 4: Optional: Future Work - Facility LVDC Power Distribution — 15 minutes.**\
-Extend the rack-level view to facility LVDC architectures. Compare voltage and earthing choices, protection, conversion, energy storage, grid interaction, and open standards questions.
+Use the OCP LVDC white paper v1.1.0 to connect the Mt. Diablo sidecar to facility and rack architectures. Compare voltage, earthing, protection, and storage choices, and identify what to verify about operating sequences, EMC, and safety.
