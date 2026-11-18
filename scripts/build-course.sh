@@ -126,6 +126,7 @@ if [[ "$COURSE_STYLE" == "scrolling" ]]; then
     rsync -a "$SOURCE_DIR/resources/" "$BUILD_DIR/resources/"
   fi
   "$PYTHON_BIN" "$SKILL_DIR/scripts/render_index.py" "$BUILD_DIR/course.json"
+  "$PYTHON_BIN" "$DEFAULT_SKILL_DIR/scripts/course_feedback.py" "$BUILD_DIR"
   "$PYTHON_BIN" "$SKILL_DIR/scripts/validate_package.py" "$BUILD_DIR"
 else
   if [[ -d "$SOURCE_DIR/audio" ]]; then
@@ -191,6 +192,7 @@ PY
     "$PYTHON_BIN" "$SKILL_DIR/scripts/render_module.py" "$BUILD_DIR/course.json" --all
   fi
   "$PYTHON_BIN" "$SKILL_DIR/scripts/render_index.py" "$BUILD_DIR/course.json"
+  "$PYTHON_BIN" "$DEFAULT_SKILL_DIR/scripts/course_feedback.py" "$BUILD_DIR"
 
   if [[ "${SKIP_AUDIO:-0}" == "1" && -z "${EXISTING_AUDIO_DIR:-}" ]]; then
     echo "Rendered without audio validation because SKIP_AUDIO=1 and EXISTING_AUDIO_DIR is unset."

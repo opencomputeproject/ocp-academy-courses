@@ -41,6 +41,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [OCP's Volunteer Leadership Guide](courses/ocp-orientation/ocp-volunteer-leadership-guide/README.md) | Learn volunteer leadership responsibilities, project onboarding, community collaboration, contribution processes, and product and data-center recognition. |
 | [OCP Ready™ Data Center Recognition Program](courses/ocp-orientation/ocp-ready-data-center-recognition-program/README.md) | Understand the requirements and recognition process for data centers prepared to support OCP infrastructure and solutions. |
 | [OCP Contribution Process](courses/ocp-orientation/ocp-contribution-process/README.md) | Follow a technical contribution from initiation and submission through review, document preparation, approval, and publication. |
+| [OCP Market Impact: What We’re Building in 2027](courses/ocp-orientation/ocp-market-impact-2027/README.md) | Follow the 2026 Summit market forecast and find an OCP project to join in 2027. |
 | [OCP Project Brazos: Liquid Cooling in Air-Cooled Data Centers](courses/ocp-project-brazos-liquid-to-air-cooling/README.md) | Trace Brazos liquid-to-air heat paths, interpret cooling performance, and assess rack integration, serviceability, controls, and deployment readiness. |
 | [OCP Ready™ Requirements for Energy Storage Systems](courses/ocp-ready-requirements-for-energy-storage-systems/README.md) | Compare energy storage deployment architectures and technologies, then connect safety hazards, operational practices, and applicable standards to OCP Ready™ requirements. |
 | [OCP S.A.F.E.: Product Security Reviews and S.O.L.I.D. Requirements](courses/ocp-safe-product-security/README.md) | Understand independent product security review scope, preparation, remediation, and reporting, including S.O.L.I.D. requirements and the role of AI-assisted analysis. |
@@ -123,6 +124,7 @@ courses/
   ocp-orientation/ocp-volunteer-leadership-guide/
   ocp-orientation/ocp-ready-data-center-recognition-program/
   ocp-orientation/ocp-contribution-process/
+  ocp-orientation/ocp-market-impact-2027/
   ocp-project-brazos-liquid-to-air-cooling/
   ocp-ready-requirements-for-energy-storage-systems/
   ocp-safe-product-security/

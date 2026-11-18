@@ -96,6 +96,10 @@ adding it to the SCORM runtime. Include source metadata and readable exports in
 the normal repository contribution; preserve approved copy during rebuilds and
 localize it independently for translations.
 
+## Shared course feedback
+
+The final-slide **Share Feedback** button opens https://opencomputeproject.github.io/ocp-academy-courses/feedback/ for every new build, rebuild and translation. Keep the shared destination when a course supplies an older survey URL or uses a pinned renderer. Verify the actual link in the rendered completion slide before packaging.
+
 ## What "done" looks like
 
 Every Slides course includes a Course Home at `index.html`. An explicit `scorm.include_home_sco: false` changes Home to an untracked asset and removes its LMS syllabus entry; it never removes the Home/index page, its Start action, or its visual design. Keep the default tracked Home unless a course records an approved tracking override.
