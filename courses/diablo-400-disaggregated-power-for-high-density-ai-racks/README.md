@@ -66,6 +66,8 @@ See [the poster standard](../../skills/academy-wizard/references/lms_poster_styl
 
 ## v1.0.0 refresh
 
-The English source targets the final Mt. Diablo specification effective October 8, 2026. The stable course folder, course slug, module slugs and audio filenames are retained. The seven locale sources remain based on v0.7.0 and must be refreshed separately before release as v1.0.0.
+The English course and [all seven translations](locales/) target the final Mt. Diablo specification v1.0.0, effective October 8, 2026. The optional Module 4 in every edition uses the OCP LVDC white paper v1.1.0.
 
-The English content and scripts were approved on November 17, 2026. The local rebuild uses the approved Leo v2 voice with the full Eleven v4 synthesis model and the maintained 1.18 pitch-preserving tempo multiplier. Delivery is 44.1 kHz, 96 kbps CBR mono MP3. Retain WAV masters outside learner delivery. Generated audio, rendered review pages and LMS packages are not source-controlled. See `SPEC_UPDATE_V1.0.0.md` for the change map and source ambiguities.
+The English content and scripts were approved on November 17, 2026, and merged in [PR #148](https://github.com/opencomputeproject/ocp-academy-courses/pull/148). [PR #150](https://github.com/opencomputeproject/ocp-academy-courses/pull/150) updated Latin American Spanish, Brazilian Portuguese, Vietnamese, Japanese, Korean, Simplified Chinese, and Traditional Chinese. The seven localized packages and LMS summaries were published in place on [OCP Academy course 49](https://academy.opencompute.org/learn/courses/49/) on November 18, 2026.
+
+Each edition has 36 narrated slides and retains Course Home plus four module entries in the LMS syllabus. English uses Leo v2; each translation uses its configured native-language voice. All editions use the full Eleven v4 synthesis model with 1.18 pitch-preserving pacing and 44.1 kHz, 96 kbps CBR mono MP3 delivery. Generated audio, rendered review pages, and LMS packages are not source-controlled. See [the refresh notes](SPEC_UPDATE_V1.0.0.md) for the change map and source qualifications.

@@ -1,8 +1,10 @@
 # Mt. Diablo specification v1.0.0: English course refresh
 
-Status: English content and scripts approved by the user on November 17, 2026. The notes below describe the original PR review. The November 18 local rebuild uses Leo v2 with the full Eleven v4 model and 96 kbps MP3 delivery. It rebuilds the four teaching videos at 1080p and preserves the separate syllabus entries. Human listening review and release packaging remain pending.
+## Release status
 
-The local review now has 36 slides. Each module ends with a dedicated takeaways slide, a knowledge check, and a next-module or course-completion slide. Each of those slides has separate narration. Modules 1–3 retain their quiz content and audio. Question IDs remain stable across all modules.
+The English content and scripts were approved on November 17, 2026. The release merged in [PR #148](https://github.com/opencomputeproject/ocp-academy-courses/pull/148) on November 18. The same day, [PR #150](https://github.com/opencomputeproject/ocp-academy-courses/pull/150) merged the seven v1.0.0 translations, which were also published to the existing language editions on OCP Academy course 49. See the [course README](README.md#v100-refresh) for the current edition and narration settings.
+
+The released course has 36 slides and four teaching videos per edition. Each module ends with separately narrated takeaways, a knowledge check, and a next-module or completion slide. Question IDs remain stable across all modules.
 
 ## Optional Module 4 source audit
 
@@ -22,16 +24,13 @@ Source: https://www.opencompute.org/wp-content/uploads/2026/10/OCP-Specification
 
 Page numbers below are one-based PDF viewer pages. The final specification has 37 pages; the earlier specification has 36. Both full texts were extracted and compared, and the changed grounding diagrams, PSU table, and interconnect tables were checked against their rendered pages.
 
-## Course scope and compatibility
+## Original review scope and compatibility
 
-- Keep four modules and 32 slides, with the optional facility-LVDC module remaining distinct from base-specification requirements.
-- Preserve the 35-minute core and 15-minute optional learner-time estimates. Validate timing again after narration is generated.
-- Keep the stable course folder, course slug, module slugs, slide IDs, question IDs, and audio filenames. The title now uses Mt. Diablo.
-- Preserve SCORM 1.2, Course Home plus four module syllabus entries, and existing independent video loops. No deployment-format migration is proposed.
-- Keep WAV delivery, as requested by the user on November 17, 2026.
-- Seven locale sources remain unchanged and based on v0.7.0. They must be refreshed separately before being presented as v1.0.0 editions.
+The original English review used 32 slides and WAV audio. The release added four dedicated takeaways slides and switched delivery to MP3. The 35-minute core and 15-minute optional learner-time estimates are unchanged. The course retained its stable folder and slugs, SCORM 1.2, and Course Home plus four module syllabus entries. Localization was handled separately after the English review and is now complete.
 
-## Change map
+## Original English change map
+
+Slide numbers below refer to the original English review. The final optional module uses the v1.1.0 audit above.
 
 | Course location | Change | v1.0.0 evidence |
 | --- | --- | --- |
@@ -66,9 +65,10 @@ Ratings are up-to average DC load, without redundancy. Voltage order: 480 / 415 
 3. Section 8.1.4 describes solid-return 800 V grounding, while §8.2.1 describes a differential 800 V option isolated from PE and downstream input-isolation requirements. These architecture-specific statements need to be reconciled for the selected implementation; the course does not prescribe a universal bond location.
 4. Table 12's 96/100 kW row mixes “3W to 2W” assembly wording with a two-wire electrical-source description. The course reports a two-wire option without inventing adapter wiring or pin assignments.
 5. Appendix A is non-normative and contains strong touch-safety assertions. The course retains qualified fault/service tradeoffs and explicitly preserves pole-to-pole shock risk.
-6. The existing Module 2 bipolar teaching clip retains its historical “Diablo 400” label. Its caption identifies that history and limits the example to bipolar output; current 800 V and grounding coverage is in the slide text and Module 3. No numerical requirement in that retained clip was changed by this refresh.
 
-## Review and validation
+## Original English review and validation
+
+These checks describe the original 32-slide review, not the released packages.
 
 - English source QA: four modules, four retained teaching videos, 23 glossary placements, and 12 page-specific PDF teaching links; zero flags.
 - SVG arrow geometry: passes for active course figures. Existing canvas animations produce informational “no inline SVG” warnings.
@@ -77,19 +77,15 @@ Ratings are up-to average DC load, without redundancy. Voltage order: 480 / 415 
 - Review-package structure/media validation passes. This validates the silent review build, not final audio or LMS deployment.
 - Browser spot checks: updated grounding slide, mobile PSU table (390 px; no horizontal page overflow), Module 3 question feedback and Retry reset, and all three revised static diagrams.
 - Catalog poster uses the maintained template, bundled Lato/Academy logo/background and artwork. The command-line renderer could not launch its browser in this environment; the same template was checked and captured in the native review browser at 800 × 400.
-- Audio generation and automated audio-tail checks are complete for all 32 clips, with zero flags. Model/voice, script/output hashes, pacing receipts, PCM format, silence and clipping checks also passed. Human pronunciation/listening approval, release packaging and target-LMS tracking verification remain pending. Script approval is now recorded from the user’s November 17, 2026 approval, rather than inherited from v0.7.0.
+- Audio generation and automated audio-tail checks passed for all 32 review clips. Model, voice, script and output hashes, pacing receipts, PCM format, silence, and clipping were checked. The review audio settings were superseded by the release settings in the README.
 
-Narration: River (`SAz9YHcvj6GT2YYXdXww`), explicitly selected by the user after live metadata reported that the default Leo voice was unavailable. Use full Eleven v4 with the maintained pitch-preserving 1.18 tempo multiplier; learner speed remains 1.0. Keep WAV delivery. Confirm final audio and slides before release packaging.
+## Original review narration timing
 
-## Narration delivery review
-
-Measured narration time (not learner time):
+Measured narration time for the pre-release audio (not learner time):
 
 - Module 1: 7.48 minutes.
 - Module 2: 9.59 minutes.
 - Module 3: 8.99 minutes.
 - Module 4: 9.37 minutes.
 
-Total narration: 35.42 minutes. The approved 35-minute core and additional 15-minute optional learner-time estimates remain unchanged. Native masters and per-clip receipts are retained outside the runtime. WAV delivery is decoded from ElevenLabs provider MP3 and paced with pitch preserved; it is not a lossless provider recording.
-
-The narrated review is separate from the earlier silent review. No release SCORM ZIP has been created or uploaded, and no GitHub publication has been performed.
+Total pre-release narration: 35.42 minutes. The review WAVs were decoded from ElevenLabs provider MP3 and paced with pitch preserved. This timing does not describe the released narration.
