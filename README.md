@@ -49,7 +49,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [Open Chiplet Economy: Business and Technology of Chiplet-based Systems](courses/open-chiplet-economy/README.md) | Connect chiplet architecture, packaging, die-to-die interfaces, testing, economics, standards, and supplier qualification to viable interoperable systems. |
 | [Open Cluster Designs for AI](courses/open-cluster-designs-for-ai/README.md) | Interpret OCP cluster reference designs, trace building blocks into complete clusters, compare AI fabrics, and assemble deployment and operating evidence. |
 | [Open Data Center for AI](courses/open-data-center-for-ai/README.md) | Evaluate facility compatibility for AI infrastructure through structural loads, movement paths, row geometry, power, cooling, and compatibility with equipment from different suppliers. |
-| [Open Rack: Architecture, Power, Cooling and Deployment](courses/open-rack-architecture-power-cooling-deployment/README.md) | Connect ORv3, high-power racks, and Open Rack Wide to mechanical fit, power, cooling, resilience, serviceability, and deployment validation. |
+| [Open Rack: Architecture, Power, Cooling and Deployment](courses/open-rack-architecture-power-cooling-deployment/README.md) | Follow equipment through ORv3 and Open Rack Wide: mechanical fit, power delivery, cooling and real rack designs. Four English modules, 63 minutes. |
 | [Open Systems for AI](courses/open-systems-for-ai/README.md) | Connect AI workload requirements to cluster architecture, physical infrastructure, modular IT building blocks, shared interfaces, and systems management. |
 | [Optical Circuit Switching for AI and Hyperscale Data Centers](courses/optical-circuit-switching-for-ai-and-hyperscale-data-centers/README.md) | Explore OCS mechanisms, deployment architectures, emerging AI uses and the open ecosystem behind optical networking. |
 | [OCP Project Deschutes](courses/project-deschutes-cdu-specification-v1-0/README.md) | Explore coolant distribution unit architecture, facility and technology cooling loops, performance requirements, controls, serviceability, and deployment considerations. |
@@ -133,6 +133,7 @@ courses/
   open-cluster-designs-for-ai/
   open-data-center-for-ai/
   open-rack-architecture-power-cooling-deployment/
+    locales/                         # Seven translations of the previous seven-module edition
   open-systems-for-ai/
   optical-circuit-switching-for-ai-and-hyperscale-data-centers/
   project-deschutes-cdu-specification-v1-0/
@@ -251,6 +252,8 @@ translation and QA workflow.
 Published editions are available on the
 [OCP Academy Translated Learning](https://academy.opencompute.org/pages/25/ocp-academy-translated-learning)
 page.
+
+The Open Rack translations currently use the previous seven-module syllabus; the English edition has four modules.
 
 <!-- translations-table:start -->
 | Course | Chinese (Simplified) | Chinese (Traditional) | Japanese | Korean | Portuguese (Brazil) | Spanish (LATAM) | Vietnamese |

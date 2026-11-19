@@ -2,31 +2,22 @@
 Open Rack: Architecture, Power, Cooling and Deployment
 
 **Short Description**\
-Connect Open Rack architecture, ORv3, high-power systems and ORW to practical power, cooling and deployment reviews.
+Explore Open Rack v3 and Open Rack Wide: how trays fit, how power and cooling reach them, and how builders use shared interfaces.
 
 **Long Description**
 
-Explore Open Rack as a connected system of mechanical, electrical, cooling and operational interfaces. This seven-module course develops an engineering approach to reviewing ORv3, high-power racks and Open Rack Wide, using specification-based diagrams, narrated teaching animations, expert walkthroughs and applied design decisions. Learn to compare implementations, identify missing evidence and plan a supported deployment. Key specifications, an integrated glossary and related OCP Academy courses provide paths to deeper study.
+Follow a compute tray from the front of an Open Rack to its connections at the rear. Explore how Open Rack v3 and Open Rack Wide support equipment, supply power and remove heat. Then compare contributed frames and real systems to see which details come from the rack specification and which are up to the builder.
 
-**Overall duration: 145 minutes**
+**Overall duration: 63 minutes**
 
-**Module 1: Open Rack Architecture and the Open Ecosystem — 18 minutes.**\
-Establish the rack's role in the open ecosystem, distinguish specifications from implementations, and define the workload and deployment envelope before selecting equipment.
+**Module 1: Inside Open Rack — 16 minutes.**\
+Compare Open Rack v3 and Open Rack Wide. Follow a tray from its supports and latch to the rear power busbar, and distinguish a shared interface from an individual frame design.
 
-**Module 2: ORv3: Mechanical, Power and Cooling Interfaces — 25 minutes.**\
-Trace ORv3 frame datums, OpenU and RU grids, power delivery, bonding, cooling and service access. Review whether equipment interfaces agree across a configured rack.
+**Module 2: How servers and switches fit into the rack — 15 minutes.**\
+See how tray width, rail position and usable depth affect fit. Compare OpenU and rack units, then check whether cables leave enough room to service a switch.
 
-**Module 3: Selecting, Integrating and Validating an ORv3 Deployment — 17 minutes.**\
-Compare implementations and supplier evidence, use Marketplace and contribution resources appropriately, and plan compatibility, transport, site-route and acceptance reviews.
+**Module 3: What changes as racks carry more power and heat? — 17 minutes.**\
+Trace power from a shelf to the tray and heat from a processor through the cooling loops. Explore how high-power racks and the Mt. Diablo power sidecar change the arrangement.
 
-**Module 4: High-Power Racks: Capacity, Resilience and Control — 24 minutes.**\
-Evaluate high-power rack architecture, usable capacity, power management, buffers, fault domains and recovery. Recalculate the workload budget when a supply path is lost.
-
-**Module 5: Scaling Power: Sidecars, Higher Voltage and Workload Dynamics — 19 minutes.**\
-Compare sidecars, higher-voltage distribution and conversion boundaries across the complete power path. Connect changing AI workload demand to buffering, sharing and rack-to-facility responsibilities.
-
-**Module 6: Open Rack Wide: Frame, Payload and Facility Integration — 20 minutes.**\
-Review ORW base and implementation specifications, frame and canister interfaces, configured payload, lifting, transport, routing and facility integration.
-
-**Module 7: Liquid Cooling, Serviceability and the Integrated Design Review — 22 minutes.**\
-Follow the complete cooling loop and PBMC interface, assess flow, pressure, residual air heat and serviceability, and assemble commissioning and handover evidence for an integrated rack design review.
+**Module 4: Open Rack in practice — 14 minutes.**\
+Compare Meta and Google frames, HPE’s implementation of AMD Helios, and Supermicro’s wide server chassis. Then follow a loaded rack around a corner on its way to the data hall.
