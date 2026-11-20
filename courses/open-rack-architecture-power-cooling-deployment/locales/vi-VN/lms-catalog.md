@@ -2,31 +2,22 @@
 Open Rack: Kiến trúc, nguồn điện, làm mát và triển khai
 
 **Mô tả ngắn**\
-Kết nối kiến trúc Open Rack, ORv3, hệ công suất cao và ORW với đánh giá điện, làm mát và triển khai thực tế.
+Khám phá Open Rack v3 và Open Rack Wide: cách lắp khay, cấp điện, làm mát và sử dụng các giao diện chung.
 
 **Mô tả chi tiết**
 
-Khám phá Open Rack như hệ liên kết giao diện cơ khí, điện, làm mát và vận hành. Bảy mô-đun phát triển cách đánh giá kỹ thuật ORv3, tủ công suất cao và Open Rack Wide bằng sơ đồ theo đặc tả, hoạt ảnh có thuyết minh, hướng dẫn chuyên gia và quyết định thiết kế ứng dụng. Học so phương án, nhận diện bằng chứng thiếu và lập triển khai có cơ sở. Đặc tả chính, thuật ngữ tích hợp và khóa OCP Academy liên quan mở đường học sâu.
+Theo chân một khay tính toán từ mặt trước của Open Rack đến các điểm kết nối phía sau. Tìm hiểu cách Open Rack v3 và Open Rack Wide nâng đỡ thiết bị, cấp điện và thải nhiệt. Sau đó so sánh các thiết kế khung được đóng góp với hệ thống thực tế để phân biệt yêu cầu của đặc tả với lựa chọn riêng của nhà sản xuất.
 
-**Tổng thời lượng: 145 phút**
+**Tổng thời lượng: 63 phút**
 
-**Mô-đun 1: Kiến trúc Open Rack và hệ sinh thái mở — 18 phút**\
-Xác lập vai trò tủ trong hệ mở, phân biệt đặc tả với phương án và xác định phạm vi tải, triển khai trước khi chọn thiết bị.
+**Mô-đun 1: Bên trong Open Rack — 16 phút**\
+So sánh Open Rack v3 và Open Rack Wide. Lần theo khay từ điểm đỡ và chốt phía trước đến thanh cái nguồn phía sau, phân biệt giao diện dùng chung với thiết kế khung riêng.
 
-**Mô-đun 2: ORv3: Giao diện cơ khí, nguồn điện và làm mát — 25 phút**\
-Theo chuẩn khung ORv3, lưới OpenU và RU, cấp điện, liên kết bảo vệ, làm mát, tiếp cận. Đánh giá giao diện thiết bị có phù hợp trên tủ cấu hình.
+**Mô-đun 2: Máy chủ và bộ chuyển mạch lắp vào tủ như thế nào? — 15 phút**\
+Xem chiều rộng khay, vị trí ray và chiều sâu khả dụng ảnh hưởng thế nào đến việc lắp thiết bị. So sánh OpenU với đơn vị rack, rồi kiểm tra khoảng trống bảo trì bộ chuyển mạch sau khi đi cáp.
 
-**Mô-đun 3: Lựa chọn, tích hợp và xác nhận triển khai ORv3 — 17 phút**\
-So phương án và bằng chứng nhà cung cấp, dùng Marketplace, đóng góp đúng cách, lập đánh giá tương thích, vận chuyển, tuyến cơ sở và nghiệm thu.
+**Mô-đun 3: Điều gì thay đổi khi tủ mang công suất lớn hơn và tỏa nhiều nhiệt hơn? — 17 phút**\
+Lần theo đường điện từ khay nguồn đến khay thiết bị và đường nhiệt từ bộ xử lý qua các vòng làm mát. Tìm hiểu cách bố trí khác nhau của tủ công suất cao và tủ nguồn phụ Mt. Diablo.
 
-**Mô-đun 4: Tủ rack công suất cao: Công suất, khả năng chống chịu và điều khiển — 24 phút**\
-Đánh giá kiến trúc công suất cao, công suất khả dụng, quản lý điện, bộ đệm, miền sự cố và khôi phục. Tính lại ngân sách tải khi mất đường nguồn.
-
-**Mô-đun 5: Mở rộng nguồn điện: Tủ nguồn sidecar, điện áp cao hơn và động thái tải công việc — 19 phút**\
-So sidecar, phân phối cao áp và ranh giới chuyển đổi trên toàn đường điện. Nối tải AI thay đổi với đệm, chia sẻ và trách nhiệm tủ–cơ sở.
-
-**Mô-đun 6: Open Rack Wide: Khung, tải thiết bị và tích hợp cơ sở — 20 phút**\
-Đánh giá đặc tả cơ sở, triển khai ORW, giao diện khung, canister, tải cấu hình, nâng, vận chuyển, đi tuyến và tích hợp cơ sở.
-
-**Mô-đun 7: Làm mát bằng chất lỏng, khả năng bảo trì và đánh giá thiết kế tích hợp — 22 phút**\
-Theo toàn vòng làm mát và giao diện PBMC; đánh giá lưu lượng, áp suất, nhiệt dư không khí, bảo trì; tập hợp bằng chứng chạy thử, bàn giao cho đánh giá thiết kế tủ tích hợp.
+**Mô-đun 4: Open Rack trong thực tế — 14 phút**\
+So sánh khung của Meta và Google, phiên bản AMD Helios của HPE và khung máy chủ dạng rộng của Supermicro. Sau đó theo một tủ đã lắp đầy thiết bị qua góc rẽ trên đường vào phòng máy.
