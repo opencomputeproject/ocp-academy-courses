@@ -1,0 +1,1818 @@
+{
+  "style": "Slides",
+  "course_slug": "meta-icecube",
+  "course_title": "Meta IceCube: Anatomy of a 102.4 Tb/s Ethernet Switch",
+  "course_subtitle": "Follow the Ethernet signal, cooling paths, and hardware management through Meta’s IceCube switch.",
+  "language": "en-US",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Design specification v1.0.0",
+  "target_duration_minutes": 24,
+  "audience_level": "intermediate",
+  "index_show_module_status": false,
+  "index_module_links": false,
+  "index_navigation_instruction": "Use the LMS syllabus to launch each tracked module.",
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 3
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "icecube-mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "badge_text": "IceCube"
+  },
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo",
+    "model_id": "eleven_v4",
+    "model_policy": "stable",
+    "speed": 1.18,
+    "teaching_video_mode": "narration-synchronized",
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR"
+    }
+  },
+  "sources": [
+    {
+      "kind": "spec",
+      "title": "Meta IceCube OCP Design Specification v1.0.0",
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf"
+    },
+    {
+      "kind": "article",
+      "title": "Engineering at Meta · OCP Summit 2026 networking announcement",
+      "url": "https://engineering.fb.com/2026/10/12/open-source/ocp-summit-2026-powering-ai-with-open-innovations-in-scale-up-scale-out-and-scale-across-networks/"
+    },
+    {
+      "kind": "work_stream",
+      "title": "OCP Networking · Open Switch Platform Architecture",
+      "url": "https://www.opencompute.org/projects/networking/open-switch-platform-architecture/"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "asic-to-fiber",
+      "title": "From ASIC to fiber",
+      "subtitle": "Follow one transmit signal and explain the connector and interface counts.",
+      "next_module_title": "Cooling and servicing IceCube",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "From ASIC to fiber",
+          "subtitle": "The signal path behind IceCube’s 102.4 Tb/s capacity",
+          "module_number": 1,
+          "version_chip": "Meta IceCube",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "delivery_file": "audio/module1/slide_01_title.mp3",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "course_overview",
+          "slug": "overview",
+          "title": "Two views of the same switch",
+          "subtitle": "Start with Ethernet traffic, then turn the chassis around to see what keeps it running.",
+          "chips": [
+            {
+              "icon": "clock",
+              "text": "24 minutes"
+            },
+            {
+              "icon": "modules",
+              "text": "Intermediate"
+            },
+            {
+              "icon": "spec",
+              "text": "IceCube design specification 1.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_02_overview.txt",
+            "wav_file": "audio/module1/slide_02_overview.wav",
+            "delivery_file": "audio/module1/slide_02_overview.mp3",
+            "approved": true
+          },
+          "modules_listed": [
+            "From ASIC to fiber",
+            "Cooling and servicing IceCube"
+          ]
+        },
+        {
+          "id": 3,
+          "type": "content_diagram",
+          "slug": "front_panel",
+          "title": "Read the faceplate",
+          "section_label": "Chassis orientation",
+          "figure": {
+            "path": "figures/figure-3-chassis-front-view.jpg",
+            "alt": "Front panel with 64 central OSFP connectors, RJ45 connections at left, and QSFP28 and an E1.S drive at right.",
+            "caption": "The 64 OSFP data connectors occupy the center. Management connections and the E1.S drive sit at the edges.",
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "3898b2ff2efb7e3f2f824628accc6865ba96af09310bfb0a2f6d2b9fc3ced5ff",
+              "entries": [
+                {
+                  "text": "FBPN,CPN&REV label"
+                },
+                {
+                  "text": "Injectors"
+                },
+                {
+                  "text": "SN & MAC label"
+                },
+                {
+                  "text": "Asset label"
+                },
+                {
+                  "text": "OSFP LEDs"
+                },
+                {
+                  "text": "OSFP LEDs switch button"
+                },
+                {
+                  "text": "RJ45(x3)"
+                },
+                {
+                  "text": "USB"
+                },
+                {
+                  "text": "Status LEDs"
+                },
+                {
+                  "text": "OSFP (x64)"
+                },
+                {
+                  "text": "QSFP28"
+                },
+                {
+                  "text": "E1.S SSD"
+                }
+              ]
+            }
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_03_front_panel.txt",
+            "wav_file": "audio/module1/slide_03_front_panel.wav",
+            "delivery_file": "audio/module1/slide_03_front_panel.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · Figure 3 · p. 13",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13"
+            },
+            {
+              "label": "IceCube spec · §§3.15.5–3.15.7 · pp. 29–30",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 13,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13",
+              "description": "IceCube spec · Figure 3 · p. 13"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 29,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29",
+              "description": "IceCube spec · §§3.15.5–3.15.7 · pp. 29–30"
+            }
+          ],
+          "term_refs": [
+            "osfp"
+          ],
+          "caption": "Count the OSFP openings for data traffic. Each holds one pluggable module."
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "signal_path",
+          "title": "Trace one Ethernet transmit signal",
+          "section_label": "Signal path",
+          "figure": {
+            "path": "figures/signal-path.mp4",
+            "poster": "figures/signal-path-poster.png",
+            "media_type": "video",
+            "alt": "The frame moves from the front panel to the ASIC, flyover cables, and optical module, then compares the two capacity configurations.",
+            "caption": "The module sends light onto fiber after the signal crosses the chassis electrically.",
+            "source": "custom",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "a4286c5405ff844346adca015e3f9e3897fc2f2555bb83bac8ad5e4ca2418aff",
+              "entries": [
+                {
+                  "text": "How can 64 connectors deliver 128 interfaces?",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Front panel",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "64 physical OSFP connectors",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Two physical interface cards carry 32 connectors each.",
+                  "at_seconds": 6
+                },
+                {
+                  "text": "Follow one transmit signal",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "Internal top view · Simplified signal path",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "ASIC / SerDes",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "SMB",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "Ultrapass(x16)",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "MCB",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "Airduct",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "Removeable cover(x2)",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "OSFP coldplate",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "Fan FRU (x4)",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "PIC (x2)",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "ASIC coldplate",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "DIMM(x2)",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "BMC",
+                  "at_seconds": 10.0
+                },
+                {
+                  "text": "RF flyover cables",
+                  "at_seconds": 14.0
+                },
+                {
+                  "text": "PIC / OSFP",
+                  "at_seconds": 18.0
+                },
+                {
+                  "text": "Pluggable optical module",
+                  "at_seconds": 23.0
+                },
+                {
+                  "text": "Fiber",
+                  "at_seconds": 27.375
+                },
+                {
+                  "text": "Electrical → optical",
+                  "at_seconds": 27.375
+                },
+                {
+                  "text": "One connector carries two 800GbE interfaces",
+                  "at_seconds": 28.375
+                },
+                {
+                  "text": "One populated OSFP opening · Simplified view",
+                  "at_seconds": 28.375
+                },
+                {
+                  "text": "One OSFP connector",
+                  "at_seconds": 28.375
+                },
+                {
+                  "text": "Dual-800G module",
+                  "at_seconds": 32.375
+                },
+                {
+                  "text": "800GbE interface 1",
+                  "at_seconds": 32.375
+                },
+                {
+                  "text": "800GbE interface 2",
+                  "at_seconds": 35.375
+                },
+                {
+                  "text": "Front panel · 64 physical connectors",
+                  "at_seconds": 41.375
+                },
+                {
+                  "text": "64 × 2 × 800 Gb/s = 102.4 Tb/s",
+                  "at_seconds": 41.375
+                },
+                {
+                  "text": "128 logical 800GbE interfaces",
+                  "at_seconds": 41.375
+                },
+                {
+                  "text": "Two ways to express system capacity",
+                  "at_seconds": 48.583333
+                },
+                {
+                  "text": "512 × 200 Gb/s = 102.4 Tb/s",
+                  "at_seconds": 50.583333
+                }
+              ]
+            }
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_04_signal_path.txt",
+            "wav_file": "audio/module1/slide_04_signal_path.wav",
+            "delivery_file": "audio/module1/slide_04_signal_path.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · Figure 1 · p. 11",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11"
+            },
+            {
+              "label": "IceCube spec · §3.12 · p. 20",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20"
+            },
+            {
+              "label": "IceCube spec · §§3.1–3.4 · p. 8",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 11,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11",
+              "description": "IceCube spec · Figure 1 · p. 11"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 20,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20",
+              "description": "IceCube spec · §3.12 · p. 20"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 8,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8",
+              "description": "IceCube spec · §§3.1–3.4 · p. 8"
+            }
+          ],
+          "term_refs": [
+            "serdes"
+          ],
+          "transcript": "Start with the front panel. IceCube has sixty-four O S F P connectors. So how can the switch offer a hundred and twenty-eight eight-hundred-gigabit Ethernet interfaces?\n\nFollow one transmit signal. It starts at the switch ASIC, beneath the cold plate on the Switch Main Board. The signal travels electrically over high-speed flyover cables to a Physical Interface Card. At the faceplate, the pluggable module converts the electrical signal to light and sends it out through fiber.\n\nZoom in on one connector. With Meta's dual eight-hundred-gigabit module, one connector carries two independent eight-hundred-gigabit Ethernet interfaces. Each of the two interface cards carries thirty-two connectors. Multiply sixty-four by two by eight hundred gigabits per second. That's one hundred and two point four terabits per second.\n\nThe specification also lists five hundred and twelve two-hundred-gigabit Ethernet interfaces. That's the same total capacity at a different interface rate. When reading a port count, ask whether it describes the faceplate or the configured interfaces."
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "electrical_to_optical",
+          "title": "Where the electrical path ends",
+          "section_label": "Inside the chassis",
+          "figure": {
+            "path": "figures/figure-1-internal-chassis-top-view.jpg",
+            "alt": "Top view with the front panel on the left, switch ASIC and flyover cables in the center, and four fan trays at right.",
+            "caption": "The ASIC sits under the central cold plate. Flyover cables carry the electrical signal to the pluggable module, where it becomes optical.",
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "dcd2322ff11c56db7f2da429dfdff891a1227ff746856b7958d984b74ec389dc",
+              "entries": [
+                {
+                  "text": "SMB"
+                },
+                {
+                  "text": "Ultrapass(x16)"
+                },
+                {
+                  "text": "MCB"
+                },
+                {
+                  "text": "Airduct"
+                },
+                {
+                  "text": "Removeable cover(x2)"
+                },
+                {
+                  "text": "OSFP coldplate"
+                },
+                {
+                  "text": "Fan FRU (x4)"
+                },
+                {
+                  "text": "PIC (x2)"
+                },
+                {
+                  "text": "ASIC coldplate"
+                },
+                {
+                  "text": "DIMM(x2)"
+                },
+                {
+                  "text": "BMC"
+                }
+              ]
+            }
+          },
+          "audio": {
+            "script_file": "audio/module1/slide_05_electrical_to_optical.txt",
+            "wav_file": "audio/module1/slide_05_electrical_to_optical.wav",
+            "delivery_file": "audio/module1/slide_05_electrical_to_optical.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "Meta · Two IceCube variants",
+              "url": "https://engineering.fb.com/2026/10/12/open-source/ocp-summit-2026-powering-ai-with-open-innovations-in-scale-up-scale-out-and-scale-across-networks/"
+            },
+            {
+              "label": "Reza Niazmand at 14:24 · “It gives us ASIC diversity.”",
+              "url": "https://www.youtube.com/watch?v=39tvEfs9LuA&t=864s"
+            },
+            {
+              "label": "IceCube spec · §§2.2–2.4 · p. 6",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=6"
+            },
+            {
+              "label": "IceCube spec · Fig. 1 · p. 11",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11"
+            },
+            {
+              "label": "IceCube spec · §3.9 · p. 14",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=14"
+            },
+            {
+              "label": "IceCube spec · §3.15.5 · p. 29",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29"
+            },
+            {
+              "label": "Summit deck · IceCube-N preview · slide 11",
+              "url": "https://drive.google.com/file/d/1HBSpWnbuKEbmtQxH52qOFHcO7dnaxYLY/view"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 6,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=6",
+              "description": "IceCube spec · §§2.2–2.4 · p. 6"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 11,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11",
+              "description": "IceCube spec · Fig. 1 · p. 11"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 14,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=14",
+              "description": "IceCube spec · §3.9 · p. 14"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 29,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29",
+              "description": "IceCube spec · §3.15.5 · p. 29"
+            },
+            {
+              "source": "Engineering at Meta · OCP Summit 2026 networking announcement",
+              "url": "https://engineering.fb.com/2026/10/12/open-source/ocp-summit-2026-powering-ai-with-open-innovations-in-scale-up-scale-out-and-scale-across-networks/",
+              "description": "Meta · Two IceCube variants"
+            },
+            {
+              "source": "OCP Global Summit 2026 · Meta 102.4T Ethernet Switch · presentation",
+              "url": "https://drive.google.com/file/d/1HBSpWnbuKEbmtQxH52qOFHcO7dnaxYLY/view",
+              "description": "Summit deck · IceCube-N preview · slide 11"
+            },
+            {
+              "source": "OCP Global Summit 2026 · Meta 102.4T Ethernet Switch · recording",
+              "description": "Reza Niazmand at 14:24 · “It gives us ASIC diversity.”",
+              "url": "https://www.youtube.com/watch?v=39tvEfs9LuA&t=864s"
+            }
+          ],
+          "show_context_note": true,
+          "subtitle": "The Broadcom Tomahawk6C reference uses flyover cables. Meta’s IceCube-N preview uses NVIDIA Spectrum-6 and routes its 212G PAM4 signals on the PCB.",
+          "transcript": "In the top view, orient yourself with the front on the left. The switch ASIC sits under the large cold plate in the center. Its serializer and deserializer, called SerDes, drive high-speed electrical signals toward the front. The yellow cable assemblies are the electrical flyover path. They carry those signals inside the chassis to the Physical Interface Cards and the O S F P connectors.\n\nThe design specification describes the IceCube variant based on Broadcom’s Tomahawk six C. Meta also announced a variant based on Nvidia’s Spectrum six. The signal path here follows the Broadcom-based design described in the O C P specification.\n\nThe specification calls the board design PHY-less. In this path, the host signal reaches the pluggable module without going through a separate board-level PHY chip. The optical module changes the outgoing electrical signal into light. In the other direction, the module receives light and converts it back to an electrical signal for the switch."
+        },
+        {
+          "id": 6,
+          "type": "content_table",
+          "slug": "interface_counts",
+          "title": "One faceplate, two interface counts",
+          "section_label": "Switch capacity",
+          "subtitle": "Physical connectors hold modules. Logical interfaces are configured Ethernet links. Both configurations deliver 102.4 Tb/s.",
+          "columns": [
+            "Configuration",
+            "OSFP connectors",
+            "Ethernet interfaces"
+          ],
+          "rows": [
+            [
+              "Dual-800G optics",
+              "64",
+              "128 × 800GbE"
+            ],
+            [
+              "200GbE configuration",
+              "64",
+              "512 × 200GbE"
+            ]
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_06_interface_counts.txt",
+            "wav_file": "audio/module1/slide_06_interface_counts.wav",
+            "delivery_file": "audio/module1/slide_06_interface_counts.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · §§3.1–3.4 · p. 8",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8"
+            },
+            {
+              "label": "IceCube spec · §3.12 · p. 20",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20"
+            },
+            {
+              "label": "IceCube spec · §3.15.9 · pp. 31–32",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=31"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 8,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8",
+              "description": "IceCube spec · §§3.1–3.4 · p. 8"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 20,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20",
+              "description": "IceCube spec · §3.12 · p. 20"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 31,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=31",
+              "description": "IceCube spec · §3.15.9 · pp. 31–32"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "How to read IceCube’s port count",
+          "items": [
+            "Count 64 physical OSFP data connectors across two interface cards.",
+            "Trace the electrical signal from the ASIC over flyover cables.",
+            "Locate electrical-to-optical conversion inside the pluggable module.",
+            "Read capacity as the number of logical interfaces × their rate."
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_07_takeaways.txt",
+            "wav_file": "audio/module1/slide_07_takeaways.wav",
+            "delivery_file": "audio/module1/slide_07_takeaways.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · §§3.1–3.4 · p. 8",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8"
+            },
+            {
+              "label": "IceCube spec · Figure 1 · p. 11",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11"
+            },
+            {
+              "label": "IceCube spec · §3.12 · p. 20",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 8,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8",
+              "description": "IceCube spec · §§3.1–3.4 · p. 8"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 11,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11",
+              "description": "IceCube spec · Figure 1 · p. 11"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 20,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20",
+              "description": "IceCube spec · §3.12 · p. 20"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Check the signal path and port count",
+          "subtitle": "Submit an answer to both questions to continue. You can retry after feedback.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "Where does an outgoing electrical signal become optical?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The ASIC’s SerDes",
+                  "correct": false,
+                  "feedback_incorrect": "The SerDes launches the electrical host signal. Look farther along the path for conversion into light."
+                },
+                {
+                  "id": "b",
+                  "text": "The electrical flyover cable",
+                  "correct": false,
+                  "feedback_incorrect": "The flyover cable carries the host signal electrically to the front-panel interface."
+                },
+                {
+                  "id": "c",
+                  "text": "The pluggable optical module",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The front-panel connector",
+                  "correct": false,
+                  "feedback_incorrect": "The connector interfaces to the module. Optical conversion takes place in the module."
+                }
+              ],
+              "feedback_correct": "Correct. The optical module transmits onto fiber.",
+              "feedback_incorrect": "Trace the electrical path through the connector and into the module."
+            },
+            {
+              "id": "m1_q2",
+              "prompt": "All 64 OSFP openings hold dual-800G modules. Which statements are true?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The faceplate still has 64 physical OSFP connectors.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Each installed module exposes one 800GbE interface.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "The switch exposes 128 logical 800GbE interfaces.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The QSFP28 management connector contributes to the 128 interfaces.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Each of the 64 modules provides two 800GbE interfaces.",
+              "feedback_incorrect": "Count the modules against the physical openings. Then count two 800GbE interfaces per dual-800G module."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module1/slide_08_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_08_knowledge_check.wav",
+            "delivery_file": "audio/module1/slide_08_knowledge_check.mp3",
+            "approved": true
+          }
+        },
+        {
+          "id": 9,
+          "type": "up_next",
+          "slug": "up_next",
+          "title": "Cooling and servicing IceCube",
+          "next_module_number": 2,
+          "next_module_title": "Cooling and servicing IceCube",
+          "audio": {
+            "script_file": "audio/module1/slide_09_up_next.txt",
+            "wav_file": "audio/module1/slide_09_up_next.wav",
+            "delivery_file": "audio/module1/slide_09_up_next.mp3",
+            "approved": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "cooling-and-service",
+      "title": "Cooling and servicing IceCube",
+      "subtitle": "Locate the rack interfaces, follow heat, and trace a fan warning.",
+      "slides": [
+        {
+          "id": 1,
+          "type": "title",
+          "slug": "title",
+          "title": "Cooling and servicing IceCube",
+          "subtitle": "Rack interfaces, hybrid cooling, and hardware management",
+          "module_number": 2,
+          "version_chip": "Meta IceCube",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "delivery_file": "audio/module2/slide_01_title.mp3",
+            "approved": true
+          }
+        },
+        {
+          "id": 2,
+          "type": "objectives",
+          "slug": "objectives",
+          "title": "What to look for at the rack",
+          "objectives": [
+            "Locate IceCube’s power and coolant connections in ORv3 HPRv1.",
+            "Distinguish the cold-plate path from the front-to-back airflow path.",
+            "Choose the management connection for a platform issue.",
+            "Trace a fan warning and locate documented field-replaceable parts."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "delivery_file": "audio/module2/slide_02_objectives.mp3",
+            "approved": true
+          }
+        },
+        {
+          "id": 3,
+          "type": "content_two_column",
+          "slug": "rack_fit",
+          "title": "IceCube blades in the IcePack rack",
+          "section_label": "ORv3 HPRv1",
+          "figure": {
+            "path": "figures/meta-icepack-rack.png",
+            "alt": "Two front views of an IcePack rack filled with IceCube switch blades and yellow fiber cabling.",
+            "caption": "Two views of IcePack populated with IceCube switch blades. Image from Engineering at Meta.",
+            "source": "reuse",
+            "source_url": "https://engineering.fb.com/wp-content/uploads/2026/10/Meta-OCP-2026-IcePack-Rack-e1791838724959.png",
+            "text_inventory": {
+              "sha256": "2aa26039617f2b8e3397b9a2fd534d221befee50e1c969c1ad9e819685885e06",
+              "entries": []
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_03_rack_fit.txt",
+            "wav_file": "audio/module2/slide_03_rack_fit.wav",
+            "delivery_file": "audio/module2/slide_03_rack_fit.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · Figure 2 · p. 12",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=12"
+            },
+            {
+              "label": "IceCube spec · §3.8.1 · p. 13",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13"
+            },
+            {
+              "label": "IceCube spec · Table 2 and §3.9 · p. 14",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=14"
+            },
+            {
+              "label": "Meta · IcePack at OCP Summit 2026",
+              "url": "https://engineering.fb.com/2026/10/12/open-source/ocp-summit-2026-powering-ai-with-open-innovations-in-scale-up-scale-out-and-scale-across-networks/"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 12,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=12",
+              "description": "IceCube spec · Figure 2 · p. 12"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 13,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13",
+              "description": "IceCube spec · §3.8.1 · p. 13"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 14,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=14",
+              "description": "IceCube spec · Table 2 and §3.9 · p. 14"
+            },
+            {
+              "source": "Engineering at Meta · OCP Summit 2026 networking announcement",
+              "url": "https://engineering.fb.com/2026/10/12/open-source/ocp-summit-2026-powering-ai-with-open-innovations-in-scale-up-scale-out-and-scale-across-networks/",
+              "description": "Meta · IcePack at OCP Summit 2026"
+            }
+          ],
+          "mobile_scroll": true,
+          "bullets": [
+            {
+              "bold_lead": "IcePack",
+              "text": "is Meta’s first liquid-cooled network rack and is based on ORv3 HPRv1."
+            },
+            {
+              "bold_lead": "Each IceCube blade",
+              "text": "occupies 2OU and mounts with a canister adapter."
+            },
+            {
+              "bold_lead": "Rack power and coolant",
+              "text": "connect to the rear of the blade."
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "content_diagram",
+          "slug": "rear_connections",
+          "title": "Locate the rear rack connections",
+          "section_label": "Power and liquid",
+          "figure": {
+            "path": "figures/figure-4-chassis-rear-view.png",
+            "alt": "Rear view showing a blind-mate coolant coupling at each end, four fan grilles, and a center busbar connector.",
+            "caption": "Facing the rear, coolant enters on the right and returns on the left. The center connection takes DC power from the rack.",
+            "source": "reuse",
+            "text_inventory": {
+              "sha256": "f50b388bd9165caeeafd18c135b715b783c52a5d6ef4c0ded49bb20fc345f561",
+              "entries": [
+                {
+                  "text": "BMQC (x2)"
+                },
+                {
+                  "text": "DC 48V"
+                },
+                {
+                  "text": "Busbar connector"
+                }
+              ]
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_04_rear_connections.txt",
+            "wav_file": "audio/module2/slide_04_rear_connections.wav",
+            "delivery_file": "audio/module2/slide_04_rear_connections.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · Figure 4 · p. 13",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13"
+            },
+            {
+              "label": "IceCube spec · Table 2 and §3.9 · p. 14",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=14"
+            },
+            {
+              "label": "IceCube spec · Table 5 · pp. 16–17",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=16"
+            },
+            {
+              "label": "Meta · Annotated front and rear blade views",
+              "url": "https://engineering.fb.com/wp-content/uploads/2026/10/Meta-OCP-2026-IceCube.jpg"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 13,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13",
+              "description": "IceCube spec · Figure 4 · p. 13"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 14,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=14",
+              "description": "IceCube spec · Table 2 and §3.9 · p. 14"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 16,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=16",
+              "description": "IceCube spec · Table 5 · pp. 16–17"
+            },
+            {
+              "source": "Engineering at Meta · OCP Summit 2026 networking announcement",
+              "url": "https://engineering.fb.com/wp-content/uploads/2026/10/Meta-OCP-2026-IceCube.jpg",
+              "description": "Meta · Annotated front and rear blade views"
+            }
+          ],
+          "term_refs": [
+            "bmqc"
+          ],
+          "caption": "Nominal rack input is 51 V DC. The specified steady-state range is 45–53 V DC."
+        },
+        {
+          "id": 5,
+          "type": "content_diagram",
+          "slug": "hybrid_cooling",
+          "title": "Follow liquid and air through IceCube",
+          "section_label": "Hybrid cooling",
+          "figure": {
+            "path": "figures/hybrid-cooling.mp4",
+            "poster": "figures/hybrid-cooling-poster.png",
+            "media_type": "video",
+            "alt": "Animation shows the rack adapter, ASIC and OSFP cold plates, front-to-back airflow, and rear supply and return.",
+            "caption": "Cold plates cool the switch ASIC and OSFP optics. Airflow cools the other board components.",
+            "source": "custom",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "3a95d0cf10e1f33f091be821eba1dc2b6f45efda50e46734fd0eecce38fdad98",
+              "entries": [
+                {
+                  "text": "IceCube in the Open Rack v3 High Power Rack",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Canister adapter",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Mounts the 2OU chassis in the rack.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Rack outline and mounting interface are schematic.",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Liquid and air remove heat from different parts",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Internal top view · Simplified airflow",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Cold plates",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Switch ASIC",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "SMB",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Ultrapass(x16)",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "MCB",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Airduct",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Removeable cover(x2)",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "OSFP coldplate",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Fan FRU (x4)",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "PIC (x2)",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "ASIC coldplate",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "DIMM(x2)",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "BMC",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Populated OSFP optics",
+                  "at_seconds": 20
+                },
+                {
+                  "text": "Front-to-back air",
+                  "at_seconds": 25
+                },
+                {
+                  "text": "Microserver and RunBMC",
+                  "at_seconds": 25
+                },
+                {
+                  "text": "Power stages and SSD",
+                  "at_seconds": 25
+                },
+                {
+                  "text": "QSFP28 and board devices",
+                  "at_seconds": 25
+                },
+                {
+                  "text": "Front",
+                  "at_seconds": 25
+                },
+                {
+                  "text": "Rear",
+                  "at_seconds": 25
+                },
+                {
+                  "text": "Locate the rack-side connections",
+                  "at_seconds": 40
+                },
+                {
+                  "text": "Rear view · As seen from the back of the rack",
+                  "at_seconds": 40
+                },
+                {
+                  "text": "Coolant supply",
+                  "at_seconds": 40
+                },
+                {
+                  "text": "Supply in",
+                  "at_seconds": 40
+                },
+                {
+                  "text": "DC 48V",
+                  "at_seconds": 40
+                },
+                {
+                  "text": "Coolant return",
+                  "at_seconds": 47
+                },
+                {
+                  "text": "Return out",
+                  "at_seconds": 47
+                },
+                {
+                  "text": "51 V DC power",
+                  "at_seconds": 52
+                },
+                {
+                  "text": "Which front-panel optics use cold plates?",
+                  "at_seconds": 60
+                },
+                {
+                  "text": "Front view",
+                  "at_seconds": 60
+                },
+                {
+                  "text": "OSFP banks",
+                  "at_seconds": 65
+                },
+                {
+                  "text": "Liquid-cooled",
+                  "at_seconds": 65
+                },
+                {
+                  "text": "QSFP28",
+                  "at_seconds": 69
+                },
+                {
+                  "text": "Air-cooled",
+                  "at_seconds": 69
+                }
+              ]
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_05_hybrid_cooling.txt",
+            "wav_file": "audio/module2/slide_05_hybrid_cooling.wav",
+            "delivery_file": "audio/module2/slide_05_hybrid_cooling.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · Figure 1 · p. 11",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11"
+            },
+            {
+              "label": "IceCube spec · Figure 4 · p. 13",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13"
+            },
+            {
+              "label": "IceCube spec · Table 5 · pp. 16–17",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=16"
+            },
+            {
+              "label": "IceCube spec · §3.10.2 · p. 17",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=17"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 11,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=11",
+              "description": "IceCube spec · Figure 1 · p. 11"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 13,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13",
+              "description": "IceCube spec · Figure 4 · p. 13"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 16,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=16",
+              "description": "IceCube spec · Table 5 · pp. 16–17"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 17,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=17",
+              "description": "IceCube spec · §3.10.2 · p. 17"
+            }
+          ],
+          "term_refs": [
+            "osfp"
+          ],
+          "transcript": "IceCube slides into a two Open Unit space in an Open Rack version three High Power Rack. A canister adapter fits the switch to the rack. Here, the rack supplies power and connects the switch to the coolant loop.\n\nInside, liquid-cooled cold plates carry heat away from the switch ASIC and the O S F P optics. Follow the other path from the front of the switch to its rear fans. That airflow cools the microserver, the baseboard management controller, the power stages, the solid-state drive, and the Q S F P twenty-eight management module.\n\nNow look directly at the rear. Coolant enters on your right through a blind-mate coupling. It returns on your left. The central connector mates to the rack's D C power busbar. Between the coolant couplings, four fans draw air through the chassis.\n\nBack at the front, two optical form factors sit near each other. Which uses liquid cooling? The O S F P bank uses cold plates. The Q S F P twenty-eight depends on airflow."
+        },
+        {
+          "id": 6,
+          "type": "content_grid",
+          "slug": "management_connections",
+          "title": "Choose the management connection",
+          "section_label": "Front-panel access",
+          "cards": [
+            {
+              "title": "RJ45 OOB Ethernet",
+              "body": "1 GbE platform management path to the microserver and BMC."
+            },
+            {
+              "title": "RJ45 serial console",
+              "body": "RS-232 console path to the BMC."
+            },
+            {
+              "title": "RJ45 leak sensing",
+              "body": "Blade leak and control signals to the rack management controller."
+            },
+            {
+              "title": "QSFP28 Ethernet",
+              "body": "Separate management connection to the switch ASIC."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_06_management_connections.txt",
+            "wav_file": "audio/module2/slide_06_management_connections.wav",
+            "delivery_file": "audio/module2/slide_06_management_connections.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · §3.12 · p. 20",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20"
+            },
+            {
+              "label": "IceCube spec · §3.12.7 · pp. 22–23",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=22"
+            },
+            {
+              "label": "IceCube spec · §§3.15.1–3.15.2 · pp. 25–27",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=25"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 20,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20",
+              "description": "IceCube spec · §3.12 · p. 20"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 22,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=22",
+              "description": "IceCube spec · §3.12.7 · pp. 22–23"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 25,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=25",
+              "description": "IceCube spec · §§3.15.1–3.15.2 · pp. 25–27"
+            }
+          ],
+          "grid_cols": 2,
+          "mobile_scroll": true,
+          "transcript": "At the front, several connections use the same R J forty-five shape. Read the label and match the connector to the job. The one-gigabit out-of-band Ethernet port provides platform management access to the microserver and the baseboard management controller. The serial console uses R S two thirty-two and connects to the B M C. The leak-sensing connection exchanges signals with the rack management controller.\n\nThe Q S F P twenty-eight connection is an Ethernet management path into the switch ASIC. Before you troubleshoot, decide which device owns what you’re trying to observe. For a fan fault, you want the platform management path to the microserver or B M C."
+        },
+        {
+          "id": 7,
+          "type": "content_diagram",
+          "slug": "slow_fan",
+          "title": "Trace a slow-fan warning",
+          "section_label": "BMC-lite management",
+          "figure": {
+            "path": "figures/slow-fan.mp4",
+            "poster": "figures/slow-fan-poster.png",
+            "media_type": "video",
+            "alt": "The animation follows fan speed feedback to programmable logic and then to the microserver, compares controller responsibilities, and locates rear fans and front SSD.",
+            "caption": "The fan logic reports low RPM. The microserver runs the fan-speed algorithm.",
+            "source": "custom",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "6d822d19ffe431bfdd32ae77d7747449919727920535347952c10c0889990d01",
+              "entries": [
+                {
+                  "text": "How does IceCube detect a slow fan?",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Rear view · Four fan trays",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "One fan slows",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "DC 48V",
+                  "at_seconds": 0
+                },
+                {
+                  "text": "Its speed falls below the RPM threshold.",
+                  "at_seconds": 7
+                },
+                {
+                  "text": "From fan speed to a control decision",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Simplified monitoring and control signals",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Fan tray",
+                  "at_seconds": 15
+                },
+                {
+                  "text": "Fan control logic",
+                  "at_seconds": 19
+                },
+                {
+                  "text": "Fan speed feedback",
+                  "at_seconds": 19
+                },
+                {
+                  "text": "Microserver",
+                  "at_seconds": 22
+                },
+                {
+                  "text": "Low-RPM warning",
+                  "at_seconds": 22
+                },
+                {
+                  "text": "Temperature sensors",
+                  "at_seconds": 26
+                },
+                {
+                  "text": "Fan speed command",
+                  "at_seconds": 31
+                },
+                {
+                  "text": "Two controllers have different responsibilities",
+                  "at_seconds": 35
+                },
+                {
+                  "text": "BMC-lite management",
+                  "at_seconds": 35
+                },
+                {
+                  "text": "BMC",
+                  "at_seconds": 35
+                },
+                {
+                  "text": "Reads sensors",
+                  "at_seconds": 35
+                },
+                {
+                  "text": "Runs the fan-speed control algorithm",
+                  "at_seconds": 35
+                },
+                {
+                  "text": "Power-on",
+                  "at_seconds": 37
+                },
+                {
+                  "text": "Failure recovery",
+                  "at_seconds": 37
+                },
+                {
+                  "text": "System event logging",
+                  "at_seconds": 37
+                },
+                {
+                  "text": "Find the same fan tray in both views",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "Rear view",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "Internal top view",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "SMB",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "Ultrapass(x16)",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "MCB",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "Airduct",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "Removeable cover(x2)",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "OSFP coldplate",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "Fan FRU (x4)",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "PIC (x2)",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "ASIC coldplate",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "DIMM(x2)",
+                  "at_seconds": 50
+                },
+                {
+                  "text": "Find the front-accessible E1.S SSD",
+                  "at_seconds": 56
+                },
+                {
+                  "text": "Front view · Field-replaceable storage",
+                  "at_seconds": 56
+                },
+                {
+                  "text": "E1.S SSD",
+                  "at_seconds": 56
+                },
+                {
+                  "text": "Who runs the fan-speed control algorithm?",
+                  "at_seconds": 61
+                }
+              ]
+            }
+          },
+          "audio": {
+            "script_file": "audio/module2/slide_07_slow_fan.txt",
+            "wav_file": "audio/module2/slide_07_slow_fan.wav",
+            "delivery_file": "audio/module2/slide_07_slow_fan.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · §3.15 · p. 24",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=24"
+            },
+            {
+              "label": "IceCube spec · §§3.15.5–3.15.7 · pp. 29–30",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29"
+            },
+            {
+              "label": "IceCube spec · §3.15.7 · p. 30",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=30"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 24,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=24",
+              "description": "IceCube spec · §3.15 · p. 24"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 29,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29",
+              "description": "IceCube spec · §§3.15.5–3.15.7 · pp. 29–30"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 30,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=30",
+              "description": "IceCube spec · §3.15.7 · p. 30"
+            }
+          ],
+          "term_refs": [
+            "bmc-lite"
+          ]
+        },
+        {
+          "id": 8,
+          "type": "content_grid",
+          "slug": "field_service",
+          "title": "Locate the field-replaceable parts",
+          "section_label": "Serviceability",
+          "cards": [
+            {
+              "title": "Rear fan trays",
+              "body": "Four field-replaceable trays in 3+1 redundancy. The design tolerates one failed or removed tray under specified conditions."
+            },
+            {
+              "title": "Front E1.S SSD",
+              "body": "The switch’s field-replaceable solid-state drive is accessible from the front."
+            },
+            {
+              "title": "Internal replaceable parts",
+              "body": "The RunBMC module card and memory modules are field-replaceable."
+            },
+            {
+              "title": "Rack response to a tray leak",
+              "body": "Main power shuts down with standby retained. The rack controller closes coolant supply to the affected blade."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_08_field_service.txt",
+            "wav_file": "audio/module2/slide_08_field_service.wav",
+            "delivery_file": "audio/module2/slide_08_field_service.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · §§3.1–3.4 · p. 8",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8"
+            },
+            {
+              "label": "IceCube spec · §3.10.2 · p. 17",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=17"
+            },
+            {
+              "label": "IceCube spec · §3.12.7 · pp. 22–23",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=22"
+            },
+            {
+              "label": "IceCube spec · §§3.15.5–3.15.7 · pp. 29–30",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 8,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=8",
+              "description": "IceCube spec · §§3.1–3.4 · p. 8"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 17,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=17",
+              "description": "IceCube spec · §3.10.2 · p. 17"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 22,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=22",
+              "description": "IceCube spec · §3.12.7 · pp. 22–23"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 29,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=29",
+              "description": "IceCube spec · §§3.15.5–3.15.7 · pp. 29–30"
+            }
+          ],
+          "grid_cols": 2,
+          "mobile_scroll": true
+        },
+        {
+          "id": 9,
+          "type": "takeaways",
+          "slug": "takeaways",
+          "title": "Connect the symptom to the right subsystem",
+          "items": [
+            "Use the rear view for the 51 V busbar and coolant connections.",
+            "Follow liquid to the ASIC and OSFP cold plates, and airflow to the other components.",
+            "Use RJ45 OOB Ethernet for a platform-management issue.",
+            "Read fan telemetry at the platform. The microserver runs the fan-speed algorithm."
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_09_takeaways.txt",
+            "wav_file": "audio/module2/slide_09_takeaways.wav",
+            "delivery_file": "audio/module2/slide_09_takeaways.mp3",
+            "approved": true
+          },
+          "reference_links": [
+            {
+              "label": "IceCube spec · Figure 4 · p. 13",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13"
+            },
+            {
+              "label": "IceCube spec · Table 5 · pp. 16–17",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=16"
+            },
+            {
+              "label": "IceCube spec · §3.15 · p. 24",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=24"
+            },
+            {
+              "label": "IceCube spec · §3.15.7 · p. 30",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=30"
+            }
+          ],
+          "source_refs": [
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 13,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13",
+              "description": "IceCube spec · Figure 4 · p. 13"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 16,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=16",
+              "description": "IceCube spec · Table 5 · pp. 16–17"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 24,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=24",
+              "description": "IceCube spec · §3.15 · p. 24"
+            },
+            {
+              "source": "Meta IceCube OCP Design Specification v1.0.0",
+              "page": 30,
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=30",
+              "description": "IceCube spec · §3.15.7 · p. 30"
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "type": "knowledge_check",
+          "slug": "knowledge_check",
+          "title": "Diagnose a cooling or fan issue",
+          "subtitle": "Submit an answer to both questions to continue. You can retry after feedback.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "Coolant is circulating, but front-to-back airflow falls. Which component depends on that airflow?",
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Switch ASIC",
+                  "correct": false,
+                  "feedback_incorrect": "The switch ASIC is served by a liquid cold plate."
+                },
+                {
+                  "id": "b",
+                  "text": "OSFP data optics",
+                  "correct": false,
+                  "feedback_incorrect": "The populated OSFP optics are served by liquid cold plates."
+                },
+                {
+                  "id": "c",
+                  "text": "E1.S solid-state drive",
+                  "correct": true
+                }
+              ],
+              "feedback_correct": "Correct. The E1.S drive relies on front-to-back airflow.",
+              "feedback_incorrect": "Separate the liquid-cooled ASIC and OSFP bank from the air-cooled components."
+            },
+            {
+              "id": "m2_q2",
+              "prompt": "A rear fan drops below its RPM threshold. Which statements guide your first review?",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Use RJ45 OOB Ethernet for platform management.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The ASIC’s QSFP28 management link is the platform fan-management path.",
+                  "correct": false
+                },
+                {
+                  "id": "c",
+                  "text": "The microserver runs the fan-speed algorithm.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "The fan trays are field-replaceable at the rear.",
+                  "correct": true
+                },
+                {
+                  "id": "e",
+                  "text": "The rack controller determines each fan’s speed.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Correct. Use platform management, trace fan speed to the microserver, and find the tray at the rear.",
+              "feedback_incorrect": "Keep access, control, and physical service separate. Use the platform’s out-of-band management connection, the microserver’s fan control, and the rear fan trays."
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_10_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_10_knowledge_check.wav",
+            "delivery_file": "audio/module2/slide_10_knowledge_check.mp3",
+            "approved": true
+          }
+        },
+        {
+          "id": 11,
+          "type": "course_complete",
+          "slug": "course_complete",
+          "title": "Course Complete",
+          "course_title": "Meta IceCube: Anatomy of a 102.4 Tb/s Ethernet Switch",
+          "cert_message": "Watch Meta’s Summit talk for the IceCube-N preview and how IceCube blades are deployed in IcePack. Explore OSPA, the Open Switch Platform Architecture work stream under the OCP Networking Project.",
+          "reference_links": [
+            {
+              "label": "Meta IceCube OCP Design Specification v1.0.0",
+              "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf"
+            },
+            {
+              "label": "OCP Networking · OSPA work stream",
+              "url": "https://www.opencompute.org/projects/networking/open-switch-platform-architecture/"
+            },
+            {
+              "label": "Summit talk · IceCube-N · 14:09",
+              "url": "https://www.youtube.com/watch?v=39tvEfs9LuA&t=849s"
+            },
+            {
+              "label": "Summit talk · IcePack racks · 15:37",
+              "url": "https://www.youtube.com/watch?v=39tvEfs9LuA&t=937s"
+            },
+            {
+              "label": "Summit presentation slides",
+              "url": "https://drive.google.com/file/d/1HBSpWnbuKEbmtQxH52qOFHcO7dnaxYLY/view"
+            }
+          ],
+          "audio": {
+            "script_file": "audio/module2/slide_11_course_complete.txt",
+            "wav_file": "audio/module2/slide_11_course_complete.wav",
+            "delivery_file": "audio/module2/slide_11_course_complete.mp3",
+            "approved": true
+          },
+          "source_refs": [
+            {
+              "source": "OCP Networking · Open Switch Platform Architecture",
+              "url": "https://www.opencompute.org/projects/networking/open-switch-platform-architecture/",
+              "description": "OCP Networking · OSPA work stream"
+            },
+            {
+              "source": "OCP Global Summit 2026 · Meta 102.4T Ethernet Switch · recording",
+              "url": "https://www.youtube.com/watch?v=39tvEfs9LuA&t=849s",
+              "description": "Summit talk · IceCube-N · 14:09"
+            },
+            {
+              "source": "OCP Global Summit 2026 · Meta 102.4T Ethernet Switch · recording",
+              "url": "https://www.youtube.com/watch?v=39tvEfs9LuA&t=937s",
+              "description": "Summit talk · IcePack racks · 15:37"
+            },
+            {
+              "source": "OCP Global Summit 2026 · Meta 102.4T Ethernet Switch · presentation",
+              "url": "https://drive.google.com/file/d/1HBSpWnbuKEbmtQxH52qOFHcO7dnaxYLY/view",
+              "description": "Summit presentation slides"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "lms_catalog": {
+    "title": "Meta IceCube: Anatomy of a 102.4 Tb/s Ethernet Switch",
+    "short_description": "Trace IceCube’s ASIC-to-optics path, then explore its Ethernet interfaces, hybrid cooling, and field service.",
+    "overview": "Explore Meta’s 102.4 Tb/s IceCube Ethernet switch from its front-panel connectors to its ORv3 HPRv1 power and cooling interfaces. Practice reading the chassis, interpreting port counts, and locating management and service points.",
+    "duration_minutes": 24,
+    "duration_basis": "estimated_learner_time",
+    "home_duration_minutes": 1,
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 11,
+        "summary": "Follow an electrical transmit signal to the pluggable optics. Interpret two system configurations and tell physical connectors from logical Ethernet interfaces."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 12,
+        "summary": "Locate the ORv3 HPRv1 rack connections, trace two cooling paths, and diagnose a slow fan using IceCube’s hardware management architecture."
+      }
+    ]
+  },
+  "term_glossary": [
+    {
+      "id": "osfp",
+      "term": "OSFP",
+      "tooltip": "Octal Small Form Factor Pluggable. The front-panel connector and pluggable module follow this form factor.",
+      "aliases": [
+        "O S F P"
+      ],
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=20",
+      "reference_label": "IceCube design specification · p. 20"
+    },
+    {
+      "id": "serdes",
+      "term": "SerDes",
+      "tooltip": "Serializer/deserializer. This circuit drives and receives high-speed serial electrical lane signals.",
+      "aliases": [
+        "serializer and deserializer"
+      ],
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=14",
+      "reference_label": "IceCube design specification · p. 14"
+    },
+    {
+      "id": "bmqc",
+      "term": "BMQC",
+      "tooltip": "Blind-mate quick-connect. The rear liquid coupling mates to its rack-side connection as the chassis seats.",
+      "aliases": [
+        "blind-mate quick-connect",
+        "blind mate quick connect"
+      ],
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=13",
+      "reference_label": "IceCube design specification · p. 13"
+    },
+    {
+      "id": "bmc-lite",
+      "term": "BMC-lite",
+      "tooltip": "IceCube’s management split. The BMC handles critical functions such as power-on and recovery. The microserver handles sensors and fan-speed control.",
+      "aliases": [],
+      "url": "https://www.opencompute.org/wp-content/uploads/2026/11/Meta-IceCube-OCP-Design-Specification-v1.0.0-final.pdf#page=24",
+      "reference_label": "IceCube design specification · p. 24"
+    }
+  ]
+}
