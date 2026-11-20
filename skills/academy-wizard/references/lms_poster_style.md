@@ -72,7 +72,7 @@ Verify the committed outputs without replacing them:
 node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --check
 ```
 
-The renderer scans `courses/` and the optional `series/` directory, skips `locales/`, and discovers both canonical `poster.json` and existing `thumbnail.png` files, so missing metadata cannot silently omit a poster. Shared series descriptions and posters may live in `series/<series-name>/` while their independent course folders remain directly under `courses/`. The `--course` option accepts either a course or series folder.
+Keep shared learning-plan descriptions and posters in a folder under `courses/`, alongside the independent course folders. The renderer scans `courses/`, skips `locales/`, and discovers both canonical `poster.json` and existing `thumbnail.png` files, so missing metadata cannot silently omit a poster. The `--course` option accepts either a course or a shared learning-plan folder.
 
 It loads bundled assets offline, checks fonts, measured text bounds, fixed geometry, PNG format/dimensions, and reports the chosen title tier. `--check` compares PNG bytes first, then decoded pixels if necessary. It tolerates only isolated native text-smoothing rounding: at most 16 of 320,000 pixels (0.005%), each at most 16/255 per channel. Comparison metrics are recorded in the QA report; larger changes fail and save a drift PNG. Use the pinned dependencies on the same platform when checking exact raster reproduction. A platform difference still needs visual review, not automatic replacement of accepted output.
 

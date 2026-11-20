@@ -2,7 +2,7 @@
 
 An introductory-to-intermediate OCP Academy course on how new optical approaches address scale, efficiency, density, latency, and compute integration in AI infrastructure.
 
-This standalone SCORM course belongs to the **Optical Connectivity & Reliability for AI Infrastructure** learning-plan series. Its source is intended for PR-friendly editing. Change slides, knowledge checks, glossary links, and media references in `course.json`; change narration in `audio/moduleN/slide_*.txt`.
+This standalone SCORM course belongs to the [Optical Connectivity & Reliability for AI Infrastructure learning plan](../optics/README.md). Edit slides, knowledge checks, glossary links, and media references in `course.json`. Edit narration in `audio/moduleN/slide_*.txt`.
 
 ## Modules
 
