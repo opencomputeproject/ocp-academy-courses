@@ -1,15 +1,15 @@
 # Optical Connectivity & Reliability for AI Infrastructure
 
-OCP Academy course sources for a learning-plan series on optical technologies, connectivity practices, and reliability workflows for AI infrastructure.
+Shared LMS descriptions and poster for the OCP Academy learning plan on optical technologies, connectivity practices, and reliability workflows for AI infrastructure.
 
-Each course lives directly under `courses/` with its own `course.json`, narration scripts, figures, thumbnail, and course-owned teaching media. This folder keeps only the shared series metadata and poster. Course ordering is managed in the LMS learning plan, so folder names and learner-facing titles do not include fixed sequence numbers.
+Each course lives in its own sibling folder under `courses/`, with its own `course.json`, language editions, narration scripts, figures, and thumbnail. The LMS learning plan controls the order in which the courses appear.
 
 ## Available Course Sources
 
 | Folder | Course | Description |
 |---|---|---|
-| [courses/introduction-to-emerging-optical-technologies](../../courses/introduction-to-emerging-optical-technologies/README.md) | Introduction to Emerging Optical Technologies | Emerging optical approaches for scale, efficiency, density, latency, and compute integration in AI infrastructure. |
-| [courses/enhanced-telemetry-optics](../../courses/enhanced-telemetry-optics/README.md) | Enhanced Telemetry Optics | Enhanced telemetry for finding what failed, where, and why in AI optical fabrics. |
+| [courses/introduction-to-emerging-optical-technologies](../introduction-to-emerging-optical-technologies/README.md) | Introduction to Emerging Optical Technologies | Emerging optical approaches for scale, efficiency, density, latency, and compute integration in AI infrastructure. |
+| [courses/enhanced-telemetry-optics](../enhanced-telemetry-optics/README.md) | Enhanced Telemetry Optics | Enhanced telemetry for finding what failed, where, and why in AI optical fabrics. |
 
 ## Language Editions And LMS Copy
 
@@ -35,7 +35,7 @@ Additional optics courses can be added directly under `courses/` as the learning
 Edit `poster.json` for wording and artwork. The shared Academy template fixes typography, gradients, logo and pill positions, and the white emblem dimensions. Rebuild from the repository root:
 
 ```sh
-node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course series/optics
+node skills/academy-wizard/scripts/render_lms_posters.mjs --repo-root . --course courses/optics
 ```
 
 See [the poster standard](../../skills/academy-wizard/references/lms_poster_style.md) for dependency setup, title-fitting rules and full-catalog checks.

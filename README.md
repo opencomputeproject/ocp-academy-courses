@@ -136,18 +136,12 @@ courses/
     locales/                         # Seven translations of the previous seven-module edition
   open-systems-for-ai/
   optical-circuit-switching-for-ai-and-hyperscale-data-centers/
+  optics/                            # Shared optics learning-plan metadata and poster
   project-deschutes-cdu-specification-v1-0/
   short-reach-optical-interconnects-sroi-for-ai-scale-up-fabrics/
   sue-t-ethernet-transport-for-xpu-scale-up-systems/
   thermal-boundaries-in-ai-infrastructure/
   two-phase-direct-liquid-cooling-efficiencies-and-fluids/
-series/
-  optics/
-    README.md
-    lms-series-catalog.json
-    lms-series-catalog.md
-    poster.json
-    thumbnail.png
 scripts/
   build-course.sh
   install-academy-wizard-skill.sh
@@ -166,9 +160,9 @@ See the [metadata contract](skills/academy-wizard/references/lms_catalog.md) and
 [LMS catalog index](docs/lms-catalog/README.md). Each course maintains its own
 approved metadata and exports with its complete source.
 
-Shared optics learning-plan descriptions and the series poster are maintained
-separately in [series/optics](series/optics/README.md); both optics course folders
-live directly under `courses/`.
+Find the shared descriptions and poster in the
+[optics learning-plan folder](courses/optics/README.md). Each optics course
+has its own folder directly under `courses/`.
 
 ## Install the AcademyWizard skill
 

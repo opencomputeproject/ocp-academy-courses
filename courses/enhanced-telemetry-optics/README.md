@@ -2,7 +2,7 @@
 
 Enhanced telemetry for finding what failed, where, and why in AI optical fabrics.
 
-This standalone SCORM course belongs to the **Optical Connectivity & Reliability for AI Infrastructure** learning-plan series. Its source is intended for PR-friendly editing. Change slides, knowledge checks, glossary links, and media references in `course.json`; change narration in `audio/moduleN/slide_*.txt`.
+This standalone SCORM course belongs to the [Optical Connectivity & Reliability for AI Infrastructure learning plan](../optics/README.md). Edit slides, knowledge checks, glossary links, and media references in `course.json`. Edit narration in `audio/moduleN/slide_*.txt`.
 
 ## Modules
 
