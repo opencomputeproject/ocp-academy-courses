@@ -2,7 +2,7 @@
 
 [OCP Academy course 95](https://academy.opencompute.org/learn/courses/95/) · [English narration and knowledge checks](content/Narration-and-questions.md) · [LMS descriptions](lms-catalog.md)
 
-The November 19 English edition follows a compute tray through Open Rack v3 and Open Rack Wide. It uses contributed frames and real systems to distinguish a shared rack interface from a manufacturer's design choice. The course is one SCORM 1.2 package: Course Home plus four separately tracked modules, 64 narrated slides, ten synchronized teaching animations and eight knowledge-check questions. Estimated learner time is **63 minutes**, including one minute for Course Home. Optional references and Summit recordings are extra.
+This four-module course follows a compute tray through Open Rack v3 and Open Rack Wide. It uses contributed frames and real systems to distinguish a shared rack interface from a manufacturer's design choice. The course is one SCORM 1.2 package: Course Home plus four separately tracked modules, 64 narrated slides, ten synchronized teaching animations and eight knowledge-check questions. Estimated learner time is **63 minutes**, including one minute for Course Home. Optional references and Summit recordings are extra.
 
 ![Open Rack course poster](thumbnail.png)
 
@@ -15,7 +15,11 @@ The November 19 English edition follows a compute tray through Open Rack v3 and 
 
 ## Languages and earlier editions
 
-The seven published [translations](locales/) still teach the **seven-module, 145-minute** Slides edition. This English update does not replace those materials. Each locale has its own scripts, figures, recordings and LMS description; use its own course file when building. For translation alignment, dubbing or historical English sources, use [the matching seven-module English revision](https://github.com/opencomputeproject/ocp-academy-courses/tree/9802bb10c8178a12a90a9b2c5526c20e9ff0a515/courses/open-rack-architecture-power-cooling-deployment), not the four-module English manuscript. The previously published [localization validation](provenance/localization-validation-2026-11-10.json) describes that edition. The older scrolling series is a separate [historical replacement](provenance/replacement.json).
+All seven [language editions](locales/) follow the same four modules and 63-minute learner-time estimate as English: [Spanish (Latin America)](locales/es-419/lms-catalog.md), [Portuguese (Brazil)](locales/pt-BR/lms-catalog.md), [Japanese](locales/ja-JP/lms-catalog.md), [Korean](locales/ko-KR/lms-catalog.md), [Simplified Chinese](locales/zh-CN/lms-catalog.md), [Traditional Chinese](locales/zh-TW/lms-catalog.md), and [Vietnamese](locales/vi-VN/lms-catalog.md). Each edition has its own native narration scripts, assessments, diagram labels, accessible descriptions and voice-timed teaching videos. The [course poster](thumbnail.png) is shared.
+
+The [previous seven-module Slides editions](https://github.com/opencomputeproject/ocp-academy-courses/tree/1a8f55f5f231432a7c903acbc61f87467be43ea2/courses/open-rack-architecture-power-cooling-deployment/locales) and [their original validation](provenance/localization-validation-2026-11-10.json) remain available for historical reference. The older scrolling series is a separate [historical replacement](provenance/replacement.json).
+
+To rebuild a translation, pass its full course path to the repository builder, for example `./scripts/build-course.sh open-rack-architecture-power-cooling-deployment/locales/vi-VN`. Set `EXISTING_AUDIO_DIR` to that language’s approved audio directory to avoid resynthesis. If recording changes, use the edition’s `align_locale.py` for the affected animated slide (or the narrated M1S4 interaction), then rebuild. These tools use audible cue phrases from `localization/cues.json`, not English durations. Generated narration and SCORM archives are release artifacts, not Git source.
 
 ## Rebuild the English course
 
