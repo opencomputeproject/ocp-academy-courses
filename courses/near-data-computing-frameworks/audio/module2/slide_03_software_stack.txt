@@ -1,0 +1,8 @@
+# pronunciation: NDC -> N D C
+Applications need more than a physical engine to make use of near data computation. The draft organizes the host stack into applications, frameworks, interfaces, formats, runtimes, drivers, and hardware. Each layer contributes to turning an intended operation into valid device work.
+
+A library-oriented path can dispatch an operation to a suitable implementation at runtime. A compiler-oriented path can analyze a program or graph, transform it, and generate code for a target. Many systems combine these approaches. A compiler can still call an optimized library, and a runtime can manage code that was compiled earlier.
+
+PyTorch provides a useful example of operation dispatch. A backend supplies implementations and supporting device behavior. Triton provides a language and compiler for describing parallel kernels. Supporting a different target still involves translating its execution and memory requirements and connecting to a runtime or driver. A familiar front end does not make the device-specific work disappear.
+
+The important distinction is between the application boundary and the implementation beneath it. A common interface can reduce divergence visible to applications, while adapters, backends, and device libraries remain necessary. For your workload, ask where an operation is selected, where its data description is interpreted, where execution is launched, and where errors return. Those responsibilities help identify a realistic insertion point for N D C support.

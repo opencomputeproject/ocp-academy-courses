@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:Open Sans;src:url(open-sans-400.ttf);font-weight:400}@font-face{font-family:Open Sans;src:url(open-sans-700.ttf);font-weight:700}*{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;background:white;overflow:hidden}svg{display:block}text{font-family:Open Sans,Arial,sans-serif}
+</style></head><body data-duration-ms="106915.19274376417" data-poster-ms="104915.19274376417"><svg id="canvas" xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"></svg><script>
+const C={ink:'#253047',muted:'#657083',purple:'#4F46A5',green:'#8DC63F',greenink:'#507727',line:'#CFD5DE',pale:'#F5F7FA'};
+window.TIMING={"duration": 106915.19274376417, "discover": 19580.0, "prepare": 39080.0, "invoke": 62540.0, "complete": 80640.0, "result": 94300.0, "parameters": 49360.0, "accepted": 71280.0, "running": 76980.0, "written": 83620.0, "visible": 91660.0};
+const S=document.getElementById('canvas');
+const text=(x,y,s,size=28,weight=400,fill=C.ink,anchor='start')=>`<text x="${x}" y="${y}" font-size="${size}" font-weight="${weight}" fill="${fill}" text-anchor="${anchor}">${s}</text>`;
+const rect=(x,y,w,h,fill=C.pale,stroke=C.line,r=16)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+function arrow(x1,y1,x2,y2,color=C.purple){let a=Math.atan2(y2-y1,x2-x1),bx=x2-13*Math.cos(a),by=y2-13*Math.sin(a),px=6*Math.sin(a),py=-6*Math.cos(a);return `<path d="M${x1},${y1} L${bx},${by}" stroke="${color}" stroke-width="4" fill="none"/><polygon points="${x2},${y2} ${bx+px},${by+py} ${bx-px},${by-py}" fill="${color}"/>`}
+function polyArrow(points,color=C.green){const p=points.slice(0,-1),last=points.at(-1),prev=p.at(-1);return `<polyline points="${p.map(a=>a.join(',')).join(' ')}" fill="none" stroke="${color}" stroke-width="5" stroke-linejoin="round"/>`+arrow(prev[0],prev[1],last[0],last[1],color)}
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+function token(x,y,label,color=C.purple){return `<circle cx="${x}" cy="${y}" r="12" fill="${color}" stroke="white" stroke-width="3"/>`}
+window.setTeachingTime=function(ms){const T=window.TIMING,t=clamp(ms,0,T.duration),phase=t<T.discover?0:t<T.prepare?1:t<T.invoke?2:t<T.complete?3:t<T.result?4:5;
+ const starts=[0,T.discover,T.prepare,T.invoke,T.complete,T.result,T.duration],u=clamp((t-starts[phase])/(starts[phase+1]-starts[phase]));
+ const prepared=t>=T.parameters;const titles=['Two paths, one request','1  Discover capabilities','2  Prepare operands','3  Invoke the function','4  Complete and synchronize','5  Access the result'];
+ const lines=[['Requests and status cross the software stack.','Operands and results follow the memory contract.'],['Choose supported operations and memory resources.','The adapter translates device-specific capabilities.'],['Describe the bytes and establish their residence.','Copy, mapping or handles depend on the implementation.'],['Submit references to prepared operands.','Request accepted does not mean work completed.'],['Completion and visibility are explicit contracts.','A result can exist before it is safe to consume.'],['Move or expose only the required output.','The large input stays beside the computation.']];
+ let b='<rect width="1920" height="1080" fill="white"/>'+text(70,48,'CONCEPTUAL LIFECYCLE · NOT AN ADOPTED API SEQUENCE',22,700,C.muted);
+ const names=['Discover','Prepare','Invoke','Complete','Access'];for(let i=0;i<5;i++){let x=70+i*360,done=phase>i,active=phase===i+1;b+=rect(x,82,340,66,active?'#EFEDF8':done?'#F1F7E9':'#F5F7FA',active?C.purple:done?C.green:C.line,12)+text(x+25,123,`${i+1}  ${names[i]}`,22,active?700:400);}
+ b+=text(70,207,'SOFTWARE / CONTROL',23,700,C.muted)+text(830,207,titles[phase],36,700);
+ b+=text(830,257,lines[phase][0],29)+text(830,298,lines[phase][1],27,400,C.muted);
+ const layers=[['Application','Express the work'],['Framework','Select the operation'],['Common interface','Shared integration boundary'],['Adapter / runtime','Device-specific translation'],['Device','Execute beside resident data']];
+ const ly=[245,383,521,659,797];for(let i=0;i<5;i++){let active=((phase===1||phase===3)&&i===Math.min(4,Math.floor(u/.42*5)))||(phase===4&&i===Math.max(0,4-Math.floor(u/.65*5)));b+=rect(70,ly[i],460,110,active?'#EFEDF8':i===4?'#F1F7E9':C.pale,active?C.purple:C.line)+text(98,ly[i]+52,layers[i][0],27,700)+text(98,ly[i]+85,layers[i][1],22,400,C.muted);if(i<4)b+=arrow(300,ly[i]+110,300,ly[i+1],C.purple);}
+ // Explicit control/status rails terminate at box boundaries.
+ if((phase===1||phase===3)&&u<.42){let p=clamp(u/.42)*4,seg=Math.min(3,Math.floor(p)),f=p-seg;b+=token(300,ly[seg]+110+28*f);}
+
+ if((phase===1&&u>.42)||(phase===3&&u>.3)||phase>=4){b+=`<path d="M530,870 H670 V326 H543" fill="none" stroke="${C.purple}" stroke-width="3" stroke-dasharray="8 7"/>`+arrow(543,326,530,326);let p=phase===4?clamp(u/.65):phase===1?clamp((u-.42)/.4):phase===3?clamp((u-.3)/.24):1;if(p<1)b+=token(670,870-544*p);}
+ b+=text(300,941,'Request ↓',22,400,C.purple,'middle')+text(670,941,'Status ↑',22,400,C.purple,'middle');
+ b+=text(830,357,'DATA / RESIDENCY',23,700,C.muted);
+ b+=rect(830,387,1000,158,'#FAFBFC')+text(855,426,'APPLICATION-ACCESSIBLE MEMORY',21,700,C.muted);
+ b+=rect(855,448,430,72,prepared?'#F1F7E9':'#FFF',prepared?C.green:C.line,10)+text(1070,493,prepared?'Small parameter buffer':'Parameter buffer',24,prepared?700:400,C.ink,'middle');
+ b+=rect(1490,448,315,72,phase>=5?'#F1F7E9':'#FFF',phase>=5?C.green:C.line,10)+text(1647,493,phase>=5?'Result accessible':'Result destination',24,phase>=5?700:400,C.ink,'middle');
+ b+=rect(830,650,1000,257,'#F8FAF5','#AFC792')+text(855,690,'DEVICE-SIDE MEMORY AND EXECUTION',21,700,C.muted);
+ b+=rect(855,711,410,166,'#EDF5E2','#AFC792',12)+text(885,763,'Large resident input',27,700)+text(885,803,'Already near the device',24)+text(885,837,'Remains here throughout',22,700,C.greenink);
+ let run=phase<3?'Ready':phase===3?(t<T.accepted?'Submitted':t<T.running?'Accepted':'Running'):t<T.written?'Running':'Finished';
+ b+=rect(1305,711,225,166,phase>=3?'#EFEDF8':'#FFF',phase>=3?C.purple:C.line,12)+text(1417,763,'Operation',27,700,C.ink,'middle')+text(1417,800,run,24,700,phase>=3?C.purple:C.muted,'middle');
+ let hasResult=t>=T.written,visible=t>=T.visible;
+ b+=rect(1570,711,235,166,hasResult?'#F1F7E9':'#FFF',hasResult?C.green:C.line,12)+text(1687,763,'Output',27,700,C.ink,'middle')+text(1687,796,hasResult?'Written':'Not ready',24,700,hasResult?C.greenink:C.muted,'middle')+text(1687,839,visible?'Visible':'Access pending',21,400,visible?C.greenink:C.muted,'middle');
+ if(phase>=0){b+=`<g opacity="${prepared?1:.38}">`;b+=polyArrow([[1070,520],[1070,594],[1417,594],[1417,711]]);b+=text(1090,570,'Operand access',23,700,C.greenink);b+='</g>';if(phase===2&&t>=T.parameters&&t<T.parameters+4000){let q=clamp((t-T.parameters)/4000),x,y;if(q<.15){x=1070;y=520+(q/.15)*74}else if(q<.8){x=1070+((q-.15)/.65)*347;y=594}else{x=1417;y=594+((q-.8)/.2)*117}b+=token(x,y,'',C.green)}}
+ if(phase>=3){b+=arrow(1265,798,1305,798,C.green);if(hasResult)b+=arrow(1530,798,1570,798,C.green)}
+ if(phase>=5){b+=arrow(1687,711,1687,545,C.green);b+=text(1750,596,'Access',22,700,C.greenink,'middle');let p=clamp(u/.5);if(p<1)b+=token(1687,711-166*p,'',C.green)}
+ let summary=phase===0?'Follow control separately from data movement.':phase===1?(u<.5?'Query resources → match supported capabilities':'Capabilities returned → choose a valid operation'):phase===2?'Data description + residence + ownership + visibility':phase===3?(t<T.accepted?'Submitted → awaiting acceptance':t<T.running?'Accepted → awaiting execution':'Running near the resident input'):phase===4?(t<T.written?'Execution and completion are separate events':t<T.visible?'Written is not yet safe to consume':'Completion + synchronization → result visible'):'Common interface + device support + explicit data contracts';
+ b+=rect(70,980,1760,66,phase===5?'#EDF5E2':'#F5F7FA',phase===5?C.green:C.line,12)+text(950,1022,summary,22,700,C.ink,'middle');
+ S.innerHTML=b;window.lastTeachingState={phase,u,time:t};
+};window.setTeachingTime(0);
+</script></body></html>

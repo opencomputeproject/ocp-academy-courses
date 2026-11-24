@@ -1,0 +1,7 @@
+Consider a conceptual filtering workload. A large collection of records resides beside a capable processing engine. The application wants only the records that satisfy a predicate. This example illustrates a traffic relationship; it is not a benchmark reported by the draft.
+
+In a host-side path, the relevant input records cross to the host before the host evaluates the predicate. In an offloaded path, the host supplies the operation and its parameters. The nearby engine examines the resident records and returns the selected output. If that output is much smaller, the traffic pattern can change substantially.
+
+Now account for the work the simple drawing leaves out. The data may first need loading or conversion. The predicate must have agreed semantics and be supported by the engine. The application must know when evaluation has finished and how to access the output. If the next stage needs all original records on the host anyway, reducing this one transfer may not improve the complete pipeline.
+
+Compare both paths from the same starting condition to the same useful result. Include preparation, execution, result access, and any cleanup that matters to the use case. Reuse can change the tradeoff: one initial load spread across many requests is different from repeatedly preparing the same input. A defensible placement decision identifies these boundaries before claiming an improvement.

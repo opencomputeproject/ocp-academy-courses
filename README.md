@@ -32,6 +32,7 @@ It also includes the `academy-wizard` Codex skill used to author and rebuild cou
 | [LVDC Power Distribution for Data Centers](courses/lvdc-power-distribution-for-data-centers/README.md) | Review facility-to-rack DC power architectures, voltage compatibility, grounding, protection, conversion, controls, and installation verification. |
 | [Meta IceCube: Anatomy of a 102.4 Tb/s Ethernet Switch](courses/meta-icecube/README.md) | Trace the ASIC-to-optics signal path, interpret physical connectors and logical Ethernet interfaces, and examine hybrid cooling and serviceability in an ORv3 HPRv1 IcePack rack. |
 | [OCP Academy - MRC Technical Overview](courses/multipath-reliable-connection-mrc/README.md) | Examine the MRC RDMA transport, including multipath routing, reliability, congestion control, failure recovery, and AI training fabric deployment. |
+| [Near Data Computing: Frameworks and Open Design Questions](courses/near-data-computing-frameworks/README.md) | Evaluate where computation should run, trace how applications connect to near-data devices, and turn open design questions into testable contributions to OCP DCC. |
 | [NVIDIA MGX 1.2 Rack and Tray Interfaces](courses/nvidia-mgx-1-2-rack-and-tray-interfaces/README.md) | Interpret MGX rack and tray geometry, modular I/O, power and grounding, liquid interfaces, and qualification evidence for integration reviews. |
 | [OCP ESUN: Ethernet for Scale-Up Networks](courses/ocp-esun-ethernet-for-scale-up-networks/README.md) | Explore Ethernet for scale-up networks, the ESUN packet header, and the endpoint and switch requirements for interoperable AI fabrics. |
 | [OCP L.O.C.K.: Secure Key Management for Self-Encrypting Storage](courses/ocp-lock-secure-key-management-for-self-encrypting-storage/README.md) | Trace secure key management for self-encrypting storage through threat models, key hierarchies, lifecycle rules, controller interfaces, and compliance requirements. |
@@ -116,6 +117,7 @@ courses/
   lvdc-power-distribution-for-data-centers/
   meta-icecube/
   multipath-reliable-connection-mrc/
+  near-data-computing-frameworks/
   nvidia-mgx-1-2-rack-and-tray-interfaces/
   ocp-esun-ethernet-for-scale-up-networks/
   ocp-lock-secure-key-management-for-self-encrypting-storage/

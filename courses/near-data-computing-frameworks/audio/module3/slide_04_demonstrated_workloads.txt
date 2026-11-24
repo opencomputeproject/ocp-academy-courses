@@ -1,0 +1,12 @@
+# pronunciation: NDC -> N D C; API -> A P I; CXL -> C X L; PNM -> P N M; CPU -> C P U; SSD -> S S D; CMM-DC -> C M M D C; IVFFlat -> I V F Flat; GEMV -> gem vee; RAG -> rag
+The draft demonstrates two proof-of-concept integrations. Both place selected computation near data, using N D C A P I to connect an existing software path to a processing-near-memory device. They demonstrate integration, not a new industry standard or a guaranteed application speedup.
+
+First, follow inference with LLaMA three point two, one billion parameters, running through ExecuTorch. A selected general matrix-vector multiplication, or gem vee, reaches the C P U-side library path. That path has been extended to request execution through N D C A P I and the device driver.
+
+The large matrix already resides in device memory. The host supplies an input vector. The P N M engine computes with that vector and the resident matrix, then returns an output vector for subsequent inference operations. The useful change is the traffic pattern: reuse the matrix where it resides, instead of repeatedly moving it to the host. The small vector symbols explain the relationship; they are not measured byte counts.
+
+Now follow the retrieval stage of retrieval-augmented generation, or rag. In this second proof of concept, Faiss uses an I V F Flat index. An index generated from the vector dataset is stored on an S S D, then loaded into C M M D C memory for search. That preparation still has a cost.
+
+A search request reaches the P N M engine through N D C A P I. Candidate vectors are accessed near the resident index for search computation. Smaller search results return to the host. Compared with host-side distance computation, this can reduce candidate-vector traffic across the host-device connection.
+
+Both examples share a pattern: keep a large reusable operand near the engine, send the requested work, and return a smaller result. But fewer transferred bytes do not alone establish end-to-end benefit. Measure setup, execution, latency, throughput, energy, and correctness against a suitable baseline. The draft's bandwidth comparison is not an application speedup claim.
