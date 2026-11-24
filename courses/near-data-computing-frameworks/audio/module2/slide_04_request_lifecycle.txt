@@ -1,0 +1,12 @@
+# pronunciation: NDC -> N D C; API -> A P I; CXL -> C X L; PNM -> P N M; CPU -> C P U; SSD -> S S D; CMM-DC -> C M M D C; IVFFlat -> I V F Flat; GEMV -> gem vee; RAG -> rag
+Follow one request from an application to a near data device. This is a conceptual lifecycle for reviewing integration contracts, not a prescribed sequence in an adopted N D C standard. The indigo path carries requests and status. The green path shows operands and results; those bytes do not have to follow every software layer.
+
+First, discover capabilities. The framework asks what devices, operations, and memory resources are available. A common interface can expose that information, but the device adapter and runtime still translate it into capabilities the hardware actually supports. Discovery must guide a valid choice, not merely return a device name.
+
+Next, prepare the operands. Describe their type, shape, layout, and alignment, and establish where they reside. Here, the large input already lives near the device. A smaller parameter buffer is prepared for this request. Depending on the implementation, preparation may require a copy, a mapped region, or a device handle. Shared addressing does not by itself settle ownership or visibility.
+
+Now invoke the function. The framework submits an operation with references to the prepared operands. The runtime translates and dispatches that request. Notice that sending a request is different from moving the input, and acceptance is different from completion. The device performs the operation beside the resident data.
+
+Then establish completion and synchronization. The result may exist in device memory before the application is allowed to consume it. The contract must define how completion is reported and when the result becomes visible and safe to access.
+
+Finally, access the result by the supported mechanism. Only the required output moves or becomes accessible. A useful common interface connects these stages, while device support and explicit data contracts make each stage work.

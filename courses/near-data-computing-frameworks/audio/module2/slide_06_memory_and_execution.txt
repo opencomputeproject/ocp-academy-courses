@@ -1,0 +1,12 @@
+# pronunciation: API -> A P I; DPU -> D P U
+Two implementations can expose a similar call and still require different rules for correct execution. Consider four questions that belong in a framework discussion.
+
+First, what names the data? A host pointer, an opaque device handle, and a stream identifier describe different forms of access. Shared virtual addressing can simplify naming, but the contract must still explain what is accessible and when.
+
+Second, who owns the operand and how long must it remain valid? An application that reuses or releases a buffer before a queued operation finishes can invalidate the work. The common model needs a way to express those lifetime assumptions.
+
+Third, what makes a result safe to consume? Request acceptance, execution completion, and visibility of writes are distinct concepts. Coherency addresses how memory views remain consistent; it does not by itself supply every ordering or synchronization rule required by the application.
+
+Fourth, how is data in flight represented? A D P U stream may involve an ongoing source and sink rather than a finite stored buffer. The draft specifically identifies streams as a gap in generalizing the storage A P I.
+
+Also distinguish management from execution. Discovering, configuring, or provisioning a resource is related to submitting work, but these are different responsibilities. Rather than inventing one rule for every device, ask which capabilities and guarantees software can discover, and which combinations a supported operation actually requires.

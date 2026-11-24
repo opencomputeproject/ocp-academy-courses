@@ -1,0 +1,12 @@
+# pronunciation: NDC -> N D C; API -> A P I; CXL -> C X L; PNM -> P N M; CPU -> C P U; SSD -> S S D; CMM-DC -> C M M D C; IVFFlat -> I V F Flat; GEMV -> gem vee; RAG -> rag
+The draft compares two architecture options by asking a practical question: what does the host see first? These are design choices to investigate, not two mandatory modes of every near data device.
+
+In the device first option, the memory resource is exposed to the host. Follow the green path: the host accesses data through that resource. The accelerator sits behind it. The draft describes possible load and store access, and command driven implementations such as computational storage. The exact access method depends on the device.
+
+Now separate data access from asking for work. The indigo path represents function control. A command can reach a controller and be passed internally to the accelerator. Configuration, invoking a function, and moving its operands are related responsibilities, but they are not the same event.
+
+In the accelerator first option, the host directly faces the accelerator interface. Memory sits behind the accelerator. Follow the indigo invocation path to the accelerator, then the green path between the accelerator and its memory. The architecture changes which resource is presented first; it does not make data movement disappear.
+
+The draft also describes shared addressing and pipelined execution for this option. Treat addressing, coherency, and coordination as contracts to verify for a particular implementation. They are not universal guarantees supplied simply by choosing C X L.
+
+Compare the completed views. Ask separately: which data can the host access, how does it request a function, and when are results safe to use? Those questions lead from physical placement to the software interface.

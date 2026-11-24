@@ -1,0 +1,79 @@
+{
+  "title": "Trace the Two Demonstrated Workloads",
+  "narration_source": "authoring/module3_video_script.txt",
+  "status": "Timed to measured final narration and forced character alignment",
+  "duration_ms": 111865.3514739229,
+  "scenes": [
+    {
+      "cue": "The draft demonstrates two proof-of-concept integrations.",
+      "visual": "Opening paired operand cards: GEMV resident matrix and vector search resident index. Explicit Proof-of-concept integrations badge; restrained transition into inference."
+    },
+    {
+      "cue": "First, follow inference",
+      "visual": "Inference scene. Host with LLaMA 3.2-1B / ExecuTorch. Selected GEMV path reveals CPU-side library, NDC API and driver. CXL host-device boundary visible."
+    },
+    {
+      "cue": "The large matrix already resides",
+      "visual": "Resident matrix in device-memory enclosure highlighted; engine adjacent in same device. No matrix packet crosses boundary."
+    },
+    {
+      "cue": "The host supplies an input vector.",
+      "visual": "Input-vector request traverses host-device boundary once; input lands at PNM engine."
+    },
+    {
+      "cue": "The PNM engine computes",
+      "visual": "Local matrix/engine link activates and GEMV expression resolves to output vector; result then crosses boundary back to host."
+    },
+    {
+      "cue": "The useful change is the traffic pattern",
+      "visual": "Hold completed GEMV path, label matrix reuse and smaller exchanged vectors. Explicit schematic quantities disclaimer."
+    },
+    {
+      "cue": "Now follow the retrieval stage",
+      "visual": "Explicit new-scene transition to Faiss IVFFlat retrieval. Dataset/index on SSD becomes visible below host before loading."
+    },
+    {
+      "cue": "An index generated from the vector dataset",
+      "visual": "SSD index transfers once into CMM-DC memory. Label setup/load cost; source remains on SSD and resident index appears in device."
+    },
+    {
+      "cue": "A search request reaches",
+      "visual": "Host search request via NDC API travels to PNM engine. Local candidate-search link activates within CMM-DC memory."
+    },
+    {
+      "cue": "Smaller search results return",
+      "visual": "Compact result packet returns to host; resident index remains. Candidate vector traffic stays device-local."
+    },
+    {
+      "cue": "Both examples share a pattern",
+      "visual": "Final paired comparison: resident matrix plus GEMV and resident index plus search, each with input and smaller result. Common conclusion: reduced traffic is a hypothesis for system benefit."
+    },
+    {
+      "cue": "But fewer transferred bytes",
+      "visual": "Final evidence strip reveals setup, latency, throughput, energy and correctness. Hold completed summary through audio end; no loops or reset."
+    }
+  ],
+  "actual_timing": {
+    "duration_ms": 111865.3514739229,
+    "gemv": 16640,
+    "search": 56280,
+    "summary": 90040,
+    "evidence": 98020,
+    "gemv_cues": {
+      "stack": 22520,
+      "resident": 33520,
+      "input": 36360,
+      "compute": 38400,
+      "output": 41780,
+      "conclusion": 45380
+    },
+    "search_cues": {
+      "stack": 56280,
+      "setup": 64920,
+      "resident": 68620,
+      "input": 73900,
+      "compute": 77600,
+      "output": 81560
+    }
+  }
+}

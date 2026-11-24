@@ -1,0 +1,2519 @@
+{
+  "style": "Slides",
+  "course_slug": "ocp_academy_ndc_framework_design_questions",
+  "course_title": "Near Data Computing: Frameworks and Open Design Questions",
+  "language": "en-US",
+  "course_subtitle": "Evaluate placement, integration contracts, and evidence with the OCP DCC community.",
+  "tagline": "Community-driven Hyperscale Innovation for All",
+  "spec_version_chip": "Working draft v0.1 · Discussion course",
+  "index_footer_line": "Based on the Near Data Computing Framework draft v0.1. Proposals remain open for DCC discussion.",
+  "target_duration_minutes": 40,
+  "audience_level": "intermediate",
+  "narration": {
+    "engine": "elevenlabs",
+    "voice_id": "bbGtsRRKUfYO634UxSjz",
+    "voice_name": "Leo",
+    "model_id": "eleven_v4",
+    "speed": 1.18,
+    "teaching_video_mode": "narration-synchronized",
+    "delivery": {
+      "format": "mp3",
+      "approved": true,
+      "bitrate_kbps": 96,
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "bitrate_mode": "CBR"
+    }
+  },
+  "brand": {
+    "primary_color": "#8DC63F",
+    "primary_color_dark": "#6FA030",
+    "gray": "#5F6062",
+    "course_logo": "ndc_course_mark.svg",
+    "academy_logo": "ocp_academy_white.svg",
+    "motion_intro_logo": "ocp_academy_white.svg",
+    "badge_text": "NDC"
+  },
+  "motion_intro": {
+    "enabled": true,
+    "duration_ms": 8000,
+    "logo": "ocp_academy_white.svg",
+    "index": {
+      "enabled": true,
+      "eyebrow": "OCP Academy"
+    },
+    "modules": {
+      "enabled": true
+    }
+  },
+  "index_show_module_status": false,
+  "index_module_links": false,
+  "index_navigation_instruction": "Begin with Module 1, then continue using the next-module controls.",
+  "index_start": {
+    "enabled": true,
+    "label": "Start with MODULE 1",
+    "navigation": "direct"
+  },
+  "scorm": {
+    "version": "1.2",
+    "organization": "multi-sco",
+    "include_home_sco": true,
+    "expected_sco_count": 4
+  },
+  "sources": [
+    {
+      "title": "NDC Framework White Paper",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit",
+      "kind": "draft",
+      "version": "0.1",
+      "status": "The course was authored from a v0.1 snapshot. This URL opens the evolving DCC working draft."
+    },
+    {
+      "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/",
+      "kind": "community"
+    },
+    {
+      "url": "https://github.com/opencomputeproject/samsung-ndc",
+      "kind": "reference_implementation"
+    },
+    {
+      "url": "https://www.snia.org/csapi",
+      "kind": "standard_status"
+    }
+  ],
+  "term_glossary": [
+    {
+      "id": "throughput",
+      "term": "Throughput",
+      "tooltip": "Useful work completed per unit of time, such as queries or requests per second. Define the useful task and correctness target for a fair comparison.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    },
+    {
+      "id": "cxl",
+      "term": "CXL",
+      "aliases": [
+        "Compute Express Link"
+      ],
+      "tooltip": "Compute Express Link: an interconnect used with processors, memory expansion, and accelerators. Verify the application’s access, coherency, and coordination guarantees for the implementation.",
+      "url": "https://computeexpresslink.org/about-cxl/"
+    },
+    {
+      "id": "api",
+      "term": "API",
+      "aliases": [
+        "application programming interface"
+      ],
+      "tooltip": "Application programming interface: a defined software boundary through which components request functions or exchange information.",
+      "url": "https://developer.mozilla.org/en-US/docs/Glossary/API"
+    },
+    {
+      "id": "bandwidth",
+      "term": "Bandwidth",
+      "tooltip": "The amount of data that can cross a specified boundary per unit of time.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    },
+    {
+      "id": "latency",
+      "term": "Latency",
+      "tooltip": "The time taken for an access, request, or operation, measured across a stated boundary.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    },
+    {
+      "id": "pim",
+      "term": "PIM",
+      "aliases": [
+        "processing in memory",
+        "processing-in-memory"
+      ],
+      "tooltip": "Processing in memory: computational capabilities placed within the memory organization. Mechanisms vary by implementation.",
+      "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+    },
+    {
+      "id": "pnm",
+      "term": "PNM",
+      "aliases": [
+        "processing near memory",
+        "processing-near-memory"
+      ],
+      "tooltip": "Processing near memory: compute resources placed adjacent to the memory holding operands.",
+      "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+    },
+    {
+      "id": "computational_storage",
+      "term": "Computational storage",
+      "tooltip": "Compute capabilities placed close to stored data, for operations such as filtering, compression, or encryption.",
+      "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+    },
+    {
+      "id": "dpu",
+      "term": "DPU",
+      "aliases": [
+        "DPUs",
+        "data processing unit",
+        "data processing units"
+      ],
+      "tooltip": "Data processing unit: a programmable processor for data-centric work, including work on network data in flight.",
+      "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+    },
+    {
+      "id": "coherency",
+      "term": "Coherency",
+      "tooltip": "Rules that keep multiple views of memory consistent. Application ordering and synchronization still need defined guarantees.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    },
+    {
+      "id": "backend",
+      "term": "Backend",
+      "aliases": [
+        "backends"
+      ],
+      "tooltip": "Target-specific software that maps framework or compiler operations to an implementation and its device support.",
+      "url": "https://triton-lang.org/main/index.html"
+    },
+    {
+      "id": "kernel",
+      "term": "Kernel",
+      "aliases": [
+        "kernels"
+      ],
+      "tooltip": "An executable unit of computation prepared for a particular processing target.",
+      "url": "https://triton-lang.org/main/index.html"
+    },
+    {
+      "id": "operand",
+      "term": "Operand",
+      "aliases": [
+        "operands"
+      ],
+      "tooltip": "An input or other data object used by an operation, described by its representation and access rules.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    },
+    {
+      "id": "synchronization",
+      "term": "Synchronization",
+      "tooltip": "Coordination that establishes required execution order and when data may safely be consumed.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    },
+    {
+      "id": "cxl_mem",
+      "term": "CXL.mem",
+      "aliases": [
+        "C X L dot mem"
+      ],
+      "tooltip": "The memory-access protocol in Compute Express Link. The NDC API proof of concept initially targets devices exposing this interface.",
+      "url": "https://github.com/opencomputeproject/samsung-ndc"
+    },
+    {
+      "id": "gemv",
+      "term": "GEMV",
+      "aliases": [
+        "gem vee",
+        "general matrix-vector multiplication"
+      ],
+      "tooltip": "General matrix-vector multiplication: a matrix and input vector produce an output vector.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    },
+    {
+      "id": "rag",
+      "term": "RAG",
+      "aliases": [
+        "retrieval-augmented generation"
+      ],
+      "tooltip": "Retrieval-augmented generation: retrieval supplies relevant information to support a generative-model workflow.",
+      "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+    }
+  ],
+  "modules": [
+    {
+      "id": 1,
+      "slug": "choosing-compute-placement",
+      "title": "Choosing Where Computation Runs",
+      "subtitle": "Data locality, architectural options, and a testable placement hypothesis.",
+      "duration_minutes": 12,
+      "module_badge_text": "Module 1",
+      "next_module_title": "Connecting Applications to NDC Devices",
+      "slides": [
+        {
+          "id": 1,
+          "slug": "title",
+          "type": "title",
+          "title": "Choosing Where Computation Runs",
+          "audio": {
+            "script_file": "audio/module1/slide_01_title.txt",
+            "wav_file": "audio/module1/slide_01_title.wav",
+            "delivery_file": "audio/module1/slide_01_title.mp3",
+            "approved": false
+          },
+          "transcript": "Module one. Choosing where computation runs. Near data computing starts with a placement question: which work should happen beside the data, and which work belongs on the host? We'll build a common vocabulary, compare two architecture options, and practice making a placement hypothesis. This course follows a working OCP framework draft. Some ideas are established, some have been demonstrated, and others are questions for the Data Centric Computing community to resolve.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "Executive summary; 1.1",
+              "status": "working draft v0.1"
+            }
+          ],
+          "subtitle": "Data location, useful work, and the cost of crossing boundaries",
+          "version_chip": "Working draft v0.1 · Discussion course"
+        },
+        {
+          "id": 2,
+          "slug": "course_route",
+          "type": "course_overview",
+          "title": "Your Route Through the NDC Design Questions",
+          "audio": {
+            "script_file": "audio/module1/slide_02_course_route.txt",
+            "wav_file": "audio/module1/slide_02_course_route.wav",
+            "delivery_file": "audio/module1/slide_02_course_route.mp3",
+            "approved": false
+          },
+          "transcript": "Data Centric Computing, or DCC, is the OCP workstream bringing together approaches that place useful computation according to where data resides. Near Data Computing, or NDC, names the family of technologies we examine here. Keep that distinction in mind: the community is broader than a particular device or interface.\n\nThe first module develops your placement reasoning. The second connects that reasoning to application frameworks, runtimes, data descriptions, and device interfaces. The third examines concrete proposals and proof-of-concept integrations, then helps you prepare a useful contribution.\n\nAllow about forty minutes, including the questions and short reflection activities. You don't need special hardware or a programming environment. Keep one workload in mind as you go. You'll gradually record its data location, a missing integration contract, and evidence that could clarify a design decision. Sharing your note with DCC is optional. Completing the course does not require agreement with an architectural proposal.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "Executive summary; 1.1.5",
+              "status": "working draft v0.1"
+            }
+          ],
+          "subtitle": "Three modules connect architectural understanding to a useful contribution.",
+          "modules_listed": [
+            "Choosing Where Computation Runs",
+            "Connecting Applications to NDC Devices",
+            "Testing the Proposals and Contributing to DCC"
+          ],
+          "chips": [
+            {
+              "text": "About 40 minutes"
+            },
+            {
+              "text": "Mixed DCC community"
+            },
+            {
+              "text": "Working framework draft v0.1"
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "OCP DCC workstream",
+              "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "slug": "data_movement",
+          "type": "content_grid",
+          "title": "Data Movement Can Become the Bottleneck",
+          "audio": {
+            "script_file": "audio/module1/slide_03_data_movement.txt",
+            "wav_file": "audio/module1/slide_03_data_movement.wav",
+            "delivery_file": "audio/module1/slide_03_data_movement.mp3",
+            "approved": false
+          },
+          "transcript": "A fast processor cannot help while the work it needs is waiting on data. The framework draft begins with large AI working sets, limited local memory capacity, and the cost of accessing data elsewhere. These are related constraints, but they are not interchangeable.\n\nCapacity asks whether the working set fits in a memory tier. Bandwidth describes how much data can cross a boundary in a given time. Latency is the time taken for an individual access or operation. Energy accounts for the work of moving, storing, and processing data across the whole system. Improving one constraint can leave another unchanged.\n\nOne response is to increase memory capacity or interconnect bandwidth. Another is to place a suitable operation near data that would otherwise move. For example, a filter may examine many records and return a small subset. The potential opportunity depends on the computation, the layout, the frequency of reuse, and what must cross the boundary before and after execution.\n\nThis is a hypothesis to test. A small result alone does not guarantee that offloading helps. Device setup, input preparation, contention, synchronization, and any result conversion can consume the benefit. Begin by identifying the constrained phase of the workload. Then compare complete execution paths using a suitable baseline, rather than assuming that a faster local engine makes the application faster.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "1.1.1–1.1.2",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "The placement problem",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Capacity",
+              "body": "Does the working set fit in the required tier?"
+            },
+            {
+              "title": "Bandwidth",
+              "body": "How much data must cross each boundary?"
+            },
+            {
+              "title": "Latency",
+              "body": "Which waits determine the critical path?"
+            },
+            {
+              "title": "Energy",
+              "body": "What does the full execution path consume?"
+            }
+          ],
+          "term_refs": [
+            "bandwidth",
+            "latency",
+            "throughput"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Memory and energy challenges",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            }
+          ],
+          "subtitle": "Useful throughput is completed work per unit time. Compare it alongside latency, energy, and correctness."
+        },
+        {
+          "id": 4,
+          "slug": "device_landscape",
+          "type": "content_diagram",
+          "title": "Four Places to Put Computation",
+          "audio": {
+            "script_file": "audio/module1/slide_04_device_landscape.txt",
+            "wav_file": "audio/module1/slide_04_device_landscape.wav",
+            "delivery_file": "audio/module1/slide_04_device_landscape.mp3",
+            "approved": false
+          },
+          "transcript": "Near data computing is a family of placements, rather than a single type of accelerator. The draft includes four classes. Processing in memory, or PIM, places computational capabilities within the memory organization. Processing near memory, or PNM, places compute beside memory. The distinction affects what data can be accessed efficiently and how work can be initiated.\n\nComputational storage places useful computation close to stored data. Examples of functions include filtering, compression, and encryption. A data processing unit, or DPU, can perform work on data in flight in a network path, as well as on data available in its own memory. These are useful starting points for understanding locality. Actual device capabilities vary.\n\nThink about data in use, data at rest, and data in transit. A tensor already resident near a memory engine presents a different integration problem from a stored dataset or a continuous network stream. A common software framework must describe those differences without hiding information needed for a correct placement decision.\n\nThe DCC objective is horizontal integration across technologies. It does not mean that every device executes every operation, uses the same memory model, or offers the same guarantees. Discovery and capability descriptions must let software choose valid work for a particular resource. For now, connect each class to its data location. We'll return to how those locations affect the software contract.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "Executive summary; 1.1.2; 4.5.2",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "NDC device landscape",
+          "figure": {
+            "path": "figures/module1_device_landscape.svg",
+            "alt": "Four classes place computation within memory, near memory, alongside stored data, or in the network data path.",
+            "caption": "Near data computing spans memory, storage, and network paths. The class identifies where computation is placed; it does not establish a common programming interface.",
+            "text_inventory": {
+              "sha256": "547729d3115d0e14d0bf138e024480b3710a5066a5e3a7ec469319009e5ffe8f",
+              "entries": [
+                {
+                  "text": "Processing in memory"
+                },
+                {
+                  "text": "Computation within the memory structure"
+                },
+                {
+                  "text": "Memory"
+                },
+                {
+                  "text": "Compute inside"
+                },
+                {
+                  "text": "Processing near memory"
+                },
+                {
+                  "text": "Compute placed close to memory"
+                },
+                {
+                  "text": "Compute"
+                },
+                {
+                  "text": "Computational storage"
+                },
+                {
+                  "text": "Compute associated with stored data"
+                },
+                {
+                  "text": "Stored data"
+                },
+                {
+                  "text": "Data processing unit"
+                },
+                {
+                  "text": "Compute on data in the network path"
+                },
+                {
+                  "text": "Data"
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "pim",
+            "pnm",
+            "computational_storage",
+            "dpu"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · NDC device architectures",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "DCC technical scope",
+              "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "slug": "device_first_accelerator_first",
+          "type": "content_diagram",
+          "title": "Device First and Accelerator First",
+          "audio": {
+            "script_file": "audio/module1/slide_05_device_first_accelerator_first.txt",
+            "wav_file": "audio/module1/slide_05_device_first_accelerator_first.wav",
+            "delivery_file": "audio/module1/slide_05_device_first_accelerator_first.mp3",
+            "approved": false
+          },
+          "transcript": "The draft compares two architecture options by asking a practical question: what does the host see first? These are design choices to investigate, not two mandatory modes of every near data device.\n\nIn the device first option, the memory resource is exposed to the host. Follow the green path: the host accesses data through that resource. The accelerator sits behind it. The draft describes possible load and store access, and command driven implementations such as computational storage. The exact access method depends on the device.\n\nNow separate data access from asking for work. The indigo path represents function control. A command can reach a controller and be passed internally to the accelerator. Configuration, invoking a function, and moving its operands are related responsibilities, but they are not the same event.\n\nIn the accelerator first option, the host directly faces the accelerator interface. Memory sits behind the accelerator. Follow the indigo invocation path to the accelerator, then the green path between the accelerator and its memory. The architecture changes which resource is presented first; it does not make data movement disappear.\n\nThe draft also describes shared addressing and pipelined execution for this option. Treat addressing, coherency, and coordination as contracts to verify for a particular implementation. They are not universal guarantees supplied simply by choosing CXL.\n\nCompare the completed views. Ask separately: which data can the host access, how does it request a function, and when are results safe to use? Those questions lead from physical placement to the software interface.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "7.1–7.2",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Architecture options",
+          "media_focus": true,
+          "figure": {
+            "path": "figures/module1_device_accelerator.mp4",
+            "alt": "A device-first view exposes memory to the host with a separate function-control route to its accelerator. The comparison opens to show an accelerator-first view with the accelerator interface ahead of memory.",
+            "caption": "The draft changes which resource the host faces first. Green access paths and indigo function-control paths identify separate responsibilities; they do not prescribe a universal CXL behavior or a mandatory protocol sequence.",
+            "media_type": "video",
+            "poster": "figures/module1_device_accelerator_poster.png",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "c73ec683a620df2bd2d1cfed44750885d5b9c3a170574a15872d44f06cabc976",
+              "entries": [
+                {
+                  "text": "What does the host see first?",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Device first",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Accelerator first",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Host",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Memory resource",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Exposed to the host",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Accelerator",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Behind the resource",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Data access",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Device-dependent method",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Function control",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Internal command",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Data",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Accelerator interface",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Presented to the host",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Behind the accelerator",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Function invocation",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Local access",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Addressing • Coherency • Coordination — verify the implementation",
+                  "at_seconds": 69
+                },
+                {
+                  "text": "Which data is accessible? • How is work invoked? • When are results ready?",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Placement changes the interface; it does not eliminate data movement.",
+                  "at_seconds": 85
+                },
+                {
+                  "text": "Draft architecture options • Access and invocation depend on the implementation",
+                  "at_seconds": 85
+                }
+              ]
+            },
+            "duration_seconds": 91.6
+          },
+          "term_refs": [
+            "coherency",
+            "cxl"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Device and accelerator integration",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "slug": "filter_offload",
+          "type": "content_diagram",
+          "title": "Follow the Data Before Choosing an Offload",
+          "audio": {
+            "script_file": "audio/module1/slide_06_filter_offload.txt",
+            "wav_file": "audio/module1/slide_06_filter_offload.wav",
+            "delivery_file": "audio/module1/slide_06_filter_offload.mp3",
+            "approved": false
+          },
+          "transcript": "Consider a conceptual filtering workload. A large collection of records resides beside a capable processing engine. The application wants only the records that satisfy a predicate. This example illustrates a traffic relationship; it is not a benchmark reported by the draft.\n\nIn a host-side path, the relevant input records cross to the host before the host evaluates the predicate. In an offloaded path, the host supplies the operation and its parameters. The nearby engine examines the resident records and returns the selected output. If that output is much smaller, the traffic pattern can change substantially.\n\nNow account for the work the simple drawing leaves out. The data may first need loading or conversion. The predicate must have agreed semantics and be supported by the engine. The application must know when evaluation has finished and how to access the output. If the next stage needs all original records on the host anyway, reducing this one transfer may not improve the complete pipeline.\n\nCompare both paths from the same starting condition to the same useful result. Include preparation, execution, result access, and any cleanup that matters to the use case. Reuse can change the tradeoff: one initial load spread across many requests is different from repeatedly preparing the same input. A defensible placement decision identifies these boundaries before claiming an improvement.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5.1; 4.6; illustrative application",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "An illustrative workload",
+          "figure": {
+            "path": "figures/module1_filter_offload.svg",
+            "alt": "A host filter transfers all stored records to the host; a filter near stored data returns matching records. Additional transfers must still be counted.",
+            "caption": "An illustrative selective filter can reduce the records returned to the host. This is not a benchmark: request, setup, results, and any remaining data transfers still contribute to total cost.",
+            "text_inventory": {
+              "sha256": "b63551a70124c720600d7940448356def05daea8c6eb0bec23d4a59e0b952539",
+              "entries": [
+                {
+                  "text": "Filter at the host"
+                },
+                {
+                  "text": "Stored records"
+                },
+                {
+                  "text": "Full input"
+                },
+                {
+                  "text": "Move all records"
+                },
+                {
+                  "text": "Host"
+                },
+                {
+                  "text": "Apply filter → use matches"
+                },
+                {
+                  "text": "Filter near stored data"
+                },
+                {
+                  "text": "Stored records + local filter"
+                },
+                {
+                  "text": "Evaluate the predicate near the data"
+                },
+                {
+                  "text": "Return matches"
+                },
+                {
+                  "text": "Use matches"
+                },
+                {
+                  "text": "Illustrative: fewer returned bytes only when the filter selects a subset."
+                },
+                {
+                  "text": "Count request, setup, result and any remaining transfers."
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "DCC working draft · Interfaces and offload examples",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "slug": "placement_hypothesis",
+          "type": "content_bullets",
+          "title": "Make a Placement Hypothesis",
+          "audio": {
+            "script_file": "audio/module1/slide_07_placement_hypothesis.txt",
+            "wav_file": "audio/module1/slide_07_placement_hypothesis.wav",
+            "delivery_file": "audio/module1/slide_07_placement_hypothesis.mp3",
+            "approved": false
+          },
+          "transcript": "Choose one workload you know, or use the filtering example. Give it a concrete operation, such as selecting records, computing a matrix-vector product, or inspecting a flow. Identify where its large input resides before the request arrives.\n\nThen describe the current path. Which bytes move, across which boundary, and how often? Describe an alternative placement with the same starting condition and required result. Include the parameters that must travel to the engine and the output that must come back. Avoid adding a performance number unless you have evidence for it.\n\nFinish with a testable sentence. For example: keeping the repeatedly scanned records near the filter engine may reduce host-bound traffic, provided preparation and coordination do not dominate. State what you would measure to accept or reject that claim.\n\nPause the narration and spend about a minute writing your hypothesis in the contribution worksheet. A useful DCC discussion starts with this context. It lets someone else offer a counterexample, propose a measurement, or explain a device constraint. Your chosen placement is an ungraded design suggestion.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "1 overview questions; 1.1.5",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Your first contribution",
+          "bullets": [
+            {
+              "bold_lead": "Workload",
+              "text": "Name one operation and its useful result."
+            },
+            {
+              "bold_lead": "Residence",
+              "text": "Locate the input before execution begins."
+            },
+            {
+              "bold_lead": "Boundary",
+              "text": "Identify what moves in each execution path."
+            },
+            {
+              "bold_lead": "Hypothesis",
+              "text": "State the expected change and evidence needed."
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Data placement and offload motivation",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "Open contribution worksheet",
+              "url": "resources/dcc_contribution_worksheet.html#placement"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "slug": "takeaways",
+          "type": "takeaways",
+          "title": "Placement Decisions Need Workload Evidence",
+          "audio": {
+            "script_file": "audio/module1/slide_08_takeaways.txt",
+            "wav_file": "audio/module1/slide_08_takeaways.wav",
+            "delivery_file": "audio/module1/slide_08_takeaways.mp3",
+            "approved": false
+          },
+          "transcript": "The central question is where useful work should run relative to its data. Memory capacity, bandwidth, latency, and energy describe different parts of that decision. Near data technologies provide several placements across memory, storage, and networking.\n\nThe device-first and accelerator-first options help you ask what the host addresses and how it invokes work. They do not settle every access, coherency, or coordination rule. Those contracts depend on the implementation.\n\nYour placement hypothesis should connect a particular workload to a change in the traffic pattern. Test the full path, including preparation and downstream use. A smaller result is a promising reason to investigate; measurements determine whether the complete application benefits.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "1.1; 7",
+              "status": "working draft v0.1"
+            }
+          ],
+          "items": [
+            "Start with the workload and data residence.",
+            "Separate capacity, bandwidth, latency, and energy.",
+            "Compare data access with function invocation.",
+            "Test the full execution path against a suitable baseline."
+          ]
+        },
+        {
+          "id": 9,
+          "slug": "knowledge_check",
+          "type": "knowledge_check",
+          "title": "Check Your Placement Reasoning",
+          "audio": {
+            "script_file": "audio/module1/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module1/slide_09_knowledge_check.wav",
+            "delivery_file": "audio/module1/slide_09_knowledge_check.mp3",
+            "approved": false
+          },
+          "transcript": "Check the placement model before you continue. The first question asks which workload offers a plausible opportunity for near data execution. The second asks what belongs in a fair comparison of execution paths.\n\nSubmit each question once to continue. Correct answers are not required, and you can retry after feedback. Read the explanations even if you answer correctly. They connect the choice to the costs and boundaries you need to examine in a real workload. Your reflection remains ungraded.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "1.1; 4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Apply the model",
+          "subtitle": "Submit both questions to continue. You can retry after feedback.",
+          "questions": [
+            {
+              "id": "m1_q1",
+              "prompt": "Which situation most directly motivates investigating near-data execution?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "A large resident dataset can be processed locally to return a much smaller useful result.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "An accelerator has a higher advertised peak compute rate, regardless of the workload.",
+                  "correct": false,
+                  "feedback_incorrect": "Peak compute rate does not identify the constrained phase or account for data movement and coordination."
+                },
+                {
+                  "id": "c",
+                  "text": "The device and host share an address space, so all data movement has disappeared.",
+                  "correct": false,
+                  "feedback_incorrect": "Shared addressing does not remove physical data movement or settle visibility and ownership."
+                }
+              ],
+              "feedback_correct": "A large resident input and smaller useful output can change the traffic pattern. Full-path measurement is still needed.",
+              "feedback_incorrect": "Investigate where the input resides, which bytes move, and what the application actually needs back."
+            },
+            {
+              "id": "m1_q2",
+              "prompt": "Which factors belong in a fair comparison? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Input preparation and any initial loading or conversion.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Execution, result access, and downstream requirements.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "The relevant latency, throughput, energy, and correctness outcomes.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Only the engine’s peak compute rate.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Compare complete useful execution paths, with consistent starting conditions and result requirements.",
+              "feedback_incorrect": "Include preparation, execution, result access, and application outcomes. Peak compute rate alone is insufficient."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "slug": "up_next",
+          "type": "up_next",
+          "title": "From Placement to Integration",
+          "audio": {
+            "script_file": "audio/module1/slide_10_up_next.txt",
+            "wav_file": "audio/module1/slide_10_up_next.wav",
+            "delivery_file": "audio/module1/slide_10_up_next.mp3",
+            "approved": false
+          },
+          "transcript": "Thank you for completing module one, Choosing Where Computation Runs. You now have a way to connect a workload, its data location, and a testable placement hypothesis.\n\nThe next module examines the software needed to make that placement work. We'll trace a request across frameworks and device support, then identify the data and execution contracts that a common interface must express. Keep your workload note nearby. It will help make those contracts concrete.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "1.1.5; framework diagrams",
+              "status": "working draft v0.1"
+            }
+          ],
+          "next_module_number": 2,
+          "next_module_title": "Connecting Applications to NDC Devices"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "connecting-applications-devices",
+      "title": "Connecting Applications to NDC Devices",
+      "subtitle": "Software responsibilities, request flow, and explicit data and execution contracts.",
+      "duration_minutes": 14,
+      "module_badge_text": "Module 2",
+      "next_module_title": "Testing the Proposals and Contributing to DCC",
+      "slides": [
+        {
+          "id": 1,
+          "slug": "title",
+          "type": "title",
+          "title": "Connecting Applications to NDC Devices",
+          "audio": {
+            "script_file": "audio/module2/slide_01_title.txt",
+            "wav_file": "audio/module2/slide_01_title.wav",
+            "delivery_file": "audio/module2/slide_01_title.mp3",
+            "approved": false
+          },
+          "transcript": "Module two. Connecting applications to near data devices. A placement idea becomes useful only when the software can describe the work, prepare its operands, invoke the right resource, and safely consume the result. We'll connect the major software layers, follow a conceptual request lifecycle, and examine what a common data and execution contract needs to say. The goal is architectural understanding, without requiring you to implement a compiler backend or write device kernels.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "1.1.4; framework diagrams",
+              "status": "working draft v0.1"
+            }
+          ],
+          "subtitle": "Software layers and the contracts between them"
+        },
+        {
+          "id": 2,
+          "slug": "objectives",
+          "type": "objectives",
+          "title": "Trace the Work and Name the Contracts",
+          "audio": {
+            "script_file": "audio/module2/slide_02_objectives.txt",
+            "wav_file": "audio/module2/slide_02_objectives.wav",
+            "delivery_file": "audio/module2/slide_02_objectives.mp3",
+            "approved": false
+          },
+          "transcript": "By the end of this module, you'll be able to explain what frameworks, compiler paths, runtime libraries, and device support contribute to execution. You'll trace a request while keeping control messages separate from operand movement.\n\nYou'll also distinguish a description of data from a description of the operation to perform on it. Finally, you'll identify an ownership, completion, or visibility question that the draft needs to resolve for your chosen workload. We will treat missing definitions as contribution opportunities. Any descriptor you propose here is an illustrative review aid, rather than new specification text.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "2; 4 opening questions; 4.5.3",
+              "status": "working draft v0.1"
+            }
+          ],
+          "objectives": [
+            "Locate the framework, compiler, runtime, and device responsibilities.",
+            "Trace invocation, operand movement, completion, and result access.",
+            "Describe data representation and operation semantics separately.",
+            "Identify one missing integration contract for your workload."
+          ]
+        },
+        {
+          "id": 3,
+          "slug": "software_stack",
+          "type": "content_diagram",
+          "title": "Where Frameworks Compilers and Runtimes Fit",
+          "audio": {
+            "script_file": "audio/module2/slide_03_software_stack.txt",
+            "wav_file": "audio/module2/slide_03_software_stack.wav",
+            "delivery_file": "audio/module2/slide_03_software_stack.mp3",
+            "approved": false
+          },
+          "transcript": "Applications need more than a physical engine to make use of near data computation. The draft organizes the host stack into applications, frameworks, interfaces, formats, runtimes, drivers, and hardware. Each layer contributes to turning an intended operation into valid device work.\n\nA library-oriented path can dispatch an operation to a suitable implementation at runtime. A compiler-oriented path can analyze a program or graph, transform it, and generate code for a target. Many systems combine these approaches. A compiler can still call an optimized library, and a runtime can manage code that was compiled earlier.\n\nPyTorch provides a useful example of operation dispatch. A backend supplies implementations and supporting device behavior. Triton provides a language and compiler for describing parallel kernels. Supporting a different target still involves translating its execution and memory requirements and connecting to a runtime or driver. A familiar front end does not make the device-specific work disappear.\n\nThe important distinction is between the application boundary and the implementation beneath it. A common interface can reduce divergence visible to applications, while adapters, backends, and device libraries remain necessary. For your workload, ask where an operation is selected, where its data description is interpreted, where execution is launched, and where errors return. Those responsibilities help identify a realistic insertion point for NDC support.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "1.1.4; 3.2–3.3",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "The host software stack",
+          "figure": {
+            "path": "figures/module2_software_stack.svg",
+            "alt": "Conceptual software paths connect an application and framework through a library or compiler path, runtime or adapter, driver, and device.",
+            "caption": "Library and compiler paths can combine. A shared integration boundary still needs device-specific backends, kernels, drivers, and runtime support.",
+            "text_inventory": {
+              "sha256": "819d06a1a22ef5690335846b26a91a44da821511206a79ac78f482ed14a696a1",
+              "entries": [
+                {
+                  "text": "Application"
+                },
+                {
+                  "text": "Express the workload"
+                },
+                {
+                  "text": "Framework"
+                },
+                {
+                  "text": "Select and dispatch operations"
+                },
+                {
+                  "text": "Library path"
+                },
+                {
+                  "text": "Call an implemented operation"
+                },
+                {
+                  "text": "Compiler path"
+                },
+                {
+                  "text": "Lower an operation to target code"
+                },
+                {
+                  "text": "Runtime / adapter"
+                },
+                {
+                  "text": "Prepare memory and schedule execution"
+                },
+                {
+                  "text": "Driver"
+                },
+                {
+                  "text": "Reach the device interface"
+                },
+                {
+                  "text": "Device"
+                },
+                {
+                  "text": "Execute supported operations"
+                },
+                {
+                  "text": "Conceptual paths can combine. New devices still need backends, kernels and runtime support."
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "backend",
+            "kernel"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Programming models and existing frameworks",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "PyTorch extension notes",
+              "url": "https://docs.pytorch.org/docs/stable/notes/extending.html"
+            },
+            {
+              "label": "Triton documentation",
+              "url": "https://triton-lang.org/main/index.html"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "slug": "request_lifecycle",
+          "type": "content_diagram",
+          "title": "Follow One Request Through the Stack",
+          "audio": {
+            "script_file": "audio/module2/slide_04_request_lifecycle.txt",
+            "wav_file": "audio/module2/slide_04_request_lifecycle.wav",
+            "delivery_file": "audio/module2/slide_04_request_lifecycle.mp3",
+            "approved": false
+          },
+          "transcript": "Follow one request from an application to a near data device. This is a conceptual lifecycle for reviewing integration contracts, not a prescribed sequence in an adopted NDC standard. The indigo path carries requests and status. The green path shows operands and results; those bytes do not have to follow every software layer.\n\nFirst, discover capabilities. The framework asks what devices, operations, and memory resources are available. A common interface can expose that information, but the device adapter and runtime still translate it into capabilities the hardware actually supports. Discovery must guide a valid choice, not merely return a device name.\n\nNext, prepare the operands. Describe their type, shape, layout, and alignment, and establish where they reside. Here, the large input already lives near the device. A smaller parameter buffer is prepared for this request. Depending on the implementation, preparation may require a copy, a mapped region, or a device handle. Shared addressing does not by itself settle ownership or visibility.\n\nNow invoke the function. The framework submits an operation with references to the prepared operands. The runtime translates and dispatches that request. Notice that sending a request is different from moving the input, and acceptance is different from completion. The device performs the operation beside the resident data.\n\nThen establish completion and synchronization. The result may exist in device memory before the application is allowed to consume it. The contract must define how completion is reported and when the result becomes visible and safe to access.\n\nFinally, access the result by the supported mechanism. Only the required output moves or becomes accessible. A useful common interface connects these stages, while device support and explicit data contracts make each stage work.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4 opening questions; 4.5–4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "A conceptual offload lifecycle",
+          "media_focus": true,
+          "figure": {
+            "path": "figures/module2_request_lifecycle.mp4",
+            "alt": "A conceptual request discovers capabilities, prepares operands, invokes a function through five software layers, establishes completion and visibility, and accesses a result while the large input remains near the device. Indigo indicates control and status; green indicates operand and result access.",
+            "caption": "Request acceptance, device completion, and safe result access are separate events. This conceptual lifecycle separates control from data residency and movement; it is not a normative API sequence, and a common interface still needs device support.",
+            "media_type": "video",
+            "poster": "figures/module2_request_lifecycle_poster.png",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "095e3be12b805bdb388e0c5e39f9dbe2d4ffbbd1e9fc98fd0c21afa940a02bd8",
+              "entries": [
+                {
+                  "text": "CONCEPTUAL LIFECYCLE · NOT AN ADOPTED API SEQUENCE",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "1  Discover",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "2  Prepare",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "3  Invoke",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "4  Complete",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "5  Access",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "SOFTWARE / CONTROL",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Two paths, one request",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Requests and status cross the software stack.",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Operands and results follow the memory contract.",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Application",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Express the work",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Framework",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Select the operation",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Common interface",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Shared integration boundary",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Adapter / runtime",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Device-specific translation",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Device",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Execute beside resident data",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Request ↓",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Status ↑",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "DATA / RESIDENCY",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "APPLICATION-ACCESSIBLE MEMORY",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Parameter buffer",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Result destination",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "DEVICE-SIDE MEMORY AND EXECUTION",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Large resident input",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Already near the device",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Remains here throughout",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Operation",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Ready",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Output",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Not ready",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Access pending",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Operand access",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "Follow control separately from data movement.",
+                  "at_seconds": 0.5
+                },
+                {
+                  "text": "1  Discover capabilities",
+                  "at_seconds": 20
+                },
+                {
+                  "text": "Choose supported operations and memory resources.",
+                  "at_seconds": 20
+                },
+                {
+                  "text": "The adapter translates device-specific capabilities.",
+                  "at_seconds": 20
+                },
+                {
+                  "text": "Query resources → match supported capabilities",
+                  "at_seconds": 20
+                },
+                {
+                  "text": "Capabilities returned → choose a valid operation",
+                  "at_seconds": 29.5
+                },
+                {
+                  "text": "2  Prepare operands",
+                  "at_seconds": 39.5
+                },
+                {
+                  "text": "Describe the bytes and establish their residence.",
+                  "at_seconds": 39.5
+                },
+                {
+                  "text": "Copy, mapping or handles depend on the implementation.",
+                  "at_seconds": 39.5
+                },
+                {
+                  "text": "Data description + residence + ownership + visibility",
+                  "at_seconds": 39.5
+                },
+                {
+                  "text": "Small parameter buffer",
+                  "at_seconds": 49.5
+                },
+                {
+                  "text": "3  Invoke the function",
+                  "at_seconds": 63
+                },
+                {
+                  "text": "Submit references to prepared operands.",
+                  "at_seconds": 63
+                },
+                {
+                  "text": "Request accepted does not mean work completed.",
+                  "at_seconds": 63
+                },
+                {
+                  "text": "Submitted",
+                  "at_seconds": 63
+                },
+                {
+                  "text": "Submitted → awaiting acceptance",
+                  "at_seconds": 63
+                },
+                {
+                  "text": "Accepted",
+                  "at_seconds": 71.5
+                },
+                {
+                  "text": "Accepted → awaiting execution",
+                  "at_seconds": 71.5
+                },
+                {
+                  "text": "Running",
+                  "at_seconds": 77
+                },
+                {
+                  "text": "Running near the resident input",
+                  "at_seconds": 77
+                },
+                {
+                  "text": "4  Complete and synchronize",
+                  "at_seconds": 81
+                },
+                {
+                  "text": "Completion and visibility are explicit contracts.",
+                  "at_seconds": 81
+                },
+                {
+                  "text": "A result can exist before it is safe to consume.",
+                  "at_seconds": 81
+                },
+                {
+                  "text": "Execution and completion are separate events",
+                  "at_seconds": 81
+                },
+                {
+                  "text": "Finished",
+                  "at_seconds": 84
+                },
+                {
+                  "text": "Written",
+                  "at_seconds": 84
+                },
+                {
+                  "text": "Written is not yet safe to consume",
+                  "at_seconds": 84
+                },
+                {
+                  "text": "Visible",
+                  "at_seconds": 92
+                },
+                {
+                  "text": "Completion + synchronization → result visible",
+                  "at_seconds": 92
+                },
+                {
+                  "text": "5  Access the result",
+                  "at_seconds": 94.5
+                },
+                {
+                  "text": "Move or expose only the required output.",
+                  "at_seconds": 94.5
+                },
+                {
+                  "text": "The large input stays beside the computation.",
+                  "at_seconds": 94.5
+                },
+                {
+                  "text": "Result accessible",
+                  "at_seconds": 94.5
+                },
+                {
+                  "text": "Access",
+                  "at_seconds": 94.5
+                },
+                {
+                  "text": "Common interface + device support + explicit data contracts",
+                  "at_seconds": 94.5
+                }
+              ]
+            },
+            "duration_seconds": 106.9
+          },
+          "term_refs": [
+            "operand",
+            "synchronization",
+            "api"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Data movement and execution interfaces",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "slug": "data_and_operation",
+          "type": "content_diagram",
+          "title": "Describe Both the Data and the Operation",
+          "audio": {
+            "script_file": "audio/module2/slide_05_data_and_operation.txt",
+            "wav_file": "audio/module2/slide_05_data_and_operation.wav",
+            "delivery_file": "audio/module2/slide_05_data_and_operation.mp3",
+            "approved": false
+          },
+          "transcript": "An address or handle tells software where to refer to data. It does not fully describe what those bytes mean. A device may need the element type, dimensions, layout, stride, and alignment before it can interpret an operand correctly. It also needs an agreed meaning for the requested operation, its arguments, and its output.\n\nThe draft discusses open formats as a way to make these descriptions usable across software boundaries. Apache Arrow describes in-memory columnar data and associated interchange structures. HDF5 organizes self-describing datasets and metadata for persistent scientific data. These serve different roles; neither should be treated as a universal device execution contract.\n\nONNX represents machine-learning models and their operations. Substrait describes relational computations in a portable form. They help explain why a representation of the computation is different from the physical layout of its data. We use those definitions as supporting background; the draft's ONNX and Substrait subsections still need further development.\n\nFor the filtering example, naming a buffer is not enough. Software must agree on the record schema, predicate semantics, output layout, and any supported types. For a tensor operation, dimensions and strides can determine which elements are actually read. A shared format can reduce avoidable conversions when the implementations support it. It does not automatically provide zero-copy execution, device compatibility, or correct synchronization. Keep representation, operation meaning, and execution guarantees separate in your review.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "2; 4.5.3; 5 with official format background",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Data and computation descriptions",
+          "figure": {
+            "path": "figures/module2_data_contract.svg",
+            "alt": "A data description covers type, shape, layout or strides, and alignment; the execution contract covers operation semantics, ownership and lifetime, and completion and visibility.",
+            "caption": "Interpreting an offloaded request requires both a data description and an execution contract. This illustrative checklist is a review proposal, not a defined NDC descriptor or adopted specification.",
+            "text_inventory": {
+              "sha256": "412af4f8d7d0767f850380988a1b5a546ac64ea8b85be726a3566d5e8c67e6ba",
+              "entries": [
+                {
+                  "text": "DATA DESCRIPTION"
+                },
+                {
+                  "text": "EXECUTION CONTRACT"
+                },
+                {
+                  "text": "Type"
+                },
+                {
+                  "text": "How each value is interpreted"
+                },
+                {
+                  "text": "Shape"
+                },
+                {
+                  "text": "Dimensions and element counts"
+                },
+                {
+                  "text": "Layout / strides"
+                },
+                {
+                  "text": "Where elements are stored"
+                },
+                {
+                  "text": "Alignment"
+                },
+                {
+                  "text": "Required address boundaries"
+                },
+                {
+                  "text": "Operation semantics"
+                },
+                {
+                  "text": "What function means and returns"
+                },
+                {
+                  "text": "Ownership / lifetime"
+                },
+                {
+                  "text": "Who may access data, and for how long"
+                },
+                {
+                  "text": "Completion / visibility"
+                },
+                {
+                  "text": "When the result is safe to consume"
+                },
+                {
+                  "text": "Both are needed to interpret an offloaded request."
+                },
+                {
+                  "text": "Illustrative review checklist — not a defined NDC descriptor or adopted specification."
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "DCC working draft · Data format and operation representation",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "Arrow format",
+              "url": "https://arrow.apache.org/docs/format/Columnar.html"
+            },
+            {
+              "label": "HDF5 introduction",
+              "url": "https://support.hdfgroup.org/documentation/hdf5/latest/_intro_h_d_f5.html"
+            },
+            {
+              "label": "ONNX concepts",
+              "url": "https://onnx.ai/onnx/intro/concepts.html"
+            },
+            {
+              "label": "Substrait",
+              "url": "https://substrait.io/"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "slug": "memory_and_execution",
+          "type": "content_grid",
+          "title": "Memory Access and Execution Need Explicit Rules",
+          "audio": {
+            "script_file": "audio/module2/slide_06_memory_and_execution.txt",
+            "wav_file": "audio/module2/slide_06_memory_and_execution.wav",
+            "delivery_file": "audio/module2/slide_06_memory_and_execution.mp3",
+            "approved": false
+          },
+          "transcript": "Two implementations can expose a similar call and still require different rules for correct execution. Consider four questions that belong in a framework discussion.\n\nFirst, what names the data? A host pointer, an opaque device handle, and a stream identifier describe different forms of access. Shared virtual addressing can simplify naming, but the contract must still explain what is accessible and when.\n\nSecond, who owns the operand and how long must it remain valid? An application that reuses or releases a buffer before a queued operation finishes can invalidate the work. The common model needs a way to express those lifetime assumptions.\n\nThird, what makes a result safe to consume? Request acceptance, execution completion, and visibility of writes are distinct concepts. Coherency addresses how memory views remain consistent; it does not by itself supply every ordering or synchronization rule required by the application.\n\nFourth, how is data in flight represented? A DPU stream may involve an ongoing source and sink rather than a finite stored buffer. The draft specifically identifies streams as a gap in generalizing the storage API.\n\nAlso distinguish management from execution. Discovering, configuring, or provisioning a resource is related to submitting work, but these are different responsibilities. Rather than inventing one rule for every device, ask which capabilities and guarantees software can discover, and which combinations a supported operation actually requires.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4 opening questions; 4.5.2–4.5.3",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Contracts to make explicit",
+          "grid_cols": 2,
+          "cards": [
+            {
+              "title": "Addressing and access",
+              "body": "Pointer, device handle, shared region, or stream?"
+            },
+            {
+              "title": "Ownership and lifetime",
+              "body": "Who may read, write, reuse, and release each operand?"
+            },
+            {
+              "title": "Completion and visibility",
+              "body": "When has work finished, and when is its result safe to consume?"
+            },
+            {
+              "title": "Management and execution",
+              "body": "Separate provisioning and configuration from submitting useful work."
+            }
+          ],
+          "term_refs": [
+            "coherency",
+            "dpu"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Memory management and execution",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "slug": "missing_contract",
+          "type": "content_bullets",
+          "title": "Specify One Missing Contract",
+          "audio": {
+            "script_file": "audio/module2/slide_07_missing_contract.txt",
+            "wav_file": "audio/module2/slide_07_missing_contract.wav",
+            "delivery_file": "audio/module2/slide_07_missing_contract.mp3",
+            "approved": false
+          },
+          "transcript": "Return to your workload hypothesis. Now describe enough information for another implementation to understand the request. You can use the contribution worksheet to keep the note with your earlier answer.\n\nIdentify the operation and its expected output. Then name each input, its representation, and its location. Add the assumptions about access: which component can read or write it, and how long it must remain valid. Finally, state how completion is reported and how the next stage knows the result is ready.\n\nYou do not need to design a full API. Choose one unresolved question. For example: can the application reuse the input buffer after submission, or must it wait for completion? What does an unsupported data type return? How would a network stream be named as a source?\n\nPause and spend a minute or two making that question specific. Tie it to a section of the draft and suggest a clarification or small example. Section two currently lists data format, alignment, and objects without defining the complete model. Your note can help turn one of those headings into a concrete, reviewable contract.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "2; 4; 4.5.3",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Your second contribution",
+          "bullets": [
+            {
+              "bold_lead": "Describe",
+              "text": "Operation, operands, representation, location, and useful result."
+            },
+            {
+              "bold_lead": "Constrain",
+              "text": "Access rights, ownership, lifetime, and completion."
+            },
+            {
+              "bold_lead": "Focus",
+              "text": "Choose one ambiguity that affects your workload."
+            },
+            {
+              "bold_lead": "Contribute",
+              "text": "Suggest wording, an example, or a test that resolves it."
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Architecture components",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "DCC working draft · Interface contracts",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "Open contribution worksheet",
+              "url": "resources/dcc_contribution_worksheet.html#contract"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "slug": "takeaways",
+          "type": "takeaways",
+          "title": "A Common Interface Still Needs Device Support",
+          "audio": {
+            "script_file": "audio/module2/slide_08_takeaways.txt",
+            "wav_file": "audio/module2/slide_08_takeaways.wav",
+            "delivery_file": "audio/module2/slide_08_takeaways.mp3",
+            "approved": false
+          },
+          "transcript": "Frameworks and compiler paths help select and express useful work. Runtime libraries, adapters, and drivers make it executable on a particular device. A common interface can connect those responsibilities, but it does not replace them.\n\nFollow control messages separately from operand movement. Describe both the bytes and the operation that gives them meaning. Then make ownership, lifetime, completion, and visibility explicit. Shared addressing and coherency are helpful capabilities when supported, rather than substitutes for the full contract.\n\nYour contribution can be small. One precise question about a missing assumption is more useful than a broad request for interoperability. Tie the question to a workload and show what another implementation would need to know.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "Framework diagrams; 2; 4",
+              "status": "working draft v0.1"
+            }
+          ],
+          "items": [
+            "A portable boundary still needs backends, adapters, and runtime support.",
+            "Requests and data can follow different paths.",
+            "Representations and function semantics must agree.",
+            "Ownership, completion, and visibility require explicit contracts."
+          ]
+        },
+        {
+          "id": 9,
+          "slug": "knowledge_check",
+          "type": "knowledge_check",
+          "title": "Check the Integration Model",
+          "audio": {
+            "script_file": "audio/module2/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module2/slide_09_knowledge_check.wav",
+            "delivery_file": "audio/module2/slide_09_knowledge_check.mp3",
+            "approved": false
+          },
+          "transcript": "These questions check the integration model. First, identify what a common application interface can and cannot accomplish. Then select the information that makes a result safe for the next stage to use.\n\nSubmit both questions once to continue. Correct answers are not required, and you can retry after feedback. If a choice sounds convenient, check whether it supplies an actual execution guarantee or merely gives the data a name. That distinction is central to reviewing the framework.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "Framework diagrams; 3.3; 4",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Apply the model",
+          "subtitle": "Submit both questions to continue. You can retry after feedback.",
+          "questions": [
+            {
+              "id": "m2_q1",
+              "prompt": "What does a common NDC interface still depend on?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Device-specific implementations, capability descriptions, and runtime support.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Only a shared function name; data and execution behavior become identical.",
+                  "correct": false,
+                  "feedback_incorrect": "A function name does not establish operand representation, device capabilities, or execution guarantees."
+                },
+                {
+                  "id": "c",
+                  "text": "No runtime or driver once the application has been compiled.",
+                  "correct": false,
+                  "feedback_incorrect": "Compiled work still needs device access, memory support, launch, completion, and error handling."
+                }
+              ],
+              "feedback_correct": "The common boundary can reduce application divergence while implementations below it remain device specific.",
+              "feedback_incorrect": "Separate the shared application boundary from the support needed to execute correctly on each target."
+            },
+            {
+              "id": "m2_q2",
+              "prompt": "Which contracts help make result access safe? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Operand ownership and lifetime rules.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Completion reporting and required synchronization.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Result visibility and the supported access mechanism.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Assuming request acceptance means the result is already visible.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "Ownership, completion, visibility, and access semantics work together. Acceptance alone does not supply them.",
+              "feedback_incorrect": "Request acceptance is distinct from completion and safe result access. Include lifetime, synchronization, visibility, and access rules."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "slug": "up_next",
+          "type": "up_next",
+          "title": "From Integration Contracts to Practical Proposals",
+          "audio": {
+            "script_file": "audio/module2/slide_10_up_next.txt",
+            "wav_file": "audio/module2/slide_10_up_next.wav",
+            "delivery_file": "audio/module2/slide_10_up_next.mp3",
+            "approved": false
+          },
+          "transcript": "Thank you for completing module two, Connecting Applications to NDC Devices. You can now trace a conceptual request and identify the information needed at its boundaries.\n\nThe final module compares the draft's interface proposals with an existing proof of concept. We'll follow two real integration examples, examine what their evidence establishes, and turn your workload and contract notes into one focused contribution for DCC.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5–4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "next_module_number": 3,
+          "next_module_title": "Testing the Proposals and Contributing to DCC"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "testing-proposals-contributing",
+      "title": "Testing the Proposals and Contributing to DCC",
+      "subtitle": "Implementation examples, evidence, and a focused contribution to the workstream.",
+      "duration_minutes": 14,
+      "module_badge_text": "Module 3",
+      "slides": [
+        {
+          "id": 1,
+          "slug": "title",
+          "type": "title",
+          "title": "Testing the Proposals and Contributing to DCC",
+          "audio": {
+            "script_file": "audio/module3/slide_01_title.txt",
+            "wav_file": "audio/module3/slide_01_title.wav",
+            "delivery_file": "audio/module3/slide_01_title.mp3",
+            "approved": false
+          },
+          "transcript": "Module three. Testing the proposals and contributing to DCC. We now connect the architectural model to the draft's concrete interface work and two proof-of-concept examples. We'll distinguish a published standard from a proposed extension, examine what the demonstrations establish, and plan evidence for an application-level decision. You'll finish with one focused contribution that can help the workstream improve the paper.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5–4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "subtitle": "From implementation examples to useful community evidence"
+        },
+        {
+          "id": 2,
+          "slug": "objectives",
+          "type": "objectives",
+          "title": "Separate Evidence Proposals and Open Decisions",
+          "audio": {
+            "script_file": "audio/module3/slide_02_objectives.txt",
+            "wav_file": "audio/module3/slide_02_objectives.wav",
+            "delivery_file": "audio/module3/slide_02_objectives.mp3",
+            "approved": false
+          },
+          "transcript": "By the end of this module, you'll be able to compare the roles and maturity of the interface starting points. You'll explain the traffic pattern in the inference and vector-search examples without treating it as a guaranteed performance result.\n\nYou'll also identify evidence that could support or challenge an offload decision. Finally, you'll turn a draft section, a concrete workload, and an unresolved assumption into a short contribution note. The knowledge check assesses these distinctions. Your preferred architecture or interface remains an open design judgment.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5–4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "objectives": [
+            "Distinguish a published standard, a draft proposal, and a proof of concept.",
+            "Explain the inference and vector-search dataflows.",
+            "Plan evidence for a fair end-to-end comparison.",
+            "Prepare one specific, actionable contribution for DCC."
+          ]
+        },
+        {
+          "id": 3,
+          "slug": "interface_starting_points",
+          "type": "content_grid",
+          "title": "Compare the Interface Starting Points",
+          "audio": {
+            "script_file": "audio/module3/slide_03_interface_starting_points.txt",
+            "wav_file": "audio/module3/slide_03_interface_starting_points.wav",
+            "delivery_file": "audio/module3/slide_03_interface_starting_points.mp3",
+            "approved": false
+          },
+          "transcript": "The draft discusses related interface efforts with different status and scope. Keeping those differences visible makes the technical discussion more productive.\n\nThe Storage Networking Industry Association, or SNIA, publishes the Computational Storage API. Version one point one is a published standard for the application interface to computational storage devices. Device implementations still map that interface onto their own capabilities and access mechanisms.\n\nSection four point five proposes extending this starting point across near data classes. It describes broader discovery, generalized data sources and sinks, additional memory attributes, richer operand descriptions, function naming, and placement information. These changes are presented as design intent, rather than adopted specification text. The proposal needs experiments and an agreed definition of the shared contract.\n\nSection four point six describes NDC API, a host-side abstraction with an implementation contributed through OCP. The public repository identifies its initial scope as devices exposing CXL.mem and calls it a proof of concept and reference implementation. It explicitly says it is not a new industry standard.\n\nThe useful next question is how these efforts relate. Which abstractions overlap? Where would an adapter sit? Which contracts remain different? The draft does not yet establish an adopted bridge between the approaches. A worked mapping would help contributors compare practical behavior while preserving the distinction between the published interface, the proposed generalization, and the implementation being used for experimentation.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5–4.6; verified official SNIA and OCP repository",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Status and scope",
+          "grid_cols": 3,
+          "cards": [
+            {
+              "title": "Published SNIA API",
+              "body": "An existing computational-storage application interface with device implementations.",
+              "tone": "blue"
+            },
+            {
+              "title": "Proposed generalization",
+              "body": "Draft extensions for broader discovery, data sources/sinks, memory, and function descriptions.",
+              "tone": "amber"
+            },
+            {
+              "title": "NDC API proof of concept",
+              "body": "A host-side reference implementation initially targeting CXL.mem devices.",
+              "tone": "green"
+            }
+          ],
+          "term_refs": [
+            "computational_storage",
+            "cxl_mem",
+            "api"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Existing APIs and the NDC API prototype",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "SNIA API status",
+              "url": "https://www.snia.org/csapi"
+            },
+            {
+              "label": "NDC API scope and status",
+              "url": "https://github.com/opencomputeproject/samsung-ndc"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "slug": "demonstrated_workloads",
+          "type": "content_diagram",
+          "title": "Trace the Two Demonstrated Workloads",
+          "audio": {
+            "script_file": "audio/module3/slide_04_demonstrated_workloads.txt",
+            "wav_file": "audio/module3/slide_04_demonstrated_workloads.wav",
+            "delivery_file": "audio/module3/slide_04_demonstrated_workloads.mp3",
+            "approved": false
+          },
+          "transcript": "The draft demonstrates two proof-of-concept integrations. Both place selected computation near data, using NDC API to connect an existing software path to a processing-near-memory device. They demonstrate integration, not a new industry standard or a guaranteed application speedup.\n\nFirst, follow inference with LLaMA three point two, one billion parameters, running through ExecuTorch. A selected general matrix-vector multiplication, or GEMV, reaches the CPU-side library path. That path has been extended to request execution through NDC API and the device driver.\n\nThe large matrix already resides in device memory. The host supplies an input vector. The PNM engine computes with that vector and the resident matrix, then returns an output vector for subsequent inference operations. The useful change is the traffic pattern: reuse the matrix where it resides, instead of repeatedly moving it to the host. The small vector symbols explain the relationship; they are not measured byte counts.\n\nNow follow the retrieval stage of retrieval-augmented generation, or RAG. In this second proof of concept, Faiss uses an IVFFlat index. An index generated from the vector dataset is stored on an SSD, then loaded into CMM-DC memory for search. That preparation still has a cost.\n\nA search request reaches the PNM engine through NDC API. Candidate vectors are accessed near the resident index for search computation. Smaller search results return to the host. Compared with host-side distance computation, this can reduce candidate-vector traffic across the host-device connection.\n\nBoth examples share a pattern: keep a large reusable operand near the engine, send the requested work, and return a smaller result. But fewer transferred bytes do not alone establish end-to-end benefit. Measure setup, execution, latency, throughput, energy, and correctness against a suitable baseline. The draft's bandwidth comparison is not an application speedup claim.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Two proof-of-concept integrations",
+          "media_focus": true,
+          "figure": {
+            "path": "figures/module3_workloads.mp4",
+            "alt": "Two proof-of-concept dataflows: ExecuTorch sends a vector to a PNM device holding a GEMV matrix; Faiss sends a search request to a PNM engine beside an IVFFlat index loaded from SSD. Smaller results return to the host.",
+            "caption": "The two proof-of-concept integrations keep a reusable matrix or index near the processing engine and return smaller results. Reduced data movement motivates measurement; it does not establish application speedup or energy savings.",
+            "media_type": "video",
+            "poster": "figures/module3_workloads_poster.png",
+            "sync_to_narration": true,
+            "autoplay": false,
+            "loop": false,
+            "muted": true,
+            "text_inventory": {
+              "sha256": "538f8a45b3d2d375d60592691bcc87901a076912855329439a4ea29d3e963344",
+              "entries": [
+                {
+                  "text": "Two integrations. One data-placement idea.",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "Proof of concept • selected work executes near resident data",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "Inference",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "Retrieval",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "Resident",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "matrix",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "Resident",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "index",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "LLaMA 3.2-1B / ExecuTorch",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "Faiss IVFFlat / RAG",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "Integration evidence • not a new industry standard",
+                  "at_seconds": 0.033
+                },
+                {
+                  "text": "GEMV: keep the matrix resident",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "Inference • LLaMA 3.2-1B / ExecuTorch",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "HOST",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "ExecuTorch",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "CPU-side GEMV path",
+                  "at_seconds": 23.233
+                },
+                {
+                  "text": "NDC API + driver",
+                  "at_seconds": 23.233
+                },
+                {
+                  "text": "Subsequent inference",
+                  "at_seconds": 23.233
+                },
+                {
+                  "text": "PNM DEVICE",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "Resident matrix",
+                  "at_seconds": 34.233
+                },
+                {
+                  "text": "PNM",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "engine",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "GEMV",
+                  "at_seconds": 39.1
+                },
+                {
+                  "text": "Compute with device-local data",
+                  "at_seconds": 39.1
+                },
+                {
+                  "text": "Input vector",
+                  "at_seconds": 37.067
+                },
+                {
+                  "text": "Output vector",
+                  "at_seconds": 42.467
+                },
+                {
+                  "text": "Host–device",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "connection",
+                  "at_seconds": 16.7
+                },
+                {
+                  "text": "Reuse the matrix • exchange vectors • schematic sizes, not byte counts",
+                  "at_seconds": 46.067
+                },
+                {
+                  "text": "Vector search: keep the index resident",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "Retrieval for RAG • Faiss IVFFlat",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "HOST",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "Faiss IVFFlat",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "Search request",
+                  "at_seconds": 56.967
+                },
+                {
+                  "text": "NDC API",
+                  "at_seconds": 56.967
+                },
+                {
+                  "text": "Search results for RAG",
+                  "at_seconds": 56.967
+                },
+                {
+                  "text": "CMM-DC MEMORY + PNM",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "Resident index",
+                  "at_seconds": 69.333
+                },
+                {
+                  "text": "PNM",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "engine",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "Search",
+                  "at_seconds": 78.3
+                },
+                {
+                  "text": "Compute with device-local data",
+                  "at_seconds": 78.3
+                },
+                {
+                  "text": "Search request",
+                  "at_seconds": 74.6
+                },
+                {
+                  "text": "Smaller results",
+                  "at_seconds": 82.267
+                },
+                {
+                  "text": "Host–device",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "connection",
+                  "at_seconds": 56.333
+                },
+                {
+                  "text": "SSD: generated index",
+                  "at_seconds": 65.633
+                },
+                {
+                  "text": "From vector dataset",
+                  "at_seconds": 65.633
+                },
+                {
+                  "text": "Load before search",
+                  "at_seconds": 65.633
+                },
+                {
+                  "text": "Setup has a cost",
+                  "at_seconds": 65.633
+                },
+                {
+                  "text": "Resident data. Selected work. Smaller results.",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Two proof-of-concept paths using NDC API",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Inference",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Matrix",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "GEMV",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "near data",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Resident data stays • results return",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Retrieval",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Index",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Search",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "near data",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Resident data stays • results return",
+                  "at_seconds": 90.1
+                },
+                {
+                  "text": "Less traffic is not an end-to-end speedup result.",
+                  "at_seconds": 98.733
+                },
+                {
+                  "text": "Measure setup, latency, throughput, energy and correctness.",
+                  "at_seconds": 98.733
+                },
+                {
+                  "text": "Compare against a suitable baseline.",
+                  "at_seconds": 98.733
+                }
+              ]
+            },
+            "duration_seconds": 111.866667
+          },
+          "term_refs": [
+            "pnm",
+            "gemv",
+            "rag"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Prototype workload examples",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "NDC API reference implementation",
+              "url": "https://github.com/opencomputeproject/samsung-ndc"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "slug": "cross_device_abstraction",
+          "type": "content_diagram",
+          "title": "Test the Abstraction Across Device Classes",
+          "audio": {
+            "script_file": "audio/module3/slide_05_cross_device_abstraction.txt",
+            "wav_file": "audio/module3/slide_05_cross_device_abstraction.wav",
+            "delivery_file": "audio/module3/slide_05_cross_device_abstraction.mp3",
+            "approved": false
+          },
+          "transcript": "An abstraction becomes useful when it preserves the differences that software needs while offering a common way to express work. The draft maps computational storage resources onto processing in memory, processing near memory, and data processing units. Treat that mapping as a proposal to test across implementations.\n\nSeveral ideas can recur: discover a resource, identify a supported function, reserve or refer to operand memory, request execution, and establish completion. But the source and sink of the data can differ. Storage work may refer to persistent data and device buffers. A memory-oriented operation may use a bank-local region or device-attached memory. A DPU may operate on an ongoing network stream.\n\nThat is why the draft proposes a generalized source and sink description, additional memory attributes, and richer function arguments. A single vocabulary is helpful only if it can express those cases without making unsupported guarantees. A PIM mechanism should not be assumed to use the same launch or completion path as every other device.\n\nThe two detailed proof-of-concept examples both use PNM. A useful community contribution is therefore another walkthrough: describe the same conceptual lifecycle for computational storage, a PIM device, or data in flight. Identify exactly where the proposed shared model fits and where it needs a new capability, restriction, or example.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5.2–4.5.3; 4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Horizontal integration",
+          "figure": {
+            "path": "figures/module3_device_matrix.svg",
+            "alt": "Four-row comparison of proposed source and sink mappings for computational storage, PIM, PNM and DPU devices, alongside where data lives and what adaptation remains to test.",
+            "caption": "Applying the draft’s resource and source/sink proposal across four device classes exposes different execution and data-access contracts. These mappings are review proposals, not adopted cross-device requirements.",
+            "text_inventory": {
+              "sha256": "6a357889ffb38fe29631f0e092030eb9fd257a80ac5392ee0d7ddd0a4c5eae8a",
+              "entries": [
+                {
+                  "text": "Test the proposed mapping across device classes"
+                },
+                {
+                  "text": "Illustrative review questions • not adopted cross-device requirements"
+                },
+                {
+                  "text": "Device class"
+                },
+                {
+                  "text": "Where the data lives"
+                },
+                {
+                  "text": "Source / sink"
+                },
+                {
+                  "text": "Adaptation or gap to test"
+                },
+                {
+                  "text": "Storage"
+                },
+                {
+                  "text": "Storage media;"
+                },
+                {
+                  "text": "device memory"
+                },
+                {
+                  "text": "Storage extent ↔ host buffer"
+                },
+                {
+                  "text": "Map existing storage path"
+                },
+                {
+                  "text": "PIM"
+                },
+                {
+                  "text": "Memory banks"
+                },
+                {
+                  "text": "Host / mapped memory"
+                },
+                {
+                  "text": "Whole operator →"
+                },
+                {
+                  "text": "bank execution"
+                },
+                {
+                  "text": "PNM"
+                },
+                {
+                  "text": "Device-attached memory"
+                },
+                {
+                  "text": "Host ↔ device memory"
+                },
+                {
+                  "text": "Addressing, visibility,"
+                },
+                {
+                  "text": "completion"
+                },
+                {
+                  "text": "DPU"
+                },
+                {
+                  "text": "Network flow;"
+                },
+                {
+                  "text": "host memory"
+                },
+                {
+                  "text": "Stream ↔ buffer / stream"
+                },
+                {
+                  "text": "Name streams;"
+                },
+                {
+                  "text": "bound lifetime"
+                },
+                {
+                  "text": "Common descriptors are a proposal; each device still needs a valid execution and data-access contract."
+                }
+              ]
+            }
+          },
+          "term_refs": [
+            "pim",
+            "dpu"
+          ],
+          "reference_links": [
+            {
+              "label": "DCC working draft · Interfaces across device classes",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "slug": "evidence_plan",
+          "type": "content_diagram",
+          "title": "Design Evidence That Could Change a Decision",
+          "audio": {
+            "script_file": "audio/module3/slide_06_evidence_plan.txt",
+            "wav_file": "audio/module3/slide_06_evidence_plan.wav",
+            "delivery_file": "audio/module3/slide_06_evidence_plan.mp3",
+            "approved": false
+          },
+          "transcript": "A demonstration can show that an integration path works without settling whether it is beneficial for a particular deployment. Build an experiment that could change your decision, including the possibility that offloading does not help.\n\nStart with a suitable baseline and the same useful task. Record hardware, software, model or dataset, data representation, and relevant workload settings. Use equivalent correctness requirements. For approximate retrieval, compare the required quality as well as performance so a different answer is not mistaken for faster execution of the same task.\n\nAccount for setup, loading, and conversions. Then measure the execution path: bytes crossing relevant boundaries, end-to-end latency, useful throughput, and energy where available. Distinguish a one-time preparation cost from a cost paid on every request. Repeated reuse and cold-start behavior may tell different stories.\n\nAdd one difficult condition. What happens when an operation is unsupported, a device fails, or fallback is required? Identify the expected behavior and what evidence would demonstrate it. These are review questions for the broader framework, rather than guarantees supplied by the demonstrations.\n\nThe draft includes a vector-search bandwidth illustration. A bandwidth ratio is not automatically an application speedup or an energy saving. Explain the relationship that a measurement establishes, keep the system boundary visible, and report limitations that would matter to another contributor trying to reproduce the result.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.6; 7.3; 8 and proposed validation questions",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "A reproducible comparison",
+          "figure": {
+            "path": "figures/module3_evidence_plan.svg",
+            "alt": "Baseline host execution and selected device offload compared under fixed conditions, measuring complete-workload latency, throughput, transferred bytes, energy and correctness, including setup and failures.",
+            "caption": "Compare a suitable host baseline with device offload under the same workload and quality conditions. Include preparation and failure behavior so reduced traffic is tested as a system-level benefit.",
+            "text_inventory": {
+              "sha256": "aa31d5c0236184da6f0e9a3aa6f99cf8371fd6e87ac030861d9ac3c33fe9f205",
+              "entries": [
+                {
+                  "text": "Compare the complete workload, including preparation"
+                },
+                {
+                  "text": "Illustrative measurement protocol • no synthetic performance numbers"
+                },
+                {
+                  "text": "BASELINE"
+                },
+                {
+                  "text": "Host executes the operation"
+                },
+                {
+                  "text": "Record transfers and setup"
+                },
+                {
+                  "text": "OFFLOAD"
+                },
+                {
+                  "text": "Device executes selected work"
+                },
+                {
+                  "text": "Record setup, transfers and fallback"
+                },
+                {
+                  "text": "vs."
+                },
+                {
+                  "text": "Hold the comparison conditions fixed"
+                },
+                {
+                  "text": "Hardware / software • dataset / model / index • quality target • warm-up • concurrency"
+                },
+                {
+                  "text": "Measure end-to-end latency • throughput • transferred bytes • energy • correctness"
+                },
+                {
+                  "text": "Report setup separately and in amortized totals; test an unsupported operation or device failure."
+                }
+              ]
+            }
+          },
+          "reference_links": [
+            {
+              "label": "DCC working draft · Prototype workload evidence",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "slug": "contribution_note",
+          "type": "content_bullets",
+          "title": "Prepare One DCC Contribution",
+          "audio": {
+            "script_file": "audio/module3/slide_07_contribution_note.txt",
+            "wav_file": "audio/module3/slide_07_contribution_note.wav",
+            "delivery_file": "audio/module3/slide_07_contribution_note.mp3",
+            "approved": false
+          },
+          "transcript": "Bring together your placement hypothesis and your integration question. Choose one section of the draft that your experience can help improve. Keep the scope small enough for another contributor to review and act on.\n\nA useful note starts with context. Name the workload and device assumptions, then identify the unclear claim or missing requirement. Explain its consequence. Perhaps two implementations could interpret an operand differently, or a bandwidth comparison could be mistaken for a complete application result.\n\nOffer a next step. You might suggest a sentence of clearer wording, a worked example, a counterexample, or an experiment with a defined baseline. State what evidence would resolve the question. If you are proposing a new requirement, label it as a proposal and explain why the workload needs it.\n\nPause and spend two or three minutes drafting the note. The worksheet helps you copy or download it. Your contribution is not posted automatically. You can bring it to the DCC workstream through its existing participation route when you choose.\n\nThe workstream benefits from specific examples across memory, storage, and networking. A carefully described limitation can be as useful as a success case. The goal is a clearer framework that other contributors can understand, test, and improve.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "2; 4; 7.3; 8 and proposed community exercise",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Your final contribution",
+          "bullets": [
+            {
+              "bold_lead": "Locate",
+              "text": "Name the paper section and workload context."
+            },
+            {
+              "bold_lead": "Explain",
+              "text": "State the ambiguity, missing assumption, or counterexample."
+            },
+            {
+              "bold_lead": "Propose",
+              "text": "Offer clearer wording, a worked example, or an experiment."
+            },
+            {
+              "bold_lead": "Support",
+              "text": "Name the evidence needed to resolve the question."
+            }
+          ],
+          "reference_links": [
+            {
+              "label": "DCC participation and resources",
+              "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+            },
+            {
+              "label": "DCC working draft · Architecture and open design questions",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "Open contribution worksheet",
+              "url": "resources/dcc_contribution_worksheet.html#contribution"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "slug": "takeaways",
+          "type": "takeaways",
+          "title": "Useful Feedback Connects a Claim to Evidence",
+          "audio": {
+            "script_file": "audio/module3/slide_08_takeaways.txt",
+            "wav_file": "audio/module3/slide_08_takeaways.wav",
+            "delivery_file": "audio/module3/slide_08_takeaways.mp3",
+            "approved": false
+          },
+          "transcript": "Keep status, scope, and evidence separate. The published computational-storage interface, the draft's proposed generalization, and the NDC API proof of concept contribute different starting points to the discussion.\n\nThe two demonstrations explain how selected inference and retrieval operations can run near resident data. They motivate a comparison, while an application-level decision still needs equivalent correctness, complete cost accounting, and measured outcomes.\n\nYou can help by providing a missing contract, another device-class walkthrough, a counterexample, or a reproducible experiment. Tie the contribution to a paper section and a concrete consequence. That gives the DCC community something specific to examine and improve.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5–4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "items": [
+            "Distinguish published standards, draft proposals, and proofs of concept.",
+            "Read the demonstrations as integration and traffic-pattern evidence.",
+            "Test complete useful execution paths, including difficult conditions.",
+            "Contribute a specific clarification, example, counterexample, or experiment."
+          ]
+        },
+        {
+          "id": 9,
+          "slug": "knowledge_check",
+          "type": "knowledge_check",
+          "title": "Check Your Review Judgment",
+          "audio": {
+            "script_file": "audio/module3/slide_09_knowledge_check.txt",
+            "wav_file": "audio/module3/slide_09_knowledge_check.wav",
+            "delivery_file": "audio/module3/slide_09_knowledge_check.mp3",
+            "approved": false
+          },
+          "transcript": "The final questions check how you interpret status and evidence. First, choose the statement that accurately distinguishes the interface efforts. Then select the evidence needed for a defensible offload comparison.\n\nSubmit both questions once to continue. Correct answers are not required, and retry feedback is available. These questions do not ask you to endorse a particular API or architecture. They check whether a technical claim is supported by the type of evidence being offered.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "4.5–4.6",
+              "status": "working draft v0.1"
+            }
+          ],
+          "section_label": "Apply the model",
+          "subtitle": "Submit both questions to continue. You can retry after feedback.",
+          "questions": [
+            {
+              "id": "m3_q1",
+              "prompt": "Which statement correctly distinguishes the interface efforts?",
+              "multiple": false,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "The SNIA CS API is published; its broader NDC generalization is proposed; NDC API is a proof of concept.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "The draft has already standardized one interface across all NDC device classes.",
+                  "correct": false,
+                  "feedback_incorrect": "The draft presents design intent and open questions. It does not establish an adopted interface covering every class."
+                },
+                {
+                  "id": "c",
+                  "text": "The NDC API repository replaces the published SNIA standard.",
+                  "correct": false,
+                  "feedback_incorrect": "The repository describes a proof of concept, not a replacement standard or an adopted bridge to the SNIA API."
+                }
+              ],
+              "feedback_correct": "Published interface, proposed extension, and proof of concept have different scope and status.",
+              "feedback_incorrect": "Keep the published SNIA interface distinct from the proposed generalization and the NDC API reference implementation."
+            },
+            {
+              "id": "m3_q2",
+              "prompt": "What belongs in a defensible offload comparison? Select all that apply.",
+              "multiple": true,
+              "choices": [
+                {
+                  "id": "a",
+                  "text": "Equivalent useful work and defined correctness or retrieval-quality requirements.",
+                  "correct": true
+                },
+                {
+                  "id": "b",
+                  "text": "Setup, conversion, execution, result access, and reuse assumptions.",
+                  "correct": true
+                },
+                {
+                  "id": "c",
+                  "text": "Measured application outcomes and documented system/workload settings.",
+                  "correct": true
+                },
+                {
+                  "id": "d",
+                  "text": "Treating a bandwidth ratio as the application speedup without further measurement.",
+                  "correct": false
+                }
+              ],
+              "feedback_correct": "A reproducible comparison defines equivalent work, complete costs, and measured application outcomes.",
+              "feedback_incorrect": "Specify the workload and correctness target, account for the full path, and measure outcomes. A bandwidth ratio alone cannot supply the application result."
+            }
+          ]
+        },
+        {
+          "id": 10,
+          "slug": "course_complete",
+          "type": "course_complete",
+          "title": "Continue the Work With DCC",
+          "audio": {
+            "script_file": "audio/module3/slide_10_course_complete.txt",
+            "wav_file": "audio/module3/slide_10_course_complete.wav",
+            "delivery_file": "audio/module3/slide_10_course_complete.mp3",
+            "approved": false
+          },
+          "transcript": "Thank you for completing module three, Testing the Proposals and Contributing to DCC, and for working through the course. You can now explain placement choices, trace an integration lifecycle, and distinguish a proposed design from a demonstrated implementation.\n\nUse your contribution note to make one part of the framework clearer or easier to test. Explore the reference implementation, review the working paper, and join the DCC conversation when you are ready. Thank you for helping turn practical experience into a stronger shared model.",
+          "source_refs": [
+            {
+              "source": "NDC Framework White Paper v0.1 (authoring snapshot)",
+              "section": "Course synthesis and continuing resources",
+              "status": "working draft v0.1"
+            }
+          ],
+          "course_title": "Near Data Computing: Frameworks and Open Design Questions",
+          "cert_message": "Apply the model to one workload. Bring one specific question or piece of evidence to DCC.",
+          "reference_links": [
+            {
+              "label": "OCP DCC workstream",
+              "url": "https://www.opencompute.org/projects/future-technologies-initiative/data-centric-computing/"
+            },
+            {
+              "label": "NDC API reference implementation",
+              "url": "https://github.com/opencomputeproject/samsung-ndc"
+            },
+            {
+              "label": "DCC working framework draft",
+              "url": "https://docs.google.com/document/d/1gu1eheF2DapoegftHQQ8jfEBuxrLVWHQHWgM57XswEY/edit"
+            },
+            {
+              "label": "Your contribution worksheet",
+              "url": "resources/dcc_contribution_worksheet.html"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "authoring": {
+    "source_status_policy": "Distinguish concepts, published standards, draft proposals, and proofs of concept.",
+    "build_notes": "README.md"
+  },
+  "resource_assets": [
+    "resources/dcc_contribution_worksheet.html",
+    "resources/fonts/open-sans.css",
+    "resources/fonts/open-sans.woff2",
+    "resources/fonts/OFL.txt",
+    "resources/fonts/font-source.txt"
+  ],
+  "local_font_stylesheet": "resources/fonts/open-sans.css",
+  "lms_catalog": {
+    "title": "Near Data Computing: Frameworks and Open Design Questions (Beta)",
+    "short_description": "Beta: Explore near data computing frameworks, test draft design ideas, and contribute to the OCP DCC workstream.",
+    "overview": "This beta course explores near data computing (NDC) through the working Near Data Computing Framework draft v0.1. Learners compare compute placement across memory, storage, and networking; trace application-to-device integration; distinguish published standards, draft proposals, and proofs of concept; and prepare evidence-based feedback for the OCP Data Centric Computing (DCC) workstream. The course supports community review and helps identify gaps in the draft paper.",
+    "duration_minutes": 40,
+    "duration_basis": "estimated_learner_time",
+    "duration_note": "Includes narration, reading, six knowledge-check questions, and reflection activities. Optional community posting and workstream-call attendance are excluded.",
+    "modules": [
+      {
+        "id": 1,
+        "duration_minutes": 12,
+        "summary": "Explore the data-movement problem, compare NDC device classes and device-first versus accelerator-first architectures, and develop a testable placement hypothesis for a workload."
+      },
+      {
+        "id": 2,
+        "duration_minutes": 14,
+        "summary": "Trace a conceptual offload request through frameworks, runtimes, and device support. Identify the data representation, ownership, completion, and visibility contracts needed for correct integration."
+      },
+      {
+        "id": 3,
+        "duration_minutes": 14,
+        "summary": "Compare interface starting points, examine inference and vector-search proofs of concept, plan a fair end-to-end evaluation, and prepare a focused contribution to the DCC workstream."
+      }
+    ]
+  }
+}
